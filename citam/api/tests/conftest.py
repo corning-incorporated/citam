@@ -61,6 +61,9 @@ class MockedSession:
 def s3_client(monkeypatch):
     monkeypatch.setenv('CITAM_STORAGE_SECRET', 'xyz')
     monkeypatch.setenv('CITAM_STORAGE_KEY', 'abc')
+    monkeypatch.setenv('CITAM_STORAGE_BUCKET', 'abc')
+    monkeypatch.setenv('CITAM_STORAGE_REGION', 'us-east-1')
+    monkeypatch.setenv('CITAM_STORAGE_URL', 'amazonaws.com')
     monkeypatch.setattr(
         citam.api.storage.s3.boto3.session,
         'Session',
