@@ -55,17 +55,18 @@ class CitamSettings:
 
     def __init__(self):
         #: Access Key for s3 backend.
-        self.access_key = os.environ.get('CITAM_STORAGE_KEY')
+        self.access_key = os.environ.get('CITAM_STORAGE_KEY', '')
         #: Secret Key for s3 backend.
-        self.secret_key = os.environ.get('CITAM_STORAGE_SECRET')
+        self.secret_key = os.environ.get('CITAM_STORAGE_SECRET', '')
         #: Storage bucket for S3 backend
-        self.storage_bucket = os.environ.get('CITAM_STORAGE_BUCKET')
+        self.storage_bucket = os.environ.get('CITAM_STORAGE_BUCKET', '')
         #: Region Name for S3 backend
-        self.region_name = os.environ.get('CITAM_STORAGE_REGION')
+        self.region_name = os.environ.get('CITAM_STORAGE_REGION', '')
         #: Storage URL for S3 backend
-        self.storage_url = os.environ.get('CITAM_STORAGE_URL')
+        self.storage_url = os.environ.get('CITAM_STORAGE_URL', '')
         #: Filesystem path for result files to use with LocalStorage backend
-        self.result_path = os.environ.get('CITAM_RESULT_PATH')
+        self.result_path = os.environ.get('CITAM_RESULT_PATH', '')
+        print('storage_url', self.storage_url)
 
         #: Path to storage driver class
         self.storage_driver_path = os.environ.get('CITAM_STORAGE_DRIVER')
@@ -107,6 +108,8 @@ class CitamSettings:
 
         :rtype: citam.storage.BaseStorageDriver
         """
+        print('initializing driver', self._storage_kwargs)
+        print('storage_url', self.storage_url)
         driver_class = _import_string(self.storage_driver_path)
         self._active_storage_driver_path = str(self.storage_driver_path)
         self._active_storage_driver_options = self._storage_kwargs
@@ -118,7 +121,7 @@ class CitamSettings:
             f"BaseStorageDriver.  Extend BaseStorageDriver in your custom "
             f"storage driver."
         )
-        return driver_class(self._storage_kwargs)
+        return driver_class(**self._storage_kwargs)
 
     @staticmethod
     def _get_default_log_level():
