@@ -31,7 +31,7 @@ import falcon
 from mimetypes import guess_type
 from os.path import abspath, basename, dirname, isfile, join
 from citam.api import parser
-from citam.api.settings_parser import get_storage_driver
+from citam.api.settings_parser import settings
 
 LOG = logging.getLogger(__name__)
 STATIC_PATH = join(dirname(abspath(__file__)), 'static')
@@ -41,7 +41,7 @@ class ResultsResource:
     """Results file APIs"""
 
     def __init__(self):
-        self.storage = get_storage_driver()
+        self.storage = settings.storage_driver
 
     def on_get_list(self,
                     req: falcon.Request,
