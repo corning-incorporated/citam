@@ -1,0 +1,107 @@
+  //Copyright 2020. Corning Incorporated. All rights reserved.
+  //
+  //This software may only be used in accordance with the licenses granted by
+  //Corning Incorporated. All other uses as well as any copying, modification or
+  //reverse engineering of the software is strictly prohibited.
+  //
+  //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  //IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  //FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+  //CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  //ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+  //WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+  //==============================================================================
+
+.simulation-loader {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.loader-title {
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.simulation-loader-overlay {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FFFFFF;
+}
+
+.loader-wrapper {
+    clear: both;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.loader-label {
+    display: inline-block;
+    padding-left: .8rem;
+}
+
+.loaded {
+    width: 2rem;
+    height: 2rem;
+    box-sizing: border-box;
+    background-color: darkgreen;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+}
+
+.loaded:after {
+    position: absolute;
+    content: "L";
+    font-size: 1.5rem;
+    left: 50%;
+    top: 45%;
+    text-align: center;
+    color: white;
+    font-family: arial, sans-serif;
+    transform: translate(-50%, -50%) scaleX(-1) rotate(-35deg);
+}
+
+.loader {
+    width: 2rem;
+    height: 2rem;
+    box-sizing: border-box;
+    border-top: 0.3rem solid hotpink;
+    border-radius: 50%;
+    position: relative;
+    animation: rotating 2s linear infinite;
+    display: inline-block;
+}
+
+.loader::before,
+.loader::after {
+    content: '';
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    border-radius: 50%;
+    box-sizing: border-box;
+    top: -0.2rem;
+}
+
+.loader::before {
+    border-top: 0.3rem solid dodgerblue;
+    transform: rotate(120deg);
+}
+
+.loader::after {
+    border-top: 0.3rem solid gold;
+    transform: rotate(240deg);
+}
+
+@keyframes rotating {
+    50% {transform: rotate(180deg);}
+    100% {transform: rotate(360deg);}
+}

@@ -1,0 +1,9 @@
+svgpathtools
+numpy
+networkx
+scipy
+sphinx
+progressbar2
+matplotlib
+boto3
+falcon

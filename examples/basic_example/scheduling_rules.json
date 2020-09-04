@@ -1,0 +1,33 @@
+
+{
+
+    "OFFICE_WORK":    {"purpose": "OFFICE_WORK", 
+                      "min_duration": 50, 
+                      "max_duration": 200, 
+                      "min_instances": 2, 
+                      "max_instances": 10 
+                      }, 
+    "RESTROOM_VISIT":  {"purpose": "RESTROOM_VISIT", 
+                      "min_duration": 50, 
+                      "max_duration": 200, 
+                      "min_instances": 1, 
+                      "max_instances": 4
+                      }, 
+    "CAFETERIA_VISIT": {"purpose": "CAFETERIA_VISIT", 
+                      "min_duration": 50, 
+                      "max_duration": 200,  
+                      "min_instances": 0, 
+                      "max_instances": 2}, 
+    "MEETING":         {"purpose": "MEETING", 
+                      "min_duration": 50, 
+                      "max_duration": 200, 
+                      "min_instances": 1, 
+                      "max_instances": 8 
+                      }, 
+    "LAB_WORK":        {"purpose": "LAB_WORK", 
+                      "min_duration": 50, 
+                      "max_duration": 200, 
+                      "min_instances": 1, 
+                      "max_instances": 4 
+                      }
+}

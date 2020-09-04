@@ -1,0 +1,268 @@
+# Copyright 2020. Corning Incorporated. All rights reserved.
+#
+# This software may only be used in accordance with the licenses granted by
+# Corning Incorporated. All other uses as well as any copying, modification or
+# reverse engineering of the software is strictly prohibited.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+# ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+# ==============================================================================
+
+from citam.engine.point import Point
+import citam.engine.basic_visualization as bv
+
+import logging
+import pickle
+
+
+class Floorplan:
+    """
+    Class to represent and manipulate a floorplan in a given facility.
+
+    ...
+
+    Attributes
+    ----------
+    scale : float
+        The scale of the floorplan in ft per drawing unit
+    spaces : list of Space objects
+        list of space objects representing each space (room, hallway,
+        etc.). Used for geolocation and navigation
+    aisles : list
+        list of all aisles. Each aisle is a list with 2 (parallel) walls
+    walls : list of Line objects
+        list of all the walls in the floorplan. Used to generate the final
+        map of the facility and to have realistic navigation.
+    width : int
+        the overall width of the facility  in units of the SVG drawing
+    height : int
+        the overall height of the facility in units of the SVG drawing
+    """
+
+    def __init__(self,
+                 scale,
+                 spaces,
+                 doors,
+                 walls,
+                 aisles,
+                 width,
+                 height,
+                 floor_name="0",
+                 special_walls=[],  # Walls that are not attached to any space
+                 traffic_policy=None,
+                 ):
+        super().__init__()
+
+        self.floor_name = None
+        self.scale = scale
+        self.floor_name = floor_name
+        self.buildings = []
+        self.special_walls = special_walls
+
+        if doors is not None and \
+                spaces is not None and \
+                walls is not None and \
+                aisles is not None:
+
+            self.spaces = spaces
+            self.doors = doors
+            self.walls = walls
+            self.aisles = aisles
+            self.width = width
+            self.height = height
+            self.minx = 0
+            self.miny = 0
+
+            for space in self.spaces:
+                if space.building not in self.buildings:
+                    self.buildings.append(space.building)
+        else:
+            logging.error('Invalid inputs for floorplan.')
+            quit()
+
+        n_spaces_with_doors = 0
+        n_rooms_with_doors = 0
+        n_rooms = 0
+        for space in self.spaces:
+            if len(space.doors) > 0:
+                n_spaces_with_doors += 1
+            if not space.is_space_a_hallway():
+                n_rooms += 1
+                if len(space.doors) > 0:
+                    n_rooms_with_doors += 1
+
+        logging.info('Number of spaces: ' + str(len(self.spaces)))
+        logging.info('Number of rooms: ' + str(n_rooms))
+        logging.info('Number of rooms with doors: ' + str(n_rooms_with_doors))
+        logging.info('Number of walls: ' + str(len(self.walls)))
+        logging.info('Total number of doors: ' + str(len(self.doors)))
+
+        n_outside_doors = 0
+        for door in self.doors:
+            if door.space1 is None or door.space2 is None:
+                n_outside_doors += 1
+        logging.info('Number of outside doors: ' + str(n_outside_doors))
+
+        self.agent_locations = {}
+        if traffic_policy is None:
+            self.traffic_policy = [0 for aisle in self.aisles]
+        else:
+            self.traffic_policy = traffic_policy
+
+        return
+
+    def place_agent(self, agent, pos):
+        """ Position an agent in a given x, y position on this floor
+        """
+        x, y = pos
+        key = str(x) + '-' + str(y)
+        # self.grid[x][y].add(agent)
+        if key not in self.agent_locations:
+            self.agent_locations[key] = [agent]
+        else:
+            self.agent_locations[key].append(agent)
+        agent.pos = pos
+
+    def remove_agent(self, agent):
+        """Remove the agent from the facility and set its pos variable to None.
+        """
+        pos = agent.pos
+        x, y = pos
+        key = str(x) + '-' + str(y)
+        if key not in self.agent_locations:
+            logging.error('Cannot find any agent in this location.')
+        else:
+            self.agent_locations[key].remove(agent)
+        agent.pos = None
+
+    def move_agent(self, agent, pos):
+        """
+        Move an agent from its current position to a new position.
+
+        Parameters
+        ------------
+        agent: Agent object to move. Assumed to have its current location
+                   stored in a 'pos' tuple.
+        pos: Tuple of new position to move the agent to.
+        """
+        self.remove_agent(agent)
+        self.place_agent(agent, pos)
+
+    def identify_this_location(self, x, y, include_boundaries=True):
+        """Given a point given by its xy coords, find the space inside of
+        which it is located.
+        """
+        location = None
+        for i, room in enumerate(self.spaces):
+            if room.is_point_inside_space(Point(x=x, y=y),
+                                          include_boundaries=include_boundaries
+                                          ):
+                location = i
+                break
+
+        return location
+
+    def get_room_exit_coords(self, room_id):
+        """Given a room id, find the exit coords (xy point at the middle of
+        the door)
+        """
+        room = self.spaces[room_id]
+
+        if len(room.doors) == 0:
+            space_name = str(self.spaces[room_id].unique_name)
+            logging.warn(space_name + ' has no door')
+            return None
+
+        else:
+            door = room.doors[0]
+
+            x = round(door.point(0.5).real)
+            y = round(door.point(0.5).imag)
+
+            return (x, y)
+
+    def export_to_svg(self, svg_file, include_doors=False):
+        """Export the current floorplan to an SVG file.
+
+           Each space is written to file as a path element. Doors
+           are written seperately as path element as well.
+
+        """
+
+        doors = []
+        if include_doors:
+            doors = self.doors
+
+        bv.export_world_to_svg(
+            self.walls,
+            [],
+            svg_file,
+            marker_locations=[],
+            marker_type=None,
+            arrows=[],
+            doors=doors,
+            max_contacts=100,
+            current_time=None,
+            show_colobar=False,
+            viewbox=None
+            )
+
+        return
+
+    def export_to_file(self, filename):
+        """Serialize floorplan data and save to file.
+        """
+        space_dict_list = [vars(space) for space in self.spaces]
+        door_dict_list = []
+
+        for door in self.doors:
+            if door.space1 is not None:
+                name1 = door.space1.unique_name
+            else:
+                name1 = None
+
+            if door.space2 is not None:
+                name2 = door.space2.unique_name
+            else:
+                name2 = None
+
+            door_dict = {'path': door.path,
+                         'space1': name1,
+                         'space2': name2
+                         }
+            door_dict_list.append(door_dict)
+
+        # TODO: also add building walls so that people can run simulations for
+        # specific buildings in a facility
+        data_dict = {'spaces': space_dict_list,
+                     'doors': door_dict_list,
+                     'walls': self.walls,
+                     'special_walls': self.special_walls,
+                     'aisles': self.aisles,
+                     'scale': self.scale
+                     }
+
+        with open(filename, 'wb') as outfile:
+            pickle.dump(data_dict, outfile)
+
+        return
+
+    def export_data_to_pickle_file(self, fp_pickle_file):
+
+        data_to_save = [self.spaces,
+                        self.doors,
+                        self.walls,
+                        self.special_walls,
+                        self.aisles,
+                        1000,
+                        1000,
+                        self.scale
+                        ]
+        with open(fp_pickle_file, 'wb') as f:
+            pickle.dump(data_to_save, f)
+
+        return

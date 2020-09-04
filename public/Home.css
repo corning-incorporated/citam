@@ -1,0 +1,148 @@
+.container-fluid {
+  padding: 0 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+.container-fluid .row {
+  margin-right: 0;
+}
+.customNav {
+  background-color: black;
+  max-height: 58px;
+}
+.customNav nav {
+  border-bottom: 0px;
+}
+.customNav .nav-item {
+  margin-bottom: -8px;
+}
+.customNav a {
+  color: white;
+  font-weight: 650;
+  line-height: 2;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.customNav a:active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+.customNav p {
+  color: white;
+  font-size: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10px 0 0 30px;
+  margin-bottom: 0;
+}
+.customNav a:hover {
+  color: orange;
+}
+.bckImg {
+  background-image: url("./Images/CITAM-hero.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 80%;
+  height: 400px;
+  margin-top: 50px;
+}
+.colSpacing {
+  margin-top: 15px;
+}
+.titleBorder {
+  border-bottom: 1px solid black;
+  width: 85%;
+  margin-top: 50px;
+}
+#citamTitle {
+  font-size: 55px;
+  padding: 10px 10px 0 50px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#citamSubTitle {
+  padding: 15px 0 0 70px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.2;
+  font-size: 18px;
+}
+.subTitleMargin {
+  margin: 10px 0 0 60px;
+}
+/*Custom button Styling with hover effects*/
+.customButton {
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 20px 4px 0;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.btn {
+  background-color: orange;
+  color: white;
+  border: 1px solid orange;
+}
+
+.btn:hover {
+  background-color: black;
+  color: orange;
+}
+.customButton a {
+  text-decoration: none;
+  color: white;
+}
+.customButton a:hover {
+  color: orange;
+}
+.customButton:hover a {
+  color: orange;
+}
+#citamDesc {
+  border-bottom: 1px solid black;
+  width: 90%;
+  margin: 20px 0 20px 0;
+  padding-bottom: 25px;
+  text-align: center;
+  font-size: 22px;
+}
+
+/*Key features section styling*/
+.centerMargin {
+  margin: 0 85px 30px 85px !important;
+}
+.featureItem {
+  margin: 0 0 20px 0;
+  background-color: lightgray;
+  padding: 20px 10px 7px 10px;
+}
+.featureItem:hover {
+  box-shadow: 2px 2px 2px 2px darkgray;
+  transition-duration: 0.6s;
+}
+#colHeight {
+  height: 93%;
+}
+.customBorder {
+  border-bottom: 1px solid black;
+  width: 90%;
+  padding-bottom: 40px;
+}
+
+#copyRight {
+  font-size: 15px;
+  text-align: end;
+  padding: 17px 40px 0px 0;
+}
+.document .documentwrapper {
+  margin: 10px 50px 0px 50px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.document .documentwrapper .body {
+  max-width: 100%;
+}
+div.related {
+  margin: 70px 10px 0 10px;
+  width: 99% !important;
+}

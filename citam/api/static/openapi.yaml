@@ -1,0 +1,365 @@
+openapi: 3.0.1
+info:
+  title: CITAM Results API
+  description: CITAM Results API
+  version: 1.0.0
+servers:
+  - url: /v1
+paths:
+  /list:
+    get:
+      summary: Retrieve a list of completed simulations
+      operationId: getList
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /{simId}:
+    get:
+      summary: Retrieve the simulation summary
+      operationId: getSummary
+      parameters:
+        - name: simId
+          in: path
+          description: ID of simulation
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationSummary'
+        400:
+          description: Invalid Simulation ID supplied
+          content: {}
+        404:
+          description: Simulation not found
+          content: {}
+
+  /{simId}/contact:
+    get:
+      summary: Retrieve contact data for a simulation
+      operationId: getContact
+      parameters:
+        - name: simId
+          in: path
+          description: ID of simulation to return
+          required: true
+          schema:
+            type: string
+        - name: floor
+          description: The floor to return data for. If not defined, the API will return the first floor
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        400:
+          description: Invalid Simulation ID supplied
+          content: {}
+        404:
+          description: Simulation not found
+          content: {}
+
+  /{simId}/pair:
+    get:
+      summary: Retrieve pair contact data between two agents for a simulation
+      operationId: getPair
+      parameters:
+        - name: simId
+          in: path
+          description: ID of simulation to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PairResponse'
+        400:
+          description: Invalid Simulation ID supplied
+          content: {}
+        404:
+          description: Simulation not found
+          content: {}
+
+  /{simId}/statistics:
+    get:
+      summary: Retrieve Statistics json file contents for a simulation
+      operationId: getStatistics
+      parameters:
+        - name: simId
+          in: path
+          description: ID of simulation to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsResponse'
+        400:
+          description: Invalid Simulation ID supplied
+          content: {}
+        404:
+          description: Simulation not found
+          content: {}
+
+  /{simId}/distribution/coordinate:
+    get:
+      summary: Retrieve contact distribution by coordinate
+      operationId: getCoordinateDistribition
+      parameters:
+        - name: simId
+          description: ID of simulation to return
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: floor
+          description: The floor to return data for. If not defined, the API will return the first floor
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDistributionResponse'
+        400:
+          description: Invalid Simulation ID supplied
+          content: {}
+        404:
+          description: Simulation not found
+          content: {}
+
+  /{simId}/trajectory:
+    get:
+      summary: Retrieve trajectory data for a simulation
+      operationId: getTrajectory
+      parameters:
+        - name: simId
+          in: path
+          description: ID of simulation to return
+          required: true
+          schema:
+            type: string
+        - name: floor
+          description: The floor to return data for. If not defined, the API will return all floors.
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrajectoryResponse'
+        400:
+          description: Invalid Simulation ID supplied
+          content: {}
+        404:
+          description: Simulation not found
+          content: {}
+
+  /{simId}/map:
+    get:
+      summary: Retrieve the base map for a simulation
+      operationId: getMap
+      parameters:
+        - name: simId
+          in: path
+          description: ID of simulation to return
+          required: true
+          schema:
+            type: string
+        - name: floor
+          description: The floor to return data for. If not defined, the API will return the first floor
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+                format: xml
+        400:
+          description: Invalid Simulation ID supplied
+          content: {}
+        404:
+          description: Simulation not found
+          content: {}
+
+components:
+  schemas:
+    SimulationSummary:
+      type: object
+      properties:
+        TimestepInSec:
+          type: number
+          format: float
+        NumberOfFloors:
+          type: integer
+          format: int64
+        NumberOfOneWayAisles:
+          type: integer
+          format: int64
+        NumberOfEmployees:
+          type: integer
+          format: int64
+        SimulationName:
+          type: string
+        Campus:
+          type: string
+        FacilityOccupancy:
+          type: number
+          format: float
+        MaxRoomOccupancy:
+          type: number
+          format: float
+        NumberOfShifts:
+          type: integer
+          format: int64
+        NumberOfEntrances:
+          type: integer
+          format: int64
+        NumberOfExits:
+          type: integer
+          format: int64
+        EntranceScreening:
+          type: boolean
+        scaleMultiplier:
+          type: number
+          format: float
+        Floors:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              directory:
+                type: string
+
+    Contact:
+      type: object
+      properties:
+        x:
+          type: integer
+          format: int64
+        y:
+          type: integer
+          format: int64
+        count:
+          type: integer
+          format: int64
+
+    Pair:
+      type: object
+      properties:
+        Agent1:
+          type: string
+        Agent2:
+          type: string
+        N_Contacts:
+          type: integer
+          format: int64
+        TotalContactDuration:
+          type: string
+
+    Statistics:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: integer
+          format: int64
+        unit:
+          type: string
+
+    ContactResponse:
+      type: array
+      items:
+        type: array
+        items:
+          $ref: '#/components/schemas/Contact'
+
+    PairResponse:
+      type: array
+      items:
+        type: array
+        items:
+          $ref: '#/components/schemas/Pair'
+
+    StatisticsResponse:
+      type: array
+      items:
+        type: array
+        items:
+          $ref: '#/components/schemas/Statistics'
+
+    ContactDistributionResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Contact'
+
+    TrajectoryResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              x:
+                type: integer
+                format: int64
+              y:
+                type: integer
+                format: int64
+              z:
+                type: integer
+                format: int64
+              agent:
+                type: integer
+                format: int64
+              count:
+                type: integer
+                format: int64
+        statistics:
+          type: object
+          properties:
+            max_contacts:
+              type: integer
+              format: int64
