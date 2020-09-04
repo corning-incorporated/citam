@@ -59,11 +59,17 @@ class CitamSettings:
         #: Secret Key for s3 backend.
         self.secret_key = os.environ.get('CITAM_STORAGE_SECRET', '')
         #: Storage bucket for S3 backend
-        self.storage_bucket = os.environ.get('CITAM_STORAGE_BUCKET', '')
+        self.storage_bucket = os.environ.get(
+            'CITAM_STORAGE_BUCKET',
+            'example',
+        )
         #: Region Name for S3 backend
         self.region_name = os.environ.get('CITAM_STORAGE_REGION', '')
         #: Storage URL for S3 backend
-        self.storage_url = os.environ.get('CITAM_STORAGE_URL', '')
+        self.storage_url = os.environ.get(
+            'CITAM_STORAGE_URL',
+            'http://example.com',
+        )
         #: Filesystem path for result files to use with LocalStorage backend
         self.result_path = os.environ.get('CITAM_RESULT_PATH', '')
         print('storage_url', self.storage_url)
@@ -114,13 +120,13 @@ class CitamSettings:
         self._active_storage_driver_path = str(self.storage_driver_path)
         self._active_storage_driver_options = self._storage_kwargs
 
-        assert (
-            issubclass(BaseStorageDriver, driver_class),
+        assert issubclass(driver_class, BaseStorageDriver), (
             f"You are using a custom storage driver, but "
             f"{self._active_storage_driver_path} does not extend "
             f"BaseStorageDriver.  Extend BaseStorageDriver in your custom "
             f"storage driver."
         )
+
         return driver_class(**self._storage_kwargs)
 
     @staticmethod

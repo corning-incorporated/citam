@@ -11,8 +11,25 @@
 #  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
+import pytest
 
+import citam.api.storage.s3
 from citam.api.storage.s3 import S3StorageDriver
+from citam.api.tests.conftest import MockedSession
+
+
+@pytest.fixture(autouse=True)
+def s3_client(monkeypatch):
+    monkeypatch.setenv('CITAM_STORAGE_SECRET', 'xyz')
+    monkeypatch.setenv('CITAM_STORAGE_KEY', 'abc')
+    monkeypatch.setenv('CITAM_STORAGE_BUCKET', 'abc')
+    monkeypatch.setenv('CITAM_STORAGE_REGION', 'us-east-1')
+    monkeypatch.setenv('CITAM_STORAGE_URL', 'https://us-east-1.amazonaws.com')
+    monkeypatch.setattr(
+        citam.api.storage.s3.boto3.session,
+        'Session',
+        lambda *args, **kwargs: MockedSession()
+    )
 
 
 def test_client_custom_config(monkeypatch):
