@@ -34,6 +34,7 @@ class LocalStorageDriver(BaseStorageDriver):
     """
 
     def __init__(self, search_path, **kwargs):
+        super().__init__()
         self.search_path = search_path
         self.result_dirs = {}
 

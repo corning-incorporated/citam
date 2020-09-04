@@ -58,14 +58,14 @@ class MockedSession:
 
 
 @pytest.fixture(autouse=True)
-def s3_client(monkeypatch):
-    monkeypatch.setenv('CITAM_STORAGE_SECRET', 'xyz')
-    monkeypatch.setenv('CITAM_STORAGE_KEY', 'abc')
-    monkeypatch.setenv('CITAM_STORAGE_BUCKET', 'abc')
-    monkeypatch.setenv('CITAM_STORAGE_REGION', 'us-east-1')
-    monkeypatch.setenv('CITAM_STORAGE_URL', 'amazonaws.com')
-    monkeypatch.setattr(
-        citam.api.storage.s3.boto3.session,
-        'Session',
-        lambda *args, **kwargs: MockedSession()
+def local_storage(monkeypatch):
+    search_root = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        'sample_results',
     )
+    monkeypatch.setenv(
+        'CITAM_STORAGE_DRIVER',
+        'citam.api.storage.local.LocalStorageDriver',
+    )
+    monkeypatch.setenv('CITAM_RESULT_PATH', search_root)
+
