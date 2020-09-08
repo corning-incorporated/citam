@@ -13,11 +13,9 @@
 #  ==========================================================================
 
 from citam.api.parser import get_contacts, get_trajectories
-from citam.api.settings_parser import settings
 
 
 def test_contacts_parsing_num_steps():
-    import os
     contacts = get_contacts('sim_id_0001', "0")
     assert len(contacts) == 1900
 

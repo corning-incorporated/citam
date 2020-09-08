@@ -12,6 +12,9 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-__all__ = ['api', 'cli', 'engine']
+__all__ = ['api', 'cli', 'engine', 'settings']
 
 from . import api, cli, engine
+from . import settings as not_settings
+
+settings = not_settings.settings

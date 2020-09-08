@@ -15,7 +15,7 @@ import os
 import wsgiref.simple_server
 from tempfile import TemporaryDirectory
 from citam import cli
-from citam.api.settings_parser import settings
+from citam.conf import settings
 
 
 def test_dash_results(monkeypatch):

@@ -30,13 +30,13 @@ Commands
       gunicorn citam.api:app
 
 """
-__all__ = ['app', 'run_server', 'settings']
+__all__ = ['app', 'run_server']
 
 import logging
 import os
 from wsgiref import simple_server
 from citam.api.server import get_wsgi_app
-from citam.api.settings_parser import settings
+from citam.conf import settings
 
 LOG = logging.getLogger(__name__)
 
