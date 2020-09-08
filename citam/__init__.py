@@ -14,7 +14,6 @@
 
 __all__ = ['api', 'cli', 'engine', 'settings']
 
-from . import api, cli, engine
-from . import settings as not_settings
+from . import api, cli, engine, conf
 
-settings = not_settings.settings
+settings = conf.settings
