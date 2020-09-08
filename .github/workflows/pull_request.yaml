@@ -2,10 +2,7 @@ name: Pull Request Workflow
 on: [ pull_request ]
 jobs:
   lint-python:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -31,10 +28,7 @@ jobs:
       - run: python -m pytest --cov-report xml:coverage.xml --cov=citam citam
 
   lint-javascript:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
