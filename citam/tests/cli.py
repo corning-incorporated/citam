@@ -11,17 +11,29 @@
 #  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
-
 import os
-import pytest
+import wsgiref.simple_server
+from tempfile import TemporaryDirectory
+from citam import cli
 from citam.api.settings_parser import settings
 
 
-@pytest.fixture(autouse=True)
-def local_storage():
-    search_root = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        'sample_results',
+def test_dash_results(monkeypatch):
+    # Prevent server from actually starting
+    monkeypatch.setattr(
+        wsgiref.simple_server.WSGIServer,
+        'serve_forever',
+        lambda *args, **kwargs: None
     )
-    settings.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'
-    settings.result_path = search_root
+
+    # Create temporary directory
+    with TemporaryDirectory() as td:
+        results_dir = os.path.abspath(td)
+
+        # Pass temp directory to CLI with --results
+        parser = cli.get_parser()
+        parsed = parser.parse_args(['dash', '--results', results_dir])
+        parsed.func(**vars(parsed))
+
+        # Assert results_dir is being set properly
+        assert settings.result_path == results_dir

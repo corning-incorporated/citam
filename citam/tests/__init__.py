@@ -12,16 +12,3 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-import os
-import pytest
-from citam.api.settings_parser import settings
-
-
-@pytest.fixture(autouse=True)
-def local_storage():
-    search_root = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        'sample_results',
-    )
-    settings.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'
-    settings.result_path = search_root

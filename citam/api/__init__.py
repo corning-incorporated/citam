@@ -33,9 +33,10 @@ Commands
 __all__ = ['app', 'run_server', 'settings']
 
 import logging
+import os
 from wsgiref import simple_server
 from citam.api.server import get_wsgi_app
-import citam.api.settings_parser as settings
+from citam.api.settings_parser import settings
 
 LOG = logging.getLogger(__name__)
 
@@ -43,7 +44,10 @@ LOG = logging.getLogger(__name__)
 app = get_wsgi_app()
 
 
-def run_server(port=8000, host='127.0.0.1', *args, **kwargs):
+def run_server(port=8000, host='127.0.0.1', results=None, *args, **kwargs):
+    if os.path.isdir(os.path.abspath(results)):
+        LOG.debug("Result path '%s' specified to CLI. Updating settings.")
+        settings.result_path = os.path.abspath(results)
     LOG.info("Attempting to start server on %s:%s", host, port)
     httpd = simple_server.make_server(host, port, app)
     print(f"Running CITAM Server on http://{host}:{port}", flush=True)
