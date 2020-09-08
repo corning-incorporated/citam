@@ -72,7 +72,6 @@ class CitamSettings:
         )
         #: Filesystem path for result files to use with LocalStorage backend
         self.result_path = os.environ.get('CITAM_RESULT_PATH', '')
-        print('storage_url', self.storage_url)
 
         #: Path to storage driver class
         self.storage_driver_path = os.environ.get('CITAM_STORAGE_DRIVER')
@@ -81,7 +80,6 @@ class CitamSettings:
                 self.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'  # noqa
             else:
                 self.storage_driver_path = 'citam.api.storage.s3.S3StorageDriver'  # noqa
-        print(self.storage_driver_path)
 
         #: Verbosity. Valid options: DEBUG, INFO, WARNING, ERROR, CRITICAL.
         self.log_level = self._get_default_log_level()
@@ -114,8 +112,6 @@ class CitamSettings:
 
         :rtype: citam.storage.BaseStorageDriver
         """
-        print('initializing driver', self._storage_kwargs)
-        print('storage_url', self.storage_url)
         driver_class = _import_string(self.storage_driver_path)
         self._active_storage_driver_path = str(self.storage_driver_path)
         self._active_storage_driver_options = self._storage_kwargs
