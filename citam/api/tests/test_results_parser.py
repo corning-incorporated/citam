@@ -13,9 +13,11 @@
 #  ==========================================================================
 
 from citam.api.parser import get_contacts, get_trajectories
+from citam.api.settings_parser import settings
 
 
 def test_contacts_parsing_num_steps():
+    import os
     contacts = get_contacts('sim_id_0001', "0")
     assert len(contacts) == 1900
 
@@ -80,7 +82,7 @@ def test_get_trajectories_2agents():
 
 
 def test_get_trajectories_2agents_filtered():
-    trajectories = get_trajectories('xxx', floor=1)
+    trajectories = get_trajectories('sim_id_0001', floor=1)
     expected_trajectories = [
         {'agent': 5, 'x': 0, 'y': 602, 'z': 1, 'count': 0},
     ]
