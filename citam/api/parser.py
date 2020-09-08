@@ -19,7 +19,7 @@ __all__ = [
 ]
 
 import logging
-from citam.api.settings_parser import settings
+from citam.conf import settings
 import json
 
 LOG = logging.getLogger(__name__)

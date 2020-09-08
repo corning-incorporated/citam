@@ -14,7 +14,7 @@
 
 import os
 import pytest
-from citam.api.settings_parser import settings
+from citam.conf import settings
 
 
 @pytest.fixture(autouse=True)
