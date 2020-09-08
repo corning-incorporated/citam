@@ -14,47 +14,7 @@
 
 import os
 import pytest
-import citam.api.storage
-
-TEST_RESULT_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    'sample_results',
-    'TF',
-)
-
-
-class MockedSession:
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-        self.client_args = None
-        self.client_kwargs = None
-        self.method_calls = {
-            'list_objects_v2': [],
-            'get_object': [],
-        }
-
-    def client(self, *args, **kwargs):
-        self.client_args = args
-        self.client_kwargs = kwargs
-        return self
-
-    def list_objects_v2(self, *args, **kwargs):
-        self.method_calls['list_objects_v2'].append(
-            {'args': args, 'kwargs': kwargs}
-        )
-        return {'CommonPrefixes': [{'Prefix': 'test_result/'}]}
-
-    def get_object(self, Key=None, *args, **kwargs):
-        self.method_calls['get_object'].append(
-            {'Key': Key, 'args': args, 'kwargs': kwargs}
-        )
-
-        filename = '/'.join(Key.split('/')[1:])
-        return {'Body': open(
-            os.path.join(TEST_RESULT_PATH, filename),
-            'rb'
-        )}
+from citam.api.settings_parser import settings
 
 
 @pytest.fixture(autouse=True)
@@ -63,9 +23,5 @@ def local_storage(monkeypatch):
         os.path.dirname(os.path.abspath(__file__)),
         'sample_results',
     )
-    monkeypatch.setenv(
-        'CITAM_STORAGE_DRIVER',
-        'citam.api.storage.local.LocalStorageDriver',
-    )
-    monkeypatch.setenv('CITAM_RESULT_PATH', search_root)
-
+    settings.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'
+    settings.result_path = search_root
