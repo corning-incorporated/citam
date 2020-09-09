@@ -55,12 +55,13 @@ def run_server(port=8000, host='127.0.0.1', results=None, *args, **kwargs):
     LOG.debug("--results='%s' specified via CLI. Updating settings",
               results)
 
-    results_dir = os.path.abspath(results)
-    if not os.path.exists(results_dir):
-        raise IOError(f"{results_dir} does not exist")
-    if not os.path.isdir(os.path.abspath(results)):
-        raise IOError(f"{results_dir} is not a directory")
-    settings.result_path = os.path.abspath(results)
+    if results is not None:
+        results_dir = os.path.abspath(results)
+        if not os.path.exists(results_dir):
+            raise IOError(f"{results_dir} does not exist")
+        if not os.path.isdir(os.path.abspath(results)):
+            raise IOError(f"{results_dir} is not a directory")
+        settings.result_path = os.path.abspath(results)
 
     LOG.info("Attempting to start server on %s:%s", host, port)
     httpd = simple_server.make_server(host, port, app)

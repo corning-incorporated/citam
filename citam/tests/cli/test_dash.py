@@ -35,6 +35,13 @@ def disable_blocking_run_forever_call(monkeypatch):
     )
 
 
+def test_results_is_optional():
+    # Set a starting results path
+    parser = cli.get_parser()
+    parsed = parser.parse_args(['dash'])
+    parsed.func(**vars(parsed))
+
+
 def test_valid_results_option():
     # Set a starting results path
     settings.result_path = os.path.dirname(__file__)
