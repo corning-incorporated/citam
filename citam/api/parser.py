@@ -68,7 +68,7 @@ def get_trajectories(sim_id, floor=None):
     LOG.info("trajectory file parsing process is complete")
     try:
         max_contacts = max(max([y['count'] for x in steps for y in x]), 100)
-    except ValueError:
+    except ValueError:  # pragma: nocover
         max_contacts = 100
     output = {
         "data": steps,
@@ -155,7 +155,7 @@ def get_pair_contacts(sim_id):
     result_file.readline().strip()
     for line in result_file:
         data = line.strip().split(",")
-        if len(data) != 4:
+        if len(data) != 4:  # pragma: nocover
             LOG.error("Corrupted file! 4 values are expected for each line "
                       "in pair_contact.csv. %d found.", len(data))
             return []
@@ -182,7 +182,7 @@ def get_statistics_json(sim_id):
     )
     LOG.info("Statistics JSON file parsing process started")
 
-    if 'data' not in result_dict or len(result_dict['data']) != 4:
+    if 'data' not in result_dict or len(result_dict['data']) != 4:  # pragma: nocover noqa
         LOG.error("Corrupted file! Statistics JSON file does "
                   "not have required attributes.")
         return []

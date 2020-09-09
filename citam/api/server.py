@@ -28,8 +28,7 @@ __all__ = ['get_wsgi_app']
 
 import logging
 import falcon
-from mimetypes import guess_type
-from os.path import abspath, basename, dirname, isfile, join
+from os.path import abspath, dirname, join
 from citam.api import parser
 from citam.conf import settings
 
