@@ -21,6 +21,9 @@ import json
 class BaseStorageDriver(abc.ABC):
     """Base class for CITAM storage engines"""
 
+    def __init__(self, **kwargs):  # noqa
+        pass
+
     @abc.abstractmethod
     def list_runs(self):
         """List all simulations"""

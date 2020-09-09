@@ -25,7 +25,7 @@ def client() -> testing.TestClient:
 
 def test_trajectory_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/trajectory'
+        '/v1/sim_id_0001/trajectory'
     )
     assert result.status_code == 200
     assert result.json.get('data')
@@ -35,7 +35,7 @@ def test_trajectory_response(client):
 
 def test_contact_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/contact'
+        '/v1/sim_id_0001/contact'
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
@@ -43,7 +43,7 @@ def test_contact_response(client):
 
 def test_contact_distribution_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/distribution/coordinate'
+        '/v1/sim_id_0001/distribution/coordinate'
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
@@ -51,7 +51,7 @@ def test_contact_distribution_response(client):
 
 def test_map_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/map'
+        '/v1/sim_id_0001/map'
     )
     assert result.status_code == 200
 
@@ -66,8 +66,9 @@ def test_list_response(client):
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
-    assert len(result.json) == 1
-    assert result.json[0] == 'test_result'
+    assert len(result.json) == 2
+    assert 'sim_id_0001' in result.json
+    assert 'sim_id_0002' in result.json
 
 
 def test_redoc(client):
