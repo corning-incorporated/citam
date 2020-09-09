@@ -80,7 +80,7 @@ def test_get_trajectories_2agents():
 
 
 def test_get_trajectories_2agents_filtered():
-    trajectories = get_trajectories('xxx', floor=1)
+    trajectories = get_trajectories('sim_id_0001', floor=1)
     expected_trajectories = [
         {'agent': 5, 'x': 0, 'y': 602, 'z': 1, 'count': 0},
     ]
