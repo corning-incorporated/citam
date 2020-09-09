@@ -25,9 +25,7 @@ class develop_custom(develop):
 
     def run(self):
         super().run()
-        print("CUSTOM DEVELOP")
         self.run_command('build_js')
-        print("BUILD JS GOT RUN")
 
 
 class sdist_custom(sdist):
