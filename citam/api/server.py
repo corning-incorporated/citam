@@ -33,7 +33,7 @@ from citam.api import parser
 from citam.conf import settings
 
 LOG = logging.getLogger(__name__)
-STATIC_PATH = join(dirname(abspath(__file__)), 'static')
+DASH_INDEX = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
 
 
 class ResultsResource:
@@ -139,7 +139,9 @@ class RedocResource:
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
-        with open(join(STATIC_PATH, 'redoc.html')) as f:
+
+        filename = join(dirname(abspath(__file__)), 'static', 'redoc.html')
+        with open(filename) as f:
             resp.body = f.read()
 
 
@@ -149,9 +151,8 @@ class DashIndexResource:
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
-        index_path = join(STATIC_PATH, 'dash', 'index.html')
 
-        with open(index_path) as f:
+        with open(DASH_INDEX) as f:
             resp.body = f.read()
 
 
@@ -205,8 +206,7 @@ def _404_route_sink(req, resp):
 
     LOG.info("%s does not match a resource. Returning index.html", req.path)
 
-    filepath = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
-    with open(filepath) as f:
+    with open(DASH_INDEX) as f:
         LOG.debug("Returning file")
         resp.status = falcon.HTTP_200
         resp.body = f.read()
