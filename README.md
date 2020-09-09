@@ -19,7 +19,7 @@ The code is divided into multiple components:
 
 ### Pre-requisites
 * Python 3.x
-* NodeJS (to use the dasboard)
+* NodeJS (to use the dashboard)
 
 
 ## To Install
@@ -51,7 +51,7 @@ After successful cloning, follow these steps to install:
    For details on how to add your facilities and run simulations, go to the getting started section and consult the documentation. If you want to visualize simulation results, you need to install the dashboard Node dependencies by following the step below.
 
 2. Install the dashboard dependencies and setup local development environemnt:
-   - If you don't already have it, eownload and install [NodeJS 12](https://nodejs.org/en/download/)
+   - If you don't already have it, download and install [NodeJS 12](https://nodejs.org/en/download/)
    - Run ``python setup.py install -e``
    > This will install both Python and NPM dependencies required to run the application, and compile the javascript into the installed python package.
    - Run the dashboard with the command `$ citam dash`
@@ -72,8 +72,7 @@ After successful cloning, follow these steps to install:
 ## Getting Started
 
 
-How to Add Facilities
-----------------------
+### How to Add Facilities
 
 Currently, the primary way to use CITAM is through the CLI. To get a list of commands, do:
 
@@ -129,8 +128,7 @@ The svg file can then be visualized using any SVG viewer.
 
 This process can be repeated for as many facilities as needed. But it is only done once for each facility.
 
-How to Run Simulations
-------------------------
+### How to Run Simulations
 
 Assuming at least one facility was successfully added and validated, any number
 of simulations can be run on that facility using the following command where INPUT_FILE
@@ -144,3 +142,6 @@ Example input files can be found in the citam/examples directory.
 
 
 ## License
+
+CITAM is made available to the public under GPLv3.
+
