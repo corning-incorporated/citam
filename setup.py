@@ -20,9 +20,14 @@ from setuptools.command.develop import develop
 from build_tasks import NodeJSBuild
 
 
-class develop_custom(sdist):
+class develop_custom(develop):
     """Custom sdist command which includes the build_js subcommand"""
-    sub_commands = [('build_js', None)] + develop.sub_commands
+
+    def run(self):
+        super().run()
+        print("CUSTOM DEVELOP")
+        self.run_command('build_js')
+        print("BUILD JS GOT RUN")
 
 
 class sdist_custom(sdist):
