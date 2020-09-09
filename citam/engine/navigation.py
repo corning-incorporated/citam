@@ -28,10 +28,16 @@ import math
 
 class Navigation:
 
-    def __init__(self, floorplans, facility_name, traffic_policy):
+    def __init__(self,
+                 floorplans,
+                 facility_name,
+                 traffic_policy,
+                 multifloor_type='naming'
+                 ):
 
         super().__init__()
 
+        self.multifloor_type = multifloor_type
         self.route_graph_per_floor = []
         self.oneway_network_per_floor = []
         self.hallways_graph_per_floor = []
@@ -73,7 +79,6 @@ class Navigation:
             self.create_multifloor_navnet()
 
         self.apply_traffic_policy()
-        return
 
     def load_hallway_graph(self, floorplan_directory):
         """Load the hallway graph
@@ -88,7 +93,6 @@ class Navigation:
                 self.hallways_graph_per_floor.append(hg)
             logging.info('Success!')
         else:
-            logging.fatal('Error loading file.')
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
                                     floor_hallway_graph_file
@@ -108,7 +112,6 @@ class Navigation:
                 oneway_net = pickle.load(f)
             logging.info('Success!',)
         else:
-            logging.fatal('Error loading file')
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
                                     oneway_net_file
@@ -127,7 +130,6 @@ class Navigation:
                 navnet = pickle.load(f)
             logging.info('Success!',)
         else:
-            logging.fatal('Error loading file')
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
                                     floor_route_graph_file
@@ -136,8 +138,7 @@ class Navigation:
 
     def get_corresponding_vertical_space(self,
                                          ref_space,
-                                         dest_floor,
-                                         method='naming'
+                                         dest_floor
                                          ):
         """Given a reference space and a destination floor, find the space
         on the destination floor that lies in the same xy position as the
@@ -149,24 +150,39 @@ class Navigation:
             The reference space
         dest_floor: int
             Id of the destination floor
-
+        method: string
+            The method to use to find the corresponding space (supported
+            values: 'naming' or 'xy')
         Returns
         --------
         int, Space:
             Integer ID and Space object matching the request. None, None if
             no space was found.
         """
-        # TODO: Add support for various methods
+        # TODO: Add regex as another method.
         dest_space = None
         dest_space_id = None
-        name1 = ref_space.unique_name
-        name2 = name1[0] + str(dest_floor + 1) + name1[2:]
 
-        for j, space in enumerate(self.floorplans[dest_floor].spaces):
-            if space.unique_name == name2:
-                dest_space = space
-                dest_space_id = j
-                break
+        if self.multifloor_type == 'naming':
+            name1 = ref_space.unique_name
+            name2 = name1[0] + str(dest_floor + 1) + name1[2:]
+
+            for j, space in enumerate(self.floorplans[dest_floor].spaces):
+                if space.unique_name == name2:
+                    dest_space = space
+                    dest_space_id = j
+                    break
+        elif self.multifloor_type == 'xy':
+            p = ref_space.get_random_internal_point()
+            dest_space_id = \
+                self.floorplans[dest_floor].identify_this_location(p.x, p.y)
+            if dest_space_id is not None:
+                dest_space = self.floorplans[dest_floor].spaces[dest_space_id]
+
+        else:
+            raise ValueError(
+                "Unknown method : ' + str(method) +'Expected: naming or 'xy'"
+            )
 
         return dest_space_id, dest_space
 
@@ -222,10 +238,9 @@ class Navigation:
                     self.multifloor_navnet.has_node(node2):
                 self.multifloor_navnet.add_edge(node1, node2)
                 self.multifloor_navnet.add_edge(node2, node1)
-                print('Node 1 & 2 are: ', node1, node2)
                 n_vert_edges += 1
             else:
-                print(node1, 'or', node2, ' not found in graph')
+                logging.warning("%s or %s not found in graph", node1, node2)
 
         return n_vert_edges
 

@@ -11,6 +11,7 @@ from distutils import dir_util
 import pytest
 import os
 import copy
+from copy import deepcopy
 
 
 @pytest.fixture
@@ -176,7 +177,7 @@ def rect_floorplan_ingester_data():
         'id': space_id,
         'facility': 'TF',
         'building': 'TF1',
-        'unique_name': space_id,
+        'unique_name': str(space_id),
         'space_function': 'aisle'
     })
 
@@ -194,7 +195,7 @@ def rect_floorplan_ingester_data():
             'id': space_id,
             'facility': 'TF',
             'building': 'TF1',
-            'unique_name': space_id,
+            'unique_name': str(space_id),
             'space_function': 'office'
         })
 
@@ -207,7 +208,7 @@ def rect_floorplan_ingester_data():
             'id': space_id,
             'facility': 'TF',
             'building': 'TF1',
-            'unique_name': space_id,
+            'unique_name': str(space_id),
             'space_function': 'office'
         })
 
@@ -231,7 +232,7 @@ def rect_floorplan_ingester_data():
             'id': space_id,
             'facility': 'TF',
             'building': 'TF1',
-            'unique_name': space_id,
+            'unique_name': str(space_id),
             'space_function': 'cafeteria'
         })
     rect_fi.space_attributes.append({'id': space_id})
@@ -250,3 +251,38 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
         rfid.spaces.append(space)
 
     return rfid
+
+
+@pytest.fixture
+def simple_facility_floorplan(rect_floorplan_ingester):
+
+    # TODO: Shouldn't have to run this here, create the data manually instead
+    rect_floorplan_ingester.run()
+
+    spaces = rect_floorplan_ingester.spaces
+    doors = rect_floorplan_ingester.doors
+    walls = rect_floorplan_ingester.walls
+    aisles = rect_floorplan_ingester.aisles
+
+    fp = Floorplan(1.0, spaces, doors, walls, aisles, 350, 350)
+
+    return fp
+
+
+@pytest.fixture
+def simple_facility_floorplan_2_floors(rect_floorplan_ingester):
+
+    # TODO: Shouldn't have to run this here, create the data manually instead
+    rect_floorplan_ingester.run()
+
+    spaces = rect_floorplan_ingester.spaces
+    doors = rect_floorplan_ingester.doors
+    walls = rect_floorplan_ingester.walls
+    aisles = rect_floorplan_ingester.aisles
+
+    fp1 = Floorplan(1.0, spaces, doors, walls, aisles, 350, 350)
+    fp2 = deepcopy(fp1)
+    for space in fp2.spaces:
+        space.unique_name = space.unique_name + '_2'
+
+    return [fp1, fp2]
