@@ -21,7 +21,7 @@ from build_tasks import NodeJSBuild
 
 
 class develop_custom(develop):
-    """Custom sdist command which includes the build_js subcommand"""
+    """Custom develop command which includes the build_js subcommand"""
 
     def run(self):
         super().run()
