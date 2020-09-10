@@ -28,7 +28,7 @@ __all__ = ['get_wsgi_app']
 
 import logging
 import falcon
-from os.path import abspath, dirname, join
+from os.path import abspath, dirname, join, exists
 from citam.api import parser
 from citam.conf import settings
 
@@ -205,6 +205,9 @@ def _404_route_sink(req, resp):
 
     LOG.info("%s does not match a resource. Returning index.html", req.path)
     file = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
+    if not exists(file):
+        LOG.warning("CITAM Dash is not included with this build")
+        file = join(dirname(dirname(file)), 'dash404.html')
 
     with open(file) as f:
         LOG.debug("Returning file")
