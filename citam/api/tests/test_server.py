@@ -23,6 +23,11 @@ def client() -> testing.TestClient:
     return testing.TestClient(server.get_wsgi_app())
 
 
+def test_get_summary(client):
+    result = client.simulate_get('/v1/sim_id_0001')
+    assert result.status_code == 200
+
+
 def test_trajectory_response(client):
     result: testing.Result = client.simulate_get(
         '/v1/sim_id_0001/trajectory'
@@ -56,6 +61,23 @@ def test_map_response(client):
     assert result.status_code == 200
 
 
+def test_get_heatmap(client):
+    result = client.simulate_get('/v1/sim_id_0001/heatmap')
+    assert result.status_code == 200
+
+
+def test_get_statistics(client):
+    result = client.simulate_get('/v1/sim_id_0001/statistics')
+    assert result.status_code == 200
+    assert isinstance(result.json, list)
+
+
+def test_get_pair_contact(client):
+    result = client.simulate_get('/v1/sim_id_0001/pair')
+    assert result.status_code == 200
+    assert isinstance(result.json, list)
+
+
 def test_list_response(client):
     """
     note: The result here is set by the mock.
@@ -84,3 +106,10 @@ def test_openapi_response(client):
 def test_index(client):
     result: testing.Result = client.simulate_get('/')
     assert result.status_code == 200
+
+
+def test_404(client):
+    expected = client.simulate_get('/')
+    actual = client.simulate_get('/invalid/path')
+    assert actual.status_code == 200
+    assert actual.content == expected.content

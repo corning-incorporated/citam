@@ -12,7 +12,7 @@
 #  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==============================================================================
 
-__all__ = ['LocalStorageDriver']
+__all__ = ['LocalStorageDriver', 'NoResultsFoundError']
 
 import json
 import logging
@@ -21,6 +21,10 @@ from glob import glob
 from citam.api.storage import BaseStorageDriver
 
 LOG = logging.getLogger(__name__)
+
+
+class NoResultsFoundError(IOError):
+    """Error raised when no results were found by the driver"""
 
 
 class LocalStorageDriver(BaseStorageDriver):
@@ -55,13 +59,10 @@ class LocalStorageDriver(BaseStorageDriver):
                      len(manifests))
 
         else:
-            if os.path.basename(search_path) == 'manifest.json':
-                manifests = [search_path]
-            else:
-                raise RuntimeError(
-                    f"search_path '{search_path}' is invalid. search_path "
-                    f"must reference a directory or manifest.json file"
-                )
+            raise IOError(
+                f"search_path '{search_path}' is invalid. search_path "
+                f"must reference a directory"
+            )
 
         for manifest in manifests:
             with open(manifest, 'r') as manifest_file:
@@ -77,11 +78,11 @@ class LocalStorageDriver(BaseStorageDriver):
 
                 self.result_dirs[name] = os.path.dirname(manifest)
 
-            if len(self.result_dirs.keys()) == 0:
-                raise RuntimeError(
-                    "LocalStorageDriver did not find any valid manifest.json"
-                    "files in the directory '{search_path}'"
-                )
+        if len(self.result_dirs.keys()) == 0:
+            raise NoResultsFoundError(
+                "LocalStorageDriver did not find any valid manifest.json"
+                "files in the directory '{search_path}'"
+            )
 
     def list_runs(self):
         return list(self.result_dirs.keys())
