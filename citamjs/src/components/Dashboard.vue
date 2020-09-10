@@ -147,7 +147,7 @@
             <div class="d-flex align-items-center justify-content-between small">
               <div class="text-muted"> &copy; CITAM</div>
               <div>
-                <a href="https://opensource.org/licenses/BSD-3-Clause" target="_blank">License</a>
+                <a href="https://github.com/corning-incorporated/citam/blob/main/LICENSE" target="_blank">License</a>
               </div>
             </div>
           </div>
