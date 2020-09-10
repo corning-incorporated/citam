@@ -17,6 +17,7 @@
 The CITAM results API is for retrieving results and SVG maps related to the
 CITAM COVID-19 model.
 
+
 .. note::
     To use local results instead of the result storage server,
     set the environment variable ``USE_LOCAL_RESULTS=True`` when running
