@@ -121,6 +121,27 @@ def test_get_map_file():
     assert call_args['Key'] == 'xyz/floor_0/map.svg'
 
 
+def test_get_heatmap_file():
+    driver = s3.S3StorageDriver(bucket='test_bucket')
+    driver.get_heatmap_file('xyz', '0')
+    call_args = driver.client.method_calls['get_object'][-1]
+    assert call_args['Key'] == 'xyz/floor_0/heatmap.svg'
+
+
+def test_get_pair_contact_file():
+    driver = s3.S3StorageDriver(bucket='test_bucket')
+    driver.get_pair_contact_file('xyz')
+    call_args = driver.client.method_calls['get_object'][-1]
+    assert call_args['Key'] == 'xyz/pair_contact.csv'
+
+
+def test_get_statistics_file():
+    driver = s3.S3StorageDriver(bucket='test_bucket')
+    driver.get_statistics_file('xyz')
+    call_args = driver.client.method_calls['get_object'][-1]
+    assert call_args['Key'] == 'xyz/statistics.json'
+
+
 def test_get_coordinate_distribution_file():
     driver = s3.S3StorageDriver(bucket='test_bucket')
     driver.get_coordinate_distribution_file('xyz', '0')
