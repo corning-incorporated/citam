@@ -62,25 +62,30 @@ class NodeJSBuild(Command):
                           'NodeJS build step')
             return
 
-        logging.info("Cleaning previously generated NodeJS artifacts")
-        if os.path.exists(CITAM_STATIC_DIR):
-            shutil.rmtree(CITAM_STATIC_DIR, ignore_errors=True)
+        try:
+            logging.info("Cleaning previously generated NodeJS artifacts")
+            if os.path.exists(CITAM_STATIC_DIR):
+                shutil.rmtree(CITAM_STATIC_DIR, ignore_errors=True)
 
-        logging.info("Building NodeJS artifacts")
-        original_dir = os.getcwd()
-        os.chdir(NODE_ROOT)
+            logging.info("Building NodeJS artifacts")
+            original_dir = os.getcwd()
+            os.chdir(NODE_ROOT)
 
-        # NODE_ENV=development is set to ensure dev_dependencies are installed
-        env['NODE_ENV'] = 'development'
-        subprocess.run(['npm', 'install', '--progress=false'],
-                       check=True, env=env, shell=shell)
+            # NODE_ENV=development is set to install dev_dependencies
+            env['NODE_ENV'] = 'development'
+            subprocess.run(['npm', 'install', '--progress=false'],
+                           check=True, env=env, shell=shell)
 
-        # NODE_ENV=production triggers build-time optimizations
-        env['NODE_ENV'] = 'production'
-        subprocess.run(['npm', 'run', 'build'],
-                       check=True, env=env, shell=shell)
+            # NODE_ENV=production triggers build-time optimizations
+            env['NODE_ENV'] = 'production'
+            subprocess.run(['npm', 'run', 'build'],
+                           check=True, env=env, shell=shell)
 
-        # TODO: It would be nice if node directly compiled to CITAM_STATIC_DIR
-        logging.info("Copying NodeJS artifacts into package")
-        shutil.copytree(NODE_OUTPUT_DIR, CITAM_STATIC_DIR)
-        os.chdir(original_dir)
+            # TODO: Make JS compile directly to CITAM_STATIC_DIR
+            logging.info("Copying NodeJS artifacts into package")
+            shutil.copytree(NODE_OUTPUT_DIR, CITAM_STATIC_DIR)
+            os.chdir(original_dir)
+        except (subprocess.SubprocessError, FileNotFoundError):
+            warnings.warn('NodeJS build Failed. '
+                          'The CITAM dashboard will not be available')
+            return
