@@ -151,6 +151,9 @@ class DashIndexResource:
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
         file = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
+        if not exists(file):
+            LOG.warning("CITAM Dash is not included with this build")
+            file = join(dirname(dirname(file)), 'dash404.html')
         with open(file) as f:
             resp.body = f.read()
 
