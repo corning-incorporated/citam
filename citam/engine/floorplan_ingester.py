@@ -162,24 +162,25 @@ class FloorplanIngester:
         """
         Given a door SVG element, find the index of the space to which it
         belongs.
+
+        :param Path door: path element representing a door in the drawing
+        :return: space_index and door lines
+        :rtype: (int,list[Line])
         """
         # Find lines on which the door potentially lies
-        is_bezier = False
         test_points = []
+        door_lines = door
+
         for path in door:
             if type(path) == CubicBezier:
-                is_bezier = True
-                bezier = path
-                door_lines = gsu.find_door_line(bezier)
-                test_points.append(Point(complex_coords=bezier.point(0.5)))
-                test_points.append(Point(complex_coords=bezier.start))
-                test_points.append(Point(complex_coords=bezier.end))
-        if not is_bezier:
-            door_lines = door
-            for dl in door_lines:
-                test_points.append(Point(complex_coords=dl.point(0.5)))
-                test_points.append(Point(complex_coords=dl.start))
-                test_points.append(Point(complex_coords=dl.end))
+                door_lines = gsu.find_door_line(path)
+                test_points.append(Point(complex_coords=path.point(0.5)))
+                test_points.append(Point(complex_coords=path.start))
+                test_points.append(Point(complex_coords=path.end))
+            else:
+                test_points.append(Point(complex_coords=path.point(0.5)))
+                test_points.append(Point(complex_coords=path.start))
+                test_points.append(Point(complex_coords=path.end))
 
         # Use the test points to find the space to which this door belongs
         space_index = None
@@ -245,6 +246,12 @@ class FloorplanIngester:
         """
         Given a door and one of the spaces that it connects, find the other
         space.
+
+        :param int space_index: index of the space of interest
+        :param Line door_line: Line representing the door
+        :return: wall_index, space_index, new_walls after extracting door from
+                wall
+        :rtype: int, int, Line
         """
         # TODO: Handle case where more than 2 spaces are involved.
         # Find which other space this wall is shared with
@@ -345,8 +352,9 @@ class FloorplanIngester:
         Add door to access a given room from a given wall.
 
         :param Space room: the room to add door to
-        :param Line room_wall: the wall to carve out the door from
+        :param svgpathtools.Line room_wall: the wall to carve out the door
         :param int room_id: index of the room of interest
+        :return: the door created. None if unsuccessful.
         """
         door = gsu.create_door_in_room_wall(room_wall,
                                             door_size=12.0
@@ -376,10 +384,17 @@ class FloorplanIngester:
                                  other_walls,
                                  other_space_ids,
                                  add_door=True,
-                                 verbose=False
                                  ):
         """Given a hallway wall, iterate over all other walls to test for
         overap. If found, remove overlap.
+
+        :param Line hallway_wall: Line representing one of the walls
+        :param list[svgpathtools.Line] other_walls: list of other walls from
+            which to look for overlap with this wall
+        :param list[int] other_space_ids: list of indices of the space to
+            which each wall belongs
+        :param boolean add_door: Whether to add a wall or not to the otehr
+            wall if an overlap is found
         """
         wall_fragments = []
         processed_segments = []
@@ -434,6 +449,11 @@ class FloorplanIngester:
 
     def find_invalid_walls(self, hallway_walls):
         """Find and remove walls that are between 2 hallways (or aisles)
+
+        :param list[Line] hallway_walls: list of lines representing the walls
+            to check.
+        :return valid_hallway_walls, invalid_hallway_walls
+        :rtype: (list[svgpathtools.Line], list[svgpathtools.Line])
         """
         valid_hallway_walls = []
         invalid_hallway_walls = []
@@ -472,15 +492,9 @@ class FloorplanIngester:
         to a room, it is likely that there is a door to the room, unless
         the room already has a door.
 
-        Parameters
-        -----------
-        building: str
-            The building of interest
-
-        returns
-        ---------
-        list
-            list of valid walls
+        :param str building: Name of the building of interest
+        :return: list of valid room and hallway walls: room_walls, valid_walls
+        :rtype (list[svgpathtools.Line], list[svgpathtools.Line])
         """
 
         logging.info('\nCreating doors in building ' + building)
@@ -536,15 +550,9 @@ class FloorplanIngester:
     def export_data_to_pickle_file(self, pickle_file):
         """Export extracted floorplan data to a pickle file.
 
-        Parameters
-        -----------
-        pickle_file: str
-            Path to the file location where to save the data
-
-        Returns
-        -------
-        bool:
-            Whether the operation was successful or not
+        :param str pickle_file: file location where to save the data
+        :return: boolean indicating if the operation was successful or not
+        :rtype: bool:
         """
         special_walls = []
         data_to_save = [self.spaces,
