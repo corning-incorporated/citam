@@ -175,8 +175,7 @@ class Floorplan:
 
         if len(room.doors) == 0:
             for door in self.doors:
-                if door.space1 == self.spaces[room_id] or \
-                        door.space2 == self.spaces[room_id]:
+                if self.spaces[room_id] in [door.space1, door.space2]:
                     room_door = door
                     break
             if room_door is None:
