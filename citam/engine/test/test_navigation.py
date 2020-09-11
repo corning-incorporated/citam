@@ -6,9 +6,6 @@ from citam.engine.navigation import (
 import pytest
 import os
 
-import citam.engine.basic_visualization as bv
-from svgpathtools.path import Line
-
 
 def test_get_corresponding_vertical_space_bad_method_naming(
             simple_facility_floorplan_2_floors,
@@ -184,6 +181,7 @@ def test_init(simple_facility_floorplan, monkeypatch, datadir):
     assert len(nav.hallways_graph_per_floor) == 1
     assert nav.traffic_policy is None
 
+
 def test_init_2_floors(simple_facility_floorplan_2_floors,
                        monkeypatch,
                        datadir
@@ -227,8 +225,7 @@ def test_oneway_policy_missing_network(simple_facility_floorplan_2_floors,
     policy = [{'floor': '1', 'segment_id': '0', 'direction': -1}]
 
     with pytest.raises(FileNotFoundError):
-
-        nav = Navigation(
+        Navigation(
                 simple_facility_floorplan_2_floors,
                 "test_simple_facility",
                 policy
@@ -245,13 +242,10 @@ def test_get_route_same_floor(simple_facility_floorplan, monkeypatch, datadir):
     floor_number = 0
     current_location = 1
     destination = 8
-
     route = nav.get_route_same_floor(floor_number,
                                      current_location,
                                      destination
                                      )
-
-
     assert len(route) == 8
 
 
@@ -309,28 +303,26 @@ def test_get_multifloor_route(simple_facility_floorplan_2_floors,
                              )
     assert len(route) == 11
 
-# def test_get_route():
 
 def test_remove_unncessary_coords_same_floor():
-
-    route = [(0, 0), (10, 0), (15, 0), (15,20)]
+    route = [(0, 0), (10, 0), (15, 0), (15, 20)]
     route = remove_unncessary_coords(route)
     assert len(route) == 3
 
-def test_remove_unncessary_coords_same_floor2():
 
+def test_remove_unncessary_coords_same_floor2():
     route = [(0, 0), (10, 0), (10, 20), (15, 20), (25, 20)]
     route = remove_unncessary_coords(route)
     assert len(route) == 4
 
-def test_remove_unncessary_coords_2_floors():
 
+def test_remove_unncessary_coords_2_floors():
     route = [(0, 0, 0), (10, 0, 0), (10, 0, 1), (15, 0, 1), (15, 20, 1)]
     route = remove_unncessary_coords(route)
     assert len(route) == 5
 
-def test_remove_unncessary_coords_2_floors2():
 
+def test_remove_unncessary_coords_2_floors2():
     route = [(0, 0, 0),
              (5, 0, 0),
              (10, 0, 0),
@@ -340,17 +332,14 @@ def test_remove_unncessary_coords_2_floors2():
     route = remove_unncessary_coords(route)
     assert len(route) == 5
 
-def test_unroll_route():
 
+def test_unroll_route():
     route = [(0, 0), (0, 50), (25, 50), (26, 51)]
     new_route = unroll_route(route, 2.0)
-
     assert len(new_route) == 25 + 12 + 2
 
 
 def test_unroll_route_2_floors():
-
     route = [(0, 0, 0), (0, 50, 0), (0, 50, 1), (25, 50, 1), (26, 51, 1)]
     new_route = unroll_route(route, 2.0)
-
     assert len(new_route) == 25 + 12 + 3

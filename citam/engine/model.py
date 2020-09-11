@@ -228,7 +228,7 @@ class FacilityTransmissionModel:
                        ]
             m.update(repr(fp_data).encode('utf-8'))
 
-        for nv, hg in zip(self.navigation.route_graph_per_floor,
+        for nv, hg in zip(self.navigation.navnet_per_floor,
                           self.navigation.hallways_graph_per_floor
                           ):
             data = nx.to_edgelist(nv)
@@ -400,9 +400,9 @@ class FacilityTransmissionModel:
                                round(door_mid_point.imag)
                                )
 
-            if self.navigation.route_graph_per_floor[entrance_floor]\
+            if self.navigation.navnet_per_floor[entrance_floor]\
                     .has_node(entrance_coords):
-                edges = self.navigation.route_graph_per_floor[entrance_floor]\
+                edges = self.navigation.navnet_per_floor[entrance_floor]\
                         .edges(entrance_coords)
                 if len(edges) == 0:
                     logging.fatal('Cannot use this entrance.')

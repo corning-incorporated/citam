@@ -132,11 +132,11 @@ def rect_space():
 
 @pytest.fixture
 def datadir(tmpdir, request):
-    '''
+    """
     Fixture responsible for searching a folder with the same name of test
     module and, if available, moving all contents to a temporary directory so
     tests can use them freely.
-    '''
+    """
     filename = request.module.__file__
     test_dir, _ = os.path.splitext(filename)
 
@@ -162,9 +162,9 @@ def aisle_from_x_floorplan2(x_floorplan):
 
 @pytest.fixture
 def rect_floorplan_ingester_data():
-    '''Basic rect floorplan with one main aisle, 4 office spaces on each side
+    """Basic rect floorplan with one main aisle, 4 office spaces on each side
     and a big room at the end of the hallway
-    '''
+    """
     rect_fi = FloorplanIngester(None, None, 1.0)
     rect_fi.space_data = []
     rect_fi.space_paths = []
@@ -253,36 +253,6 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
         rfid.spaces.append(space)
 
     return rfid
-
-
-@pytest.fixture
-def create_simple_facility_floorplan(rect_floorplan_ingester_data, request):
-    filename = request.module.__file__
-    test_dir, _ = os.path.splitext(filename)
-
-    spaces = rect_floorplan_ingester_data.spaces
-    rect_floorplan_ingester_data.run()
-
-    spaces = rect_floorplan_ingester_data.spaces
-    doors = rect_floorplan_ingester_data.doors
-    walls = rect_floorplan_ingester_data.walls
-    aisles = rect_floorplan_ingester_data.aisles
-    scale = 1.0/12.0
-
-    data_to_save = [spaces,
-                    doors,
-                    walls,
-                    [],
-                    aisles,
-                    350,
-                    350,
-                    scale
-                    ]
-
-    with open('updated_floorplan.pkl', 'wb') as f:
-        pickle.dump(data_to_save, f)
-
-    return
 
 
 @pytest.fixture
