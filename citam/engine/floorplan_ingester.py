@@ -186,8 +186,8 @@ class FloorplanIngester:
         for test_point in test_points:
             for i, space in enumerate(self.spaces):
                 if space.is_point_inside_space(test_point,
-                                                include_boundaries=True
-                                                ):
+                                               include_boundaries=True
+                                               ):
                     space_index = i
                     break
             if space_index is not None:
@@ -198,7 +198,7 @@ class FloorplanIngester:
     def find_closest_wall_and_best_door_line(self,
                                              space_index,
                                              door_lines,
-                                             max_distance = 10.0
+                                             max_distance=10.0
                                              ):
         """
         Given a number of lines in the door SVG element, find the best line
@@ -222,9 +222,7 @@ class FloorplanIngester:
                 continue
 
             for door_line in door_lines:
-                xo, yo = gsu.calculate_x_and_y_overlap(wall,
-                                                        door_line
-                                                        )
+                xo, yo = gsu.calculate_x_and_y_overlap(wall, door_line)
                 if xo < 1.0 and yo < 1.0:
                     continue
                 dot_product, distance = \

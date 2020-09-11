@@ -312,7 +312,7 @@ class Schedule:
                 self.schedule_items.append(schedule_item)
 
         elif len(self.schedule_items) == 0:
-                raise ValueError('Cannot compute route to primary office')
+            raise ValueError('Cannot compute route to primary office')
 
         return prev_floor_number, prev_location
 

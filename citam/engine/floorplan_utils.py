@@ -13,10 +13,7 @@
 # ==============================================================================
 
 import citam.engine.geometry_and_svg_utils as gsu
-from citam.engine.space import Space
 from citam.engine.point import Point
-
-from svgpathtools import Line
 
 
 def find_closest_parallel_wall(space_boundaries, ref_wall):
@@ -82,14 +79,14 @@ def find_aisles(space, valid_boundaries, no_repeat=True):
         if wall1.length() <= 1.0:
             continue
         if no_repeat and is_this_wall_part_of_an_aisle(wall1, aisles):
-                continue
+            continue
 
         wall2 = find_closest_parallel_wall(valid_boundaries, wall1)
         if wall2.length() <= 1.0:
             continue
 
         if no_repeat and is_this_wall_part_of_an_aisle(wall2, aisles):
-                continue
+            continue
 
         if (wall1, wall2) in aisles or (wall2, wall1) in aisles:
             continue
