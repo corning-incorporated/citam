@@ -121,6 +121,7 @@ def generate_closed_path_for_aisle(aisle):
 
     return path
 
+
 def is_one_segment_within_the_other(p1, q1, p2, q2):
     """
     Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
@@ -144,6 +145,7 @@ def do_lines_intersect_at_endpoint(p1, q1, p2, q2):
         return True
 
     return False
+
 
 def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
     """

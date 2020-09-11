@@ -27,6 +27,7 @@ def update_data_dictionary(datadict, key, data):
 
     return datadict
 
+
 class ContactEvent:
 
     def __init__(self, floor_number, location, position, current_step):
@@ -245,5 +246,3 @@ class ContactEvents:
         return
 
     # TODO: create function to add to concatenate 2 contact_events objects
-
-
