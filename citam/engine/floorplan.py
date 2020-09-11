@@ -154,7 +154,7 @@ class Floorplan:
 
     def identify_this_location(self, x, y, include_boundaries=True):
         """Given a point given by its xy coords, find the space inside of
-        which it is located.
+        which it is located. Returns the space integer id.
         """
         location = None
         for i, room in enumerate(self.spaces):
@@ -171,19 +171,25 @@ class Floorplan:
         the door)
         """
         room = self.spaces[room_id]
+        room_door = None
 
         if len(room.doors) == 0:
-            space_name = str(self.spaces[room_id].unique_name)
-            logging.warn(space_name + ' has no door')
-            return None
+            for door in self.doors:
+                if self.spaces[room_id] in [door.space1, door.space2]:
+                    room_door = door
+                    break
+            if room_door is None:
+                space_name = str(self.spaces[room_id].unique_name)
+                logging.warning(space_name + ' has no door')
+                return None
 
         else:
-            door = room.doors[0]
+            room_door = room.doors[0]
 
-            x = round(door.point(0.5).real)
-            y = round(door.point(0.5).imag)
+        x = round(room_door.point(0.5).real)
+        y = round(room_door.point(0.5).imag)
 
-            return (x, y)
+        return (x, y)
 
     def export_to_svg(self, svg_file, include_doors=False):
         """Export the current floorplan to an SVG file.
