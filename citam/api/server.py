@@ -17,6 +17,7 @@
 The CITAM results API is for retrieving results and SVG maps related to the
 CITAM COVID-19 model.
 
+
 .. note::
     To use local results instead of the result storage server,
     set the environment variable ``USE_LOCAL_RESULTS=True`` when running
@@ -28,13 +29,11 @@ __all__ = ['get_wsgi_app']
 
 import logging
 import falcon
-from mimetypes import guess_type
-from os.path import abspath, basename, dirname, isfile, join
+from os.path import abspath, dirname, join, exists
 from citam.api import parser
 from citam.conf import settings
 
 LOG = logging.getLogger(__name__)
-STATIC_PATH = join(dirname(abspath(__file__)), 'static')
 
 
 class ResultsResource:
@@ -140,7 +139,9 @@ class RedocResource:
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
-        with open(join(STATIC_PATH, 'redoc.html')) as f:
+
+        filename = join(dirname(abspath(__file__)), 'static', 'redoc.html')
+        with open(filename) as f:
             resp.body = f.read()
 
 
@@ -150,57 +151,12 @@ class DashIndexResource:
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
-        index_path = join(STATIC_PATH, 'dash', 'index.html')
-
-        if not isfile(index_path):
-            index_path = join(STATIC_PATH, 'dash404.html')
-
-        with open(index_path) as f:
+        file = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
+        if not exists(file):
+            LOG.warning("CITAM Dash is not included with this build")
+            file = join(dirname(dirname(file)), 'dash404.html')
+        with open(file) as f:
             resp.body = f.read()
-
-
-class DashStaticResource:
-    """
-    Static files for the Dash.
-
-    .. note::
-        These files are added/updated during the packaging process, and need
-        to be added manually if not running this from the pip package.
-    """
-    ROOT_PATH = join(dirname(abspath(__file__)), 'static', 'dash')
-    FALLBACK_PATH = join(ROOT_PATH, 'index.html')
-
-    def on_get(self, req, resp, path):
-
-        # Route / to index.html
-        if path == '' or path == '/':
-            LOG.debug("converting empty path to /index.html")
-            print('path getting set')
-
-        # Convert to filesystem path
-        filepath = join(self.ROOT_PATH, path)
-        LOG.debug("Requested file: %s, filesystem path: %s", path, filepath)
-
-        if not isfile(filepath):
-            LOG.debug("File: %s not found, returning index.html", filepath)
-            filepath = self.FALLBACK_PATH
-            # resp.status = falcon.HTTP_404
-            # resp.body = "File not Found"
-
-        with open(filepath) as f:
-            LOG.debug("Returning file")
-            resp.status = falcon.HTTP_200
-            try:
-                resp.body = f.read()
-            except UnicodeDecodeError:
-                LOG.debug("Unable to decode file as text, returning as bytes")
-
-            resp.content_type, _ = guess_type(filepath)
-            LOG.debug(
-                "Returning %s with content_type %s",
-                basename(filepath),
-                resp.content_type
-            )
 
 
 class OpenAPIResource:
@@ -242,6 +198,27 @@ class CORSMiddleware:
             ))
 
 
+def _404_route_sink(req, resp):
+    """This handles all 404s and converts them to index.html
+
+    We need this so ``citam dash`` can handle links to specific subpages
+    :param falcon.Request req: incoming request
+    :param falcon.Response resp: outgoing response
+    :rtype: falcon.Response
+    """
+
+    LOG.info("%s does not match a resource. Returning index.html", req.path)
+    file = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
+    if not exists(file):
+        LOG.warning("CITAM Dash is not included with this build")
+        file = join(dirname(dirname(file)), 'dash404.html')
+
+    with open(file) as f:
+        LOG.debug("Returning file")
+        resp.status = falcon.HTTP_200
+        resp.body = f.read()
+
+
 def get_wsgi_app():
     """
     Return the WSGI application for this API.
@@ -271,6 +248,7 @@ def get_wsgi_app():
                   suffix='statistics')
     app.add_route('/v1/{sim_id}/heatmap', results,
                   suffix='heatmap')
+    app.add_sink(_404_route_sink)
     app.add_static_route(
         '/',
         join(dirname(abspath(__file__)), 'static', 'dash')

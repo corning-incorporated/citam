@@ -13,12 +13,29 @@
 #  ==========================================================================
 
 import os
-from citam.api.storage.local import LocalStorageDriver
+import pytest
+from tempfile import TemporaryDirectory
+
+from citam.api.storage.local import LocalStorageDriver, NoResultsFoundError
 
 search_root = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'sample_results',
 )
+
+
+def test_bad_search_path():
+    """
+    This test uses a similar mechanism as citam.tests.cli.dash to check when
+    a directory with a valid name but does not exist is passed into the
+    storage driver, the correct exception is thrown.
+    """
+    # Create, get name of, then delete a temporary directory
+    td = TemporaryDirectory()
+    bad_dir = os.path.abspath(td.name)
+    td.cleanup()
+    with pytest.raises(IOError):
+        LocalStorageDriver(search_path=bad_dir)
 
 
 def test_results_found(monkeypatch):
@@ -31,14 +48,20 @@ def test_results_found(monkeypatch):
     assert len(driver.result_dirs) == 2
 
 
+def test_no_results_found():
+    with TemporaryDirectory() as td:
+        with pytest.raises(NoResultsFoundError):
+            LocalStorageDriver(search_path=td)
+
+
 def test_list_runs():
     expected = [
         'sim_id_0001',
-        'sim_id_0002'
+        'sim_id_0002',
+        # the result in TFBAD has a malformed manifest and should be ignored
     ]
     driver = LocalStorageDriver(search_path=search_root)
     runs = driver.list_runs()
-    print(runs)
     assert isinstance(runs, list)
     assert len(runs) == len(expected)
     for expected_run in expected:

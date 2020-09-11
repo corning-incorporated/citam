@@ -68,7 +68,7 @@ def get_trajectories(sim_id, floor=None):
     LOG.info("trajectory file parsing process is complete")
     try:
         max_contacts = max(max([y['count'] for x in steps for y in x]), 100)
-    except ValueError:
+    except ValueError:  # pragma: nocover
         max_contacts = 100
     output = {
         "data": steps,
@@ -155,7 +155,7 @@ def get_pair_contacts(sim_id):
     result_file.readline().strip()
     for line in result_file:
         data = line.strip().split(",")
-        if len(data) != 4:
+        if len(data) != 4:  # pragma: nocover
             LOG.error("Corrupted file! 4 values are expected for each line "
                       "in pair_contact.csv. %d found.", len(data))
             return []
