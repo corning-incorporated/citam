@@ -69,35 +69,28 @@ def find_aisles(space, valid_boundaries, no_repeat=True):
     For each wall, find the closest other wall, verify that they
     form an aisle .
 
-    Parameters
-    -----------
-    space: Space
+    :param Space space:
         The space (hallway) of interest
-    no_repeat: bool
+    :param bool no_repeat:
         Whether to allow a wall to appear in multiple aisles or not
-
-    Returns
-    --------
-        List of aisles where each aisle is a tuple of 2 walls
+    :return: List of aisles where each aisle is a tuple of 2 walls
+    :rtype: list[(Line, Line)]
     """
     aisles = []
 
     for wall1 in valid_boundaries:
         if wall1.length() <= 1.0:
             continue
-        if no_repeat:
-            if is_this_wall_part_of_an_aisle(wall1, aisles):
+        if no_repeat and is_this_wall_part_of_an_aisle(wall1, aisles):
                 continue
 
         wall2 = find_closest_parallel_wall(valid_boundaries, wall1)
-
-        if wall2 is None:
-            continue
         if wall2.length() <= 1.0:
             continue
-        if no_repeat:
-            if is_this_wall_part_of_an_aisle(wall2, aisles):
+
+        if no_repeat and is_this_wall_part_of_an_aisle(wall2, aisles):
                 continue
+
         if (wall1, wall2) in aisles or (wall2, wall1) in aisles:
             continue
 
@@ -159,7 +152,7 @@ def get_aisle_center_point_and_width(aisle):
     return center_point, width
 
 
-def is_this_an_aisle(wall1: Line, wall2: Line, space: Space):
+def is_this_an_aisle(wall1, wall2, space):
     """Verify that 2 walls form an aisle
 
     Works by verifying that the center point of this aisle is part
@@ -177,6 +170,9 @@ def is_this_an_aisle(wall1: Line, wall2: Line, space: Space):
     bool
         Whether the 2 walls form an aisle or not
     """
+    if wall1 is None or wall2 is None:
+        return False
+
     aisle = (wall1, wall2)
     center_point, _ = get_aisle_center_point_and_width(aisle)
     if space.is_point_inside_space(center_point):

@@ -108,6 +108,26 @@ class FloorplanUpdater:
 
         return
 
+    def remove_door_from_spaces(self, door):
+        """
+        Remove door from corresponding spaces.
+        """
+        if door.space1 is not None:
+            index = self.floorplan.spaces.index(door.space1)
+            if door.path in self.floorplan.spaces[index].doors:
+                self.floorplan.spaces[index]\
+                                .doors.remove(door.path)
+        if door.space2 is not None:
+            index = self.floorplan.spaces.index(door.space2)
+            if door.path in self.floorplan.spaces[index].doors:
+                self.floorplan.spaces[index]\
+                                .doors.remove(door.path)
+        # TODO: In the future, use the code below to shorten
+        # door sizes. But this is not supported for now
+        # new_door = \
+        #         self.remove_segment_from_wall(door.path, wall)
+        # break
+
     def find_doors_to_remove(self):
         """Go through existing doors and check if they overal with any special
         walls. If so, tag them for removal
@@ -127,21 +147,6 @@ class FloorplanUpdater:
                     # remove the wall from the door so as to shorten or
                     # completely remove the door
                     doors_to_remove.append(door)
-                    if door.space1 is not None:
-                        index = self.floorplan.spaces.index(door.space1)
-                        if door.path in self.floorplan.spaces[index].doors:
-                            self.floorplan.spaces[index]\
-                                          .doors.remove(door.path)
-                    if door.space2 is not None:
-                        index = self.floorplan.spaces.index(door.space2)
-                        if door.path in self.floorplan.spaces[index].doors:
-                            self.floorplan.spaces[index]\
-                                          .doors.remove(door.path)
-                    # TODO: In the future, use the code below to shorten
-                    # door sizes. But this is not supported for now
-                    # new_door = \
-                    #         self.remove_segment_from_wall(door.path, wall)
-                    # break
 
         return doors_to_remove
 
@@ -192,8 +197,11 @@ class FloorplanUpdater:
         doors_to_remove = self.find_doors_to_remove()
         updated_doors = []
         for door in self.floorplan.doors:
-            if door not in doors_to_remove:
+            if door in doors_to_remove:
+                self.remove_door_from_spaces(door)
+            else:
                 updated_doors.append(door)
+
         logging.info('We removed ' + str(len(doors_to_remove)) + ' doors.')
         logging.info('New number of doors: ' + str(len(updated_doors)))
 
@@ -260,11 +268,43 @@ class FloorplanUpdater:
 
         return space1, space2
 
-    def process_new_doors(self,
-                          svg_door_paths,
-                          updated_doors,
-                          max_distance_to_walls=3.0
-                          ):
+    def overlap_door_with_wall(self, new_door, max_distance_to_walls=3.0):
+        """
+        Verify if new door lines overlap with existing walls,
+        if so, update wall accordingly and update door as well
+        """
+
+        for i, wall in enumerate(self.floorplan.walls):
+            xo, yo = gsu.calculate_x_and_y_overlap(wall, new_door)
+            if xo < 1.0 and yo < 1.0:
+                continue
+            dot_product, distance = \
+                gsu.calculate_dot_product_and_distance_between_walls(
+                                                            wall,
+                                                            new_door
+                                                        )
+            if dot_product is not None:
+                if abs(dot_product - 1.0) < 1e-1 and \
+                        distance < max_distance_to_walls:
+                    # door and wall overlap
+                    # if gsu.do_walls_overlap(wall, new_door):
+
+                    del self.floorplan.walls[i]
+                    new_door = gsu.align_to_reference(wall, new_door)
+                    V_perp = gsu.calculate_normal_vector_between_walls(
+                                                        new_door, wall
+                                                    )
+                    V_perp = Point(V_perp[0], V_perp[1])
+                    new_door = new_door.translated(
+                                                V_perp.complex_coords
+                                            )
+                    new_wall_segments = \
+                        gsu.remove_segment_from_wall(wall, new_door)
+                    self.floorplan.walls += new_wall_segments
+
+        return new_door
+
+    def process_new_doors(self, svg_door_paths, updated_doors):
         """Iterate over door paths extracted from svg file and process them
         for addition to the floorplan
 
@@ -294,35 +334,7 @@ class FloorplanUpdater:
             space1, space2 = self.find_spaces_for_door(new_door)
 
             if space1 is not None or space2 is not None:
-                # Verify if new door lines overlap with existing walls,
-                # if so, update wall accordingly
-                for i, wall in enumerate(self.floorplan.walls):
-                    xo, yo = gsu.calculate_x_and_y_overlap(wall, new_door)
-                    if xo < 1.0 and yo < 1.0:
-                        continue
-                    dot_product, distance = \
-                        gsu.calculate_dot_product_and_distance_between_walls(
-                                                                    wall,
-                                                                    new_door
-                                                                )
-                    if dot_product is not None:
-                        if abs(dot_product - 1.0) < 1e-1 and \
-                                distance < max_distance_to_walls:
-                            # door and wall overlap
-                            # if gsu.do_walls_overlap(wall, new_door):
-
-                            del self.floorplan.walls[i]
-                            new_door = gsu.align_to_reference(wall, new_door)
-                            V_perp = gsu.calculate_normal_vector_between_walls(
-                                                                new_door, wall
-                                                            )
-                            V_perp = Point(V_perp[0], V_perp[1])
-                            new_door = new_door.translated(
-                                                        V_perp.complex_coords
-                                                    )
-                            new_wall_segments = \
-                                gsu.remove_segment_from_wall(wall, new_door)
-                            self.floorplan.walls += new_wall_segments
+                new_door = self.overlap_door_with_wall(new_door)
 
                 door_obj = Door(path=new_door, space1=space1, space2=space2)
                 updated_doors.append(door_obj)

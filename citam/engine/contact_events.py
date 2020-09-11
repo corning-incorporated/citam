@@ -15,6 +15,18 @@
 import logging
 
 
+def update_data_dictionary(datadict, key, data):
+    """
+    Utility function to update a dictionary to add data to existing value if
+    the key exist or create new key:value pair if not
+    """
+    if key not in datadict:
+        datadict[key] = data
+    else:
+        datadict[key] += data
+
+    return datadict
+
 class ContactEvent:
 
     def __init__(self, floor_number, location, position, current_step):
@@ -123,30 +135,30 @@ class ContactEvents:
             cont_durations = [ce.duration for ce in self.contact_data[key]]
             overall_total_contact_duration += sum(cont_durations)
 
-            if agent1 not in total_contacts_per_agent:
-                total_contacts_per_agent[agent1] = n_contacts
-            else:
-                total_contacts_per_agent[agent1] += n_contacts
+            total_contacts_per_agent = \
+                update_data_dictionary(total_contacts_per_agent,
+                                       agent1,
+                                       n_contacts
+                                       )
 
-            if agent2 not in total_contacts_per_agent:
-                total_contacts_per_agent[agent2] = n_contacts
-            else:
-                total_contacts_per_agent[agent2] += n_contacts
+            total_contacts_per_agent = \
+                update_data_dictionary(total_contacts_per_agent,
+                                       agent2,
+                                       n_contacts
+                                       )
 
-            if agent1 not in total_contact_duration_per_agent:
-                total_contact_duration_per_agent[agent1] = sum(cont_durations)
-            else:
-                total_contact_duration_per_agent[agent1] += sum(cont_durations)
+            total_contact_duration_per_agent = \
+                update_data_dictionary(total_contact_duration_per_agent,
+                                       agent1,
+                                       sum(cont_durations)
+                                       )
+            total_contact_duration_per_agent = \
+                update_data_dictionary(total_contact_duration_per_agent,
+                                       agent2,
+                                       sum(cont_durations)
+                                       )
 
-            if agent2 not in total_contact_duration_per_agent:
-                total_contact_duration_per_agent[agent2] = sum(cont_durations)
-            else:
-                total_contact_duration_per_agent[agent2] += sum(cont_durations)
-
-            if agent1 not in n_others:
-                n_others[agent1] = 1
-            else:
-                n_others[agent1] += 1
+            n_others = update_data_dictionary(n_others, agent1, 1)
 
         stat = {'name': 'overall_total_contact_duration',
                 'value': round(overall_total_contact_duration / 60.0, 2),
@@ -187,27 +199,35 @@ class ContactEvents:
 
         return statistics
 
+    def get_floor_contact_coords(self, key, floor_number):
+        """
+        Iterate over all contact events associated with key, and return
+        the ones that correspond to floor number.
+        """
+        floor_positions = []
+        for ce in self.contact_data[key]:
+            for i, pos in enumerate(ce.positions):
+                if ce.floor_numbers[i] == floor_number:
+                    floor_positions.append(pos)
+
+        return floor_positions
+
     def get_contacts_per_coordinates(self, step, floor_number):
         """Save per coordinate contact data to file
         """
         contacts_per_location = {}
 
         for key in self.contact_data:
-            floor_positions = []
-            for ce in self.contact_data[key]:
-                for i, pos in enumerate(ce.positions):
-                    if ce.floor_numbers[i] == floor_number:
-                        floor_positions.append(pos)
-
+            floor_positions = self.get_floor_contact_coords(key, floor_number)
             unique_positions = list(set(floor_positions))
             for pos in unique_positions:
                 count = floor_positions.count(pos)
 
-                if pos in contacts_per_location:
-                    contacts_per_location[pos] += count
-                else:
-                    contacts_per_location[pos] = count
-
+                contacts_per_location = \
+                    update_data_dictionary(contacts_per_location,
+                                           pos,
+                                           count
+                                           )
         return contacts_per_location
 
     def save_raw_contact_data(self, filename):
@@ -225,3 +245,5 @@ class ContactEvents:
         return
 
     # TODO: create function to add to concatenate 2 contact_events objects
+
+

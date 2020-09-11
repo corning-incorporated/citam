@@ -52,7 +52,7 @@ class Floorplan:
                  width,
                  height,
                  floor_name="0",
-                 special_walls=[],  # Walls that are not attached to any space
+                 special_walls=None,  # Walls not attached to any space
                  traffic_policy=None,
                  ):
         super().__init__()
@@ -62,34 +62,28 @@ class Floorplan:
         self.floor_name = floor_name
         self.buildings = []
         self.special_walls = special_walls
+        if self.special_walls is None:
+            self.special_walls = []
 
-        if doors is not None and \
-                spaces is not None and \
-                walls is not None and \
-                aisles is not None:
+        self.spaces = spaces
+        self.doors = doors
+        self.walls = walls
+        self.aisles = aisles
+        self.width = width
+        self.height = height
+        self.minx = 0
+        self.miny = 0
 
-            self.spaces = spaces
-            self.doors = doors
-            self.walls = walls
-            self.aisles = aisles
-            self.width = width
-            self.height = height
-            self.minx = 0
-            self.miny = 0
+        if any(ele is None for ele in [doors, spaces, walls, aisles]):
+            raise ValueError("Invalid inputs for floorplan.")
 
-            for space in self.spaces:
-                if space.building not in self.buildings:
-                    self.buildings.append(space.building)
-        else:
-            logging.error('Invalid inputs for floorplan.')
-            quit()
-
-        n_spaces_with_doors = 0
         n_rooms_with_doors = 0
         n_rooms = 0
         for space in self.spaces:
-            if len(space.doors) > 0:
-                n_spaces_with_doors += 1
+
+            if space.building not in self.buildings:
+                self.buildings.append(space.building)
+
             if not space.is_space_a_hallway():
                 n_rooms += 1
                 if len(space.doors) > 0:
@@ -108,10 +102,7 @@ class Floorplan:
         logging.info('Number of outside doors: ' + str(n_outside_doors))
 
         self.agent_locations = {}
-        if traffic_policy is None:
-            self.traffic_policy = [0 for aisle in self.aisles]
-        else:
-            self.traffic_policy = traffic_policy
+        self.traffic_policy = traffic_policy
 
         return
 
