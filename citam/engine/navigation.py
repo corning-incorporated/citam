@@ -12,15 +12,20 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
+import citam.engine.geometry_and_svg_utils as gsu
+from citam.engine.point import Point
 import citam.engine.storage_utils as su
-from citam.engine.constants import ONEWAY_TRAFFIC_NEGATIVE_DIRECTION
-from citam.engine.constants import ONEWAY_TRAFFIC_POSITIVE_DIRECTION
-from citam.engine.constants import TWO_WAY_TRAFFIC
+from citam.engine.constants import (
+    ONEWAY_TRAFFIC_NEGATIVE_DIRECTION,
+    ONEWAY_TRAFFIC_POSITIVE_DIRECTION,
+    TWO_WAY_TRAFFIC
+)
+
+from svgpathtools import Line
 
 import os
 import pickle
 import networkx as nx
-# import copy
 import logging
 import errno
 import math
@@ -28,11 +33,17 @@ import math
 
 class Navigation:
 
-    def __init__(self, floorplans, facility_name, traffic_policy):
+    def __init__(self,
+                 floorplans,
+                 facility_name,
+                 traffic_policy,
+                 multifloor_type='naming'
+                 ):
 
         super().__init__()
 
-        self.route_graph_per_floor = []
+        self.multifloor_type = multifloor_type
+        self.navnet_per_floor = []
         self.oneway_network_per_floor = []
         self.hallways_graph_per_floor = []
         self.floorplans = floorplans
@@ -51,7 +62,7 @@ class Navigation:
             # Load navigation newtork
             logging.info('Loading navnet...')
             navnet = self.load_floor_navnet(floorplan_directory)
-            self.route_graph_per_floor.append(navnet)
+            self.navnet_per_floor.append(navnet)
 
             # Load oneway network
             if self.traffic_policy is not None and self.traffic_policy != []:
@@ -64,16 +75,10 @@ class Navigation:
             hg = self.load_hallway_graph(floorplan_directory)
             self.hallways_graph_per_floor.append(hg)
 
-        # Keeping one copy in case we need to change the traffic policy
-        # self.initial_route_graph_per_floor = []
-        # for rg in self.route_graph_per_floor:
-        #     self.initial_route_graph_per_floor.append(copy.deepcopy(rg))
-
         if len(self.floorplans) > 1:
             self.create_multifloor_navnet()
 
         self.apply_traffic_policy()
-        return
 
     def load_hallway_graph(self, floorplan_directory):
         """Load the hallway graph
@@ -85,10 +90,8 @@ class Navigation:
         if os.path.isfile(floor_hallway_graph_file):
             with open(floor_hallway_graph_file, 'rb') as f:
                 hg = pickle.load(f)
-                self.hallways_graph_per_floor.append(hg)
             logging.info('Success!')
         else:
-            logging.fatal('Error loading file.')
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
                                     floor_hallway_graph_file
@@ -108,7 +111,6 @@ class Navigation:
                 oneway_net = pickle.load(f)
             logging.info('Success!',)
         else:
-            logging.fatal('Error loading file')
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
                                     oneway_net_file
@@ -119,54 +121,57 @@ class Navigation:
         """Load the navigation network.
         """
         navnet = None
-        floor_route_graph_file = os.path.join(floorplan_directory,
-                                              'routes.pkl'
-                                              )
-        if os.path.isfile(floor_route_graph_file):
-            with open(floor_route_graph_file, 'rb') as f:
+        floor_navnet_file = os.path.join(floorplan_directory,
+                                         'routes.pkl'
+                                         )
+        if os.path.isfile(floor_navnet_file):
+            with open(floor_navnet_file, 'rb') as f:
                 navnet = pickle.load(f)
             logging.info('Success!',)
         else:
-            logging.fatal('Error loading file')
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
-                                    floor_route_graph_file
+                                    floor_navnet_file
                                     )
         return navnet
 
     def get_corresponding_vertical_space(self,
                                          ref_space,
-                                         dest_floor,
-                                         method='naming'
+                                         dest_floor
                                          ):
         """Given a reference space and a destination floor, find the space
         on the destination floor that lies in the same xy position as the
         reference space. Mostly used for stairs and elevators.
 
-        Parameters
-        -----------
-        ref_space: Space
-            The reference space
-        dest_floor: int
-            Id of the destination floor
-
-        Returns
-        --------
-        int, Space:
-            Integer ID and Space object matching the request. None, None if
-            no space was found.
+        :param Space ref_space: the reference space
+        :param int dest_floor: id of the destination floor
+        :return: dest_space_id
+        :return: dest_space
+        :rtype: (int, Space)
         """
-        # TODO: Add support for various methods
+        # TODO: Add regex as another method.
         dest_space = None
         dest_space_id = None
-        name1 = ref_space.unique_name
-        name2 = name1[0] + str(dest_floor + 1) + name1[2:]
 
-        for j, space in enumerate(self.floorplans[dest_floor].spaces):
-            if space.unique_name == name2:
-                dest_space = space
-                dest_space_id = j
-                break
+        if self.multifloor_type == 'naming':
+            name1 = ref_space.unique_name
+            name2 = name1[0] + str(dest_floor + 1) + name1[2:]
+
+            for j, space in enumerate(self.floorplans[dest_floor].spaces):
+                if space.unique_name == name2 and space.is_space_vertical():
+                    dest_space = space
+                    dest_space_id = j
+                    break
+        elif self.multifloor_type == 'xy':
+            p = ref_space.get_random_internal_point()
+            dest_space_id = \
+                self.floorplans[dest_floor].identify_this_location(p.x, p.y)
+            if dest_space_id is not None:
+                dest_space = self.floorplans[dest_floor].spaces[dest_space_id]
+        else:
+            raise ValueError(
+                "Unknown method : ' + str(method) +'Expected: naming or 'xy'"
+            )
 
         return dest_space_id, dest_space
 
@@ -210,6 +215,9 @@ class Navigation:
             if space2 is None:
                 continue
 
+            if not space2.is_space_vertical():
+                continue
+
             # add edges between room the exit coords of the vertical spaces
             # (TODO: maybe create edges between an xy coords inside rooms?)
             node1 = (coords1[0], coords1[1], floor_number1)
@@ -222,11 +230,9 @@ class Navigation:
                     self.multifloor_navnet.has_node(node2):
                 self.multifloor_navnet.add_edge(node1, node2)
                 self.multifloor_navnet.add_edge(node2, node1)
-                print('Node 1 & 2 are: ', node1, node2)
                 n_vert_edges += 1
             else:
-                print(node1, 'or', node2, ' not found in graph')
-
+                logging.warning("%s or %s not found in graph", node1, node2)
         return n_vert_edges
 
     def create_multifloor_navnet(self):
@@ -242,16 +248,16 @@ class Navigation:
 
         Returns
         --------
-        None
+
         """
         print('Combining navigation networks...')
         self.multifloor_navnet = nx.DiGraph()
         # Relabel nodes in each floor navnet
         for fn in range(len(self.floorplans)):
             mapping = {}
-            for node in list(self.route_graph_per_floor[fn].nodes()):
+            for node in list(self.navnet_per_floor[fn].nodes()):
                 mapping[node] = (node[0], node[1], fn)
-            navnet = nx.relabel_nodes(self.route_graph_per_floor[fn], mapping)
+            navnet = nx.relabel_nodes(self.navnet_per_floor[fn], mapping)
             # Compose new graph with all floor graphs
             self.multifloor_navnet = nx.compose(self.multifloor_navnet, navnet)
 
@@ -260,8 +266,6 @@ class Navigation:
         for floor_number2 in range(1, len(self.floorplans)):
             nverts += self.add_vertical_edges(floor_number1, floor_number2)
             floor_number1 = floor_number2
-
-        return
 
     def apply_traffic_policy(self):
         """Remove edges that should not exist based on user traffic policy
@@ -273,23 +277,21 @@ class Navigation:
         if len(self.floorplans) == 1:
             for pol in self.traffic_policy:
                 self.set_policy_for_aisle(pol,
-                                          self.route_graph_per_floor[0],
+                                          self.navnet_per_floor[0],
                                           self.oneway_network_per_floor[0]
                                           )
         else:
             for i, fp in enumerate(self.floorplans):
-                floor_name = fp.name
-                logging.info('\tWorking with floor {%s}', floor_name)
+                logging.info('\tWorking with floor {%s}', fp.floor_name)
                 for pol in self.traffic_policy:
-                    if pol['floor'] == floor_name:
+                    if pol['floor'] == fp.floor_name:
                         self.set_policy_for_aisle(
                                             pol,
-                                            self.route_graph_per_floor[i],
+                                            self.navnet_per_floor[i],
                                             self.oneway_network_per_floor[i],
                                             navnet_type='multifloor',
                                             floor_number=i
                                         )
-        return
 
     def set_policy_for_aisle(self,
                              policy,
@@ -302,6 +304,7 @@ class Navigation:
         match the desired traffic pattern.
         """
         logging.info('\t\tApplying this policy {%s}: ', policy)
+        print(policy)
         if policy['direction'] == TWO_WAY_TRAFFIC:
             return
 
@@ -373,81 +376,6 @@ class Navigation:
 
         return False
 
-    def get_route_length(self, route):
-        """Compute the length (in distance unit, not in step or node units)
-        of a given route
-
-        Parameters
-        -----------
-        route: List
-            List of tuples where each element represent a node in the
-            navigation network.
-
-        Returns
-        --------
-        int
-            The total lenght of the route
-        """
-        length = 0
-
-        point1 = route[0]
-        for point2 in route[1:]:
-            dx = point2[0] - point1[0]
-            dy = point2[1] - point1[1]
-            seg_len = (dx**2 + dy**2)**0.5
-            length += seg_len
-            point1 = point2
-
-        return length
-
-    def get_route_different_floors_deprecated(self,
-                                              starting_location,
-                                              starting_floor,
-                                              dest_location,
-                                              dest_floor
-                                              ):
-        best_route = None, None
-
-        # logging.info('Trying to find the closest stairway or elevator...')
-        starting_floor_verticals = [
-                            (i, space) for i, space in
-                            enumerate(self.floorplans[starting_floor].spaces)
-                            if space.is_space_vertical()
-                        ]
-        dest_floor_verticals = [(i, space) for i, space in
-                                enumerate(self.floorplans[dest_floor].spaces)
-                                if space.is_space_vertical()
-                                ]
-
-        min_length = 1e10
-        for sf_vert_loc, sf_vert_space in starting_floor_verticals:
-            name1 = sf_vert_space.unique_name
-            # TODO: Use naming settings for multiple floors from input file
-            name2 = name1[0] + str(dest_floor + 1) + name1[2:]
-            for df_vert_loc, df_vert_space in dest_floor_verticals:
-                if df_vert_space.unique_name == name2:
-                    route1 = self.get_route_same_floor(starting_floor,
-                                                       starting_location,
-                                                       sf_vert_loc
-                                                       )
-
-                    if route1 is None:
-                        continue
-
-                    route2 = self.get_route_same_floor(dest_floor,
-                                                       dest_location,
-                                                       df_vert_loc)
-                    if route2 is None:
-                        continue
-
-                    route = route1 + route2
-                    length = self.get_route_length(route)
-                    if length < min_length:
-                        min_length = length
-                        best_route = route1, route2
-
-        return best_route
-
     def get_route(self,
                   starting_location,
                   starting_floor_number,
@@ -478,7 +406,7 @@ class Navigation:
                                               starting_location,
                                               destination
                                               )
-            tmp_route = self.unroll_route(route, pace)
+            tmp_route = unroll_route(route, pace)
             if tmp_route is None:
                 return None
             route = [[r, starting_floor_number] for r in tmp_route]
@@ -488,7 +416,7 @@ class Navigation:
                                               destination,
                                               destination_floor_number
                                               )
-            tmp_route = self.unroll_route(route, pace)
+            tmp_route = unroll_route(route, pace)
             if tmp_route is None:
                 return None
             route = [[(r[0], r[1]), r[2]] for r in tmp_route]
@@ -547,14 +475,16 @@ class Navigation:
             logging.error('Dest coordinates not in navnet: ' + str(end_node))
             return None
 
-        # Getroute
+        # Get route
         try:
             route = nx.astar_path(self.multifloor_navnet,
                                   start_node,
                                   end_node
                                   )
         except Exception as e:
-            logging.exception(str(e))
+            logging.exception('Here is the exception: %s', e)
+            logging.error('\tNo route between: %s, %s',
+                          starting_location, destination)
             return None
 
         return route
@@ -565,6 +495,16 @@ class Navigation:
                              destination
                              ):
         """Find the best route between two locations on the same floor.
+
+        Parameters
+        -----------
+        floor_number : int
+        current_locatoin : int
+        destination : int
+
+        Returns
+        --------
+        route : list of (x, y) positions
         """
         # Pace expected in unit length of the floormap per simulation timestep
         floorplan = self.floorplans[floor_number]
@@ -573,8 +513,8 @@ class Navigation:
             start_coords = current_location
         else:
             start_coords = floorplan.get_room_exit_coords(current_location)
-            if self.route_graph_per_floor[floor_number].has_node(start_coords):
-                n_edges = self.route_graph_per_floor[floor_number].\
+            if self.navnet_per_floor[floor_number].has_node(start_coords):
+                n_edges = self.navnet_per_floor[floor_number].\
                     edges(start_coords)
                 if n_edges == 1:
                     logging.error('No exit from this room. Check the navnet')
@@ -584,8 +524,8 @@ class Navigation:
             end_coords = destination
         else:
             end_coords = floorplan.get_room_exit_coords(destination)
-            if self.route_graph_per_floor[floor_number].has_node(end_coords):
-                n_edges = self.route_graph_per_floor[floor_number].\
+            if self.navnet_per_floor[floor_number].has_node(end_coords):
+                n_edges = self.navnet_per_floor[floor_number].\
                     edges(end_coords)
                 if n_edges == 1:
                     logging.error('No exit from this room. Check the navnet')
@@ -594,12 +534,12 @@ class Navigation:
         if start_coords is None or end_coords is None:
             return None
 
-        if not self.route_graph_per_floor[floor_number].has_node(start_coords):
+        if not self.navnet_per_floor[floor_number].has_node(start_coords):
             logging.error('Start coordinates not in nav network: ' +
                           str(start_coords))
             return None
 
-        if not self.route_graph_per_floor[floor_number].has_node(end_coords):
+        if not self.navnet_per_floor[floor_number].has_node(end_coords):
             if not (isinstance(destination, tuple)):
                 dest_space = self.floorplans[floor_number].spaces[destination]
                 dest_name = dest_space.unique_name
@@ -611,7 +551,7 @@ class Navigation:
             return None
 
         try:
-            route = nx.astar_path(self.route_graph_per_floor[floor_number],
+            route = nx.astar_path(self.navnet_per_floor[floor_number],
                                   start_coords,
                                   end_coords
                                   )
@@ -622,45 +562,78 @@ class Navigation:
 
         return route
 
-    def unroll_route(self, route, pace):
-        """Use the given pace to find intermediate coordinates between each
-        pair of nodes in this route.
-        """
-        if route is None:
-            return None
 
-        full_route = [route[0]]
+def remove_unncessary_coords(route):
+    """
+    Inspect a route given by a set of coordinates and remove any intermediate
+    coords that's collinear with its two neighbors.
 
-        for i, pos in enumerate(route[1:]):  # Look back and unroll
-
-            current_x, current_y = pos[0], pos[1]
-            last_x, last_y = route[i][0], route[i][1]
-
-            # Check if this is between 2 floors
-            if len(pos) == 3:
-                if pos[2] != route[i][2]:
+    :param list route: List of tuples of x, y coordinates
+    :return: Trimmed down list of coords
+    :rtype: list[(int, int)]
+    """
+    while True:
+        index_of_coords_to_delete = None
+        for i in range(len(route)):
+            if i == 0 or i == len(route) - 1:
+                continue
+            if len(route[i]) == 3:
+                if route[i-1][2] != route[i][2] or \
+                        route[i][2] != route[i+1][2]:
                     continue
+            # Check if this point and the points before and after are collinear
+            test_line = Line(start=complex(route[i-1][0], route[i-1][1]),
+                             end=complex(route[i+1][0], route[i+1][1]))
+            test_point = Point(x=route[i][0], y=route[i][1])
+            if gsu.is_point_on_line(test_line, test_point, tol=1e-1):
+                index_of_coords_to_delete = i
+                break
+        if index_of_coords_to_delete is not None:
+            del route[index_of_coords_to_delete]
+        else:
+            break
 
-            Dx = current_x - last_x
-            Dy = current_y - last_y
+    return route
 
-            n_intermediate_steps = max(int(abs(Dx)*1.0/pace),
-                                       int(abs(Dy)*1.0/pace))
 
-            # print(n_intermediate_steps, x_length, y_length, pace)
+def unroll_route(route, pace):
+    """Use the given pace to find intermediate coordinates between each
+    pair of nodes in this route.
+    """
+    if route is None:
+        return None
 
-            if n_intermediate_steps > 1:
+    route = remove_unncessary_coords(route)
+    full_route = [route[0]]
 
-                dx = int(round(Dx*1.0/n_intermediate_steps))
-                dy = int(round(Dy*1.0/n_intermediate_steps))
+    for i, pos in enumerate(route[1:]):  # Look back and unroll
 
-                for step in range(n_intermediate_steps-1):
-                    if len(pos) == 2:
-                        new_pos = (last_x + step*dx, last_y + step*dy)
-                    else:
-                        new_pos = (last_x + step*dx, last_y + step*dy, pos[2])
-                    full_route.append(new_pos)
+        current_x, current_y = pos[0], pos[1]
+        last_x, last_y = route[i][0], route[i][1]
 
-            full_route.append(pos)
+        # Check if this is between 2 floors
+        if len(pos) == 3:
+            if pos[2] != route[i][2]:
+                full_route.append(pos)
+                continue
 
-        return full_route
+        Dx = current_x - last_x
+        Dy = current_y - last_y
+
+        n_intermediate_steps = max(int(abs(Dx)*1.0/pace),
+                                   int(abs(Dy)*1.0/pace)) + 1
+        if n_intermediate_steps > 1:
+
+            dx = int(round(Dx*1.0/n_intermediate_steps))
+            dy = int(round(Dy*1.0/n_intermediate_steps))
+
+            for step in range(1, n_intermediate_steps-1):
+                if len(pos) == 2:
+                    new_pos = (last_x + step*dx, last_y + step*dy)
+                else:
+                    new_pos = (last_x + step*dx, last_y + step*dy, pos[2])
+                full_route.append(new_pos)
+
+        full_route.append(pos)
+
+    return full_route

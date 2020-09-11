@@ -277,9 +277,9 @@ def build_navigation_network(**kwargs):
     navbuilder.build()
 
     hw_graph_file = os.path.join(floorplan_directory, 'hallways_graph.pkl')
-    floor_route_graph_file = os.path.join(floorplan_directory, 'routes.pkl')
+    floor_navnet_file = os.path.join(floorplan_directory, 'routes.pkl')
 
-    navbuilder.export_navdata_to_pkl(floor_route_graph_file, hw_graph_file)
+    navbuilder.export_navdata_to_pkl(floor_navnet_file, hw_graph_file)
 
     return True
 
@@ -641,6 +641,7 @@ def find_and_save_potential_one_way_aisles(**kwargs):
                                        )
     with open(oneway_net_pkl_file, 'wb') as f:
         pickle.dump(oneway_network, f)
+        logging.info('File saved: %s', oneway_net_pkl_file)
     try:   # Export to SVG file
         bv.export_possible_oneway_aisles_to_svg(walls,
                                                 oneway_network,
