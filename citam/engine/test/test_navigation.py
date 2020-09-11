@@ -1,6 +1,13 @@
-from citam.engine.navigation import Navigation
+from citam.engine.navigation import (
+    Navigation,
+    unroll_route,
+    remove_unncessary_coords
+)
 import pytest
 import os
+
+import citam.engine.basic_visualization as bv
+from svgpathtools.path import Line
 
 
 def test_get_corresponding_vertical_space_bad_method_naming(
@@ -73,7 +80,8 @@ def test_add_vertical_edges_no_matching_stairs(
             datadir,
             monkeypatch
         ):
-
+    # This is expected lead to a vertical edge as only the space in the
+    # starting floor is checked for the correct function.
     simple_facility_floorplan_2_floors[0].spaces[1].space_function = 'stairs'
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
     nav = Navigation(simple_facility_floorplan_2_floors,
@@ -85,16 +93,12 @@ def test_add_vertical_edges_no_matching_stairs(
 
     assert n_vert_edges == 0
 
+
 def test_add_vertical_edges_2_edges(
             simple_facility_floorplan_2_floors,
             datadir,
             monkeypatch
         ):
-
-    # print(len(simple_facility_floorplan_2_floors[0].doors))
-    for i, space in enumerate(simple_facility_floorplan_2_floors[0].spaces):
-        print(i, len(space.doors))
-
 
     simple_facility_floorplan_2_floors[0].spaces[1].space_function = 'stairs'
     simple_facility_floorplan_2_floors[1].spaces[1].space_function = 'stairs'
@@ -141,6 +145,7 @@ def test_init_hallway_graph_not_found(simple_facility_floorplan,
             floor_dir,
             'hallways_graph.pkl'
         ))
+
     with pytest.raises(FileNotFoundError):
 
         Navigation(
@@ -170,10 +175,182 @@ def test_init_navnet_not_found(simple_facility_floorplan,
 
 def test_init(simple_facility_floorplan, monkeypatch, datadir):
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-    Navigation(
+    nav = Navigation(
             [simple_facility_floorplan],
             "test_simple_facility",
             None
         )
+    assert len(nav.navnet_per_floor) == 1
+    assert len(nav.hallways_graph_per_floor) == 1
+    assert nav.traffic_policy is None
 
-# def test_create_multifloor_navnet()
+def test_init_2_floors(simple_facility_floorplan_2_floors,
+                       monkeypatch,
+                       datadir
+                       ):
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+    nav = Navigation(
+            simple_facility_floorplan_2_floors,
+            "test_simple_facility",
+            None
+        )
+    assert nav.multifloor_navnet is not None
+    assert len(nav.navnet_per_floor) == 2
+    assert nav.traffic_policy is None
+    assert len(nav.hallways_graph_per_floor) == 2
+
+
+def test_set_policy_for_aisle(simple_facility_floorplan, monkeypatch, datadir):
+
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+    policy = [{'floor': '0', 'segment_id': '0', 'direction': -1}]
+
+    nav = Navigation(
+            [simple_facility_floorplan],
+            "test_simple_facility",
+            policy
+        )
+
+    n_edges2 = nav.navnet_per_floor[0].number_of_edges()
+
+    assert len(nav.oneway_network_per_floor) == 1
+    assert n_edges2 == 56 - 5
+    # TODO: Verify that the right edges have been removed
+    # TODO: Create a similar test for a diagonal nav segment
+
+
+def test_oneway_policy_missing_network(simple_facility_floorplan_2_floors,
+                                       monkeypatch,
+                                       datadir):
+
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+    policy = [{'floor': '1', 'segment_id': '0', 'direction': -1}]
+
+    with pytest.raises(FileNotFoundError):
+
+        nav = Navigation(
+                simple_facility_floorplan_2_floors,
+                "test_simple_facility",
+                policy
+            )
+
+
+def test_get_route_same_floor(simple_facility_floorplan, monkeypatch, datadir):
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+    nav = Navigation(
+            [simple_facility_floorplan],
+            "test_simple_facility",
+            None
+        )
+    floor_number = 0
+    current_location = 1
+    destination = 8
+
+    route = nav.get_route_same_floor(floor_number,
+                                     current_location,
+                                     destination
+                                     )
+
+
+    assert len(route) == 8
+
+
+def test_get_multifloor_route_no_stairs(simple_facility_floorplan_2_floors,
+                                        monkeypatch,
+                                        datadir):
+
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+    nav = Navigation(
+            simple_facility_floorplan_2_floors,
+            "test_simple_facility",
+            None,
+            multifloor_type='xy'
+        )
+
+    starting_floor_number = 0
+    starting_location = 1
+    destination = 8
+    destination_floor_number = 1
+
+    route = nav.get_multifloor_route(
+                             starting_location,
+                             starting_floor_number,
+                             destination,
+                             destination_floor_number
+                             )
+    assert route is None
+
+
+def test_get_multifloor_route(simple_facility_floorplan_2_floors,
+                              monkeypatch,
+                              datadir):
+
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+
+    simple_facility_floorplan_2_floors[0].spaces[4].space_function = 'stairs'
+    simple_facility_floorplan_2_floors[1].spaces[4].space_function = 'stairs'
+    nav = Navigation(
+            simple_facility_floorplan_2_floors,
+            "test_simple_facility",
+            None,
+            multifloor_type='xy'
+        )
+
+    starting_floor_number = 0
+    starting_location = 1
+    destination = 8
+    destination_floor_number = 1
+
+    route = nav.get_multifloor_route(
+                             starting_location,
+                             starting_floor_number,
+                             destination,
+                             destination_floor_number
+                             )
+    assert len(route) == 11
+
+# def test_get_route():
+
+def test_remove_unncessary_coords_same_floor():
+
+    route = [(0, 0), (10, 0), (15, 0), (15,20)]
+    route = remove_unncessary_coords(route)
+    assert len(route) == 3
+
+def test_remove_unncessary_coords_same_floor2():
+
+    route = [(0, 0), (10, 0), (10, 20), (15, 20), (25, 20)]
+    route = remove_unncessary_coords(route)
+    assert len(route) == 4
+
+def test_remove_unncessary_coords_2_floors():
+
+    route = [(0, 0, 0), (10, 0, 0), (10, 0, 1), (15, 0, 1), (15, 20, 1)]
+    route = remove_unncessary_coords(route)
+    assert len(route) == 5
+
+def test_remove_unncessary_coords_2_floors2():
+
+    route = [(0, 0, 0),
+             (5, 0, 0),
+             (10, 0, 0),
+             (10, 0, 1),
+             (15, 0, 1),
+             (15, 20, 1)]
+    route = remove_unncessary_coords(route)
+    assert len(route) == 5
+
+def test_unroll_route():
+
+    route = [(0, 0), (0, 50), (25, 50), (26, 51)]
+    new_route = unroll_route(route, 2.0)
+
+    assert len(new_route) == 25 + 12 + 2
+
+
+def test_unroll_route_2_floors():
+
+    route = [(0, 0, 0), (0, 50, 0), (0, 50, 1), (25, 50, 1), (26, 51, 1)]
+    new_route = unroll_route(route, 2.0)
+
+    assert len(new_route) == 25 + 12 + 3

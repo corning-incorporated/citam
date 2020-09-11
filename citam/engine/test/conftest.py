@@ -13,6 +13,8 @@ import os
 import copy
 from copy import deepcopy
 
+import pickle
+
 
 @pytest.fixture
 def x_floorplan():
@@ -254,35 +256,60 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
 
 
 @pytest.fixture
-def simple_facility_floorplan(rect_floorplan_ingester):
+def create_simple_facility_floorplan(rect_floorplan_ingester_data, request):
+    filename = request.module.__file__
+    test_dir, _ = os.path.splitext(filename)
 
-    # TODO: Shouldn't have to run this here, create the data manually instead
-    rect_floorplan_ingester.run()
+    spaces = rect_floorplan_ingester_data.spaces
+    rect_floorplan_ingester_data.run()
 
-    spaces = rect_floorplan_ingester.spaces
-    doors = rect_floorplan_ingester.doors
-    walls = rect_floorplan_ingester.walls
-    aisles = rect_floorplan_ingester.aisles
+    spaces = rect_floorplan_ingester_data.spaces
+    doors = rect_floorplan_ingester_data.doors
+    walls = rect_floorplan_ingester_data.walls
+    aisles = rect_floorplan_ingester_data.aisles
+    scale = 1.0/12.0
 
-    fp = Floorplan(1.0, spaces, doors, walls, aisles, 350, 350)
+    data_to_save = [spaces,
+                    doors,
+                    walls,
+                    [],
+                    aisles,
+                    350,
+                    350,
+                    scale
+                    ]
+
+    with open('updated_floorplan.pkl', 'wb') as f:
+        pickle.dump(data_to_save, f)
+
+    return
+
+
+@pytest.fixture
+def simple_facility_floorplan(request):
+    filename = request.module.__file__
+    test_dir, _ = os.path.splitext(filename)
+
+    floorplan_pickle_file = os.path.join(test_dir,
+                                         'floorplans_and_nav_data',
+                                         'test_simple_facility/',
+                                         'floor_0',
+                                         'updated_floorplan.pkl'
+                                         )
+    with open(floorplan_pickle_file, 'rb') as f:
+        spaces, doors, walls, special_walls, aisles, width, height, \
+            scale = pickle.load(f)
+    fp = Floorplan(scale, spaces, doors, walls, aisles, width, height)
 
     return fp
 
 
 @pytest.fixture
-def simple_facility_floorplan_2_floors(rect_floorplan_ingester):
+def simple_facility_floorplan_2_floors(simple_facility_floorplan):
 
-    # TODO: Shouldn't have to run this here, create the data manually instead
-    rect_floorplan_ingester.run()
-
-    spaces = rect_floorplan_ingester.spaces
-    doors = rect_floorplan_ingester.doors
-    walls = rect_floorplan_ingester.walls
-    aisles = rect_floorplan_ingester.aisles
-
-    fp1 = Floorplan(1.0, spaces, doors, walls, aisles, 350, 350)
-    fp2 = deepcopy(fp1)
+    fp2 = deepcopy(simple_facility_floorplan)
     for space in fp2.spaces:
         space.unique_name = space.unique_name + '_2'
+    fp2.floor_name = '1'
 
-    return [fp1, fp2]
+    return [simple_facility_floorplan, fp2]
