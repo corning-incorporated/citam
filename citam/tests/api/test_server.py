@@ -132,12 +132,12 @@ def test_openapi_response(client):
     assert result.status_code == 200
 
 
-def test_index(client, static_route):
+def test_index(client):
     result: testing.Result = client.simulate_get('/')
     assert result.status_code == 200
 
 
-def test_404(client, static_route):
+def test_404(client):
     expected = client.simulate_get('/')
     actual = client.simulate_get('/invalid/path')
     assert actual.status_code == 200
