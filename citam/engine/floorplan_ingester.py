@@ -37,8 +37,8 @@ class FloorplanIngester:
                  csv_file,
                  scale,
                  extract_doors_from_file=False,
-                 buildings_to_keep=['all'],
-                 excluded_buildings=[]
+                 buildings_to_keep=None,
+                 excluded_buildings=None
                  ):
         super().__init__()
 
@@ -60,7 +60,12 @@ class FloorplanIngester:
         self.buildings = []
 
         self.excluded_buildings = excluded_buildings
+        if self.excluded_buildings is None:
+            self.excluded_buildings = []
+
         self.buildings_to_keep = buildings_to_keep
+        if self.buildings_to_keep is None:
+            self.buildings_to_keep = ['all']
 
         if self.svg_file is not None and self.csv_file is not None:
             self.read_input_files()
@@ -71,24 +76,10 @@ class FloorplanIngester:
 
     def create_spaces(self):
         """Create space objects from data extracted in csv and svg files
-
-        Parameters
-        -----------
-        No parameter
-
-        Returns
-        --------
-        None
         """
-        if len(self.space_paths) == 0:
-            logging.error('No space paths provided.')
-            return
-        if len(self.space_attributes) != len(self.space_paths):
-            logging.error('The number of attributes and paths must be equal')
-            return
+
         if len(self.space_data) < len(self.space_paths):
-            logging.error('Each good path in svg must have metadata')
-            return
+            raise ValueError('Each good path in svg must have metadata')
 
         for space_path, space_attr in zip(self.space_paths,
                                           self.space_attributes
@@ -112,29 +103,26 @@ class FloorplanIngester:
                                       )
                     self.spaces.append(space)
                     break
-        return
 
     def read_input_files(self):
         """Read and parse csv and svg files
         """
         self.space_data = parser.parse_csv_metadata_file(self.csv_file)
+
         if len(self.space_data) == 0:
-            logging.fatal('Could not load any space data from CSV file')
-            return
-        else:
-            n_data = len(self.space_data)
-            msg = f'Successfully loaded {n_data} rows from csv file'
-            logging.info(msg)
+            raise ValueError('Could not load any space data from CSV file')
+
+        n_data = len(self.space_data)
+        logging.info(f'Successfully loaded {n_data} rows from csv file')
 
         svg_data = parser.parse_svg_floorplan_file(self.svg_file)
 
         if len(svg_data[0]) == 0:
-            logging.fatal('Could not load any space path from SVG file')
-            return
-        else:
-            self.space_paths = svg_data[0]
-            self.space_attributes = svg_data[1]
-            self.door_paths = svg_data[2]
+            raise ValueError('Could not load any space path from SVG file')
+
+        self.space_paths = svg_data[0]
+        self.space_attributes = svg_data[1]
+        self.door_paths = svg_data[2]
 
         return
 
@@ -170,6 +158,124 @@ class FloorplanIngester:
 
         return
 
+    def find_space_index_for_door(self, door):
+        """
+        Given a door SVG element, find the index of the space to which it
+        belongs.
+
+        :param Path door: path element representing a door in the drawing
+        :return: space_index and door lines
+        :rtype: (int,list[Line])
+        """
+        # Find lines on which the door potentially lies
+        test_points = []
+        door_lines = door
+
+        for path in door:
+            if type(path) == CubicBezier:
+                door_lines = gsu.find_door_line(path)
+                test_points.append(Point(complex_coords=path.point(0.5)))
+                test_points.append(Point(complex_coords=path.start))
+                test_points.append(Point(complex_coords=path.end))
+            else:
+                test_points.append(Point(complex_coords=path.point(0.5)))
+                test_points.append(Point(complex_coords=path.start))
+                test_points.append(Point(complex_coords=path.end))
+
+        # Use the test points to find the space to which this door belongs
+        space_index = None
+        for test_point in test_points:
+            for i, space in enumerate(self.spaces):
+                if space.is_point_inside_space(test_point,
+                                               include_boundaries=True
+                                               ):
+                    space_index = i
+                    break
+            if space_index is not None:
+                break
+
+        return space_index, door_lines
+
+    def find_closest_wall_and_best_door_line(self,
+                                             space_index,
+                                             door_lines,
+                                             max_distance=10.0
+                                             ):
+        """
+        Given a number of lines in the door SVG element, find the best line
+        based on proximity to a wall.
+
+        :param int space_index: index of the space where this door is located
+        :param list door_lines: list of Line elements that represent the door
+        :param float max_distance: max distance beyond which a wall is
+            considered too far from the door.
+        :return: wall index and best_door_line
+                index of the closest wall to any given line and Line that is
+                closest to that wall
+        :rtype: (int, Line)
+        """
+        wall_index = None
+        current_min_distance = 100.0
+        best_door_line = None
+
+        for w, wall in enumerate(self.spaces[space_index].path):
+            if wall.length() <= 2:
+                continue
+
+            for door_line in door_lines:
+                xo, yo = gsu.calculate_x_and_y_overlap(wall, door_line)
+                if xo < 1.0 and yo < 1.0:
+                    continue
+                dot_product, distance = \
+                    gsu.calculate_dot_product_and_distance_between_walls(
+                                                        wall,
+                                                        door_line
+                                                    )
+                if dot_product is not None:
+                    if abs(dot_product - 1.0) < 1e-1 and \
+                            distance < max_distance and \
+                            distance < current_min_distance:
+
+                        current_min_distance = distance
+                        wall_index = w
+                        best_door_line = door_line
+
+        return wall_index, best_door_line
+
+    def find_adjacent_space(self, space_index, door_line):
+        """
+        Given a door and one of the spaces that it connects, find the other
+        space.
+
+        :param int space_index: index of the space of interest
+        :param Line door_line: Line representing the door
+        :return: wall_index, space_index, new_walls after extracting door from
+                wall
+        :rtype: int, int, Line
+        """
+        # TODO: Handle case where more than 2 spaces are involved.
+        # Find which other space this wall is shared with
+        space2_index = None
+        wall2_index = None
+        new_walls2 = []
+        for j, space in enumerate(self.spaces):
+            if space != self.spaces[space_index]:
+                for k, other_wall in enumerate(space.path):
+                    if gsu.do_walls_overlap(other_wall, door_line):
+                        space2_index = j
+                        wall2_index = k
+                        new_walls2 = gsu.remove_segment_from_wall(
+                                                other_wall,
+                                                door_line
+                                            )
+                        if not space.is_space_a_hallway():
+                            space.doors.append(door_line)
+                        break
+            if space2_index is not None:
+                break
+
+        return wall2_index, space2_index, new_walls2
+
     def process_doors(self):
         """Iterate over the door paths extracted from the SVG file, find
         associated spaces and create door objects.
@@ -178,115 +284,54 @@ class FloorplanIngester:
 
         n_success = 0
         n_no_match = 0
-        max_distance = 10.0
 
         i = -1
         for door in pb.progressbar(self.door_paths):
             i += 1
-            # Find lines on which the door potentially lies
-            is_bezier = False
-            test_points = []
-            for path in door:
-                if type(path) == CubicBezier:
-                    is_bezier = True
-                    bezier = path
-                    door_lines = gsu.find_door_line(bezier)
-                    test_points.append(Point(complex_coords=bezier.point(0.5)))
-                    test_points.append(Point(complex_coords=bezier.start))
-                    test_points.append(Point(complex_coords=bezier.end))
-            if not is_bezier:
-                door_lines = door
-                for dl in door_lines:
-                    test_points.append(Point(complex_coords=dl.point(0.5)))
-                    test_points.append(Point(complex_coords=dl.start))
-                    test_points.append(Point(complex_coords=dl.end))
 
-            # Use the test points to find the space to which this door belongs
-            space_index = None
-            for test_point in test_points:
-                for i, space in enumerate(self.spaces):
-                    if space.is_point_inside_space(test_point,
-                                                   include_boundaries=True
-                                                   ):
-                        space_index = i
-                        break
-                if space_index is not None:
-                    break
+            # Find the space where this door belongs
+            space_index, door_lines = self.find_space_index_for_door(door)
 
             if space_index is None:
-                logging.error('Space index for this door is None! Fix it!!!')
+                logging.warning("Space index for this door is None: %s", door)
                 n_no_match += 1
                 continue
 
-            # For each door line, compute distance with existing walls
-            wall_index = None
-            current_min_distance = 100.0
-            best_door_line = None
-
-            for w, wall in enumerate(self.spaces[space_index].path):
-                if wall.length() <= 2:
-                    continue
-
-                for door_line in door_lines:
-                    xo, yo = gsu.calculate_x_and_y_overlap(wall,
-                                                           door_line
-                                                           )
-                    if xo < 1.0 and yo < 1.0:
-                        continue
-                    dot_product, distance = \
-                        gsu.calculate_dot_product_and_distance_between_walls(
-                                                            wall,
-                                                            door_line
-                                                        )
-                    if dot_product is not None:
-                        if abs(dot_product - 1.0) < 1e-1 and \
-                                distance < max_distance and \
-                                distance < current_min_distance:
-
-                            current_min_distance = distance
-                            wall_index = w
-                            best_door_line = door_line
+            # For each door line, find closest wall and choose best door line
+            # based on proximity to a wall
+            wall_index, best_door_line = \
+                self.find_closest_wall_and_best_door_line(space_index,
+                                                          door_lines)
 
             if wall_index is None:
+                logging.warning("Unable to find a nearby wall %s.", door)
                 continue
 
             wall = self.spaces[space_index].path[wall_index]
             door_line = best_door_line
 
+            # Translate door line to overlap with wall
             door_line = gsu.align_to_reference(wall, door_line)
             V_perp = gsu.calculate_normal_vector_between_walls(door_line, wall)
             V_perp = Point(V_perp[0], V_perp[1])
             door_line = door_line.translated(V_perp.complex_coords)
 
+            # Find adjacent space
+            wall2_index, space2_index, new_walls2 = \
+                self.find_adjacent_space(space_index, door_line)
+
+            # Add door line to space
             self.spaces[space_index].doors.append(door_line)
             new_walls = gsu.remove_segment_from_wall(wall, door_line)
 
+            # Create door object
             door_obj = Door(path=door_line, space1=self.spaces[space_index])
-
-            # Find which other space this wall is shared with
-            space2_index = None
-            wall2_index = None
-            new_walls2 = []
-            for j, space in enumerate(self.spaces):
-                if space != self.spaces[space_index]:
-                    for k, other_wall in enumerate(space.path):
-                        if gsu.do_walls_overlap(other_wall, door_line):
-                            door_obj.space2 = space
-                            space2_index = j
-                            wall2_index = k
-                            new_walls2 = gsu.remove_segment_from_wall(
-                                                    other_wall,
-                                                    door_line
-                                                )
-                            if not space.is_space_a_hallway():
-                                space.doors.append(door_line)
-                            break
-                if space2_index is not None:
-                    break
-
+            if space2_index is not None:
+                door_obj.space2 = self.spaces[space2_index]
             self.doors.append(door_obj)
             n_success += 1
 
+            # Delete walls that have been broken down
             del self.spaces[space_index].path[wall_index]
             for new_wall in new_walls:
                 self.spaces[space_index].path.append(new_wall)
@@ -296,21 +341,60 @@ class FloorplanIngester:
                 for new_wall in new_walls2:
                     self.spaces[space2_index].path.append(new_wall)
 
-        logging.info('Number of door paths: ' + str(len(self.door_paths)))
-        logging.info('Number of no matches: ' + str(n_no_match))
-        logging.info('Number of doors added: ' + str(n_success))
+        logging.info('Number of door paths: %d', len(self.door_paths))
+        logging.info('Number of no matches: %d', n_no_match)
+        logging.info('Number of doors added: %d', n_success)
 
         return
+
+    def add_door_to_room(self, room, room_wall, room_id):
+        """
+        Add door to access a given room from a given wall.
+
+        :param Space room: the room to add door to
+        :param svgpathtools.Line room_wall: the wall to carve out the door
+        :param int room_id: index of the room of interest
+        :return: the door created. None if unsuccessful.
+        """
+        door = gsu.create_door_in_room_wall(room_wall,
+                                            door_size=12.0
+                                            )
+        if door is not None:
+            door_obj = Door(path=door, space1=room)
+            space2_found = False
+            for sp in self.spaces:
+                if sp == self.spaces[room_id]:
+                    continue
+                for k, other_wall in enumerate(sp.path):
+                    if gsu.do_walls_overlap(other_wall,
+                                            door):
+                        door_obj.space2 = sp
+                        space2_found = True
+                        break
+                if space2_found:
+                    break
+
+            self.doors.append(door_obj)
+            room.doors.append(door)
+
+        return door
 
     def find_and_remove_overlaps(self,
                                  hallway_wall,
                                  other_walls,
                                  other_space_ids,
                                  add_door=True,
-                                 verbose=False
                                  ):
         """Given a hallway wall, iterate over all other walls to test for
         overap. If found, remove overlap.
+
+        :param Line hallway_wall: Line representing one of the walls
+        :param list[svgpathtools.Line] other_walls: list of other walls from
+            which to look for overlap with this wall
+        :param list[int] other_space_ids: list of indices of the space to
+            which each wall belongs
+        :param boolean add_door: Whether to add a wall or not to the otehr
+            wall if an overlap is found
         """
         wall_fragments = []
         processed_segments = []
@@ -319,9 +403,6 @@ class FloorplanIngester:
         processing_queue.put(hallway_wall)
 
         n_overlaps = 0
-        if verbose:
-            logging.debug('\nWorking with hallway wall : ' + str(hallway_wall))
-
         while not processing_queue.empty():
             j = 0  # iterator over room walls
             h_wall = processing_queue.get()
@@ -330,6 +411,7 @@ class FloorplanIngester:
             while j < len(other_walls):
 
                 room_wall = other_walls[j]
+                room_id = other_space_ids[j]
 
                 # Edge case of room wall being a single point
                 p_segment = Point(complex_coords=room_wall.start)
@@ -339,38 +421,18 @@ class FloorplanIngester:
                     continue
 
                 if gsu.do_walls_overlap(h_wall, room_wall):
-                    room = self.spaces[other_space_ids[j]]
-                    if room.id == '1':
-                        print('N doors in space 1: ', len(room.doors))
+                    room = self.spaces[room_id]
                     n_overlaps += 1
                     if add_door and len(room.doors) == 0:
-                        door = gsu.create_door_in_room_wall(room_wall,
-                                                            door_size=12.0
-                                                            )
+                        door = self.add_door_to_room(room, room_wall, room_id)
+                        # update room wall to carve out door
                         if door is not None:
-                            door_obj = Door(path=door, space1=room)
-                            space2_found = False
-                            for sp in self.spaces:
-                                if sp != self.spaces[other_space_ids[j]]:
-                                    for k, other_wall in enumerate(sp.path):
-                                        if gsu.do_walls_overlap(other_wall,
-                                                                door):
-                                            door_obj.space2 = sp
-                                            space2_found = True
-                                            break
-                                if space2_found:
-                                    break
-
-                            self.doors.append(door_obj)
-                            room.doors.append(door)
-
-                            # update room wall to carve out door
                             new_wall = gsu.subtract_walls(room_wall, door)
                             for w, wall in enumerate(room.path):
                                 if wall == room_wall:
                                     room.path[w] = new_wall
                                     other_walls[j] = new_wall
-                                    self.spaces[other_space_ids[j]] = room
+                                    self.spaces[room_id] = room
                                     break
 
                     segments = gsu.remove_segment_from_wall(h_wall, room_wall)
@@ -385,25 +447,22 @@ class FloorplanIngester:
 
         return wall_fragments
 
-    def find_invalid_walls(self, hallway_walls, indices=None):
+    def find_invalid_walls(self, hallway_walls):
         """Find and remove walls that are between 2 hallways (or aisles)
+
+        :param list[Line] hallway_walls: list of lines representing the walls
+            to check.
+        :return valid_hallway_walls, invalid_hallway_walls
+        :rtype: (list[svgpathtools.Line], list[svgpathtools.Line])
         """
         valid_hallway_walls = []
         invalid_hallway_walls = []
-
-        if indices is not None:
-            valid_hallway_indices = []
-        else:
-            valid_hallway_indices = None
 
         for i in range(len(hallway_walls)):
             # space1 = self.spaces[hallway_indices[i]]
             wall1 = hallway_walls[i]
             wall1 = gsu.round_coords(wall1)
-
-            p_segment = Point(complex_coords=wall1.start)
-            q_segment = Point(complex_coords=wall1.end)
-            if p_segment == q_segment:  # This is just one point.
+            if wall1.start == wall1.end:  # This is just one point.
                 continue
 
             for j in range(i+1, len(hallway_walls)):
@@ -411,10 +470,7 @@ class FloorplanIngester:
                 # space2 = self.spaces[hallway_indices[j]]
                 wall2 = hallway_walls[j]
                 wall2 = gsu.round_coords(wall2)
-
-                p_segment = Point(complex_coords=wall2.start)
-                q_segment = Point(complex_coords=wall2.end)
-                if p_segment == q_segment:  # This is just one point.
+                if wall2.start == wall2.end:  # This is just one point.
                     continue
 
                 if gsu.do_walls_overlap(wall1, wall2, max_distance=2.0):
@@ -425,13 +481,8 @@ class FloorplanIngester:
 
             if wall1 not in invalid_hallway_walls:
                 valid_hallway_walls.append(wall1)
-                if indices is not None:
-                    valid_hallway_indices.append(indices[i])
 
-        return_values = \
-            valid_hallway_walls, invalid_hallway_walls, valid_hallway_indices
-
-        return return_values
+        return valid_hallway_walls, invalid_hallway_walls
 
     def find_walls_and_create_doors(self, building):
         """Create missing doors and remove walls between hallways
@@ -441,20 +492,12 @@ class FloorplanIngester:
         to a room, it is likely that there is a door to the room, unless
         the room already has a door.
 
-        Parameters
-        -----------
-        building: str
-            The building of interest
-
-        returns
-        ---------
-        list
-            list of valid walls
+        :param str building: Name of the building of interest
+        :return: list of valid room and hallway walls: room_walls, valid_walls
+        :rtype (list[svgpathtools.Line], list[svgpathtools.Line])
         """
 
         logging.info('\nCreating doors in building ' + building)
-
-        building_walls = []
         hallway_walls, room_walls = [], []
         hallway_indices, room_ids = [], []
 
@@ -462,24 +505,25 @@ class FloorplanIngester:
         n_hallways = 0
         for i, space in enumerate(self.spaces):
 
-            if space.building == building:
+            if space.building != building:
+                continue
 
-                if space.is_space_a_hallway():
-                    n_hallways += 1
-                    for line in space.path:
-                        hallway_indices.append(i)
-                        hallway_walls.append(line)
-                else:
-                    for line in space.path:
-                        room_ids.append(i)
-                        room_walls.append(line)
+            if space.is_space_a_hallway():
+                n_hallways += 1
+                for line in space.path:
+                    hallway_indices.append(i)
+                    hallway_walls.append(line)
+            else:
+                for line in space.path:
+                    room_ids.append(i)
+                    room_walls.append(line)
 
         logging.info('Hallways identified: ' + str(n_hallways))
         logging.info('Room walls identified: ' + str(len(room_walls)))
 
         # Find walls that are shared between two hallways
-        valid_hallway_walls, invalid_hallway_walls, valid_hallway_indices = \
-            self.find_invalid_walls(hallway_walls, indices=hallway_indices)
+        valid_hallway_walls, invalid_hallway_walls = \
+            self.find_invalid_walls(hallway_walls)
 
         logging.info('Done with shared hallway walls.')
         logging.info('Now working with rooms and hallways...')
@@ -501,23 +545,14 @@ class FloorplanIngester:
                                           add_door=True
                                           )
 
-        for wall in room_walls + valid_walls:
-            building_walls.append(wall)
-
         return room_walls, valid_walls
 
     def export_data_to_pickle_file(self, pickle_file):
         """Export extracted floorplan data to a pickle file.
 
-        Parameters
-        -----------
-        pickle_file: str
-            Path to the file location where to save the data
-
-        Returns
-        -------
-        bool:
-            Whether the operation was successful or not
+        :param str pickle_file: file location where to save the data
+        :return: boolean indicating if the operation was successful or not
+        :rtype: bool:
         """
         special_walls = []
         data_to_save = [self.spaces,
@@ -536,39 +571,3 @@ class FloorplanIngester:
         except Exception as e:
             logging.exception(e)
             return False
-
-    # def export_building_to_svg(self, building: str, svg_file:str):
-    #     """Export a specific building to svg
-
-    #     Parameters
-    #     -----------
-    #     building: str
-    #         The name of the building to export
-    #     svg_file: str
-    #         Path to where to save the svg file
-    #     Returns
-    #     --------
-    #     None
-    #     """
-
-    #     walls = self.building_walls[building]['walls']
-    #     xmin = self.building_walls[building]['xmin']
-    #     ymin = self.building_walls[building]['ymin']
-    #     xmax = self.building_walls[building]['xmax']
-    #     ymax = self.building_walls[building]['ymax']
-
-    #     # Map svg file for the entire facility
-    #     bv.export_world_to_svg(
-    #         walls,
-    #         [],
-    #         svg_file,
-    #         marker_locations = [],
-    #         marker_type = None,
-    #         arrows = [],
-    #         max_contacts = 100,
-    #         current_time = None,
-    #         show_colobar = False,
-    #         viewbox = [xmin - 20, ymin -20, xmax + 50, ymax + 50]
-    #     )
-
-    #     return
