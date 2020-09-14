@@ -283,3 +283,4 @@ def simple_facility_floorplan_2_floors(simple_facility_floorplan):
     fp2.floor_name = '1'
 
     return [simple_facility_floorplan, fp2]
+

@@ -172,7 +172,6 @@ class FacilityTransmissionModel:
         floor_office_spaces = []
         n_unreachable_offices = 0
 
-        print('Finding good offices for floor #', str(floor_number), '...')
         pbar = pb.ProgressBar(max_value=len(floorplan.spaces))
         for index, space in enumerate(floorplan.spaces):
             pbar.update(index)
@@ -196,7 +195,6 @@ class FacilityTransmissionModel:
         navigation policy, floorplan and navigation data to generate a unique
         ID for each simulation.
         """
-
         # TODO: Add random number seed to sim ID hash data
         m = hashlib.blake2b(digest_size=10)
         data = [self.daylength,
@@ -238,10 +236,12 @@ class FacilityTransmissionModel:
             m.update(repr(data).encode('utf-8'))
 
         self.simid = m.hexdigest()
-        return
 
     def run_serial(self, sim_name, workdir):
-        """Runs an ABM simulation serially
+        """Runs an citam simulation serially.
+
+        :param str sim_name: user-defined name of this simulation
+        :param str workdir: directory to save the files for this simulation
         """
 
         self.simulation_name = sim_name
@@ -256,11 +256,7 @@ class FacilityTransmissionModel:
                     )
         else:
             if self.occupancy_rate < 0.0 or self.occupancy_rate > 1.0:
-                logging.fatal(
-                    'Occupancy rate must be between 0.0 and 1.0. ' +
-                    'Current value is: ' + str(self.occupancy_rate)
-                )
-                quit()
+                raise ValueError( 'Invalid occupancy rate (must be > 0 & <=1')
             self.n_agents = round(self.occupancy_rate*self.total_offices)
 
         logging.info('Running simulation serially')
@@ -321,11 +317,10 @@ class FacilityTransmissionModel:
         return True
 
     def remove_unreachable_rooms(self):
-        """Iterate through every space that is not a hallway in every floor
-           and exclude the ones with no door.
-
         """
-
+        Iterate through every space that is not a hallway in every floor
+        and exclude the ones with no door.
+        """
         total_spaces = sum([len(fp.spaces) for fp in self.floorplans])
         logging.info('Number of spaces before ' + str(total_spaces) + '...')
 
@@ -360,14 +355,30 @@ class FacilityTransmissionModel:
         total_spaces = sum([len(fp.spaces) for fp in self.floorplans])
         logging.info('\tNumber of spaces: ' + str(total_spaces))
 
-        return
+    def find_possible_entrance_doors(self, entrance_floor, entrance_space):
+        """
+        Iterate over all doors in the facility to identify any that belong to
+        the entrance floor and entrance spaceand are outside facing.
+        """
+        possible_entrance_doors = []
+        for door in self.navigation.floorplans[entrance_floor].doors:
+            if door.space1 is not None and door.space2 is not None:
+                # The door has to lead to outside of the facility
+                continue
+            if door.space1 is not None:
+                if door.space1.unique_name == entrance_space.unique_name:
+                    possible_entrance_doors.append(door)
+            elif door.space2 is not None:
+                if door.space2.unique_name == entrance_space.unique_name:
+                    possible_entrance_doors.append(door)
 
-    def choose_best_entrance(self, office_floor, office_id):
+        return possible_entrance_doors
 
-        best_entrance_door = None
-        best_entrance_floor = None
-        min_length = 1e10
-
+    def validate_entrances(self):
+        """
+        Iterate over possible entrances and verify that there is indeed
+        an outside facing door and that the door is present in the navnet.
+        """
         for entrance in self.entrances:
             # chosen_entrance = np.random.choice(self.entrances)
             entrance_floor = entrance['floor_index']
@@ -375,23 +386,12 @@ class FacilityTransmissionModel:
             entrance_space = self.navigation.floorplans[entrance_floor]\
                                             .spaces[entrance_room_id]
 
-            possible_entrance_doors = []
-            for door in self.navigation.floorplans[entrance_floor].doors:
-                if door.space1 is not None and door.space2 is not None:
-                    # The door has to lead to outside of the facility
-                    continue
-                if door.space1 is not None:
-                    if door.space1.unique_name == entrance_space.unique_name:
-                        possible_entrance_doors.append(door)
-                elif door.space2 is not None:
-                    if door.space2.unique_name == entrance_space.unique_name:
-                        possible_entrance_doors.append(door)
-
-            # print('Chosen entrance: ', entrance_space.unique_name)
-
+            possible_entrance_doors = self.find_possible_entrance_doors(
+                                        entrance_floor,
+                                        entrance_space
+                                    )
             if len(possible_entrance_doors) == 0:
-                logging.fatal('This entrance does not have any doors')
-                quit()
+                raise ValueError('This entrance does not have any doors')
 
             entrance_door = np.random.choice(possible_entrance_doors)
 
@@ -405,27 +405,58 @@ class FacilityTransmissionModel:
                 edges = self.navigation.navnet_per_floor[entrance_floor]\
                         .edges(entrance_coords)
                 if len(edges) == 0:
-                    logging.fatal('Cannot use this entrance.')
-                    logging.info(str(entrance_door))
                     logging.info('Possible doors are:')
                     for d in possible_entrance_doors:
                         logging.info('\t' + str(d))
-                    quit()
+                    raise ValueError('Cannot use this entrance %s',
+                                     entrance_door)
             else:
-                logging.fatal('Entrance coords not found in graph.')
                 logging.info('Entrance coords: ' + str(entrance_coords))
                 logging.info('Entrance floor is: ' + str(entrance_floor))
                 logging.info(str(entrance_door))
                 logging.info('Possible doors aree:')
                 for d in possible_entrance_doors:
                     logging.info('\t' + str(d))
-                quit()
+                raise ValueError('Entrance coords not found in graph.')
 
+    def choose_best_entrance(self, office_floor, office_id):
+        """
+        Find the facility entrance that offers the fastest route to an agent's
+        assigned office space.
+
+        :param int offcie_floor: index of the floor where this office is
+            located
+        :param int office_id: index of the office space
+        :return: best_entrance_door, best_entrance_floor
+        :rtype: (dict, int)
+        """
+        best_entrance_door = None
+        best_entrance_floor = None
+        min_length = 1e10
+
+        for entrance in self.entrances:
+            # chosen_entrance = np.random.choice(self.entrances)
+            entrance_floor = entrance['floor_index']
+            entrance_room_id = entrance['space_index']
+            entrance_space = self.navigation.floorplans[entrance_floor]\
+                                            .spaces[entrance_room_id]
+
+            possible_entrance_doors = self.find_possible_entrance_doors(
+                                        entrance_floor,
+                                        entrance_space
+                                    )
+
+            entrance_door = np.random.choice(possible_entrance_doors)
+            door_mid_point = entrance_door.path.point(0.5)
+            entrance_coords = (round(door_mid_point.real),
+                               round(door_mid_point.imag)
+                               )
             route = self.navigation.get_route(entrance_coords,
                                               entrance_floor,
                                               office_id,
                                               office_floor,
-                                              1.0)
+                                              1.0
+                                              )
             if route is not None:
                 if len(route) < min_length:
                     min_length = len(route)
@@ -437,11 +468,13 @@ class FacilityTransmissionModel:
             logging.info('\tNo entrance found for office: ' +
                          office.unique_name
                          )
-
         return best_entrance_door, best_entrance_floor
 
     def add_agents_and_build_schedules(self):
-
+        """
+        Add the specified number of agents to the facility and create a
+        schedule and an itinerary for each of them.
+        """
         logging.info('Initializing with ' + str(self.n_agents) + ' agents...')
         total_agents = 0
         current_agent = 0
@@ -518,14 +551,19 @@ class FacilityTransmissionModel:
 
                 current_agent += 1
 
-        return
-
     def identify_xy_proximity(self, positions_vector):
         """Compute pairwise distances, given a vector of xy positions and
         return the indices of the ones that fall within the given contact
         distance.
+
+        :param list[(x,y)] position_vector: list of current xy positions
+            of all active agents
+        :return: list of indices of agents that are within the contact
+            distance of each other
+        :rtype: list[int]
         """
-        # Compute pairwise distances and find agents closer to threshold
+        # Compute pairwise distances and find indices of agents within
+        # contact distance
         dists = scipy.spatial.distance.pdist(positions_vector)
         dist_matrix = scipy.spatial.distance.squareform(dists)
         indices = np.argwhere(dist_matrix < self.contact_distance)
@@ -534,7 +572,11 @@ class FacilityTransmissionModel:
 
     def identify_contacts(self, agents):
         """Iterate over agents, compute whether they fall within the contact
-        distance or not and verify that they are indeed making contact.
+        distance or not and verify that they are indeed making contact (based
+        on whether they are in the same space or not).
+
+        :param list agents: list of agents under consideration for contact
+            statistics
         """
         # Discard contact event if either:
         # 1. agents are in different floors
@@ -571,10 +613,10 @@ class FacilityTransmissionModel:
                                                    ):
                             self.add_contact_event(agent1, agent2)
 
-        return
-
     def add_contact_event(self, agent1, agent2):
-
+        """
+        Record contact event between agent1 and agent2.
+        """
         dx = (agent2.pos[0] - agent1.pos[0])/2.0
         dy = (agent2.pos[1] - agent1.pos[1])/2.0
         contact_position = (agent1.pos[0] + dx, agent1.pos[1] + dy)
@@ -638,14 +680,19 @@ class FacilityTransmissionModel:
                                 str(cl[1]) + '\t' +
                                 str(nc) + '\n'
                             )
-
         self.current_step += 1
 
-        return
-
     def move_agents(self):
+        """
+        Iterate over agents and move them to the next position in their
+        itinerary. Active agents are agents currently in the facility and
+        moving agents are agents currently moving from one location to the
+        next.
 
-        active_agents = []  # All employees currently within the facility
+        :return list of active and moving agents
+        :rtype: (list, list)
+        """
+        active_agents = []  # All agents currently within the facility
 
         # TODO: consider contacts for agents that are stationary as well
         moving_agents = []  # All employees that are currently moving
@@ -661,7 +708,8 @@ class FacilityTransmissionModel:
         return active_agents, moving_agents
 
     def extract_contact_distribution_per_agent(self):
-        """Compute total contacts per agent.
+        """
+        Compute total contacts per agent.
         """
         agent_ids, n_contacts = [], []
         for unique_id, agent in self.agents.items():
@@ -671,7 +719,9 @@ class FacilityTransmissionModel:
         return agent_ids, n_contacts
 
     def save_manifest(self, work_directory):
-
+        """
+        Save manifest file, used by the dashboard to show results.
+        """
         floors = []
         for floor in range(self.number_of_floors):
             floors.append(
@@ -712,12 +762,9 @@ class FacilityTransmissionModel:
         with open(manifest_file, 'w') as json_file:
             json.dump(manifest_dict, json_file, indent=4)
 
-        return
-
     def save_maps(self, work_directory):
         """Save svg maps for each floor for visualization.
         """
-
         for floor_number in range(self.number_of_floors):
 
             floor_directory = os.path.join(work_directory,
@@ -744,8 +791,6 @@ class FacilityTransmissionModel:
                          self.floorplans[floor_number].height + 50
                          ]
             )
-
-        return
 
     def create_svg_heatmap(self,
                            contacts_per_coord,
@@ -805,6 +850,9 @@ class FacilityTransmissionModel:
 
     def save_outputs(self, work_directory):
         """Write output files to the output directory
+
+        :param str work_directory: directory where all output files are to be
+            saved.
         """
         # TODO: generate time-dependent cumulative contacts per coordinate
 
@@ -868,5 +916,3 @@ class FacilityTransmissionModel:
                     outfile.write(str(x) + ',' + str(y) + ','+str(dur)+'\n')
 
             self.create_svg_heatmap(contacts_per_coord, floor_directory)
-
-        return
