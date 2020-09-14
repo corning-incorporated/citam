@@ -15,11 +15,14 @@
 import numpy as np
 import logging
 
-from citam.engine.constants import CAFETERIA_VISIT
-from citam.engine.constants import LAB_WORK
-from citam.engine.constants import OFFICE_WORK
-from citam.engine.constants import RESTROOM_VISIT
-from citam.engine.constants import MEETING
+from citam.engine.constants import (
+        CAFETERIA_VISIT,
+        LAB_WORK,
+        OFFICE_WORK,
+        RESTROOM_VISIT,
+        MEETING,
+        LAST_SCHEDULE_ITEM_CUTOFF
+    )
 
 
 class Schedule:
@@ -347,7 +350,7 @@ class Schedule:
                 self.update_itinerary(route, schedule_item)
 
             remaining_daylength = self.daylength - len(self.itinerary)
-            if remaining_daylength <= 60:  # Arbitrary break point
+            if remaining_daylength <= LAST_SCHEDULE_ITEM_CUTOFF:
                 break
 
         coords = (int(round(self.exit_door.path.point(0.5).real)),

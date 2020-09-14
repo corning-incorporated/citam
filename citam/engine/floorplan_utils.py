@@ -149,7 +149,7 @@ def get_aisle_center_point_and_width(aisle):
     return center_point, width
 
 
-def is_this_an_aisle(wall1, wall2, space):
+def is_this_an_aisle(wall1: Line, wall2: Line, space: Space):
     """Verify that 2 walls form an aisle
 
     Works by verifying that the center point of this aisle is part
