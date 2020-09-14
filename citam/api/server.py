@@ -30,9 +30,7 @@ __all__ = ['get_wsgi_app']
 import logging
 import falcon
 from os.path import abspath, dirname, join, exists
-
 from falcon.routing import StaticRoute
-
 from citam.api import parser
 from citam.conf import settings
 
@@ -226,13 +224,16 @@ def _get_sink():
         """
 
         if static_route.match(req.path):
-            LOG.debug("Static file %s matched by sink", req.path)
-            static_route(req, resp)
-            return
+            try:  # Try static route
+                static_route(req, resp)
+                LOG.debug("%s refers to a static file", req.path)
+                return
+            except falcon.HTTPNotFound:  # Abort static file resolution
+                LOG.debug("%s does not match a resource. returning index.html",
+                          req.path)
 
-        LOG.info("%s does not match a resource. Returning index", req.path)
-        file = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
-
+        file = join(dirname(abspath(__file__)),
+                    'static', 'dash', 'index.html')
         if not exists(file):
             LOG.warning("CITAM Dash is not included with this build")
             file = join(dirname(dirname(file)), 'dash404.html')
