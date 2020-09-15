@@ -1,4 +1,4 @@
-
+import pytest
 import citam.engine.main as main
 
 import os
@@ -7,39 +7,11 @@ import os
 def test_export_navigation_graph_to_svg_no_issue(datadir, tmpdir, monkeypatch):
     svg_file = os.path.join(tmpdir, 'routes.svg')
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-    res = main.export_navigation_graph_to_svg(facility="TEST",
-                                              floor="0",
-                                              outputfile=svg_file
-                                              )
+    main.export_navigation_graph_to_svg(facility="TEST",
+                                        floor="0",
+                                        outputfile=svg_file
+                                        )
     assert os.path.isfile(svg_file) is True
-    assert res
-
-
-def test_export_navigation_graph_to_svg_invalid_file(datadir,
-                                                     tmpdir,
-                                                     monkeypatch
-                                                     ):
-    svg_file = os.path.join(tmpdir, 'routes.dat')
-    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-    res = main.export_navigation_graph_to_svg(facility="TEST",
-                                              floor="0",
-                                              outputfile=svg_file
-                                              )
-    assert os.path.isfile(svg_file) is False
-    assert res is False
-
-
-# def test_export_navigation_graph_to_svg_bad_outputdir(datadir,
-#                                                       tmpdir,
-#                                                       monkeypatch
-#                                                       ):
-#     svg_file = '/THIS IS A BAD PATH/routes.svg'
-#     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-#     res = main.export_navigation_graph_to_svg(facility="TEST",
-#                                               floor="0",
-#                                               outputfile=svg_file
-#                                               )
-#     assert res is False
 
 
 def test_run_simulation_no_issues(datadir, tmpdir, monkeypatch):
@@ -63,7 +35,7 @@ def test_run_simulation_no_issues(datadir, tmpdir, monkeypatch):
                    'output_directory': tmpdir
                    }
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-    res = main.run_simulation(inputs_dict)
+    main.run_simulation(inputs_dict)
 
     traj_file = os.path.join(tmpdir, 'trajectory.txt')
     pair_contact_file = os.path.join(tmpdir, 'pair_contact.csv')
@@ -77,7 +49,6 @@ def test_run_simulation_no_issues(datadir, tmpdir, monkeypatch):
                                      'contact_dist_per_coord.csv'
                                      )
 
-    assert res
     assert os.path.isdir(floor_subdir)
     assert os.path.isfile(traj_file)
     assert os.path.isfile(pair_contact_file)
