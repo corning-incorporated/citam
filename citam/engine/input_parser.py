@@ -358,7 +358,7 @@ def parse_input_file(input_file):
                    'entrances': entrances,
                    'contact_distance': converted_contact_distance,
                    'shifts': shifts,
-                   'meetings_policy': meetings_policy,
+                   'meetings_policy_params': meetings_policy,
                    'scheduling_policy': scheduling_policy,
                    'traffic_policy': traffic_policy,
                    'output_directory': os.getcwd() + '/'
