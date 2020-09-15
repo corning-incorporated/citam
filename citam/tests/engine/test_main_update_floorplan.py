@@ -10,9 +10,9 @@ def test_update_floorplan_from_svg_file_file_not_found(tmpdir, monkeypatch):
 
     with pytest.raises(FileNotFoundError):
         main.update_floorplan_from_svg_file(facility="TEST",
-                                              floor="0",
-                                              map=svg_file
-                                              )
+                                            floor="0",
+                                            map=svg_file
+                                            )
 
 
 def test_update_floorplan_from_svg_file_floorplan_not_found(tmpdir,
@@ -60,9 +60,9 @@ def test_export_floorplan_to_svg_invalid_output_location(datadir, monkeypatch):
 def test_export_floorplan_to_svg_no_issues(datadir, tmpdir, monkeypatch):
     outputfile = os.path.join(tmpdir, 'test.svg')
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-    res = main.export_floorplan_to_svg(facility="TEST",
-                                       floor="0",
-                                       outputfile=outputfile
-                                       )
+    main.export_floorplan_to_svg(facility="TEST",
+                                 floor="0",
+                                 outputfile=outputfile
+                                 )
 
     assert os.path.isfile(outputfile)
