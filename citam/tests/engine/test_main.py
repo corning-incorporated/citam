@@ -4,20 +4,6 @@ import citam.engine.main as main
 import os
 
 
-def test_ingest_floorplan_wrong_file_types():
-    # Test if function rejects wrong file types
-    csv_file = 'test.dat'
-    svg_file = 'test2.dat'
-    facility_name = 'test'
-
-    res = main.ingest_floorplan(csv=csv_file,
-                                map=svg_file,
-                                facility=facility_name
-                                )
-
-    assert res is False
-
-
 def test_ingest_floorplan_file_not_found():
     # Check if functions raises correct error when file not found.
     csv_file = 'test.csv'
