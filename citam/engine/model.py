@@ -53,7 +53,9 @@ class FacilityTransmissionModel:
                  meetings_policy_params=None,
                  scheduling_policy=None,
                  traffic_policy=None,
-                 dry_run=False
+                 dry_run=False,
+                 *args,
+                 **kwargs,
                  ):
 
         self.floorplans = floorplans
