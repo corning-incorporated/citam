@@ -21,17 +21,28 @@ The code is divided into multiple components:
 * Python 3.x
 * NodeJS (to use the dashboard)
 
+You may already have Python and NodeJS installed. Check their version to make sure all pre-requisites are satisfied:
+
+```shell script
+$ python --version    # must be 3.x
+$ node --version      # should be 12 or above
+$ npm --version       # should be 6 or above 
+```
 
 ## To Install
 
-> Consider creating a new virtual environment to install and run CITAM.
+> Consider creating a new [virtual environment](https://docs.python.org/3/library/venv.html) to install and run CITAM.
 
 ### From GitHub
 
 `$ git clone https://github.com/corning-incorporated/citam.git`
 
-> For the latest usable version, please cd to the citam directory and checkout the "alpha" branch as follows:
-`$ git checkout alpha`
+> For the latest usable version, please change directory to the citam directory and checkout the "alpha" branch as follows:
+
+```
+$ cd citam
+$ git checkout alpha
+```
 
 After successful cloning, follow these steps to install:
 1. Install the engine and CLI
@@ -48,17 +59,17 @@ After successful cloning, follow these steps to install:
 
    `$ citam -h`
 
-   For details on how to add your facilities and run simulations, go to the getting started section and consult the documentation. If you want to visualize simulation results, you need to install the dashboard Node dependencies by following the step below.
+   For details on how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation. If you want to visualize simulation results, you need to install the dashboard Node dependencies by following the step below.
 
 2. Install the dashboard dependencies and setup local development environemnt:
    - If you don't already have it, download and install [NodeJS 12](https://nodejs.org/en/download/)
-   - Run ``python setup.py install -e``
+   - Run `pip install -e .`
    > This will install both Python and NPM dependencies required to run the application, and compile the javascript into the installed python package.
    - Run the dashboard with the command `$ citam dash`
 
    > During javascript development, it is useful to have a live-compiler
       set up, so you can test changes without recompiling the app.
-      To run a live-compiler instance, open the `citamjs` directory and run
+      To run a live-compiler instance, change directory to `citamjs` and run
       `npm run serve`
 
 ### Using Anaconda
@@ -82,13 +93,15 @@ Before running a simulation, at least one facility must be added. Each facility
 will have a name and ingested floorplan data on a per-floor basis. To add a new
 facility follow the following steps for each floor.
 
+> Verbose option is available for all `citam` commands with option `-v`. Log level degug infomration can be obtained with stacking option `-v -v`
+
 **1. Ingest Floor Data**
 
 Before you can ingest a floorplan, you need a map file in SVG format and a CSV
 file describing each space. For example such files, go to the examples directory.
 Assuming you have those 2 files available, use the following command to ingest your floorplan data:
 
-  `$citam engine ingest FACILITY_NAME FLOOR_NAME --csv CSV_FILE --map SVG_FILE`
+  `$citam engine ingest foo_facility foo_floor --csv CSV_FILE --map SVG_FILE`
 
 During the ingestion process, CITAM will attempt to add doors to spaces that do not have any and
 remove walls that are between hallways.
@@ -98,7 +111,7 @@ remove walls that are between hallways.
 
  You can export the ingested floorplan as an SVG file for visualization as follow:
 
-  `$citam engine export-floorplan FACILITY_NAME FLOOR_NAME -o OUTPUT_FILE`
+  `$citam engine export-floorplan foo_facility foo_floor -o OUTPUT_FILE`
 
 This will export the ingested floorplan in SVG format saved as OUTPUT_FILE.
 Use your favorite SVG viewer to open it (most web browsers can show SVG files).
@@ -108,25 +121,49 @@ the free and open-source INKSCAPE software in case you need to update the ingest
 If you notice errors in the ingested floorplan, please correct them using your
 favorite SVG editor and then use the following command to update.
 
-   `$citam engine update-floorplan FACILITY_NAME FLOOR_NAME --map EDITED_SVG_FILE`
+   `$citam engine update-floorplan foo_facility foo_floor --map EDITED_SVG_FILE`
 
 **3. Build Navigation Network**
 
 Once a floorplan has been ingested, the next step is to generate the Navigation
 Network (navnet) using the following command.
 
-   `$citam engine build-network FACILITY_NAME FLOOR_NAME`
+   `$citam engine build-navnet foo_facility foo_floor`
 
 **4. Validate Navigation Network**
 
 The network can also be exported as an SVG file to be visualized and updated manually.
 To export as an SVG file, run the following command:
 
-   `$citam export-nav-network FACILITY_NAME FLOOR_NAME -o OUTPUT_SVG_FILE`
+   `$citam engine export-navnet foo_facility foo_floor -o OUTPUT_SVG_FILE`
 
 The svg file can then be visualized using any SVG viewer.
 
 This process can be repeated for as many facilities as needed. But it is only done once for each facility.
+
+**5. Dashboard**
+
+Dashboard provides contact details and visual representation of all simulations that were part of previous setps. 
+Dashboard can be accessed at [http://localhost:8000](http://localhost:8000). 
+
+You can check all simulation runs along with floor level information in tabular format on the first 
+page. By clicking on `View Details`; you would be taken to details page with following informations listed:
+
+ - Overall Total Contact Duration 
+ - Average Number of Contacts Per Agent
+ - Average Contact Duration Per Agent
+ - Average Number of People Per Agent
+ 
+ On this page you would find charts for:
+ 
+ - Per Agent Total Contact and Average Contact Duration scatterplot
+ - Total Contact per Agent histogram
+ - Average Contact Duration (minutes) histogram
+ - Contact heatmap
+ 
+ 
+ You can access interactive visual map of floors and agenet movement by clicking on `Visualization` tab on this page. 
+ 
 
 ### How to Run Simulations
 
@@ -137,6 +174,7 @@ is a JSON input file:
    `$citam engine run INPUT_FILE`
 
 Example input files can be found in the citam/examples directory.
+
 
 ## Contributing
 
