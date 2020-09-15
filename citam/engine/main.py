@@ -214,8 +214,8 @@ def build_navigation_network(**kwargs):
 
     facility_name = kwargs['facility']
     floor_name = kwargs['floor']
-    if 'floor_name' in kwargs:
-        floor_name = kwargs['floor_name']
+    if 'floor' in kwargs:
+        floor_name = kwargs['floor']
     else:
         logging.info('No value provided for floor name. Will use the ' +
                      'default value of "0"'
