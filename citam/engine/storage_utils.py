@@ -13,16 +13,19 @@
 # ==============================================================================
 
 import os
-
+from appdirs import *
 
 def get_user_cache():
     """Returns the user cache directory for citam
     """
     citam_cache_directory = os.environ.get('CITAM_CACHE_DIRECTORY')
     if citam_cache_directory is None:
-        citam_cache_directory = os.path.join(os.path.expanduser('~'),
-                                             '/.citam/'
-                                             )
+        citam_cache_directory = user_data_dir('CITAM')
+
+    parent_dir = os.path.abspath(os.path.join(citam_cache_directory, '..'))
+    if not os.path.isdir(parent_dir):
+        os.mkdir(parent_dir)
+
     if not os.path.isdir(citam_cache_directory):
         os.mkdir(citam_cache_directory)
 
