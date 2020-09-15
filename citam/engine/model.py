@@ -103,8 +103,7 @@ class FacilityTransmissionModel:
                     entrance['floor_index'] = fp_index
                     break
             if fp_index is None:
-                logging.error('Unknown entrance floor: ' + str(efloor))
-                raise ValueError()
+                raise ValueError('Unknown entrance floor: ' + str(efloor))
             for i, space in enumerate(self.floorplans[fp_index].spaces):
                 if space.unique_name == ename:
                     entrance['space_index'] = i
