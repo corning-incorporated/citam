@@ -91,8 +91,8 @@ def ingest_floorplan(**kwargs):
     svg_file = kwargs['map']
     csv_file = kwargs['csv']
     facility_name = kwargs['facility']
-    if 'floor_name' in kwargs:
-        floor_name = kwargs['floor_name']
+    if 'floor' in kwargs:
+        floor_name = kwargs['floor']
     else:
         logging.info('No value provided for floor name. Will use the ' +
                      'default value of "0"'
@@ -109,14 +109,6 @@ def ingest_floorplan(**kwargs):
     output_directory = None
     if 'output_directory' in kwargs:
         output_directory = kwargs['output_directory']
-
-    if not svg_file.endswith('.svg'):
-        logging.error('Only svg files are supported. Error with ' + svg_file)
-        return False
-
-    if not csv_file.endswith('.csv'):
-        logging.error('Only svg files are supported. Error with ' + csv_file)
-        return False
 
     if not os.path.isfile(svg_file):
         raise FileNotFoundError(
@@ -172,15 +164,6 @@ def export_floorplan_to_svg(**kwargs):
     """
 
     svg_file = kwargs['outputfile']
-    if not svg_file.endswith('.svg'):
-        logging.fatal('Invalid file type. Can only export to svg.')
-        return False
-
-    output_dir = os.path.dirname(svg_file)
-    if not os.path.isdir(output_dir):
-        logging.fatal('Invalid output directory: ' + str(output_dir))
-        return False
-
     facility_name = kwargs['facility']
     floor_name = kwargs['floor']
 
@@ -301,11 +284,7 @@ def update_floorplan_from_svg_file(**kwargs):
 
     if not os.path.isfile(edited_svg_file):
         logging.error('File not found: ' + edited_svg_file)
-        return False
-
-    if not edited_svg_file.endswith('svg'):
-        logging.error('Invalid file type. Only svg files are supported.')
-        return False
+        raise FileNotFoundError(edited_svg_file)
 
     if 'floorplan_directory' in kwargs:
         floorplan_directory = kwargs['floorplan_directory']
@@ -326,7 +305,7 @@ def update_floorplan_from_svg_file(**kwargs):
 
     else:
         logging.info('Facility floorplan file not found' + initial_pickle_file)
-        return False
+        raise FileNotFoundError(initial_pickle_file)
 
     logging.info('Initializing floorplan with: ')
     logging.info(str(len(doors)) + ' doors')
@@ -347,23 +326,12 @@ def update_floorplan_from_svg_file(**kwargs):
     fp_updater.run()
     fp_updater.export_floorplan_to_pickle_file(updated_pickle_file)
 
-    return True
-
 
 def export_navigation_graph_to_svg(**kwargs):
     """Export navigation network to svg file for visualization.
     """
 
     svg_file = kwargs['outputfile']
-    if not svg_file.endswith('.svg'):
-        logging.error('Invalid file type. Can only export to svg.')
-        return False
-
-    dirname = os.path.dirname(svg_file)
-    if not dirname:
-        logging.error('Output directory not found: ' + dirname)
-        return False
-
     facility_name = kwargs['facility']
     floor_name = kwargs['floor']
 
@@ -373,29 +341,27 @@ def export_navigation_graph_to_svg(**kwargs):
         floorplan_directory = su.get_datadir(facility_name, floor_name)
     if not os.path.isdir(floorplan_directory):
         logging.fatal('Directory with facility files not found.')
-        return False
+        raise FileNotFoundError(floorplan_directory)
 
     floorplan_file = os.path.join(floorplan_directory, 'updated_floorplan.pkl')
     if not os.path.isfile(floorplan_file):
         floorplan_file = os.path.join(floorplan_directory, 'floorplan.pkl')
 
+    if not os.path.isfile(floorplan_file):
+        raise FileNotFoundError(floorplan_file)
+
     nav_network_file = os.path.join(floorplan_directory, 'routes.pkl')
+    if not os.path.isfile(nav_network_file):
+        raise FileNotFoundError(nav_network_file)
 
     logging.info('Loading files...')
-    try:
-        with open(floorplan_file, 'rb') as f:
-            spaces, doors, walls, special_walls, aisles, width, height, \
-                scale = pickle.load(f)
-    except Exception as e:
-        logging.exception(e)
-        return False
 
-    try:
-        with open(nav_network_file, 'rb') as f:
-            nav_graph = pickle.load(f)
-    except Exception as e:
-        logging.exception(e)
-        return False
+    with open(floorplan_file, 'rb') as f:
+        spaces, doors, walls, special_walls, aisles, width, height, \
+            scale = pickle.load(f)
+
+    with open(nav_network_file, 'rb') as f:
+        nav_graph = pickle.load(f)
 
     nav_nodes = []
     nav_paths = []
@@ -406,16 +372,10 @@ def export_navigation_graph_to_svg(**kwargs):
                  end=complex(e[1][0], e[1][1])
                  )
         nav_paths.append(p)
+
     logging.info('Exporting...')
-    try:
-        bv.export_nav_network_to_svg(walls, nav_paths, nav_nodes, svg_file)
-    except Exception as e:
-        logging.exception(e)
-        return False
-
-    logging.info('Navigation nework exported to : ' + svg_file)
-
-    return True
+    bv.export_nav_network_to_svg(walls, nav_paths, nav_nodes, svg_file)
+    logging.info('Navigation network exported to : ' + svg_file)
 
 
 def load_floorplans(floors,
@@ -428,43 +388,39 @@ def load_floorplans(floors,
 
     for fn in floors:
         logging.info('Loading floorplan for floor: ' + str(fn))
-
         floorplan_directory = su.get_datadir(facility_name, fn)
         if not os.path.isdir(floorplan_directory):
-            logging.fatal('Cannot load data for floor : ' + str(fn) +
-                          '\nFloorplan directory is: ' + floorplan_directory)
-
-            return []
+            raise FileNotFoundError(floorplan_directory)
 
         floorplan_file = os.path.join(floorplan_directory,
                                       'updated_floorplan.pkl'
                                       )
-        if os.path.isfile(floorplan_file):
-            with open(floorplan_file, 'rb') as f:
-                spaces, doors, walls, special_walls, aisles, width, height, \
-                    scale = pickle.load(f)
-                logging.info('.............success')
+        if not os.path.isfile(floorplan_file):
+            floorplan_file = os.path.join(floorplan_directory, 'floorplan.pkl')
 
-            if user_scale is not None:
-                scale = round(user_scale, 6)
+        if not os.path.isfile(floorplan_file):
+            raise FileNotFoundError(floorplan_file)
 
-            logging.info('Scale: ' + str(scale) + ' [ft/drawing unit]')
-            floorplan = Floorplan(scale=scale,
-                                  spaces=spaces,
-                                  doors=doors,
-                                  walls=walls,
-                                  aisles=aisles,
-                                  width=width,
-                                  height=height,
-                                  floor_name=fn,
-                                  special_walls=special_walls
-                                  )
+        with open(floorplan_file, 'rb') as f:
+            spaces, doors, walls, special_walls, aisles, width, height, \
+                scale = pickle.load(f)
+            logging.info('.............success')
 
-            floorplans.append(floorplan)
+        if user_scale is not None:
+            scale = round(user_scale, 6)
 
-        else:
-            logging.error('Could not find floorplan file' + floorplan_file)
-            return []
+        logging.info('Scale: ' + str(scale) + ' [ft/drawing unit]')
+        floorplan = Floorplan(scale=scale,
+                                spaces=spaces,
+                                doors=doors,
+                                walls=walls,
+                                aisles=aisles,
+                                width=width,
+                                height=height,
+                                floor_name=fn,
+                                special_walls=special_walls
+                                )
+        floorplans.append(floorplan)
 
     return floorplans
 
@@ -497,13 +453,7 @@ def run_simulation(inputs):
         del model_inputs['output_directory']
         my_model = FacilityTransmissionModel(**model_inputs)
     else:
-        logging.info('Nothing to do.')
-        return False
-    # my_model.run_parallel(sim_name=sim_name,
-    #                       n_processes=2,
-    #                       workdir=work_directory,
-    #                       n_agents=10,
-    #                     )
+        raise ValueError('At least one floorplan must be provided.')
 
     sim_id = 'sim_id_0001'
     work_directory = inputs['output_directory']
@@ -518,10 +468,11 @@ def run_simulation(inputs):
         cwd = os.getcwd()
         foldername = os.path.basename(cwd)
         os.chdir('..')
-        os.system('s3cmd sync ' + foldername + ' ' + upload_location)
+        try:
+            os.system('s3cmd sync ' + foldername + ' ' + upload_location)
+        except Exception as e:
+            logging.error('Failed to upload results to S3. Error: %s', e)
         os.chdir(foldername)
-    else:
-        pass
 
     total_time = time.time() - start_time
 
@@ -531,8 +482,6 @@ def run_simulation(inputs):
     logging.info('Results were saved here: ' + str(work_directory))
     logging.info('Elapsed time: ' + str(total_time) + ' sec\n')
     logging.info('Done with everything.')
-
-    return True
 
 
 def find_and_save_potential_one_way_aisles(**kwargs):
@@ -545,15 +494,6 @@ def find_and_save_potential_one_way_aisles(**kwargs):
     """
 
     svg_file = kwargs['outputfile']
-    if not svg_file.endswith('.svg'):
-        logging.error('Invalid file type. Can only export to svg.')
-        return False
-
-    dirname = os.path.dirname(svg_file)
-    if not dirname:
-        logging.error('Output directory not found: ' + dirname)
-        return False
-
     facility_name = kwargs['facility']
     floor_name = kwargs['floor']
 
@@ -561,31 +501,28 @@ def find_and_save_potential_one_way_aisles(**kwargs):
         floorplan_directory = kwargs['floorplan_directory']
     else:
         floorplan_directory = su.get_datadir(facility_name, floor_name)
+
     if not os.path.isdir(floorplan_directory):
-        logging.fatal('Directory with facility files not found.')
-        return False
+        raise FileNotFoundError(floorplan_directory)
 
     floorplan_file = os.path.join(floorplan_directory, 'updated_floorplan.pkl')
     if not os.path.isfile(floorplan_file):
         floorplan_file = os.path.join(floorplan_directory, 'floorplan.pkl')
 
+    if not os.path.isfile(floorplan_file):
+        raise FileNotFoundError(floorplan_file)
+
     nav_network_file = os.path.join(floorplan_directory, 'routes.pkl')
+    if not os.path.isfile(nav_network_file):
+        raise FileNotFoundError(nav_network_file)
 
     logging.info('Loading files...')
-    try:
-        with open(floorplan_file, 'rb') as f:
-            spaces, doors, walls, special_walls, aisles, width, height, \
-                scale = pickle.load(f)
-    except Exception as e:
-        logging.exception(e)
-        return False
+    with open(floorplan_file, 'rb') as f:
+        spaces, doors, walls, special_walls, aisles, width, height, \
+            scale = pickle.load(f)
 
-    try:
-        with open(nav_network_file, 'rb') as f:
-            nav_graph = pickle.load(f)
-    except Exception as e:
-        logging.exception(e)
-        return False
+    with open(nav_network_file, 'rb') as f:
+        nav_graph = pickle.load(f)
 
     logging.info('Finding possible one way aisles from navigation network...')
     oneway_network = nx.Graph()
@@ -642,15 +579,10 @@ def find_and_save_potential_one_way_aisles(**kwargs):
     with open(oneway_net_pkl_file, 'wb') as f:
         pickle.dump(oneway_network, f)
         logging.info('File saved: %s', oneway_net_pkl_file)
-    try:   # Export to SVG file
-        bv.export_possible_oneway_aisles_to_svg(walls,
-                                                oneway_network,
-                                                svg_file
-                                                )
-    except Exception as e:
-        logging.exception(e)
-        return False
 
+
+    bv.export_possible_oneway_aisles_to_svg(walls,
+                                            oneway_network,
+                                            svg_file
+                                            )
     logging.info('Possible one-way aisles exported to : ' + svg_file)
-
-    return True
