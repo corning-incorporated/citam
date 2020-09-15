@@ -1,4 +1,3 @@
-import pytest
 import citam.engine.main as main
 
 import os
