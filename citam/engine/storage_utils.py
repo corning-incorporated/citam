@@ -13,7 +13,8 @@
 # ==============================================================================
 
 import os
-from appdirs import *
+from appdirs import user_data_dir
+
 
 def get_user_cache():
     """Returns the user cache directory for citam
