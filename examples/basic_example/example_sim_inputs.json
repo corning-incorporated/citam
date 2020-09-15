@@ -1,10 +1,10 @@
 {
-    "upload_results" : true,
+    "upload_results" : false,
     "upload_location" : "s3://resultstorage_dev",
-    "facility_name" : "foo_facility",
+    "facility_name" : "foo",
     "simulation_name" : "test_run_1",
     "floors" : ["0"],
-    "entrances" : [ {"name":"AISLE213", "floor": 0}],
+    "entrances" : [ {"name":"AISLE213", "floor": "0"}],
     "daylength" : 1800,
     "entrance_time" : 100,
     "n_agents" : 20,
