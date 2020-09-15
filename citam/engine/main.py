@@ -411,15 +411,15 @@ def load_floorplans(floors,
 
         logging.info('Scale: ' + str(scale) + ' [ft/drawing unit]')
         floorplan = Floorplan(scale=scale,
-                                spaces=spaces,
-                                doors=doors,
-                                walls=walls,
-                                aisles=aisles,
-                                width=width,
-                                height=height,
-                                floor_name=fn,
-                                special_walls=special_walls
-                                )
+                              spaces=spaces,
+                              doors=doors,
+                              walls=walls,
+                              aisles=aisles,
+                              width=width,
+                              height=height,
+                              floor_name=fn,
+                              special_walls=special_walls
+                              )
         floorplans.append(floorplan)
 
     return floorplans
@@ -579,7 +579,6 @@ def find_and_save_potential_one_way_aisles(**kwargs):
     with open(oneway_net_pkl_file, 'wb') as f:
         pickle.dump(oneway_network, f)
         logging.info('File saved: %s', oneway_net_pkl_file)
-
 
     bv.export_possible_oneway_aisles_to_svg(walls,
                                             oneway_network,
