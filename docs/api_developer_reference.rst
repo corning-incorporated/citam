@@ -6,10 +6,6 @@ API Developer Reference
 Running the backend
 -------------------
 
-.. note::
-   In order to run the backend, you need to get credentials for the results
-   storage server.  Contact soperc@corning.com for more info
-
 1. Create a new virtualenv, and activate it
 #. Run :code:`pip install -e .` to install the project and all dependencies
    into the virtualenv
