@@ -1,4 +1,3 @@
-
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
 # This software may only be used in accordance with the licenses granted by
@@ -39,9 +38,6 @@ def list_facilities(**kwargs):
     """List all the floorplans already ingested
     """
 
-    location = kwargs['location']
-    if location != 'cache':
-        print('ERROR: unknown location: ', location, 'Supported values: cache')
     floorplans_directory = su.get_floorplans_directory()
     if not os.path.isdir(floorplans_directory):
         print('No facility found.')
@@ -104,7 +100,7 @@ def ingest_floorplan(**kwargs):
         logging.info('No value provided for the floorplan scale. Will use ' +
                      'the default value of 1/12 [ft/drawing unit]'
                      )
-        scale = 1.0/12.0
+        scale = 1.0 / 12.0
 
     output_directory = None
     if 'output_directory' in kwargs:
@@ -184,7 +180,7 @@ def export_floorplan_to_svg(**kwargs):
 
         with open(fp_pickle_file, 'rb') as f:
             spaces, doors, walls, special_walls, aisles, width, height, \
-                scale = pickle.load(f)
+            scale = pickle.load(f)
         logging.info('Floorplan successfully loaded.')
 
     else:
@@ -238,8 +234,8 @@ def build_navigation_network(**kwargs):
 
         with open(floorplan_pickle_file, 'rb') as f:
             spaces, doors, walls, special_walls, aisles, width, height, \
-                scale = pickle.load(f)
-        print('Floorplan successfully loaded from: ',  floorplan_pickle_file)
+            scale = pickle.load(f)
+        print('Floorplan successfully loaded from: ', floorplan_pickle_file)
 
     else:
         logging.error('Floorplan file not found: ' + floorplan_pickle_file)
@@ -300,7 +296,7 @@ def update_floorplan_from_svg_file(**kwargs):
 
         with open(initial_pickle_file, 'rb') as f:
             spaces, doors, walls, special_walls, aisles, width, height, \
-                scale = pickle.load(f)
+            scale = pickle.load(f)
         logging.info('Floorplan loaded from: ' + initial_pickle_file)
 
     else:
@@ -358,7 +354,7 @@ def export_navigation_graph_to_svg(**kwargs):
 
     with open(floorplan_file, 'rb') as f:
         spaces, doors, walls, special_walls, aisles, width, height, \
-            scale = pickle.load(f)
+        scale = pickle.load(f)
 
     with open(nav_network_file, 'rb') as f:
         nav_graph = pickle.load(f)
@@ -383,7 +379,6 @@ def load_floorplans(floors,
                     user_scale=None,
                     buildings_to_keep=['all']
                     ):
-
     floorplans = []
 
     for fn in floors:
@@ -403,7 +398,7 @@ def load_floorplans(floors,
 
         with open(floorplan_file, 'rb') as f:
             spaces, doors, walls, special_walls, aisles, width, height, \
-                scale = pickle.load(f)
+            scale = pickle.load(f)
             logging.info('.............success')
 
         if user_scale is not None:
@@ -519,7 +514,7 @@ def find_and_save_potential_one_way_aisles(**kwargs):
     logging.info('Loading files...')
     with open(floorplan_file, 'rb') as f:
         spaces, doors, walls, special_walls, aisles, width, height, \
-            scale = pickle.load(f)
+        scale = pickle.load(f)
 
     with open(nav_network_file, 'rb') as f:
         nav_graph = pickle.load(f)

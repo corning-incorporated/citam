@@ -180,12 +180,6 @@ def _add_engine_commands(subparser, global_args):
         help="List all the floorplans already ingested."
     )
     list_fac.set_defaults(func=list_facilities)
-    list_fac.add_argument(
-        '--location',
-        type=str,
-        required=True,
-        help="Location to look for facilities (only 'local' supported for now)"
-    )
 
     export_floorplan = engine_commands.add_parser(
         'export-floorplan',
