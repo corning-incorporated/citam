@@ -12,19 +12,16 @@
 #  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==============================================================================
 
-__all__ = ['LocalStorageDriver', 'NoResultsFoundError']
+__all__ = ['LocalStorageDriver']
 
 import json
 import logging
 import os
 from glob import glob
-from citam.api.storage import BaseStorageDriver
+
+from citam.api.storage import BaseStorageDriver, NoResultsFoundError
 
 LOG = logging.getLogger(__name__)
-
-
-class NoResultsFoundError(IOError):
-    """Error raised when no results were found by the driver"""
 
 
 class LocalStorageDriver(BaseStorageDriver):
@@ -37,7 +34,7 @@ class LocalStorageDriver(BaseStorageDriver):
         Search root for simulation results.
     """
 
-    def __init__(self, search_path, **kwargs):
+    def __init__(self, search_path, **kwargs):  # noqa
         super().__init__()
         self.search_path = search_path
         self.result_dirs = {}
