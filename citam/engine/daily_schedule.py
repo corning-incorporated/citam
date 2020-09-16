@@ -15,11 +15,14 @@
 import numpy as np
 import logging
 
-from citam.engine.constants import CAFETERIA_VISIT
-from citam.engine.constants import LAB_WORK
-from citam.engine.constants import OFFICE_WORK
-from citam.engine.constants import RESTROOM_VISIT
-from citam.engine.constants import MEETING
+from citam.engine.constants import (
+        CAFETERIA_VISIT,
+        LAB_WORK,
+        OFFICE_WORK,
+        RESTROOM_VISIT,
+        MEETING,
+        LAST_SCHEDULE_ITEM_CUTOFF
+    )
 
 
 class Schedule:
@@ -37,7 +40,7 @@ class Schedule:
                  office_floor,
                  navigation,
                  scheduling_rules,
-                 meetings=[]
+                 meetings=None
                  ):
         super().__init__()
 
@@ -50,6 +53,9 @@ class Schedule:
         self.daylength = exit_time - start_time
         self.timestep = timestep
         self.meetings = meetings
+        if meetings is None:
+            self.meetings = []
+
         self.scheduling_rules = scheduling_rules
 
         self.office_location = office_location
@@ -131,8 +137,8 @@ class Schedule:
 
             total_locations = sum([len(pl) for pl in possible_locations])
             if total_locations == 0:
-                logging.debug('No location available for this purpose')
-                return None
+                raise ValueError('total locations must be > 0')
+
             floor_number = np.random.randint(len(self.navigation.floorplans))
             location = np.random.choice(possible_locations[floor_number])
 
@@ -194,28 +200,24 @@ class Schedule:
 
         """
         # TODO: add more complex rules based on employee details
+        # (e.g. no office work or no lab work).
 
-        # Downselect purposes based on existing rooms in this facility
+        # Only keep purposes that have corresponding rooms in this facility
+        purposes_under_consideration = [OFFICE_WORK]
 
-        purposes_under_consideration = []
+        # TODO: Associate each purpose with a room type at the model level
+        locations_for_purpose = {
+            RESTROOM_VISIT: self.restrooms,
+            LAB_WORK: self.labs,
+            CAFETERIA_VISIT: self.cafes,
+        }
 
         for purpose in self.scheduling_rules:
-            possible_locations = []
-            if purpose == RESTROOM_VISIT:
-                possible_locations = self.restrooms
-            elif purpose == LAB_WORK:
-                possible_locations = self.labs
-            elif purpose == CAFETERIA_VISIT:
-                possible_locations = self.cafes
-            elif purpose == OFFICE_WORK:
-                possible_locations = [self.office_location]
-
-            if purpose != OFFICE_WORK:
+            if purpose in locations_for_purpose.keys():
+                possible_locations = locations_for_purpose[purpose]
                 total_locations = sum([len(pl) for pl in possible_locations])
                 if total_locations > 0:
                     purposes_under_consideration.append(purpose)
-            else:
-                purposes_under_consideration.append(purpose)
 
         # Count how many items of each type is already in the schedule
         n_items = [0 for i in purposes_under_consideration]
@@ -249,9 +251,7 @@ class Schedule:
         if len(valid_purposes) > 0:
             chosen_purpose = np.random.choice(valid_purposes)
         else:
-            logging.fatal('No valid purpose found. Please double check.')
-            logging.info(self)
-            quit()
+            raise ValueError('At least one valid purpose required.')
 
         return chosen_purpose
 
@@ -275,6 +275,50 @@ class Schedule:
 
         return pace
 
+    def update_itinerary(self, route, schedule_item):
+        """
+        Given a route and a next schedule item, update this agent's itinerary
+        accordingly
+        """
+        next_location = schedule_item['location']
+        next_floor_number = schedule_item['floor_number']
+        if route is not None:
+
+            # Update itinerary
+            self.itinerary += route
+
+            # Choose random point inside destination as last coords
+            internal_point = self.navigation.floorplans[next_floor_number]\
+                .spaces[next_location].get_random_internal_point()
+
+            prev_coords = (internal_point.x, internal_point.y)
+            prev_location = next_location
+            prev_floor_number = next_floor_number
+            self.itinerary.append([prev_coords, prev_floor_number])
+
+            # Stay in this location for the given duration
+            for j in range(schedule_item['duration']):
+                self.itinerary.append([prev_coords, prev_floor_number])
+
+            # update list of schedule items
+            if len(self.schedule_items) > 0:
+                last_item = self.schedule_items[-1]
+                if last_item['purpose'] == schedule_item['purpose'] and \
+                        last_item['location'] == schedule_item['location']:
+                    # If this purpose and location are the same as the last
+                    # one, just update the last one
+                    self.schedule_items[-1]['duration'] += \
+                        schedule_item['duration']
+                else:
+                    self.schedule_items.append(schedule_item)
+            else:
+                self.schedule_items.append(schedule_item)
+
+        elif len(self.schedule_items) == 0:
+            raise ValueError('Cannot compute route to primary office')
+
+        return prev_floor_number, prev_location
+
     def build(self):
         """Build this agent's schedule and corresponding itinerary.
         """
@@ -290,10 +334,6 @@ class Schedule:
         while len(self.itinerary) < self.exit_time:
 
             schedule_item = self.find_next_schedule_item()
-            if schedule_item is None:
-                logging.error('Failed to build a schedule for this agent')
-                logging.info('self')
-                quit()
 
             next_location = schedule_item['location']
             next_floor_number = schedule_item['floor_number']
@@ -305,36 +345,12 @@ class Schedule:
                                               next_floor_number,
                                               agent_pace
                                               )
-            if route is not None:
-                self.itinerary += route
-                internal_point = self.navigation.floorplans[next_floor_number]\
-                    .spaces[next_location].get_random_internal_point()
-                prev_coords = (internal_point.x, internal_point.y)
-                prev_location = next_location
-                prev_floor_number = next_floor_number
-                self.itinerary.append([prev_coords, prev_floor_number])
-                for j in range(schedule_item['duration']):
-                    self.itinerary.append([prev_coords, prev_floor_number])
-                # If this purpose and location are the same as the last one,
-                # just update the last one
-                if len(self.schedule_items) > 0:
-                    last_item = self.schedule_items[-1]
-                    if last_item['purpose'] == schedule_item['purpose'] and \
-                            last_item['location'] == schedule_item['location']:
-                        self.schedule_items[-1]['duration'] += \
-                            schedule_item['duration']
-                    else:
-                        self.schedule_items.append(schedule_item)
-                else:
-                    self.schedule_items.append(schedule_item)
-            else:
-                if len(self.schedule_items) == 0:
-                    # Can't get to primary office
-                    logging.fatal('Cannot get to primary office')
-                    quit()
+
+            prev_floor_number, prev_location = \
+                self.update_itinerary(route, schedule_item)
 
             remaining_daylength = self.daylength - len(self.itinerary)
-            if remaining_daylength <= 60:
+            if remaining_daylength <= LAST_SCHEDULE_ITEM_CUTOFF:
                 break
 
         coords = (int(round(self.exit_door.path.point(0.5).real)),
@@ -350,12 +366,12 @@ class Schedule:
                                           next_floor_number,
                                           agent_pace)
         if route is None:
-            logging.fatal('Unable to leave this facility from this location')
             myfloorplan = self.navigation.floorplans[prev_floor_number]
             myspace = myfloorplan.spaces[prev_location].unique_name
-            logging.info('Location is: ' + myspace)
+            logging.info('Last location is: ' + myspace)
             logging.info('Specified exit is: ' + str(next_location))
-            quit()
+            raise ValueError("Route to leave facility must not be None")
+
         self.itinerary += route
         self.itinerary.append([coords, self.exit_floor])
         self.itinerary.append([None, None])

@@ -13,8 +13,8 @@
 # ==============================================================================
 
 import citam.engine.geometry_and_svg_utils as gsu
-from citam.engine.space import Space
 from citam.engine.point import Point
+from citam.engine.space import Space
 
 from svgpathtools import Line
 
@@ -69,35 +69,28 @@ def find_aisles(space, valid_boundaries, no_repeat=True):
     For each wall, find the closest other wall, verify that they
     form an aisle .
 
-    Parameters
-    -----------
-    space: Space
+    :param Space space:
         The space (hallway) of interest
-    no_repeat: bool
+    :param bool no_repeat:
         Whether to allow a wall to appear in multiple aisles or not
-
-    Returns
-    --------
-        List of aisles where each aisle is a tuple of 2 walls
+    :return: List of aisles where each aisle is a tuple of 2 walls
+    :rtype: list[(Line, Line)]
     """
     aisles = []
 
     for wall1 in valid_boundaries:
         if wall1.length() <= 1.0:
             continue
-        if no_repeat:
-            if is_this_wall_part_of_an_aisle(wall1, aisles):
-                continue
+        if no_repeat and is_this_wall_part_of_an_aisle(wall1, aisles):
+            continue
 
         wall2 = find_closest_parallel_wall(valid_boundaries, wall1)
-
-        if wall2 is None:
-            continue
         if wall2.length() <= 1.0:
             continue
-        if no_repeat:
-            if is_this_wall_part_of_an_aisle(wall2, aisles):
-                continue
+
+        if no_repeat and is_this_wall_part_of_an_aisle(wall2, aisles):
+            continue
+
         if (wall1, wall2) in aisles or (wall2, wall1) in aisles:
             continue
 
@@ -150,8 +143,8 @@ def get_aisle_center_point_and_width(aisle):
     V_perp = gsu.calculate_perpendicular_vector(aisle[0], aisle[1])
     # Half way between the two walls from the middle of the first wall
     mid_point = aisle[0].point(0.5)
-    center_point = Point(x=round(mid_point.real + V_perp[0]/2.0),
-                         y=round(mid_point.imag + V_perp[1]/2.0)
+    center_point = Point(x=int(round(mid_point.real + V_perp[0]/2.0)),
+                         y=int(round(mid_point.imag + V_perp[1]/2.0))
                          )
     # Width of aisle
     width = (V_perp[0]**2 + V_perp[1]**2)**0.5
@@ -177,6 +170,9 @@ def is_this_an_aisle(wall1: Line, wall2: Line, space: Space):
     bool
         Whether the 2 walls form an aisle or not
     """
+    if wall1 is None or wall2 is None:
+        return False
+
     aisle = (wall1, wall2)
     center_point, _ = get_aisle_center_point_and_width(aisle)
     if space.is_point_inside_space(center_point):

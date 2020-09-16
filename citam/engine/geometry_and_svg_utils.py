@@ -122,6 +122,31 @@ def generate_closed_path_for_aisle(aisle):
     return path
 
 
+def is_one_segment_within_the_other(p1, q1, p2, q2):
+    """
+    Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
+    within the other.
+    """
+    if (on_segment(p1, p2, q1) and on_segment(p1, q2, q1)) or \
+            (on_segment(p2, p1, q2) and on_segment(p2, q1, q2)) or \
+            (p1 == p2 and q1 == q2) or (p1 == q2 and q1 == p2):
+
+        return True
+
+    return False
+
+
+def do_lines_intersect_at_endpoint(p1, q1, p2, q2):
+    """
+    Check if one of the lines start or ends on the other line.
+    """
+    if on_segment(p1, p2, q1) or on_segment(p1, q2, q1) or \
+            on_segment(p2, p1, q2) or on_segment(p2, q1, q2):
+        return True
+
+    return False
+
+
 def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
     """
     Verifies if two walls overlap in space.
@@ -131,17 +156,12 @@ def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
     are collinear and returns True if the dot product and the
     distance between the 2 walls are respectively ~1.0 and ~0.0.
 
-    Parameters
-    ----------
-    wall1 : Line
+    :param Line wall1:
         line object corresponding to wall 1
-    wall2 : Line
+    :param Line wall2:
         line object corresponding to wall 2
-
-    Returns
-    ------
-    do_overlap : boolean
-        True if walls overlap.
+    :return: do_overlap (True if walls overlap)
+    :rtype: boolean
     """
 
     x_overlap, y_overlap = calculate_x_and_y_overlap(wall1, wall2)
@@ -154,32 +174,19 @@ def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
 
     on_segment_test = False
 
-    if (on_segment(p1, p2, q1) and on_segment(p1, q2, q1)) or \
-            (on_segment(p2, p1, q2) and on_segment(p2, q1, q2)) or \
-            (p1 == p2 and q1 == q2) or (p1 == q2 and q1 == p2):
-
+    if is_one_segment_within_the_other(p1, q1, p2, q2):
         on_segment_test = True
 
     # only one point from line being on the other is necessary
     elif x_overlap > 0 or y_overlap > 0:
-        if on_segment(p1, p2, q1) or on_segment(p1, q2, q1) or \
-                on_segment(p2, p1, q2) or on_segment(p2, q1, q2):
-
+        if do_lines_intersect_at_endpoint(p1, q1, p2, q2):
             on_segment_test = True
-
-    if verbose:
-        print('Wall 1', p1, q1)
-        print('Wall 2', p2, q2)
-        print('On segment test result: ', on_segment_test)
 
     if on_segment_test:
 
         # Check if all 4 point are collinear
         o1 = determine_orientation(p1, q1, p2)
         o2 = determine_orientation(p1, q1, q2)
-
-        if verbose:
-            print('Orientations: ', o1, o2)
 
         if o1 == o2 and o1 == 0:
             return True
@@ -191,19 +198,12 @@ def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
             # At least one of the walls is horizontal or vertical
             pass
         else:
-
             dot_product, distance = \
                 calculate_dot_product_and_distance_between_walls(wall1, wall2)
-
             if dot_product is not None:
                 if abs(dot_product - 1.0) < 1e-3 and distance < max_distance:
-                    # logging.debug('These two walls were found to overlap\n')
-                    if verbose:
-                        print('These two walls were found to overlap\n')
                     return True
-    if verbose:
-        print('No overlap\n')
-        # quit()
+
     return False
 
 

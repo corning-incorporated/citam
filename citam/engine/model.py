@@ -53,7 +53,9 @@ class FacilityTransmissionModel:
                  meetings_policy_params=None,
                  scheduling_policy=None,
                  traffic_policy=None,
-                 dry_run=False
+                 dry_run=False,
+                 *args,
+                 **kwargs,
                  ):
 
         self.floorplans = floorplans
@@ -101,8 +103,7 @@ class FacilityTransmissionModel:
                     entrance['floor_index'] = fp_index
                     break
             if fp_index is None:
-                logging.error('Unknown entrance floor: ' + str(efloor))
-                raise ValueError()
+                raise ValueError('Unknown entrance floor: ' + str(efloor))
             for i, space in enumerate(self.floorplans[fp_index].spaces):
                 if space.unique_name == ename:
                     entrance['space_index'] = i
@@ -228,7 +229,7 @@ class FacilityTransmissionModel:
                        ]
             m.update(repr(fp_data).encode('utf-8'))
 
-        for nv, hg in zip(self.navigation.route_graph_per_floor,
+        for nv, hg in zip(self.navigation.navnet_per_floor,
                           self.navigation.hallways_graph_per_floor
                           ):
             data = nx.to_edgelist(nv)
@@ -400,9 +401,9 @@ class FacilityTransmissionModel:
                                round(door_mid_point.imag)
                                )
 
-            if self.navigation.route_graph_per_floor[entrance_floor]\
+            if self.navigation.navnet_per_floor[entrance_floor]\
                     .has_node(entrance_coords):
-                edges = self.navigation.route_graph_per_floor[entrance_floor]\
+                edges = self.navigation.navnet_per_floor[entrance_floor]\
                         .edges(entrance_coords)
                 if len(edges) == 0:
                     logging.fatal('Cannot use this entrance.')

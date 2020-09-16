@@ -48,9 +48,7 @@ class NavigationBuilder:
         intersections are found almost for free (nodes with more than 2 edges)
         but the simplification process takes longer. If only the endpoints are
         added, an iteration over pairs of nav segments that fall within the
-        same space is required. In some rare cases, I've noticed that this
-        process fails, albeit with minor implications. So for now, the
-        recommendation is to add all points.
+        same space is required.
     """
 
     def __init__(self, current_floorplan, add_all_nav_points=False):
@@ -523,17 +521,24 @@ class NavigationBuilder:
             if current_space is None:
                 boundary_spaces = self._is_point_on_boundaries(new_point)
                 if len(boundary_spaces) == 0:
-                    print('Point is outside.')
-                    logging.warning('Unable to compute segments.\
-                        Details below.')
-                    logging.info('First point is: ' + str(first_point))
-                    logging.info('Direction vector is: ' +
-                                 str(direction_vector))
-                    return [], []
+                    raise ValueError(
+                            "Unable to compute a nav segment from %s",
+                            str(new_point)
+                        )
                 elif len(boundary_spaces) == 1:
                     logging.info('{%s} on space boundary. Is it an entrance?',
                                  new_point)
                     current_space = boundary_spaces[0]
+                else:
+                    test_point = Point(x=round(new_point.x + direction*dx),
+                                       y=round(new_point.y + direction*dy)
+                                       )
+                    current_space, _ = self._find_location_of_point(test_point)
+                    if current_space is None:
+                        raise ValueError(
+                            "Unable to compute a nav segment from %s",
+                            str(new_point),
+                        )
 
             segment_spaces.append(current_space)
 

@@ -30,12 +30,13 @@ Commands
       gunicorn citam.api:app
 
 """
-__all__ = ['app', 'run_server', 'settings']
+__all__ = ['app', 'run_server']
 
 import logging
+import os
 from wsgiref import simple_server
 from citam.api.server import get_wsgi_app
-import citam.api.settings_parser as settings
+from citam.conf import settings
 
 LOG = logging.getLogger(__name__)
 
@@ -43,7 +44,25 @@ LOG = logging.getLogger(__name__)
 app = get_wsgi_app()
 
 
-def run_server(port=8000, host='127.0.0.1', *args, **kwargs):
+def run_server(port=8000, host='127.0.0.1', results=None, *args, **kwargs):
+    """
+    Run the ``citam dash`` server
+
+    :param int port: port to serve the dash from
+    :param str host: hostname to serve the dash from
+    :param str results: directory to load results from
+    """
+    LOG.debug("--results='%s' specified via CLI. Updating settings",
+              results)
+
+    if results is not None:
+        results_dir = os.path.abspath(results)
+        if not os.path.exists(results_dir):
+            raise IOError(f"{results_dir} does not exist")
+        if not os.path.isdir(os.path.abspath(results)):
+            raise IOError(f"{results_dir} is not a directory")
+        settings.result_path = os.path.abspath(results)
+
     LOG.info("Attempting to start server on %s:%s", host, port)
     httpd = simple_server.make_server(host, port, app)
     print(f"Running CITAM Server on http://{host}:{port}", flush=True)

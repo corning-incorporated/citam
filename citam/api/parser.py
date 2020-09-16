@@ -19,7 +19,7 @@ __all__ = [
 ]
 
 import logging
-from citam.api.settings_parser import get_storage_driver
+from citam.conf import settings
 import json
 
 LOG = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ def get_trajectories(sim_id, floor=None):
     :return: List of trajectories broken down by step
     :rtype: list[list[dict[str,float]]
     """
-    result_file = get_storage_driver().get_trajectory_file(sim_id)
+    result_file = settings.storage_driver.get_trajectory_file(sim_id)
     LOG.info(
         "trajectory file parsing process started",
     )
@@ -68,7 +68,7 @@ def get_trajectories(sim_id, floor=None):
     LOG.info("trajectory file parsing process is complete")
     try:
         max_contacts = max(max([y['count'] for x in steps for y in x]), 100)
-    except ValueError:
+    except ValueError:  # pragma: nocover
         max_contacts = 100
     output = {
         "data": steps,
@@ -86,7 +86,7 @@ def get_contacts(sim_id, floor):
     :return: List of contacts
     :rtype: list[list[dict[str,float]]
     """
-    result_file = get_storage_driver().get_contact_file(sim_id, floor)
+    result_file = settings.storage_driver.get_contact_file(sim_id, floor)
     LOG.info("contacts file parsing process started")
 
     steps = []
@@ -118,7 +118,7 @@ def get_coordinate_distribution(sim_id, floor):
     :return: List of contacts per coordinate
     :rtype: list[dict[str,float]]
     """
-    result_file = get_storage_driver().get_coordinate_distribution_file(
+    result_file = settings.storage_driver.get_coordinate_distribution_file(
         sim_id,
         floor,
     )
@@ -148,14 +148,14 @@ def get_pair_contacts(sim_id):
     :rtype: list[list[dict[str,str, int, str]]
     """
 
-    result_file = get_storage_driver().get_pair_contact_file(sim_id)
+    result_file = settings.storage_driver.get_pair_contact_file(sim_id)
     LOG.info("pair contacts file parsing process started")
     pairs = []
 
     result_file.readline().strip()
     for line in result_file:
         data = line.strip().split(",")
-        if len(data) != 4:
+        if len(data) != 4:  # pragma: nocover
             LOG.error("Corrupted file! 4 values are expected for each line "
                       "in pair_contact.csv. %d found.", len(data))
             return []
@@ -178,7 +178,7 @@ def get_statistics_json(sim_id):
     """
 
     result_dict = json.loads(
-        get_storage_driver().get_statistics_file(sim_id).read()
+        settings.storage_driver.get_statistics_file(sim_id).read()
     )
     LOG.info("Statistics JSON file parsing process started")
 
