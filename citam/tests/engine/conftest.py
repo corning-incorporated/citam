@@ -11,6 +11,9 @@ from distutils import dir_util
 import pytest
 import os
 import copy
+from copy import deepcopy
+
+import pickle
 
 
 @pytest.fixture
@@ -129,11 +132,11 @@ def rect_space():
 
 @pytest.fixture
 def datadir(tmpdir, request):
-    '''
+    """
     Fixture responsible for searching a folder with the same name of test
     module and, if available, moving all contents to a temporary directory so
     tests can use them freely.
-    '''
+    """
     filename = request.module.__file__
     test_dir, _ = os.path.splitext(filename)
 
@@ -159,9 +162,9 @@ def aisle_from_x_floorplan2(x_floorplan):
 
 @pytest.fixture
 def rect_floorplan_ingester_data():
-    '''Basic rect floorplan with one main aisle, 4 office spaces on each side
+    """Basic rect floorplan with one main aisle, 4 office spaces on each side
     and a big room at the end of the hallway
-    '''
+    """
     rect_fi = FloorplanIngester(None, None, 1.0)
     rect_fi.space_data = []
     rect_fi.space_paths = []
@@ -176,7 +179,7 @@ def rect_floorplan_ingester_data():
         'id': space_id,
         'facility': 'TF',
         'building': 'TF1',
-        'unique_name': space_id,
+        'unique_name': str(space_id),
         'space_function': 'aisle'
     })
 
@@ -194,7 +197,7 @@ def rect_floorplan_ingester_data():
             'id': space_id,
             'facility': 'TF',
             'building': 'TF1',
-            'unique_name': space_id,
+            'unique_name': str(space_id),
             'space_function': 'office'
         })
 
@@ -207,7 +210,7 @@ def rect_floorplan_ingester_data():
             'id': space_id,
             'facility': 'TF',
             'building': 'TF1',
-            'unique_name': space_id,
+            'unique_name': str(space_id),
             'space_function': 'office'
         })
 
@@ -231,7 +234,7 @@ def rect_floorplan_ingester_data():
             'id': space_id,
             'facility': 'TF',
             'building': 'TF1',
-            'unique_name': space_id,
+            'unique_name': str(space_id),
             'space_function': 'cafeteria'
         })
     rect_fi.space_attributes.append({'id': space_id})
@@ -250,3 +253,33 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
         rfid.spaces.append(space)
 
     return rfid
+
+
+@pytest.fixture
+def simple_facility_floorplan(request):
+    filename = request.module.__file__
+    test_dir, _ = os.path.splitext(filename)
+
+    floorplan_pickle_file = os.path.join(test_dir,
+                                         'floorplans_and_nav_data',
+                                         'test_simple_facility/',
+                                         'floor_0',
+                                         'updated_floorplan.pkl'
+                                         )
+    with open(floorplan_pickle_file, 'rb') as f:
+        spaces, doors, walls, special_walls, aisles, width, height, \
+            scale = pickle.load(f)
+    fp = Floorplan(scale, spaces, doors, walls, aisles, width, height)
+
+    return fp
+
+
+@pytest.fixture
+def simple_facility_floorplan_2_floors(simple_facility_floorplan):
+
+    fp2 = deepcopy(simple_facility_floorplan)
+    for space in fp2.spaces:
+        space.unique_name = space.unique_name + '_2'
+    fp2.floor_name = '1'
+
+    return [simple_facility_floorplan, fp2]

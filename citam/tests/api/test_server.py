@@ -11,11 +11,40 @@
 #  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
+import os
 
 import pytest
 from falcon import testing
+from falcon.routing import StaticRoute
 
+import citam
 from citam.api import server
+
+
+@pytest.fixture(scope="session")
+def static_path(tmp_path_factory):
+    """Create a directory with mocked versions of dash static files"""
+    static_dir = tmp_path_factory.mktemp(basename="dash")
+    with open(os.path.join(static_dir, 'main.js'), 'w') as f:
+        f.write("file: main.js")
+    with open(os.path.join(static_dir, 'index.html'), 'w') as f:
+        f.write("file: index.html")
+    return str(static_dir)
+
+
+@pytest.fixture(autouse=True)
+def static_route(monkeypatch, static_path):
+    """Mock static routes to test dash logic without requiring JS"""
+    print("Generating static route fixture")
+
+    class MockedStaticRoute(StaticRoute):
+        def __init__(self, prefix, directory, *args, **kwargs):  # noqa
+            print("Initializing static route!")
+            print(f"original directory:{directory}. "
+                  f"new directory: {static_path}")
+            super().__init__(prefix, str(static_path), *args, **kwargs)
+
+    monkeypatch.setattr(citam.api.server, 'StaticRoute', MockedStaticRoute)
 
 
 @pytest.fixture
@@ -23,9 +52,14 @@ def client() -> testing.TestClient:
     return testing.TestClient(server.get_wsgi_app())
 
 
+def test_get_summary(client):
+    result = client.simulate_get('/v1/sim_id_0001')
+    assert result.status_code == 200
+
+
 def test_trajectory_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/trajectory'
+        '/v1/sim_id_0001/trajectory'
     )
     assert result.status_code == 200
     assert result.json.get('data')
@@ -35,7 +69,7 @@ def test_trajectory_response(client):
 
 def test_contact_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/contact'
+        '/v1/sim_id_0001/contact'
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
@@ -43,7 +77,7 @@ def test_contact_response(client):
 
 def test_contact_distribution_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/distribution/coordinate'
+        '/v1/sim_id_0001/distribution/coordinate'
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
@@ -51,9 +85,26 @@ def test_contact_distribution_response(client):
 
 def test_map_response(client):
     result: testing.Result = client.simulate_get(
-        '/v1/sample_results/map'
+        '/v1/sim_id_0001/map'
     )
     assert result.status_code == 200
+
+
+def test_get_heatmap(client):
+    result = client.simulate_get('/v1/sim_id_0001/heatmap')
+    assert result.status_code == 200
+
+
+def test_get_statistics(client):
+    result = client.simulate_get('/v1/sim_id_0001/statistics')
+    assert result.status_code == 200
+    assert isinstance(result.json, list)
+
+
+def test_get_pair_contact(client):
+    result = client.simulate_get('/v1/sim_id_0001/pair')
+    assert result.status_code == 200
+    assert isinstance(result.json, list)
 
 
 def test_list_response(client):
@@ -66,8 +117,9 @@ def test_list_response(client):
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
-    assert len(result.json) == 1
-    assert result.json[0] == 'test_result'
+    assert len(result.json) == 2
+    assert 'sim_id_0001' in result.json
+    assert 'sim_id_0002' in result.json
 
 
 def test_redoc(client):
@@ -83,3 +135,16 @@ def test_openapi_response(client):
 def test_index(client):
     result: testing.Result = client.simulate_get('/')
     assert result.status_code == 200
+
+
+def test_404(client):
+    expected = client.simulate_get('/')
+    actual = client.simulate_get('/invalid/path')
+    assert actual.status_code == 200
+    assert actual.content == expected.content
+
+
+def test_static_route(client):
+    result: testing.Result = client.simulate_get('/main.js')
+    assert result.status_code == 200
+    assert result.text == 'file: main.js'

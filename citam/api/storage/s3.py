@@ -26,6 +26,7 @@ LOG = logging.getLogger(__name__)
 class S3StorageDriver(BaseStorageDriver):
 
     def __init__(self, bucket, **kwargs):
+        super().__init__()
         self.bucket = bucket
         self.client = self._get_s3_client(**kwargs)
 
@@ -50,8 +51,8 @@ class S3StorageDriver(BaseStorageDriver):
         session = boto3.session.Session()
         return session.client(
             service_name="s3",
-            use_ssl=kwargs.get('ssl', True),
-            verify=kwargs.get('verify', True),
+            use_ssl=kwargs.get('ssl', False),
+            verify=kwargs.get('verify', False),
             region_name=kwargs.get('storage_region'),
             endpoint_url=kwargs.get('storage_url'),
             aws_access_key_id=kwargs.get('access_key'),
