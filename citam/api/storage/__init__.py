@@ -12,10 +12,16 @@
 #  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==============================================================================
 
-__all__ = ['s3', 'local', 'BaseStorageDriver']
+__all__ = ['s3', 'local', 'BaseStorageDriver', 'NoResultsFoundError']
 
 import abc
 import json
+import io
+from typing import List, Dict, TextIO
+
+
+class NoResultsFoundError(IOError):
+    """Error raised when no results were found by the driver"""
 
 
 class BaseStorageDriver(abc.ABC):
@@ -25,69 +31,87 @@ class BaseStorageDriver(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def list_runs(self):
-        """List all simulations"""
+    def list_runs(self) -> List[str]:
+        """List all simulations
+
+        :return: A list of completed simulations
+        """
 
     @abc.abstractmethod
-    def get_coordinate_distribution_file(self, sim_id, floor):
-        """
-        Return the Coordinate Distribution file for a simulation
+    def get_coordinate_distribution_file(self,
+                                         sim_id: str,
+                                         floor: str) -> TextIO:
+        """Return the Coordinate Distribution file for a simulation
 
-        :param str sim_id: simulation identifier
-        :param str floor: Floor number
+        :param sim_id: simulation identifier
+        :param floor: Floor number
         :return: Coordinate Distribution file
-        :rtype: StringIO
         """
 
     @abc.abstractmethod
-    def get_trajectory_file(self, sim_id):
-        """
-        Return the trajectory file for a simulation
+    def get_trajectory_file(self, sim_id: str) -> TextIO:
+        """Return the trajectory file for a simulation
 
-        :param str sim_id: simulation identifier
+        :param sim_id: simulation identifier
         :return: Trajectory file
-        :rtype: StringIO
         """
 
     @abc.abstractmethod
-    def get_contact_file(self, sim_id, floor):
-        """
-        Return the contact file for a simulation
+    def get_contact_file(self, sim_id: str, floor: str) -> TextIO:
+        """Return the contact file for a simulation
 
-        :param str sim_id: simulation identifier
-        :param str floor: Floor number
+        :param sim_id: simulation identifier
+        :param floor: Floor number
         :return: Contacts file
-        :rtype: io.StringIO
         """
 
     @abc.abstractmethod
-    def get_map_file(self, sim_id, floor):
-        """
-        Return the map image for given simulation
+    def get_map_file(self, sim_id: str, floor: str) -> io.BytesIO:
+        """Return the map image for given simulation
 
-        :param str sim_id: simulation identifier
-        :param str floor: Floor number
+        :param sim_id: simulation identifier
+        :param floor: Floor number
         :return: Map file
-        :rtype: io.BytesIO
         """
 
     @abc.abstractmethod
-    def get_manifest_file(self, sim_id):
-        """
-        Return the manifest file for a simulation
+    def get_manifest_file(self, sim_id: str) -> TextIO:
+        """Return the manifest file for a simulation
 
-        :param str sim_id: simulation identifier
-        :return: Simulation Manifest file
-        :rtype: io.StringIO
+        :param sim_id: simulation identifier
+        :return: Simulation manifest file
         """
 
-    def get_manifest(self, sim_id):
+    @abc.abstractmethod
+    def get_heatmap_file(self, sim_id: str, floor: str) -> io.BytesIO:
+        """Return a heatmap file for a simulation and floor
+
+        :param sim_id: simulation identifier
+        :param floor: Floor number
+        :return: Heatmap File
+        """
+
+    @abc.abstractmethod
+    def get_pair_contact_file(self, sim_id: str) -> TextIO:
+        """Return the pair contact file for a simulation
+
+        :param sim_id: simulation identifier
+        :return: Pair contact file
+        """
+
+    @abc.abstractmethod
+    def get_statistics_file(self, sim_id: str) -> TextIO:
+        """Get the statistics file for a simulation
+
+        :param sim_id: simulation identifier
+        """
+
+    def get_manifest(self, sim_id: str) -> Dict:
         """
         Return the parsed manifest for a simulation
 
-        :param str sim_id: simulation identifier
+        :param sim_id: simulation identifier
         :return: Simulation Manifest
-        :rtype: dict
         """
         manifest = json.loads(self.get_manifest_file(sim_id).read())
 
