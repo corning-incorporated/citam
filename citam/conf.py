@@ -18,11 +18,12 @@ __all__ = ['settings']
 import logging
 import os
 from importlib import import_module
+from typing import Any
 
 from citam.api.storage import BaseStorageDriver
 
 
-def _import_string(dotted_path):
+def _import_string(dotted_path: str) -> Any:
     """
     Import a dotted module path and return the attribute/class designated by
     the last name in the path. Raise ImportError if the import failed.
@@ -88,7 +89,7 @@ class CitamSettings:
         self._storage_driver = self._initialize_storage_driver()
 
     @property
-    def storage_driver(self):
+    def storage_driver(self) -> BaseStorageDriver:
         cached_driver_conditions = (
             self._storage_driver,
             self._active_storage_driver_path == self.storage_driver_path,
@@ -100,18 +101,8 @@ class CitamSettings:
 
         return self._storage_driver
 
-    @storage_driver.setter
-    def storage_driver(self, value):  # noqa
-        raise RuntimeError(
-            "storage_driver is immutable and automatically reconfigured "
-            "when relevant settings are changed"
-        )
-
-    def _initialize_storage_driver(self):
-        """Get configured storage driver
-
-        :rtype: citam.storage.BaseStorageDriver
-        """
+    def _initialize_storage_driver(self) -> BaseStorageDriver:
+        """Get configured storage driver"""
         driver_class = _import_string(self.storage_driver_path)
         self._active_storage_driver_path = str(self.storage_driver_path)
         self._active_storage_driver_options = self._storage_kwargs
@@ -126,7 +117,7 @@ class CitamSettings:
         return driver_class(**self._storage_kwargs)
 
     @staticmethod
-    def _get_default_log_level():
+    def _get_default_log_level() -> int:
         """Get application log level/verbosity.
 
         This can be set in the environment variable ``CITAM_LOG_LEVEL``.
