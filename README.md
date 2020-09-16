@@ -53,11 +53,11 @@ After successful cloning, install CITAM as follows:
    `$ citam -h`
    
  > Note: In case matplotlib gives an error, please try uninstalling and reinstalling as follow:
+```
+   $ pip uninstall matplotlib  # uninstall the package
 
-      `$ pip uninstall matplotlib`
-
-      `$ pip install matplotlib`
-      
+   $ pip install matplotlib   # reinstall it
+```      
    For details on how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation. If you want to visualize simulation results, you need to install the dashboard Node dependencies by following the step below.
 
    
