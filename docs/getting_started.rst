@@ -18,6 +18,21 @@ possible to mimic daily activities in various indoor environments.
 CITAM is available on GitHub.
 
 ---------------
+Pre-requisites
+---------------
+
+* Python 3.x
+* NodeJS (to use the dashboard)
+
+You may already have Python and NodeJS installed. Check their version to make sure all pre-requisites are satisfied:
+
+.. codeblock:: console
+
+  $ python --version    # must be 3.x
+  $ node --version      # should be 12 or above
+  $ npm --version       # should be 6 or above
+
+---------------
 How to Install
 ---------------
 
