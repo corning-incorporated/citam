@@ -175,7 +175,7 @@ page. By clicking on `View Details`; you would be taken to details page with fol
       To run a live-compiler instance, change directory to `citamjs` and run
       `npm run serve`
       
-> Local back-end setup can be run via `citam dash --results .` abs should eb accessible at localhost:8000
+> Local back-end setup can be run via `citam dash --results .` It should be accessible at localhost:8000
 
 ## Contributing
 
