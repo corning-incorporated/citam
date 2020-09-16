@@ -2,7 +2,7 @@
     "facility_name" : "foo_facility",
     "simulation_name" : "test_run_1",
     "floors" : ["foo_floor"],
-    "entrances" : [ {"name":"AISLE213", "floor": "0"}],
+    "entrances" : [ {"name":"AISLE213", "floor": 0}],
     "daylength" : 1800,
     "entrance_time" : 100,
     "n_agents" : 20,
