@@ -7,3 +7,4 @@ progressbar2
 matplotlib
 boto3
 falcon
+appdirs

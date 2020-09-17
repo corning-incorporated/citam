@@ -11,8 +11,9 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
+from typing import Tuple
 
-
+from citam.engine.door import Door
 from citam.engine.point import Point
 import citam.engine.basic_visualization as bv
 import citam.engine.geometry_and_svg_utils as gsu
@@ -69,7 +70,6 @@ class NavigationBuilder:
         # self.current_space = None  # for testing and debugging purposes
 
         # To avoid parallel nav segments!
-        self.excluded_doors_coords = []
         self.excluded_doors = []
 
         return
@@ -110,33 +110,25 @@ class NavigationBuilder:
         logging.info('Processing doors for each space...')
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
-            door_mid_point = Point(x=round(door.path.point(0.5).real),
-                                   y=round(door.path.point(0.5).imag)
-                                   )
-            mid_coords = (door_mid_point.x, door_mid_point.y)
-            self.floor_navnet.add_node(mid_coords, node_type='door')
-
+            self.floor_navnet.add_node(door.midpoint_coords, node_type='door')
             if door in self.excluded_doors:
                 # Add short segment between current coords for door and the
                 # midpoint coord
-                index = self.excluded_doors.index(door)
-                door_coords = self.excluded_doors_coords[index]
-                if door_coords != mid_coords:
-                    self.floor_navnet.add_node(door_coords, node_type='door')
-                    self.floor_navnet.add_edge(door_coords,
-                                               mid_coords,
-                                               half_width=1.0
-                                               )
+                if not door.is_intersect_and_midpoint_same():
+                    self.floor_navnet.add_node(door.intersect_coords,
+                                               node_type='door')
+                    self.floor_navnet.add_edge(door.intersect_coords,
+                                               door.midpoint_coords,
+                                               half_width=1.0)
                 continue
             # Add mid-point of door path to navnet as a door node
             door_width = door.path.length()
             door_normal = door.path.normal(0.5)
             segments, seg_spaces = \
-                self.compute_nav_segments(door_mid_point,
+                self.compute_nav_segments(door.midpoint,
                                           door_normal,
                                           door_width,
-                                          stop_at_existing_segments=True
-                                          )
+                                          stop_at_existing_segments=True)
             if len(segments) == 0:
                 logging.warning('No nav segments found. This is not typical.')
                 logging.info('Door is: ' + str(door))
@@ -451,7 +443,7 @@ class NavigationBuilder:
 
         return
 
-    def find_door_intersect(self, test_line):
+    def find_door_intersect(self, test_line) -> Tuple[tuple, Door]:
         '''Check if the given line intersects with a door.
         '''
         coords = None
@@ -587,8 +579,8 @@ class NavigationBuilder:
                         # Is this a door?
                         coords, door = self.find_door_intersect(test_line)
                         if coords is not None:
-                            self.excluded_doors.append((door, coords))
-                            self.excluded_doors_coords.append(coords)
+                            door.intersect_coords = coords
+                            self.excluded_doors.append(door)
 
                         # We can keep adding point to segment
                         if direction == -1:

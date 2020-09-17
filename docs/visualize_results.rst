@@ -1,3 +1,5 @@
+.. _visualize:
+
 ==================
 Visualize Results
 ==================
