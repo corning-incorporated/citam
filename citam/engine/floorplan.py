@@ -300,9 +300,13 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
         LOG.debug("Updating fp_inputs with kwargs %s", kwargs)
         fp_inputs.update(**kwargs)
 
-    LOG.debug('Initializing floorplan with %d doors, %d walls',
-              len(fp_inputs.get('doors', [])),
-              len(fp_inputs.get('walls', [])))
+    LOG.info('Initializing floorplan: '
+             'doors: %s, '
+             'walls: %d, '
+             'scale: %d [ft/drawing unit]',
+             len(fp_inputs.get('doors', [])),
+             len(fp_inputs.get('walls', [])),
+             fp_inputs.get('scale', float("NaN")))
 
-    LOG.debug("Floorplan constructor arguments", fp_inputs)
+    LOG.debug("Initializing floorplan: %s", fp_inputs)
     return Floorplan(**fp_inputs)
