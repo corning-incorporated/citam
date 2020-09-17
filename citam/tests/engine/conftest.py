@@ -1,19 +1,18 @@
 from __future__ import unicode_literals
 
+import copy
+import os
+import pickle
+from copy import deepcopy
+from distutils import dir_util
+
+import pytest
 from svgpathtools import Path, Line, parse_path
 
-from citam.engine.space import Space
-from citam.engine.floorplan import Floorplan
 from citam.engine.door import Door
+from citam.engine.floorplan import Floorplan
 from citam.engine.floorplan_ingester import FloorplanIngester
-
-from distutils import dir_util
-import pytest
-import os
-import copy
-from copy import deepcopy
-
-import pickle
+from citam.engine.space import Space
 
 
 @pytest.fixture
@@ -40,7 +39,6 @@ def x_floorplan():
 
 @pytest.fixture
 def rect_floorplan():
-
     path_str = 'M 0,0 L 250,0 L 250,80 L 0,80 z'
     rect_boundaries = parse_path(path_str)
     walls = Path(*[Line(start=complex(0, 0), end=complex(120, 0)),
@@ -187,10 +185,10 @@ def rect_floorplan_ingester_data():
     for i in range(5):
         if i == 2:
             continue
-        x = i*50
+        x = i * 50
         space_id += 1
-        path_str = "M " + str(x) + ",0" + " L " + str(x) + ",-120 " +\
-                   "L " + str(x+50) + ",-120" + " L " + str(x+50) + ",0 Z"
+        path_str = "M " + str(x) + ",0" + " L " + str(x) + ",-120 " + \
+                   "L " + str(x + 50) + ",-120" + " L " + str(x + 50) + ",0 Z"
         rect_fi.space_paths.append(parse_path(path_str))
         rect_fi.space_attributes.append({'id': space_id})
         rect_fi.space_data.append({
@@ -202,8 +200,8 @@ def rect_floorplan_ingester_data():
         })
 
         space_id += 1
-        path_str = "M " + str(x) + ",80" + " L " + str(x) + ",200 " +\
-                   "L " + str(x+50) + ",200" + " L " + str(x+50) + ",80 Z"
+        path_str = "M " + str(x) + ",80" + " L " + str(x) + ",200 " + \
+                   "L " + str(x + 50) + ",200" + " L " + str(x + 50) + ",80 Z"
         rect_fi.space_paths.append(parse_path(path_str))
         rect_fi.space_attributes.append({'id': space_id})
         rect_fi.space_data.append({
@@ -231,12 +229,12 @@ def rect_floorplan_ingester_data():
     path_str = "M 250,-120 L 350,-120 L 350,200 L 250,200 Z"
     rect_fi.space_paths.append(parse_path(path_str))
     rect_fi.space_data.append({
-            'id': space_id,
-            'facility': 'TF',
-            'building': 'TF1',
-            'unique_name': str(space_id),
-            'space_function': 'cafeteria'
-        })
+        'id': space_id,
+        'facility': 'TF',
+        'building': 'TF1',
+        'unique_name': str(space_id),
+        'space_function': 'cafeteria'
+    })
     rect_fi.space_attributes.append({'id': space_id})
 
     return rect_fi
@@ -257,9 +255,7 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
 
 @pytest.fixture
 def simple_facility_floorplan(request):
-    filename = request.module.__file__
-    test_dir, _ = os.path.splitext(filename)
-
+    test_dir = os.path.join(os.path.dirname(__file__), 'test_navigation')
     floorplan_pickle_file = os.path.join(test_dir,
                                          'floorplans_and_nav_data',
                                          'test_simple_facility/',
@@ -268,7 +264,7 @@ def simple_facility_floorplan(request):
                                          )
     with open(floorplan_pickle_file, 'rb') as f:
         spaces, doors, walls, special_walls, aisles, width, height, \
-            scale = pickle.load(f)
+        scale = pickle.load(f)
     fp = Floorplan(scale, spaces, doors, walls, aisles, width, height)
 
     return fp
@@ -276,7 +272,6 @@ def simple_facility_floorplan(request):
 
 @pytest.fixture
 def simple_facility_floorplan_2_floors(simple_facility_floorplan):
-
     fp2 = deepcopy(simple_facility_floorplan)
     for space in fp2.spaces:
         space.unique_name = space.unique_name + '_2'

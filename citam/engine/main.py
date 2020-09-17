@@ -223,33 +223,28 @@ def export_navigation_graph_to_svg(facility: str,
 
 def load_floorplans(floors,
                     facility_name,
-                    user_scale=None,
-                    buildings_to_keep=['all']
-                    ):
+                    user_scale=None):
+    # TODO: TEST ME
+    # TODO: DOCUMENT ME!
+    # TODO: TEST ME!
+    # TODO: DOCUMENT ME!
+    # TODO: TEST ME!
+    # TODO: DOCUMENT ME!
     floorplans = []
 
+    if user_scale is not None:
+        user_scale = round(user_scale, 6)
+
     for fn in floors:
-        LOG.info('Loading floorplan for floor: ' + str(fn))
+        LOG.info('Loading floorplan for floor: %s', fn)
         floorplan_directory = su.get_datadir(facility_name, fn)
-        if not os.path.isdir(floorplan_directory):
-            raise FileNotFoundError(floorplan_directory)
-
-        floorplan_file = os.path.join(floorplan_directory,
-                                      'updated_floorplan.pkl'
-                                      )
-        if not os.path.isfile(floorplan_file):
-            floorplan_file = os.path.join(floorplan_directory, 'floorplan.pkl')
-
-        if not os.path.isfile(floorplan_file):
-            raise FileNotFoundError(floorplan_file)
+        floorplan = floorplan_from_directory(floorplan_directory, fn,
+                                             scale=user_scale)
 
         with open(floorplan_file, 'rb') as f:
             spaces, doors, walls, special_walls, aisles, width, height, \
             scale = pickle.load(f)
             LOG.info('.............success')
-
-        if user_scale is not None:
-            scale = round(user_scale, 6)
 
         LOG.info('Scale: ' + str(scale) + ' [ft/drawing unit]')
         floorplan = Floorplan(scale=scale,
