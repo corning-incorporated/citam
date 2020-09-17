@@ -134,6 +134,7 @@ class CitamSettings:
         Default: WARNING
         """
         configured_level = os.environ.get('CITAM_LOG_LEVEL', 'WARNING').upper()
+        configured_level.strip("'").strip('"')  # remove quotes from env
         level_map = {
             'DEBUG': logging.DEBUG,
             'INFO': logging.INFO,
