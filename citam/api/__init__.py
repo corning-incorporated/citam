@@ -44,7 +44,10 @@ LOG = logging.getLogger(__name__)
 app = get_wsgi_app()
 
 
-def run_server(port=8000, host='127.0.0.1', results=None, *args, **kwargs):
+def run_server(port: int = 8000,
+               host: str = '127.0.0.1',
+               results: str = None,
+               *args, **kwargs):
     """
     Run the ``citam dash`` server
 

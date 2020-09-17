@@ -28,6 +28,8 @@ CITAM COVID-19 model.
 __all__ = ['get_wsgi_app']
 
 import logging
+from typing import Any
+
 import falcon
 from os.path import abspath, dirname, join, exists
 from falcon.routing import StaticRoute
@@ -137,7 +139,7 @@ class ResultsResource:
 class RedocResource:
     """API Documentation Page"""
 
-    def on_get(self, req, resp):
+    def on_get(self, req: falcon.Request, resp: falcon.Response):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
 
@@ -149,7 +151,7 @@ class RedocResource:
 class DashIndexResource:
     """API Documentation Page"""
 
-    def on_get(self, req, resp):
+    def on_get(self, req: falcon.Request, resp: falcon.Response):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
         file = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
@@ -164,7 +166,7 @@ class OpenAPIResource:
     """API Endpoint to download the OpenAPI specification"""
     YAML_SPEC = join(dirname(abspath(__file__)), 'static', 'openapi.yaml')
 
-    def on_get(self, req, resp):
+    def on_get(self, req: falcon.Request, resp: falcon.Response):
         resp.content_type = 'application/x-yaml'
         with open(self.YAML_SPEC, 'rb') as f:
             resp.body = f.read()
@@ -174,7 +176,11 @@ class OpenAPIResource:
 class CORSMiddleware:
     """Middleware to enable CORS requests"""
 
-    def process_response(self, req, resp, resource, req_succeeded):  # noqa
+    def process_response(self,
+                         req: falcon.Request,
+                         resp: falcon.Response,
+                         resource: Any,
+                         req_succeeded: bool):
         resp.set_header('Access-Control-Allow-Origin', '*')
 
         if (req.get_header('Access-Control-Request-Method')
@@ -192,11 +198,11 @@ class CORSMiddleware:
                 default='*'
             )
 
-            resp.set_headers((
+            resp.set_headers([
                 ('Access-Control-Allow-Methods', allow),
                 ('Access-Control-Allow-Headers', allow_headers),
                 ('Access-Control-Max-Age', '86400'),
-            ))
+            ])
 
 
 def _get_sink():
