@@ -133,7 +133,7 @@ def _add_engine_commands(subparser, global_args):
     ingest.add_argument(
         '-c',
         '--csv',
-        type=str,  # Ex: -c, --contact_file
+        type=str,
         required=True,
         help="Map properties file as CSV"
     )
