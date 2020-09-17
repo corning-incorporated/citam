@@ -15,10 +15,12 @@
 import logging
 
 
-def update_data_dictionary(datadict, key, data):
+def update_data_dictionary(datadict: dict, key: str, data: float | int) -> dict:
     """
     Utility function to update a dictionary to add data to existing value if
     the key exist or create new key:value pair if not
+
+    :param:
     """
     if key not in datadict:
         datadict[key] = data
@@ -72,8 +74,7 @@ class ContactEvents:
                                          current_step)
 
         if agent1.unique_id == agent2.unique_id:
-            logging.warn('These are the same agents. Contact event discarded.')
-            return
+            raise ValueError('Agents must be different.')
 
         if agent1.unique_id < agent2.unique_id:
             key = str(agent1.unique_id) + '-' + str(agent2.unique_id)

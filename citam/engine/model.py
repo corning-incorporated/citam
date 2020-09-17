@@ -92,35 +92,34 @@ class FacilityTransmissionModel:
         # remove spaces that have no exit from the pool
         self.remove_unreachable_rooms()
 
-        # Find all entrances to this facility
-        for entrance in self.entrances:
-            ename = entrance['name'].lower()
-            efloor = entrance['floor']
-            fp_index = None
-            for i, fp in enumerate(self.floorplans):
-                if fp.floor_name == efloor:
-                    fp_index = i
-                    entrance['floor_index'] = fp_index
-                    break
-            if fp_index is None:
-                raise ValueError('Unknown entrance floor: ' + str(efloor))
-            for i, space in enumerate(self.floorplans[fp_index].spaces):
-                if space.unique_name == ename:
-                    entrance['space_index'] = i
-                    break
+        # Validate entrances
+        self.validate_entrances()
 
-        logging.info('Entrances: ' + str(self.entrances))
+        # Find offices and verify that they are accessible from at least one
+        # entrance
+        self.find_and_validate_offices()
 
-        # Find all office spaces in this facility
+        # Find and group all remaining spaces in this facility
+        self.group_remaining_spaces()
+
+    def find_and_validate_offices(self):
+        """
+        Iterate over all spaces to find and validate offices
+        """
         self.total_offices = 0
         self.all_office_spaces = []
         for fn in range(self.number_of_floors):
-            floor_office_spaces = self.find_floor_office_spaces(fn)
+            floor_office_spaces = self.find_valid_floor_office_spaces(fn)
             self.all_office_spaces.append(floor_office_spaces)
             self.total_offices += len(floor_office_spaces)
 
-        logging.info('Total office spaces is ' + str(self.total_offices))
+        logging.info('Total office spaces: %d', self.total_offices)
 
+    def group_remaining_spaces(self):
+        """
+        Iterate over all other spaces and group them according to their
+        function
+        """
         self.meeting_rooms, self.labs, self.cafes, self.restrooms,\
             self.offices = [], [], [], [], []  # List of list of space indices
 
@@ -162,9 +161,7 @@ class FacilityTransmissionModel:
         n_rooms = sum([len(rooms) for rooms in self.meeting_rooms])
         logging.info('Total meeting rooms: ' + str(n_rooms))
 
-        return
-
-    def find_floor_office_spaces(self, floor_number, verify_route=False):
+    def find_valid_floor_office_spaces(self, floor_number, verify_route=False):
         """Go through office spaces and verify that they are reachable from
         at least one of the predefined entrances.
         """
@@ -375,17 +372,76 @@ class FacilityTransmissionModel:
 
         return possible_entrance_doors
 
+    def find_space_by_name(self, fp_index, ename):
+        """
+        Find the space that corresponds to the given name.
+        """
+        space_index = None
+        for i, space in enumerate(self.floorplans[fp_index].spaces):
+            if space.unique_name == ename:
+                space_index = i
+                break
+
+        return space_index
+
+    def find_floor_by_name(self, floor_name):
+        """
+        Find the floor that corresponds to this name.
+
+        :param str floor_name: Name of the floor.
+        :return: index of the floorplan. None if not found.
+        """
+        fp_index = None
+        for i, fp in enumerate(self.floorplans):
+            if fp.floor_name == floor_name:
+                fp_index = i
+                break
+
+        return fp_index
+
+    def is_door_in_navnet(self, entrance_floor, entrance_door):
+        """
+        Verify that this door is part of the navnet.
+        """
+        door_mid_point = entrance_door.path.point(0.5)
+        entrance_coords = (round(door_mid_point.real),
+                            round(door_mid_point.imag)
+                            )
+        if self.navigation.navnet_per_floor[entrance_floor]\
+                .has_node(entrance_coords):
+            edges = self.navigation.navnet_per_floor[entrance_floor]\
+                    .edges(entrance_coords)
+            if len(edges) == 0:
+                logging.info('No edges from this door : %s', entrance_door)
+                return False
+            else:
+                return True
+        else:
+            logging.info('Door coords not in navnet: %s', entrance_coords)
+            return False
+
     def validate_entrances(self):
         """
         Iterate over possible entrances and verify that there is indeed
         an outside facing door and that the door is present in the navnet.
         """
         for entrance in self.entrances:
-            # chosen_entrance = np.random.choice(self.entrances)
-            entrance_floor = entrance['floor_index']
-            entrance_room_id = entrance['space_index']
+
+            ename = entrance['name'].lower()
+            efloor = entrance['floor']
+
+            entrance_floor = self.find_floor_by_name(efloor)
+            if entrance_floor is None:
+                raise ValueError('Unknown entrance floor: %s', efloor)
+            entrance['floor_index'] = entrance_floor
+
+            entrance_space_id = self.find_space_by_name(entrance_floor, ename)
+            if entrance_space_id is None:
+                raise ValueError('Unknown space: ', ename)
+            entrance['space_index'] = entrance_space_id
+
             entrance_space = self.navigation.floorplans[entrance_floor]\
-                                            .spaces[entrance_room_id]
+                                            .spaces[entrance_space_id]
 
             possible_entrance_doors = self.find_possible_entrance_doors(
                                         entrance_floor,
@@ -396,29 +452,10 @@ class FacilityTransmissionModel:
 
             entrance_door = np.random.choice(possible_entrance_doors)
 
-            door_mid_point = entrance_door.path.point(0.5)
-            entrance_coords = (round(door_mid_point.real),
-                               round(door_mid_point.imag)
-                               )
+            if not self.is_door_in_navnet(entrance_floor, entrance_door):
+                raise ValueError('Cannot use this entrance %s',
+                                    entrance_door)
 
-            if self.navigation.navnet_per_floor[entrance_floor]\
-                    .has_node(entrance_coords):
-                edges = self.navigation.navnet_per_floor[entrance_floor]\
-                        .edges(entrance_coords)
-                if len(edges) == 0:
-                    logging.info('Possible doors are:')
-                    for d in possible_entrance_doors:
-                        logging.info('\t' + str(d))
-                    raise ValueError('Cannot use this entrance %s',
-                                     entrance_door)
-            else:
-                logging.info('Entrance coords: ' + str(entrance_coords))
-                logging.info('Entrance floor is: ' + str(entrance_floor))
-                logging.info(str(entrance_door))
-                logging.info('Possible doors aree:')
-                for d in possible_entrance_doors:
-                    logging.info('\t' + str(d))
-                raise ValueError('Entrance coords not found in graph.')
 
     def choose_best_entrance(self, office_floor, office_id):
         """
@@ -481,7 +518,6 @@ class FacilityTransmissionModel:
         current_agent = 0
         agent_pool = list(range(self.n_agents))
         for shift in self.shifts:
-            print('Building shift ', shift['name'])
             shift_start_time = shift['start_time'] + self.buffer
             n_shift_agents = round(shift['percent_workforce']*self.n_agents)
             shift_agents = np.random.choice(agent_pool, n_shift_agents)
@@ -511,7 +547,8 @@ class FacilityTransmissionModel:
                     # Reinitialize office spaces.
                     # People will be 2 per office now
                     # TODO: Use office capacity instead
-                    floor_offices = self.find_floor_office_spaces(office_floor)
+                    floor_offices = \
+                        self.find_valid_floor_office_spaces(office_floor)
                     self.all_office_spaces[office_floor] = floor_offices
 
                 # Sample start time and exit time from a poisson distribution
