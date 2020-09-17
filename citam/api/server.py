@@ -30,6 +30,7 @@ __all__ = ['get_wsgi_app']
 import logging
 import falcon
 from os.path import abspath, dirname, join, exists
+from falcon.routing import StaticRoute
 from citam.api import parser
 from citam.conf import settings
 
@@ -198,25 +199,51 @@ class CORSMiddleware:
             ))
 
 
-def _404_route_sink(req, resp):
-    """This handles all 404s and converts them to index.html
+def _get_sink():
+    """Generate the API sink method given a static resolver.
 
-    We need this so ``citam dash`` can handle links to specific subpages
-    :param falcon.Request req: incoming request
-    :param falcon.Response resp: outgoing response
-    :rtype: falcon.Response
+    The current version of falcon (as of 2020-09-14) always allows sinks to
+    supersede static routes (https://github.com/falconry/falcon/issues/1372).
+
+    This method injects a built-in :class:falcon.routing.StaticRoute` object
+    into the sink method, and the method checks the static route and only
+    executes the sink logic if no static file was found.
     """
 
-    LOG.info("%s does not match a resource. Returning index.html", req.path)
-    file = join(dirname(abspath(__file__)), 'static', 'dash', 'index.html')
-    if not exists(file):
-        LOG.warning("CITAM Dash is not included with this build")
-        file = join(dirname(dirname(file)), 'dash404.html')
+    static_route = StaticRoute(
+        '/',
+        join(dirname(abspath(__file__)), 'static', 'dash'),
+    )
 
-    with open(file) as f:
-        LOG.debug("Returning file")
-        resp.status = falcon.HTTP_200
-        resp.body = f.read()
+    def _sink(req, resp):
+        """This handles all 404s and converts them to index.html
+
+        We need this so ``citam dash`` can handle links to specific subpages
+        :param falcon.Request req: incoming request
+        :param falcon.Response resp: outgoing response
+        """
+
+        if static_route.match(req.path):
+            try:  # Try static route
+                static_route(req, resp)
+                LOG.debug("%s refers to a static file", req.path)
+                return
+            except falcon.HTTPNotFound:  # Abort static file resolution
+                LOG.debug("%s does not match a resource. returning index.html",
+                          req.path)
+
+        file = join(dirname(abspath(__file__)),
+                    'static', 'dash', 'index.html')
+        if not exists(file):
+            LOG.warning("CITAM Dash is not included with this build")
+            file = join(dirname(dirname(file)), 'dash404.html')
+
+        with open(file) as f:
+            LOG.debug("Returning file")
+            resp.status = falcon.HTTP_200
+            resp.body = f.read()
+
+    return _sink
 
 
 def get_wsgi_app():
@@ -226,6 +253,7 @@ def get_wsgi_app():
     """
     app = falcon.API(middleware=[CORSMiddleware()])
     results = ResultsResource()
+
     app.add_route('/', DashIndexResource())
     app.add_route('/v1', RedocResource())
     app.add_route('/v1/openapi.yaml', OpenAPIResource())
@@ -248,9 +276,5 @@ def get_wsgi_app():
                   suffix='statistics')
     app.add_route('/v1/{sim_id}/heatmap', results,
                   suffix='heatmap')
-    app.add_sink(_404_route_sink)
-    app.add_static_route(
-        '/',
-        join(dirname(abspath(__file__)), 'static', 'dash')
-    )
+    app.add_sink(_get_sink())
     return app

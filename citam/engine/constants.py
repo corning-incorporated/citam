@@ -106,3 +106,5 @@ DEFAULT_MEETINGS_POLICY = {
     'min_attendees_per_meeting': 3
 
 }
+
+LAST_SCHEDULE_ITEM_CUTOFF = 60
