@@ -1,7 +1,8 @@
-import pytest
-import citam.engine.main as main
-
 import os
+
+import pytest
+
+import citam.engine.main as main
 
 
 def test_update_floorplan_from_svg_file_file_not_found(tmpdir, monkeypatch):
@@ -11,32 +12,28 @@ def test_update_floorplan_from_svg_file_file_not_found(tmpdir, monkeypatch):
     with pytest.raises(FileNotFoundError):
         main.update_floorplan_from_svg_file(facility="TEST",
                                             floor="0",
-                                            map=svg_file
-                                            )
+                                            svg=svg_file)
 
 
 def test_update_floorplan_from_svg_file_floorplan_not_found(tmpdir,
-                                                            monkeypatch
-                                                            ):
+                                                            monkeypatch):
     svg_file = os.path.join(tmpdir, 'test.svg')
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(tmpdir))
 
     with pytest.raises(FileNotFoundError):
         main.update_floorplan_from_svg_file(facility="TEST",
                                             floor="0",
-                                            map=svg_file
-                                            )
+                                            svg=svg_file)
 
 
 def test_update_floorplan_from_svg_file_no_issues(datadir,
                                                   tmpdir,
-                                                  monkeypatch
-                                                  ):
+                                                  monkeypatch):
     svg_file = os.path.join(datadir, 'TF1_edited.svg')
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
     main.update_floorplan_from_svg_file(facility="TEST",
                                         floor="0",
-                                        map=svg_file
+                                        svg=svg_file
                                         )
     floor_dir = os.path.join(datadir, 'floorplans_and_nav_data')
     floor_dir = os.path.join(floor_dir, 'TEST')
@@ -51,7 +48,6 @@ def test_export_floorplan_to_svg_no_issues(datadir, tmpdir, monkeypatch):
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
     main.export_floorplan_to_svg(facility="TEST",
                                  floor="0",
-                                 outputfile=outputfile
-                                 )
+                                 outputfile=outputfile)
 
     assert os.path.isfile(outputfile)

@@ -60,7 +60,7 @@ def ingest_floorplan(svg: str,
                      scale: float = 1 / 12,
                      floor: str = "0",
                      output_directory=None,
-                     **kwargs):
+                     **kwargs):  # noqa
     """Ingest raw floorplan and data files for a given floor of a facility.
 
     This method is executed with the CLI call ``citam engine ingest``
@@ -71,7 +71,6 @@ def ingest_floorplan(svg: str,
     :param scale: The scale of the drawing (default = 1/12)
     :param floor: Name of this floor (default=0)
     :param output_directory: Custom location to store output (default=cache)
-    :return: Whether the process was successful or not
     :raise FileNotFoundError: If input files are not found
     """
 
@@ -91,9 +90,7 @@ def ingest_floorplan(svg: str,
             os.mkdir(floor_directory)
 
     LOG.info('Ingesting floorplan...')
-    floorplan_ingester = FloorplanIngester(svg,
-                                           csv,
-                                           scale,
+    floorplan_ingester = FloorplanIngester(svg, csv, scale,
                                            extract_doors_from_file=True)
     floorplan_ingester.run()
 
@@ -107,7 +104,7 @@ def export_floorplan_to_svg(facility: str,
                             floor: str,
                             outputfile: str,
                             floorplan_directory: str = None,
-                            **kwargs):
+                            **kwargs):  # noqa
     """Export a given floorplan to an SVG file for visualization and editing.
 
     :param facility: Name of this facility
@@ -129,12 +126,14 @@ def export_floorplan_to_svg(facility: str,
 def build_navigation_network(facility: str,
                              floor: str = "0",
                              floorplan_directory: str = None,
-                             **kwargs):
+                             **kwargs):  # noqa
     """Build the navigation network for a given facility floor plan.
 
     :param facility: Name of this facility
     :param floor: Name of this floor (default=0)
     :param floorplan_directory: Custom directory for floorplans (default=cache)
+    :raise NotADirectoryError: floorplan_directory is invalid
+    :raise FileMotFoundError: could not find floorplan file
     """
 
     if not floorplan_directory:
@@ -151,97 +150,58 @@ def build_navigation_network(facility: str,
     navbuilder.export_navdata_to_pkl(floor_navnet_file, hw_graph_file)
 
 
-def update_floorplan_from_svg_file(**kwargs):
-    """Given a facility floor plan, use data from a user-provided svg file to
-    update the walls and doors.
+def update_floorplan_from_svg_file(svg: str,
+                                   facility: str,
+                                   floor: str = "0",
+                                   floorplan_directory: str = None,
+                                   **kwargs):  # noqa
+    """Update the walls and doors in a floorplan using an SVG file
+
+    :param svg: Path to the floorplan file in SVG format
+    :param facility: Name of this facility
+    :param floor: Name of this floor (default=0)
+    :param floorplan_directory: Custom directory for floorplans (default=cache)
+    :raise NotADirectoryError: floorplan_directory is invalid
+    :raise FileMotFoundError: could not find floorplan file
     """
-    edited_svg_file = kwargs['map']
-    facility_name = kwargs['facility']
-    floor_name = kwargs['floor']
-    if 'floor_name' in kwargs:
-        floor_name = kwargs['floor_name']
-    else:
-        LOG.info('No value provided for floor name. Will use the ' +
-                 'default value of "0"'
-                 )
-        floor_name = '0'
+    if not os.path.isfile(svg):
+        LOG.error('File not found: ' + svg)
+        raise FileNotFoundError(svg)
 
-    if not os.path.isfile(edited_svg_file):
-        LOG.error('File not found: ' + edited_svg_file)
-        raise FileNotFoundError(edited_svg_file)
+    if not floorplan_directory:
+        floorplan_directory = su.get_datadir(facility, floor)
 
-    if 'floorplan_directory' in kwargs:
-        floorplan_directory = kwargs['floorplan_directory']
-    else:
-        floorplan_directory = su.get_datadir(facility_name, floor_name)
-
-    initial_pickle_file = os.path.join(floorplan_directory, 'floorplan.pkl')
-    updated_pickle_file = os.path.join(floorplan_directory,
-                                       'updated_floorplan.pkl'
-                                       )
-
-    if os.path.isfile(initial_pickle_file):
-        with open(initial_pickle_file, 'rb') as f:
-            spaces, doors, walls, special_walls, aisles, width, height, \
-            scale = pickle.load(f)
-        LOG.info('Floorplan loaded from: ' + initial_pickle_file)
-
-    else:
-        LOG.info('Facility floorplan file not found' + initial_pickle_file)
-        raise FileNotFoundError(initial_pickle_file)
-
-    LOG.info('Initializing floorplan with: ')
-    LOG.info(str(len(doors)) + ' doors')
-    LOG.info(str(len(walls)) + ' walls')
-
-    floorplan = Floorplan(scale=scale,
-                          spaces=spaces,
-                          doors=doors,
-                          walls=walls,
-                          aisles=aisles,
-                          width=width,
-                          height=height,
-                          special_walls=special_walls,
-                          floor_name=floor_name
-                          )
-
-    fp_updater = FloorplanUpdater(floorplan, svg_file=edited_svg_file)
+    floorplan = floorplan_from_directory(floorplan_directory, floor)
+    fp_updater = FloorplanUpdater(floorplan, svg_file=svg)
     fp_updater.run()
+
+    updated_pickle_file = os.path.join(floorplan_directory,
+                                       'updated_floorplan.pkl')
     fp_updater.export_floorplan_to_pickle_file(updated_pickle_file)
 
 
-def export_navigation_graph_to_svg(**kwargs):
+def export_navigation_graph_to_svg(facility: str,
+                                   floor: str,
+                                   outputfile: str,
+                                   floorplan_directory: str = None,
+                                   **kwargs):  # noqa
     """Export navigation network to svg file for visualization.
+
+    :param facility: Name of this facility
+    :param floor: Name of this floor (default=0)
+    :param outputfile: Location to store output
+    :param floorplan_directory: Custom directory for floorplans (default=cache)
+    :raise NotADirectoryError: floorplan_directory is invalid
+    :raise FileMotFoundError: could not find floorplan file
     """
 
-    svg_file = kwargs['outputfile']
-    facility_name = kwargs['facility']
-    floor_name = kwargs['floor']
-
-    if 'floorplan_directory' in kwargs:
-        floorplan_directory = kwargs['floorplan_directory']
-    else:
-        floorplan_directory = su.get_datadir(facility_name, floor_name)
-    if not os.path.isdir(floorplan_directory):
-        LOG.fatal('Directory with facility files not found.')
-        raise FileNotFoundError(floorplan_directory)
-
-    floorplan_file = os.path.join(floorplan_directory, 'updated_floorplan.pkl')
-    if not os.path.isfile(floorplan_file):
-        floorplan_file = os.path.join(floorplan_directory, 'floorplan.pkl')
-
-    if not os.path.isfile(floorplan_file):
-        raise FileNotFoundError(floorplan_file)
+    if not floorplan_directory:
+        floorplan_directory = su.get_datadir(facility, floor)
+    floorplan = floorplan_from_directory(floorplan_directory, floor)
 
     nav_network_file = os.path.join(floorplan_directory, 'routes.pkl')
     if not os.path.isfile(nav_network_file):
         raise FileNotFoundError(nav_network_file)
-
-    LOG.info('Loading files...')
-
-    with open(floorplan_file, 'rb') as f:
-        spaces, doors, walls, special_walls, aisles, width, height, \
-        scale = pickle.load(f)
 
     with open(nav_network_file, 'rb') as f:
         nav_graph = pickle.load(f)
@@ -252,13 +212,13 @@ def export_navigation_graph_to_svg(**kwargs):
         nav_nodes.append(e[0])
         nav_nodes.append(e[1])
         p = Line(start=complex(e[0][0], e[0][1]),
-                 end=complex(e[1][0], e[1][1])
-                 )
+                 end=complex(e[1][0], e[1][1]))
         nav_paths.append(p)
 
-    LOG.info('Exporting...')
-    bv.export_nav_network_to_svg(walls, nav_paths, nav_nodes, svg_file)
-    LOG.info('Navigation network exported to : ' + svg_file)
+    LOG.info('Exporting nav network to svg')
+    bv.export_nav_network_to_svg(floorplan.walls, nav_paths,
+                                 nav_nodes, outputfile)
+    LOG.info('Navigation network exported to: %s', outputfile)
 
 
 def load_floorplans(floors,
