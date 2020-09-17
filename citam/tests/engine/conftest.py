@@ -263,8 +263,8 @@ def simple_facility_floorplan(request):
                                          'updated_floorplan.pkl'
                                          )
     with open(floorplan_pickle_file, 'rb') as f:
-        spaces, doors, walls, special_walls, aisles, width, height, \
-        scale = pickle.load(f)
+        (spaces, doors, walls, special_walls,
+         aisles, width, height, scale) = pickle.load(f)
     fp = Floorplan(scale, spaces, doors, walls, aisles, width, height)
 
     return fp
