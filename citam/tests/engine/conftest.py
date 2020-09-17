@@ -256,12 +256,16 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
 
 
 @pytest.fixture
-def simple_facility_floorplan(request):
+def simple_facility_floorplan(request, monkeypatch):
     filename = request.module.__file__
-    test_dir, _ = os.path.splitext(filename)
+    test_dir = os.path.dirname(filename)
 
-    floorplan_pickle_file = os.path.join(test_dir,
-                                         'floorplans_and_nav_data',
+    datadir = os.path.join(test_dir,
+                           'test_navigation',
+                           'floorplans_and_nav_data')
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+
+    floorplan_pickle_file = os.path.join(datadir,
                                          'test_simple_facility/',
                                          'floor_0',
                                          'updated_floorplan.pkl'
@@ -270,7 +274,7 @@ def simple_facility_floorplan(request):
         spaces, doors, walls, special_walls, aisles, width, height, \
             scale = pickle.load(f)
     fp = Floorplan(scale, spaces, doors, walls, aisles, width, height)
-
+    fp.floor_name = "0"
     return fp
 
 
