@@ -26,7 +26,7 @@ from svgpathtools import Line
 import citam.engine.basic_visualization as bv
 import citam.engine.geometry_and_svg_utils as gsu
 import citam.engine.storage_utils as su
-from citam.engine.floorplan import Floorplan, floorplan_from_directory
+from citam.engine.floorplan import floorplan_from_directory
 from citam.engine.floorplan_ingester import FloorplanIngester
 from citam.engine.floorplan_updater import FloorplanUpdater
 from citam.engine.model import FacilityTransmissionModel
@@ -108,7 +108,7 @@ def export_floorplan_to_svg(facility: str,
     """Export a given floorplan to an SVG file for visualization and editing.
 
     :param facility: Name of this facility
-    :param floor: Name of this floor (default=0)
+    :param floor: Name of this floor
     :param outputfile: Location to store output
     :param floorplan_directory: Custom directory for floorplans (default=cache)
     :raise NotADirectoryError: floorplan_directory is invalid
@@ -165,7 +165,6 @@ def update_floorplan_from_svg_file(svg: str,
     :raise FileMotFoundError: could not find floorplan file
     """
     if not os.path.isfile(svg):
-        LOG.error('File not found: ' + svg)
         raise FileNotFoundError(svg)
 
     if not floorplan_directory:
@@ -188,7 +187,7 @@ def export_navigation_graph_to_svg(facility: str,
     """Export navigation network to svg file for visualization.
 
     :param facility: Name of this facility
-    :param floor: Name of this floor (default=0)
+    :param floor: Name of this floor
     :param outputfile: Location to store output
     :param floorplan_directory: Custom directory for floorplans (default=cache)
     :raise NotADirectoryError: floorplan_directory is invalid
@@ -240,39 +239,14 @@ def load_floorplans(floors,
         floorplan_directory = su.get_datadir(facility_name, fn)
         floorplan = floorplan_from_directory(floorplan_directory, fn,
                                              scale=user_scale)
-
-        with open(floorplan_file, 'rb') as f:
-            spaces, doors, walls, special_walls, aisles, width, height, \
-            scale = pickle.load(f)
-            LOG.info('.............success')
-
-        LOG.info('Scale: ' + str(scale) + ' [ft/drawing unit]')
-        floorplan = Floorplan(scale=scale,
-                              spaces=spaces,
-                              doors=doors,
-                              walls=walls,
-                              aisles=aisles,
-                              width=width,
-                              height=height,
-                              floor_name=fn,
-                              special_walls=special_walls
-                              )
         floorplans.append(floorplan)
-
     return floorplans
 
 
-def run_simulation(inputs):
-    """ Perform an agent-based simulation given a dictionary of input values
+def run_simulation(inputs: dict):
+    """Perform an agent-based simulation given a dictionary of input values
 
-    Parameters
-    -----------
-    input_dic: dict
-        Dictionary of input values
-
-    Returns
-    --------
-    None
+    :param inputs: Dictionary of input values
     """
     start_time = time.time()
     upload_results = inputs['upload_results']
@@ -316,47 +290,39 @@ def run_simulation(inputs):
     with open(work_directory + 'timing.txt', 'w') as outfile:
         outfile.write(str(total_time))
 
-    LOG.info('Results were saved here: ' + str(work_directory))
-    LOG.info('Elapsed time: ' + str(total_time) + ' sec\n')
-    LOG.info('Done with everything.')
+    LOG.info('Results were saved here: %s', work_directory)
+    LOG.info('Elapsed time: %s sec', total_time)
+    LOG.info('Done with everything')
 
 
-def find_and_save_potential_one_way_aisles(**kwargs):
+def find_and_save_potential_one_way_aisles(facility: str,
+                                           floor: str,
+                                           outputfile: str,
+                                           floorplan_directory: str = None,
+                                           **kwargs):  # noqa
     """Iterate over nodes and edges in the navigation network and identify
     segments that could potentially be assigned one-way traffic.
 
     Creates a list of potential one-way nav segments where each segment is a
     list of successive nodes belonging to that nav segment. Save the list
     for later retrieval and outputs it to an SVG file for the user.
+
+    :param facility: Name of this facility
+    :param floor: Name of this floor
+    :param outputfile: Location to store output
+    :param floorplan_directory: Custom directory for floorplans (default=cache)
+    :raise NotADirectoryError: floorplan_directory is invalid
+    :raise FileMotFoundError: could not find floorplan file
+    :raise FileMotFoundError: could not find navnet file
     """
 
-    svg_file = kwargs['outputfile']
-    facility_name = kwargs['facility']
-    floor_name = kwargs['floor']
-
-    if 'floorplan_directory' in kwargs:
-        floorplan_directory = kwargs['floorplan_directory']
-    else:
-        floorplan_directory = su.get_datadir(facility_name, floor_name)
-
-    if not os.path.isdir(floorplan_directory):
-        raise FileNotFoundError(floorplan_directory)
-
-    floorplan_file = os.path.join(floorplan_directory, 'updated_floorplan.pkl')
-    if not os.path.isfile(floorplan_file):
-        floorplan_file = os.path.join(floorplan_directory, 'floorplan.pkl')
-
-    if not os.path.isfile(floorplan_file):
-        raise FileNotFoundError(floorplan_file)
+    if not floorplan_directory:
+        floorplan_directory = su.get_datadir(facility, floor)
+    floorplan = floorplan_from_directory(floorplan_directory, floor)
 
     nav_network_file = os.path.join(floorplan_directory, 'routes.pkl')
     if not os.path.isfile(nav_network_file):
         raise FileNotFoundError(nav_network_file)
-
-    LOG.info('Loading files...')
-    with open(floorplan_file, 'rb') as f:
-        spaces, doors, walls, special_walls, aisles, width, height, \
-        scale = pickle.load(f)
 
     with open(nav_network_file, 'rb') as f:
         nav_graph = pickle.load(f)
@@ -411,14 +377,12 @@ def find_and_save_potential_one_way_aisles(**kwargs):
 
     # Save oneway network to pickle file
     oneway_net_pkl_file = os.path.join(floorplan_directory,
-                                       'onewway_network.pkl'
-                                       )
+                                       'onewway_network.pkl')
     with open(oneway_net_pkl_file, 'wb') as f:
         pickle.dump(oneway_network, f)
         LOG.info('File saved: %s', oneway_net_pkl_file)
 
-    bv.export_possible_oneway_aisles_to_svg(walls,
+    bv.export_possible_oneway_aisles_to_svg(floorplan.walls,
                                             oneway_network,
-                                            svg_file
-                                            )
-    LOG.info('Possible one-way aisles exported to : ' + svg_file)
+                                            outputfile)
+    LOG.info('Possible one-way aisles exported to %s', outputfile)
