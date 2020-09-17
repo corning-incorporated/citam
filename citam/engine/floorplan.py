@@ -297,8 +297,9 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
         raise FileNotFoundError("Could not find floorplan file")
 
     if kwargs.items():
-        LOG.debug("Updating fp_inputs with kwargs %s", kwargs)
-        fp_inputs.update(**kwargs)
+        no_none_kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        LOG.debug("Updating fp_inputs with kwargs %s", no_none_kwargs)
+        fp_inputs.update(**no_none_kwargs)
 
     LOG.info('Initializing floorplan: '
              'doors: %s, '

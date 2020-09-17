@@ -266,10 +266,9 @@ def run_simulation(inputs: dict):
     else:
         raise ValueError('At least one floorplan must be provided.')
 
-    sim_id = 'sim_id_0001'
     work_directory = inputs['output_directory']
     LOG.info('Running simulation...')
-    my_model.run_serial(sim_name=sim_id, workdir=work_directory)
+    my_model.run_serial(workdir=work_directory)
 
     LOG.info('Extracting stats...')
     my_model.save_outputs(work_directory)
