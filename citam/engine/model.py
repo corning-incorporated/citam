@@ -75,6 +75,8 @@ class FacilityTransmissionModel:
         self.shifts = shifts
         self.dry_run = dry_run
         self.traffic_policy = traffic_policy
+        self.simulation_name = None
+        self.simid = None
 
         # Handle scheduling rules
         if scheduling_policy is None:
@@ -240,9 +242,9 @@ class FacilityTransmissionModel:
 
         :param str sim_name: user-defined name of this simulation
         :param str workdir: directory to save the files for this simulation
+        :return: True or False to indicate if the simulation was successful
+        :rtype: boolean
         """
-
-        self.simulation_name = sim_name
 
         if self.n_agents is not None:
             self.occupancy_rate = \
