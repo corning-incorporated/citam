@@ -293,6 +293,9 @@ def floorplan_from_directory(path: str, floor: str) -> Floorplan:
     else:
         raise FileNotFoundError("Could not find floorplan file")
 
+    LOG.debug('Initializing floorplan with %d doors, %d walls',
+              len(doors), len(walls))
+
     return Floorplan(scale=scale,
                      spaces=spaces,
                      doors=doors,
