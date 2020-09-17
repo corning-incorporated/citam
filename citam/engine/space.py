@@ -11,26 +11,25 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
-
-
-import numpy as np
 import itertools
 import sys
+from typing import List
+
+import numpy as np
+from svgpathtools import Line
 
 import citam.engine.geometry_and_svg_utils as gsu
 from citam.engine.point import Point
 
 
 class Space:
-
     def __init__(self, path, boundaries, **attributes):
-
         self.boundaries = boundaries
         self.path = path
-        for key in attributes:
-            setattr(self, key, attributes[key])
+        for key, value in attributes.items():
+            setattr(self, key, value)
         self.pick_weight = 1.0
-        self.doors = []
+        self.doors: List[Line] = []
 
         if 'capacity' not in attributes:
             if self.is_space_a_meeting_room():
@@ -39,7 +38,11 @@ class Space:
             else:
                 self.capacity = None
 
-        return
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __hash__(self):
+        return id(self)
 
     def __str__(self):
 
@@ -54,12 +57,6 @@ class Space:
         size += sys.getsizeof(self.doors)
 
         return size
-
-    def __eq__(self, other):
-        return self.__dict__ == other.__dict__
-
-    def __hash__(self):
-        return hash(self)
 
     def is_point_on_space_walls(self, test_point):
 
@@ -159,8 +156,8 @@ class Space:
         xmin, xmax, ymin, ymax = self.path.bbox()
         found = False
         while not found:
-            x = np.random.randint(round(xmin)+1, round(xmax))
-            y = np.random.randint(round(ymin)+1, round(ymax))
+            x = np.random.randint(round(xmin) + 1, round(xmax))
+            y = np.random.randint(round(ymin) + 1, round(ymax))
             inside_point = Point(x=x, y=y)
             if self.is_point_inside_space(inside_point):
                 found = True
@@ -217,7 +214,7 @@ class Space:
     def is_space_vertical(self):
 
         if ('stair' in self.space_function.lower() or
-                'elev' in self.space_function.lower()) and \
+            'elev' in self.space_function.lower()) and \
                 'evac' not in self.space_function.lower():
             return True
         else:
@@ -236,8 +233,8 @@ class Space:
         """
         xmin, xmax, ymin, ymax = self.path.bbox()
 
-        x = int((xmax-xmin)/2.0)
-        y = int((ymax-ymin)/2.0)
+        x = int((xmax - xmin) / 2.0)
+        y = int((ymax - ymin) / 2.0)
 
         return (x, y)
 
@@ -246,8 +243,8 @@ class Space:
         inside_points = []
         xmin, xmax, ymin, ymax = self.path.bbox()
 
-        x_range = range(round(xmin), round(xmax)+1)
-        y_range = range(round(ymin), round(ymax)+1)
+        x_range = range(round(xmin), round(xmax) + 1)
+        y_range = range(round(ymin), round(ymax) + 1)
 
         for x, y in itertools.product(x_range, y_range):
             p = Point(x=x, y=y)
