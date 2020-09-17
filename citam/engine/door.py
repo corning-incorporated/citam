@@ -45,3 +45,6 @@ class Door:
             str_repr += 'Space 2: None' + '\n'
 
         return str_repr
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__

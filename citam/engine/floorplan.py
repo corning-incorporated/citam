@@ -268,14 +268,16 @@ class Floorplan:
         return
 
 
-def floorplan_from_directory(path: str, floor: str) -> Floorplan:
+def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
     """Load a floorplan from a given floorplan directory
+
+    .. note:: additional kwargs will be passed to the Floorplan constructor
 
     :param path: Floorplan Directory
     :param floor: Name of the floor being imported
-    :return: Floorplan Directory
     :raise FileNotFoundError: If floorplan file cannot be found
     :raise NotADirectoryError: path does not reference a valid directory
+    :return: Floorplan Directory
     """
 
     if not os.path.isdir(path):
@@ -287,21 +289,20 @@ def floorplan_from_directory(path: str, floor: str) -> Floorplan:
 
     if os.path.isfile(fp_pickle_file):
         with open(fp_pickle_file, 'rb') as f:
-            (spaces, doors, walls, special_walls, aisles,
-             width, height, scale) = pickle.load(f)
+            fields = ('spaces', 'doors', 'walls', 'special_walls', 'aisles',
+                      'width', 'height', 'scale')
+            fp_inputs = {k: v for k, v in zip(fields, pickle.load(f))}
         LOG.info('Floorplan successfully loaded.')
     else:
         raise FileNotFoundError("Could not find floorplan file")
 
-    LOG.debug('Initializing floorplan with %d doors, %d walls',
-              len(doors), len(walls))
+    if kwargs.items():
+        LOG.debug("Updating fp_inputs with kwargs %s", kwargs)
+        fp_inputs.update(**kwargs)
 
-    return Floorplan(scale=scale,
-                     spaces=spaces,
-                     doors=doors,
-                     walls=walls,
-                     special_walls=special_walls,
-                     aisles=aisles,
-                     width=width,
-                     height=height,
-                     floor_name=floor)
+    LOG.debug('Initializing floorplan with %d doors, %d walls',
+              len(fp_inputs.get('doors', [])),
+              len(fp_inputs.get('walls', [])))
+
+    LOG.debug("Floorplan constructor arguments", fp_inputs)
+    return Floorplan(**fp_inputs)

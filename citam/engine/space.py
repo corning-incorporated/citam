@@ -55,6 +55,9 @@ class Space:
 
         return size
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
     def is_point_on_space_walls(self, test_point):
 
         for wall in self.path:
