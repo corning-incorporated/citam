@@ -12,11 +12,14 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-from citam.engine.point import Point
-import citam.engine.basic_visualization as bv
-
 import logging
+import os
 import pickle
+
+import citam.engine.basic_visualization as bv
+from citam.engine.point import Point
+
+LOG = logging.getLogger(__name__)
 
 
 class Floorplan:
@@ -89,17 +92,17 @@ class Floorplan:
                 if len(space.doors) > 0:
                     n_rooms_with_doors += 1
 
-        logging.info('Number of spaces: ' + str(len(self.spaces)))
-        logging.info('Number of rooms: ' + str(n_rooms))
-        logging.info('Number of rooms with doors: ' + str(n_rooms_with_doors))
-        logging.info('Number of walls: ' + str(len(self.walls)))
-        logging.info('Total number of doors: ' + str(len(self.doors)))
+        LOG.info('Number of spaces: ' + str(len(self.spaces)))
+        LOG.info('Number of rooms: ' + str(n_rooms))
+        LOG.info('Number of rooms with doors: ' + str(n_rooms_with_doors))
+        LOG.info('Number of walls: ' + str(len(self.walls)))
+        LOG.info('Total number of doors: ' + str(len(self.doors)))
 
         n_outside_doors = 0
         for door in self.doors:
             if door.space1 is None or door.space2 is None:
                 n_outside_doors += 1
-        logging.info('Number of outside doors: ' + str(n_outside_doors))
+        LOG.info('Number of outside doors: ' + str(n_outside_doors))
 
         self.agent_locations = {}
         self.traffic_policy = traffic_policy
@@ -125,7 +128,7 @@ class Floorplan:
         x, y = pos
         key = str(x) + '-' + str(y)
         if key not in self.agent_locations:
-            logging.error('Cannot find any agent in this location.')
+            LOG.error('Cannot find any agent in this location.')
         else:
             self.agent_locations[key].remove(agent)
         agent.pos = None
@@ -171,7 +174,7 @@ class Floorplan:
                     break
             if room_door is None:
                 space_name = str(self.spaces[room_id].unique_name)
-                logging.warning(space_name + ' has no door')
+                LOG.warning(space_name + ' has no door')
                 return None
 
         else:
@@ -206,7 +209,7 @@ class Floorplan:
             current_time=None,
             show_colobar=False,
             viewbox=None
-            )
+        )
 
         return
 
@@ -263,3 +266,39 @@ class Floorplan:
             pickle.dump(data_to_save, f)
 
         return
+
+
+def floorplan_from_directory(path: str, floor: str) -> Floorplan:
+    """Load a floorplan from a given floorplan directory
+
+    :param path: Floorplan Directory
+    :param floor: Name of the floor being imported
+    :return: Floorplan Directory
+    :raise FileNotFoundError: If floorplan file cannot be found
+    :raise NotADirectoryError: path does not reference a valid directory
+    """
+
+    if not os.path.isdir(path):
+        raise NotADirectoryError(f'Floor directory not found: {path}')
+
+    fp_pickle_file = os.path.join(path, 'updated_floorplan.pkl')
+    if not os.path.isfile(fp_pickle_file):
+        fp_pickle_file = os.path.join(path, 'floorplan.pkl')
+
+    if os.path.isfile(fp_pickle_file):
+        with open(fp_pickle_file, 'rb') as f:
+            (spaces, doors, walls, special_walls, aisles,
+             width, height, scale) = pickle.load(f)
+        LOG.info('Floorplan successfully loaded.')
+    else:
+        raise FileNotFoundError("Could not find floorplan file")
+
+    return Floorplan(scale=scale,
+                     spaces=spaces,
+                     doors=doors,
+                     walls=walls,
+                     special_walls=special_walls,
+                     aisles=aisles,
+                     width=width,
+                     height=height,
+                     floor_name=floor)

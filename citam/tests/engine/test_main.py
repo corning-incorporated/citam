@@ -12,7 +12,7 @@ def test_ingest_floorplan_file_not_found():
 
     with pytest.raises(FileNotFoundError):
         main.ingest_floorplan(csv=csv_file,
-                              map=svg_file,
+                              svg=svg_file,
                               facility=facility_name
                               )
 
@@ -21,11 +21,9 @@ def test_ingest_floorplan_no_issues(datadir, tmpdir):
     csv_file = os.path.join(datadir, 'TF1.csv')
     svg_file = os.path.join(datadir, 'TF1.svg')
     facility_name = 'mytest'
-    res = main.ingest_floorplan(csv=csv_file,
-                                map=svg_file,
-                                facility=facility_name,
-                                output_directory=tmpdir
-                                )
+    main.ingest_floorplan(csv=csv_file,
+                          svg=svg_file,
+                          facility=facility_name,
+                          output_directory=tmpdir)
     output_filename = os.path.join(tmpdir, 'floorplan.pkl')
-    assert res is True
     assert os.path.isfile(output_filename)
