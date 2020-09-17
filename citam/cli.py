@@ -131,17 +131,18 @@ def _add_engine_commands(subparser, global_args):
         help="Floor name"
     )
     ingest.add_argument(
-        '--csv',  # TODO: name this after what it does, not what it is.
+        '-c',
+        '--csv',
         type=str,  # Ex: -c, --contact_file
         required=True,
         help="Map properties file as CSV"
     )
     ingest.add_argument(
-        '-m',
-        '--map',
+        '-s',
+        '--svg',
         type=str,
         required=True,
-        help="Raw map SVG file"
+        help=""
     )
     ingest.add_argument(
         '--output_dir',
@@ -167,8 +168,8 @@ def _add_engine_commands(subparser, global_args):
         help="Facility name"
     )
     update_floorplan.add_argument(
-        '-m',
-        '--map',
+        '-s',
+        '--svg',
         type=str,
         required=True,
         help="Raw map SVG file"
