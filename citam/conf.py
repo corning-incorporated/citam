@@ -51,6 +51,7 @@ def _import_string(dotted_path: str) -> Any:
 
 class CitamSettings:
     _storage_driver = None
+    _result_path = None
     _active_storage_driver_path = None
     _active_storage_driver_options = None
 
@@ -87,6 +88,19 @@ class CitamSettings:
 
         #: Storage driver instance
         self._storage_driver = self._initialize_storage_driver()
+
+    @property
+    def result_path(self) -> str:
+        return self._result_path
+
+    @result_path.setter
+    def result_path(self, value: str):
+        self._result_path = value
+        # Update the storage driver if this changes
+        if self._result_path:
+            self.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'  # noqa
+        else:
+            self.storage_driver_path = 'citam.api.storage.s3.S3StorageDriver'  # noqa
 
     @property
     def storage_driver(self) -> BaseStorageDriver:
