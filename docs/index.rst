@@ -15,7 +15,9 @@ Welcome to CITAM's documentation
    visualize_results
    cli_commands
    global_configuration
-   tech_documentation
+   engine_developer_reference
+   cli_developer_reference
+   api_developer_reference
 
 Indices and tables
 ==================
