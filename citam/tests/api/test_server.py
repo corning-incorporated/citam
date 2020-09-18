@@ -35,20 +35,16 @@ def static_path(tmp_path_factory):
 @pytest.fixture(autouse=True)
 def static_route(monkeypatch, static_path):
     """Mock static routes to test dash logic without requiring JS"""
-    print("Generating static route fixture")
 
     class MockedStaticRoute(StaticRoute):
         def __init__(self, prefix, directory, *args, **kwargs):  # noqa
-            print("Initializing static route!")
-            print(f"original directory:{directory}. "
-                  f"new directory: {static_path}")
             super().__init__(prefix, str(static_path), *args, **kwargs)
 
     monkeypatch.setattr(citam.api.server, 'StaticRoute', MockedStaticRoute)
 
 
 @pytest.fixture
-def client() -> testing.TestClient:
+def client(use_local_storage) -> testing.TestClient:
     return testing.TestClient(server.get_wsgi_app())
 
 

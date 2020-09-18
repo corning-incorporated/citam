@@ -15,12 +15,12 @@
 from citam.api.parser import get_contacts, get_trajectories
 
 
-def test_contacts_parsing_num_steps():
+def test_contacts_parsing_num_steps(use_local_storage):
     contacts = get_contacts('sim_id_0001', "0")
     assert len(contacts) == 1900
 
 
-def test_get_contacts_no_contact_step():
+def test_get_contacts_no_contact_step(use_local_storage):
     """
     Test that the correct data is parsed when a single contact was made in a
     step
@@ -29,7 +29,7 @@ def test_get_contacts_no_contact_step():
     assert len(contacts[0]) == 0
 
 
-def test_get_contacts_single_contact_step():
+def test_get_contacts_single_contact_step(use_local_storage):
     """
     Test that the correct data is parsed when a single contact was made in a
     step
@@ -42,7 +42,7 @@ def test_get_contacts_single_contact_step():
     assert step[0]['count'] == 1
 
 
-def test_get_contacts_multiple_contact_step():
+def test_get_contacts_multiple_contact_step(use_local_storage):
     """
     Test that the correct data is parsed when a multiple contacts were made
     in a step
@@ -58,18 +58,18 @@ def test_get_contacts_multiple_contact_step():
         assert contact == expected[ix]
 
 
-def test_trajectories_num_structure():
+def test_trajectories_num_structure(use_local_storage):
     trajectories = get_trajectories('sim_id_0001')
     assert (trajectories.get('data'))
     assert (trajectories.get('statistics'))
 
 
-def test_trajectories_num_steps():
+def test_trajectories_num_steps(use_local_storage):
     trajectories = get_trajectories('sim_id_0001')
     assert len(trajectories['data']) == 1900
 
 
-def test_get_trajectories_2agents():
+def test_get_trajectories_2agents(use_local_storage):
     trajectories = get_trajectories('sim_id_0001')
     expected_trajectories = [
         {'agent': 5, 'x': 0, 'y': 602, 'z': 0, 'count': 0},
@@ -79,7 +79,7 @@ def test_get_trajectories_2agents():
         assert trajectories['data'][82][ix] == expected
 
 
-def test_get_trajectories_2agents_filtered():
+def test_get_trajectories_2agents_filtered(use_local_storage):
     trajectories = get_trajectories('sim_id_0001', floor=1)
     expected_trajectories = [
         {'agent': 5, 'x': 0, 'y': 602, 'z': 1, 'count': 0},
