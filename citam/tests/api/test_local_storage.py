@@ -16,7 +16,8 @@ import os
 import pytest
 from tempfile import TemporaryDirectory
 
-from citam.api.storage.local import LocalStorageDriver, NoResultsFoundError
+from citam.api.storage.local import LocalStorageDriver
+from citam.api.storage import NoResultsFoundError
 
 search_root = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),

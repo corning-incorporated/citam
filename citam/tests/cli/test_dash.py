@@ -18,20 +18,39 @@
 import os
 import wsgiref.simple_server
 from tempfile import TemporaryDirectory
-
 import pytest
 
+import citam
 from citam import cli
-from citam.conf import settings
+from citam.api.storage.local import LocalStorageDriver
+from citam.conf import settings, CitamSettings
 
 
 @pytest.fixture(autouse=True)
 def disable_blocking_run_forever_call(monkeypatch):
     """This prevents the ``citam dash`` command from starting the server"""
+
+    class MockedSimpleServer:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def serve_forever(self, *args, **kwargs):
+            pass
+
     monkeypatch.setattr(
-        wsgiref.simple_server.WSGIServer,
-        'serve_forever',
-        lambda *args, **kwargs: None
+        wsgiref.simple_server,
+        'make_server',
+        lambda *args, **kwargs: MockedSimpleServer(*args, **kwargs)
+    )
+
+
+@pytest.fixture(autouse=True)
+def reinitialize_settings(monkeypatch):
+    """Before each command is run, reinitialize the citam settings"""
+    monkeypatch.setattr(
+        citam.conf,
+        'settings',
+        lambda *args, **kwargs: CitamSettings()
     )
 
 
@@ -40,6 +59,7 @@ def test_results_is_optional():
     parser = cli.get_parser()
     parsed = parser.parse_args(['dash'])
     parsed.func(**vars(parsed))
+    assert isinstance(settings.storage_driver, LocalStorageDriver)
 
 
 def test_valid_results_option():
@@ -50,6 +70,10 @@ def test_valid_results_option():
     with TemporaryDirectory() as td:
         results_dir = os.path.abspath(td)
 
+        # Populate the directory with a minimal result manifest
+        with open(os.path.join(results_dir, 'manifest.json'), 'w') as manifest:
+            manifest.write('{"SimulationName": "testing"}')
+
         # Pass temp directory to CLI with --results
         parser = cli.get_parser()
         parsed = parser.parse_args(['dash', '--results', results_dir])
@@ -57,6 +81,7 @@ def test_valid_results_option():
 
         # Assert results_dir is being set properly
         assert settings.result_path == results_dir
+        assert isinstance(settings.storage_driver, LocalStorageDriver)
 
 
 def test_invalid_dir_results_option():

@@ -68,6 +68,7 @@ setuptools.setup(
         'matplotlib',
         'boto3',
         'falcon',
+        'appdirs'
     ],
 
     # For a list of classifiers, see https://pypi.org/classifiers/
