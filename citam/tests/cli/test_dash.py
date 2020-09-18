@@ -23,7 +23,7 @@ import pytest
 
 from citam import cli
 from citam.api.storage.local import LocalStorageDriver
-from citam.conf import settings, ConfigurationError
+from citam.conf import ConfigurationError
 
 
 @pytest.fixture(autouse=True)
@@ -45,6 +45,13 @@ def mocked_dash_server(monkeypatch):
 
 
 @pytest.fixture()
+def settings(reinitialize_settings):
+    """Re-initialize and return a reference to the CitamSettings object"""
+    from citam.conf import settings
+    return settings
+
+
+@pytest.fixture()
 def result_dir(tmpdir):
     """Generate a result directory and populate it with a manifest"""
     # Populate the directory with a minimal result manifest
@@ -54,9 +61,12 @@ def result_dir(tmpdir):
     return str(result_dir)
 
 
-def test_results_is_optional_if_env_is_set(monkeypatch, result_dir):
+def test_results_is_optional_if_env_is_set(monkeypatch, result_dir, settings):
     # Set a starting results path
     monkeypatch.setenv('CITAM_RESULT_PATH', result_dir)
+    print('--++--[[[[]]]][[[[]]]]--++--[[[[]]]][[[[]]]]--++--[[[[]]]][[[[]]]]')
+    print(os.environ['CITAM_RESULT_PATH'])
+    print('--++--[[[[]]]][[[[]]]]--++--[[[[]]]][[[[]]]]--++--[[[[]]]][[[[]]]]')
     parser = cli.get_parser()
     parsed = parser.parse_args(['dash'])
     parsed.func(**vars(parsed))
@@ -65,14 +75,14 @@ def test_results_is_optional_if_env_is_set(monkeypatch, result_dir):
     assert settings.result_path == result_dir
 
 
-def test_result_not_set_fails():
+def test_result_not_set_fails(settings):
     parser = cli.get_parser()
     parsed = parser.parse_args(['dash'])
     with pytest.raises(ConfigurationError):
         parsed.func(**vars(parsed))
 
 
-def test_valid_results_option(result_dir):
+def test_valid_results_option(result_dir, settings):
     parser = cli.get_parser()
     parsed = parser.parse_args(['dash', '--results', result_dir])
     parsed.func(**vars(parsed))
@@ -83,7 +93,7 @@ def test_valid_results_option(result_dir):
     assert isinstance(settings.storage_driver, LocalStorageDriver)
 
 
-def test_invalid_dir_results_option():
+def test_invalid_dir_results_option(settings):
     """
     This is to test that when an invalid or non-existent directory is
     specified via the CLI, the correct exception is raised.

@@ -17,9 +17,8 @@ __all__ = ['settings']
 
 import logging
 import os
-from copy import deepcopy
 from importlib import import_module
-from typing import Any, Union
+from typing import Any, Optional
 
 from citam.api.storage import BaseStorageDriver
 
@@ -60,24 +59,52 @@ def _import_string(dotted_path: str) -> Any:
         ) from err
 
 
+class LazySetting:
+    def __init__(self):
+        pass
+
+    def __get__(self, obj, obj_type):
+        pass
+
+    def __set__(self, obj, value):
+        pass
+
+
 class CitamSettings:
-    #: Internal variable for the currently initialized storage driver object
-    _storage_driver = None
-
-    #: Internal variable for the result_path property
-    _result_path = None
-
-    #: Internal variable for the storage_driver path related to the currently
-    #: initialized storage driver object
-    _active_storage_driver_path = None
-
-    #: Internal tracking for validation problems
-    _active_storage_driver_options = None
-
-    #: Internal tracking for validation problems
-    _validation_errors = {}
+    access_key: Optional[str]
+    secret_key: Optional[str]
+    storage_bucket: Optional[str]
+    region_name: Optional[str]
+    storage_url: Optional[str]
+    storage_driver_path: Optional[str]
+    log_level: int
 
     def __init__(self):
+        self._storage_driver = None
+        self._result_path = None
+        self._active_storage_driver_path = None
+        self._active_storage_driver_options = None
+        self._validation_errors = {}
+
+        self.reset()
+
+    def reset(self):
+        #: Internal variable for the currently initialized storage driver object
+        self._storage_driver = None
+
+        #: Internal variable for the result_path property
+        self._result_path = None
+
+        #: Internal variable for the storage_driver path related to the currently
+        #: initialized storage driver object
+        self._active_storage_driver_path = None
+
+        #: Internal tracking for validation problems
+        self._active_storage_driver_options = None
+
+        #: Internal tracking for validation problems
+        self._validation_errors = {}
+
         #: Access Key for s3 backend.
         self.access_key = os.environ.get('CITAM_STORAGE_KEY', '')
 
@@ -152,11 +179,11 @@ class CitamSettings:
 
         LOG.debug("Using results directory: %s", self._result_path)
 
-    def _initialize_storage_driver(self) -> Union[BaseStorageDriver, None]:
+    def _initialize_storage_driver(self) -> Optional[BaseStorageDriver]:
         """Get configured storage driver"""
         driver_class = _import_string(self.storage_driver_path)
         self._active_storage_driver_path = str(self.storage_driver_path)
-        self._active_storage_driver_options = deepcopy(self._storage_kwargs)
+        self._active_storage_driver_options = {**self._storage_kwargs}
 
         # Clear any existing "storage driver" validation errors
         self._validation_errors['storage_driver'] = False

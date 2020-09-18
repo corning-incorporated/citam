@@ -39,6 +39,6 @@ def reinitialize_settings(monkeypatch):
     monkeypatch.setattr(
         citam.conf,
         'settings',
-        lambda *a, **b: CitamSettings(),
+        CitamSettings(),
         raising=False,
     )
