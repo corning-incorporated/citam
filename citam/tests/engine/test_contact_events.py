@@ -156,7 +156,7 @@ def test_extract_statistics(sample_contacts):
 
     stats = sample_contacts.extract_statistics()
 
-    assert len(stats) == 5
+    assert len(stats) == 6
     for stat in stats:
         assert 'name' in stat
         assert 'value' in stat
@@ -177,13 +177,16 @@ def test_extract_statistics(sample_contacts):
     assert stats[4]['name'] == 'avg_number_of_people_per_agent'
     assert stats[4]['value'] == 1
 
+    assert stats[5]['name'] == 'max_contacts'
+    assert stats[5]['value'] == 2
+
 
 def test_extract_statistics_no_data():
 
     contacts = ContactEvents()
     stats = contacts.extract_statistics()
 
-    assert len(stats) == 5
+    assert len(stats) == 6
     for stat in stats:
         assert 'name' in stat
         assert 'value' in stat
@@ -203,6 +206,9 @@ def test_extract_statistics_no_data():
 
     assert stats[4]['name'] == 'avg_number_of_people_per_agent'
     assert stats[4]['value'] == 0
+
+    assert stats[5]['name'] == 'max_contacts'
+    assert stats[5]['value'] == 0
 
 
 def test_get_floor_contact_coords(sample_contacts):

@@ -230,6 +230,15 @@ class ContactEvents:
                 }
         statistics.append(stat)
 
+        max_contacts = 0
+        if len(total_contacts_per_agent) > 0:
+            max_contacts = max(total_contacts_per_agent.values())
+        stat = {'name': 'max_contacts',
+                'value': max_contacts,
+                'unit': ''
+                }
+        statistics.append(stat)
+
         return statistics
 
     def get_floor_contact_coords(self,
