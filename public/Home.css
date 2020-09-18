@@ -48,9 +48,15 @@
   margin-top: 15px;
 }
 .titleBorder {
-  border-bottom: 1px solid black;
+  /*border-bottom: 1px solid black; */
   width: 85%;
   margin-top: 50px;
+}
+
+.titleBorder img {
+  margin: 15px 0 0 55px;
+  width: 170px;
+  height: 40px;
 }
 #citamTitle {
   font-size: 55px;
