@@ -12,6 +12,7 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
+from typing import Dict, Tuple
 import numpy as np
 import scipy.spatial.distance
 from collections import OrderedDict
@@ -237,7 +238,7 @@ class FacilityTransmissionModel:
 
         self.simid = m.hexdigest()
 
-    def run_serial(self, sim_name, workdir):
+    def run_serial(self, workdir):
         """Runs an citam simulation serially.
 
         :param str sim_name: user-defined name of this simulation
@@ -256,7 +257,7 @@ class FacilityTransmissionModel:
                     )
         else:
             if self.occupancy_rate < 0.0 or self.occupancy_rate > 1.0:
-                raise ValueError( 'Invalid occupancy rate (must be > 0 & <=1')
+                raise ValueError('Invalid occupancy rate (must be > 0 & <=1')
             self.n_agents = round(self.occupancy_rate*self.total_offices)
 
         logging.info('Running simulation serially')
@@ -407,8 +408,8 @@ class FacilityTransmissionModel:
         """
         door_mid_point = entrance_door.path.point(0.5)
         entrance_coords = (round(door_mid_point.real),
-                            round(door_mid_point.imag)
-                            )
+                           round(door_mid_point.imag)
+                           )
         if self.navigation.navnet_per_floor[entrance_floor]\
                 .has_node(entrance_coords):
             edges = self.navigation.navnet_per_floor[entrance_floor]\
@@ -456,10 +457,11 @@ class FacilityTransmissionModel:
 
             if not self.is_door_in_navnet(entrance_floor, entrance_door):
                 raise ValueError('Cannot use this entrance %s',
-                                    entrance_door)
+                                 entrance_door)
 
-
-    def choose_best_entrance(self, office_floor, office_id):
+    def choose_best_entrance(self,
+                             office_floor: int,
+                             office_id: int) -> Tuple[Dict, int]:
         """
         Find the facility entrance that offers the fastest route to an agent's
         assigned office space.

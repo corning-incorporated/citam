@@ -12,15 +12,23 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-import logging
+from citam.engine.agent import Agent
+
+from typing import Tuple, Dict, List
 
 
-def update_data_dictionary(datadict: dict, key: str, data: float | int) -> dict:
+def update_data_dictionary(datadict: dict,
+                           key: str,
+                           data: float or int) -> dict:
     """
     Utility function to update a dictionary to add data to existing value if
     the key exist or create new key:value pair if not
 
-    :param:
+    :param dict datadict: the dictionary to update
+    :param str key: key for the value to update
+    :param float or int data: the value to add to current value
+    :return: the updated dictionary
+    :rtype: dict
     """
     if key not in datadict:
         datadict[key] = data
@@ -32,7 +40,12 @@ def update_data_dictionary(datadict: dict, key: str, data: float | int) -> dict:
 
 class ContactEvent:
 
-    def __init__(self, floor_number, location, position, current_step):
+    def __init__(self,
+                 floor_number: int,
+                 location: int,
+                 position: Tuple[int, int],
+                 current_step: int):
+
         super().__init__()
         self.locations = [location]
         self.floor_numbers = [floor_number]
@@ -45,25 +58,31 @@ class ContactEvents:
     """Class to keep track of every time 2 agents come in close proximity
     """
 
-    def __init__(self):
+    def __init__(self):  # TODO: maybe make this a dict subclass
         super().__init__()
 
         # Will keep track of the data in a dictionary instead of a matrix so
         # we don't waste space for agents that never come into contact with
-        # each other. The key will be make with the unique ID of agent 1 and
-        # unique ID or agent 2 in "increasing" order
+        # each other. The key will be made with the unique IDs of agent 1 and
+        # agent 2 in "increasing" order (i.e. the smallest always comes first)
 
         self.contact_data = {}
 
-        return
-
     def add_contact(self,
-                    agent1,
-                    agent2,
-                    current_step,
-                    position
-                    ):
-        """Add single contact event to this.
+                    agent1: Agent,
+                    agent2: Agent,
+                    current_step: int,
+                    position: Tuple[int, int]
+                    ) -> None:
+        """
+        Add single contact event between two agents. If there was a contact
+        event in the previous step, update its duration and list of locations.
+        The floor number is extracted from the first agent's position.
+
+        :param Agent agent1: First agent involved in this contact event.
+        :param Agent agent2: Second agent involved in this contact event.
+        :param int current_step: Step when this contact takes place
+        :position tuple(int, int) Position: xy position of contact
         """
         floor_number = agent1.current_floor
         # TODO: find location of contacts based on xy position
@@ -94,10 +113,11 @@ class ContactEvents:
         else:
             self.contact_data[key] = [new_contact_event]
 
-        return
-
-    def count(self):
+    def count(self) -> int:
         """compute the total number of contacts
+
+        :return: total number of contact events
+        :rtype: int
         """
         n_contacts = 0
         for key in self.contact_data:
@@ -105,8 +125,10 @@ class ContactEvents:
 
         return n_contacts
 
-    def save_pairwise_contacts(self, filename):
-        """Output pairwise contact data to file
+    def save_pairwise_contacts(self, filename: str) -> None:
+        """Save pairwise contact data to file
+
+        :param str filename: name of the file
         """
         with open(filename, 'w') as outfile:
             outfile.write('Agent1,Agent2,N_Contacts,TotalContactDuration\n')
@@ -119,10 +141,12 @@ class ContactEvents:
                 outfile.write(agent1 + ',' + agent2 + ',' + n_contacts +
                               ',' + total_duration + '\n')
 
-        return
-
-    def exatract_statistics(self):
+    def extract_statistics(self) -> List[Dict[str, str or int]]:
         """Extract key contact statistics from contact data
+
+        :return: list of dictionaries of key statistics. Each stat is given
+            by its name, value and unit.
+        :rtype: list[dict[str, str | int]]
         """
         statistics = []
 
@@ -169,8 +193,10 @@ class ContactEvents:
         statistics.append(stat)
 
         n_agents_with_contact = len(total_contacts_per_agent)
-        avg_n_contacts_per_agent = \
-            sum(total_contacts_per_agent.values()) / n_agents_with_contact
+        avg_n_contacts_per_agent = 0
+        if n_agents_with_contact > 0:
+            avg_n_contacts_per_agent = \
+                sum(total_contacts_per_agent.values()) / n_agents_with_contact
         stat = {'name': 'avg_n_contacts_per_agent',
                 'value': round(avg_n_contacts_per_agent, 2),
                 'unit': ''
@@ -178,8 +204,10 @@ class ContactEvents:
         statistics.append(stat)
 
         total_contact_duration = sum(total_contact_duration_per_agent.values())
-        avg_contact_duration_per_agent = \
-            total_contact_duration / n_agents_with_contact
+        avg_contact_duration_per_agent = 0
+        if n_agents_with_contact > 0:
+            avg_contact_duration_per_agent = \
+                total_contact_duration / (n_agents_with_contact*2.0)
         stat = {'name': 'avg_contact_duration_per_agent',
                 'value': round(avg_contact_duration_per_agent / 60.0, 2),
                 'unit': 'min'
@@ -190,9 +218,12 @@ class ContactEvents:
                 'value': n_agents_with_contact,
                 'unit': ''
                 }
+        statistics.append(stat)
 
-        avg_number_of_people_per_agent = \
-            sum(n_others.values()) / n_agents_with_contact
+        avg_number_of_people_per_agent = 0
+        if n_agents_with_contact > 0:
+            avg_number_of_people_per_agent = \
+                sum(n_others.values()) / n_agents_with_contact
         stat = {'name': 'avg_number_of_people_per_agent',
                 'value': round(avg_number_of_people_per_agent, 2),
                 'unit': ''
@@ -201,10 +232,18 @@ class ContactEvents:
 
         return statistics
 
-    def get_floor_contact_coords(self, key, floor_number):
+    def get_floor_contact_coords(self,
+                                 key: str,
+                                 floor_number: int) -> List[Tuple[int, int]]:
         """
         Iterate over all contact events associated with key, and return
         the ones that correspond to floor number.
+
+        :param str key: the pair of agents given by a key of the form
+            <agent1_id>-<agent2_id>.
+        :param int floor_number: index of the floor of interest.
+        :return: list of positions
+        :rtype: list[(int, int)]
         """
         floor_positions = []
         for ce in self.contact_data[key]:
@@ -214,8 +253,17 @@ class ContactEvents:
 
         return floor_positions
 
-    def get_contacts_per_coordinates(self, step, floor_number):
-        """Save per coordinate contact data to file
+    def get_contacts_per_coordinates(self,
+                                     step: int,
+                                     floor_number: int
+                                     ) -> Dict[Tuple[int, int], int]:
+        """Save per coordinate contact data to file.
+
+        :param int step: Simulation step for which to extract contact data.
+        :param int floor_number: Floor number for which to extract data.
+
+        :return: Dictionary of contacts per location with xy positions as keys
+        :rtype: dict[(int,int), int]
         """
         contacts_per_location = {}
 
@@ -232,18 +280,17 @@ class ContactEvents:
                                            )
         return contacts_per_location
 
-    def save_raw_contact_data(self, filename):
-        """Save all contact data to file
+    def save_raw_contact_data(self, filename: str) -> None:
+        """Save all contact data to file.
+
+        :param str filename: The file path to save the data
         """
-        # List of dictionaries (one dictionary for each contact event)
-        contact_list = []
-        for key in self.contact_data:
-            for ce in self.contact_data[key]:
-                contact_list.append(ce.__dict__)
+
+        data_to_save = {}
+        for key, value in self.contact_data.items():
+            data_to_save[key] = [v.__dict__ for v in value]
 
         with open(filename, 'w') as outfile:
-            outfile.write(str(contact_list))
+            outfile.write(str(data_to_save))
 
-        return
-
-    # TODO: create function to add to concatenate 2 contact_events objects
+    # TODO: create function to add 2 contact_events objects

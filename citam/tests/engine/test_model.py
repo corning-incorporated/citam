@@ -5,6 +5,7 @@ import os
 import pytest
 import numpy as np
 
+
 @pytest.fixture
 def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
     filename = request.module.__file__
@@ -14,20 +15,20 @@ def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
 
     model = FacilityTransmissionModel([simple_facility_floorplan],
-                                       daylength=3600,
-                                       n_agents=2,
-                                       occupancy_rate=None,
-                                       buffer=100,
-                                       timestep=1.0,
-                                       entrances=[{"name":"1", "floor": "0"}],
-                                       facility_name='test_simple_facility',
-                                       contact_distance=6.0,
-                                       shifts=[{"name":"1", "start_time": 0,
-                                                 "percent_workforce": 1.0}],
-                                       meetings_policy_params=None,
-                                       scheduling_policy=None,
-                                       traffic_policy=None,
-                                       dry_run=False)
+                                      daylength=3600,
+                                      n_agents=2,
+                                      occupancy_rate=None,
+                                      buffer=100,
+                                      timestep=1.0,
+                                      entrances=[{"name": "1", "floor": "0"}],
+                                      facility_name='test_simple_facility',
+                                      contact_distance=6.0,
+                                      shifts=[{"name": "1", "start_time": 0,
+                                              "percent_workforce": 1.0}],
+                                      meetings_policy_params=None,
+                                      scheduling_policy=None,
+                                      traffic_policy=None,
+                                      dry_run=False)
 
     return model
 
@@ -80,8 +81,7 @@ def test_identify_xy_proximity_no_data(simple_facility_model):
 
 def test_identify_xy_proximity_same_coords(simple_facility_model):
     model = simple_facility_model
-
-    positions_vector = np.array([[1,1], [1,1]])
+    positions_vector = np.array([[1, 1], [1, 1]])
     indices = model.identify_xy_proximity(positions_vector)
 
     print(indices)
@@ -94,11 +94,8 @@ def test_identify_xy_proximity_same_coords(simple_facility_model):
 
 def test_add_contact_event(simple_facility_model):
     model = simple_facility_model
-
     agent1 = Agent('1', None)
     agent2 = Agent('2', None)
-
-
     model.add_contact_event(agent1, agent2)
 
     assert len(model.contact_events .contact_data)
@@ -107,9 +104,6 @@ def test_add_contact_event(simple_facility_model):
 # def test_step():
 
 # def test_run_serial():
-
-
-
 
 # def test_extract_contact_distribution_per_agent():
 

@@ -66,8 +66,8 @@ def get_datadir(facility_name, floor_name):
     """
     citam_cache_directory = get_user_cache()
     floor_directory = os.path.join(citam_cache_directory,
-                                       'floorplans_and_nav_data',
-                                       facility_name,
-                                       'floor_' + floor_name
-                                       )
+                                   'floorplans_and_nav_data',
+                                   facility_name,
+                                   'floor_' + floor_name
+                                   )
     return floor_directory
