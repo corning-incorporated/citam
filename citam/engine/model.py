@@ -37,6 +37,8 @@ import xml.etree.ElementTree as ET
 ET.register_namespace('', "http://www.w3.org/2000/svg")
 ET.register_namespace('xlink', "http://www.w3.org/1999/xlink")
 
+LOG = logging.getLogger(__name__)
+
 
 class FacilityTransmissionModel:
 
@@ -78,6 +80,7 @@ class FacilityTransmissionModel:
         self.traffic_policy = traffic_policy
         self.simulation_name = None
         self.simid = None
+        self.step_contact_locations = [{} for f in floorplans]
 
         # Handle scheduling rules
         if scheduling_policy is None:
@@ -116,7 +119,7 @@ class FacilityTransmissionModel:
             self.all_office_spaces.append(floor_office_spaces)
             self.total_offices += len(floor_office_spaces)
 
-        logging.info('Total office spaces: %d', self.total_offices)
+        LOG.info('Total office spaces: %d', self.total_offices)
 
     def group_remaining_spaces(self):
         """
@@ -153,16 +156,16 @@ class FacilityTransmissionModel:
             self.meeting_rooms.append(floor_meeting_rooms)
 
         n_rooms = sum([len(rooms) for rooms in self.labs])
-        logging.info('Total labs is ' + str(n_rooms))
+        LOG.info('Total labs is ' + str(n_rooms))
 
         n_rooms = sum([len(rooms) for rooms in self.cafes])
-        logging.info('Total cafeterias: ' + str(n_rooms))
+        LOG.info('Total cafeterias: ' + str(n_rooms))
 
         n_rooms = sum([len(rooms) for rooms in self.restrooms])
-        logging.info('Total restrooms: ' + str(n_rooms))
+        LOG.info('Total restrooms: ' + str(n_rooms))
 
         n_rooms = sum([len(rooms) for rooms in self.meeting_rooms])
-        logging.info('Total meeting rooms: ' + str(n_rooms))
+        LOG.info('Total meeting rooms: ' + str(n_rooms))
 
     def find_valid_floor_office_spaces(self, floor_number, verify_route=False):
         """Go through office spaces and verify that they are reachable from
@@ -187,7 +190,7 @@ class FacilityTransmissionModel:
                 else:
                     floor_office_spaces.append(index)
 
-        logging.info('Unreachable offices: ' + str(n_unreachable_offices))
+        LOG.info('Unreachable offices: ' + str(n_unreachable_offices))
 
         return floor_office_spaces
 
@@ -237,6 +240,7 @@ class FacilityTransmissionModel:
             m.update(repr(data).encode('utf-8'))
 
         self.simid = m.hexdigest()
+        self.simulation_name = self.simid
 
     def run_serial(self, workdir):
         """Runs an citam simulation serially.
@@ -251,7 +255,7 @@ class FacilityTransmissionModel:
             self.occupancy_rate = \
                 round(self.n_agents*1.0/self.total_offices, 2)
             if self.occupancy_rate > 1.0:
-                logging.warn(
+                LOG.warn(
                     'Occupancy rate is ' + str(self.occupancy_rate) +
                     ' > 1.0 (Office spaces: ' + str(self.total_offices)
                     )
@@ -260,8 +264,8 @@ class FacilityTransmissionModel:
                 raise ValueError('Invalid occupancy rate (must be > 0 & <=1')
             self.n_agents = round(self.occupancy_rate*self.total_offices)
 
-        logging.info('Running simulation serially')
-        logging.info('Total agents: ' + str(self.n_agents))
+        LOG.info('Running simulation serially')
+        LOG.info('Total agents: ' + str(self.n_agents))
 
         self.create_simid()
         self.save_manifest(workdir)
@@ -305,15 +309,15 @@ class FacilityTransmissionModel:
                       contact_outfiles=contact_outfiles
                       )
             if i % 1000 == 0:
-                logging.info('Current step is: ' + str(i))
+                LOG.info('Current step is: ' + str(i))
 
-        logging.info('Current step is: ' + str(self.current_step))
+        LOG.info('Current step is: ' + str(self.current_step))
 
         # Close files
         t_outfile.close()
         for cof in contact_outfiles:
             cof.close()
-        logging.info('Done with simulation.\n')
+        LOG.info('Done with simulation.\n')
 
         return True
 
@@ -323,7 +327,7 @@ class FacilityTransmissionModel:
         and exclude the ones with no door.
         """
         total_spaces = sum([len(fp.spaces) for fp in self.floorplans])
-        logging.info('Number of spaces before ' + str(total_spaces) + '...')
+        LOG.info('Number of spaces before ' + str(total_spaces) + '...')
 
         n_hallways = 0
         n_rooms_with_doors = 0
@@ -348,13 +352,13 @@ class FacilityTransmissionModel:
 
             self.floorplans[fn].spaces = tmp_spaces
 
-        logging.info('After sanitizing...')
-        logging.info('\tNumber of hallways: ' + str(n_hallways))
-        logging.info('\tRooms with doors: ' + str(n_rooms_with_doors))
-        logging.info('\tRooms with no doors: ' + str(n_rooms_with_no_doors))
+        LOG.info('After sanitizing...')
+        LOG.info('\tNumber of hallways: ' + str(n_hallways))
+        LOG.info('\tRooms with doors: ' + str(n_rooms_with_doors))
+        LOG.info('\tRooms with no doors: ' + str(n_rooms_with_no_doors))
 
         total_spaces = sum([len(fp.spaces) for fp in self.floorplans])
-        logging.info('\tNumber of spaces: ' + str(total_spaces))
+        LOG.info('\tNumber of spaces: ' + str(total_spaces))
 
     def find_possible_entrance_doors(self, entrance_floor, entrance_space):
         """
@@ -415,12 +419,12 @@ class FacilityTransmissionModel:
             edges = self.navigation.navnet_per_floor[entrance_floor]\
                     .edges(entrance_coords)
             if len(edges) == 0:
-                logging.info('No edges from this door : %s', entrance_door)
+                LOG.info('No edges from this door : %s', entrance_door)
                 return False
             else:
                 return True
         else:
-            logging.info('Door coords not in navnet: %s', entrance_coords)
+            LOG.info('Door coords not in navnet: %s', entrance_coords)
             return False
 
     def validate_entrances(self):
@@ -507,9 +511,9 @@ class FacilityTransmissionModel:
 
         if best_entrance_door is None:
             office = self.floorplans[office_floor].spaces[office_id]
-            logging.info('\tNo entrance found for office: ' +
-                         office.unique_name
-                         )
+            LOG.info('\tNo entrance found for office: ' +
+                     office.unique_name
+                     )
         return best_entrance_door, best_entrance_floor
 
     def add_agents_and_build_schedules(self):
@@ -517,7 +521,7 @@ class FacilityTransmissionModel:
         Add the specified number of agents to the facility and create a
         schedule and an itinerary for each of them.
         """
-        logging.info('Initializing with ' + str(self.n_agents) + ' agents...')
+        LOG.info('Initializing with ' + str(self.n_agents) + ' agents...')
         total_agents = 0
         current_agent = 0
         agent_pool = list(range(self.n_agents))
@@ -528,9 +532,9 @@ class FacilityTransmissionModel:
             agent_pool = [a for a in agent_pool if a not in shift_agents]
             total_agents += n_shift_agents
 
-            logging.info('Working with shift: ' + shift['name'])
-            logging.info('\tNumber of agents: ' + str(n_shift_agents))
-            logging.info('\tAverage starting step: ' + str(shift_start_time))
+            LOG.info('Working with shift: ' + shift['name'])
+            LOG.info('\tNumber of agents: ' + str(n_shift_agents))
+            LOG.info('\tAverage starting step: ' + str(shift_start_time))
 
             for i in pb.progressbar(shift_agents):
 
@@ -587,9 +591,9 @@ class FacilityTransmissionModel:
                 self.agents[agent.unique_id] = agent
 
                 schedule.build()
-                logging.info('Schedule for agent: ' + str(current_agent))
-                logging.info('\t' + str(schedule))
-                logging.info('\n')
+                LOG.info('Schedule for agent: ' + str(current_agent))
+                LOG.info('\t' + str(schedule))
+                LOG.info('\n')
 
                 current_agent += 1
 
@@ -633,6 +637,10 @@ class FacilityTransmissionModel:
                 agent1 = agents[i]
                 agent2 = agents[j]
 
+                if agent1.current_location is None or \
+                        agent2.current_location is None:
+                    continue
+
                 if agent1.current_floor == agent2.current_floor:
                     fn = agent1.current_floor
                     if agent1.current_location == agent2.current_location:
@@ -655,23 +663,23 @@ class FacilityTransmissionModel:
                                                    ):
                             self.add_contact_event(agent1, agent2)
 
-    def add_contact_event(self, agent1, agent2):
+    def add_contact_event(self, agent1: Agent, agent2: Agent) -> None:
         """
         Record contact event between agent1 and agent2.
         """
         dx = (agent2.pos[0] - agent1.pos[0])/2.0
         dy = (agent2.pos[1] - agent1.pos[1])/2.0
-        contact_position = (agent1.pos[0] + dx, agent1.pos[1] + dy)
+        contact_pos = (agent1.pos[0] + dx, agent1.pos[1] + dy)
         agent1.n_contacts += 1
         agent2.n_contacts += 1
         self.contact_events.add_contact(agent1,
                                         agent2,
                                         self.current_step,
-                                        contact_position)
+                                        contact_pos)
         if agent1.pos not in self.step_contact_locations[agent1.current_floor]:
-            self.step_contact_locations[agent1.current_floor][agent1.pos] = 1
+            self.step_contact_locations[agent1.current_floor][contact_pos] = 1
         else:
-            self.step_contact_locations[agent1.current_floor][agent1.pos] += 1
+            self.step_contact_locations[agent1.current_floor][contact_pos] += 1
 
         return
 
@@ -772,7 +780,7 @@ class FacilityTransmissionModel:
                          }
                 )
 
-        logging.info('Saving manifest file...')
+        LOG.info('Saving manifest file...')
         # TODO: total over all floors
         if self.traffic_policy is None:
             n_one_way_aisles = 0
@@ -844,10 +852,11 @@ class FacilityTransmissionModel:
         map_file = os.path.join(floor_directory, 'map.svg')
 
         if not os.path.isfile(map_file):
-            logging.error('Could not find map file: ' + str(map_file))
-            return False
+            raise FileNotFoundError(map_file)
 
-        max_contacts = max(contacts_per_coord.values())
+        max_contacts = 0
+        if len(contacts_per_coord.values()) > 0:
+            max_contacts = max(contacts_per_coord.values())
         tree = ET.parse(map_file)
 
         root = tree.getroot()[0]
@@ -885,7 +894,7 @@ class FacilityTransmissionModel:
         try:
             tree.write(heatmap_file)
         except Exception as e:
-            logging.exception(e)
+            LOG.exception(e)
             return False
 
         return True
@@ -922,7 +931,7 @@ class FacilityTransmissionModel:
         self.contact_events.save_raw_contact_data(filename)
 
         # Statistics
-        statistics = self.contact_events.exatract_statistics()
+        statistics = self.contact_events.extract_statistics()
         statistics_dict = {"SimulationName": self.simulation_name,
                            "data": statistics
                            }
