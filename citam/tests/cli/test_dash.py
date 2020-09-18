@@ -46,16 +46,6 @@ def disable_blocking_run_forever_call(monkeypatch):
 
 
 @pytest.fixture(autouse=True)
-def reinitialize_settings(monkeypatch):
-    """Before each command is run, reinitialize the citam settings"""
-    monkeypatch.setattr(
-        citam.conf,
-        'settings',
-        lambda *args, **kwargs: CitamSettings()
-    )
-
-
-@pytest.fixture(autouse=True)
 def result_dir(tmpdir):
     """Generate a result directory and populate it with a manifest"""
     # Populate the directory with a minimal result manifest

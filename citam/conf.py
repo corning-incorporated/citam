@@ -80,22 +80,24 @@ class CitamSettings:
     def __init__(self):
         #: Access Key for s3 backend.
         self.access_key = os.environ.get('CITAM_STORAGE_KEY', '')
+
         #: Secret Key for s3 backend.
         self.secret_key = os.environ.get('CITAM_STORAGE_SECRET', '')
+
         #: Storage bucket for S3 backend
         self.storage_bucket = os.environ.get(
             'CITAM_STORAGE_BUCKET',
             'example',
         )
+
         #: Region Name for S3 backend
         self.region_name = os.environ.get('CITAM_STORAGE_REGION', '')
+
         #: Storage URL for S3 backend
         self.storage_url = os.environ.get(
             'CITAM_STORAGE_URL',
             'http://example.com',
         )
-        #: Filesystem path for result files to use with LocalStorage backend
-        self._result_path = os.environ.get('CITAM_RESULT_PATH', '')
 
         #: Path to storage driver class
         self.storage_driver_path = os.environ.get('CITAM_STORAGE_DRIVER')
@@ -111,28 +113,16 @@ class CitamSettings:
     @property
     def result_path(self) -> str:
         if not self._result_path:
-            self._result_path = os.environ.get('CITAM_RESULT_PATH')
+            return os.environ.get('CITAM_RESULT_PATH', '')
         return self._result_path
 
     @result_path.setter
-    def result_path(self, value: Union[str, None]):
+    def result_path(self, value: str):
         if not value:
             return
 
         self._result_path = value
         self.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'
-
-        if not os.path.exists(self._result_path):
-            self._validation_errors['result_path'] = \
-                f"{self._result_path} does not exist"
-
-        elif not os.path.isdir(self._result_path):
-            self._validation_errors['result_path'] = \
-                f"{self._result_path} is not a valid directory"
-
-        else:
-            if self._validation_errors.get('result_path'):
-                self._validation_errors['result_path'] = False
 
     @property
     def storage_driver(self) -> BaseStorageDriver:
@@ -152,9 +142,8 @@ class CitamSettings:
 
         :raise ConfigurationError: If the configuration is invalid
         """
-        print("VALIDATING", flush=True)
-        # Re-initialize the storage driver if needed
-        assert self.storage_driver
+        # Re-initialize the storage driver
+        self._initialize_storage_driver()
 
         if any(self._validation_errors.values()):
             raise ConfigurationError(
@@ -169,19 +158,21 @@ class CitamSettings:
         self._active_storage_driver_path = str(self.storage_driver_path)
         self._active_storage_driver_options = deepcopy(self._storage_kwargs)
 
-        assert issubclass(driver_class, BaseStorageDriver), (
-            f"You are using a custom storage driver, but "
-            f"{self._active_storage_driver_path} does not extend "
-            f"BaseStorageDriver.  Extend BaseStorageDriver in your custom "
-            f"storage driver."
-        )
+        # Clear any existing "storage driver" validation errors
+        self._validation_errors['storage_driver'] = False
+
+        if not issubclass(driver_class, BaseStorageDriver):
+            self._validation_errors['storage_driver'] = (
+                f"The configured storage driver '{driver_class.__class__}' "
+                f"does not extend BaseStorageDriver"
+            )
+            return
+
         try:
             driver = driver_class(**self._storage_kwargs)
-            # Remove any flags
-            if self._validation_errors.get('storage_driver'):
-                self._validation_errors['storage_driver'] = False
+
         except OSError as err:
-            LOG.info(
+            LOG.debug(
                 "Error initializing driver_class, this will happen in "
                 "normal operation when settings are specified on the CLI",
                 exc_info=err,
