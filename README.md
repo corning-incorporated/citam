@@ -109,7 +109,7 @@ the free and open-source INKSCAPE software in case you need to update the ingest
 If you notice errors in the ingested floorplan, please correct them using your
 favorite SVG editor and then use the following command to update. (e.g. foo_edited.svg is edited svg file)
 
-   `$citam engine update-floorplan foo_facility foo_floor --map foo_edited.svg`
+   `$citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg`
 
 **3. Build Navigation Network**
 
