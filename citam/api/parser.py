@@ -19,20 +19,22 @@ __all__ = [
 ]
 
 import logging
+from typing import Dict, List
+
 from citam.conf import settings
 import json
 
 LOG = logging.getLogger(__name__)
 
 
-def get_trajectories(sim_id, floor=None):
+def get_trajectories(sim_id: str,
+                     floor: str or int = None) -> Dict:
     """
     Get trajectory information for a simulation
 
-    :param str sim_id: simulation identifier
-    :param str|int|None floor: Floor number.  Use None to return all floors
+    :param sim_id: simulation identifier
+    :param floor: Floor number.  Use None to return all floors
     :return: List of trajectories broken down by step
-    :rtype: list[list[dict[str,float]]
     """
     result_file = settings.storage_driver.get_trajectory_file(sim_id)
     LOG.info(
@@ -77,14 +79,13 @@ def get_trajectories(sim_id, floor=None):
     return output
 
 
-def get_contacts(sim_id, floor):
-    """
-    Retrieve contact information for a simulation
+def get_contacts(sim_id: str,
+                 floor: str) -> List[List[Dict]]:
+    """Retrieve contact information for a simulation
 
-    :param str sim_id: simulation identifier
-    :param str floor: Floor number
+    :param sim_id: simulation identifier
+    :param floor: Floor number
     :return: List of contacts
-    :rtype: list[list[dict[str,float]]
     """
     result_file = settings.storage_driver.get_contact_file(sim_id, floor)
     LOG.info("contacts file parsing process started")
@@ -109,14 +110,12 @@ def get_contacts(sim_id, floor):
     return steps
 
 
-def get_coordinate_distribution(sim_id, floor):
-    """
-    Retrieve contact/coordinate distribution for a simulation
+def get_coordinate_distribution(sim_id: str, floor: str) -> List[Dict]:
+    """Retrieve contact/coordinate distribution for a simulation
 
-    :param str sim_id: simulation identifier
-    :param str floor: Floor number
+    :param sim_id: simulation identifier
+    :param floor: Floor number
     :return: List of contacts per coordinate
-    :rtype: list[dict[str,float]]
     """
     result_file = settings.storage_driver.get_coordinate_distribution_file(
         sim_id,
@@ -139,13 +138,11 @@ def get_coordinate_distribution(sim_id, floor):
     return contacts
 
 
-def get_pair_contacts(sim_id):
-    """
-    Retrieve contact information for a simulation
+def get_pair_contacts(sim_id: str) -> List[Dict]:
+    """Retrieve pair contact information for a simulation
 
-    :param str sim_id: simulation identifier
+    :param sim_id: simulation identifier
     :return: List of pair contacts
-    :rtype: list[list[dict[str,str, int, str]]
     """
 
     result_file = settings.storage_driver.get_pair_contact_file(sim_id)
@@ -168,13 +165,11 @@ def get_pair_contacts(sim_id):
     return pairs
 
 
-def get_statistics_json(sim_id):
-    """
-    Retrieve get_statistics json information for a simulation
+def get_statistics_json(sim_id: str) -> List[Dict]:
+    """Retrieve get_statistics json information for a simulation
 
     :param str sim_id: simulation identifier
     :return: List of statistics
-    :rtype: list[list[dict[str,str, int, str]]
     """
 
     result_dict = json.loads(

@@ -75,6 +75,8 @@ class FacilityTransmissionModel:
         self.shifts = shifts
         self.dry_run = dry_run
         self.traffic_policy = traffic_policy
+        self.simulation_name = None
+        self.simid = None
 
         # Handle scheduling rules
         if scheduling_policy is None:
@@ -239,13 +241,13 @@ class FacilityTransmissionModel:
             m.update(repr(data).encode('utf-8'))
 
         self.simid = m.hexdigest()
+        # TODO: Remove this, it should no longer be used
+        self.simulation_name = self.simid
         return
 
-    def run_serial(self, sim_name, workdir):
+    def run_serial(self, workdir):
         """Runs an ABM simulation serially
         """
-
-        self.simulation_name = sim_name
 
         if self.n_agents is not None:
             self.occupancy_rate = \

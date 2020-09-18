@@ -21,6 +21,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
     'sphinx.ext.inheritance_diagram',
+    # 'sphinx.ext.autosectionlabel',
     'sphinx.ext.mathjax',
     'numpydoc',
     'sphinx.ext.viewcode',
