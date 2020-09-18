@@ -110,7 +110,7 @@ favorite SVG editor and then use the following command to update.
 
 .. code-block:: console
 
-    $citam engine update-floorplan foo_facility foo_floor --map foo_edited.svg
+    $citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg
 
 **3. Build Navigation Network**
 
