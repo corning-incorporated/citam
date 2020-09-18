@@ -21,10 +21,9 @@ from tempfile import TemporaryDirectory
 
 import pytest
 
-import citam
 from citam import cli
 from citam.api.storage.local import LocalStorageDriver
-from citam.conf import settings, CitamSettings, ConfigurationError
+from citam.conf import settings, ConfigurationError
 
 
 @pytest.fixture(autouse=True)
