@@ -144,10 +144,11 @@ of simulations can be run on that facility using the following command where INP
 is a JSON input file:
 
 Example input files can be found in the citam/examples directory. It is recommended to create seperate folders for each simulation with their own input file.
-To run a simulation copy `example_sim_inputs.json` file to a new directory. Change directory to this new folder and execute:
+To run a simulation copy `example_sim_inputs.json` file to a new directory (let's call it ``SIMULATION_DIR``). Change directory to this new folder and execute:
 
 .. code-block:: console
 
+    $cd SIMULATION_DIR
     $citam engine run example_sim_inputs.json
 
 More example input files can be found in the examples directory.

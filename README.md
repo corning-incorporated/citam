@@ -137,21 +137,27 @@ of simulations can be run on that facility using the following command where INP
 is a JSON input file:
 
 Example input files can be found in the citam/examples directory. It is recommended to create seperate folders for each simulation with their own input file.
-To run a simulation copy `example_sim_inputs.json` file to a new directory. Change directory to this new folder and execute:
+To run a simulation copy `example_sim_inputs.json` file to a new directory (le'ts call it `SIMULATION_DIR`). Change directory to `SIMULATION_DIR` new folder and execute:
 
+   `$cd SIMULATION_DIR`
    `$citam engine run example_sim_inputs.json`
 
 
 ### How to Visualize Results
 
 
-Dashboard provides contact details and visual representation of all simulations that were part of previous steps.
+Dashboard provides contact details and visual representation of simulation results.
 Dashboard can be accessed at [http://localhost:8081](http://localhost:8081) after firing
 the server using.
 
 ```
-   $ pip uninstall matplotlib  # uninstall the package
+   $ citam dash --results .
 ```
+
+You can also set the `CITAM_RESULT_PATH` environment variable to the top level directory
+where you expect all your simulation results to be. CITAM will recursively scan that
+directory for simulation results. If you have the `CITAM_RESULT_PATH` environment variable set,
+you can run `citam dash` (without the --results flag) to start the dashboard.
 
 You can check all simulation runs along with floor level information in tabular format on the first
 page. By clicking on `View Details`; you would be taken to details page with following informations listed:
