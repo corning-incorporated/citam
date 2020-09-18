@@ -44,7 +44,7 @@ Clone from GitHub and install as follow:
 
   $git clone https://github.com/corning-incorporated/citam.git
   $cd citam
-  $pip install
+  $pip install .
 
 NOTE: if you plan on making changes to the source code, use the following instead:
 
@@ -80,13 +80,7 @@ Assuming you have those 2 files available, use the following command to ingest y
 
 .. code-block:: console
 
-  $citam engine ingest foo_facility foo_floor --csv /examples/basic_example/TF1.csv --map /examples/basic_example/TF1.svg
-
-alternatively, you may need to run:
-
-.. code-block:: console
-
-  $citam engine ingest foo_facility foo_floor -c /examples/basic_example/TF1.csv -s /examples/basic_example/TF1.svg
+  $citam engine ingest foo_facility foo_floor --csv /examples/basic_example/TF1.csv --svg /examples/basic_example/TF1.svg
 
 Use the help flag as follow for the most up to date information on your system.
 
