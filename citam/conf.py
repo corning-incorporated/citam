@@ -18,7 +18,7 @@ __all__ = ['settings']
 import logging
 import os
 from importlib import import_module
-from typing import Any
+from typing import Any, Union
 
 from citam.api.storage import BaseStorageDriver
 
@@ -90,11 +90,11 @@ class CitamSettings:
         self._storage_driver = self._initialize_storage_driver()
 
     @property
-    def result_path(self):
+    def result_path(self) -> str:
         return self._result_path
 
     @result_path.setter
-    def result_path(self, value: str):
+    def result_path(self, value: Union[str, None]):
         self._result_path = value
         # Update the storage driver if this changes
         if self._result_path:
