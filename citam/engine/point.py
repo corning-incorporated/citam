@@ -12,14 +12,6 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-"""
-point.py
-
-Author: Mardochee Reveil
-Date Created: June 9, 2020
-
-"""
-
 
 class Point:
 
