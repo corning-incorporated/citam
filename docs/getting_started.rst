@@ -1,3 +1,5 @@
+.. _getting_started:
+
 ================
 Getting Started
 ================
@@ -42,7 +44,7 @@ Clone from GitHub and install as follow:
 
   $git clone https://github.com/corning-incorporated/citam.git
   $cd citam
-  $pip install
+  $pip install .
 
 NOTE: if you plan on making changes to the source code, use the following instead:
 
@@ -78,13 +80,7 @@ Assuming you have those 2 files available, use the following command to ingest y
 
 .. code-block:: console
 
-  $citam engine ingest foo_facility foo_floor --csv /examples/basic_example/TF1.csv --map /examples/basic_example/TF1.svg
-
-alternatively, you may need to run:
-
-.. code-block:: console
-
-  $citam engine ingest foo_facility foo_floor -c /examples/basic_example/TF1.csv -s /examples/basic_example/TF1.svg
+  $citam engine ingest foo_facility foo_floor --csv /examples/basic_example/TF1.csv --svg /examples/basic_example/TF1.svg
 
 Use the help flag as follow for the most up to date information on your system.
 
@@ -114,7 +110,7 @@ favorite SVG editor and then use the following command to update.
 
 .. code-block:: console
 
-    $citam engine update-floorplan foo_facility foo_floor --map foo_edited.svg
+    $citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg
 
 **3. Build Navigation Network**
 
@@ -148,10 +144,11 @@ of simulations can be run on that facility using the following command where INP
 is a JSON input file:
 
 Example input files can be found in the citam/examples directory. It is recommended to create seperate folders for each simulation with their own input file.
-To run a simulation copy `example_sim_inputs.json` file to a new directory. Change directory to this new folder and execute:
+To run a simulation copy `example_sim_inputs.json` file to a new directory (let's call it ``SIMULATION_DIR``). Change directory to this new folder and execute:
 
 .. code-block:: console
 
+    $cd SIMULATION_DIR
     $citam engine run example_sim_inputs.json
 
 More example input files can be found in the examples directory.

@@ -89,7 +89,7 @@ Before you can ingest a floorplan, you need a map file in SVG format and a CSV
 file describing each space. For example such files, go to the examples directory.
 Assuming you have those 2 files available, use the following command to ingest your floorplan data:
 
-  `$citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --map examples/basic_example/TF1.svg`
+  `$citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --svg examples/basic_example/TF1.svg`
 
 During the ingestion process, CITAM will attempt to add doors to spaces that do not have any and
 remove walls that are between hallways.
@@ -109,7 +109,7 @@ the free and open-source INKSCAPE software in case you need to update the ingest
 If you notice errors in the ingested floorplan, please correct them using your
 favorite SVG editor and then use the following command to update. (e.g. foo_edited.svg is edited svg file)
 
-   `$citam engine update-floorplan foo_facility foo_floor --map foo_edited.svg`
+   `$citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg`
 
 **3. Build Navigation Network**
 
@@ -137,16 +137,27 @@ of simulations can be run on that facility using the following command where INP
 is a JSON input file:
 
 Example input files can be found in the citam/examples directory. It is recommended to create seperate folders for each simulation with their own input file.
-To run a simulation copy `example_sim_inputs.json` file to a new directory. Change directory to this new folder and execute:
+To run a simulation copy `example_sim_inputs.json` file to a new directory (le'ts call it `SIMULATION_DIR`). Change directory to `SIMULATION_DIR` new folder and execute:
 
+   `$cd SIMULATION_DIR`
    `$citam engine run example_sim_inputs.json`
-
 
 
 ### How to Visualize Results
 
-Dashboard provides contact details and visual representation of all simulations that were part of previous steps.
-Dashboard can be accessed at [http://localhost:8081](http://localhost:8081).
+
+Dashboard provides contact details and visual representation of simulation results.
+Dashboard can be accessed at [http://localhost:8081](http://localhost:8081) after firing
+the server using.
+
+```
+   $ citam dash --results .
+```
+
+You can also set the `CITAM_RESULT_PATH` environment variable to the top level directory
+where you expect all your simulation results to be. CITAM will recursively scan that
+directory for simulation results. If you have the `CITAM_RESULT_PATH` environment variable set,
+you can run `citam dash` (without the --results flag) to start the dashboard.
 
 You can check all simulation runs along with floor level information in tabular format on the first
 page. By clicking on `View Details`; you would be taken to details page with following informations listed:
@@ -162,7 +173,6 @@ page. By clicking on `View Details`; you would be taken to details page with fol
  - Total Contact per Agent histogram
  - Average Contact Duration (minutes) histogram
  - Contact heatmap
-
 
  You can access interactive visual map of floors and agenet movement by clicking on `Visualization` tab on this page.
 
