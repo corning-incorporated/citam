@@ -59,46 +59,6 @@ def _import_string(dotted_path: str) -> Any:
         ) from err
 
 
-class LazySetting:
-    """
-    This wraps access to individual settings values, and allows CITAM to be
-    configured from multiple different sources (env, config_file, cli, etc.)
-    with configured source priorities.
-    """
-
-    def __init__(self, config_key: str = None, default_value=None):
-        self._env_var = f"citam_{config_key}".upper()
-        self._config_key = config_key.lower()
-        self._value = default_value
-
-    def __get__(self, obj, obj_type) -> Union[str, None]:
-        """Lazily load and remember the configuration value"""
-        if not self._value:
-            for method in self._prioritized_loader_list:
-                returned_value = method()
-                if returned_value:
-                    self._value = returned_value
-                    break
-        return self._value
-
-    def __set__(self, obj, value: str) -> None:
-        """Manually set the configuration value"""
-        self._value = value
-
-    def _load_from_env(self) -> Union[str, None]:
-        """Attempt to load the configuration from the environment"""
-        return os.environ.get(self._config_key)
-
-    @property
-    def _prioritized_loader_list(self) -> List:
-        """List of configuration sources, with highest priority first"""
-        return [
-            self._load_from_env,
-            # self._load_from_local_config,
-            # self._load_from_user_config,
-        ]
-
-
 class CitamSettings:
     access_key: Optional[str]
     secret_key: Optional[str]
