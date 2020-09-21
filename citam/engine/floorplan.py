@@ -301,6 +301,7 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
         LOG.debug("Updating fp_inputs with kwargs %s", no_none_kwargs)
         fp_inputs.update(**no_none_kwargs)
 
+    fp_inputs['floor_name'] = floor
     LOG.info('Initializing floorplan: '
              'doors: %s, '
              'walls: %d, '
