@@ -13,12 +13,12 @@
 #  ==========================================================================
 
 """Methods to load overridable user-defined settings"""
-__all__ = ['settings']
+__all__ = ['ConfigurationError', 'settings']
 
 import logging
 import os
 from importlib import import_module
-from typing import Any, Optional, List, Union
+from typing import Any, Optional
 
 from citam.api.storage import BaseStorageDriver
 
@@ -114,10 +114,10 @@ class CitamSettings:
         self._active_storage_driver_path = None
         self._active_storage_driver_options = None
         self._validation_errors = {}
-
         self.reset()
 
     def reset(self):
+        """Reset all settings to their default values"""
         #: Internal variable for the currently initialized storage driver object
         self._storage_driver = None
 

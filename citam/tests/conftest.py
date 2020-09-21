@@ -22,7 +22,6 @@
 import pytest
 
 import citam
-from citam.conf import CitamSettings
 
 
 @pytest.fixture(autouse=True)
@@ -35,10 +34,4 @@ def reinitialize_settings(monkeypatch):
     monkeypatch.delenv('CITAM_RESULT_PATH', raising=False)
     monkeypatch.delenv('CITAM_STORAGE_DRIVER', raising=False)
     monkeypatch.delenv('CITAM_LOG_LEVEL', raising=False)
-    monkeypatch.delattr(citam.conf, 'settings', raising=True)
-    monkeypatch.setattr(
-        citam.conf,
-        'settings',
-        CitamSettings(),
-        raising=False,
-    )
+    citam.conf.settings.reset()
