@@ -55,17 +55,15 @@ def run_server(port: int = 8000,
     :param str host: hostname to serve the dash from
     :param str results: directory to load results from
     """
-    LOG.debug("--results='%s' specified via CLI. Updating settings",
-              results)
 
     if results is not None:
-        results_dir = os.path.abspath(results)
-        if not os.path.exists(results_dir):
-            raise IOError(f"{results_dir} does not exist")
-        if not os.path.isdir(os.path.abspath(results)):
-            raise IOError(f"{results_dir} is not a directory")
+        LOG.debug(
+            "--results='%s' specified via CLI. Updating settings",
+            results,
+        )
         settings.result_path = os.path.abspath(results)
 
+    settings.validate()
     LOG.info("Attempting to start server on %s:%s", host, port)
     httpd = simple_server.make_server(host, port, app)
     print(f"Running CITAM Server on http://{host}:{port}", flush=True)
