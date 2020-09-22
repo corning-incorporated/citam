@@ -45,12 +45,6 @@ def mocked_dash_server(monkeypatch):
 
 
 @pytest.fixture()
-def reset_settings(reinitialize_settings):
-    """Re-initialize and return a reference to the CitamSettings object"""
-    return settings
-
-
-@pytest.fixture()
 def result_dir(tmpdir):
     """Generate a result directory and populate it with a manifest"""
     # Populate the directory with a minimal result manifest
