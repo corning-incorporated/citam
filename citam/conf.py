@@ -13,14 +13,24 @@
 #  ==========================================================================
 
 """Methods to load overridable user-defined settings"""
-__all__ = ['settings']
+__all__ = ['ConfigurationError', 'settings']
 
 import logging
 import os
 from importlib import import_module
-from typing import Any
+from typing import Any, Optional
 
 from citam.api.storage import BaseStorageDriver
+
+LOG = logging.getLogger(__name__)
+
+
+class ConfigurationError(Exception):
+    """This error is raised when the running CITAM configuration is invalid"""
+
+    def __init__(self, error_list):
+        error_str = '\n'.join(error_list)
+        super().__init__(error_str)
 
 
 def _import_string(dotted_path: str) -> Any:
@@ -50,38 +60,65 @@ def _import_string(dotted_path: str) -> Any:
 
 
 class CitamSettings:
-    _storage_driver = None
-    _result_path = None
-    _active_storage_driver_path = None
-    _active_storage_driver_options = None
+    access_key: Optional[str]
+    secret_key: Optional[str]
+    storage_bucket: Optional[str]
+    region_name: Optional[str]
+    storage_url: Optional[str]
+    storage_driver_path: Optional[str]
+    log_level: int
 
     def __init__(self):
+        self._storage_driver = None
+        self._result_path = None
+        self._active_storage_driver_path = None
+        self._active_storage_driver_options = None
+        self._validation_errors = {}
+        self.reset()
+
+    def reset(self):
+        """Reset all settings to their default values"""
+        #: Internal variable for the storage driver object
+        self._storage_driver = None
+
+        #: Internal variable for the result_path property
+        self._result_path = None
+
+        #: Internal variable for the storage_driver path related to the
+        #: currently initialized storage driver object
+        self._active_storage_driver_path = None
+
+        #: Internal tracking for validation problems
+        self._active_storage_driver_options = None
+
+        #: Internal tracking for validation problems
+        self._validation_errors = {}
+
         #: Access Key for s3 backend.
         self.access_key = os.environ.get('CITAM_STORAGE_KEY', '')
+
         #: Secret Key for s3 backend.
         self.secret_key = os.environ.get('CITAM_STORAGE_SECRET', '')
+
         #: Storage bucket for S3 backend
         self.storage_bucket = os.environ.get(
             'CITAM_STORAGE_BUCKET',
             'example',
         )
+
         #: Region Name for S3 backend
         self.region_name = os.environ.get('CITAM_STORAGE_REGION', '')
+
         #: Storage URL for S3 backend
         self.storage_url = os.environ.get(
             'CITAM_STORAGE_URL',
             'http://example.com',
         )
-        #: Filesystem path for result files to use with LocalStorage backend
-        self.result_path = os.environ.get('CITAM_RESULT_PATH', '')
 
         #: Path to storage driver class
         self.storage_driver_path = os.environ.get('CITAM_STORAGE_DRIVER')
         if not self.storage_driver_path:
-            if self.result_path:
-                self.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'  # noqa
-            else:
-                self.storage_driver_path = 'citam.api.storage.s3.S3StorageDriver'  # noqa
+            self.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'  # noqa
 
         #: Verbosity. Valid options: DEBUG, INFO, WARNING, ERROR, CRITICAL.
         self.log_level = self._get_default_log_level()
@@ -91,16 +128,17 @@ class CitamSettings:
 
     @property
     def result_path(self) -> str:
+        if not self._result_path:
+            self._result_path = os.environ.get('CITAM_RESULT_PATH', '')
         return self._result_path
 
     @result_path.setter
     def result_path(self, value: str):
+        if not value:
+            return
+
         self._result_path = value
-        # Update the storage driver if this changes
-        if self._result_path:
-            self.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'  # noqa
-        else:
-            self.storage_driver_path = 'citam.api.storage.s3.S3StorageDriver'  # noqa
+        self.storage_driver_path = 'citam.api.storage.local.LocalStorageDriver'
 
     @property
     def storage_driver(self) -> BaseStorageDriver:
@@ -115,20 +153,49 @@ class CitamSettings:
 
         return self._storage_driver
 
-    def _initialize_storage_driver(self) -> BaseStorageDriver:
+    def validate(self):
+        """Validate the current configuration object
+
+        :raise ConfigurationError: If the configuration is invalid
+        """
+        # Re-initialize the storage driver
+        self._initialize_storage_driver()
+
+        if any(self._validation_errors.values()):
+            raise ConfigurationError(
+                [x for x in self._validation_errors.values() if x]
+            )
+
+        LOG.debug("Using results directory: %s", self._result_path)
+
+    def _initialize_storage_driver(self) -> Optional[BaseStorageDriver]:
         """Get configured storage driver"""
         driver_class = _import_string(self.storage_driver_path)
         self._active_storage_driver_path = str(self.storage_driver_path)
-        self._active_storage_driver_options = self._storage_kwargs
+        self._active_storage_driver_options = {**self._storage_kwargs}
 
-        assert issubclass(driver_class, BaseStorageDriver), (
-            f"You are using a custom storage driver, but "
-            f"{self._active_storage_driver_path} does not extend "
-            f"BaseStorageDriver.  Extend BaseStorageDriver in your custom "
-            f"storage driver."
-        )
+        # Clear any existing "storage driver" validation errors
+        self._validation_errors['storage_driver'] = False
 
-        return driver_class(**self._storage_kwargs)
+        if not issubclass(driver_class, BaseStorageDriver):
+            self._validation_errors['storage_driver'] = (
+                f"The configured storage driver '{driver_class.__class__}' "
+                f"does not extend BaseStorageDriver"
+            )
+            return
+
+        try:
+            driver = driver_class(**self._storage_kwargs)
+
+        except OSError as err:
+            LOG.debug(
+                "Error initializing driver_class, this will happen in "
+                "normal operation when settings are specified on the CLI",
+                exc_info=err,
+            )
+            driver = None
+            self._validation_errors['storage_driver'] = str(err)
+        return driver
 
     @staticmethod
     def _get_default_log_level() -> int:
