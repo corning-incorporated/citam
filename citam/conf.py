@@ -78,14 +78,14 @@ class CitamSettings:
 
     def reset(self):
         """Reset all settings to their default values"""
-        #: Internal variable for the currently initialized storage driver object
+        #: Internal variable for the storage driver object
         self._storage_driver = None
 
         #: Internal variable for the result_path property
         self._result_path = None
 
-        #: Internal variable for the storage_driver path related to the currently
-        #: initialized storage driver object
+        #: Internal variable for the storage_driver path related to the
+        #: currently initialized storage driver object
         self._active_storage_driver_path = None
 
         #: Internal tracking for validation problems
@@ -129,7 +129,7 @@ class CitamSettings:
     @property
     def result_path(self) -> str:
         if not self._result_path:
-            return os.environ.get('CITAM_RESULT_PATH', '')
+            self._result_path = os.environ.get('CITAM_RESULT_PATH', '')
         return self._result_path
 
     @result_path.setter
