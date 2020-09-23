@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: ${{ matrix.python-version }}
       - run: python -m pip install --upgrade pip
       - run: pip install . coverage[toml] pytest pytest-cov
       - run: python -m pytest --cov-report xml:coverage.xml --cov=citam citam
