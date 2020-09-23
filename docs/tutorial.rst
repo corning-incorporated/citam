@@ -55,7 +55,7 @@ The example floorplan that we will use can be found in the **examples/basic_exam
 folder located inside the main citam folder. The files that we need for now are named **TF2.csv** and **TF2.svg**
 Fig. 1 shows how the floor plan given by TF2.svg looks like. You can use any SVG viewer to visualize it (any web browser will do).
 
-.. image:: images/floorplan_before_ingestion.png
+.. image:: assets/floorplan_before_ingestion.png
   :alt: Floorplan before ingestion
 
 Fig. 1: Layout of the floorplan used in this tutorial. Notice how the boundaries for each space are clearly shown.
@@ -63,7 +63,7 @@ Fig. 1: Layout of the floorplan used in this tutorial. Notice how the boundaries
 Before ingestion, let's take a look at the content of TF2.svg. Use a text editor such
 as notepad++ to open the file and inspect its contents. Here is the top 30 lines of this file:
 
-.. literalinclude:: images/TF2.svg
+.. literalinclude:: assets/TF2.svg
     :language: xml
     :lines: 1-30
     :encoding: UTF-8
@@ -77,7 +77,7 @@ For a detailed discussion of the SVG format and the required information, please
 
 The second file of interest in TF2.csv. Let's take a closer look at it:
 
-.. literalinclude:: images/TF2.csv
+.. literalinclude:: assets/TF2.csv
     :language: csv
     :lines: 1-30
     :encoding: UTF-8
@@ -120,7 +120,7 @@ what the ingested floor plan looks like. CITAM has removed walls that it thinks 
 (based on whether they fall between two hallways). CITAM has also added doors to each
 space.
 
-.. image:: images/FirstOutputFilewithLabel.png
+.. image:: assets/FirstOutputFilewithLabel.png
   :alt: Floorplan after ingestion
 
 Fig. 2: The ingestion process will remove walls that are between hallways and add doors to all other spaces.
@@ -134,7 +134,7 @@ the lines with the keyword "door" in it.
 
 An example of the floor plan after using Inkscape to include wall features is as shown in Fig. 3.
 
-.. image:: images/FirstOutputFileEdited.png
+.. image:: assets/FirstOutputFileEdited.png
   :alt: Edited floorplan.
 
 Fig. 3: Floorplan as edited in Inkscape. The newly added lines are darker. Notice how a door is added to the left outside wall as a regular line except its ID is set to "dooor_1".
