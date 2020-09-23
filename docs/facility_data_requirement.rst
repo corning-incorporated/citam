@@ -17,7 +17,7 @@ Primary Information Requirements
 
 The source drawing must represent indoor spaces only. The platform is not designed to simulate transmission points in outdoor spaces - even outdoor spaces that are part of facility, such as...
 
-.. image:: images/example_floorplan_1.png
+.. image:: assets/example_floorplan_1.png
   :alt: Example floorplan.
 
 Facilities
@@ -81,7 +81,7 @@ Doors
 
 Below is a representation of the same space as above showing only the polylines along with the other critical components required by the model
 
-.. image:: images/example_floorplan_2.png
+.. image:: assets/example_floorplan_2.png
   :alt: Example floorplan.
 
 
