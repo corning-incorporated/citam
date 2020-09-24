@@ -76,7 +76,8 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = settings.storage_driver.get_manifest(sim_id)['floors'][0]['name']
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
         resp.media = parser.get_contacts(sim_id, floor)
         resp.status = falcon.HTTP_200
 
@@ -88,7 +89,8 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = settings.storage_driver.get_manifest(sim_id)['floors'][0]['name']
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
         resp.body = settings.storage_driver.get_map_file(sim_id, floor).read()
         resp.content_type = 'image/svg+xml'
         resp.status = falcon.HTTP_200
@@ -101,8 +103,10 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = settings.storage_driver.get_manifest(sim_id)['floors'][0]['name']
-        resp.body = settings.storage_driver.get_heatmap_file(sim_id, floor).read()
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
+        resp.body = settings.storage_driver.get_heatmap_file(sim_id,
+                                                             floor).read()
         resp.content_type = 'image/svg+xml'
         resp.status = falcon.HTTP_200
 
@@ -114,7 +118,8 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = settings.storage_driver.get_manifest(sim_id)['floors'][0]['name']
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
         resp.media = parser.get_coordinate_distribution(sim_id, floor)
         resp.status = falcon.HTTP_200
 
