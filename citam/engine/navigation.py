@@ -12,23 +12,25 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
+import errno
+import logging
+import math
+import os
+import pickle
+
+import networkx as nx
+from svgpathtools import Line
+
 import citam.engine.geometry_and_svg_utils as gsu
-from citam.engine.point import Point
 import citam.engine.storage_utils as su
 from citam.engine.constants import (
     ONEWAY_TRAFFIC_NEGATIVE_DIRECTION,
     ONEWAY_TRAFFIC_POSITIVE_DIRECTION,
     TWO_WAY_TRAFFIC
 )
+from citam.engine.point import Point
 
-from svgpathtools import Line
-
-import os
-import pickle
-import networkx as nx
-import logging
-import errno
-import math
+LOG = logging.getLogger(__name__)
 
 
 class Navigation:
@@ -52,26 +54,25 @@ class Navigation:
 
         for fnum, floorplan in enumerate(self.floorplans):
 
-            logging.info('Loading navigation data for floor {%s}',
-                         floorplan.floor_name
-                         )
+            LOG.info('Loading navigation data for floor {%s}',
+                     floorplan.floor_name)
 
             floorplan_directory = \
                 su.get_datadir(facility_name, floorplan.floor_name)
 
             # Load navigation newtork
-            logging.info('Loading navnet...')
+            LOG.info('Loading navnet...')
             navnet = self.load_floor_navnet(floorplan_directory)
             self.navnet_per_floor.append(navnet)
 
             # Load oneway network
             if self.traffic_policy is not None and self.traffic_policy != []:
-                logging.info('Loading oneway network...')
+                LOG.info('Loading oneway network...')
                 oneway_net = self.load_floor_oneway_net(floorplan_directory)
                 self.oneway_network_per_floor.append(oneway_net)
 
             # Load hallways graph
-            logging.info('Loading hallway graph for floor...')
+            LOG.info('Loading hallway graph for floor...')
             hg = self.load_hallway_graph(floorplan_directory)
             self.hallways_graph_per_floor.append(hg)
 
@@ -90,7 +91,7 @@ class Navigation:
         if os.path.isfile(floor_hallway_graph_file):
             with open(floor_hallway_graph_file, 'rb') as f:
                 hg = pickle.load(f)
-            logging.info('Success!')
+            LOG.info('Success!')
         else:
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
@@ -109,7 +110,7 @@ class Navigation:
         if os.path.isfile(oneway_net_file):
             with open(oneway_net_file, 'rb') as f:
                 oneway_net = pickle.load(f)
-            logging.info('Success!',)
+            LOG.info('Success!')
         else:
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
@@ -127,7 +128,7 @@ class Navigation:
         if os.path.isfile(floor_navnet_file):
             with open(floor_navnet_file, 'rb') as f:
                 navnet = pickle.load(f)
-            logging.info('Success!',)
+            LOG.info('Success!')
         else:
             raise FileNotFoundError(errno.ENOENT,
                                     os.strerror(errno.ENOENT),
@@ -232,7 +233,7 @@ class Navigation:
                 self.multifloor_navnet.add_edge(node2, node1)
                 n_vert_edges += 1
             else:
-                logging.warning("%s or %s not found in graph", node1, node2)
+                LOG.warning("%s or %s not found in graph", node1, node2)
         return n_vert_edges
 
     def create_multifloor_navnet(self):
@@ -273,7 +274,7 @@ class Navigation:
         """
         if self.traffic_policy is None or self.traffic_policy == []:
             return
-        logging.info('Appling traffic policy...')
+        LOG.info('Appling traffic policy...')
         if len(self.floorplans) == 1:
             for pol in self.traffic_policy:
                 self.set_policy_for_aisle(pol,
@@ -282,7 +283,7 @@ class Navigation:
                                           )
         else:
             for i, fp in enumerate(self.floorplans):
-                logging.info('\tWorking with floor {%s}', fp.floor_name)
+                LOG.info('Working with floor {%s}', fp.floor_name)
                 for pol in self.traffic_policy:
                     if pol['floor'] == fp.floor_name:
                         self.set_policy_for_aisle(
@@ -303,19 +304,19 @@ class Navigation:
         """Find edge of interest from navnet and keep only the ones that
         match the desired traffic pattern.
         """
-        logging.info('\t\tApplying this policy {%s}: ', policy)
+        LOG.info('Applying this policy {%s}: ', policy)
         print(policy)
         if policy['direction'] == TWO_WAY_TRAFFIC:
             return
 
         if policy['direction'] != ONEWAY_TRAFFIC_NEGATIVE_DIRECTION and \
                 policy['direction'] != ONEWAY_TRAFFIC_POSITIVE_DIRECTION:
-            logging.fatal('Unknown direction in traffic policy input {%s}',
-                          policy['direction'])
-            logging.info('Supported values are {%d}, {%d} and {%d}. See docs.',
-                         ONEWAY_TRAFFIC_POSITIVE_DIRECTION,
-                         ONEWAY_TRAFFIC_NEGATIVE_DIRECTION,
-                         TWO_WAY_TRAFFIC)
+            LOG.fatal('Unknown direction in traffic policy input {%s}',
+                      policy['direction'])
+            LOG.info('Supported values are {%d}, {%d} and {%d}. See docs.',
+                     ONEWAY_TRAFFIC_POSITIVE_DIRECTION,
+                     ONEWAY_TRAFFIC_NEGATIVE_DIRECTION,
+                     TWO_WAY_TRAFFIC)
             raise ValueError()
 
         # Find edges of interest and remove them from navnet if they don't
@@ -347,8 +348,7 @@ class Navigation:
                                     navnet.remove_edge(test_edge[0],
                                                        test_edge[1]
                                                        )
-                                    logging.debug('\t\t\tEdge removed {%s}',
-                                                  test_edge)
+                                    LOG.debug('Edge removed {%s}', test_edge)
                 break
 
         return
@@ -440,17 +440,16 @@ class Navigation:
             coords = self.floorplans[starting_floor_number]\
                                   .get_room_exit_coords(starting_location)
             if coords is None:
-                logging.error('No exit from this room. Check the navnet')
+                LOG.error('No exit from this room. Check the navnet')
                 return None
             start_node = (coords[0], coords[1], starting_floor_number)
         if self.multifloor_navnet.has_node(start_node):
             n_edges = self.multifloor_navnet.edges(start_node)
             if n_edges == 1:
-                logging.error('No exit from this room. Check the navnet')
+                LOG.error('No exit from this room. Check the navnet')
                 return None
         else:
-            logging.error('Start coordinates not in navnet: ' +
-                          str(start_node))
+            LOG.error('Start coordinates not in navnet: %s', str(start_node))
 
         # End node
         if isinstance(destination, tuple):
@@ -462,17 +461,17 @@ class Navigation:
             coords = self.floorplans[destination_floor_number]\
                        .get_room_exit_coords(destination)
             if coords is None:
-                logging.error('No exit from this room. Check the navnet')
+                LOG.error('No exit from this room. Check the navnet')
                 return None
             end_node = (coords[0], coords[1], destination_floor_number)
 
         if self.multifloor_navnet.has_node(end_node):
             n_edges = self.multifloor_navnet.edges(end_node)
             if n_edges == 1:
-                logging.error('No exit from this room. Check the navnet')
+                LOG.error('No exit from this room. Check the navnet')
                 return None
         else:
-            logging.error('Dest coordinates not in navnet: ' + str(end_node))
+            LOG.error('Dest coordinates not in navnet: %s', str(end_node))
             return None
 
         # Get route
@@ -482,9 +481,9 @@ class Navigation:
                                   end_node
                                   )
         except Exception as e:
-            logging.exception('Here is the exception: %s', e)
-            logging.error('\tNo route between: %s, %s',
-                          starting_location, destination)
+            LOG.exception('Here is the exception: %s', e)
+            LOG.error('No route between: %s, %s',
+                      starting_location, destination)
             return None
 
         return route
@@ -517,7 +516,7 @@ class Navigation:
                 n_edges = self.navnet_per_floor[floor_number].\
                     edges(start_coords)
                 if n_edges == 1:
-                    logging.error('No exit from this room. Check the navnet')
+                    LOG.error('No exit from this room. Check the navnet')
                     return None
 
         if isinstance(destination, tuple):
@@ -528,15 +527,14 @@ class Navigation:
                 n_edges = self.navnet_per_floor[floor_number].\
                     edges(end_coords)
                 if n_edges == 1:
-                    logging.error('No exit from this room. Check the navnet')
+                    LOG.error('No exit from this room. Check the navnet')
                     return None
 
         if start_coords is None or end_coords is None:
             return None
 
         if not self.navnet_per_floor[floor_number].has_node(start_coords):
-            logging.error('Start coordinates not in nav network: ' +
-                          str(start_coords))
+            LOG.error('Start coordinates not in nav network: %s', start_coords)
             return None
 
         if not self.navnet_per_floor[floor_number].has_node(end_coords):
@@ -546,8 +544,8 @@ class Navigation:
                 # This should never happen but for now, here is a workaround.
             else:
                 dest_name = destination
-            logging.error('End coordinates not in nav network:' +
-                          str(end_coords) + ' Destination: ' + dest_name)
+            LOG.error('End coordinates not in nav network: %s. Destination %s',
+                      end_coords, dest_name)
             return None
 
         try:
@@ -556,8 +554,9 @@ class Navigation:
                                   end_coords
                                   )
         except Exception as e:
-            logging.exception('Here is the exception:' + str(e))
-            logging.info('\tNo route between: ', current_location, destination)
+            LOG.exception('Here is the exception: %s', str(e))
+            LOG.info('No route between: (%s, %s)',
+                     current_location, destination)
             return None
 
         return route

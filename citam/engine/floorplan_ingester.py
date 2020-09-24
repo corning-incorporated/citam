@@ -12,20 +12,22 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
+import copy
+import logging
+import pickle
+import queue
+
+import progressbar as pb
+from svgpathtools import Line, CubicBezier
+
+import citam.engine.floorplan_utils as fu
 import citam.engine.geometry_and_svg_utils as gsu
+import citam.engine.input_parser as parser
+from citam.engine.door import Door
 from citam.engine.point import Point
 from citam.engine.space import Space
-from citam.engine.door import Door
-import citam.engine.input_parser as parser
-import citam.engine.floorplan_utils as fu
 
-from svgpathtools import Line, CubicBezier
-import progressbar as pb
-
-import logging
-import queue
-import copy
-import pickle
+LOG = logging.getLogger(__name__)
 
 
 class FloorplanIngester:
@@ -70,7 +72,7 @@ class FloorplanIngester:
         if self.svg_file is not None and self.csv_file is not None:
             self.read_input_files()
         else:
-            logging.warning('No svg and/or csv file provided.')
+            LOG.warning('No svg and/or csv file provided.')
 
         return
 
@@ -113,7 +115,7 @@ class FloorplanIngester:
             raise ValueError('Could not load any space data from CSV file')
 
         n_data = len(self.space_data)
-        logging.info(f'Successfully loaded {n_data} rows from csv file')
+        LOG.info(f'Successfully loaded {n_data} rows from csv file')
 
         svg_data = parser.parse_svg_floorplan_file(self.svg_file)
 
@@ -151,10 +153,9 @@ class FloorplanIngester:
 
         self.walls = all_room_walls + all_hallway_walls
 
-        logging.info('Done loading floorplan from files.')
-        logging.info('Number of spaces: ' + str(len(self.spaces)))
-        logging.info('Number of aisles: ' + str(len(self.aisles)))
-        logging.info('Number of walls: ' + str(len(self.walls)))
+        LOG.info('Done loading floorplan from files.')
+        LOG.info('Number of spaces: %d, aisles: %d, walls: %d',
+                 len(self.spaces), len(self.aisles), len(self.walls))
 
         return
 
@@ -228,14 +229,13 @@ class FloorplanIngester:
                     continue
                 dot_product, distance = \
                     gsu.calculate_dot_product_and_distance_between_walls(
-                                                        wall,
-                                                        door_line
-                                                    )
+                        wall,
+                        door_line
+                    )
                 if dot_product is not None:
                     if abs(dot_product - 1.0) < 1e-1 and \
                             distance < max_distance and \
                             distance < current_min_distance:
-
                         current_min_distance = distance
                         wall_index = w
                         best_door_line = door_line
@@ -265,9 +265,9 @@ class FloorplanIngester:
                         space2_index = j
                         wall2_index = k
                         new_walls2 = gsu.remove_segment_from_wall(
-                                                other_wall,
-                                                door_line
-                                            )
+                            other_wall,
+                            door_line
+                        )
                         if not space.is_space_a_hallway():
                             space.doors.append(door_line)
                         break
@@ -280,7 +280,7 @@ class FloorplanIngester:
         """Iterate over the door paths extracted from the SVG file, find
         associated spaces and create door objects.
         """
-        logging.info('Processing doors from SVG file...')
+        LOG.info('Processing doors from SVG file...')
 
         n_success = 0
         n_no_match = 0
@@ -293,7 +293,7 @@ class FloorplanIngester:
             space_index, door_lines = self.find_space_index_for_door(door)
 
             if space_index is None:
-                logging.warning("Space index for this door is None: %s", door)
+                LOG.warning("Space index for this door is None: %s", door)
                 n_no_match += 1
                 continue
 
@@ -304,7 +304,7 @@ class FloorplanIngester:
                                                           door_lines)
 
             if wall_index is None:
-                logging.warning("Unable to find a nearby wall %s.", door)
+                LOG.warning("Unable to find a nearby wall %s.", door)
                 continue
 
             wall = self.spaces[space_index].path[wall_index]
@@ -341,9 +341,8 @@ class FloorplanIngester:
                 for new_wall in new_walls2:
                     self.spaces[space2_index].path.append(new_wall)
 
-        logging.info('Number of door paths: %d', len(self.door_paths))
-        logging.info('Number of no matches: %d', n_no_match)
-        logging.info('Number of doors added: %d', n_success)
+        LOG.info('Number of door paths: %d, no matches: %d, doors added: %d',
+                 len(self.door_paths), n_no_match, n_success)
 
         return
 
@@ -465,7 +464,7 @@ class FloorplanIngester:
             if wall1.start == wall1.end:  # This is just one point.
                 continue
 
-            for j in range(i+1, len(hallway_walls)):
+            for j in range(i + 1, len(hallway_walls)):
                 # find other hallways that share this wall
                 # space2 = self.spaces[hallway_indices[j]]
                 wall2 = hallway_walls[j]
@@ -497,7 +496,7 @@ class FloorplanIngester:
         :rtype (list[svgpathtools.Line], list[svgpathtools.Line])
         """
 
-        logging.info('\nCreating doors in building ' + building)
+        LOG.info('Creating doors in building %s', building)
         hallway_walls, room_walls = [], []
         hallway_indices, room_ids = [], []
 
@@ -518,15 +517,15 @@ class FloorplanIngester:
                     room_ids.append(i)
                     room_walls.append(line)
 
-        logging.info('Hallways identified: ' + str(n_hallways))
-        logging.info('Room walls identified: ' + str(len(room_walls)))
+        LOG.info('Hallways identified: %d', n_hallways)
+        LOG.info('Room walls identified: %d', len(room_walls))
 
         # Find walls that are shared between two hallways
         valid_hallway_walls, invalid_hallway_walls = \
             self.find_invalid_walls(hallway_walls)
 
-        logging.info('Done with shared hallway walls.')
-        logging.info('Now working with rooms and hallways...')
+        LOG.info('Done with shared hallway walls.')
+        LOG.info('Now working with rooms and hallways...')
 
         valid_walls = []
         i = 0
@@ -569,5 +568,5 @@ class FloorplanIngester:
                 pickle.dump(data_to_save, f)
             return True
         except Exception as e:
-            logging.exception(e)
+            LOG.exception(e)
             return False
