@@ -42,6 +42,8 @@ class NodeJSBuild(Command):
 
     """
 
+    user_options = []
+
     def initialize_options(self):
         """There are currently no options for this command"""
 

@@ -1,0 +1,13 @@
+exclude *.pkl
+exclude contributing.md
+exclude .gitignore
+
+prune citam/tests/
+prune citamjs/
+prune docs/
+prune examples/
+prune public/
+prune .github/
+
+recursive-include citam/api/static/ *
+recursive-exclude */tests/ *
