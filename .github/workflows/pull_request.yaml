@@ -75,9 +75,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade setuptools>=42 wheel
-          python setup.py build sdist bdist_wheel
+          python setup.py bdist_wheel
       - name: Upload packages
         uses: actions/upload-artifact@v2
         with:
-          name: python-packages
-          path: dist/*
+          name: python-wheel
+          path: dist/*.whl
