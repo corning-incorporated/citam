@@ -14,6 +14,6 @@
 
 __all__ = ['api', 'cli', 'engine', 'settings']
 
-from . import api, cli, engine, conf
+from citam import api, cli, engine, conf
 
 settings = conf.settings
