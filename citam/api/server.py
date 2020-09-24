@@ -28,28 +28,27 @@ CITAM COVID-19 model.
 __all__ = ['get_wsgi_app']
 
 import logging
+from os.path import abspath, dirname, join, exists
 from typing import Any
 
 import falcon
-from os.path import abspath, dirname, join, exists
 from falcon.routing import StaticRoute
+
 from citam.api import parser
 from citam.conf import settings
 
 LOG = logging.getLogger(__name__)
 
 
+# noinspection PyUnusedLocal
 class ResultsResource:
     """Results file APIs"""
-
-    def __init__(self):
-        self.storage = settings.storage_driver
 
     def on_get_list(self,
                     req: falcon.Request,
                     resp: falcon.response):
         """Get the base map as an SVG"""
-        resp.media = self.storage.list_runs()
+        resp.media = settings.storage_driver.list_runs()
         resp.status = falcon.HTTP_200
 
     def on_get_summary(self,
@@ -57,7 +56,7 @@ class ResultsResource:
                        resp: falcon.response,
                        sim_id: str):
         """Get simulation summary"""
-        resp.media = self.storage.get_manifest(sim_id)
+        resp.media = settings.storage_driver.get_manifest(sim_id)
         resp.status = falcon.HTTP_200
 
     def on_get_trajectory(self,
@@ -77,7 +76,8 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = self.storage.get_manifest(sim_id)['floors'][0]['name']
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
         resp.media = parser.get_contacts(sim_id, floor)
         resp.status = falcon.HTTP_200
 
@@ -89,8 +89,9 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = self.storage.get_manifest(sim_id)['floors'][0]['name']
-        resp.body = self.storage.get_map_file(sim_id, floor).read()
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
+        resp.body = settings.storage_driver.get_map_file(sim_id, floor).read()
         resp.content_type = 'image/svg+xml'
         resp.status = falcon.HTTP_200
 
@@ -102,8 +103,10 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = self.storage.get_manifest(sim_id)['floors'][0]['name']
-        resp.body = self.storage.get_heatmap_file(sim_id, floor).read()
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
+        resp.body = settings.storage_driver.get_heatmap_file(sim_id,
+                                                             floor).read()
         resp.content_type = 'image/svg+xml'
         resp.status = falcon.HTTP_200
 
@@ -115,7 +118,8 @@ class ResultsResource:
         floor = req.params.get('floor')
         if not floor:
             # If floor is not specified, use the first listed floor in manifest
-            floor = self.storage.get_manifest(sim_id)['floors'][0]['name']
+            manifest = settings.storage_driver.get_manifest(sim_id)
+            floor = manifest['floors'][0]['name']
         resp.media = parser.get_coordinate_distribution(sim_id, floor)
         resp.status = falcon.HTTP_200
 
@@ -136,6 +140,7 @@ class ResultsResource:
         resp.status = falcon.HTTP_200
 
 
+# noinspection PyUnusedLocal
 class RedocResource:
     """API Documentation Page"""
 
@@ -148,6 +153,7 @@ class RedocResource:
             resp.body = f.read()
 
 
+# noinspection PyUnusedLocal
 class DashIndexResource:
     """API Documentation Page"""
 
@@ -162,6 +168,7 @@ class DashIndexResource:
             resp.body = f.read()
 
 
+# noinspection PyUnusedLocal
 class OpenAPIResource:
     """API Endpoint to download the OpenAPI specification"""
     YAML_SPEC = join(dirname(abspath(__file__)), 'static', 'openapi.yaml')
@@ -173,6 +180,7 @@ class OpenAPIResource:
         resp.status = falcon.HTTP_200
 
 
+# noinspection PyUnusedLocal
 class CORSMiddleware:
     """Middleware to enable CORS requests"""
 
