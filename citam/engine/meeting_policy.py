@@ -19,6 +19,8 @@ import progressbar as pb
 
 from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 
+LOG = logging.getLogger(__name__)
+
 
 class Meeting:
 
@@ -76,7 +78,7 @@ class MeetingPolicy:
             policy_params['min_attendees_per_meeting']
 
         n_meeting_rooms = sum([len(rooms) for rooms in self.meeting_rooms])
-        logging.info('Meeting rooms in policy: ' + str(n_meeting_rooms))
+        LOG.info('Meeting rooms in policy: ' + str(n_meeting_rooms))
 
         return
 
@@ -149,10 +151,6 @@ class MeetingPolicy:
 
                     if len(self.attendee_pool) == 0:
                         break
-
-            # logging.info('Total meetings: ' + str(len(self.meetings)))
-            # for meeting in self.meetings:
-            #     logging.info(str(meeting))
         return
 
     def _update_attendee_pool(self):
