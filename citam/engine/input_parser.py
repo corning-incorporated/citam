@@ -341,7 +341,7 @@ def parse_input_file(input_file):
         raise ValueError('Total percent workforce greater than 1.0')
 
     LOG.info('Number of agents: %d', n_agents)
-    LOG.info('User provided floorplan scale is: %s' + floorplan_scale)
+    LOG.info('User provided floorplan scale is: %s', floorplan_scale)
 
     converted_contact_distance = contact_distance/floorplan_scale
     inputs_dict = {'upload_results': upload_results,
