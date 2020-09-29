@@ -30,10 +30,14 @@ from citam.engine.point import Point
 
 def on_segment(p, q, r):
     """Given three colinear points p, q, r, the function checks if
-       point q lies on line segment 'pr'
+    point q lies on line segment 'pr'
     """
-    if (q.x <= max(p.x, r.x) and q.x >= min(p.x, r.x) and
-            q.y <= max(p.y, r.y) and q.y >= min(p.y, r.y)):
+    if (
+        q.x <= max(p.x, r.x)
+        and q.x >= min(p.x, r.x)
+        and q.y <= max(p.y, r.y)
+        and q.y >= min(p.y, r.y)
+    ):
         return True
     return False
 
@@ -44,12 +48,13 @@ def on_segment(p, q, r):
 #  1 --> Clockwise
 #  2 --> Counterclockwise
 
+
 def determine_orientation(p, q, r):
 
     val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
 
     if val == 0:
-        return 0   # colinear
+        return 0  # colinear
     elif val > 0:
         return 1  # clockwise
     else:
@@ -59,9 +64,9 @@ def determine_orientation(p, q, r):
 #  The function that returns true if line segment 'p1q1'
 #  and 'p2q2' intersect.
 
+
 def do_intersect(p1, q1, p2, q2):
-    """Check if two lines as given by their respective end points intersect.
-    """
+    """Check if two lines as given by their respective end points intersect."""
     # Find the four orientations needed for general and
     # special cases
     o1 = determine_orientation(p1, q1, p2)
@@ -87,10 +92,10 @@ def do_intersect(p1, q1, p2, q2):
         return True
 
     #  p2, q2 and q1 are colinear and q1 lies on segment p2q2
-    if (o4 == 0 and on_segment(p2, q1, q2)):
+    if o4 == 0 and on_segment(p2, q1, q2):
         return True
 
-    return False   # Doesn't fall in any of the above cases
+    return False  # Doesn't fall in any of the above cases
 
 
 def generate_closed_path_for_aisle(aisle):
@@ -127,9 +132,12 @@ def is_one_segment_within_the_other(p1, q1, p2, q2):
     Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
     within the other.
     """
-    if (on_segment(p1, p2, q1) and on_segment(p1, q2, q1)) or \
-            (on_segment(p2, p1, q2) and on_segment(p2, q1, q2)) or \
-            (p1 == p2 and q1 == q2) or (p1 == q2 and q1 == p2):
+    if (
+        (on_segment(p1, p2, q1) and on_segment(p1, q2, q1))
+        or (on_segment(p2, p1, q2) and on_segment(p2, q1, q2))
+        or (p1 == p2 and q1 == q2)
+        or (p1 == q2 and q1 == p2)
+    ):
 
         return True
 
@@ -140,8 +148,12 @@ def do_lines_intersect_at_endpoint(p1, q1, p2, q2):
     """
     Check if one of the lines start or ends on the other line.
     """
-    if on_segment(p1, p2, q1) or on_segment(p1, q2, q1) or \
-            on_segment(p2, p1, q2) or on_segment(p2, q1, q2):
+    if (
+        on_segment(p1, p2, q1)
+        or on_segment(p1, q2, q1)
+        or on_segment(p2, p1, q2)
+        or on_segment(p2, q1, q2)
+    ):
         return True
 
     return False
@@ -193,13 +205,19 @@ def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
 
         # only do this for walls that are diagonal
         tol = 1e-2
-        if abs(p1.x - q1.x) < tol or abs(p1.y - q1.y) < tol or \
-                abs(p2.x - q2.x) < tol or abs(p2.y - q2.y) < tol:
+        if (
+            abs(p1.x - q1.x) < tol
+            or abs(p1.y - q1.y) < tol
+            or abs(p2.x - q2.x) < tol
+            or abs(p2.y - q2.y) < tol
+        ):
             # At least one of the walls is horizontal or vertical
             pass
         else:
-            dot_product, distance = \
-                calculate_dot_product_and_distance_between_walls(wall1, wall2)
+            (
+                dot_product,
+                distance,
+            ) = calculate_dot_product_and_distance_between_walls(wall1, wall2)
             if dot_product is not None:
                 if abs(dot_product - 1.0) < 1e-3 and distance < max_distance:
                     return True
@@ -208,8 +226,7 @@ def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
 
 
 def calculate_normal_vector_between_walls(wall1, wall2):
-    """Given two Line objects, compute the normal vector between them.
-    """
+    """Given two Line objects, compute the normal vector between them."""
     p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
     q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
 
@@ -221,8 +238,8 @@ def calculate_normal_vector_between_walls(wall1, wall2):
     # Arbitrary vector W joining wall 1 and wall 2 (let's use p1 and p2)
     W = np.array([p2.x - p1.x, p2.y - p1.y])
     # Projection of W onto V1
-    coeff = np.dot(V1, W)/((V1_norm)**2)
-    W_proj = V1*coeff
+    coeff = np.dot(V1, W) / ((V1_norm) ** 2)
+    W_proj = V1 * coeff
     # Perpendicular vector between the two walls
     V_perp = W - W_proj
 
@@ -247,15 +264,15 @@ def calculate_dot_product_and_distance_between_walls(wall1, wall2):
     # Arbitrary vector W joining wall 1 and wall 2 (let's use p1 and p2)
     W = np.array([p2.x - p1.x, p2.y - p1.y])
     # Projection of W onto V1
-    coeff = np.dot(V1, W)/((V1_norm)**2)
-    W_proj = V1*coeff
+    coeff = np.dot(V1, W) / ((V1_norm) ** 2)
+    W_proj = V1 * coeff
     # Perpendicular vector between the two walls
     V_perp = W - W_proj
     # Distance and dot products of the 2 walls
     distance = np.linalg.norm(V_perp)
 
-    if V1_norm*V2_norm != 0:
-        dot_product = abs(np.dot(V1, V2)/(V1_norm*V2_norm))
+    if V1_norm * V2_norm != 0:
+        dot_product = abs(np.dot(V1, V2) / (V1_norm * V2_norm))
 
     return dot_product, distance
 
@@ -293,7 +310,7 @@ def calculate_dot_product_between_walls(wall1, wall2):
     V2_norm = np.linalg.norm(V2)
 
     # if V1_norm*V2_norm != 0:
-    dot_product = abs(np.dot(V1, V2)/(V1_norm*V2_norm))
+    dot_product = abs(np.dot(V1, V2) / (V1_norm * V2_norm))
 
     return dot_product
 
@@ -327,8 +344,8 @@ def calculate_perpendicular_vector(wall1, wall2):
     # Arbitrary vector W joining wall 1 and wall 2 (let's use p1 and p2)
     W = np.array([p2.x - p1.x, p2.y - p1.y])
     # Projection of W onto V1
-    coeff = np.dot(V1, W)/((V1_norm)**2)
-    W_proj = V1*coeff
+    coeff = np.dot(V1, W) / ((V1_norm) ** 2)
+    W_proj = V1 * coeff
     # Perpendicular vector between the two walls
     V_perp = W - W_proj
 
@@ -361,8 +378,7 @@ def calculate_distance_between_walls(wall1, wall2):
 
 
 def calculate_x_and_y_overlap(wall1, wall2):
-    """Give two lines, calculate their x and y overlaps.
-    """
+    """Give two lines, calculate their x and y overlaps."""
     p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
     q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
 
@@ -385,8 +401,7 @@ def calculate_x_and_y_overlap(wall1, wall2):
 
 
 def round_coords(wall):
-    """Given a line, round the its start and end coordinates
-    """
+    """Given a line, round the its start and end coordinates"""
     p = Point(complex_coords=wall.start)
     q = Point(complex_coords=wall.end)
 
@@ -460,16 +475,15 @@ def subtract_walls(wall1, wall2):
 
 
 def sample_random_points_from_line(line, npoints=10):
-    """Sample n random points from line
-    """
+    """Sample n random points from line"""
     x1 = line.start.real
     y1 = line.start.imag
 
     x2 = line.end.real
     y2 = line.end.imag
 
-    x = list(x1 + np.round((x2 - x1)*np.random.rand(npoints)))
-    y = list(y1 + np.round((y2 - y1)*np.random.rand(npoints)))
+    x = list(x1 + np.round((x2 - x1) * np.random.rand(npoints)))
+    y = list(y1 + np.round((y2 - y1) * np.random.rand(npoints)))
 
     return list(itertools.product(x, y))[:npoints]
 
@@ -484,9 +498,10 @@ def create_parallel_line(line, side=1):
     new_x1 = line.start.real + side
     new_y1 = line.start.imag + side
 
-    new_line = Line(start=complex(new_x1, new_y1),
-                    end=complex(new_x1 + V[0], new_y1 + V[1])
-                    )
+    new_line = Line(
+        start=complex(new_x1, new_y1),
+        end=complex(new_x1 + V[0], new_y1 + V[1]),
+    )
     return new_line
 
 
@@ -500,15 +515,15 @@ def create_door_in_room_wall(room_wall, door_size=2.0):
 
     Vx = room_wall.end.real - room_wall.start.real
     Vy = room_wall.end.imag - room_wall.start.imag
-    V_norm = math.sqrt(Vx**2 + Vy**2)
+    V_norm = math.sqrt(Vx ** 2 + Vy ** 2)
     if V_norm == 0:
         return None
 
-    Vx = Vx/V_norm
-    Vy = Vy/V_norm
+    Vx = Vx / V_norm
+    Vy = Vy / V_norm
 
-    end_x = start_x + door_size*Vx
-    end_y = start_y + door_size*Vy
+    end_x = start_x + door_size * Vx
+    end_y = start_y + door_size * Vy
 
     p = Point(start_x, start_y)
     q = Point(end_x, end_y)
@@ -518,7 +533,7 @@ def create_door_in_room_wall(room_wall, door_size=2.0):
     return door
 
 
-def find_door_line(cubic_bezier):   # TODO: Create unit test for this function
+def find_door_line(cubic_bezier):  # TODO: Create unit test for this function
 
     # start and end point
 
@@ -544,11 +559,11 @@ def find_door_line(cubic_bezier):   # TODO: Create unit test for this function
     a2 = Bx - Cx
     b2 = By - Cy
 
-    d1 = 0.5*(Ax**2 - Bx**2 + Ay**2 - By**2)
-    d2 = 0.5*(Bx**2 - Cx**2 + By**2 - Cy**2)
+    d1 = 0.5 * (Ax ** 2 - Bx ** 2 + Ay ** 2 - By ** 2)
+    d2 = 0.5 * (Bx ** 2 - Cx ** 2 + By ** 2 - Cy ** 2)
 
-    y = (d2 - a2*d1/a1) / (b2 - a2*b1/a1)
-    x = (d1 - b1*y)/a1
+    y = (d2 - a2 * d1 / a1) / (b2 - a2 * b1 / a1)
+    x = (d1 - b1 * y) / a1
 
     if abs(x - Ax) < 3.0:
         x = Ax
@@ -569,13 +584,11 @@ def find_door_line(cubic_bezier):   # TODO: Create unit test for this function
     # assuming that the start point of the bezier is where
     # the door starts
 
-    door_line1 = Line(start=arc_start.complex_coords,
-                      end=center.complex_coords
-                      )
+    door_line1 = Line(
+        start=arc_start.complex_coords, end=center.complex_coords
+    )
 
-    door_line2 = Line(start=arc_end.complex_coords,
-                      end=center.complex_coords
-                      )
+    door_line2 = Line(start=arc_end.complex_coords, end=center.complex_coords)
 
     return door_line1, door_line2
 
@@ -587,16 +600,15 @@ def align_to_reference(reference_line, test_line):
     dy = reference_line.end.imag - reference_line.start.imag
 
     if dx == 0:
-        end_x = test_line.start.real   # end x is the same as start x
-        end_y = test_line.end.imag   # end y remains as is
+        end_x = test_line.start.real  # end x is the same as start x
+        end_y = test_line.end.imag  # end y remains as is
     elif dy == 0:
         end_y = test_line.start.imag  # end y is the same as start y
         end_x = test_line.end.real  # end x remains as is
     else:
         return test_line
 
-    new_line = Line(start=test_line.start,
-                    end=complex(end_x, end_y))
+    new_line = Line(start=test_line.start, end=complex(end_x, end_y))
 
     return new_line
 
@@ -617,8 +629,10 @@ def is_point_on_line(line, p_test, tol=1e-3):
         Whether the point falls on the line or not
     """
 
-    if complex(p_test.x, p_test.y) == line.start or \
-            complex(p_test.x, p_test.y) == line.end:
+    if (
+        complex(p_test.x, p_test.y) == line.start
+        or complex(p_test.x, p_test.y) == line.end
+    ):
         return True
 
     p = Point(x=line.start.real, y=line.start.imag)
@@ -627,8 +641,10 @@ def is_point_on_line(line, p_test, tol=1e-3):
         test_line = Line(start=line.start, end=complex(p_test.x, p_test.y))
         normal1 = line.normal(0.5)
         normal2 = test_line.normal(0.5)
-        if abs(normal1.real - normal2.real) < tol and \
-                abs(normal1.imag - normal2.imag) < tol:
+        if (
+            abs(normal1.real - normal2.real) < tol
+            and abs(normal1.imag - normal2.imag) < tol
+        ):
             return True
 
     return False
@@ -654,13 +670,13 @@ def remove_segment_from_wall(wall, segment, verbose=False):
     for line in [line1, line2, line3, line4]:
         p1 = Point(complex_coords=line.start)
         q1 = Point(complex_coords=line.end)
-        if on_segment(p1, p_segment, q1) and\
-                on_segment(p1, q_segment, q1):
+        if on_segment(p1, p_segment, q1) and on_segment(p1, q_segment, q1):
             # if both start and end of segment belong to
             # line or wall, it's invalid
             pass
-        elif not on_segment(p_wall, p1, q_wall) or\
-                not on_segment(p_wall, q1, q_wall):
+        elif not on_segment(p_wall, p1, q_wall) or not on_segment(
+            p_wall, q1, q_wall
+        ):
             # If both start and end of line don't belong to wall, it's
             # invalid
             pass
@@ -674,14 +690,15 @@ def remove_segment_from_wall(wall, segment, verbose=False):
 
 if __name__ == "__main__":
 
-    cubic_bezier = CubicBezier(start=(3455.0684 + 2204.5262j),
-                               control1=(3456.1214 + 2189.3597j),
-                               control2=(3468.8934 + 2177.69j),
-                               end=(3484.0928 + 2178.006j)
-                               )
+    cubic_bezier = CubicBezier(
+        start=(3455.0684 + 2204.5262j),
+        control1=(3456.1214 + 2189.3597j),
+        control2=(3468.8934 + 2177.69j),
+        end=(3484.0928 + 2178.006j),
+    )
 
     door = find_door_line(cubic_bezier)
 
-    print('Correct answer: 3455 to 3486 and y = 2208')
+    print("Correct answer: 3455 to 3486 and y = 2208")
 
     pass

@@ -12,7 +12,7 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-__all__ = ['api', 'cli', 'engine', 'settings']
+__all__ = ["api", "cli", "engine", "settings"]
 
 from citam import api, cli, engine, conf
 
