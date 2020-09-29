@@ -29,17 +29,17 @@ import pickle
 
 
 class FloorplanIngester:
-    """Ingest floorplan data from svg and csv files.
-    """
+    """Ingest floorplan data from svg and csv files."""
 
-    def __init__(self,
-                 svg_file,
-                 csv_file,
-                 scale,
-                 extract_doors_from_file=False,
-                 buildings_to_keep=None,
-                 excluded_buildings=None
-                 ):
+    def __init__(
+        self,
+        svg_file,
+        csv_file,
+        scale,
+        extract_doors_from_file=False,
+        buildings_to_keep=None,
+        excluded_buildings=None,
+    ):
         super().__init__()
 
         self.svg_file = svg_file
@@ -65,60 +65,61 @@ class FloorplanIngester:
 
         self.buildings_to_keep = buildings_to_keep
         if self.buildings_to_keep is None:
-            self.buildings_to_keep = ['all']
+            self.buildings_to_keep = ["all"]
 
         if self.svg_file is not None and self.csv_file is not None:
             self.read_input_files()
         else:
-            logging.warning('No svg and/or csv file provided.')
+            logging.warning("No svg and/or csv file provided.")
 
         return
 
     def create_spaces(self):
-        """Create space objects from data extracted in csv and svg files
-        """
+        """Create space objects from data extracted in csv and svg files"""
 
         if len(self.space_data) < len(self.space_paths):
-            raise ValueError('Each good path in svg must have metadata')
+            raise ValueError("Each good path in svg must have metadata")
 
-        for space_path, space_attr in zip(self.space_paths,
-                                          self.space_attributes
-                                          ):
+        for space_path, space_attr in zip(
+            self.space_paths, self.space_attributes
+        ):
             for space_data in self.space_data:
-                if space_data['id'] == space_attr['id']:
-                    if space_data['building'] not in self.buildings:
-                        self.buildings.append(space_data['building'])
+                if space_data["id"] == space_attr["id"]:
+                    if space_data["building"] not in self.buildings:
+                        self.buildings.append(space_data["building"])
                     for i, line in enumerate(space_path):
-                        new_start = complex(int(round(line.start.real)),
-                                            int(round(line.start.imag))
-                                            )
-                        new_end = complex(int(round(line.end.real)),
-                                          int(round(line.end.imag))
-                                          )
+                        new_start = complex(
+                            int(round(line.start.real)),
+                            int(round(line.start.imag)),
+                        )
+                        new_end = complex(
+                            int(round(line.end.real)),
+                            int(round(line.end.imag)),
+                        )
                         new_line = Line(start=new_start, end=new_end)
                         space_path[i] = new_line
-                        space = Space(boundaries=space_path,
-                                      path=copy.deepcopy(space_path),
-                                      **space_data
-                                      )
+                        space = Space(
+                            boundaries=space_path,
+                            path=copy.deepcopy(space_path),
+                            **space_data,
+                        )
                     self.spaces.append(space)
                     break
 
     def read_input_files(self):
-        """Read and parse csv and svg files
-        """
+        """Read and parse csv and svg files"""
         self.space_data = parser.parse_csv_metadata_file(self.csv_file)
 
         if len(self.space_data) == 0:
-            raise ValueError('Could not load any space data from CSV file')
+            raise ValueError("Could not load any space data from CSV file")
 
         n_data = len(self.space_data)
-        logging.info(f'Successfully loaded {n_data} rows from csv file')
+        logging.info(f"Successfully loaded {n_data} rows from csv file")
 
         svg_data = parser.parse_svg_floorplan_file(self.svg_file)
 
         if len(svg_data[0]) == 0:
-            raise ValueError('Could not load any space path from SVG file')
+            raise ValueError("Could not load any space path from SVG file")
 
         self.space_paths = svg_data[0]
         self.space_attributes = svg_data[1]
@@ -127,34 +128,35 @@ class FloorplanIngester:
         return
 
     def run(self):
-        """Perform the ingestion process
-        """
+        """Perform the ingestion process"""
         self.create_spaces()
         self.process_doors()
 
         self.building_walls = {}
         all_room_walls, all_hallway_walls = [], []
         for building in self.buildings:
-            room_walls, hallway_walls = \
-                self.find_walls_and_create_doors(building)
+            room_walls, hallway_walls = self.find_walls_and_create_doors(
+                building
+            )
             building_walls = room_walls + hallway_walls
             xmin, xmax, ymin, ymax = fu.compute_bounding_box(building_walls)
 
-            self.building_walls[building] = {'walls': building_walls,
-                                             'xmin': xmin,
-                                             'ymin': ymin,
-                                             'xmax': xmax,
-                                             'ymax': ymax
-                                             }
+            self.building_walls[building] = {
+                "walls": building_walls,
+                "xmin": xmin,
+                "ymin": ymin,
+                "xmax": xmax,
+                "ymax": ymax,
+            }
             all_room_walls += room_walls
             all_hallway_walls += hallway_walls
 
         self.walls = all_room_walls + all_hallway_walls
 
-        logging.info('Done loading floorplan from files.')
-        logging.info('Number of spaces: ' + str(len(self.spaces)))
-        logging.info('Number of aisles: ' + str(len(self.aisles)))
-        logging.info('Number of walls: ' + str(len(self.walls)))
+        logging.info("Done loading floorplan from files.")
+        logging.info("Number of spaces: " + str(len(self.spaces)))
+        logging.info("Number of aisles: " + str(len(self.aisles)))
+        logging.info("Number of walls: " + str(len(self.walls)))
 
         return
 
@@ -186,9 +188,9 @@ class FloorplanIngester:
         space_index = None
         for test_point in test_points:
             for i, space in enumerate(self.spaces):
-                if space.is_point_inside_space(test_point,
-                                               include_boundaries=True
-                                               ):
+                if space.is_point_inside_space(
+                    test_point, include_boundaries=True
+                ):
                     space_index = i
                     break
             if space_index is not None:
@@ -196,11 +198,9 @@ class FloorplanIngester:
 
         return space_index, door_lines
 
-    def find_closest_wall_and_best_door_line(self,
-                                             space_index,
-                                             door_lines,
-                                             max_distance=10.0
-                                             ):
+    def find_closest_wall_and_best_door_line(
+        self, space_index, door_lines, max_distance=10.0
+    ):
         """
         Given a number of lines in the door SVG element, find the best line
         based on proximity to a wall.
@@ -226,15 +226,18 @@ class FloorplanIngester:
                 xo, yo = gsu.calculate_x_and_y_overlap(wall, door_line)
                 if xo < 1.0 and yo < 1.0:
                     continue
-                dot_product, distance = \
-                    gsu.calculate_dot_product_and_distance_between_walls(
-                                                        wall,
-                                                        door_line
-                                                    )
+                (
+                    dot_product,
+                    distance,
+                ) = gsu.calculate_dot_product_and_distance_between_walls(
+                    wall, door_line
+                )
                 if dot_product is not None:
-                    if abs(dot_product - 1.0) < 1e-1 and \
-                            distance < max_distance and \
-                            distance < current_min_distance:
+                    if (
+                        abs(dot_product - 1.0) < 1e-1
+                        and distance < max_distance
+                        and distance < current_min_distance
+                    ):
 
                         current_min_distance = distance
                         wall_index = w
@@ -265,9 +268,8 @@ class FloorplanIngester:
                         space2_index = j
                         wall2_index = k
                         new_walls2 = gsu.remove_segment_from_wall(
-                                                other_wall,
-                                                door_line
-                                            )
+                            other_wall, door_line
+                        )
                         if not space.is_space_a_hallway():
                             space.doors.append(door_line)
                         break
@@ -280,7 +282,7 @@ class FloorplanIngester:
         """Iterate over the door paths extracted from the SVG file, find
         associated spaces and create door objects.
         """
-        logging.info('Processing doors from SVG file...')
+        logging.info("Processing doors from SVG file...")
 
         n_success = 0
         n_no_match = 0
@@ -299,9 +301,12 @@ class FloorplanIngester:
 
             # For each door line, find closest wall and choose best door line
             # based on proximity to a wall
-            wall_index, best_door_line = \
-                self.find_closest_wall_and_best_door_line(space_index,
-                                                          door_lines)
+            (
+                wall_index,
+                best_door_line,
+            ) = self.find_closest_wall_and_best_door_line(
+                space_index, door_lines
+            )
 
             if wall_index is None:
                 logging.warning("Unable to find a nearby wall %s.", door)
@@ -317,8 +322,9 @@ class FloorplanIngester:
             door_line = door_line.translated(V_perp.complex_coords)
 
             # Find adjacent space
-            wall2_index, space2_index, new_walls2 = \
-                self.find_adjacent_space(space_index, door_line)
+            wall2_index, space2_index, new_walls2 = self.find_adjacent_space(
+                space_index, door_line
+            )
 
             # Add door line to space
             self.spaces[space_index].doors.append(door_line)
@@ -341,9 +347,9 @@ class FloorplanIngester:
                 for new_wall in new_walls2:
                     self.spaces[space2_index].path.append(new_wall)
 
-        logging.info('Number of door paths: %d', len(self.door_paths))
-        logging.info('Number of no matches: %d', n_no_match)
-        logging.info('Number of doors added: %d', n_success)
+        logging.info("Number of door paths: %d", len(self.door_paths))
+        logging.info("Number of no matches: %d", n_no_match)
+        logging.info("Number of doors added: %d", n_success)
 
         return
 
@@ -356,9 +362,7 @@ class FloorplanIngester:
         :param int room_id: index of the room of interest
         :return: the door created. None if unsuccessful.
         """
-        door = gsu.create_door_in_room_wall(room_wall,
-                                            door_size=12.0
-                                            )
+        door = gsu.create_door_in_room_wall(room_wall, door_size=12.0)
         if door is not None:
             door_obj = Door(path=door, space1=room)
             space2_found = False
@@ -366,8 +370,7 @@ class FloorplanIngester:
                 if sp == self.spaces[room_id]:
                     continue
                 for k, other_wall in enumerate(sp.path):
-                    if gsu.do_walls_overlap(other_wall,
-                                            door):
+                    if gsu.do_walls_overlap(other_wall, door):
                         door_obj.space2 = sp
                         space2_found = True
                         break
@@ -379,12 +382,13 @@ class FloorplanIngester:
 
         return door
 
-    def find_and_remove_overlaps(self,
-                                 hallway_wall,
-                                 other_walls,
-                                 other_space_ids,
-                                 add_door=True,
-                                 ):
+    def find_and_remove_overlaps(
+        self,
+        hallway_wall,
+        other_walls,
+        other_space_ids,
+        add_door=True,
+    ):
         """Given a hallway wall, iterate over all other walls to test for
         overap. If found, remove overlap.
 
@@ -465,7 +469,7 @@ class FloorplanIngester:
             if wall1.start == wall1.end:  # This is just one point.
                 continue
 
-            for j in range(i+1, len(hallway_walls)):
+            for j in range(i + 1, len(hallway_walls)):
                 # find other hallways that share this wall
                 # space2 = self.spaces[hallway_indices[j]]
                 wall2 = hallway_walls[j]
@@ -497,7 +501,7 @@ class FloorplanIngester:
         :rtype (list[svgpathtools.Line], list[svgpathtools.Line])
         """
 
-        logging.info('\nCreating doors in building ' + building)
+        logging.info("\nCreating doors in building " + building)
         hallway_walls, room_walls = [], []
         hallway_indices, room_ids = [], []
 
@@ -518,32 +522,29 @@ class FloorplanIngester:
                     room_ids.append(i)
                     room_walls.append(line)
 
-        logging.info('Hallways identified: ' + str(n_hallways))
-        logging.info('Room walls identified: ' + str(len(room_walls)))
+        logging.info("Hallways identified: " + str(n_hallways))
+        logging.info("Room walls identified: " + str(len(room_walls)))
 
         # Find walls that are shared between two hallways
-        valid_hallway_walls, invalid_hallway_walls = \
-            self.find_invalid_walls(hallway_walls)
+        valid_hallway_walls, invalid_hallway_walls = self.find_invalid_walls(
+            hallway_walls
+        )
 
-        logging.info('Done with shared hallway walls.')
-        logging.info('Now working with rooms and hallways...')
+        logging.info("Done with shared hallway walls.")
+        logging.info("Now working with rooms and hallways...")
 
         valid_walls = []
         i = 0
         for hallway_wall in pb.progressbar(valid_hallway_walls):
-            valid_walls += self.find_and_remove_overlaps(hallway_wall,
-                                                         room_walls,
-                                                         room_ids,
-                                                         add_door=True
-                                                         )
+            valid_walls += self.find_and_remove_overlaps(
+                hallway_wall, room_walls, room_ids, add_door=True
+            )
             i += 1
 
         for hallway_wall in pb.progressbar(invalid_hallway_walls):
-            self.find_and_remove_overlaps(hallway_wall,
-                                          room_walls,
-                                          room_ids,
-                                          add_door=True
-                                          )
+            self.find_and_remove_overlaps(
+                hallway_wall, room_walls, room_ids, add_door=True
+            )
 
         return room_walls, valid_walls
 
@@ -555,17 +556,18 @@ class FloorplanIngester:
         :rtype: bool:
         """
         special_walls = []
-        data_to_save = [self.spaces,
-                        self.doors,
-                        self.walls,
-                        special_walls,
-                        self.aisles,
-                        1000,
-                        1000,
-                        self.scale
-                        ]
+        data_to_save = [
+            self.spaces,
+            self.doors,
+            self.walls,
+            special_walls,
+            self.aisles,
+            1000,
+            1000,
+            self.scale,
+        ]
         try:
-            with open(pickle_file, 'wb') as f:
+            with open(pickle_file, "wb") as f:
                 pickle.dump(data_to_save, f)
             return True
         except Exception as e:

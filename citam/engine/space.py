@@ -32,7 +32,7 @@ class Space:
         self.pick_weight = 1.0
         self.doors: List[Line] = []
 
-        if 'capacity' not in attributes:
+        if "capacity" not in attributes:
             if self.is_space_a_meeting_room():
                 # TODO: Use square footage instead, if available
                 self.capacity = np.random.randint(25)
@@ -77,22 +77,20 @@ class Space:
 
         return False
 
-    def is_point_inside_space(self,
-                              test_point,
-                              include_boundaries=False,
-                              verbose=False
-                              ):
+    def is_point_inside_space(
+        self, test_point, include_boundaries=False, verbose=False
+    ):
 
         # check if point is outside bounding box
 
         minx, maxx, miny, maxy = self.path.bbox()
         if test_point.x < round(minx) or test_point.x > round(maxx):
             if verbose:
-                print('X is outside bounds')
+                print("X is outside bounds")
             return False
         elif test_point.y < round(miny) or test_point.y > round(maxy):
             if verbose:
-                print('Y is outside bounds')
+                print("Y is outside bounds")
             return False
 
         # Check if point is on the door line, for a room
@@ -113,15 +111,16 @@ class Space:
 
         # Create a point for line segment from p to infinite
         inf = 1e10
-        extreme_points = [Point(x=inf, y=test_point.y + 5.0),
-                          Point(x=test_point.x - 5.0, y=inf),
-                          Point(x=-inf, y=test_point.y + 5.0),
-                          Point(x=test_point.x - 5.0, y=-inf),
-                          Point(x=inf, y=inf),
-                          Point(x=inf, y=-inf),
-                          Point(x=-inf, y=inf),
-                          Point(x=-inf, y=-inf),
-                          ]
+        extreme_points = [
+            Point(x=inf, y=test_point.y + 5.0),
+            Point(x=test_point.x - 5.0, y=inf),
+            Point(x=-inf, y=test_point.y + 5.0),
+            Point(x=test_point.x - 5.0, y=-inf),
+            Point(x=inf, y=inf),
+            Point(x=inf, y=-inf),
+            Point(x=-inf, y=inf),
+            Point(x=-inf, y=-inf),
+        ]
 
         # Count intersections of the above lines with sides of polygon
 
@@ -133,22 +132,20 @@ class Space:
 
                 # Check if the line segment from 'p' to 'extreme' intersects
                 # with the line segment from 'start_segment' to 'end_segment'
-                intersects = gsu.do_intersect(start_segment,
-                                              end_segment,
-                                              test_point,
-                                              extreme
-                                              )
+                intersects = gsu.do_intersect(
+                    start_segment, end_segment, test_point, extreme
+                )
                 if intersects:
                     count += 1
 
             # Return true if count is odd, false otherwise
             if count % 2 == 1:
                 if verbose:
-                    print('Count is: ', count)
+                    print("Count is: ", count)
                 return True
 
         if verbose:
-            print('Final count is: ', count)
+            print("Final count is: ", count)
 
         return False
 
@@ -167,56 +164,63 @@ class Space:
 
     def is_space_a_hallway(self):
 
-        if 'circulation' in self.space_function.lower() or \
-                'aisle' in self.space_function.lower() or \
-                'lobby' in self.space_function.lower() or \
-                'vestibule' in self.space_function.lower():
+        if (
+            "circulation" in self.space_function.lower()
+            or "aisle" in self.space_function.lower()
+            or "lobby" in self.space_function.lower()
+            or "vestibule" in self.space_function.lower()
+        ):
             return True
         else:
             return False
 
     def is_space_an_office(self):
 
-        if 'office' in self.space_function.lower() or \
-                'workstation' in self.space_function.lower():
+        if (
+            "office" in self.space_function.lower()
+            or "workstation" in self.space_function.lower()
+        ):
             return True
         else:
             return False
 
     def is_space_a_cafeteria(self):
 
-        if 'cafe' in self.space_function.lower():
+        if "cafe" in self.space_function.lower():
             return True
         else:
             return False
 
     def is_space_a_lab(self):
 
-        if 'lab' in self.space_function.lower():
+        if "lab" in self.space_function.lower():
             return True
         else:
             return False
 
     def is_space_a_meeting_room(self):
 
-        if 'conference' in self.space_function.lower() \
-                or 'meeting' in self.space_function.lower():
+        if (
+            "conference" in self.space_function.lower()
+            or "meeting" in self.space_function.lower()
+        ):
             return True
         else:
             return False
 
     def is_space_a_restroom(self):
 
-        if 'restroom' in self.space_function.lower():
+        if "restroom" in self.space_function.lower():
             return True
         else:
             return False
 
     def is_space_vertical(self):
 
-        if ('stair' in self.space_function.lower() or
-            'elev' in self.space_function.lower()) and \
-                'evac' not in self.space_function.lower():
+        if (
+            "stair" in self.space_function.lower()
+            or "elev" in self.space_function.lower()
+        ) and "evac" not in self.space_function.lower():
             return True
         else:
             return False

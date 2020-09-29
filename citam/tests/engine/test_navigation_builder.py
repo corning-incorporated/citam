@@ -30,7 +30,7 @@ def test__find_location_of_point_1(rect_floorplan):
 
     assert point_space is not None
     assert space_id == 0
-    assert point_space.unique_name == 'test'
+    assert point_space.unique_name == "test"
 
 
 def test__find_location_of_point_2(rect_floorplan):
@@ -66,7 +66,7 @@ def test__find_location_of_point(x_floorplan):
     space, space_id = nav_builder._find_location_of_point(test_point)
 
     assert space is not None
-    assert space.unique_name == 'test'
+    assert space.unique_name == "test"
     assert space_id == 0
 
 
@@ -77,10 +77,9 @@ def test_compute_nav_segments_starting_point_on_wall(rect_floorplan):
     first_point = Point(x=0, y=40)
     direction_vector = complex(1, 0)
     width = 10
-    segments, seg_spaces = nav_builder.compute_nav_segments(first_point,
-                                                            direction_vector,
-                                                            width
-                                                            )
+    segments, seg_spaces = nav_builder.compute_nav_segments(
+        first_point, direction_vector, width
+    )
 
     assert len(seg_spaces) == 1
     assert len(segments) == 1
@@ -92,10 +91,9 @@ def test_compute_nav_segments_overlap_with_wall(rect_floorplan):
     first_point = Point(x=0, y=40)
     direction_vector = complex(0, 1)
     width = 10
-    segments, seg_spaces = nav_builder.compute_nav_segments(first_point,
-                                                            direction_vector,
-                                                            width
-                                                            )
+    segments, seg_spaces = nav_builder.compute_nav_segments(
+        first_point, direction_vector, width
+    )
 
     assert len(seg_spaces) == 0
     assert len(segments) == 0
@@ -107,10 +105,9 @@ def test_compute_nav_segments_starts_from_mid_aisle_no_issue(rect_floorplan):
     first_point = Point(x=125, y=40)
     direction_vector = complex(1, 0)
     width = 10
-    segments, seg_spaces = nav_builder.compute_nav_segments(first_point,
-                                                            direction_vector,
-                                                            width
-                                                            )
+    segments, seg_spaces = nav_builder.compute_nav_segments(
+        first_point, direction_vector, width
+    )
 
     assert len(seg_spaces) == 2
     assert len(segments) == 2
@@ -123,10 +120,9 @@ def test_compute_nav_segments_across_spaces(rect_floorplan2):
     first_point = Point(x=50, y=40)
     direction_vector = complex(1, 0)
     width = 10
-    segments, seg_spaces = nav_builder.compute_nav_segments(first_point,
-                                                            direction_vector,
-                                                            width
-                                                            )
+    segments, seg_spaces = nav_builder.compute_nav_segments(
+        first_point, direction_vector, width
+    )
 
     assert len(seg_spaces) == 3
     assert len(list(set(seg_spaces))) == 2
@@ -219,10 +215,9 @@ def test_simplify_navigation_network_2(x_floorplan, aisle_from_x_floorplan2):
     assert n_edges == 1
 
 
-def test_simplify_navigation_network_3(x_floorplan,
-                                       aisle_from_x_floorplan,
-                                       aisle_from_x_floorplan2
-                                       ):
+def test_simplify_navigation_network_3(
+    x_floorplan, aisle_from_x_floorplan, aisle_from_x_floorplan2
+):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     nav_builder.create_nav_segment_for_aisle(aisle_from_x_floorplan)
     nav_builder.create_nav_segment_for_aisle(aisle_from_x_floorplan2)
@@ -235,10 +230,9 @@ def test_simplify_navigation_network_3(x_floorplan,
     assert n_edges == 4
 
 
-def test_sanitize_graph(x_floorplan,
-                        aisle_from_x_floorplan,
-                        aisle_from_x_floorplan2
-                        ):
+def test_sanitize_graph(
+    x_floorplan, aisle_from_x_floorplan, aisle_from_x_floorplan2
+):
 
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     nav_builder.create_nav_segment_for_aisle(aisle_from_x_floorplan)
@@ -257,10 +251,9 @@ def test_sanitize_graph_2(rect_floorplan):
     wall2 = list(space.boundaries)[2]
     aisle = (wall1, wall2)
     nav_builder.create_nav_segment_for_aisle(aisle)
-    rect_floorplan.special_walls = [Line(start=complex(125, 0),
-                                         end=complex(125, 80)
-                                         )
-                                    ]
+    rect_floorplan.special_walls = [
+        Line(start=complex(125, 0), end=complex(125, 80))
+    ]
     nav_builder.simplify_navigation_network()
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     n_edges = nav_builder.floor_navnet.number_of_edges()
@@ -329,7 +322,7 @@ def test_export_navnet_to_svg(x_floorplan, tmp_path):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     nav_builder.floor_navnet.add_node((0, 40))
     nav_builder.floor_navnet.add_node((250, 40))
-    nav_builder.floor_navnet.add_edge((0, 0), (250, 40), half_width='40')
+    nav_builder.floor_navnet.add_edge((0, 0), (250, 40), half_width="40")
 
     d = tmp_path / "sub"
     d.mkdir()
@@ -344,7 +337,7 @@ def test_load_navdata_from_pkl_files_1(x_floorplan, tmp_path):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     nav_builder.floor_navnet.add_node((0, 40))
     nav_builder.floor_navnet.add_node((250, 40))
-    nav_builder.floor_navnet.add_edge((0, 40), (250, 40), half_width='40')
+    nav_builder.floor_navnet.add_edge((0, 40), (250, 40), half_width="40")
 
     d = tmp_path / "sub"
     d.mkdir()
@@ -352,9 +345,9 @@ def test_load_navdata_from_pkl_files_1(x_floorplan, tmp_path):
     hallway_graph_file = d / "hallway_graph.pkl"
     nav_builder.export_navdata_to_pkl(navnet_file, hallway_graph_file)
     nav_builder.floor_navnet.clear()
-    load_result = nav_builder.load_navdata_from_pkl_files(navnet_file,
-                                                          hallway_graph_file
-                                                          )
+    load_result = nav_builder.load_navdata_from_pkl_files(
+        navnet_file, hallway_graph_file
+    )
 
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     n_edges = nav_builder.floor_navnet.number_of_edges()
@@ -370,9 +363,9 @@ def test_load_navdata_from_pkl_files_2(x_floorplan, tmp_path):
     d.mkdir()
     navnet_file = d / "ntest.pkl"
     hallway_graph_file = d / "htest.pkl"
-    load_result = nav_builder.load_navdata_from_pkl_files(navnet_file,
-                                                          hallway_graph_file
-                                                          )
+    load_result = nav_builder.load_navdata_from_pkl_files(
+        navnet_file, hallway_graph_file
+    )
 
     assert load_result is False
 
@@ -384,9 +377,9 @@ def test_load_navdata_from_pkl_files_3(x_floorplan, tmp_path):
     d.mkdir()
     navnet_file = d / "navnet.pkl"
     hallway_graph_file = d / "hallway_graph.pkl"
-    load_result = nav_builder.load_navdata_from_pkl_files(navnet_file,
-                                                          hallway_graph_file
-                                                          )
+    load_result = nav_builder.load_navdata_from_pkl_files(
+        navnet_file, hallway_graph_file
+    )
 
     assert load_result is False
 
@@ -394,7 +387,7 @@ def test_load_navdata_from_pkl_files_3(x_floorplan, tmp_path):
 def test_load_nav_segments_from_svg_file(x_floorplan):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     dir_name = os.path.dirname(os.path.realpath(__file__))
-    test_svg_file = dir_name + '/sample_results/new_nav_seg.svg'
+    test_svg_file = dir_name + "/sample_results/new_nav_seg.svg"
     segs = nav_builder.load_nav_segments_from_svg_file(test_svg_file)
 
     assert len(segs) == 2
@@ -404,7 +397,7 @@ def test_update_network_from_svg_file(x_floorplan):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     nav_builder.build()
     dir_name = os.path.dirname(os.path.realpath(__file__))
-    test_svg_file = dir_name + '/sample_results/new_nav_seg.svg'
+    test_svg_file = dir_name + "/sample_results/new_nav_seg.svg"
     res = nav_builder.update_network_from_svg_file(test_svg_file)
 
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
