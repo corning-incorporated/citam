@@ -6,9 +6,11 @@ def test_init_correct_number_of_objects(datadir):
     svg_file = None  # datadir + '/TF1.svg'
     csv_file = None  # datadir + '/TF1.csv'
     scale = 0.8
-    fi = FloorplanIngester(
-        svg_file, csv_file, scale, extract_doors_from_file=True
-    )
+    fi = FloorplanIngester(svg_file,
+                           csv_file,
+                           scale,
+                           extract_doors_from_file=True
+                           )
 
     assert fi.spaces == []
     assert fi.doors == []
@@ -50,10 +52,8 @@ def test_run_correct_number_of_objects(rect_floorplan_ingester_data):
 
 
 def test_find_walls_and_create_doors(rect_floorplan_ingester):
-    (
-        room_walls,
-        valid_hw_walls,
-    ) = rect_floorplan_ingester.find_walls_and_create_doors("TF1")
+    room_walls, valid_hw_walls = \
+        rect_floorplan_ingester.find_walls_and_create_doors('TF1')
 
     assert len(room_walls) == 36
     assert len(valid_hw_walls) == 3

@@ -12,7 +12,7 @@
 #  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==============================================================================
 
-__all__ = ["LocalStorageDriver"]
+__all__ = ['LocalStorageDriver']
 
 import json
 import logging
@@ -40,22 +40,20 @@ class LocalStorageDriver(BaseStorageDriver):
         self.result_dirs = {}
 
         if os.path.isdir(search_path):
-            LOG.info(
-                "Initializing LocalStorageDriver with root path %s",
-                search_path,
-            )
+            LOG.info("Initializing LocalStorageDriver with root path %s",
+                     search_path)
 
             search_path = os.path.join(
-                os.path.abspath(search_path), "**", "manifest.json"
+                os.path.abspath(search_path),
+                '**',
+                'manifest.json'
             )
 
             LOG.debug("search_path: %s", search_path)
             manifests = glob(search_path, recursive=True)
 
-            LOG.info(
-                "LocalStorageDriver found %d manifest.json files",
-                len(manifests),
-            )
+            LOG.info("LocalStorageDriver found %d manifest.json files",
+                     len(manifests))
 
         else:
             raise IOError(
@@ -64,13 +62,13 @@ class LocalStorageDriver(BaseStorageDriver):
             )
 
         for manifest in manifests:
-            with open(manifest, "r") as manifest_file:
+            with open(manifest, 'r') as manifest_file:
                 try:
-                    name = json.load(manifest_file)["SimulationName"]
+                    name = json.load(manifest_file)['SimulationName']
                 except KeyError:
                     LOG.warning(
                         '"%s" does not define "SimulationName". '
-                        "The results for this manifest will be ignored ",
+                        'The results for this manifest will be ignored ',
                         manifest,
                     )
                     continue
@@ -88,65 +86,53 @@ class LocalStorageDriver(BaseStorageDriver):
 
     def get_coordinate_distribution_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
-        return open(
-            os.path.join(
-                self.result_dirs[sim_id],
-                f'{manifest["floor_dict"][floor]}contact_dist_per_coord.csv',
-            ),
-            "r",
-        )
+        return open(os.path.join(
+            self.result_dirs[sim_id],
+            f'{manifest["floor_dict"][floor]}contact_dist_per_coord.csv',
+        ), 'r')
 
     def get_trajectory_file(self, sim_id):
         manifest = self.get_manifest(sim_id)
-        return open(
-            os.path.join(
-                self.result_dirs[sim_id],
-                manifest.get("trajectory_file", "trajectory.txt"),
-            ),
-            "r",
-        )
+        return open(os.path.join(
+            self.result_dirs[sim_id],
+            manifest.get('trajectory_file', 'trajectory.txt')
+        ), 'r')
 
     def get_contact_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
-        return open(
-            os.path.join(
-                self.result_dirs[sim_id],
-                f'{manifest["floor_dict"][floor]}contacts.txt',
-            ),
-            "r",
-        )
+        return open(os.path.join(
+            self.result_dirs[sim_id],
+            f'{manifest["floor_dict"][floor]}contacts.txt',
+        ), 'r')
 
     def get_map_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
-        return open(
-            os.path.join(
-                self.result_dirs[sim_id],
-                f'{manifest["floor_dict"][floor]}map.svg',
-            ),
-            "rb",
-        )
+        return open(os.path.join(
+            self.result_dirs[sim_id],
+            f'{manifest["floor_dict"][floor]}map.svg',
+        ), 'rb')
 
     def get_heatmap_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
-        return open(
-            os.path.join(
-                self.result_dirs[sim_id],
-                f'{manifest["floor_dict"][floor]}heatmap.svg',
-            ),
-            "rb",
-        )
+        return open(os.path.join(
+            self.result_dirs[sim_id],
+            f'{manifest["floor_dict"][floor]}heatmap.svg',
+        ), 'rb')
 
     def get_manifest_file(self, sim_id):
         return open(
-            os.path.join(self.result_dirs[sim_id], "manifest.json"), "r"
+            os.path.join(self.result_dirs[sim_id], 'manifest.json'),
+            'r'
         )
 
     def get_pair_contact_file(self, sim_id):
         return open(
-            os.path.join(self.result_dirs[sim_id], "pair_contact.csv"), "r"
+            os.path.join(self.result_dirs[sim_id], 'pair_contact.csv'),
+            'r'
         )
 
     def get_statistics_file(self, sim_id):
         return open(
-            os.path.join(self.result_dirs[sim_id], "statistics.json"), "r"
+            os.path.join(self.result_dirs[sim_id], 'statistics.json'),
+            'r'
         )

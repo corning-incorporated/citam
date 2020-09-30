@@ -14,6 +14,7 @@
 
 
 class Point:
+
     def __init__(self, x=None, y=None, complex_coords=None):
         super().__init__()
         self.x = x

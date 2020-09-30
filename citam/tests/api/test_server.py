@@ -25,9 +25,9 @@ from citam.api import server
 def static_path(tmp_path_factory):
     """Create a directory with mocked versions of dash static files"""
     static_dir = tmp_path_factory.mktemp(basename="dash")
-    with open(os.path.join(static_dir, "main.js"), "w") as f:
+    with open(os.path.join(static_dir, 'main.js'), 'w') as f:
         f.write("file: main.js")
-    with open(os.path.join(static_dir, "index.html"), "w") as f:
+    with open(os.path.join(static_dir, 'index.html'), 'w') as f:
         f.write("file: index.html")
     return str(static_dir)
 
@@ -40,7 +40,7 @@ def static_route(monkeypatch, static_path):
         def __init__(self, prefix, directory, *args, **kwargs):  # noqa
             super().__init__(prefix, str(static_path), *args, **kwargs)
 
-    monkeypatch.setattr(citam.api.server, "StaticRoute", MockedStaticRoute)
+    monkeypatch.setattr(citam.api.server, 'StaticRoute', MockedStaticRoute)
 
 
 @pytest.fixture
@@ -49,50 +49,56 @@ def client(use_local_storage) -> testing.TestClient:
 
 
 def test_get_summary(client):
-    result = client.simulate_get("/v1/sim_id_0001")
+    result = client.simulate_get('/v1/sim_id_0001')
     assert result.status_code == 200
 
 
 def test_trajectory_response(client):
-    result: testing.Result = client.simulate_get("/v1/sim_id_0001/trajectory")
+    result: testing.Result = client.simulate_get(
+        '/v1/sim_id_0001/trajectory'
+    )
     assert result.status_code == 200
-    assert result.json.get("data")
-    assert result.json.get("statistics")
-    assert result.json["statistics"].get("max_contacts")
+    assert result.json.get('data')
+    assert result.json.get('statistics')
+    assert result.json['statistics'].get('max_contacts')
 
 
 def test_contact_response(client):
-    result: testing.Result = client.simulate_get("/v1/sim_id_0001/contact")
+    result: testing.Result = client.simulate_get(
+        '/v1/sim_id_0001/contact'
+    )
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
 
 def test_contact_distribution_response(client):
     result: testing.Result = client.simulate_get(
-        "/v1/sim_id_0001/distribution/coordinate"
+        '/v1/sim_id_0001/distribution/coordinate'
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
 
 def test_map_response(client):
-    result: testing.Result = client.simulate_get("/v1/sim_id_0001/map")
+    result: testing.Result = client.simulate_get(
+        '/v1/sim_id_0001/map'
+    )
     assert result.status_code == 200
 
 
 def test_get_heatmap(client):
-    result = client.simulate_get("/v1/sim_id_0001/heatmap")
+    result = client.simulate_get('/v1/sim_id_0001/heatmap')
     assert result.status_code == 200
 
 
 def test_get_statistics(client):
-    result = client.simulate_get("/v1/sim_id_0001/statistics")
+    result = client.simulate_get('/v1/sim_id_0001/statistics')
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
 
 def test_get_pair_contact(client):
-    result = client.simulate_get("/v1/sim_id_0001/pair")
+    result = client.simulate_get('/v1/sim_id_0001/pair')
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
@@ -102,37 +108,39 @@ def test_list_response(client):
     note: The result here is set by the mock.
     See :mod:`citam.api.tests.conftest` for more information.
     """
-    result: testing.Result = client.simulate_get("/v1/list")
+    result: testing.Result = client.simulate_get(
+        '/v1/list'
+    )
     assert result.status_code == 200
     assert isinstance(result.json, list)
     assert len(result.json) == 2
-    assert "sim_id_0001" in result.json
-    assert "sim_id_0002" in result.json
+    assert 'sim_id_0001' in result.json
+    assert 'sim_id_0002' in result.json
 
 
 def test_redoc(client):
-    result: testing.Result = client.simulate_get("/v1")
+    result: testing.Result = client.simulate_get('/v1')
     assert result.status_code == 200
 
 
 def test_openapi_response(client):
-    result: testing.Result = client.simulate_get("/v1/openapi.yaml")
+    result: testing.Result = client.simulate_get('/v1/openapi.yaml')
     assert result.status_code == 200
 
 
 def test_index(client):
-    result: testing.Result = client.simulate_get("/")
+    result: testing.Result = client.simulate_get('/')
     assert result.status_code == 200
 
 
 def test_404(client):
-    expected = client.simulate_get("/")
-    actual = client.simulate_get("/invalid/path")
+    expected = client.simulate_get('/')
+    actual = client.simulate_get('/invalid/path')
     assert actual.status_code == 200
     assert actual.content == expected.content
 
 
 def test_static_route(client):
-    result: testing.Result = client.simulate_get("/main.js")
+    result: testing.Result = client.simulate_get('/main.js')
     assert result.status_code == 200
-    assert result.text == "file: main.js"
+    assert result.text == 'file: main.js'

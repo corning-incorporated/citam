@@ -14,12 +14,13 @@
 
 
 class Agent:
+
     def __init__(self, name, schedule):
 
         self.name = name
         self.unique_id = name
 
-        self.status = "S"
+        self.status = 'S'
         self.office = None
         self.job_function = None
 
@@ -44,27 +45,24 @@ class Agent:
         if xy_position is not None:
 
             if self.pos is None:
-                self.schedule.navigation.floorplans[floor_number].place_agent(
-                    self, xy_position
-                )
+                self.schedule.navigation.floorplans[floor_number] \
+                    .place_agent(self, xy_position)
             else:  # TODO: Handle when changing floors
                 if self.current_floor == floor_number:
-                    self.schedule.navigation.floorplans[
-                        floor_number
-                    ].move_agent(self, xy_position)
+                    self.schedule.navigation.floorplans[floor_number] \
+                        .move_agent(self, xy_position)
                 else:
-                    self.schedule.navigation.floorplans[
-                        self.current_floor
-                    ].remove_agent(self)
-                    self.schedule.navigation.floorplans[
-                        floor_number
-                    ].place_agent(self, xy_position)
+                    self.schedule.navigation.floorplans[self.current_floor] \
+                        .remove_agent(self)
+                    self.schedule.navigation.floorplans[floor_number] \
+                        .place_agent(self, xy_position)
             # self.pos = new_position
-            self.current_location = self.schedule.navigation.floorplans[
-                floor_number
-            ].identify_this_location(
-                xy_position[0], xy_position[1], include_boundaries=True
-            )
+            self.current_location = self.schedule.navigation \
+                .floorplans[floor_number] \
+                .identify_this_location(xy_position[0],
+                                        xy_position[1],
+                                        include_boundaries=True
+                                        )
             self.current_floor = floor_number
 
         return has_moved
