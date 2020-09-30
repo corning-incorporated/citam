@@ -11,25 +11,25 @@ import json
 def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
     filename = request.module.__file__
     test_dir = os.path.dirname(filename)
-    datadir = os.path.join(test_dir,
-                           'test_navigation')
+    datadir = os.path.join(test_dir, "test_navigation")
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
 
-    model = FacilityTransmissionModel([simple_facility_floorplan],
-                                      daylength=3600,
-                                      n_agents=2,
-                                      occupancy_rate=None,
-                                      buffer=100,
-                                      timestep=1.0,
-                                      entrances=[{"name": "1", "floor": "0"}],
-                                      facility_name='test_simple_facility',
-                                      contact_distance=6.0,
-                                      shifts=[{"name": "1", "start_time": 0,
-                                              "percent_workforce": 1.0}],
-                                      meetings_policy_params=None,
-                                      scheduling_policy=None,
-                                      traffic_policy=None,
-                                      dry_run=False)
+    model = FacilityTransmissionModel(
+        [simple_facility_floorplan],
+        daylength=3600,
+        n_agents=2,
+        occupancy_rate=None,
+        buffer=100,
+        timestep=1.0,
+        entrances=[{"name": "1", "floor": "0"}],
+        facility_name="test_simple_facility",
+        contact_distance=6.0,
+        shifts=[{"name": "1", "start_time": 0, "percent_workforce": 1.0}],
+        meetings_policy_params=None,
+        scheduling_policy=None,
+        traffic_policy=None,
+        dry_run=False,
+    )
 
     return model
 
@@ -94,30 +94,29 @@ def test_identify_contacts(simple_facility_model):
 
     model = simple_facility_model
 
-    agent1 = Agent('1', None)
+    agent1 = Agent("1", None)
     agent1.pos = (5, 5)
     agent1.current_floor = 0
     agent1.current_location = 0
 
-    agent2 = Agent('2', None)
+    agent2 = Agent("2", None)
     agent2.pos = (6, 5)
     agent2.current_floor = 0
     agent2.current_location = 0
 
-    agent3 = Agent('3', None)
+    agent3 = Agent("3", None)
     agent3.pos = (16, 50)
     agent3.current_floor = 0
     agent3.current_location = 0
 
     model.identify_contacts([agent1, agent2, agent3])
     contact_pos = (5.5, 5.0)
-    key = '1-2'
+    key = "1-2"
     # Only agents 1 and 2 make contact.
     assert len(model.contact_events.contact_data) == 1
     assert key in model.contact_events.contact_data
     assert len(model.contact_events.contact_data[key]) == 1
-    assert model.contact_events.contact_data[key][0].positions == \
-        [contact_pos]
+    assert model.contact_events.contact_data[key][0].positions == [contact_pos]
     assert len(model.step_contact_locations) == 1
     assert len(model.step_contact_locations[0]) == 1
     assert contact_pos in model.step_contact_locations[0]
@@ -128,11 +127,11 @@ def test_identify_contacts_outside_facility(simple_facility_model):
 
     model = simple_facility_model
 
-    agent1 = Agent('1', None)
+    agent1 = Agent("1", None)
     agent1.pos = (1, 1)
     agent1.current_floor = 0
 
-    agent2 = Agent('2', None)
+    agent2 = Agent("2", None)
     agent2.pos = (1, 1)
     agent2.current_floor = 0
     agent2.current_location = 1
@@ -148,12 +147,12 @@ def test_identify_contacts_wall_seperation(simple_facility_model):
 
     model = simple_facility_model
 
-    agent1 = Agent('1', None)
+    agent1 = Agent("1", None)
     agent1.pos = (10, 1)
     agent1.current_floor = 0
     agent1.current_location = 0
 
-    agent2 = Agent('2', None)
+    agent2 = Agent("2", None)
     agent2.pos = (10, -1)
     agent2.current_floor = 0
     agent2.current_location = 1
@@ -171,17 +170,17 @@ def test_identify_contacts_3_way(simple_facility_model):
 
     model = simple_facility_model
 
-    agent1 = Agent('1', None)
+    agent1 = Agent("1", None)
     agent1.pos = (5, 5)
     agent1.current_floor = 0
     agent1.current_location = 0
 
-    agent2 = Agent('2', None)
+    agent2 = Agent("2", None)
     agent2.pos = (6, 5)
     agent2.current_floor = 0
     agent2.current_location = 0
 
-    agent3 = Agent('3', None)
+    agent3 = Agent("3", None)
     agent3.pos = (6, 6)
     agent3.current_floor = 0
     agent3.current_location = 0
@@ -195,11 +194,12 @@ def test_identify_contacts_3_way(simple_facility_model):
     assert agent2.n_contacts == 2
     assert agent3.n_contacts == 2
 
-    for key, contact_pos in zip(['1-2', '1-3', '2-3'], contact_positions):
+    for key, contact_pos in zip(["1-2", "1-3", "2-3"], contact_positions):
         assert key in model.contact_events.contact_data
         assert len(model.contact_events.contact_data[key]) == 1
-        assert model.contact_events.contact_data[key][0].positions == \
-            [contact_pos]
+        assert model.contact_events.contact_data[key][0].positions == [
+            contact_pos
+        ]
         assert contact_pos in model.step_contact_locations[0]
         assert model.step_contact_locations[0][contact_pos] == 1
 
@@ -208,22 +208,21 @@ def test_add_contact_event(simple_facility_model):
 
     model = simple_facility_model
 
-    agent1 = Agent('1', None)
+    agent1 = Agent("1", None)
     agent1.pos = (5, 5)
     agent1.current_floor = 0
 
-    agent2 = Agent('2', None)
+    agent2 = Agent("2", None)
     agent2.pos = (6, 5)
     agent2.current_floor = 0
 
     model.add_contact_event(agent1, agent2)
     contact_pos = (5.5, 5.0)
-    key = '1-2'
+    key = "1-2"
     assert len(model.contact_events.contact_data) == 1
     assert key in model.contact_events.contact_data
     assert len(model.contact_events.contact_data[key]) == 1
-    assert model.contact_events.contact_data[key][0].positions == \
-        [contact_pos]
+    assert model.contact_events.contact_data[key][0].positions == [contact_pos]
     assert len(model.step_contact_locations) == 1
     assert contact_pos in model.step_contact_locations[0]
     assert model.step_contact_locations[0][contact_pos] == 1
@@ -252,10 +251,10 @@ def test_run_serial(simple_facility_model, tmpdir):
     for agent in model.agents.values():
         assert agent.schedule is not None
     assert model.current_step == model.daylength + model.buffer
-    assert os.path.isfile(os.path.join(tmpdir, 'manifest.json'))
-    assert os.path.isfile(os.path.join(tmpdir, 'trajectory.txt'))
-    assert os.path.isfile(os.path.join(tmpdir, 'floor_0', 'map.svg'))
-    assert os.path.isfile(os.path.join(tmpdir, 'floor_0', 'contacts.txt'))
+    assert os.path.isfile(os.path.join(tmpdir, "manifest.json"))
+    assert os.path.isfile(os.path.join(tmpdir, "trajectory.txt"))
+    assert os.path.isfile(os.path.join(tmpdir, "floor_0", "map.svg"))
+    assert os.path.isfile(os.path.join(tmpdir, "floor_0", "contacts.txt"))
 
 
 def test_extract_contact_distribution_per_agent(simple_facility_model):
@@ -272,13 +271,13 @@ def test_extract_contact_distribution_per_agent(simple_facility_model):
 def test_save_manifest(tmpdir, simple_facility_model):
     model = simple_facility_model
     model.save_manifest(tmpdir)
-    manifest_file = os.path.join(tmpdir, 'manifest.json')
+    manifest_file = os.path.join(tmpdir, "manifest.json")
     assert os.path.isfile(manifest_file)
 
-    with open(manifest_file, 'r') as infile:
+    with open(manifest_file, "r") as infile:
         data = json.load(infile)
 
-    assert 'SimulationID' in data
+    assert "SimulationID" in data
     assert "TimestepInSec" in data
     assert "NumberOfFloors" in data
     assert "NumberOfOneWayAisles" in data
@@ -303,16 +302,16 @@ def test_save_manifest(tmpdir, simple_facility_model):
 def test_save_maps(tmpdir, simple_facility_model):
     model = simple_facility_model
     model.save_maps(tmpdir)
-    assert os.path.isfile(os.path.join(tmpdir, 'floor_0', 'map.svg'))
+    assert os.path.isfile(os.path.join(tmpdir, "floor_0", "map.svg"))
 
 
 def test_create_svg_heatmap(tmpdir, simple_facility_model):
     model = simple_facility_model
     model.save_maps(tmpdir)
-    floor_dir = os.path.join(tmpdir, 'floor_0')
+    floor_dir = os.path.join(tmpdir, "floor_0")
     model.create_svg_heatmap({(1, 1): 10}, floor_dir)
 
-    assert os.path.isfile(os.path.join(floor_dir, 'heatmap.svg'))
+    assert os.path.isfile(os.path.join(floor_dir, "heatmap.svg"))
 
 
 def test_create_svg_heatmap_no_map(tmpdir, simple_facility_model):
@@ -325,23 +324,24 @@ def test_create_svg_heatmap_no_map(tmpdir, simple_facility_model):
 def test_save_outputs(tmpdir, simple_facility_model):
 
     model = simple_facility_model
-    floor_dir = os.path.join(tmpdir, 'floor_0')
+    floor_dir = os.path.join(tmpdir, "floor_0")
 
     if not os.path.isdir(floor_dir):
         os.mkdir(floor_dir)
 
-    with open(os.path.join(floor_dir, 'map.svg'), 'w') as outfile:
-        outfile.write('<svg> <g> </g> </svg>')
+    with open(os.path.join(floor_dir, "map.svg"), "w") as outfile:
+        outfile.write("<svg> <g> </g> </svg>")
 
     model.save_outputs(tmpdir)
 
-    assert os.path.isfile(os.path.join(tmpdir, 'contact_dist_per_agent.csv'))
-    assert os.path.isfile(os.path.join(tmpdir, 'agent_ids.txt'))
-    assert os.path.isfile(os.path.join(tmpdir, 'pair_contact.csv'))
-    assert os.path.isfile(os.path.join(tmpdir, 'raw_contact_data.ccd'))
+    assert os.path.isfile(os.path.join(tmpdir, "contact_dist_per_agent.csv"))
+    assert os.path.isfile(os.path.join(tmpdir, "agent_ids.txt"))
+    assert os.path.isfile(os.path.join(tmpdir, "pair_contact.csv"))
+    assert os.path.isfile(os.path.join(tmpdir, "raw_contact_data.ccd"))
 
-    assert os.path.isfile(os.path.join(floor_dir,
-                                       'contact_dist_per_coord.csv'))
+    assert os.path.isfile(
+        os.path.join(floor_dir, "contact_dist_per_coord.csv")
+    )
 
     # TODO: validate contents of each file
 

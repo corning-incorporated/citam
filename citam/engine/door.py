@@ -19,14 +19,15 @@ from citam.engine.point import Point
 class Door:
     _intersect_coords: tuple
 
-    def __init__(self,
-                 path,
-                 space1,
-                 space2=None,
-                 in_service=True,
-                 emergency_only=False,
-                 special_access=False
-                 ):
+    def __init__(
+        self,
+        path,
+        space1,
+        space2=None,
+        in_service=True,
+        emergency_only=False,
+        special_access=False,
+    ):
 
         super().__init__()
         self.path = path
@@ -50,7 +51,7 @@ class Door:
     def midpoint(self) -> Point:
         return Point(
             x=round(self.path.point(0.5).real),
-            y=round(self.path.point(0.5).imag)
+            y=round(self.path.point(0.5).imag),
         )
 
     @property
@@ -61,15 +62,15 @@ class Door:
         return self.intersect_coords == self.midpoint_coords
 
     def __str__(self):
-        str_repr = '\nPath: ' + str(self.path) + '\n'
+        str_repr = "\nPath: " + str(self.path) + "\n"
         if self.space1 is not None:
-            str_repr += 'Space 1: ' + str(self.space1.unique_name) + '\n'
+            str_repr += "Space 1: " + str(self.space1.unique_name) + "\n"
         else:
-            str_repr += 'Space 1: None' + '\n'
+            str_repr += "Space 1: None" + "\n"
         if self.space2 is not None:
-            str_repr += 'Space 2: ' + str(self.space2.unique_name) + '\n'
+            str_repr += "Space 2: " + str(self.space2.unique_name) + "\n"
         else:
-            str_repr += 'Space 2: None' + '\n'
+            str_repr += "Space 2: None" + "\n"
 
         return str_repr
 
