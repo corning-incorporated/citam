@@ -46,18 +46,19 @@ class Floorplan:
         the overall height of the facility in units of the SVG drawing
     """
 
-    def __init__(self,
-                 scale,
-                 spaces,
-                 doors,
-                 walls,
-                 aisles,
-                 width,
-                 height,
-                 floor_name="0",
-                 special_walls=None,  # Walls not attached to any space
-                 traffic_policy=None,
-                 ):
+    def __init__(
+        self,
+        scale,
+        spaces,
+        doors,
+        walls,
+        aisles,
+        width,
+        height,
+        floor_name="0",
+        special_walls=None,  # Walls not attached to any space
+        traffic_policy=None,
+    ):
         super().__init__()
 
         self.floor_name = None
@@ -92,17 +93,17 @@ class Floorplan:
                 if len(space.doors) > 0:
                     n_rooms_with_doors += 1
 
-        LOG.info('Number of spaces: ' + str(len(self.spaces)))
-        LOG.info('Number of rooms: ' + str(n_rooms))
-        LOG.info('Number of rooms with doors: ' + str(n_rooms_with_doors))
-        LOG.info('Number of walls: ' + str(len(self.walls)))
-        LOG.info('Total number of doors: ' + str(len(self.doors)))
+        LOG.info("Number of spaces: " + str(len(self.spaces)))
+        LOG.info("Number of rooms: " + str(n_rooms))
+        LOG.info("Number of rooms with doors: " + str(n_rooms_with_doors))
+        LOG.info("Number of walls: " + str(len(self.walls)))
+        LOG.info("Total number of doors: " + str(len(self.doors)))
 
         n_outside_doors = 0
         for door in self.doors:
             if door.space1 is None or door.space2 is None:
                 n_outside_doors += 1
-        LOG.info('Number of outside doors: ' + str(n_outside_doors))
+        LOG.info("Number of outside doors: " + str(n_outside_doors))
 
         self.agent_locations = {}
         self.traffic_policy = traffic_policy
@@ -110,10 +111,9 @@ class Floorplan:
         return
 
     def place_agent(self, agent, pos):
-        """ Position an agent in a given x, y position on this floor
-        """
+        """Position an agent in a given x, y position on this floor"""
         x, y = pos
-        key = str(x) + '-' + str(y)
+        key = str(x) + "-" + str(y)
         # self.grid[x][y].add(agent)
         if key not in self.agent_locations:
             self.agent_locations[key] = [agent]
@@ -122,13 +122,13 @@ class Floorplan:
         agent.pos = pos
 
     def remove_agent(self, agent):
-        """Remove the agent from the facility and set its pos variable to None.
-        """
+        """Remove the agent from the facility and set its pos variable to
+        None."""
         pos = agent.pos
         x, y = pos
-        key = str(x) + '-' + str(y)
+        key = str(x) + "-" + str(y)
         if key not in self.agent_locations:
-            LOG.error('Cannot find any agent in this location.')
+            LOG.error("Cannot find any agent in this location.")
         else:
             self.agent_locations[key].remove(agent)
         agent.pos = None
@@ -152,9 +152,9 @@ class Floorplan:
         """
         location = None
         for i, room in enumerate(self.spaces):
-            if room.is_point_inside_space(Point(x=x, y=y),
-                                          include_boundaries=include_boundaries
-                                          ):
+            if room.is_point_inside_space(
+                Point(x=x, y=y), include_boundaries=include_boundaries
+            ):
                 location = i
                 break
 
@@ -174,7 +174,7 @@ class Floorplan:
                     break
             if room_door is None:
                 space_name = str(self.spaces[room_id].unique_name)
-                LOG.warning(space_name + ' has no door')
+                LOG.warning(space_name + " has no door")
                 return None
 
         else:
@@ -188,8 +188,8 @@ class Floorplan:
     def export_to_svg(self, svg_file, include_doors=False):
         """Export the current floorplan to an SVG file.
 
-           Each space is written to file as a path element. Doors
-           are written seperately as path element as well.
+        Each space is written to file as a path element. Doors
+        are written seperately as path element as well.
 
         """
 
@@ -208,14 +208,13 @@ class Floorplan:
             max_contacts=100,
             current_time=None,
             show_colobar=False,
-            viewbox=None
+            viewbox=None,
         )
 
         return
 
     def export_to_file(self, filename):
-        """Serialize floorplan data and save to file.
-        """
+        """Serialize floorplan data and save to file."""
         space_dict_list = [vars(space) for space in self.spaces]
         door_dict_list = []
 
@@ -230,39 +229,38 @@ class Floorplan:
             else:
                 name2 = None
 
-            door_dict = {'path': door.path,
-                         'space1': name1,
-                         'space2': name2
-                         }
+            door_dict = {"path": door.path, "space1": name1, "space2": name2}
             door_dict_list.append(door_dict)
 
         # TODO: also add building walls so that people can run simulations for
         # specific buildings in a facility
-        data_dict = {'spaces': space_dict_list,
-                     'doors': door_dict_list,
-                     'walls': self.walls,
-                     'special_walls': self.special_walls,
-                     'aisles': self.aisles,
-                     'scale': self.scale
-                     }
+        data_dict = {
+            "spaces": space_dict_list,
+            "doors": door_dict_list,
+            "walls": self.walls,
+            "special_walls": self.special_walls,
+            "aisles": self.aisles,
+            "scale": self.scale,
+        }
 
-        with open(filename, 'wb') as outfile:
+        with open(filename, "wb") as outfile:
             pickle.dump(data_dict, outfile)
 
         return
 
     def export_data_to_pickle_file(self, fp_pickle_file):
 
-        data_to_save = [self.spaces,
-                        self.doors,
-                        self.walls,
-                        self.special_walls,
-                        self.aisles,
-                        1000,
-                        1000,
-                        self.scale
-                        ]
-        with open(fp_pickle_file, 'wb') as f:
+        data_to_save = [
+            self.spaces,
+            self.doors,
+            self.walls,
+            self.special_walls,
+            self.aisles,
+            1000,
+            1000,
+            self.scale,
+        ]
+        with open(fp_pickle_file, "wb") as f:
             pickle.dump(data_to_save, f)
 
         return
@@ -281,18 +279,26 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
     """
 
     if not os.path.isdir(path):
-        raise NotADirectoryError(f'Floor directory not found: {path}')
+        raise NotADirectoryError(f"Floor directory not found: {path}")
 
-    fp_pickle_file = os.path.join(path, 'updated_floorplan.pkl')
+    fp_pickle_file = os.path.join(path, "updated_floorplan.pkl")
     if not os.path.isfile(fp_pickle_file):
-        fp_pickle_file = os.path.join(path, 'floorplan.pkl')
+        fp_pickle_file = os.path.join(path, "floorplan.pkl")
 
     if os.path.isfile(fp_pickle_file):
-        with open(fp_pickle_file, 'rb') as f:
-            fields = ('spaces', 'doors', 'walls', 'special_walls', 'aisles',
-                      'width', 'height', 'scale')
+        with open(fp_pickle_file, "rb") as f:
+            fields = (
+                "spaces",
+                "doors",
+                "walls",
+                "special_walls",
+                "aisles",
+                "width",
+                "height",
+                "scale",
+            )
             fp_inputs = {k: v for k, v in zip(fields, pickle.load(f))}
-        LOG.info('Floorplan successfully loaded.')
+        LOG.info("Floorplan successfully loaded.")
     else:
         raise FileNotFoundError("Could not find floorplan file")
 
@@ -301,14 +307,16 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
         LOG.debug("Updating fp_inputs with kwargs %s", no_none_kwargs)
         fp_inputs.update(**no_none_kwargs)
 
-    fp_inputs['floor_name'] = floor
-    LOG.info('Initializing floorplan: '
-             'doors: %s, '
-             'walls: %d, '
-             'scale: %d [ft/drawing unit]',
-             len(fp_inputs.get('doors', [])),
-             len(fp_inputs.get('walls', [])),
-             fp_inputs.get('scale', float("NaN")))
+    fp_inputs["floor_name"] = floor
+    LOG.info(
+        "Initializing floorplan: "
+        "doors: %s, "
+        "walls: %d, "
+        "scale: %d [ft/drawing unit]",
+        len(fp_inputs.get("doors", [])),
+        len(fp_inputs.get("walls", [])),
+        fp_inputs.get("scale", float("NaN")),
+    )
 
     LOG.debug("Initializing floorplan: %s", fp_inputs)
     return Floorplan(**fp_inputs)
