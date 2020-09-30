@@ -12,7 +12,7 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-__all__ = ["S3StorageDriver"]
+__all__ = ['S3StorageDriver']
 
 import logging
 import boto3
@@ -24,6 +24,7 @@ LOG = logging.getLogger(__name__)
 
 
 class S3StorageDriver(BaseStorageDriver):
+
     def __init__(self, bucket, **kwargs):
         super().__init__()
         self.bucket = bucket
@@ -50,12 +51,12 @@ class S3StorageDriver(BaseStorageDriver):
         session = boto3.session.Session()
         return session.client(
             service_name="s3",
-            use_ssl=kwargs.get("ssl", False),
-            verify=kwargs.get("verify", False),
-            region_name=kwargs.get("storage_region"),
-            endpoint_url=kwargs.get("storage_url"),
-            aws_access_key_id=kwargs.get("access_key"),
-            aws_secret_access_key=kwargs.get("secret_key"),
+            use_ssl=kwargs.get('ssl', False),
+            verify=kwargs.get('verify', False),
+            region_name=kwargs.get('storage_region'),
+            endpoint_url=kwargs.get('storage_url'),
+            aws_access_key_id=kwargs.get('access_key'),
+            aws_secret_access_key=kwargs.get('secret_key'),
         )
 
     def _get_text_file(self, sim_id, filename):
@@ -72,25 +73,24 @@ class S3StorageDriver(BaseStorageDriver):
 
         response = self.client.get_object(
             Bucket=self.bucket,
-            Key=f"{sim_id}/{filename}",
+            Key=f'{sim_id}/{filename}',
         )
         output = StringIO()
-        output.write(response["Body"].read().decode("UTF-8"))
+        output.write(response['Body'].read().decode('UTF-8'))
         output.seek(0)
 
         elapsed = datetime.now() - start_time
-        LOG.info(
-            "Completed download, time: %d seconds", elapsed.total_seconds()
-        )
+        LOG.info("Completed download, time: %d seconds",
+                 elapsed.total_seconds())
         return output
 
     def list_runs(self):
         prefixes = self.client.list_objects_v2(
             Bucket=self.bucket,
-            Delimiter="/",
-        )["CommonPrefixes"]
+            Delimiter='/',
+        )['CommonPrefixes']
 
-        return list(map(lambda x: x["Prefix"].strip("/"), prefixes))
+        return list(map(lambda x: x['Prefix'].strip('/'), prefixes))
 
     def get_coordinate_distribution_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
@@ -102,7 +102,7 @@ class S3StorageDriver(BaseStorageDriver):
     def get_trajectory_file(self, sim_id):
         manifest = self.get_manifest(sim_id)
         return self._get_text_file(
-            sim_id, manifest.get("trajectory_file", "trajectory.txt")
+            sim_id, manifest.get('trajectory_file', 'trajectory.txt')
         )
 
     def get_contact_file(self, sim_id, floor):
@@ -120,7 +120,7 @@ class S3StorageDriver(BaseStorageDriver):
         )
 
         output = BytesIO()
-        output.write(response["Body"].read())
+        output.write(response['Body'].read())
         output.seek(0)
 
         return output
@@ -133,7 +133,7 @@ class S3StorageDriver(BaseStorageDriver):
         )
 
         output = BytesIO()
-        output.write(response["Body"].read())
+        output.write(response['Body'].read())
         output.seek(0)
 
         return output
@@ -141,10 +141,10 @@ class S3StorageDriver(BaseStorageDriver):
     def get_manifest_file(self, sim_id):
         # TODO: This could be cached.
         #  This may be called more than once per request
-        return self._get_text_file(sim_id, "manifest.json")
+        return self._get_text_file(sim_id, 'manifest.json')
 
     def get_pair_contact_file(self, sim_id):
-        return self._get_text_file(sim_id, "pair_contact.csv")
+        return self._get_text_file(sim_id, 'pair_contact.csv')
 
     def get_statistics_file(self, sim_id):
-        return self._get_text_file(sim_id, "statistics.json")
+        return self._get_text_file(sim_id, 'statistics.json')

@@ -27,11 +27,11 @@ import citam
 @pytest.fixture(autouse=True)
 def reinitialize_settings(monkeypatch):
     """Before each command is run, reinitialize the citam settings"""
-    monkeypatch.delenv("CITAM_RESULT_PATH", raising=False)
-    monkeypatch.delenv("CITAM_STORAGE_KEY", raising=False)
-    monkeypatch.delenv("CITAM_STORAGE_SECRET", raising=False)
-    monkeypatch.delenv("CITAM_STORAGE_REGION", raising=False)
-    monkeypatch.delenv("CITAM_RESULT_PATH", raising=False)
-    monkeypatch.delenv("CITAM_STORAGE_DRIVER", raising=False)
-    monkeypatch.delenv("CITAM_LOG_LEVEL", raising=False)
+    monkeypatch.delenv('CITAM_RESULT_PATH', raising=False)
+    monkeypatch.delenv('CITAM_STORAGE_KEY', raising=False)
+    monkeypatch.delenv('CITAM_STORAGE_SECRET', raising=False)
+    monkeypatch.delenv('CITAM_STORAGE_REGION', raising=False)
+    monkeypatch.delenv('CITAM_RESULT_PATH', raising=False)
+    monkeypatch.delenv('CITAM_STORAGE_DRIVER', raising=False)
+    monkeypatch.delenv('CITAM_LOG_LEVEL', raising=False)
     citam.conf.settings.reset()

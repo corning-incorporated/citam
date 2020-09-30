@@ -17,12 +17,13 @@ from appdirs import user_data_dir
 
 
 def get_user_cache():
-    """Returns the user cache directory for citam"""
-    citam_cache_directory = os.environ.get("CITAM_CACHE_DIRECTORY")
+    """Returns the user cache directory for citam
+    """
+    citam_cache_directory = os.environ.get('CITAM_CACHE_DIRECTORY')
     if citam_cache_directory is None:
-        citam_cache_directory = user_data_dir("CITAM")
+        citam_cache_directory = user_data_dir('CITAM')
 
-    parent_dir = os.path.abspath(os.path.join(citam_cache_directory, ".."))
+    parent_dir = os.path.abspath(os.path.join(citam_cache_directory, '..'))
     if not os.path.isdir(parent_dir):
         os.mkdir(parent_dir)
 
@@ -34,25 +35,26 @@ def get_user_cache():
 
 def get_floorplans_directory():
     citam_cache_directory = get_user_cache()
-    floorplan_directory = os.path.join(
-        citam_cache_directory, "floorplans_and_nav_data/"
-    )
+    floorplan_directory = os.path.join(citam_cache_directory,
+                                       'floorplans_and_nav_data/'
+                                       )
     return floorplan_directory
 
 
 def create_datadir(facility_name, floor_name):
-    """Create directory to save data for a given facility and floor."""
+    """Create directory to save data for a given facility and floor.
+    """
     floorplan_directory = get_floorplans_directory()
     if not os.path.isdir(floorplan_directory):
         os.mkdir(floorplan_directory)
 
-    facility_directory = os.path.join(floorplan_directory, facility_name + "/")
+    facility_directory = os.path.join(floorplan_directory, facility_name + '/')
     if not os.path.isdir(facility_directory):
         os.mkdir(facility_directory)
 
-    floor_directory = os.path.join(
-        facility_directory, "floor_" + floor_name + "/"
-    )
+    floor_directory = os.path.join(facility_directory,
+                                   'floor_' + floor_name + '/'
+                                   )
     if not os.path.isdir(floor_directory):
         os.mkdir(floor_directory)
 
@@ -60,13 +62,12 @@ def create_datadir(facility_name, floor_name):
 
 
 def get_datadir(facility_name, floor_name):
-    """Get the directory where data for a given facility and floor are
-    saved."""
+    """Get the directory where data for a given facility and floor are saved.
+    """
     citam_cache_directory = get_user_cache()
-    floor_directory = os.path.join(
-        citam_cache_directory,
-        "floorplans_and_nav_data",
-        facility_name,
-        "floor_" + floor_name,
-    )
+    floor_directory = os.path.join(citam_cache_directory,
+                                   'floorplans_and_nav_data',
+                                   facility_name,
+                                   'floor_' + floor_name
+                                   )
     return floor_directory
