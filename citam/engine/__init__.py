@@ -33,17 +33,14 @@ def engine_run(**kwargs):
     This method is executed with the CLI call ``citam engine run``
     """
     LOG.info("Preparing to run simulation")
-    work_directory = kwargs.get(
-        'work_dir',
-        os.path.abspath(os.getcwd())
-    )
+    work_directory = kwargs.get("work_dir", os.path.abspath(os.getcwd()))
     LOG.debug("Working directory: '%s'", work_directory)
-    LOG.debug("Loading input file: %s", kwargs['input_file'])
+    LOG.debug("Loading input file: %s", kwargs["input_file"])
 
-    input_dict = parse_input_file(kwargs['input_file'])
+    input_dict = parse_input_file(kwargs["input_file"])
     if input_dict is None:
-        logging.fatal('Error loading input file. Please double check.')
-        logging.info('Done.')
+        logging.fatal("Error loading input file. Please double check.")
+        logging.info("Done.")
         return
     LOG.info("Starting simulation")
     run_simulation(input_dict)
