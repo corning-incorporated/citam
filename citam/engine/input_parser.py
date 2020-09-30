@@ -16,17 +16,19 @@
     Author: Mardochee Reveil
 
 """
-from citam.engine.constants import REQUIRED_SPACE_METADATA
-from citam.engine.constants import OPTIONAL_SPACE_METADATA
-from citam.engine.constants import SUPPORTED_SPACE_FUNCTIONS
-
-from svgpathtools import svg2paths, Line
-
 import csv
 import os
 import logging
 import errno
 import json
+
+from svgpathtools import svg2paths, Line
+
+from citam.engine.constants import REQUIRED_SPACE_METADATA
+from citam.engine.constants import OPTIONAL_SPACE_METADATA
+from citam.engine.constants import SUPPORTED_SPACE_FUNCTIONS
+
+LOG = logging.getLogger(__name__)
 
 
 class MissingInputError(TypeError):
@@ -62,7 +64,7 @@ def parse_csv_metadata_file(csv_file):
     """
 
     if not os.path.isfile(csv_file):
-        logging.fatal('File not found. ' + str(csv_file))
+        LOG.fatal('File not found. %s', csv_file)
         raise FileNotFoundError(
             errno.ENOENT, os.strerror(errno.ENOENT), csv_file)
 
@@ -77,21 +79,19 @@ def parse_csv_metadata_file(csv_file):
                 for required_data in REQUIRED_SPACE_METADATA:
                     if required_data not in header:
                         msg = f'{required_data} column is missing in csv file'
-                        logging.error(msg)
+                        LOG.error(msg)
                         return []
             else:
                 for c, name in enumerate(header):
                     value = row[c]
                     if str(value) == '':
-                        logging.error(f'No {name} found in this row {row}')
+                        LOG.error('No %s found in this row %s', name, row)
                         return []
                     if header[c] in supported_columns:
                         row_data[header[c]] = value.lower()
                         if header[c] == 'space_function':
                             if value.lower() not in SUPPORTED_SPACE_FUNCTIONS:
-                                logging.error(f'Invalid space function: \
-                                              {value}'
-                                              )
+                                LOG.error('Invalid space function: %s', value)
                                 return []
 
                 space_info.append(row_data)
@@ -122,7 +122,7 @@ def parse_svg_floorplan_file(svg_file):
     """
 
     if not os.path.isfile(svg_file):
-        logging.fatal('File not found. ' + str(svg_file))
+        LOG.fatal('File not found. %s', svg_file)
         raise FileNotFoundError(
             errno.ENOENT, os.strerror(errno.ENOENT), svg_file)
 
@@ -150,8 +150,8 @@ def parse_svg_floorplan_file(svg_file):
             space_paths.append(path)
             space_attributes.append(attr)
 
-    logging.info('Number of door paths: ' + str(len(door_paths)))
-    logging.info('Number of space paths: ' + str(len(space_paths)))
+    LOG.info('Number of door paths: %d', len(door_paths))
+    LOG.info('Number of space paths: %d', len(space_paths))
 
     return space_paths, space_attributes, door_paths
 
@@ -168,7 +168,7 @@ def parse_meetings_policy_file(json_filepath):
         with open(json_filepath, 'r') as f:
             meetings_policy_params = json.load(f)
     else:
-        logging.error('Could not find input file: {%s}', json_filepath)
+        LOG.error('Could not find input file: {%s}', json_filepath)
         raise FileNotFoundError(json_filepath)
 
     return meetings_policy_params
@@ -186,15 +186,13 @@ def parse_scheduling_policy_file(json_filepath):
        TODO: Each employee group can have their own scheduling policy (e.g.
        managers vs technicians).
     """
-    scheduling_policy = None
     if os.path.isfile(json_filepath):
         with open(json_filepath, 'r') as f:
             scheduling_policy = json.load(f)
+        return scheduling_policy
     else:
-        logging.error('Could not find input file: {%s}', json_filepath)
+        LOG.error('Could not find input file: {%s}', json_filepath)
         raise FileNotFoundError(json_filepath)
-
-    return scheduling_policy
 
 
 def parse_input_file(input_file):
@@ -220,7 +218,7 @@ def parse_input_file(input_file):
                 raise ValueError(f'{input_file} is not a valid JSON file.') \
                     from err
     else:
-        logging.error('Could not find input file: ' + input_file)
+        LOG.error('Could not find input file: %s', input_file)
         raise FileNotFoundError(input_file)
 
     # Make sure all required values are provided
@@ -342,8 +340,8 @@ def parse_input_file(input_file):
     if total_percent > 1.0:
         raise ValueError('Total percent workforce greater than 1.0')
 
-    logging.info('Number of agents: ' + str(n_agents))
-    logging.info('User provided floorplan scale is: ' + str(floorplan_scale))
+    LOG.info('Number of agents: %d', n_agents)
+    LOG.info('User provided floorplan scale is: %s', floorplan_scale)
 
     converted_contact_distance = contact_distance/floorplan_scale
     inputs_dict = {'upload_results': upload_results,
