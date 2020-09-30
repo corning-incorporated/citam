@@ -16,17 +16,17 @@
     Author: Mardochee Reveil
 
 """
-from citam.engine.constants import REQUIRED_SPACE_METADATA
-from citam.engine.constants import OPTIONAL_SPACE_METADATA
-from citam.engine.constants import SUPPORTED_SPACE_FUNCTIONS
-
-from svgpathtools import svg2paths, Line
-
 import csv
 import os
 import logging
 import errno
 import json
+
+from svgpathtools import svg2paths, Line
+
+from citam.engine.constants import REQUIRED_SPACE_METADATA
+from citam.engine.constants import OPTIONAL_SPACE_METADATA
+from citam.engine.constants import SUPPORTED_SPACE_FUNCTIONS
 
 LOG = logging.getLogger(__name__)
 
@@ -85,13 +85,13 @@ def parse_csv_metadata_file(csv_file):
                 for c, name in enumerate(header):
                     value = row[c]
                     if str(value) == '':
-                        LOG.error(f'No {name} found in this row {row}')
+                        LOG.error('No %s found in this row %s', name, row)
                         return []
                     if header[c] in supported_columns:
                         row_data[header[c]] = value.lower()
                         if header[c] == 'space_function':
                             if value.lower() not in SUPPORTED_SPACE_FUNCTIONS:
-                                LOG.error(f'Invalid space function: {value}')
+                                LOG.error('Invalid space function: %s', value)
                                 return []
 
                 space_info.append(row_data)
