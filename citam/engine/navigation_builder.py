@@ -11,21 +11,22 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
+import logging
+import os
+import pickle
 from typing import Tuple
 
+import networkx as nx
+import progressbar as pb
+from svgpathtools import Line, svg2paths
+
+import citam.engine.basic_visualization as bv
+import citam.engine.floorplan_utils as fu
+import citam.engine.geometry_and_svg_utils as gsu
 from citam.engine.door import Door
 from citam.engine.point import Point
-import citam.engine.basic_visualization as bv
-import citam.engine.geometry_and_svg_utils as gsu
-import citam.engine.floorplan_utils as fu
 
-from svgpathtools import Line, svg2paths
-import progressbar as pb
-
-import logging
-import networkx as nx
-import pickle
-import os
+LOG = logging.getLogger(__name__)
 
 
 class NavigationBuilder:
@@ -90,7 +91,7 @@ class NavigationBuilder:
 
         """
 
-        logging.info('Creating nav segments for each aisle...')
+        LOG.info('Creating nav segments for each aisle...')
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.spaces))
         for i, space in enumerate(self.current_floorplan.spaces):
             pbar.update(i)
@@ -107,7 +108,7 @@ class NavigationBuilder:
                         self.create_nav_segment_for_aisle(aisle)
 
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
-        logging.info('Processing doors for each space...')
+        LOG.info('Processing doors for each space...')
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
             self.floor_navnet.add_node(door.midpoint_coords, node_type='door')
@@ -130,13 +131,13 @@ class NavigationBuilder:
                                           door_width,
                                           stop_at_existing_segments=True)
             if len(segments) == 0:
-                logging.warning('No nav segments found. This is not typical.')
-                logging.info('Door is: ' + str(door))
+                LOG.warning('No nav segments found. This is not typical.')
+                LOG.info('Door is: %s', door)
             self._add_spaces_to_hallway_graph(seg_spaces)
             self._update_navnet(segments, seg_spaces, door_width)
 
         # Simplify nav network by removing unncesssary edges and nodes
-        logging.info('Removing unnecessary nodes from nav network...')
+        LOG.info('Removing unnecessary nodes from nav network...')
         self.simplify_navigation_network()
 
         # Make sure no intersection was missed, in case they happen between
@@ -146,7 +147,7 @@ class NavigationBuilder:
                 self.find_intersections_in_space(space)
 
         # Ensure no nav path crosses a special wall
-        logging.info('Make sure nav paths do not cross any walls...')
+        LOG.info('Make sure nav paths do not cross any walls...')
         self.sanitize_graph()
 
         # Label all intersection nodes accordingly
@@ -518,8 +519,8 @@ class NavigationBuilder:
                             str(new_point)
                         )
                 elif len(boundary_spaces) == 1:
-                    logging.info('{%s} on space boundary. Is it an entrance?',
-                                 new_point)
+                    LOG.info('{%s} on space boundary. Is it an entrance?',
+                             new_point)
                     current_space = boundary_spaces[0]
                 else:
                     test_point = Point(x=round(new_point.x + direction*dx),
@@ -597,11 +598,9 @@ class NavigationBuilder:
                         break
 
         if len(segments) != len(segment_spaces):
-            logging.fatal('Number of segments should equal number of spaces')
-            logging.info('We have: {%d} * {%d}',
-                         len(segments),
-                         len(segment_spaces)
-                         )
+            LOG.fatal('Number of segments should equal number of spaces')
+            LOG.info('We have: {%d} * {%d}',
+                     len(segments), len(segment_spaces))
             quit()
 
         good_segments = []
@@ -690,8 +689,8 @@ class NavigationBuilder:
             i += 1
 
         n_edges = self.floor_navnet.number_of_nodes()
-        logging.info('Number of intersections removed: ' + str(n_intersect))
-        logging.info('Number of edges: ' + str(n_edges))
+        LOG.info('Number of intersections removed: %d', n_intersect)
+        LOG.info('Number of edges: %d', n_edges)
 
         return
 
@@ -715,15 +714,15 @@ class NavigationBuilder:
                 return
         else:
             n_nodes = self.floor_navnet.number_of_nodes()
-            logging.info('Starting number of nodes: ' + str(n_nodes))
+            LOG.info('Starting number of nodes: %d', n_nodes)
             n_edges = self.floor_navnet.number_of_edges()
-            logging.info('Starting number of edges: ' + str(n_edges))
+            LOG.info('Starting number of edges: %d', n_edges)
 
             door_paths = [d.path for d in self.current_floorplan.doors]
             # for space in floorplan.spaces:
             #     door_paths += space.doors
 
-            logging.info('Number of doors: ' + str(len(door_paths)))
+            LOG.info('Number of doors: %d', len(door_paths))
 
             nodes_removed = 0
             completed = False
@@ -772,11 +771,11 @@ class NavigationBuilder:
                             nodes_removed += 1
                             completed = False
 
-            logging.info('Number of nodes removed: ' + str(nodes_removed))
+            LOG.info('Number of nodes removed: %d', nodes_removed)
             n_nodes = self.floor_navnet.number_of_nodes()
-            logging.info('New number of nodes: ' + str(n_nodes))
+            LOG.info('New number of nodes: %d', n_nodes)
             n_edges = self.floor_navnet.number_of_edges()
-            logging.info('New number of edges: ' + str(n_edges))
+            LOG.info('New number of edges: %d', n_edges)
             self.floor_navnet.graph['is_simplified'] = True
 
         return
@@ -990,7 +989,7 @@ class NavigationBuilder:
             with open(hallway_graph_pkl_file, 'wb') as f:
                 pickle.dump(self.hallways_graph, f)
         except Exception as e:
-            logging.error(e)
+            LOG.error(e)
             return False
 
         return True
@@ -1021,7 +1020,7 @@ class NavigationBuilder:
                      end=complex(e[1][0], e[1][1])
                      )
             nav_paths.append(p)
-        logging.info('Exporting...')
+        LOG.info('Exporting...')
         try:
             bv.export_nav_network_to_svg(self.current_floorplan.walls,
                                          nav_paths,
@@ -1029,10 +1028,10 @@ class NavigationBuilder:
                                          svg_file
                                          )
         except Exception as e:
-            logging.error(e)
+            LOG.error(e)
             return False
 
-        logging.info('Navigation nework exported to : ' + str(svg_file))
+        LOG.info('Navigation network exported to: %s', svg_file)
 
         return True
 
@@ -1116,20 +1115,18 @@ class NavigationBuilder:
 
         n_nodes = self.floor_navnet.number_of_nodes()
         if n_nodes > 0:
-            logging.error('Unable to load new navigation data. The navigation \
-                          network currently has ' + str(n_nodes) +
-                          '. Please remove them first.'
-                          )
+            LOG.error('Unable to load new navigation data. The navigation '
+                      'network currently has %d. Please remove them first.',
+                      n_nodes)
             return False
 
         if not os.path.isfile(navnet_pkl_file):
-            logging.error('File does not exist. ' + str(navnet_pkl_file))
+            LOG.error('File does not exist. %s', navnet_pkl_file)
             return False
 
         if not os.path.isfile(hallway_graph_pkl_file):
-            logging.error('Hallway graph file does not exist: ' +
-                          str(hallway_graph_pkl_file)
-                          )
+            LOG.error('Hallway graph file does not exist: %s',
+                      hallway_graph_pkl_file)
             return False
 
         with open(navnet_pkl_file, 'rb') as f:

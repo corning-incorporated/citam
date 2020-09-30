@@ -1,4 +1,3 @@
-
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
 # This software may only be used in accordance with the licenses granted by
@@ -13,12 +12,13 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-from matplotlib import cm, colors
-import xml.etree.ElementTree as ET
 import logging
+import xml.etree.ElementTree as ET
+
+from matplotlib import cm, colors
+from svgpathtools import wsvg, Arc, Line, parse_path
 
 from citam.engine.point import Point
-from svgpathtools import wsvg, Arc, Line, parse_path
 
 ET.register_namespace('', "http://www.w3.org/2000/svg")
 ET.register_namespace('xlink', "http://www.w3.org/1999/xlink")
@@ -27,9 +27,10 @@ X_MARKER = 1
 LINE_MARKER = 2
 PLUS_MARKER = 3
 
+LOG = logging.getLogger(__name__)
+
 
 def export_possible_oneway_aisles_to_svg(walls, oneway_network, svgfile):
-
     texts = []
     text_paths = []
     radius = complex(3, 3)
@@ -54,7 +55,7 @@ def export_possible_oneway_aisles_to_svg(walls, oneway_network, svgfile):
                            })
         midx, midy = p.point(0.5).real, p.point(0.5).imag
         t_path = parse_path('M ' + str(midx) + ',' + str(midy) + ' L ' +
-                            str(midx+60) + ',' + str(midy)
+                            str(midx + 60) + ',' + str(midy)
                             )
 
         texts.append(str(e[2]['id']))
@@ -118,7 +119,6 @@ def export_possible_oneway_aisles_to_svg(walls, oneway_network, svgfile):
 
 
 def create_arrow_svg_paths(arrow):
-
     paths = []
     attributes = []
 
@@ -158,7 +158,6 @@ def create_arrow_svg_paths(arrow):
 
 
 def create_markers_svg_paths(x, y, marker_type):
-
     paths = []
     attributes = []
 
@@ -187,7 +186,7 @@ def create_markers_svg_paths(x, y, marker_type):
         paths.append(line1)
 
     else:
-        logging.info('ERROR: unsupported marker type ', marker_type)
+        LOG.info('ERROR: unsupported marker type %s', marker_type)
 
     return paths, attributes
 
@@ -199,7 +198,6 @@ def export_nav_network_to_svg(walls,
                               marker_type=X_MARKER,
                               color='blue'
                               ):
-
     radius = complex(2, 2)
     paths = [wall for wall in walls]
     attributes = [{'fill': 'white',
@@ -256,10 +254,9 @@ def export_world_to_svg(walls,
                         show_colobar=False,
                         viewbox=None
                         ):
-
     if viewbox is not None:
         xmax = viewbox[2]
-        multiplier = round(xmax/1500, 1)
+        multiplier = round(xmax / 1500, 1)
     else:
         multiplier = 1.0
 
@@ -267,7 +264,7 @@ def export_world_to_svg(walls,
     paths = [wall for wall in walls]
     attributes = [{'fill': 'white',
                    'stroke': 'black',
-                   'stroke-width': 0.5*multiplier
+                   'stroke-width': 0.5 * multiplier
                    }
                   for p in paths
                   ]
@@ -275,7 +272,7 @@ def export_world_to_svg(walls,
     color_scale = cm.get_cmap('RdYlGn')
 
     for x, y, n_contacts in agent_positions_and_contacts:
-        color = color_scale(1.0 - n_contacts*1.0/max_contacts)
+        color = color_scale(1.0 - n_contacts * 1.0 / max_contacts)
         start = Point(x=x - radius.real, y=y)
         end = Point(x=x + radius.real, y=y)
         agent_top = Arc(start=start.complex_coords,
@@ -286,18 +283,17 @@ def export_world_to_svg(walls,
                         end=end.complex_coords)
         attributes.append({'fill': colors.to_hex(color),
                            'stroke': 'blue',
-                           'stroke-width': 0.1*multiplier
+                           'stroke-width': 0.1 * multiplier
                            })
         paths.append(agent_top)
         agent_bottom = agent_top.rotated(180)
         attributes.append({'fill': colors.to_hex(color),
                            'stroke': 'blue',
-                           'stroke-width': 0.1*multiplier
+                           'stroke-width': 0.1 * multiplier
                            })
         paths.append(agent_bottom)
 
     for x, y, n_contacts in marker_locations:
-
         marker_paths, marker_attr = create_markers_svg_paths(x, y, marker_type)
         paths += marker_paths
         attributes += marker_attr
@@ -309,7 +305,7 @@ def export_world_to_svg(walls,
 
     for door in doors:
         paths.append(door.path)
-        attributes.append({'stroke': 'red', 'stroke-width': 3.0*multiplier})
+        attributes.append({'stroke': 'red', 'stroke-width': 3.0 * multiplier})
 
     t_path = parse_path('M 0,0 L 250,0')
 
@@ -338,7 +334,6 @@ def export_world_to_svg(walls,
 
 
 def add_root_layer_to_svg(original_svg_filename, updated_filename):
-
     tree = ET.parse(original_svg_filename)
 
     root = tree.getroot()

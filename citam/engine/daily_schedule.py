@@ -12,22 +12,26 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-import numpy as np
 import logging
 
+import numpy as np
+
 from citam.engine.constants import (
-        CAFETERIA_VISIT,
-        LAB_WORK,
-        OFFICE_WORK,
-        RESTROOM_VISIT,
-        MEETING,
-        LAST_SCHEDULE_ITEM_CUTOFF
-    )
+    CAFETERIA_VISIT,
+    LAB_WORK,
+    OFFICE_WORK,
+    RESTROOM_VISIT,
+    MEETING,
+    LAST_SCHEDULE_ITEM_CUTOFF
+)
+
+LOG = logging.getLogger(__name__)
 
 
 class Schedule:
     """Create and manage agents schedule and itinerary
     """
+
     def __init__(self,
                  timestep,
                  start_time,
@@ -368,8 +372,8 @@ class Schedule:
         if route is None:
             myfloorplan = self.navigation.floorplans[prev_floor_number]
             myspace = myfloorplan.spaces[prev_location].unique_name
-            logging.info('Last location is: ' + myspace)
-            logging.info('Specified exit is: ' + str(next_location))
+            LOG.info('Last location: %s | specified exit: %s',
+                     myspace, next_location)
             raise ValueError("Route to leave facility must not be None")
 
         self.itinerary += route

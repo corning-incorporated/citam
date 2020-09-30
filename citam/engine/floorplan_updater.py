@@ -12,15 +12,17 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-import citam.engine.geometry_and_svg_utils as gsu
-from citam.engine.door import Door
-from citam.engine.point import Point
-from citam.engine.input_parser import parse_csv_metadata_file
-from citam.engine.space import Space
+import logging
 
 from svgpathtools import Line, svg2paths
 
-import logging
+import citam.engine.geometry_and_svg_utils as gsu
+from citam.engine.door import Door
+from citam.engine.input_parser import parse_csv_metadata_file
+from citam.engine.point import Point
+from citam.engine.space import Space
+
+LOG = logging.getLogger(__name__)
 
 
 class FloorplanUpdater:
@@ -32,7 +34,7 @@ class FloorplanUpdater:
         self.svg_file = svg_file
 
         if self.svg_file is None and self.csv_file is None:
-            logging.error('At least one of svg or csv file required')
+            LOG.error('At least one of svg or csv file required')
             quit()
 
         return
@@ -45,9 +47,8 @@ class FloorplanUpdater:
         """
 
         space_info = parse_csv_metadata_file(self.csv_file)
-        logging.debug('Successfully read CSV file. ' +
-                      'Number of spaces found: ' + str(len(space_info))
-                      )
+        LOG.debug('Successfully read CSV file. Number of spaces found: %d',
+                  len(space_info))
 
         for s_info in space_info:
             for i, space in enumerate(self.floorplan.spaces):
@@ -102,7 +103,7 @@ class FloorplanUpdater:
             if wall not in self.floorplan.walls:
                 new_or_edited_walls.append(wall)
         n_new_walls = len(new_or_edited_walls)
-        logging.info('We found ' + str(n_new_walls) + ' updated walls')
+        LOG.info('We found %d updated walls', n_new_walls)
 
         self.floorplan.special_walls = new_or_edited_walls
 
@@ -181,19 +182,19 @@ class FloorplanUpdater:
             Whether the process was successful or not
         """
         n_walls = len(self.floorplan.walls)
-        logging.info('Number of walls before: ' + str(n_walls))
+        LOG.info('Number of walls before: %d', n_walls)
         self.find_special_walls(svg_wall_paths)
 
         # Update the walls after extracting the special ones
         self.floorplan.walls = svg_wall_paths
-        logging.info('New number of walls: ' + str(len(self.floorplan.walls)))
+        LOG.info('New number of walls: %d', len(self.floorplan.walls))
 
         # Now working with doors
         n_doors = len(self.floorplan.doors)
-        logging.info('Number of doors before: ' + str(n_doors))
+        LOG.info('Number of doors before: %d', n_doors)
 
         # Delete any old door that overlaps with one of the updated walls
-        logging.info('Checking if walls overlaps with existing doors...')
+        LOG.info('Checking if walls overlaps with existing doors...')
         doors_to_remove = self.find_doors_to_remove()
         updated_doors = []
         for door in self.floorplan.doors:
@@ -202,16 +203,16 @@ class FloorplanUpdater:
             else:
                 updated_doors.append(door)
 
-        logging.info('We removed ' + str(len(doors_to_remove)) + ' doors.')
-        logging.info('New number of doors: ' + str(len(updated_doors)))
+        LOG.info('We removed %d doors', len(doors_to_remove))
+        LOG.info('New number of doors: %d', len(updated_doors))
 
         # Process new door lines found in SVG file
         self.process_new_doors(svg_door_paths, updated_doors)
         self.floorplan.doors = updated_doors
 
-        logging.info('Final walls: ' + str(len(self.floorplan.walls)))
-        logging.info('Final doors: ' + str(len(self.floorplan.doors)))
-        logging.info('Done.')
+        LOG.info('Final walls: %d', len(self.floorplan.walls))
+        LOG.info('Final doors: %d', len(self.floorplan.doors))
+        LOG.info('Done.')
 
         return
 
@@ -322,7 +323,7 @@ class FloorplanUpdater:
         None
         """
         n_door_paths = len(svg_door_paths)
-        logging.info('Processing ' + str(n_door_paths) + ' new doors...')
+        LOG.info('Processing %d new doors...', n_door_paths)
         for new_door in svg_door_paths:
             start_point = Point(x=round(new_door.start.real),
                                 y=round(new_door.start.imag))
@@ -339,8 +340,8 @@ class FloorplanUpdater:
                 door_obj = Door(path=new_door, space1=space1, space2=space2)
                 updated_doors.append(door_obj)
             else:
-                logging.warn('Could not add this door: ' + str(new_door))
-        logging.info('New doors processed: ' + str(len(svg_door_paths)))
+                LOG.warning('Could not add this door: %s', new_door)
+        LOG.info('New doors processed: %d', len(svg_door_paths))
 
         return
 
