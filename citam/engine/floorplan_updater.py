@@ -26,7 +26,6 @@ LOG = logging.getLogger(__name__)
 
 
 class FloorplanUpdater:
-
     def __init__(self, floorplan, svg_file=None, csv_file=None):
         super().__init__()
         self.floorplan = floorplan
@@ -34,7 +33,7 @@ class FloorplanUpdater:
         self.svg_file = svg_file
 
         if self.svg_file is None and self.csv_file is None:
-            LOG.error('At least one of svg or csv file required')
+            LOG.error("At least one of svg or csv file required")
             quit()
 
         return
@@ -47,12 +46,14 @@ class FloorplanUpdater:
         """
 
         space_info = parse_csv_metadata_file(self.csv_file)
-        LOG.debug('Successfully read CSV file. Number of spaces found: %d',
-                  len(space_info))
+        LOG.debug(
+            "Successfully read CSV file. Number of spaces found: %d",
+            len(space_info),
+        )
 
         for s_info in space_info:
             for i, space in enumerate(self.floorplan.spaces):
-                if space.unique_name == s_info['unique_name']:
+                if space.unique_name == s_info["unique_name"]:
                     space = Space(**s_info)
                     self.floorplan.spaces[i] = space
                     break
@@ -76,9 +77,9 @@ class FloorplanUpdater:
         svg_door_paths = []
         svg_wall_paths = []
         for i, path in enumerate(paths):
-            if 'id' not in attributes[i]:
+            if "id" not in attributes[i]:
                 svg_wall_paths.append(path[0])
-            elif 'door' not in attributes[i]['id']:
+            elif "door" not in attributes[i]["id"]:
                 svg_wall_paths.append(path[0])
             else:
                 svg_door_paths.append(path[0])
@@ -103,7 +104,7 @@ class FloorplanUpdater:
             if wall not in self.floorplan.walls:
                 new_or_edited_walls.append(wall)
         n_new_walls = len(new_or_edited_walls)
-        LOG.info('We found %d updated walls', n_new_walls)
+        LOG.info("We found %d updated walls", n_new_walls)
 
         self.floorplan.special_walls = new_or_edited_walls
 
@@ -116,13 +117,11 @@ class FloorplanUpdater:
         if door.space1 is not None:
             index = self.floorplan.spaces.index(door.space1)
             if door.path in self.floorplan.spaces[index].doors:
-                self.floorplan.spaces[index]\
-                                .doors.remove(door.path)
+                self.floorplan.spaces[index].doors.remove(door.path)
         if door.space2 is not None:
             index = self.floorplan.spaces.index(door.space2)
             if door.path in self.floorplan.spaces[index].doors:
-                self.floorplan.spaces[index]\
-                                .doors.remove(door.path)
+                self.floorplan.spaces[index].doors.remove(door.path)
         # TODO: In the future, use the code below to shorten
         # door sizes. But this is not supported for now
         # new_door = \
@@ -156,8 +155,7 @@ class FloorplanUpdater:
         and svg files.
         """
         if self.svg_file is not None:
-            svg_wall_paths, svg_door_paths = \
-                self.read_updated_svg_file()
+            svg_wall_paths, svg_door_paths = self.read_updated_svg_file()
             self.update_from_SVG_data(svg_wall_paths, svg_door_paths)
 
         if self.csv_file is not None:
@@ -182,19 +180,19 @@ class FloorplanUpdater:
             Whether the process was successful or not
         """
         n_walls = len(self.floorplan.walls)
-        LOG.info('Number of walls before: %d', n_walls)
+        LOG.info("Number of walls before: %d", n_walls)
         self.find_special_walls(svg_wall_paths)
 
         # Update the walls after extracting the special ones
         self.floorplan.walls = svg_wall_paths
-        LOG.info('New number of walls: %d', len(self.floorplan.walls))
+        LOG.info("New number of walls: %d", len(self.floorplan.walls))
 
         # Now working with doors
         n_doors = len(self.floorplan.doors)
-        LOG.info('Number of doors before: %d', n_doors)
+        LOG.info("Number of doors before: %d", n_doors)
 
         # Delete any old door that overlaps with one of the updated walls
-        LOG.info('Checking if walls overlaps with existing doors...')
+        LOG.info("Checking if walls overlaps with existing doors...")
         doors_to_remove = self.find_doors_to_remove()
         updated_doors = []
         for door in self.floorplan.doors:
@@ -203,16 +201,16 @@ class FloorplanUpdater:
             else:
                 updated_doors.append(door)
 
-        LOG.info('We removed %d doors', len(doors_to_remove))
-        LOG.info('New number of doors: %d', len(updated_doors))
+        LOG.info("We removed %d doors", len(doors_to_remove))
+        LOG.info("New number of doors: %d", len(updated_doors))
 
         # Process new door lines found in SVG file
         self.process_new_doors(svg_door_paths, updated_doors)
         self.floorplan.doors = updated_doors
 
-        LOG.info('Final walls: %d', len(self.floorplan.walls))
-        LOG.info('Final doors: %d', len(self.floorplan.doors))
-        LOG.info('Done.')
+        LOG.info("Final walls: %d", len(self.floorplan.walls))
+        LOG.info("Final doors: %d", len(self.floorplan.doors))
+        LOG.info("Done.")
 
         return
 
@@ -234,22 +232,23 @@ class FloorplanUpdater:
             Integer index of the second space
         """
         # Rounding coordinates (fractional coordinates are not supported)
-        door_path = Line(start=complex(round(door_path.start.real),
-                                       round(door_path.start.imag)
-                                       ),
-                         end=complex(round(door_path.end.real),
-                                     round(door_path.end.imag)
-                                     )
-                         )
+        door_path = Line(
+            start=complex(
+                round(door_path.start.real), round(door_path.start.imag)
+            ),
+            end=complex(round(door_path.end.real), round(door_path.end.imag)),
+        )
         door_normal = door_path.normal(0.5)
         dx = door_normal.real
         dy = door_normal.imag
-        new_point1 = Point(x=round(door_path.point(0.5).real + 2.*dx),
-                           y=round(door_path.point(0.5).imag + 2.*dy)
-                           )
-        new_point2 = Point(x=round(door_path.point(0.5).real - 2.*dx),
-                           y=round(door_path.point(0.5).imag - 2.*dy)
-                           )
+        new_point1 = Point(
+            x=round(door_path.point(0.5).real + 2.0 * dx),
+            y=round(door_path.point(0.5).imag + 2.0 * dy),
+        )
+        new_point2 = Point(
+            x=round(door_path.point(0.5).real - 2.0 * dx),
+            y=round(door_path.point(0.5).imag - 2.0 * dy),
+        )
 
         indices = self.find_spaces_of_point(new_point1)
         if len(indices) > 0:
@@ -279,28 +278,30 @@ class FloorplanUpdater:
             xo, yo = gsu.calculate_x_and_y_overlap(wall, new_door)
             if xo < 1.0 and yo < 1.0:
                 continue
-            dot_product, distance = \
-                gsu.calculate_dot_product_and_distance_between_walls(
-                                                            wall,
-                                                            new_door
-                                                        )
+            (
+                dot_product,
+                distance,
+            ) = gsu.calculate_dot_product_and_distance_between_walls(
+                wall, new_door
+            )
             if dot_product is not None:
-                if abs(dot_product - 1.0) < 1e-1 and \
-                        distance < max_distance_to_walls:
+                if (
+                    abs(dot_product - 1.0) < 1e-1
+                    and distance < max_distance_to_walls
+                ):
                     # door and wall overlap
                     # if gsu.do_walls_overlap(wall, new_door):
 
                     del self.floorplan.walls[i]
                     new_door = gsu.align_to_reference(wall, new_door)
                     V_perp = gsu.calculate_normal_vector_between_walls(
-                                                        new_door, wall
-                                                    )
+                        new_door, wall
+                    )
                     V_perp = Point(V_perp[0], V_perp[1])
-                    new_door = new_door.translated(
-                                                V_perp.complex_coords
-                                            )
-                    new_wall_segments = \
-                        gsu.remove_segment_from_wall(wall, new_door)
+                    new_door = new_door.translated(V_perp.complex_coords)
+                    new_wall_segments = gsu.remove_segment_from_wall(
+                        wall, new_door
+                    )
                     self.floorplan.walls += new_wall_segments
 
         return new_door
@@ -323,14 +324,17 @@ class FloorplanUpdater:
         None
         """
         n_door_paths = len(svg_door_paths)
-        LOG.info('Processing %d new doors...', n_door_paths)
+        LOG.info("Processing %d new doors...", n_door_paths)
         for new_door in svg_door_paths:
-            start_point = Point(x=round(new_door.start.real),
-                                y=round(new_door.start.imag))
-            end_point = Point(x=round(new_door.end.real),
-                              y=round(new_door.end.imag))
-            new_door = Line(start=start_point.complex_coords,
-                            end=end_point.complex_coords)
+            start_point = Point(
+                x=round(new_door.start.real), y=round(new_door.start.imag)
+            )
+            end_point = Point(
+                x=round(new_door.end.real), y=round(new_door.end.imag)
+            )
+            new_door = Line(
+                start=start_point.complex_coords, end=end_point.complex_coords
+            )
             # Find normal line and get the 2 spaces that this door connect
             space1, space2 = self.find_spaces_for_door(new_door)
 
@@ -340,13 +344,13 @@ class FloorplanUpdater:
                 door_obj = Door(path=new_door, space1=space1, space2=space2)
                 updated_doors.append(door_obj)
             else:
-                LOG.warning('Could not add this door: %s', new_door)
-        LOG.info('New doors processed: %d', len(svg_door_paths))
+                LOG.warning("Could not add this door: %s", new_door)
+        LOG.info("New doors processed: %d", len(svg_door_paths))
 
         return
 
     def find_spaces_of_point(self, point):
-        """ Find all spaces that a point belongs to. This should always be
+        """Find all spaces that a point belongs to. This should always be
         one unless the point is on a door line or a space boundary.
 
         Parameters
