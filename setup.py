@@ -12,11 +12,12 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-import setuptools
-
-from setuptools.command.sdist import sdist
 from distutils.command.build import build
+
+import setuptools
 from setuptools.command.develop import develop
+from setuptools.command.sdist import sdist
+
 from build_tasks import NodeJSBuild
 
 
@@ -41,11 +42,11 @@ class build_custom(build):
 setuptools.setup(
     name="CITAM",
     # Version number format defined by https://www.python.org/dev/peps/pep-0440
-    version="0.9.0",
+    use_scm_version=True,
     author="Corning Inc",
     description="The COVID Indoor Transmission Agent-based Modeling Platform",
     packages=setuptools.find_packages(
-        exclude=['*.tests.*', '*.test.*'],
+        exclude=['*.tests.*'],
     ),
     entry_points={
         'console_scripts': ['citam=citam.cli:main']
@@ -70,6 +71,7 @@ setuptools.setup(
         'falcon',
         'appdirs'
     ],
+    setup_requires=['setuptools_scm'],
 
     # For a list of classifiers, see https://pypi.org/classifiers/
     classifiers=[
