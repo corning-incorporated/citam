@@ -39,8 +39,8 @@ def mocked_dash_server(monkeypatch):
 
     monkeypatch.setattr(
         wsgiref.simple_server,
-        "make_server",
-        lambda *args, **kwargs: MockedSimpleServer(*args, **kwargs),
+        'make_server',
+        lambda *args, **kwargs: MockedSimpleServer(*args, **kwargs)
     )
 
 
@@ -48,17 +48,17 @@ def mocked_dash_server(monkeypatch):
 def result_dir(tmpdir):
     """Generate a result directory and populate it with a manifest"""
     # Populate the directory with a minimal result manifest
-    result_dir = tmpdir.mkdir("test_result")
-    with open(os.path.join(result_dir, "manifest.json"), "w") as manifest:
+    result_dir = tmpdir.mkdir('test_result')
+    with open(os.path.join(result_dir, 'manifest.json'), 'w') as manifest:
         manifest.write('{"SimulationName": "testing"}')
     return str(result_dir)
 
 
 def test_results_is_optional_if_env_is_set(monkeypatch, result_dir):
     # Set a starting results path
-    monkeypatch.setenv("CITAM_RESULT_PATH", result_dir)
+    monkeypatch.setenv('CITAM_RESULT_PATH', result_dir)
     parser = cli.get_parser()
-    parsed = parser.parse_args(["dash"])
+    parsed = parser.parse_args(['dash'])
     parsed.func(**vars(parsed))
     settings.validate()
     assert isinstance(settings.storage_driver, LocalStorageDriver)
@@ -67,14 +67,14 @@ def test_results_is_optional_if_env_is_set(monkeypatch, result_dir):
 
 def test_result_not_set_fails():
     parser = cli.get_parser()
-    parsed = parser.parse_args(["dash"])
+    parsed = parser.parse_args(['dash'])
     with pytest.raises(ConfigurationError):
         parsed.func(**vars(parsed))
 
 
 def test_valid_results_option(result_dir):
     parser = cli.get_parser()
-    parsed = parser.parse_args(["dash", "--results", result_dir])
+    parsed = parser.parse_args(['dash', '--results', result_dir])
     parsed.func(**vars(parsed))
 
     # Assert results_dir is being set properly
@@ -108,5 +108,5 @@ def test_invalid_dir_results_option():
     with pytest.raises(ConfigurationError):
         # Pass temp directory to CLI with --results
         parser = cli.get_parser()
-        parsed = parser.parse_args(["dash", "--results", results_dir])
+        parsed = parser.parse_args(['dash', '--results', results_dir])
         parsed.func(**vars(parsed))

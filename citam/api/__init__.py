@@ -30,7 +30,7 @@ Commands
       gunicorn citam.api:app
 
 """
-__all__ = ["app", "run_server"]
+__all__ = ['app', 'run_server']
 
 import logging
 import os
@@ -44,13 +44,10 @@ LOG = logging.getLogger(__name__)
 app = get_wsgi_app()
 
 
-def run_server(
-    port: int = 8000,
-    host: str = "127.0.0.1",
-    results: str = None,
-    *args,
-    **kwargs,
-):
+def run_server(port: int = 8000,
+               host: str = '127.0.0.1',
+               results: str = None,
+               *args, **kwargs):
     """
     Run the ``citam dash`` server
 
