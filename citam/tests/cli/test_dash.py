@@ -22,41 +22,65 @@ from tempfile import TemporaryDirectory
 import pytest
 
 from citam import cli
-from citam.conf import settings
+from citam.api.storage.local import LocalStorageDriver
+from citam.conf import ConfigurationError, settings
 
 
 @pytest.fixture(autouse=True)
-def disable_blocking_run_forever_call(monkeypatch):
+def mocked_dash_server(monkeypatch):
     """This prevents the ``citam dash`` command from starting the server"""
+
+    class MockedSimpleServer:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def serve_forever(self, *args, **kwargs):
+            pass
+
     monkeypatch.setattr(
-        wsgiref.simple_server.WSGIServer,
-        'serve_forever',
-        lambda *args, **kwargs: None
+        wsgiref.simple_server,
+        "make_server",
+        lambda *args, **kwargs: MockedSimpleServer(*args, **kwargs),
     )
 
 
-def test_results_is_optional():
+@pytest.fixture()
+def result_dir(tmpdir):
+    """Generate a result directory and populate it with a manifest"""
+    # Populate the directory with a minimal result manifest
+    result_dir = tmpdir.mkdir("test_result")
+    with open(os.path.join(result_dir, "manifest.json"), "w") as manifest:
+        manifest.write('{"SimulationName": "testing"}')
+    return str(result_dir)
+
+
+def test_results_is_optional_if_env_is_set(monkeypatch, result_dir):
     # Set a starting results path
+    monkeypatch.setenv("CITAM_RESULT_PATH", result_dir)
     parser = cli.get_parser()
-    parsed = parser.parse_args(['dash'])
+    parsed = parser.parse_args(["dash"])
     parsed.func(**vars(parsed))
+    settings.validate()
+    assert isinstance(settings.storage_driver, LocalStorageDriver)
+    assert settings.result_path == result_dir
 
 
-def test_valid_results_option():
-    # Set a starting results path
-    settings.result_path = os.path.dirname(__file__)
-
-    # Create temporary directory
-    with TemporaryDirectory() as td:
-        results_dir = os.path.abspath(td)
-
-        # Pass temp directory to CLI with --results
-        parser = cli.get_parser()
-        parsed = parser.parse_args(['dash', '--results', results_dir])
+def test_result_not_set_fails():
+    parser = cli.get_parser()
+    parsed = parser.parse_args(["dash"])
+    with pytest.raises(ConfigurationError):
         parsed.func(**vars(parsed))
 
-        # Assert results_dir is being set properly
-        assert settings.result_path == results_dir
+
+def test_valid_results_option(result_dir):
+    parser = cli.get_parser()
+    parsed = parser.parse_args(["dash", "--results", result_dir])
+    parsed.func(**vars(parsed))
+
+    # Assert results_dir is being set properly
+    settings.validate()
+    assert settings.result_path == result_dir
+    assert isinstance(settings.storage_driver, LocalStorageDriver)
 
 
 def test_invalid_dir_results_option():
@@ -81,8 +105,8 @@ def test_invalid_dir_results_option():
     # ensure the directory does not exist
     assert not os.path.exists(results_dir)
 
-    with pytest.raises(IOError):
+    with pytest.raises(ConfigurationError):
         # Pass temp directory to CLI with --results
         parser = cli.get_parser()
-        parsed = parser.parse_args(['dash', '--results', results_dir])
+        parsed = parser.parse_args(["dash", "--results", results_dir])
         parsed.func(**vars(parsed))

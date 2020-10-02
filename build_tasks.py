@@ -24,6 +24,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 NODE_ROOT = os.path.join(BASE_DIR, 'citamjs')
 NODE_OUTPUT_DIR = os.path.join(NODE_ROOT, 'dist')
 CITAM_STATIC_DIR = os.path.join(BASE_DIR, 'citam', 'api', 'static', 'dash')
+LOG = logging.getLogger(__name__)
 
 
 class NodeJSBuild(Command):
@@ -41,6 +42,8 @@ class NodeJSBuild(Command):
         )
 
     """
+
+    user_options = []
 
     def initialize_options(self):
         """There are currently no options for this command"""
@@ -63,11 +66,11 @@ class NodeJSBuild(Command):
             return
 
         try:
-            logging.info("Cleaning previously generated NodeJS artifacts")
+            LOG.info("Cleaning previously generated NodeJS artifacts")
             if os.path.exists(CITAM_STATIC_DIR):
                 shutil.rmtree(CITAM_STATIC_DIR, ignore_errors=True)
 
-            logging.info("Building NodeJS artifacts")
+            LOG.info("Building NodeJS artifacts")
             original_dir = os.getcwd()
             os.chdir(NODE_ROOT)
 
@@ -82,7 +85,7 @@ class NodeJSBuild(Command):
                            check=True, env=env, shell=shell)
 
             # TODO: Make JS compile directly to CITAM_STATIC_DIR
-            logging.info("Copying NodeJS artifacts into package")
+            LOG.info("Copying NodeJS artifacts into package")
             shutil.copytree(NODE_OUTPUT_DIR, CITAM_STATIC_DIR)
             os.chdir(original_dir)
         except (subprocess.SubprocessError, FileNotFoundError):

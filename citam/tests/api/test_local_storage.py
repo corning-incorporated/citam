@@ -16,11 +16,12 @@ import os
 import pytest
 from tempfile import TemporaryDirectory
 
-from citam.api.storage.local import LocalStorageDriver, NoResultsFoundError
+from citam.api.storage.local import LocalStorageDriver
+from citam.api.storage import NoResultsFoundError
 
 search_root = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    'sample_results',
+    "sample_results",
 )
 
 
@@ -56,8 +57,8 @@ def test_no_results_found():
 
 def test_list_runs():
     expected = [
-        'sim_id_0001',
-        'sim_id_0002',
+        "sim_id_0001",
+        "sim_id_0002",
         # the result in TFBAD has a malformed manifest and should be ignored
     ]
     driver = LocalStorageDriver(search_path=search_root)
@@ -70,26 +71,26 @@ def test_list_runs():
 
 def test_get_trajectory_file():
     driver = LocalStorageDriver(search_path=search_root)
-    trajectory_file = driver.get_trajectory_file('sim_id_0001').readlines()
+    trajectory_file = driver.get_trajectory_file("sim_id_0001").readlines()
     assert trajectory_file[0].strip() == "0"
 
 
 def test_get_contact_file():
     driver = LocalStorageDriver(search_path=search_root)
-    contact_file = driver.get_contact_file('sim_id_0001', '0').readlines()
+    contact_file = driver.get_contact_file("sim_id_0001", "0").readlines()
     assert contact_file[0].strip() == "0"
 
 
 def test_get_map_file():
     driver = LocalStorageDriver(search_path=search_root)
-    driver.get_map_file('sim_id_0001', '0')
+    driver.get_map_file("sim_id_0001", "0")
 
 
 def test_get_coordinate_distribution_file():
     driver = LocalStorageDriver(search_path=search_root)
-    driver.get_coordinate_distribution_file('sim_id_0001', '0')
+    driver.get_coordinate_distribution_file("sim_id_0001", "0")
 
 
 def test_get_manifest():
     driver = LocalStorageDriver(search_path=search_root)
-    driver.get_manifest('sim_id_0001')
+    driver.get_manifest("sim_id_0001")

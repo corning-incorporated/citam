@@ -46,8 +46,7 @@ def find_closest_parallel_wall(space_boundaries, ref_wall):
             continue
         if wall.length() <= 1.0:
             continue
-        x_overlap, y_overlap = \
-            gsu.calculate_x_and_y_overlap(ref_wall, wall)
+        x_overlap, y_overlap = gsu.calculate_x_and_y_overlap(ref_wall, wall)
         if x_overlap == 0 and y_overlap == 0:
             continue
         dot_prod = gsu.calculate_dot_product_between_walls(ref_wall, wall)
@@ -143,11 +142,12 @@ def get_aisle_center_point_and_width(aisle):
     V_perp = gsu.calculate_perpendicular_vector(aisle[0], aisle[1])
     # Half way between the two walls from the middle of the first wall
     mid_point = aisle[0].point(0.5)
-    center_point = Point(x=int(round(mid_point.real + V_perp[0]/2.0)),
-                         y=int(round(mid_point.imag + V_perp[1]/2.0))
-                         )
+    center_point = Point(
+        x=int(round(mid_point.real + V_perp[0] / 2.0)),
+        y=int(round(mid_point.imag + V_perp[1] / 2.0)),
+    )
     # Width of aisle
-    width = (V_perp[0]**2 + V_perp[1]**2)**0.5
+    width = (V_perp[0] ** 2 + V_perp[1] ** 2) ** 0.5
 
     return center_point, width
 

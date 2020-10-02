@@ -12,17 +12,8 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-"""
-point.py
-
-Author: Mardochee Reveil
-Date Created: June 9, 2020
-
-"""
-
 
 class Point:
-
     def __init__(self, x=None, y=None, complex_coords=None):
         super().__init__()
         self.x = x

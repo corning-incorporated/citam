@@ -11,18 +11,23 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
+from typing import Tuple
+
+from citam.engine.point import Point
 
 
 class Door:
+    _intersect_coords: tuple
 
-    def __init__(self,
-                 path,
-                 space1,
-                 space2=None,
-                 in_service=True,
-                 emergency_only=False,
-                 special_access=False
-                 ):
+    def __init__(
+        self,
+        path,
+        space1,
+        space2=None,
+        in_service=True,
+        emergency_only=False,
+        special_access=False,
+    ):
 
         super().__init__()
         self.path = path
@@ -32,16 +37,45 @@ class Door:
         self.emergency_only = emergency_only
         self.special_access = special_access
 
-    def __str__(self):
+    @property
+    def intersect_coords(self) -> tuple:
+        if self._intersect_coords:
+            return self._intersect_coords
+        return self.midpoint_coords
 
-        str_repr = '\nPath: ' + str(self.path) + '\n'
+    @intersect_coords.setter
+    def intersect_coords(self, value: tuple):
+        self._intersect_coords = value
+
+    @property
+    def midpoint(self) -> Point:
+        return Point(
+            x=round(self.path.point(0.5).real),
+            y=round(self.path.point(0.5).imag),
+        )
+
+    @property
+    def midpoint_coords(self) -> Tuple[float, float]:
+        return self.midpoint.x, self.midpoint.y
+
+    def is_intersect_and_midpoint_same(self):
+        return self.intersect_coords == self.midpoint_coords
+
+    def __str__(self):
+        str_repr = "\nPath: " + str(self.path) + "\n"
         if self.space1 is not None:
-            str_repr += 'Space 1: ' + str(self.space1.unique_name) + '\n'
+            str_repr += "Space 1: " + str(self.space1.unique_name) + "\n"
         else:
-            str_repr += 'Space 1: None' + '\n'
+            str_repr += "Space 1: None" + "\n"
         if self.space2 is not None:
-            str_repr += 'Space 2: ' + str(self.space2.unique_name) + '\n'
+            str_repr += "Space 2: " + str(self.space2.unique_name) + "\n"
         else:
-            str_repr += 'Space 2: None' + '\n'
+            str_repr += "Space 2: None" + "\n"
 
         return str_repr
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __hash__(self):
+        return id(self)

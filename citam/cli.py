@@ -41,15 +41,12 @@ def main():
         log_levels = [logging.WARNING, logging.INFO, logging.DEBUG]
         if args.log_file:
             logging.basicConfig(
-                filename=args.log_file,
-                level=log_levels[args.verbose]
+                filename=args.log_file, level=log_levels[args.verbose]
             )
         else:
-            logging.basicConfig(
-                level=log_levels[args.verbose]
-            )
+            logging.basicConfig(level=log_levels[args.verbose])
         # The below logger is annoying. TODO: Replace with real log config
-        logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
+        logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
         args.func(**vars(args))
 
 
@@ -65,23 +62,19 @@ def get_parser():
     """
     parser = argparse.ArgumentParser(
         prog="citam",
-        description='The CITAM CLI',
+        description="The CITAM CLI",
     )
     global_args = argparse.ArgumentParser(
         add_help=False,
     )
     global_args.add_argument(
-        '-v',
-        '--verbose',
-        action='count',
+        "-v",
+        "--verbose",
+        action="count",
         default=0,
         help="can be supplied multiple times to increase verbosity",
     )
-    global_args.add_argument(
-        '--log-file',
-        type=str,
-        help="log file location"
-    )
+    global_args.add_argument("--log-file", type=str, help="log file location")
 
     subparsers = parser.add_subparsers(
         metavar="<command>",
@@ -105,9 +98,9 @@ def _add_engine_commands(subparser, global_args):
         Global arguments to use as parent for spawned parsers
     """
     engine = subparser.add_parser(
-        'engine',
+        "engine",
         parents=[global_args],
-        help="Interact with the CITAM simulation engine"
+        help="Interact with the CITAM simulation engine",
     )
     engine_commands = engine.add_subparsers(
         metavar="<engine_command>",
@@ -120,172 +113,99 @@ def _add_engine_commands(subparser, global_args):
         help="Ingest raw floor plans and metadata files",
     )
     ingest.set_defaults(func=ingest_floorplan)
+    ingest.add_argument("facility", type=str, help="Facility name")
+    ingest.add_argument("floor", type=str, help="Floor name")
     ingest.add_argument(
-        'facility',
-        type=str,
-        help="Facility name"
-    )
-    ingest.add_argument(
-        'floor',
-        type=str,
-        help="Floor name"
-    )
-    ingest.add_argument(
-        '--csv',  # TODO: name this after what it does, not what it is.
-        type=str,  # Ex: -c, --contact_file
-        required=True,
-        help="Map properties file as CSV"
-    )
-    ingest.add_argument(
-        '-m',
-        '--map',
+        "-c",
+        "--csv",
         type=str,
         required=True,
-        help="Raw map SVG file"
+        help="Map properties file as CSV",
     )
+    ingest.add_argument("-s", "--svg", type=str, required=True, help="")
     ingest.add_argument(
-        '--output_dir',
+        "--output_dir",
         type=str,
         required=False,
-        help="Directory to save ingestion files"
+        help="Directory to save ingestion files",
     )
 
     update_floorplan = engine_commands.add_parser(
-        'update-floorplan',
+        "update-floorplan",
         parents=[global_args],
-        help="Update the floorplan data for a given simulation"
+        help="Update the floorplan data for a given simulation",
     )
     update_floorplan.set_defaults(func=update_floorplan_from_svg_file)
+    update_floorplan.add_argument("facility", type=str, help="Facility name")
+    update_floorplan.add_argument("floor", type=str, help="Facility name")
     update_floorplan.add_argument(
-        'facility',
-        type=str,
-        help="Facility name"
-    )
-    update_floorplan.add_argument(
-        'floor',
-        type=str,
-        help="Facility name"
-    )
-    update_floorplan.add_argument(
-        '-m',
-        '--map',
-        type=str,
-        required=True,
-        help="Raw map SVG file"
+        "-s", "--svg", type=str, required=True, help="Raw map SVG file"
     )
 
     list_fac = engine_commands.add_parser(
-        'list',
+        "list",
         parents=[global_args],
-        help="List all the floorplans already ingested."
+        help="List all the floorplans already ingested.",
     )
     list_fac.set_defaults(func=list_facilities)
-    list_fac.add_argument(
-        '--location',
-        type=str,
-        required=True,
-        help="Location to look for facilities (only 'local' supported for now)"
-    )
 
     export_floorplan = engine_commands.add_parser(
-        'export-floorplan',
+        "export-floorplan",
         parents=[global_args],
-        help="Export a floorplan to an SVG file"
+        help="Export a floorplan to an SVG file",
     )
     export_floorplan.set_defaults(func=export_floorplan_to_svg)
+    export_floorplan.add_argument("facility", type=str, help="facility name")
+    export_floorplan.add_argument("floor", type=str, help="Floor name")
     export_floorplan.add_argument(
-        'facility',
-        type=str,
-        help="facility name"
-    )
-    export_floorplan.add_argument(
-        'floor',
-        type=str,
-        help="Floor name"
-    )
-    export_floorplan.add_argument(
-        '-o',
-        '--outputfile',
-        type=str,
-        required=True,
-        help="Path to svg file"
+        "-o", "--outputfile", type=str, required=True, help="Path to svg file"
     )
 
     export_navnet = engine_commands.add_parser(
-        'export-navnet',
+        "export-navnet",
         parents=[global_args],
-        help="Export the navigation newtork to an SVG file"
+        help="Export the navigation newtork to an SVG file",
     )
     export_navnet.set_defaults(func=export_navigation_graph_to_svg)
+    export_navnet.add_argument("facility", type=str, help="facility name")
+    export_navnet.add_argument("floor", type=str, help="facility name")
     export_navnet.add_argument(
-        'facility',
-        type=str,
-        help="facility name"
-    )
-    export_navnet.add_argument(
-        'floor',
-        type=str,
-        help="facility name"
-    )
-    export_navnet.add_argument(
-        '-o',
-        '--outputfile',
-        type=str,
-        required=True,
-        help="Path to svg file"
+        "-o", "--outputfile", type=str, required=True, help="Path to svg file"
     )
 
     export_potential_one_way_aisles = engine_commands.add_parser(
-        'export-potential-oneways',
+        "export-potential-oneways",
         parents=[global_args],
-        help="Export potential one-way ailes to an SVG file"
+        help="Export potential one-way ailes to an SVG file",
     )
     export_potential_one_way_aisles.set_defaults(
         func=find_and_save_potential_one_way_aisles
     )
     export_potential_one_way_aisles.add_argument(
-        'facility',
-        type=str,
-        help="facility name"
+        "facility", type=str, help="facility name"
     )
     export_potential_one_way_aisles.add_argument(
-        'floor',
-        type=str,
-        help="facility name"
+        "floor", type=str, help="facility name"
     )
     export_potential_one_way_aisles.add_argument(
-        '-o',
-        '--outputfile',
-        type=str,
-        required=True,
-        help="Path to svg file"
+        "-o", "--outputfile", type=str, required=True, help="Path to svg file"
     )
 
     build_network = engine_commands.add_parser(
-        'build-navnet',
+        "build-navnet",
         parents=[global_args],
-        help="Build the navigation network"
+        help="Build the navigation network",
     )
     build_network.set_defaults(func=build_navigation_network)
-    build_network.add_argument(
-        'facility',
-        type=str,
-        help="Facility name"
-    )
-    build_network.add_argument(
-        'floor',
-        type=str,
-        help="Floor name"
-    )
+    build_network.add_argument("facility", type=str, help="Facility name")
+    build_network.add_argument("floor", type=str, help="Floor name")
 
     run = engine_commands.add_parser(
-        'run',
-        parents=[global_args],
-        help="Run a simulation for a facility"
+        "run", parents=[global_args], help="Run a simulation for a facility"
     )
     run.set_defaults(func=engine_run)
     run.add_argument(
-        'input_file',
+        "input_file",
         type=str,
         help="full path of file with simulation inputs",
     )
@@ -302,13 +222,13 @@ def _add_config_commands(subparser, global_args):
     """
 
     config = subparser.add_parser(
-        'config',
+        "config",
         parents=[global_args],
-        help="Interact with the CITAM global configuration"
+        help="Interact with the CITAM global configuration",
     )
     config.set_defaults(func=_placeholder_func)
     config.add_argument(
-        'get',
+        "get",
         help="Print the current CITAM configuration",
     )
 
@@ -323,27 +243,27 @@ def _add_dash_commands(subparser, global_args):
         Global arguments to use as parent for spawned parsers
     """
     dash = subparser.add_parser(
-        'dash',
+        "dash",
         parents=[global_args],
-        help='Start the CITAM dashboard',
+        help="Start the CITAM dashboard",
     )
     dash.set_defaults(func=run_server)
     dash.add_argument(
-        '-p',
-        '--port',
+        "-p",
+        "--port",
         default=8000,
         type=int,
         help="The port to use for the dashboard",
     )
     dash.add_argument(
-        '--host',
-        default='127.0.0.1',
+        "--host",
+        default="127.0.0.1",
         type=str,
         help="The host to serve the dashboard from",
     )
     dash.add_argument(
-        '-r',
-        '--results',
+        "-r",
+        "--results",
         type=str,
         help="The directory to look for results in",
     )
@@ -357,5 +277,5 @@ def _placeholder_func(*args, **kwargs):
     raise NotImplementedError("This feature has not been implemented yet")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
