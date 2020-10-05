@@ -115,3 +115,37 @@ def test_parse_svg_map_file_no_issues(datadir):
         assert 'building' in sattr
 
 
+def test_parse_svg_map_file_no_building(datadir):
+    inputfile = os.path.join(
+                    datadir, "svg_with_space_metadata_no_building.svg"
+                )
+
+    with pytest.raises(ValueError):
+        parse_standalone_svg_floorplan_file(inputfile)
+
+
+def test_parse_svg_map_file_no_building(datadir):
+    inputfile = os.path.join(
+                    datadir, "svg_with_space_metadata_no_space.svg"
+                )
+
+    with pytest.raises(ValueError):
+        parse_standalone_svg_floorplan_file(inputfile)
+
+
+def test_parse_svg_map_file_no_building(datadir):
+    inputfile = os.path.join(
+                    datadir, "svg_with_space_metadata_no_space_function.svg"
+                )
+
+    with pytest.raises(ValueError):
+        parse_standalone_svg_floorplan_file(inputfile)
+
+
+def test_parse_svg_map_file_no_building(datadir):
+    inputfile = os.path.join(
+                    datadir, "svg_with_space_metadata_invalid_building.svg"
+                )
+
+    with pytest.raises(ValueError):
+        parse_standalone_svg_floorplan_file(inputfile)
