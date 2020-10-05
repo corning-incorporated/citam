@@ -1,14 +1,14 @@
 <svg id="TestDrawing" viewBox="-264 -5064 7728 5328" xmlns="http://www.w3.org/2000/svg">
 	<style type="text/css">.spaces {stroke:red;  stroke-width:2;  fill: grey; fill-opacity: 0.1}.floors {stroke:blue; stroke-width:10; fill: none; fill-opacity: 0.1}.doors {stroke:green;  stroke-width:2;  fill: none; fill-opacity: 0.2}.Office {fill: blue}.Lab {fill: orange}.Meeting {fill: magenta}.Elevator {fill: green}.Stairs {fill: yellow}.Circulation {fill: cyan}.Restroom {fill: red}</style>
 	<g id="Contents">
-		<g id="TestDrawing" class="floorplan">
+		<g id="TestDrawing">
 			<g class="floors">
 				<path id="FI_3D29" d="M-24 24 7224 24 7224 -4824 -24 -4824Z"/>
 			</g>
 			<g class="spaces">
-				<path id="SI_3DBF" d="M3240 0 0 0 0 -600 3240 -600Z"/>
-				<path id="SI_3DC0" d="M3060 -600 2418 -600 2418 -1200 3060 -1200Z"/>
-				<path id="SI_3DC2" d="M0 -600 1704 -600 1704 -1200 0 -1200Z"/>
+				<path id="SI_3DBF" class="Lab" d="M3240 0 0 0 0 -600 3240 -600Z"/>
+				<path id="SI_3DC0" class="Meeting" d="M3060 -600 2418 -600 2418 -1200 3060 -1200Z"/>
+				<path id="SI_3DC2" class="Lab" d="M0 -600 1704 -600 1704 -1200 0 -1200Z"/>
 				<path id="SI_3DC3" class="Lab" d="M0 -1200 1704 -1200 1704 -2280 0 -2280Z"/>
 				<path id="SI_3DD7" class="Stair" d="M3480 -240 3240 -240 3240 0 3480 0Z"/>
 				<path id="SI_3DD8" class="Elevator" d="M3480 -240 3240 -240 3240 -480 3480 -480Z"/>

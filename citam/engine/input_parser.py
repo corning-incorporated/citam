@@ -176,14 +176,13 @@ def _load_buildings_data(
 
         if spaces_elem is None:
             raise InvalidSVGError("Sub-element of class 'spaces' required")
-        if doors_elem is None:
-            raise InvalidSVGError("Sub-element of class 'doors' required")
 
         sp_paths, sp_attr = _extract_spaces(spaces_elem, building_name)
         space_paths += sp_paths
         space_attributes += sp_attr
 
-        door_paths += _extract_doors(doors_elem)
+        if doors_elem is not None:
+            door_paths += _extract_doors(doors_elem)
 
     return space_paths, space_attributes, door_paths
 
