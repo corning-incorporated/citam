@@ -3,7 +3,7 @@ from citam.engine.input_parser import (
     parse_csv_metadata_file,
     parse_svg_floorplan_file,
     parse_input_file,
-    parse_svg_map_file
+    parse_standalone_svg_floorplan_file
 )
 
 import os
@@ -97,7 +97,21 @@ def test_parse_input_file_invalid_daylength(datadir):
         parse_input_file(inputfile)
 
 
-def test_parse_svg_map_file(datadir):
+def test_parse_svg_map_file_no_issues(datadir):
     inputfile = os.path.join(datadir, "svg_with_space_metadata.svg")
-    parse_svg_map_file(inputfile)
+    (space_paths,
+     space_attr,
+     door_paths
+     ) = parse_standalone_svg_floorplan_file(inputfile)
+
+    assert len(space_paths) == len(space_attr)
+    assert len(space_attr) == 525
+    assert len(door_paths) == 200
+
+    for sattr in space_attr:
+        assert 'unique_name' in sattr
+        assert 'id' in sattr
+        assert 'space_function' in sattr
+        assert 'building' in sattr
+
 

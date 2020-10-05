@@ -276,7 +276,6 @@ class FacilityTransmissionModel:
 
         :param str workdir: directory to save the files for this simulation
         """
-        open()
         if self.n_agents is not None:
             self.occupancy_rate = round(
                 self.n_agents * 1.0 / self.total_offices, 2

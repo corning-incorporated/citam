@@ -23,9 +23,11 @@ import xml.etree.ElementTree as ET
 
 from svgpathtools import svg2paths, Line, parse_path, Path
 
-from citam.engine.constants import REQUIRED_SPACE_METADATA
-from citam.engine.constants import OPTIONAL_SPACE_METADATA
-from citam.engine.constants import SUPPORTED_SPACE_FUNCTIONS
+from citam.engine.constants import (
+    REQUIRED_SPACE_METADATA,
+    OPTIONAL_SPACE_METADATA,
+    SUPPORTED_SPACE_FUNCTIONS
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -40,29 +42,9 @@ class InvalidSVGError(ValueError):
 def parse_csv_metadata_file(csv_file: str) -> List[Dict[str, str]]:
     """Read and parse CSV floorplan metadata file.
 
-    Ensure all expected columns are present, there is no missing
-    entry and values are valid. Ignore unncessary columns. The expected
-    columns are (see constants.py for full updated list):
-    - ID
-    - Campus
-    - Building
-    - Unique_name
-    - Space_function
-    - Space_category (optional)
-    - Department (optional)
-    - Capacity (optional)
-    - Square_Footage (optional)
-
-    Parameters
-    ----------
-    csv_file: str
-        Absolute path to csv file
-
-    Returns
-    --------
-    list
-        List of dictionaries (one dict per entry in the CSV file) with column
-        headers as keys
+    :param str csv_file: path to csv file
+    :return: List of dictionaries (one dict per entry in the CSV file) with
+        column headers as keys
     """
 
     if not os.path.isfile(csv_file):
@@ -102,11 +84,11 @@ def parse_csv_metadata_file(csv_file: str) -> List[Dict[str, str]]:
     return space_info
 
 
-def parse_svg_map_file(
+def parse_standalone_svg_floorplan_file(
     svg_file: str
 ) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
     """
-    Read svg input file to extract floorplan information.
+    Read standalone svg input file to extract floorplan information.
 
     :param str svg_file: Floorplan input file in SVG format to parse.
     :return: Tuple with list of space paths, list of space attributes and
@@ -182,14 +164,6 @@ def _load_buildings_data(
     # For each building, extract space paths, space attr and door paths
     for building_elem in contents_elem:
 
-        spaces_elem, doors_elem = None, None
-        if 'id' not in building_elem.attrib or \
-                'class' not in building_elem.attrib:
-            continue
-
-        if building_elem.attrib['class'].lower() != 'floorplan':
-            continue
-
         building_name = building_elem.attrib['id']
 
         for sub_elem in building_elem:
@@ -205,7 +179,7 @@ def _load_buildings_data(
         if doors_elem is None:
             raise InvalidSVGError("Sub-element of class 'doors' required")
 
-        sp_paths, sp_attr = _extract_spaces(spaces_elem)
+        sp_paths, sp_attr = _extract_spaces(spaces_elem, building_name)
         space_paths += sp_paths
         space_attributes += sp_attr
 
@@ -215,7 +189,8 @@ def _load_buildings_data(
 
 
 def _extract_spaces(
-        spaces_elem: ET.Element
+        spaces_elem: ET.Element,
+        building_name: str
     ) -> Tuple[List[Path], List[Dict[str, str]]]:
     """
     Given a SVG tree element, extract all space paths and attributes
@@ -229,13 +204,32 @@ def _extract_spaces(
     for space_elem in spaces_elem:
         # Remove namespace
         _, _, space_elem.tag = space_elem.tag.rpartition('}')
+        # Extract space data
         if space_elem.tag == 'path' and 'd' in space_elem.attrib:
             space_path = parse_path(space_elem.attrib['d'])
-            space_paths.append(space_path)
-            del space_elem.attrib['d']
-            space_attributes.append(space_elem.attrib)
 
-            # TODO: verify that all required space metadata are there
+            # Add space metadata
+            space_metadata = {}
+            if 'id' in space_elem.attrib and 'class' in space_elem.attrib:
+
+                space_metadata['id'] = space_elem.attrib['id']
+                if 'unique_name' not in space_elem.attrib:
+                    space_metadata['unique_name'] = space_elem.attrib['id']
+
+                space_function = space_elem.attrib['class']
+                if space_function.lower() not in SUPPORTED_SPACE_FUNCTIONS:
+                    raise ValueError(
+                        'Unsupported space function %s', space_function
+                    )
+                space_metadata['space_function'] = space_function
+
+                space_metadata['building'] = building_name
+
+                if 'capacity' in space_elem.attrib:
+                    space_metadata['capacity'] = space_elem.attrib['capacity']
+
+            space_paths.append(space_path)
+            space_attributes.append(space_metadata)
 
     return space_paths, space_attributes
 
