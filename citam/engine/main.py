@@ -95,7 +95,7 @@ def ingest_floorplan(
 
     LOG.info("Ingesting floorplan...")
     floorplan_ingester = FloorplanIngester(
-        svg, csv, scale, extract_doors_from_file=True
+        svg, scale, csv_file=csv, extract_doors_from_file=True
     )
     floorplan_ingester.run()
 

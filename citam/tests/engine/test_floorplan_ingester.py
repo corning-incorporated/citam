@@ -34,7 +34,7 @@ def test_init_correct_number_of_objects(datadir):
 
 
 def test_create_spaces_correct_number_of_spaces(rect_floorplan_ingester_data):
-    rect_floorplan_ingester_data.create_spaces()
+    rect_floorplan_ingester_data.create_spaces_from_csv_and_svg_data()
     assert len(rect_floorplan_ingester_data.spaces) == 10
     assert len(rect_floorplan_ingester_data.doors) == 0
     assert len(rect_floorplan_ingester_data.walls) == 0
