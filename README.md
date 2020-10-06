@@ -143,7 +143,7 @@ To run a test simulation, copy `example_sim_inputs.json` file to a new directory
 
    `$cp citam/examples/basic_example/example_sim_inputs.json citam_simulation/.`
 
-To run the simulation, change directory to the new folder `citam_simulation` and execute::
+To run the simulation, change directory to the new folder `citam_simulation` and invoke `citam engin run` as follows:
 
    `$cd citam_simulation`
 
