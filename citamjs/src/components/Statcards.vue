@@ -51,7 +51,7 @@ export default {
     this.getStatCard()
   },
   methods: {
-    toCamel(w) {
+    toUpper(w) {
       if (w.length > 0) {
         return `${w[0].toUpperCase()}${w.substring(1)}`
       }
@@ -68,9 +68,9 @@ export default {
             this.cardsData = response.data.map((statCard, i) => {
               statCard['style'] = `bg-${bgStyles[i]}`
               statCard.name = statCard.name.split("_").map(d => {
-                return this.toCamel(d)
+                return this.toUpper(d)
               }).join(" ")
-              statCard.unit = this.toCamel(statCard.unit)
+              statCard.unit = this.toUpper(statCard.unit)
               return statCard;
             });
           })
