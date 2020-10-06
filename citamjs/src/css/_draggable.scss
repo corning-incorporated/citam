@@ -1,44 +1,48 @@
-  //Copyright 2020. Corning Incorporated. All rights reserved.
-  //
-  //This software may only be used in accordance with the licenses granted by
-  //Corning Incorporated. All other uses as well as any copying, modification or
-  //reverse engineering of the software is strictly prohibited.
-  //
-  //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  //IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  //FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-  //CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-  //ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-  //WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
-  //==============================================================================
+//Copyright 2020. Corning Incorporated. All rights reserved.
+//
+//This software may only be used in accordance with the licenses granted by
+//Corning Incorporated. All other uses as well as any copying, modification or
+//reverse engineering of the software is strictly prohibited.
+//
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+//CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+//ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+//WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+//==============================================================================
 
 .drag-window {
-    border: 1px solid #CCCCCC;
-    text-align: center;
+  border: 1px solid #CCCCCC;
+  text-align: center;
 }
+
 .drag-content {
-    background-color: #FFFFFF;
+  background-color: #FFFFFF;
 }
 
 .drag-window * {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 .drag-window .drag-title-bar {
-    margin-left: 0;
-    margin-right: 0;
-    min-width: 90px;
-    border-bottom: 1px solid black;
-    text-align: left;
-    background-color: #d9e4ea;
-    width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  min-width: 90px;
+  border-bottom: 1px solid black;
+  text-align: left;
+  background-color: #d9e4ea;
+  width: 100%;
 }
+
 .drag-window .drag-title-bar .fa-grip-vertical {
-    color: #222222;
-    font-weight: 200;
-    padding-right: .5em;
-    padding-left: .1em;
+  color: #222222;
+  font-weight: 200;
+  padding-right: .5em;
+  padding-left: .1em;
 }
+
 .color-axis {
-    font-size: 14px;
+  font-size: 14px;
 }

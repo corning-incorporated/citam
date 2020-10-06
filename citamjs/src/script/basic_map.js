@@ -133,7 +133,6 @@ export default class Map2D {
       .then(response => {
         this.trajectories = response.data.data;
         this.totalSteps = this.trajectories.length;
-        // this.colorMap.domain([response.data['statistics']['max_contacts'], 0]);
         let contactDomain = [0, response.data['statistics']['max_contacts']];
         this.colorMap.domain(contactDomain);
         this.colorBar.update(...contactDomain);
