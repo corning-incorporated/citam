@@ -705,7 +705,7 @@ class FacilityTransmissionModel:
         self.contact_events.add_contact(
             agent1, agent2, self.current_step, contact_pos
         )
-        if agent1.pos not in self.step_contact_locations[agent1.current_floor]:
+        if contact_pos not in self.step_contact_locations[agent1.current_floor]:
             self.step_contact_locations[agent1.current_floor][contact_pos] = 1
         else:
             self.step_contact_locations[agent1.current_floor][contact_pos] += 1
