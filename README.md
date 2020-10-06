@@ -147,7 +147,9 @@ To run the simulation, change directory to the new folder `citam_simulation` and
 
    `$cd citam_simulation`
 
-   `$citam engine run example_sim_inputs.json`
+   `$citam engine run example_sim_inputs.json -v`
+
+Wait for your simulation to complete successfully before moving to the next section.
 
 
 ### How to Visualize Results
