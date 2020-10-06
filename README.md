@@ -49,7 +49,7 @@ After successful cloning, install CITAM as follows:
 > Note: If you plan on making changes to the code, we recommend installing as follows instead:
   `$ pip install -e .`
 
-With the engine and CLI installed, you are ready to run simulations. To check that the installation was successful please run:
+After a successful installation, you are ready to ingest your facilities and run simulations for them. To check that the installation was successful, please run:
 
 `$ citam -h`
 
