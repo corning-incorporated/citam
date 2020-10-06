@@ -156,9 +156,7 @@ To run the simulation, change directory to the new folder `citam_simulation` and
 The dashboard provides contact details and visual representation of simulation results and can be accessed at [http://localhost:8000](http://localhost:8000) after firing
 the server using.
 
-```
-   $ citam dash --results .
-```
+`$ citam dash --results .`
 
 > *Note: CITAM will recursively scan the results directory for simulation results. For example, if you
 start the dashboard with the results directory pointing to the citam source code, it will show sample
