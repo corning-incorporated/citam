@@ -25,13 +25,13 @@ TWO_WAY_TRAFFIC = 0
 
 REQUIRED_SPACE_METADATA = [
     "id",
-    "facility",
     "building",
     "unique_name",
     "space_function",
 ]
 
 OPTIONAL_SPACE_METADATA = [
+    "facility",
     "space_category",
     "floor",
     "department",

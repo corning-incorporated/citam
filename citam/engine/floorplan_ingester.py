@@ -116,8 +116,8 @@ class FloorplanIngester:
         for space_path, space_attr in zip(
             self.space_paths, self.space_attributes
         ):
-            if space_data["building"] not in self.buildings:
-                self.buildings.append(space_data["building"])
+            if space_attr["building"] not in self.buildings:
+                self.buildings.append(space_attr["building"])
             for i, line in enumerate(space_path):
                 new_start = complex(
                     int(round(line.start.real)),

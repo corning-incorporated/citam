@@ -35,6 +35,7 @@ LOG = logging.getLogger(__name__)
 class MissingInputError(TypeError):
     pass
 
+
 class InvalidSVGError(ValueError):
     pass
 
@@ -188,9 +189,9 @@ def _load_buildings_data(
 
 
 def _extract_spaces(
-        spaces_elem: ET.Element,
-        building_name: str
-    ) -> Tuple[List[Path], List[Dict[str, str]]]:
+    spaces_elem: ET.Element,
+    building_name: str
+) -> Tuple[List[Path], List[Dict[str, str]]]:
     """
     Given a SVG tree element, extract all space paths and attributes
 
@@ -306,8 +307,8 @@ def parse_svg_floorplan_file(svg_file):
 
 
 def parse_meetings_policy_file(
-        json_filepath: str
-    ) -> Dict[str, int or str or float or dict]:
+    json_filepath: str
+) -> Dict[str, int or str or float or dict]:
     """Read and parse the json meeting policy file.
 
     The meetings policy for a given facility exposes parameters
@@ -329,8 +330,8 @@ def parse_meetings_policy_file(
 
 
 def parse_scheduling_policy_file(
-        json_filepath: str
-    ) -> Dict[str, int or str or float or dict]:
+    json_filepath: str
+) -> Dict[str, int or str or float or dict]:
     """Read and parse the json scheduling policy file.
 
     Together with the meetings policy file, this file encodes
@@ -355,8 +356,8 @@ def parse_scheduling_policy_file(
 
 
 def parse_input_file(
-        input_file: str
-    ) -> Dict[str, str or int or dict or float]:
+    input_file: str
+) -> Dict[str, str or int or dict or float]:
     """Read primary simulation input file in json format, validate values,
     load floorplans and returns dictionary of model inputs.
 
