@@ -13,7 +13,7 @@ The primary requirement to use CITAM is to have a map of each floor of each faci
 
 Once a facility is successfully ingested into CITAM, any number of simulations can be performed with it. The parameters for each simulation are provided in an input file and include the number of individuals, the duration of the simulation, the contact distance, any one-way traffic, the number and characteristics of each shift if there are several, etc.
 
-CITAM is built as a cross-platform compatible with all major operating systems. The primary way of using CITAM is currently through the command-line. CITAM is also shipped with a web-based dashboard to visualize simulation results.
+CITAM is built as a cross-platform software compatible with all major operating systems. The primary way of using CITAM is currently through the command-line. CITAM is also shipped with a web-based dashboard to visualize simulation results.
 
 ### Pre-requisites
 * Python 3.x
