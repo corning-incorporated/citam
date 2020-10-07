@@ -23,25 +23,24 @@ Once a facility is successfully ingested into CITAM, any number of simulations c
 
 CITAM is built as a cross-platform software compatible with all major operating systems. The primary way of using CITAM is currently through the command-line. CITAM is also shipped with a web-based dashboard to visualize simulation results.
 
-### Pre-requisites
-* Python 3.x
-* [NodeJS](https://nodejs.org/en/download/) (to use the dashboard)
-
-You may already have Python and NodeJS installed. Check their version to make sure all pre-requisites are satisfied:
-
-```shell script
-$python --version    # must be 3.x
-$node --version      # should be 12 or above
-$npm --version       # should be 6 or above
-```
 
 ## Installing
 
+### Pre-requisites: Python 3.x
+
+Check your Python version as follows:
+
+```shell script
+$python --version    # must be 3.x
+```
+
 > Consider creating a new [virtual environment](https://docs.python.org/3/library/venv.html) to install and run CITAM.
 
-## From Wheel (Recommended)
+Below are the different ways to install CITAM.
 
-Download the latest python-wheel from [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, rename it to `citam` then install as follow from within the directory where the file is:
+### From Wheel (Recommended)
+
+Download the latest python-wheel [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, rename it to `citam` then install as follow from within the directory where the file is located:
 
 ```
 $pip install citam
@@ -49,7 +48,19 @@ $pip install citam
 
 ### From Source
 
-`$git clone https://github.com/corning-incorporated/citam.git`
+[NodeJS](https://nodejs.org/en/download/) and Git are additional prerequesite to install from source. Use the following make sure all additional pre-requisites are satisfied:
+
+```shell script
+$git --version
+$node --version      # should be 12 or above
+$npm --version       # should be 6 or above
+```
+
+If all pre-requesites are satisfied, download the source code as follow:
+
+```
+$git clone https://github.com/corning-incorporated/citam.git
+```
 
 > For the latest usable version, please change directory to the citam directory and checkout the "alpha" branch as follows:
 
@@ -69,6 +80,14 @@ After successful cloning, install CITAM as follows:
   $pip install -e .
   ```
 
+### Using Anaconda
+
+   Coming soon
+
+### Using PIP
+
+   Coming soon
+
 After a successful installation, you are ready to ingest your facilities and run simulations for them. To check that the installation was successful, please run:
 
 ```
@@ -82,14 +101,6 @@ $citam -h
    $pip install matplotlib   # reinstall it
 ```
    For a walkthrough example of how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation.
-
-### Using Anaconda
-
-   Coming soon
-
-### Using PIP
-
-   Coming soon
 
 ## Getting Started
 
