@@ -12,7 +12,7 @@ possible to mimic daily activities in various indoor environments.
 The primary requirement to use CITAM is to have a map of each floor of each facility in SVG format for ingestion as well as some metadata about each space in each floorplan. For a list of required metadata, please visit the input requirements section of the documentation. Example input files are also available in the [examples](examples/) folder in this git repository.
 
 Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below (example usage is provided in the [How to add facilities](#how-to-add-facilities) section):
-1. **Ingestion** (required): in this step, CITAM reads your SVG and CSV files, automatically adds doors to spaces where missing, removes map artifacts that are deemed unncessary for the simulation, and stores the resulting data in your local cache for furture retrieval.
+1. **Ingestion** (required): in this step, CITAM reads your SVG and CSV files, automatically adds doors to spaces where missing, removes map artifacts that are deemed unnecessary for the simulation, and stores the resulting data in your local cache for future retrieval.
 2. **Validation** (optional): In this step, you get to inspect results from the ingestion step and make any necessary changes. This step is optional but highly recommended to ensure valid simulation results.
 3. **Navigation Network Creation** (required): When you are happy with the quality of the ingested data, you use a simple command to build the navigation network (or navnet) for your facility. The navnet is used for intelligent navigation of individuals in your facility within the simulation (to know how to go from their office to a cafeteria for example).
 4. **Navigation Network Validation** (optional): You can also verify and edit the navigation network to make sure everything looks good and ensure valid simulation results.
@@ -23,8 +23,9 @@ Once a facility is successfully ingested into CITAM, any number of simulations c
 
 CITAM is built as a cross-platform software compatible with all major operating systems. The primary way of using CITAM is currently through the command-line. CITAM is also shipped with a web-based dashboard to visualize simulation results.
 
-
-## Installing
+## Getting Started
+--------------
+## Install CITAM
 
 ### Pre-requisite: Python 3.x
 
@@ -48,7 +49,7 @@ $pip install citam
 
 ### From Source
 
-[NodeJS](https://nodejs.org/en/download/) and Git are additional pre-requesites to install from source. Use the following to make sure all additional pre-requisites are satisfied:
+[NodeJS](https://nodejs.org/en/download/) and Git are additional pre-requisites to install from source. Use the following to make sure all additional pre-requisites are satisfied:
 
 ```shell script
 $git --version
@@ -56,7 +57,7 @@ $node --version      # should be 12 or above
 $npm --version       # should be 6 or above
 ```
 
-If all pre-requesites are satisfied, download the source code as follow:
+If all pre-requisites are satisfied, download the source code as follow:
 
 ```
 $git clone https://github.com/corning-incorporated/citam.git
@@ -80,14 +81,6 @@ After successful cloning, install CITAM as follows:
   $pip install -e .
   ```
 
-### Using Anaconda
-
-   Coming soon
-
-### Using PIP
-
-   Coming soon
-
 After a successful installation, you are ready to ingest your facilities and run simulations for them. To check that the installation was successful, please run:
 
 ```
@@ -102,10 +95,7 @@ $citam -h
 ```
    For a walkthrough example of how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation.
 
-## Getting Started
-
-
-### How to Add Facilities
+## Add Facilities
 
 Currently, the primary way to use CITAM is through the CLI. To get a list of commands, do:
 
@@ -123,7 +113,7 @@ Before running a simulation, at least one facility must be added. Each facility
 will have a name and per-floor data (i.e. floorplan) ingested from SVG and CSV files. To add a new
 facility with one floor, follow the steps below.
 
-> Verbose option is available for all `citam` commands with option `-v`. Log level debug infomration can be obtained with stacking option `-v -v`
+> Verbose option is available for all `citam` commands with option `-v`. Log level debug information can be obtained with stacking option `-v -v`
 
 **1. Ingest Floor Data**
 
@@ -181,9 +171,9 @@ The svg file can then be visualized using any SVG viewer.
 This process can be repeated for as many facilities as needed. But it is only done once for each facility.
 
 
-### How to Run Simulations
+## Run Simulations
 
-ssuming at least one facility was successfully added and validated, any number of simulations can be run on that facility. Example input files can also be found in the [citam/examples](examples/) directory. It is recommended to create seperate folders for each simulation with their own input file.
+Assuming at least one facility was successfully added and validated, any number of simulations can be run on that facility. Example input files can also be found in the [citam/examples](examples/) directory. It is recommended to create separate folders for each simulation with their own input file.
 
 To run a test simulation, copy [example_sim_inputs.json](examples/basic_example/example_sim_inputs.json) file to a new directory (let's call it `citam_simulation`). If you are on a UNIX system, you can do:
 
@@ -202,8 +192,7 @@ To run the simulation:
 Wait for your simulation to complete successfully before moving to the next section.
 
 
-### How to Visualize Results
-
+## Visualize Results
 
 The dashboard provides contact details and visual representation of simulation results and can be accessed at [http://localhost:8000](http://localhost:8000) after firing
 the server using.
@@ -237,8 +226,8 @@ page. By clicking on `View Details`; you will be taken to a screen with detailed
  You can also access interactive visual map of floors and time-based individuals movement by clicking on the `Visualization` tab.
 
 ## Building the Documentation
-
-CITAM's documentation is built with [Sphinx](https://www.sphinx-doc.org/). To build the documenation locally, make sure you have sphinx installed as well as the requirements listed in [docs/requirements.txt](docs/requirements.txt).
+---------
+CITAM's documentation is built with [Sphinx](https://www.sphinx-doc.org/). To build the documentation locally, make sure you have sphinx installed as well as the requirements listed in [docs/requirements.txt](docs/requirements.txt).
 
 ```
 $cd docs
@@ -255,16 +244,16 @@ $make html
 Html outputs form the build process are automatically copied to the [public](public/) folder where they are integrated with CITAM's landing page. To view the documentation, open the local copy of `public/index.html` file with your web browser.
 
 ## Contributing
-
+-----
 The code is divided into multiple components:
 + **Engine**: the core simulation engine to manage facilities and run simulations (written in Python).
 + **CLI**: The Command-Line Interface, currently the primary way of interacting with CITAM (written in Python).
 + **API**: used to read and expose simulation results that are served locally over http (written in Python)
 + **Dashboard**: The dashboard is the frontend component to visualize and analyze results (written in JavaScript).
 
-We welcome your contributions to any or all of these components. We also welcome bug reports and feature requests. For detailed instructions, please refer to the "[How to Contribute](contributing.md)" dcoument.
+We welcome your contributions to any or all of these components. We also welcome bug reports and feature requests. For detailed instructions, please refer to the "[How to Contribute](contributing.md)" document.
 
 ## License
-
+------------
 CITAM is made available to the public under GPLv3.
 
