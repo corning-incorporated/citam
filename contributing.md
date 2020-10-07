@@ -11,7 +11,7 @@ We welcome contributions of all types and from people of all backgrounds to make
 
 ## Code of Conduct
 
-By submitting your questions, answers, requests, etc. to this repository, you agree to keep it as a civil, open, inclusive and friendly space for people of all skill levels and backgrounds. The full Code of Conduct will be available soon.
+In submitting your questions, answers, requests, etc. to this repository, you agree to do so while keeping it as a civil, open, inclusive and friendly space for people of all skill levels and backgrounds. The full Code of Conduct will be available soon.
 
 ## Questions and Problems
 
@@ -34,15 +34,19 @@ We have a separate [developer document](developers.md) with all you need to get 
 
 ## Pull Request Guidelines
 
-Please start by following all guidelines in the [developer document](developers.md) and make sure your changes are in a new git branch by doing the following before you start to code where my-fix-branch should be a descriptive name of what you will be working on.
+Please start by following all guidelines in the [developer document](developers.md) and make sure your changes are in a new git branch before you start to code. You can create a new branch with the following command where my-fix-branch should be a descriptive name of what you will be working on:
 
 ```
 git checkout -b my-fix-branch dev
 ```
 
-Make sure you create appropriate test cases for your fix, you follow all coding rules and you add appropriate entries to the documentation.
+Please note that each pull request should solve one issue.
 
-Make sure all tests successfully pass locally on your machine. In addition, we recommend using `flake8` and `black` to catch and fix all styling problems. From within the main citam folder, you can run.
+Before you start working, create a new issue describing what you will be working on or comment on an existing issue and let the community know what you will be contributing to avoid duplicate efforts. For major changes, make sure a maintainer is on board with your proposed changes before implementation.
+
+While you work on your fix, make sure you create appropriate test cases, you follow all coding rules and you add appropriate entries to the documentation.
+
+When you are done with your work, make sure all tests successfully pass locally on your machine. In addition, we recommend using `flake8` and `black` to catch and fix all styling problems. From within the main citam folder, you can run.
 
 ```
 $pytest
@@ -56,8 +60,10 @@ If everything looks good, push your changes to GitHub:
 $git push origin my-fix-branch
 ```
 
-You are now ready to create a pull request against the dev branch. Monitor the continuous integration tests to make sure they all pass. If there is any issues, consult the log files and fix them.
+You are now ready to create a pull request against the dev branch. Make sure your title and description are as descriptive as poosible.
+
+After you submit your pull request, monitor the continuous integration tests to make sure they all pass. If there is any issues, consult the log files and fix them.
 
 Once all tests pass, a reviewer will take a look at your code and suggest any necessary changes. Implement them and push your changes to the "my-fix-branch" to automatically update your pull request.
 
-Once everything looks good, a maintainer will approve the pull request and you are done! Thanks for contributing!
+When everything looks good, a maintainer will approve the pull request and you are done! Thanks for contributing!
