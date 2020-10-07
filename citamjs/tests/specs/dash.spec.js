@@ -47,7 +47,7 @@ describe('Dashboard Tests', () => {
 
     test('all columns found', () => {
 
-        const columns = wrapper.findAll('#dataTable > thead > tr > th:not(:first-child)');
+        const columns = wrapper.findAll('#data-table > thead > tr > th:not(:first-child)');
         const colsOnPage = columns.wrappers.map(th => {
             return th.text()
         })
@@ -60,7 +60,7 @@ describe('Dashboard Tests', () => {
             return x.sim_id
         });
         simIds.map(simId => {
-            columns = wrapper.findAll(`#dataTable > tbody > tr#${simId} > td:not(:first-child)`);
+            columns = wrapper.findAll(`#data-table > tbody > tr#${simId} > td:not(:first-child)`);
             colsOnPage = columns.wrappers.map(td => {
                 return td.text()
             })

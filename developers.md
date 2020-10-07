@@ -12,26 +12,72 @@ We recommend going through the documentation of the component of interest to und
 
 ### Contents
 * [Environment Setup](#environment-setup)
+* [Building and Writing Documentation](#building-and-writing-documentation)
 * [Running Tests](#running-tests)
 * [Coding Rules](#coding-rules)
-* [Linting and Styling Rules](#linting-and-styling-rules)
-* [Writing Documentation](#writing-documentation)
 
 
 ## Environment Setup
+-------
+
+Keep in mind that Git and NodeJS are required dependencies for developing CITAM:
+
+* Git: The Github [Guide to Set up Git](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/set-up-git) is a good source of information.
+* NodeJS: The [dowload page]((https://nodejs.org/en/download/) ) is a good place to start.
+
+Please start by following the [installation from source](readme.md#from-source) instructions in the readme.
+
+For Python development, we also recomment installing the following additional libaries for testing and ensuring code quality: [pytest](https://www.pytest.org), [flake8](https://flake8.pycqa.org/) and [black](https://github.com/psf/black). Install them as follow:
+
+```
+$pip install pytest flake8 black
+```
+
+We also recommend [building the documentation](#building-the-documentation) locally in case you need to make any updates.
 
 During javascript development, it is useful to have a live-compiler
 set up, so you can test changes without recompiling the app.
 To run a live-compiler instance, change directory to `citamjs` and run
 `npm run serve`
 
-## Running Tests
+## Building and Writing Documentation
+---------
 
+CITAM's documentation is created with [Sphinx](https://www.sphinx-doc.org/). Before you can build the documentation locally, make sure you have sphinx installed as well as the requirements listed in [docs/requirements.txt](docs/requirements.txt):
+
+```
+$cd docs
+$pip install sphinx
+$pip install -r requirements.txt
+```
+
+You are now ready to build the documentation using the following command:
+
+```
+$make html
+```
+
+Html outputs form the build process are automatically copied to the [public](public/) folder where they are integrated with CITAM's landing page. To view the documentation, open the local copy of `public/index.html` file with your web browser.
+
+To edit the documentation, find the appropriate RST file in the docs folder and edit it as needed. Rebuild the documentation and visualize it locally to make sure everything looks good before submitting your work.
+
+## Running Tests
+----
+We use pytest to run the tests. It is important that your changes to the code do not break any existing tests unless you really know what you are doing. As you progress through your work, periodically make sure that all the tests still by running pytest from the citam folder.
+
+```
+$pytest
+```
 
 ## Coding Rules
+-----------
+To make sure all current and future developpers of CITAM deal with a uniformly formatted and consistent source code, we follow Python's official [styling rules](https://www.python.org/dev/peps/pep-0008/).
 
+As mentioned before, flake8 is a linter that can help you discover and solve any of those issues. Flake8 is also a good linter to help you with basic code quality. Black is a great tool to use to automatically format you python code.
 
-## Linting and Styling Rules
+All new features and bug fixes must be covered by unit tests.
 
+All functions must have appropriate docstrings in [RST format](https://www.python.org/dev/peps/pep-0287/)
 
-## Writing Documentation
+All functions must have type hints for parameters and return values.
+
