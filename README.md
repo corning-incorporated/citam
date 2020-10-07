@@ -39,7 +39,15 @@ $npm --version       # should be 6 or above
 
 > Consider creating a new [virtual environment](https://docs.python.org/3/library/venv.html) to install and run CITAM.
 
-### From GitHub
+## From Wheel (Recommended)
+
+Download the latest wheel from [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, rename it to `citam` then install as follow from within the directory where the file is:
+
+```
+$pip install citam
+```
+
+### From Source
 
 `$git clone https://github.com/corning-incorporated/citam.git`
 
