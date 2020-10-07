@@ -10,30 +10,30 @@ We welcome contributions of all types and from people of all backgrounds to make
 * [Pull Request Guidelines](#pull-request-guidelines)
 
 ## Code of Conduct
-
-In submitting your questions, answers, requests, etc. to this repository, you agree to do so while keeping it as a civil, open, inclusive and friendly space for people of all skill levels and backgrounds. The full Code of Conduct will be available soon.
+----
+In submitting your questions, answers, code, requests, etc. to this repository, you agree to do so while keeping it as a civil, open, inclusive and friendly space for people of all skill levels and backgrounds. The full Code of Conduct will be available soon.
 
 ## Questions and Problems
-
+---
 If you need help using CITAM or have a general question, please make sure that your question hasn't been answered before by looking at the list of [closed and open issues](https://github.com/corning-incorporated/citam/issues) and if not, describe the problem by [creating a new issue](https://github.com/corning-incorporated/citam/issues/new/choose) .
 
 ## Submitting Issues
-
+---
 If you found a bug (or other issues like typo in the documentation) or if you want to request a new feature, please start by reviewing [current issues](https://github.com/corning-incorporated/citam/issues) on the GitHub repository to make sure someone else hasn't already captured the same issue or requested the same feature. If not, please [submit a new issue](https://github.com/corning-incorporated/citam/issues/new/choose) with enough details for other people to reproduce the bug and/or fully understand your feature request.
 
 Huge bonus point, if you can fix the problem or implement the feature yourself and submit a pull request to include your contributions to the CITAM repository! [This document](developers.md) has all you need to get started with contributing code.
 
 ## Contributing to the Documentation
-
+-----
 If you find a typo in the documentation or have an idea on how to make it better, feel free to [submit a new issue](https://github.com/corning-incorporated/citam/issues/new/choose) or even better, submit a pull request with your changes.
 
 ## Contributing Code
-
+-----
 We have a separate [developer document](developers.md) with all you need to get started with contributing code.
 
 
 ## Pull Request Guidelines
-
+-----
 Please start by following all guidelines in the [developer document](developers.md) and make sure your changes are in a new git branch before you start to code. You can create a new branch with the following command where my-fix-branch should be a descriptive name of what you will be working on:
 
 ```
