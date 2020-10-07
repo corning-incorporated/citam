@@ -89,7 +89,7 @@ facility with one floor, follow the steps below.
 Before you can ingest a floorplan, you need a map file in SVG format and a CSV
 file describing each space. To see examples of floorplan SVG and CSV files, go to the examples subdirectory. Use the following command to ingest floorplan data from the `citam/examples/basic_example/` subdirectory:
 
-  `$citam engine ingest foo_facility foo_floor --csv citam/examples/basic_example/TF1.csv --svg citam/examples/basic_example/TF1.svg -v`
+  `$citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --svg examples/basic_example/TF1.svg -v`
 
 During the ingestion process, CITAM will attempt to add doors to spaces that do not have any and
 remove walls that are between hallways.
@@ -99,7 +99,7 @@ remove walls that are between hallways.
 
  You can export the ingested floorplan as an SVG file for visualization as follow:
 
-  `$citam engine export-floorplan foo_facility foo_floor -o foo_ouput.svg`
+  `$citam engine export-floorplan foo_facility foo_floor -o foo_ouput.svg -v`
 
 This will export the ingested floorplan in SVG format saved as OUTPUT_FILE.
 Use your favorite SVG viewer to open it (most web browsers can show SVG files).
@@ -109,21 +109,21 @@ the free and open-source INKSCAPE software in case you need to update the ingest
 If you notice errors in the ingested floorplan, please correct them using your
 favorite SVG editor, save the edited file with a new name (e.g. foo_edited.svg) and use the following command to update the floorplan:
 
-   `$citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg`
+   `$citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg -v`
 
 **3. Build Navigation Network**
 
 Once a floorplan has been ingested, the next step is to generate the Navigation
 Network (navnet) using the following command.
 
-   `$citam engine build-navnet foo_facility foo_floor`
+   `$citam engine build-navnet foo_facility foo_floor -v`
 
 **4. Validate Navigation Network**
 
 The network can also be exported as an SVG file to be visualized and updated manually.
 To export as an SVG file, run the following command:
 
-   `$citam engine export-navnet foo_facility foo_floor -o foo_navnet_output.svg`
+   `$citam engine export-navnet foo_facility foo_floor -o foo_navnet_output.svg -v`
 
 The svg file can then be visualized using any SVG viewer.
 
@@ -132,10 +132,7 @@ This process can be repeated for as many facilities as needed. But it is only do
 
 ### How to Run Simulations
 
-Assuming at least one facility was successfully added and validated, any number
-of simulations can be run on that facility using the `citam engine run INPUT_FILE` command where INPUT_FILE is a JSON input file:
-
-Example input files can also be found in the `citam/examples` directory. It is recommended to create seperate folders for each simulation with their own input file.
+Assuming at least one facility was successfully added and validated, any number of simulations can be run on that facility. Example input files can also be found in the `citam/examples` directory. It is recommended to create seperate folders for each simulation with their own input file.
 
 To run a test simulation, copy `example_sim_inputs.json` file to a new directory (let's call it `citam_simulation`). If you are on a UNIX system, you can do:
 
@@ -143,7 +140,7 @@ To run a test simulation, copy `example_sim_inputs.json` file to a new directory
 
    `$cp citam/examples/basic_example/example_sim_inputs.json citam_simulation/.`
 
-To run the simulation, change directory to the new folder `citam_simulation` and invoke `citam engin run` as follows:
+To run the simulation:
 
    `$cd citam_simulation`
 
