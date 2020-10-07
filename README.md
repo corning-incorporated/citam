@@ -26,7 +26,7 @@ CITAM is built as a cross-platform software compatible with all major operating 
 
 ## Installing
 
-### Pre-requisites: Python 3.x
+### Pre-requisite: Python 3.x
 
 Check your Python version as follows:
 
@@ -48,7 +48,7 @@ $pip install citam
 
 ### From Source
 
-[NodeJS](https://nodejs.org/en/download/) and Git are additional prerequesite to install from source. Use the following to make sure all additional pre-requisites are satisfied:
+[NodeJS](https://nodejs.org/en/download/) and Git are additional pre-requesites to install from source. Use the following to make sure all additional pre-requisites are satisfied:
 
 ```shell script
 $git --version
