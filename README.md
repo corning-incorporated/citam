@@ -41,7 +41,7 @@ $npm --version       # should be 6 or above
 
 ## From Wheel (Recommended)
 
-Download the latest wheel from [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, rename it to `citam` then install as follow from within the directory where the file is:
+Download the latest python-wheel from [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, rename it to `citam` then install as follow from within the directory where the file is:
 
 ```
 $pip install citam
