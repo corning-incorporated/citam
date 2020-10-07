@@ -2,7 +2,7 @@
 
 Covid-19 Indoor Transmission Agent-based Modeling platform.
 
-When you use CITAM to model your facility (e.g. a school, a manufacturing facility, an office building, etc.), it creates a "virtual" version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts and traffic patterns and compare the contact statistics to find the best mitigation strategy for your facility.
+When you use CITAM to model your facility (e.g. a school, a manufacturing facility, an office building, etc.), it creates a "virtual" version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts and traffic patterns and compare the contact statistics to find the best mitigation strategy to limit transmission within your facility.
 
 As a simulation platform, CITAM does not implement nor does it support real-world tracking of visitors, employees or other people within the facilities of interest. CITAM actually provides an alternative to that approach by allowing a simulation to be used to assess and understand the implications of
 various mitigation policies. At its core, CITAM is an agent-based
@@ -14,8 +14,10 @@ The primary requirement to use CITAM is to have a map of each floor of each faci
 Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below (example usage is provided in the [How to add facilities](#how-to-add-facilities) section):
 1. **Ingestion** (required): in this step, CITAM reads your SVG and CSV files, automatically adds doors to spaces where missing, removes map artifacts that are deemed unncessary for the simulation, and stores the resulting data in your local cache for furture retrieval.
 2. **Validation** (optional): In this step, you get to inspect results from the ingestion step and make any necessary changes. This step is optional but highly recommended to ensure valid simulation results.
-3. **Navigation Network Creation** (required): When you are happy with the quality of the ingested data, you fire a simple command to build the navigation network (navent) for your facility. The navnet is used for intelligent navigation of individuals (agents) in your facility within the simulation.
+3. **Navigation Network Creation** (required): When you are happy with the quality of the ingested data, you use a simple command to build the navigation network (or navnet) for your facility. The navnet is used for intelligent navigation of individuals in your facility within the simulation (to know how to go from their office to a cafeteria for example).
 4. **Navigation Network Validation** (optional): You can also verify and edit the navigation network to make sure everything looks good and ensure valid simulation results.
+
+These steps are done only once for each floor of each facility.
 
 Once a facility is successfully ingested into CITAM, any number of simulations can be performed with it. The parameters for each simulation are provided in an input file and include the number of individuals, the duration of the simulation, the contact distance, any one-way traffic, the number and characteristics of each shift if there are several, etc.
 
@@ -65,13 +67,13 @@ After a successful installation, you are ready to ingest your facilities and run
 $citam -h
 ```
 
- > Note: In case matplotlib gives an error, please try uninstalling and reinstalling as follow:
+ > Note: In case matplotlib gives an error, these steps have been found to solve the problem:
 ```
    $pip uninstall matplotlib  # uninstall the package
 
    $pip install matplotlib   # reinstall it
 ```
-   For details on how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation.
+   For a walkthrough example of how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation.
 
 ### Using Anaconda
 
@@ -241,7 +243,7 @@ The code is divided into multiple components:
 + **API**: used to read and expose simulation results that are served locally over http (written in Python)
 + **Dashboard**: The dashboard is the frontend component to visualize and analyze results (written in JavaScript).
 
-We welcome your contributions to any or all of these components. We also welcome bug reports and feature requests. For detailed instructions, please refer to [How to Contribute](contributing.md)
+We welcome your contributions to any or all of these components. We also welcome bug reports and feature requests. For detailed instructions, please refer to the "[How to Contribute](contributing.md)" dcoument.
 
 ## License
 
