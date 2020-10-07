@@ -40,7 +40,7 @@ Below are the different ways to install CITAM.
 
 ### From Python-Wheel (Recommended)
 
-Download the python-wheel [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, change directory to the extracted python-wheel folder, rename the .whl file to `citam` then install as follow from within the directory where the file is located:
+Download the python-wheel [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, change directory to the extracted python-wheel folder, rename the .whl file to `citam.whl` then install as follows from within the directory where the file is located:
 
 ```
 $pip install citam
