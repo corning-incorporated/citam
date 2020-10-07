@@ -22,9 +22,9 @@ CITAM is built as a cross-platform software compatible with all major operating 
 You may already have Python and NodeJS installed. Check their version to make sure all pre-requisites are satisfied:
 
 ```shell script
-$ python --version    # must be 3.x
-$ node --version      # should be 12 or above
-$ npm --version       # should be 6 or above
+$python --version    # must be 3.x
+$node --version      # should be 12 or above
+$npm --version       # should be 6 or above
 ```
 
 ## To Install
@@ -33,31 +33,31 @@ $ npm --version       # should be 6 or above
 
 ### From GitHub
 
-`$ git clone https://github.com/corning-incorporated/citam.git`
+`$git clone https://github.com/corning-incorporated/citam.git`
 
 > For the latest usable version, please change directory to the citam directory and checkout the "alpha" branch as follows:
 
 ```
-$ cd citam
-$ git checkout alpha
+$cd citam
+$git checkout alpha
 ```
 
 After successful cloning, install CITAM as follows:
 
-  `$ pip install .`
+  `$pip install .`
 
 > Note: If you plan on making changes to the code, we recommend installing as follows instead:
-  `$ pip install -e .`
+  `$pip install -e .`
 
 After a successful installation, you are ready to ingest your facilities and run simulations for them. To check that the installation was successful, please run:
 
-`$ citam -h`
+`$citam -h`
 
  > Note: In case matplotlib gives an error, please try uninstalling and reinstalling as follow:
 ```
-   $ pip uninstall matplotlib  # uninstall the package
+   $pip uninstall matplotlib  # uninstall the package
 
-   $ pip install matplotlib   # reinstall it
+   $pip install matplotlib   # reinstall it
 ```
    For details on how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation.
 
@@ -137,7 +137,7 @@ of simulations can be run on that facility using the `citam engine run INPUT_FIL
 
 Example input files can also be found in the `citam/examples` directory. It is recommended to create seperate folders for each simulation with their own input file.
 
-To run a test simulation, copy `example_sim_inputs.json` file to a new directory (le'ts call it `citam_simulation`). If you are on a UNIX system, you can do:
+To run a test simulation, copy `example_sim_inputs.json` file to a new directory (let's call it `citam_simulation`). If you are on a UNIX system, you can do:
 
    `$mkdir citam_simulation`
 
@@ -158,7 +158,7 @@ Wait for your simulation to complete successfully before moving to the next sect
 The dashboard provides contact details and visual representation of simulation results and can be accessed at [http://localhost:8000](http://localhost:8000) after firing
 the server using.
 
-`$ citam dash --results .`
+`$citam dash --results .`
 
 > *Note: CITAM will recursively scan the results directory for simulation results. For example, if you
 start the dashboard with the results directory pointing to the citam source code, it will show sample
