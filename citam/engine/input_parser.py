@@ -74,7 +74,7 @@ def parse_csv_metadata_file(csv_file):
     with open(csv_file, mode="r") as infile:
         reader = csv.reader(infile)
         for i, row in enumerate(reader):
-            row_data = {}
+            
             if i == 0:
                 header = [v.lower() for v in row]
                 for required_data in REQUIRED_SPACE_METADATA:
@@ -83,6 +83,7 @@ def parse_csv_metadata_file(csv_file):
                         LOG.error(msg)
                         return []
             else:
+                row_data = {}
                 for c, name in enumerate(header):
                     value = row[c]
                     if str(value) == "":
@@ -90,10 +91,12 @@ def parse_csv_metadata_file(csv_file):
                         return []
                     if header[c] in supported_columns:
                         row_data[header[c]] = value.lower()
-                        if header[c] == "space_function":
-                            if value.lower() not in SUPPORTED_SPACE_FUNCTIONS:
-                                LOG.error("Invalid space function: %s", value)
-                                return []
+                        if (
+                            header[c] == "space_function"
+                            and value.lower() not in SUPPORTED_SPACE_FUNCTIONS
+                        ):
+                            LOG.error("Invalid space function: %s", value)
+                            return []
 
                 space_info.append(row_data)
 
@@ -341,7 +344,7 @@ def parse_input_file(input_file):
                 )
         traffic_policy = input_dict["traffic_policy"]
 
-    total_percent = sum([s["percent_workforce"] for s in shifts])
+    total_percent = sum(s["percent_workforce"] for s in shifts)
     if total_percent > 1.0:
         raise ValueError("Total percent workforce greater than 1.0")
 
@@ -349,7 +352,7 @@ def parse_input_file(input_file):
     LOG.info("User provided floorplan scale is: %s", floorplan_scale)
 
     converted_contact_distance = contact_distance / floorplan_scale
-    inputs_dict = {
+    return {
         "upload_results": upload_results,
         "upload_location": upload_location,
         "facility_name": facility_name,
@@ -367,5 +370,3 @@ def parse_input_file(input_file):
         "traffic_policy": traffic_policy,
         "output_directory": os.getcwd() + "/",
     }
-
-    return inputs_dict
