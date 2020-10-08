@@ -99,10 +99,10 @@ class Floorplan:
         LOG.info("Number of walls: " + str(len(self.walls)))
         LOG.info("Total number of doors: " + str(len(self.doors)))
 
-        n_outside_doors = 0
-        for door in self.doors:
-            if door.space1 is None or door.space2 is None:
-                n_outside_doors += 1
+        n_outside_doors = sum(
+            1 for door in self.doors if door.space1 is None or door.space2 is None
+        )
+
         LOG.info("Number of outside doors: " + str(n_outside_doors))
 
         self.agent_locations = {}
@@ -219,16 +219,8 @@ class Floorplan:
         door_dict_list = []
 
         for door in self.doors:
-            if door.space1 is not None:
-                name1 = door.space1.unique_name
-            else:
-                name1 = None
-
-            if door.space2 is not None:
-                name2 = door.space2.unique_name
-            else:
-                name2 = None
-
+            name1 = door.space1.unique_name if door.space1 is not None else None
+            name2 = door.space2.unique_name if door.space2 is not None else None
             door_dict = {"path": door.path, "space1": name1, "space2": name2}
             door_dict_list.append(door_dict)
 
