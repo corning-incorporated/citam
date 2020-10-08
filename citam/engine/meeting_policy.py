@@ -182,4 +182,8 @@ class MeetingPolicy:
     def get_daily_meetings(self, agent_id):
         """Returns list of meetings for this agent"""
 
-        return [meeting for meeting in self.meetings if agent_id in meeting.attendees]
+        return [
+            meeting
+            for meeting in self.meetings
+            if agent_id in meeting.attendees
+        ]

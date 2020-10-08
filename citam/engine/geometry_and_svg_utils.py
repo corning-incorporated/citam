@@ -132,24 +132,28 @@ def is_one_segment_within_the_other(p1, q1, p2, q2):
     Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
     within the other.
     """
-    return bool((
-        (on_segment(p1, p2, q1) and on_segment(p1, q2, q1))
-        or (on_segment(p2, p1, q2) and on_segment(p2, q1, q2))
-        or (p1 == p2 and q1 == q2)
-        or (p1 == q2 and q1 == p2)
-    ))
+    return bool(
+        (
+            (on_segment(p1, p2, q1) and on_segment(p1, q2, q1))
+            or (on_segment(p2, p1, q2) and on_segment(p2, q1, q2))
+            or (p1 == p2 and q1 == q2)
+            or (p1 == q2 and q1 == p2)
+        )
+    )
 
 
 def do_lines_intersect_at_endpoint(p1, q1, p2, q2):
     """
     Check if one of the lines start or ends on the other line.
     """
-    return bool((
-        on_segment(p1, p2, q1)
-        or on_segment(p1, q2, q1)
-        or on_segment(p2, p1, q2)
-        or on_segment(p2, q1, q2)
-    ))
+    return bool(
+        (
+            on_segment(p1, p2, q1)
+            or on_segment(p1, q2, q1)
+            or on_segment(p2, p1, q2)
+            or on_segment(p2, q1, q2)
+        )
+    )
 
 
 def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):

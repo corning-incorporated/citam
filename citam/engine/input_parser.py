@@ -74,7 +74,7 @@ def parse_csv_metadata_file(csv_file):
     with open(csv_file, mode="r") as infile:
         reader = csv.reader(infile)
         for i, row in enumerate(reader):
-            
+
             if i == 0:
                 header = [v.lower() for v in row]
                 for required_data in REQUIRED_SPACE_METADATA:
