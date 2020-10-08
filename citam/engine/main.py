@@ -387,7 +387,7 @@ def find_and_save_potential_one_way_aisles(
 
     # Save oneway network to pickle file
     oneway_net_pkl_file = os.path.join(
-        floorplan_directory, "onewway_network.pkl"
+        floorplan_directory, "oneway_network.pkl"
     )
     with open(oneway_net_pkl_file, "wb") as f:
         pickle.dump(oneway_network, f)
