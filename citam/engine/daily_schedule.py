@@ -320,7 +320,7 @@ class Schedule:
             self.itinerary.append([prev_coords, prev_floor_number])
 
             # Stay in this location for the given duration
-            for j in range(schedule_item["duration"]):
+            for _ in range(schedule_item["duration"]):
                 self.itinerary.append([prev_coords, prev_floor_number])
 
             # update list of schedule items
@@ -328,7 +328,7 @@ class Schedule:
                 last_item = self.schedule_items[-1]
                 if (
                     last_item["purpose"] == schedule_item["purpose"]
-                    and last_item["location"] == schedule_item["location"]
+                    and last_item["location"] == prev_location
                 ):
                     # If this purpose and location are the same as the last
                     # one, just update the last one
