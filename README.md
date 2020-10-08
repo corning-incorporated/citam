@@ -72,6 +72,16 @@ $git checkout alpha
 
 After successful cloning, install CITAM as follows:
 
+Build the dashboard one of the following ways:
+1. Running the command `python setup.py build_js`
+2. Building manually by doing the following
+    2a. `cd citamjs`
+    2b. `npm install`
+    2c. `npm run build`
+    2d. `rm -r ../citam/api/static/dist`
+    2e. `cp dist/ ../citam/api/static/dash`
+
+Then install the pip package using the command
   ```
   $pip install .
   ```
