@@ -109,6 +109,6 @@ DEFAULT_SCHEDULING_RULES = {
 Meetings Policy
 ----------------
 
-The meetins policy file defines how many meetings take place as well as when, where they
+The meetings policy file defines how many meetings take place as well as when, where they
 happen and who participate.
 

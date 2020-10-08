@@ -133,7 +133,7 @@ remove walls that are between hallways.
  You can export the ingested floorplan as an SVG file for visualization as follow:
 
   ```
-  $citam engine export-floorplan foo_facility foo_floor -o foo_ouput.svg -v
+  $citam engine export-floorplan foo_facility foo_floor -o foo_output.svg -v
   ```
 
 This will export the ingested floorplan in SVG format saved as OUTPUT_FILE.

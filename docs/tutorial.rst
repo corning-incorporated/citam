@@ -20,7 +20,7 @@ CITAM is an agent-based modeling platform that can assist in the management of i
 airborne pandemics like COVID-19 and help make policy decisions to mitigate
 indoor transmission risks.
 
-This tutorial assumes that you have already downloaded and installed CTIAM. For details
+This tutorial assumes that you have already downloaded and installed CITAM. For details
 on how to install, visit the :ref:`getting_started` page. To verify
 that CITAM has been installed properly, run the following command from your terminal:
 
@@ -34,7 +34,7 @@ that we call ingestion). The ingestion process leads to a navigation-aware facil
 in which agents can move in a realistic fashion.
 
 Agents can be employees, visitors or any other users of your facility. To determine
-how, when and where they move around in the facility, CITAM attemps to automatically
+how, when and where they move around in the facility, CITAM attempts to automatically
 create a schedule and associated itinerary for them using scheduling and meeting policies that you can
 provide. We will come back to those later in this tutorial. Let's start by
 adding a facility.
@@ -45,7 +45,7 @@ Adding a facility
 To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
 each space in "path" elements. CITAM also needs information about the function of
 each space so it can build realistic schedules for them. Those information can be
-provided in a companinon CSV file where the "id" of each space is used to match them with the
+provided in a companion CSV file where the "id" of each space is used to match them with the
 SVG file.
 
 For this tutorial, we will use example files provided with CITAM in the examples/
@@ -116,7 +116,7 @@ you can use the ``citam engine export-floorplan`` command as follow:
     $ citam engine export-floorplan TF2 0 -o TF2_ingested.svg -v
 
 Use any SVG viewer (like your web browser) to visualize the exported file. Fig. 2 shows
-what the ingested floor plan looks like. CITAM has removed walls that it thinks are unncecessary
+what the ingested floor plan looks like. CITAM has removed walls that it thinks are unnecessary
 (based on whether they fall between two hallways). CITAM has also added doors to each
 space.
 
