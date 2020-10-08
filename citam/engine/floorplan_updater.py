@@ -285,7 +285,8 @@ class FloorplanUpdater:
                 wall, new_door
             )
             if dot_product is not None and (
-                abs(dot_product - 1.0) < 1e-1 and distance < max_distance_to_walls
+                abs(dot_product - 1.0) < 1e-1
+                and distance < max_distance_to_walls
             ):
                 # door and wall overlap
                 # if gsu.do_walls_overlap(wall, new_door):
