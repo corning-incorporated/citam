@@ -423,7 +423,7 @@ class Schedule:
 
     def __str__(self):
         """Convert current schedule to a str for output purposes"""
-        day_length = sum([item["duration"] for item in self.schedule_items])
+        day_length = sum(item["duration"] for item in self.schedule_items)
 
         string_repr = (
             "\nSchedule\n-----------------------\n"
