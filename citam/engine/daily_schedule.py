@@ -286,7 +286,7 @@ class Schedule:
         Returns
         - Pace: the agent's pace in [drawing unit]/[timestep]
         """
-        # typical walkging pace: 4 ft/sec; Range : 2 to 6 ft/sec
+        # typical walking pace: 4 ft/sec; Range : 2 to 6 ft/sec
         pace = 0.0
         while pace < 2.0 or pace > 6.0:
             pace = np.random.normal(loc=4)
