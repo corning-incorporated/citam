@@ -232,15 +232,14 @@ class FloorplanIngester:
                 ) = gsu.calculate_dot_product_and_distance_between_walls(
                     wall, door_line
                 )
-                if dot_product is not None:
-                    if (
-                        abs(dot_product - 1.0) < 1e-1
-                        and distance < max_distance
-                        and distance < current_min_distance
-                    ):
-                        current_min_distance = distance
-                        wall_index = w
-                        best_door_line = door_line
+                if dot_product is not None and (
+                    abs(dot_product - 1.0) < 1e-1
+                    and distance < max_distance
+                    and distance < current_min_distance
+                ):
+                    current_min_distance = distance
+                    wall_index = w
+                    best_door_line = door_line
 
         return wall_index, best_door_line
 
@@ -536,12 +535,10 @@ class FloorplanIngester:
         LOG.info("Now working with rooms and hallways...")
 
         valid_walls = []
-        i = 0
         for hallway_wall in pb.progressbar(valid_hallway_walls):
             valid_walls += self.find_and_remove_overlaps(
                 hallway_wall, room_walls, room_ids, add_door=True
             )
-            i += 1
 
         for hallway_wall in pb.progressbar(invalid_hallway_walls):
             self.find_and_remove_overlaps(
