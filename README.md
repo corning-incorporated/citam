@@ -225,24 +225,6 @@ page. By clicking on `View Details`; you will be taken to a screen with detailed
 
  You can also access interactive visual map of floors and time-based individuals movement by clicking on the `Visualization` tab.
 
-## Building the Documentation
----------
-CITAM's documentation is built with [Sphinx](https://www.sphinx-doc.org/). To build the documentation locally, make sure you have sphinx installed as well as the requirements listed in [docs/requirements.txt](docs/requirements.txt).
-
-```
-$cd docs
-$pip install sphinx
-$pip install -r requirements.txt
-```
-
-You are now ready to build the documentation using the following command:
-
-```
-$make html
-```
-
-Html outputs form the build process are automatically copied to the [public](public/) folder where they are integrated with CITAM's landing page. To view the documentation, open the local copy of `public/index.html` file with your web browser.
-
 ## Contributing
 -----
 The code is divided into multiple components:
