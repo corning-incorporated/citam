@@ -132,31 +132,24 @@ def is_one_segment_within_the_other(p1, q1, p2, q2):
     Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
     within the other.
     """
-    if (
+    return bool((
         (on_segment(p1, p2, q1) and on_segment(p1, q2, q1))
         or (on_segment(p2, p1, q2) and on_segment(p2, q1, q2))
         or (p1 == p2 and q1 == q2)
         or (p1 == q2 and q1 == p2)
-    ):
-
-        return True
-
-    return False
+    ))
 
 
 def do_lines_intersect_at_endpoint(p1, q1, p2, q2):
     """
     Check if one of the lines start or ends on the other line.
     """
-    if (
+    return bool((
         on_segment(p1, p2, q1)
         or on_segment(p1, q2, q1)
         or on_segment(p2, p1, q2)
         or on_segment(p2, q1, q2)
-    ):
-        return True
-
-    return False
+    ))
 
 
 def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
@@ -372,9 +365,7 @@ def calculate_distance_between_walls(wall1, wall2):
     float: distance between the walls
     """
     V_perp = calculate_perpendicular_vector(wall1, wall2)
-    distance = np.linalg.norm(V_perp)
-
-    return distance
+    return np.linalg.norm(V_perp)
 
 
 def calculate_x_and_y_overlap(wall1, wall2):
@@ -498,11 +489,10 @@ def create_parallel_line(line, side=1):
     new_x1 = line.start.real + side
     new_y1 = line.start.imag + side
 
-    new_line = Line(
+    return Line(
         start=complex(new_x1, new_y1),
         end=complex(new_x1 + V[0], new_y1 + V[1]),
     )
-    return new_line
 
 
 def create_door_in_room_wall(room_wall, door_size=2.0):
@@ -608,9 +598,7 @@ def align_to_reference(reference_line, test_line):
     else:
         return test_line
 
-    new_line = Line(start=test_line.start, end=complex(end_x, end_y))
-
-    return new_line
+    return Line(start=test_line.start, end=complex(end_x, end_y))
 
 
 def is_point_on_line(line, p_test, tol=1e-3):
@@ -629,10 +617,7 @@ def is_point_on_line(line, p_test, tol=1e-3):
         Whether the point falls on the line or not
     """
 
-    if (
-        complex(p_test.x, p_test.y) == line.start
-        or complex(p_test.x, p_test.y) == line.end
-    ):
+    if complex(p_test.x, p_test.y) in [line.start, line.end]:
         return True
 
     p = Point(x=line.start.real, y=line.start.imag)
