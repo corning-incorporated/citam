@@ -78,8 +78,8 @@ Build the dashboard one of the following ways:
     2a. `cd citamjs`
     2b. `npm install`
     2c. `npm run build`
-    2d. `rm -r ../citam/api/static/dist`
-    2e. `cp dist/ ../citam/api/static/dash`
+    2d. `cp -r dist/ ../citam/api/static/dash`
+    2e. `cd ..`
 
 Then install the pip package using the command
   ```
