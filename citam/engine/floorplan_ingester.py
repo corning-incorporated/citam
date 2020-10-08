@@ -181,14 +181,9 @@ class FloorplanIngester:
         for path in door:
             if type(path) == CubicBezier:
                 door_lines = gsu.find_door_line(path)
-                test_points.append(Point(complex_coords=path.point(0.5)))
-                test_points.append(Point(complex_coords=path.start))
-                test_points.append(Point(complex_coords=path.end))
-            else:
-                test_points.append(Point(complex_coords=path.point(0.5)))
-                test_points.append(Point(complex_coords=path.start))
-                test_points.append(Point(complex_coords=path.end))
-
+            test_points.append(Point(complex_coords=path.point(0.5)))
+            test_points.append(Point(complex_coords=path.start))
+            test_points.append(Point(complex_coords=path.end))
         # Use the test points to find the space to which this door belongs
         space_index = None
         for test_point in test_points:
