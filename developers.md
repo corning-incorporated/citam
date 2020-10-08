@@ -27,7 +27,7 @@ Keep in mind that Git and NodeJS are required dependencies for developing CITAM:
 
 Please start by following the [installation from source](readme.md#from-source) instructions in the readme.
 
-For Python development, we also recomment installing the following additional libaries for testing and ensuring code quality: [pytest](https://www.pytest.org), [flake8](https://flake8.pycqa.org/) and [black](https://github.com/psf/black). Install them as follow:
+For Python development, we also recommend installing the following additional libraries for testing and ensuring code quality: [pytest](https://www.pytest.org), [flake8](https://flake8.pycqa.org/) and [black](https://github.com/psf/black). Install them as follow:
 
 ```
 $pip install pytest flake8 black
@@ -71,7 +71,7 @@ $pytest
 
 ## Coding Rules
 -----------
-To make sure all current and future developpers of CITAM deal with a uniformly formatted and consistent source code, we follow Python's official [styling rules](https://www.python.org/dev/peps/pep-0008/).
+To make sure all current and future developers of CITAM deal with a uniformly formatted and consistent source code, we follow Python's official [styling rules](https://www.python.org/dev/peps/pep-0008/).
 
 As mentioned before, flake8 is a linter that can help you discover and solve any of those issues. Flake8 is also a good linter to help you with basic code quality. Black is a great tool to use to automatically format you python code.
 

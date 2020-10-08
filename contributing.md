@@ -60,10 +60,10 @@ If everything looks good, push your changes to GitHub:
 $git push origin my-fix-branch
 ```
 
-You are now ready to create a pull request against the dev branch. Make sure your title and description are as descriptive as poosible.
+You are now ready to create a pull request against the dev branch. Make sure the title and description of your pull request are as descriptive as possible.
 
 After you submit your pull request, monitor the continuous integration tests to make sure they all pass. If there is any issues, consult the log files and fix them.
 
-Once all tests pass, a reviewer will take a look at your code and suggest any necessary changes. Implement them and push your changes to the "my-fix-branch" to automatically update your pull request.
+After successful completion of all mandatory checks, including test cases, maintainers would review all the changes and will make necessary suggestions as required. Please implement these feedback and push your changes to the "my-fix-branch" to automatically update your pull request.
 
 When everything looks good, a maintainer will approve the pull request and you are done! Thanks for contributing!
