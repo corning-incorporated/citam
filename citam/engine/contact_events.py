@@ -119,11 +119,7 @@ class ContactEvents:
         :return: total number of contact events
         :rtype: int
         """
-        n_contacts = 0
-        for key in self.contact_data:
-            n_contacts += len(self.contact_data[key])
-
-        return n_contacts
+        return sum(len(self.contact_data[key]) for key in self.contact_data)
 
     def save_pairwise_contacts(self, filename: str) -> None:
         """Save pairwise contact data to file
@@ -297,9 +293,10 @@ class ContactEvents:
         :param str filename: The file path to save the data
         """
 
-        data_to_save = {}
-        for key, value in self.contact_data.items():
-            data_to_save[key] = [v.__dict__ for v in value]
+        data_to_save = {
+            key: [v.__dict__ for v in value]
+            for key, value in self.contact_data.items()
+        }
 
         with open(filename, "w") as outfile:
             outfile.write(str(data_to_save))
