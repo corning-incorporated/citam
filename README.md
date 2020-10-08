@@ -41,11 +41,10 @@ Below are the different ways to install CITAM.
 
 ### From Python-Wheel (Recommended)
 
-Download the python-wheel [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag). Extract the compressed file locally, change directory to the extracted python-wheel folder, rename the .whl file to `citam.whl` then install as follows from within the directory where the file is located:
-
-```
-$pip install citam.whl
-```
+1. Download the python-wheel [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag).
+2. Extract the compressed file locally, 
+3. change directory to the extracted python-wheel folder.  Do not rename this file.
+4. run `pip install <citam wheel>` where citam_wheel is the extracted .whl file
 
 ### From Source
 
@@ -72,6 +71,16 @@ $git checkout alpha
 
 After successful cloning, install CITAM as follows:
 
+Build the dashboard one of the following ways:
+1. Running the command `python setup.py build_js`
+2. Building manually by doing the following
+    2a. `cd citamjs`
+    2b. `npm install`
+    2c. `npm run build`
+    2d. `cp -r dist/ ../citam/api/static/dash`
+    2e. `cd ..`
+
+Then install the pip package using the command
   ```
   $pip install .
   ```
