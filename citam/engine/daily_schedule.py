@@ -66,7 +66,7 @@ class Schedule:
         self.office_floor = office_floor
         self.navigation = navigation
 
-        self.curent_standing = 0
+        self.current_standing = 0
 
         self.itinerary = [[None, None] for i in range(start_time - 2)]
         self.schedule_items = []
@@ -458,8 +458,8 @@ class Schedule:
 
     def get_next_position(self):
         """Return the next position of this agent from its itinerary"""
-        position = self.itinerary[self.curent_standing]
-        if self.curent_standing < len(self.itinerary) - 1:
-            self.curent_standing += 1
+        position = self.itinerary[self.current_standing]
+        if self.current_standing < len(self.itinerary) - 1:
+            self.current_standing += 1
 
         return position
