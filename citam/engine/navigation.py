@@ -106,7 +106,7 @@ class Navigation:
         """Load the oneway network"""
         oneway_net = None
         oneway_net_file = os.path.join(
-            floorplan_directory, "onewway_network.pkl"
+            floorplan_directory, "oneway_network.pkl"
         )
         if os.path.isfile(oneway_net_file):
             with open(oneway_net_file, "rb") as f:

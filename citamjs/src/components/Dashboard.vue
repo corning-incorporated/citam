@@ -24,7 +24,7 @@
             <div class="row page-heading">
               <div class="col-5">
                 <button v-show="showDetails!==0" class="btn btn-link order-1 order-lg-0" id="back-main"
-                        @click="backToMaintable">
+                        @click="backToMainTable">
                   <font-awesome-icon icon="arrow-alt-circle-left"></font-awesome-icon>
                   Back
                 </button>
@@ -172,7 +172,7 @@ import _ from "lodash";
 library.add(faChartBar, faChartArea, faTable, faArrowAltCircleLeft, faSort, faMap)
 
 export default {
-  name: "Dashbaord",
+  name: "Dashboard",
   components: {Scatterplot, Histogram, Statcards, PlotVisualization},
   data() {
     return {
@@ -216,7 +216,7 @@ export default {
       })
     },
 
-    backToMaintable() {
+    backToMainTable() {
       this.showDetails = 0;
     },
 

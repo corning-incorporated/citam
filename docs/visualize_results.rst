@@ -16,7 +16,7 @@ Please note that if the **CITAM_RESULT_PATH** environment variable is not set, t
 To visualize more than 1 simulation result with the dashboard, set the **CITAM_RESULT_PATH**
 as a parent directory from which all results subdirectories are accessible.
 
-To set your environment varialbe, a quick web search should provide instructions
+To set your environment variable, a quick web search should provide instructions
 on how to dot it. For more customization options, please see the global configuration page.
 
 ----------------------
@@ -24,8 +24,8 @@ The Main Results Page
 ----------------------
 
 The dashboard displays a list all of the simulations found in the specified results location
-along with floor level information in tabular format. Th etable lists all the details extracted from
-*manifest.josn* file.
+along with floor level information in tabular format. The table lists all the details extracted from
+*manifest.json* file.
 To view data for a given simulation, click on *View Details*.
 
 Details available on the main page:
@@ -100,7 +100,7 @@ It also show a floorplan-based heatmap showing hotspot (where most contact event
 The Visualizer Tab
 """""""""""""""""""
 
-The visualiation offers an interactive way to explore the time-dependent contact
+The visualization offers an interactive way to explore the time-dependent contact
 data and trajectories of each agent. The page has a colorbar to denote agent contact intensity.
 An agent with higher number of contact will be represented by intense red color.
 
