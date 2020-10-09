@@ -143,7 +143,7 @@ Assuming at least one facility was successfully added and validated, any number
 of simulations can be run on that facility using the following command where INPUT_FILE
 is a JSON input file:
 
-Example input files can be found in the citam/examples directory. It is recommended to create seperate folders for each simulation with their own input file.
+Example input files can be found in the citam/examples directory. It is recommended to create separate folders for each simulation with their own input file.
 To run a simulation copy `example_sim_inputs.json` file to a new directory (let's call it ``SIMULATION_DIR``). Change directory to this new folder and execute:
 
 .. code-block:: console
@@ -153,7 +153,7 @@ To run a simulation copy `example_sim_inputs.json` file to a new directory (let'
 
 More example input files can be found in the examples directory.
 
-We recommend going throug the tutorial for a more in-depth guide on how to use CITAM: :ref:`tutorial`
+We recommend going through the tutorial for a more in-depth guide on how to use CITAM: :ref:`tutorial`
 
 .. toctree::
    :maxdepth: 2
