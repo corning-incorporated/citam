@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      histgramChartData: this.pairData,
+      histogramChartData: this.pairData,
       divId: `contactHistogramPlot${this.options.chartTitle.replace(/ /g, "_")}`,
     };
   },
@@ -36,7 +36,7 @@ export default {
   watch: {
     pairData: {
       handler: function (histogramData) {
-        this.histgramChartData = histogramData;
+        this.histogramChartData = histogramData;
         this.setHistogram()
       },
     },
@@ -54,7 +54,7 @@ export default {
 
     setHistogram() {
       let data = [{
-            x: this.histgramChartData,
+            x: this.histogramChartData,
             type: "histogram",
             name: this.options.chartTitle,
             marker: {

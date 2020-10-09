@@ -42,12 +42,12 @@ export default class Map2D {
 
     /** Colorbar **/
     this.colorBar = new Colorbar({palette: d3.interpolateOrRd, scale: scaleSequential});
-    document.body.append(this.colorBar.domElement);
+    this.mapRoot.append(this.colorBar.domElement);
     this.colorBar.hide();
 
     /** Timer **/
     this.timer = new Timer(1);
-    document.body.append(this.timer.domElement);
+    this.mapRoot.append(this.timer.domElement);
     this.timer.hide();
 
     /** Handle for running animation set by window.setInterval */
