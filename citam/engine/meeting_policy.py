@@ -79,7 +79,7 @@ class MeetingPolicy:
             "min_attendees_per_meeting"
         ]
 
-        n_meeting_rooms = sum([len(rooms) for rooms in self.meeting_rooms])
+        n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
         LOG.info("Meeting rooms in policy: " + str(n_meeting_rooms))
 
         return
@@ -172,7 +172,7 @@ class MeetingPolicy:
                 if val < max_meetings
             }
 
-            if len(self.attendee_pool) == 0:
+            if not self.attendee_pool:
                 break
 
             values = [int(v) for v in self.attendee_pool.values()]
@@ -182,9 +182,8 @@ class MeetingPolicy:
     def get_daily_meetings(self, agent_id):
         """Returns list of meetings for this agent"""
 
-        daily_meetings = []
-        for meeting in self.meetings:
-            if agent_id in meeting.attendees:
-                daily_meetings.append(meeting)
-
-        return daily_meetings
+        return [
+            meeting
+            for meeting in self.meetings
+            if agent_id in meeting.attendees
+        ]
