@@ -181,14 +181,9 @@ class FloorplanIngester:
         for path in door:
             if type(path) == CubicBezier:
                 door_lines = gsu.find_door_line(path)
-                test_points.append(Point(complex_coords=path.point(0.5)))
-                test_points.append(Point(complex_coords=path.start))
-                test_points.append(Point(complex_coords=path.end))
-            else:
-                test_points.append(Point(complex_coords=path.point(0.5)))
-                test_points.append(Point(complex_coords=path.start))
-                test_points.append(Point(complex_coords=path.end))
-
+            test_points.append(Point(complex_coords=path.point(0.5)))
+            test_points.append(Point(complex_coords=path.start))
+            test_points.append(Point(complex_coords=path.end))
         # Use the test points to find the space to which this door belongs
         space_index = None
         for test_point in test_points:
@@ -237,15 +232,14 @@ class FloorplanIngester:
                 ) = gsu.calculate_dot_product_and_distance_between_walls(
                     wall, door_line
                 )
-                if dot_product is not None:
-                    if (
-                        abs(dot_product - 1.0) < 1e-1
-                        and distance < max_distance
-                        and distance < current_min_distance
-                    ):
-                        current_min_distance = distance
-                        wall_index = w
-                        best_door_line = door_line
+                if dot_product is not None and (
+                    abs(dot_product - 1.0) < 1e-1
+                    and distance < max_distance
+                    and distance < current_min_distance
+                ):
+                    current_min_distance = distance
+                    wall_index = w
+                    best_door_line = door_line
 
         return wall_index, best_door_line
 
@@ -541,12 +535,10 @@ class FloorplanIngester:
         LOG.info("Now working with rooms and hallways...")
 
         valid_walls = []
-        i = 0
         for hallway_wall in pb.progressbar(valid_hallway_walls):
             valid_walls += self.find_and_remove_overlaps(
                 hallway_wall, room_walls, room_ids, add_door=True
             )
-            i += 1
 
         for hallway_wall in pb.progressbar(invalid_hallway_walls):
             self.find_and_remove_overlaps(

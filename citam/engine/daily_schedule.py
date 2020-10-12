@@ -230,9 +230,9 @@ class Schedule:
         }
 
         for purpose in self.scheduling_rules:
-            if purpose in locations_for_purpose.keys():
+            if purpose in locations_for_purpose:
                 possible_locations = locations_for_purpose[purpose]
-                total_locations = sum([len(pl) for pl in possible_locations])
+                total_locations = sum(len(pl) for pl in possible_locations)
                 if total_locations > 0:
                     purposes_under_consideration.append(purpose)
 
@@ -261,14 +261,14 @@ class Schedule:
             valid_purposes.remove(RESTROOM_VISIT)
 
         # Cafeteria visits only happen around the middle of the work day
-        if CAFETERIA_VISIT in valid_purposes:
-            if len(self.itinerary) < round(self.daylength / 3.0) or len(
-                self.itinerary
-            ) > round(2 * self.daylength / 3.0):
-                valid_purposes.remove(CAFETERIA_VISIT)
+        if CAFETERIA_VISIT in valid_purposes and (
+            len(self.itinerary) < round(self.daylength / 3.0)
+            or len(self.itinerary) > round(2 * self.daylength / 3.0)
+        ):
+            valid_purposes.remove(CAFETERIA_VISIT)
 
         # Randomly choose a purpose from list of valid purposes
-        if len(valid_purposes) > 0:
+        if valid_purposes:
             chosen_purpose = np.random.choice(valid_purposes)
         else:
             raise ValueError("At least one valid purpose required.")
@@ -320,7 +320,7 @@ class Schedule:
             self.itinerary.append([prev_coords, prev_floor_number])
 
             # Stay in this location for the given duration
-            for j in range(schedule_item["duration"]):
+            for _ in range(schedule_item["duration"]):
                 self.itinerary.append([prev_coords, prev_floor_number])
 
             # update list of schedule items
@@ -328,7 +328,7 @@ class Schedule:
                 last_item = self.schedule_items[-1]
                 if (
                     last_item["purpose"] == schedule_item["purpose"]
-                    and last_item["location"] == schedule_item["location"]
+                    and last_item["location"] == prev_location
                 ):
                     # If this purpose and location are the same as the last
                     # one, just update the last one
@@ -423,7 +423,7 @@ class Schedule:
 
     def __str__(self):
         """Convert current schedule to a str for output purposes"""
-        day_length = sum([item["duration"] for item in self.schedule_items])
+        day_length = sum(item["duration"] for item in self.schedule_items)
 
         string_repr = (
             "\nSchedule\n-----------------------\n"
