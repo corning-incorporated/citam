@@ -58,13 +58,3 @@ def test_build_schedule_item(sample_empty_schedule_object):
     assert isinstance(item, ScheduleItem)
 
 
-# def test_find_next_schedule_item():
-# def test_choose_valid_scheduling_purpose():
-# def test_get_pace():
-# def test_update_itinerary():
-# def test_build():
-# def test_get_next_position():
-# def test___str__():
-
-
-
