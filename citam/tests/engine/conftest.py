@@ -147,9 +147,12 @@ def datadir(tmpdir, request):
     """
     filename = request.module.__file__
     test_dir, _ = os.path.splitext(filename)
+    test_dir = test_dir.replace('test_', 'data_')
+
 
     if os.path.isdir(test_dir):
         dir_util.copy_tree(test_dir, str(tmpdir))
+
 
     return tmpdir
 
@@ -298,7 +301,7 @@ def simple_facility_floorplan(request, monkeypatch):
     test_dir = os.path.dirname(filename)
 
     datadir = os.path.join(
-        test_dir, "test_navigation", "floorplans_and_nav_data"
+        test_dir, "data_navigation", "floorplans_and_nav_data"
     )
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
 
