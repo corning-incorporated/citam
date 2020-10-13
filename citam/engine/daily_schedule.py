@@ -23,14 +23,13 @@ from citam.engine.constants import (
     RESTROOM_VISIT,
     MEETING,
     LAST_SCHEDULE_ITEM_CUTOFF,
-    MEETING_BUFFER
+    MEETING_BUFFER,
 )
 
 LOG = logging.getLogger(__name__)
 
 
 class ScheduleItem:
-
     def __init__(self, purpose, location, floor_number, duration):
         self.purpose = purpose
         self.location = location
@@ -132,9 +131,7 @@ class Schedule:
 
         return
 
-    def build_schedule_item(
-        self, purpose, next_meeting_start_time
-    ):
+    def build_schedule_item(self, purpose, next_meeting_start_time):
         """Given a purpose and additional properties such as meeting duration,
         build a schedule item for this agent.
         """
@@ -178,7 +175,7 @@ class Schedule:
             purpose=purpose,
             location=location,
             floor_number=floor_number,
-            duration=duration
+            duration=duration,
         )
         return schedule_item
 
@@ -199,7 +196,7 @@ class Schedule:
                     purpose=MEETING,
                     duration=next_meeting.duration,
                     location=next_meeting.location,
-                    floor_number=next_meeting.floor_number
+                    floor_number=next_meeting.floor_number,
                 )
                 return schedule_item
 
@@ -423,7 +420,7 @@ class Schedule:
                 location=None,
                 duration=0,
                 floor_number=self.exit_floor,
-                purpose="Leave for the day"
+                purpose="Leave for the day",
             )
         )
 
