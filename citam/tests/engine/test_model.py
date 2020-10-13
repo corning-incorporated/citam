@@ -11,7 +11,7 @@ import json
 def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
     filename = request.module.__file__
     test_dir = os.path.dirname(filename)
-    datadir = os.path.join(test_dir, "test_navigation")
+    datadir = os.path.join(test_dir, "data_navigation")
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
 
     model = FacilityTransmissionModel(
