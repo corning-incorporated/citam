@@ -147,7 +147,7 @@ def datadir(tmpdir, request):
     """
     filename = request.module.__file__
     test_dir, _ = os.path.splitext(filename)
-    test_dir = test_dir.replace('test_', 'data_')
+    test_dir = test_dir.replace("test_", "data_")
 
     if os.path.isdir(test_dir):
         dir_util.copy_tree(test_dir, str(tmpdir))

@@ -10,8 +10,7 @@ import pytest
 
 @pytest.fixture
 def sample_empty_schedule_object(
-    simple_facility_floorplan,
-    request, monkeypatch
+    simple_facility_floorplan, request, monkeypatch
 ):
 
     filename = request.module.__file__
@@ -22,7 +21,7 @@ def sample_empty_schedule_object(
     navigation = Navigation(
         floorplans=[simple_facility_floorplan],
         facility_name="test_simple_facility",
-        traffic_policy=None
+        traffic_policy=None,
     )
 
     sched = Schedule(
