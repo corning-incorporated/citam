@@ -111,4 +111,5 @@ DEFAULT_MEETINGS_POLICY = {
     "min_attendees_per_meeting": 3,
 }
 
+MEETING_BUFFER = 60 * 15
 LAST_SCHEDULE_ITEM_CUTOFF = 60
