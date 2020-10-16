@@ -881,7 +881,7 @@ class NavigationBuilder:
             Points 1 and 2 form the first line
         point3: tuple of x, y coordinates
         point4: tuple of x, y coordinates
-            Poitns 3 and 4 form the second line
+            Points 3 and 4 form the second line
 
         Results
         --------
@@ -919,6 +919,7 @@ class NavigationBuilder:
                 self.floor_navnet.remove_edge(point1, point2)
             else:
                 half_width1 = 1
+
             if self.floor_navnet.has_edge(point2, point1):
                 self.floor_navnet.remove_edge(point2, point1)
 
@@ -928,6 +929,7 @@ class NavigationBuilder:
                 self.floor_navnet.remove_edge(point3, point4)
             else:
                 half_width2 = 1
+
             if self.floor_navnet.has_edge(point4, point3):
                 self.floor_navnet.remove_edge(point4, point3)
 
