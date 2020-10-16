@@ -23,10 +23,14 @@ LOG = logging.getLogger(__name__)
 
 
 class Meeting:
-    def __init__(self, location, start_time, end_time):
+    def __init__(self, location, floor_number, start_time, end_time, attendees=None):
         super().__init__()
         self.location = location
-        self.attendees = []  # ID of all the participants
+        self.floor_number = floor_number
+        if attendees is None:
+            self.attendees = []  # ID of all the participants
+        else:
+            self.attendees = attendees
         self.start_time = start_time
         self.end_time = end_time
 
@@ -37,6 +41,13 @@ class Meeting:
         str_repr += ">>>>>> start time :" + str(self.end_time) + "\n"
 
         return str_repr
+
+    def __eq__(self, other):
+        self.location == other.location
+        self.floor_number == other.floor_number
+        self.attendees == other.attendees
+        self.start_time == start_time
+        self.end_time == other.end_time
 
 
 class MeetingPolicy:

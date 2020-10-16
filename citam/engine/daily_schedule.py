@@ -144,10 +144,10 @@ class Schedule:
             if len(self.itinerary) + max_duration > max_end_time:
                 max_duration = max_end_time - len(self.itinerary)
 
-        if max_duration <= details["min_duration"]:
-            duration = max_duration
-        else:
+        if max_duration > details["min_duration"]:
             duration = np.random.randint(details["min_duration"], max_duration)
+        else:
+            raise ValueError("Unable to add to schedule for this purpose.")
 
         # Choose a location
         if purpose == OFFICE_WORK:
@@ -179,7 +179,7 @@ class Schedule:
         )
         return schedule_item
 
-    def find_next_schedule_item(self, current_location=None):
+    def find_next_schedule_item(self):
         """Create the next schedule item for this agent. This will correspond
         to the next meeting on this agent's calendar or to a randomly selected
         item from a list of valid purposes.
@@ -187,14 +187,16 @@ class Schedule:
 
         next_meeting_start_time = None
         # Handle meetings first
+        print("number of meetings: ", len(self.meetings))
         if len(self.meetings) > 0:
             next_meeting = self.meetings[0]
             next_meeting_start_time = next_meeting.start_time
             # Check if meeting is happening within 15 timestep of now, if so
+            print("Next meeting start time: ", next_meeting_start_time)
             if next_meeting.start_time - len(self.itinerary) <= MEETING_BUFFER:
                 schedule_item = ScheduleItem(
                     purpose=MEETING,
-                    duration=next_meeting.duration,
+                    duration=next_meeting.end_time - next_meeting.start_time,
                     location=next_meeting.location,
                     floor_number=next_meeting.floor_number,
                 )
