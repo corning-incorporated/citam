@@ -352,9 +352,7 @@ class Navigation:
                             ) and not self.is_edge_matching_direction(
                                 test_edge, policy["direction"]
                             ):
-                                navnet.remove_edge(
-                                    test_edge[0], test_edge[1]
-                                )
+                                navnet.remove_edge(test_edge[0], test_edge[1])
                                 LOG.debug("Edge removed {%s}", test_edge)
                 break
 
