@@ -1,8 +1,10 @@
 from citam.engine.daily_schedule import Schedule, ScheduleItem
 from citam.engine.navigation import Navigation
+from citam.engine.meeting_policy import Meeting
 from citam.engine.constants import (
     DEFAULT_SCHEDULING_RULES,
     OFFICE_WORK,
+    MEETING
 )
 import os
 import pytest
@@ -42,11 +44,77 @@ def sample_empty_schedule_object(
     return sched
 
 
+def test_build_schedule_item_not_enough_time(sample_empty_schedule_object):
+    """Not enough time before next meeting, raise error"""
+    sched = sample_empty_schedule_object
+    with pytest.raises(ValueError):
+        sched.build_schedule_item(
+            purpose=OFFICE_WORK,
+            next_meeting_start_time=100,
+        )
+
+
 def test_build_schedule_item(sample_empty_schedule_object):
     sched = sample_empty_schedule_object
     item = sched.build_schedule_item(
         purpose=OFFICE_WORK,
-        next_meeting_start_time=100,
+        next_meeting_start_time=None,
     )
 
     assert isinstance(item, ScheduleItem)
+    assert item.purpose == OFFICE_WORK
+    assert item.duration >= sched.scheduling_rules[OFFICE_WORK]["min_duration"]
+    assert item.duration <= sched.scheduling_rules[OFFICE_WORK]["max_duration"]
+
+
+# Test build schedule item, office work happens in assigned office space
+
+
+def test_find_next_schedule_item_first_item(sample_empty_schedule_object):
+    """If no upcoming meeting, start schedule with office work"""
+    sched = sample_empty_schedule_object
+    item = sched.find_next_schedule_item()
+
+    assert isinstance(item, ScheduleItem)
+    assert item.purpose == OFFICE_WORK
+
+
+def test_find_next_schedule_item_upcoming_meeting(
+    sample_empty_schedule_object
+):
+    """upcoming meeting found, just return it"""
+    sched = sample_empty_schedule_object
+    upcoming_meeting = Meeting(
+        location=10,
+        floor_number=0,
+        attendees=[0],
+        start_time=10,
+        end_time=90
+    )
+    sched.meetings.append(upcoming_meeting)
+    item = sched.find_next_schedule_item()
+
+    assert isinstance(item, ScheduleItem)
+    assert item.floor_number == 0
+    assert item.location == 10
+    assert item.purpose == MEETING
+    assert item.duration == 80
+
+
+def test_find_next_schedule_item_existing_item(
+    sample_empty_schedule_object
+):
+    sched = sample_empty_schedule_object
+    sched.schedule_items.append([])
+    item = sched.find_next_schedule_item()
+
+    assert isinstance(item, ScheduleItem)
+
+
+# test_choose_valid_scheduling_purpose
+
+# test_get_pace
+
+# test_update_itinerary
+
+# test_build
