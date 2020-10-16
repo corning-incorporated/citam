@@ -586,8 +586,7 @@ def remove_unnecessary_coords(route):
                 continue
 
             if len(pos) == 3 and (
-                route[i - 1][2] != pos[2]
-                or pos[2] != route[i + 1][2]
+                route[i - 1][2] != pos[2] or pos[2] != route[i + 1][2]
             ):
                 continue
             # Check if this point and the points before and after are collinear
