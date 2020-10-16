@@ -581,14 +581,13 @@ def remove_unnecessary_coords(route):
     """
     while True:
         index_of_coords_to_delete = None
-        for i in range(len(route)):
-            if i in [0, len(route) - 1]:
+        for i, pos in enumerate(route):
+            if i in (0, len(route) - 1):
                 continue
-            if len(route[i]) == 3 and (
-                (
-                    route[i - 1][2] != route[i][2]
-                    or route[i][2] != route[i + 1][2]
-                )
+
+            if len(pos) == 3 and (
+                route[i - 1][2] != pos[2]
+                or pos[2] != route[i + 1][2]
             ):
                 continue
             # Check if this point and the points before and after are collinear
@@ -596,7 +595,7 @@ def remove_unnecessary_coords(route):
                 start=complex(route[i - 1][0], route[i - 1][1]),
                 end=complex(route[i + 1][0], route[i + 1][1]),
             )
-            test_point = Point(x=route[i][0], y=route[i][1])
+            test_point = Point(x=pos[0], y=pos[1])
             if gsu.is_point_on_line(test_line, test_point, tol=1e-1):
                 index_of_coords_to_delete = i
                 break
