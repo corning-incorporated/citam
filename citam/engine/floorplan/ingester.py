@@ -20,7 +20,7 @@ import queue
 import progressbar as pb
 from svgpathtools import Line, CubicBezier
 
-import citam.engine.floorplan_utils as fu
+import citam.engine.floorplan.utils as fu
 import citam.engine.geometry_and_svg_utils as gsu
 import citam.engine.input_parser as parser
 from citam.engine.door import Door

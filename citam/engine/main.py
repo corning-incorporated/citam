@@ -27,8 +27,8 @@ import citam.engine.basic_visualization as bv
 import citam.engine.geometry_and_svg_utils as gsu
 import citam.engine.storage_utils as su
 from citam.engine.floorplan import floorplan_from_directory
-from citam.engine.floorplan_ingester import FloorplanIngester
-from citam.engine.floorplan_updater import FloorplanUpdater
+from citam.engine.floorplan.ingester import FloorplanIngester
+from citam.engine.floorplan.updater import FloorplanUpdater
 from citam.engine.model import FacilityTransmissionModel
 from citam.engine.navigation_builder import NavigationBuilder
 from citam.engine.point import Point

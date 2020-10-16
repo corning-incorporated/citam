@@ -21,7 +21,7 @@ import progressbar as pb
 from svgpathtools import Line, svg2paths
 
 import citam.engine.basic_visualization as bv
-import citam.engine.floorplan_utils as fu
+import citam.engine.floorplan.utils as fu
 import citam.engine.geometry_and_svg_utils as gsu
 from citam.engine.door import Door
 from citam.engine.point import Point

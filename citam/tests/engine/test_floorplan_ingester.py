@@ -1,4 +1,4 @@
-from citam.engine.floorplan_ingester import FloorplanIngester
+from citam.engine.floorplan.ingester import FloorplanIngester
 
 
 def test_init_correct_number_of_objects(datadir):
