@@ -903,8 +903,8 @@ class NavigationBuilder:
         intersects = line1.intersect(line2)
         if len(intersects) > 0:
             t1, t2 = intersects[0]
-            if t1 in [0.0, 1.0] and t2 in [0, 1.0]:
-                return None
+            if t1 in (0.0, 1.0) and t2 in (0.0, 1.0):
+                return
 
             intersect_point = (
                 round(line1.point(t1).real),
@@ -935,37 +935,21 @@ class NavigationBuilder:
                 self.floor_navnet.add_edge(
                     point1, intersect_point, half_width=half_width1
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point1,
-                #                            half_width=half_width1
-                #                            )
 
             if point2 != intersect_point:
                 self.floor_navnet.add_edge(
                     point2, intersect_point, half_width=half_width1
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point2,
-                #                            half_width=half_width1
-                #                            )
 
             if point3 != intersect_point:
                 self.floor_navnet.add_edge(
                     point3, intersect_point, half_width=half_width2
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point3,
-                #                            half_width=half_width2
-                #                            )
 
             if point4 != intersect_point:
                 self.floor_navnet.add_edge(
                     point4, intersect_point, half_width=half_width2
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point4,
-                #                            half_width=half_width2
-                #                            )
 
         return intersect_point
 
