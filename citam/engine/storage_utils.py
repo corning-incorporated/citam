@@ -34,10 +34,9 @@ def get_user_cache():
 
 def get_floorplans_directory():
     citam_cache_directory = get_user_cache()
-    floorplan_directory = os.path.join(
+    return os.path.join(
         citam_cache_directory, "floorplans_and_nav_data/"
     )
-    return floorplan_directory
 
 
 def create_datadir(facility_name, floor_name):
@@ -63,10 +62,9 @@ def get_datadir(facility_name, floor_name):
     """Get the directory where data for a given facility and floor are
     saved."""
     citam_cache_directory = get_user_cache()
-    floor_directory = os.path.join(
+    return os.path.join(
         citam_cache_directory,
         "floorplans_and_nav_data",
         facility_name,
         "floor_" + floor_name,
     )
-    return floor_directory

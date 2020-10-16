@@ -62,7 +62,7 @@ class Navigation:
                 facility_name, floorplan.floor_name
             )
 
-            # Load navigation newtork
+            # Load navigation network
             LOG.info("Loading navnet...")
             navnet = self.load_floor_navnet(floorplan_directory)
             self.navnet_per_floor.append(navnet)
@@ -250,9 +250,11 @@ class Navigation:
         self.multifloor_navnet = nx.DiGraph()
         # Relabel nodes in each floor navnet
         for fn in range(len(self.floorplans)):
-            mapping = {}
-            for node in list(self.navnet_per_floor[fn].nodes()):
-                mapping[node] = (node[0], node[1], fn)
+            mapping = {
+                node: (node[0], node[1], fn)
+                for node in list(self.navnet_per_floor[fn].nodes())
+            }
+
             navnet = nx.relabel_nodes(self.navnet_per_floor[fn], mapping)
             # Compose new graph with all floor graphs
             self.multifloor_navnet = nx.compose(self.multifloor_navnet, navnet)
@@ -345,14 +347,15 @@ class Navigation:
                                 floor_number,
                             )
                         for test_edge in [test_edge1, test_edge2]:
-                            if navnet.has_edge(test_edge[0], test_edge[1]):
-                                if not self.is_edge_matching_direction(
-                                    test_edge, policy["direction"]
-                                ):
-                                    navnet.remove_edge(
-                                        test_edge[0], test_edge[1]
-                                    )
-                                    LOG.debug("Edge removed {%s}", test_edge)
+                            if navnet.has_edge(
+                                test_edge[0], test_edge[1]
+                            ) and not self.is_edge_matching_direction(
+                                test_edge, policy["direction"]
+                            ):
+                                navnet.remove_edge(
+                                    test_edge[0], test_edge[1]
+                                )
+                                LOG.debug("Edge removed {%s}", test_edge)
                 break
 
         return
@@ -375,10 +378,7 @@ class Navigation:
         else:
             edge_direction = ONEWAY_TRAFFIC_NEGATIVE_DIRECTION
 
-        if desired_direction == edge_direction:
-            return True
-
-        return False
+        return desired_direction == edge_direction
 
     def get_route(
         self,
@@ -505,7 +505,7 @@ class Navigation:
         Parameters
         -----------
         floor_number : int
-        current_locatoin : int
+        current_location : int
         destination : int
 
         Returns
@@ -572,7 +572,7 @@ class Navigation:
         return route
 
 
-def remove_unncessary_coords(route):
+def remove_unnecessary_coords(route):
     """
     Inspect a route given by a set of coordinates and remove any intermediate
     coords that's collinear with its two neighbors.
@@ -584,14 +584,15 @@ def remove_unncessary_coords(route):
     while True:
         index_of_coords_to_delete = None
         for i in range(len(route)):
-            if i == 0 or i == len(route) - 1:
+            if i in [0, len(route) - 1]:
                 continue
-            if len(route[i]) == 3:
-                if (
+            if len(route[i]) == 3 and (
+                (
                     route[i - 1][2] != route[i][2]
                     or route[i][2] != route[i + 1][2]
-                ):
-                    continue
+                )
+            ):
+                continue
             # Check if this point and the points before and after are collinear
             test_line = Line(
                 start=complex(route[i - 1][0], route[i - 1][1]),
@@ -616,7 +617,7 @@ def unroll_route(route, pace):
     if route is None:
         return None
 
-    route = remove_unncessary_coords(route)
+    route = remove_unnecessary_coords(route)
     full_route = [route[0]]
 
     for i, pos in enumerate(route[1:]):  # Look back and unroll
@@ -625,10 +626,9 @@ def unroll_route(route, pace):
         last_x, last_y = route[i][0], route[i][1]
 
         # Check if this is between 2 floors
-        if len(pos) == 3:
-            if pos[2] != route[i][2]:
-                full_route.append(pos)
-                continue
+        if len(pos) == 3 and pos[2] != route[i][2]:
+            full_route.append(pos)
+            continue
 
         Dx = current_x - last_x
         Dy = current_y - last_y

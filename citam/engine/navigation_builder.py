@@ -379,7 +379,7 @@ class NavigationBuilder:
 
         """
         for i, seg in enumerate(segments):
-            if len(seg) == 0 or len(seg) == 1:
+            if len(seg) in [0, 1]:
                 continue
 
             coords1 = (seg[0].x, seg[0].y)
@@ -427,21 +427,23 @@ class NavigationBuilder:
             return
 
         old_space = spaces[0]
-        if old_space is not None:
-            if old_space.is_space_a_hallway():
-                self.hallways_graph.add_node(old_space.unique_name)
+        if old_space is not None and old_space.is_space_a_hallway():
+            self.hallways_graph.add_node(old_space.unique_name)
 
         for current_space in spaces[1:]:
-            if old_space != current_space:
-                if current_space is not None and old_space is not None:
-                    if (
-                        old_space.is_space_a_hallway()
-                        and current_space.is_space_a_hallway()
-                    ):
+            if (
+                old_space != current_space
+                and current_space is not None
+                and old_space is not None
+                and (
+                    old_space.is_space_a_hallway()
+                    and current_space.is_space_a_hallway()
+                )
+            ):
 
-                        self.hallways_graph.add_edge(
-                            old_space.unique_name, current_space.unique_name
-                        )
+                self.hallways_graph.add_edge(
+                    old_space.unique_name, current_space.unique_name
+                )
             old_space = current_space
 
         return
@@ -563,10 +565,12 @@ class NavigationBuilder:
                     )
                     # TODO: Change test_line to be the last segment!
                     for wall in self.current_floorplan.walls:
-                        if wall.length() > 1:
-                            if len(test_line.intersect(wall)) > 0:
-                                wall_found = True
-                                break
+                        if (
+                            wall.length() > 1
+                            and len(test_line.intersect(wall)) > 0
+                        ):
+                            wall_found = True
+                            break
 
                     if wall_found:
                         continue
@@ -601,9 +605,10 @@ class NavigationBuilder:
                             segments.append([segments[-1][-1], new_point])
                             segment_spaces.append(current_space)
 
-                if stop_at_existing_segments:
-                    if self.floor_navnet.has_node((new_point.x, new_point.y)):
-                        break
+                if stop_at_existing_segments and self.floor_navnet.has_node(
+                    (new_point.x, new_point.y)
+                ):
+                    break
 
         if len(segments) != len(segment_spaces):
             LOG.fatal("Number of segments should equal number of spaces")
@@ -672,7 +677,7 @@ class NavigationBuilder:
                         self.floor_navnet.add_edge(
                             edge[0], coords2, half_width=half_width
                         )
-                    # TODO: implemet support for case when edge crosses
+                    # TODO: implement support for case when edge crosses
                     # multiple walls
                     #     new_edge = (edge[0], inter_coords,
                     #                 {'half_width': half_width})
@@ -900,9 +905,8 @@ class NavigationBuilder:
         intersects = line1.intersect(line2)
         if len(intersects) > 0:
             t1, t2 = intersects[0]
-            if t1 == 0.0 or t1 == 1.0:
-                if t2 == 0 or t2 == 1.0:
-                    return None
+            if t1 in [0.0, 1.0] and t2 in [0, 1.0]:
+                return None
 
             intersect_point = (
                 round(line1.point(t1).real),
@@ -1042,13 +1046,11 @@ class NavigationBuilder:
             return []
 
         paths, attributes = svg2paths(svg_file)
-        new_nav_segments = []
-        for path, attr in zip(paths, attributes):
-            if "id" in attr:
-                if "nav" in attr["id"]:
-                    new_nav_segments.append(path)
-
-        return new_nav_segments
+        return [
+            path
+            for path, attr in zip(paths, attributes)
+            if "id" in attr and "nav" in attr["id"]
+        ]
 
     def update_network_from_svg_file(self, svg_file):
         """Update the navigation file using paths defined in an svg file.
