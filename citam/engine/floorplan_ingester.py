@@ -547,15 +547,10 @@ class FloorplanIngester:
 
         return room_walls, valid_walls
 
-    def export_data_to_pickle_file(self, pickle_file):
-        """Export extracted floorplan data to a pickle file.
-
-        :param str pickle_file: file location where to save the data
-        :return: boolean indicating if the operation was successful or not
-        :rtype: bool:
-        """
+    @property
+    def _data_to_save(self):
         special_walls = []
-        data_to_save = [
+        return [
             self.spaces,
             self.doors,
             self.walls,
@@ -565,9 +560,17 @@ class FloorplanIngester:
             1000,
             self.scale,
         ]
+
+    def export_data_to_pickle_file(self, pickle_file):
+        """Export extracted floorplan data to a pickle file.
+
+        :param str pickle_file: file location where to save the data
+        :return: boolean indicating if the operation was successful or not
+        :rtype: bool:
+        """
         try:
             with open(pickle_file, "wb") as f:
-                pickle.dump(data_to_save, f)
+                pickle.dump(self._data_to_save, f)
             return True
         except Exception as e:
             LOG.exception(e)
