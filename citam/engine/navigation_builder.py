@@ -435,10 +435,8 @@ class NavigationBuilder:
                 old_space != current_space
                 and current_space is not None
                 and old_space is not None
-                and (
-                    old_space.is_space_a_hallway()
-                    and current_space.is_space_a_hallway()
-                )
+                and old_space.is_space_a_hallway()
+                and current_space.is_space_a_hallway()
             ):
 
                 self.hallways_graph.add_edge(
