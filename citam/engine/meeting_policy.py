@@ -104,7 +104,7 @@ class MeetingPolicy:
 
         # Create the meetings
         print("Creating meetings...")
-        for floor_rooms in self.meeting_rooms:
+        for floor_number, floor_rooms in enumerate(self.meeting_rooms):
             if len(self.attendee_pool) == 0:
                 break
             for meeting_room in pb.progressbar(floor_rooms):
@@ -136,6 +136,7 @@ class MeetingPolicy:
                     # Create new meeting
                     new_meeting = Meeting(
                         location=meeting_room,
+                        floor_number=floor_number,
                         start_time=start_time,
                         end_time=end_time,
                     )
