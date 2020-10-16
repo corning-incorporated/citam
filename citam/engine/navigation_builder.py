@@ -1002,8 +1002,10 @@ class NavigationBuilder:
             Whether the export is successful or not
 
         """
+
         nav_nodes = []
         nav_paths = []
+
         for e in list(self.floor_navnet.edges):
             nav_nodes.append(e[0])
             nav_nodes.append(e[1])
@@ -1011,6 +1013,7 @@ class NavigationBuilder:
                 start=complex(e[0][0], e[0][1]), end=complex(e[1][0], e[1][1])
             )
             nav_paths.append(p)
+
         LOG.info("Exporting...")
         try:
             bv.export_nav_network_to_svg(
@@ -1025,7 +1028,6 @@ class NavigationBuilder:
         return True
 
     def load_nav_segments_from_svg_file(self, svg_file):
-
         if not os.path.isfile(svg_file):
             return []
 
@@ -1056,8 +1058,8 @@ class NavigationBuilder:
         self.floor_navnet = self.floor_navnet.to_undirected()
         edges = list(self.floor_navnet.edges)
         new_nav_segments = self.load_nav_segments_from_svg_file(svg_file)
-        for nav_seg in new_nav_segments:
 
+        for nav_seg in new_nav_segments:
             point1 = (round(nav_seg.start.real), round(nav_seg.start.imag))
             self.floor_navnet.add_node(point1)
 
@@ -1074,6 +1076,7 @@ class NavigationBuilder:
                 self.find_and_add_intersection_node_to_graph(
                     point1, point2, point3, point4
                 )
+
         self.floor_navnet = self.floor_navnet.to_directed()
 
         return True
@@ -1106,20 +1109,20 @@ class NavigationBuilder:
             )
             return False
 
-        if not os.path.isfile(navnet_pkl_file):
-            LOG.error("File does not exist. %s", navnet_pkl_file)
+        try:
+            with open(navnet_pkl_file, "rb") as f:
+                self.floor_navnet = pickle.load(f)
+        except FileNotFoundError:
+            LOG.error("File does not exist: %s", navnet_pkl_file)
             return False
 
-        if not os.path.isfile(hallway_graph_pkl_file):
+        try:
+            with open(hallway_graph_pkl_file, "rb") as f:
+                self.hallways_graph = pickle.load(f)
+        except FileNotFoundError:
             LOG.error(
                 "Hallway graph file does not exist: %s", hallway_graph_pkl_file
             )
             return False
-
-        with open(navnet_pkl_file, "rb") as f:
-            self.floor_navnet = pickle.load(f)
-
-        with open(hallway_graph_pkl_file, "rb") as f:
-            self.hallways_graph = pickle.load(f)
 
         return True
