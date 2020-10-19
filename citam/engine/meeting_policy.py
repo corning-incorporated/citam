@@ -23,7 +23,9 @@ LOG = logging.getLogger(__name__)
 
 
 class Meeting:
-    def __init__(self, location, floor_number, start_time, end_time, attendees=None):
+    def __init__(
+        self, location, floor_number, start_time, end_time, attendees=None
+    ):
         super().__init__()
         self.location = location
         self.floor_number = floor_number

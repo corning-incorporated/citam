@@ -71,7 +71,7 @@ class Schedule:
         if meetings is None:
             self.meetings = []
 
-        self.meetings.sort(key = lambda meeting: meeting.start_time)
+        self.meetings.sort(key=lambda meeting: meeting.start_time)
 
         self.scheduling_rules = scheduling_rules
 
@@ -132,30 +132,26 @@ class Schedule:
 
         self.possible_purposes = self.find_possible_purposes()
         self.shortest_purpose_duration = min(
-            [self.scheduling_rules[purp]["min_duration"]
-             for purp in self.possible_purposes if purp != RESTROOM_VISIT
-             ]
+            [
+                self.scheduling_rules[purp]["min_duration"]
+                for purp in self.possible_purposes
+                if purp != RESTROOM_VISIT
+            ]
         )
 
         return
 
-    def build_schedule_item(
-        self,
-        purpose,
-        next_meeting_start_time
-    ):
+    def build_schedule_item(self, purpose, next_meeting_start_time):
         """Given a purpose and additional properties such as meeting duration,
         build a schedule item for this agent.
         """
         # Choose a duration
         max_duration = self.get_max_duration_for_purpose(
-                            purpose,
-                            next_meeting_start_time
-                        )
+            purpose, next_meeting_start_time
+        )
         duration = np.random.randint(
-                    self.scheduling_rules[purpose]["min_duration"],
-                    max_duration
-                )
+            self.scheduling_rules[purpose]["min_duration"], max_duration
+        )
 
         # Choose a location
         if purpose == OFFICE_WORK:
@@ -219,9 +215,7 @@ class Schedule:
 
         # If no upcoming meeting and agent is already in facility, let's pick
         # a purpose using the scheduling policy
-        purpose = self.choose_valid_scheduling_purpose(
-                        next_meeting_start_time
-                    )
+        purpose = self.choose_valid_scheduling_purpose(next_meeting_start_time)
         schedule_item = self.build_schedule_item(
             purpose, next_meeting_start_time
         )
@@ -268,8 +262,7 @@ class Schedule:
         return max_duration
 
     def get_valid_purposes_from_possible_purposes(
-        self,
-        next_meeting_start_time
+        self, next_meeting_start_time
     ) -> list:
         """
         Iterate through list of purposes under consdieration, remove any that
@@ -295,9 +288,8 @@ class Schedule:
             if n_items[i] < item_details["max_instances"]:
                 # Check if we have enough time left for this purpose
                 max_duration = self.get_max_duration_for_purpose(
-                                purpose,
-                                next_meeting_start_time
-                            )
+                    purpose, next_meeting_start_time
+                )
                 if max_duration > item_details["min_duration"]:
                     valid_purposes.append(purpose)
 
@@ -326,15 +318,14 @@ class Schedule:
         """
 
         valid_purposes = self.get_valid_purposes_from_possible_purposes(
-                            next_meeting_start_time
-                        )
+            next_meeting_start_time
+        )
 
         # Randomly choose a purpose from list of valid purposes
         if valid_purposes:
             return np.random.choice(valid_purposes)
         else:
             raise ValueError("At least one valid purpose needed.")
-
 
     def get_pace(self, scale):
         """Randomly pick a walking pace for this agent by sampling from a
@@ -409,7 +400,6 @@ class Schedule:
             raise ValueError("No route to primary office")
         else:
             raise ValueError("No route to location.")
-
 
     def build(self):
         """Build this agent's schedule and corresponding itinerary."""
