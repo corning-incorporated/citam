@@ -1,3 +1,5 @@
+.. _cli_commands:
+
 ==================
 CLI Command List
 ==================
