@@ -13,11 +13,15 @@ Simulation results can be visualized using the dashboard. To start the dashboard
 Please note that if the **CITAM_RESULT_PATH** environment variable is not set, the
 --result option must be provided to use the dashboard.
 
+.. code-block:: console
+
+    $ citam dash --results .
+
 To visualize more than 1 simulation result with the dashboard, set the **CITAM_RESULT_PATH**
 as a parent directory from which all results subdirectories are accessible.
 
 To set your environment variable, a quick web search should provide instructions
-on how to dot it. For more customization options, please see the global configuration page.
+on how to do it on your machine. For more customization options, please see the global configuration page.
 
 ----------------------
 The Main Results Page
@@ -28,7 +32,7 @@ along with floor level information in tabular format. The table lists all the de
 *manifest.json* file.
 To view data for a given simulation, click on *View Details*.
 
-Details available on the main page:
+The table contains the following data for each simulation:
 
 .. table::
     :class: table-align
@@ -63,7 +67,8 @@ Details available on the main page:
     | EntranceScreening    |
     +----------------------+
 
-These details can be controlled by *manifest.json* and *get_manifest* api.
+
+**Developer Note**: These data are read from the *manifest.json* file by the *get_manifest* API endpoint.
 
 |main_dash|
 
@@ -77,8 +82,8 @@ This details page has two tabs: Summary and Visualizer.
 The Summary Tab
 """""""""""""""""""
 
-The summary tab show key statistical information about the simulation results and
-a few plots showing contact statistics.
+The summary tab show key statistics in a "cards" on top of the page about the simulation results and
+a few plots to give more details.
 
 Statistics cards comprise of following information:
  - Overall Total Contact Duration
@@ -101,8 +106,8 @@ The Visualizer Tab
 """""""""""""""""""
 
 The visualization offers an interactive way to explore the time-dependent contact
-data and trajectories of each agent. The page has a colorbar to denote agent contact intensity.
-An agent with higher number of contact will be represented by intense red color.
+data and trajectories of each agent. The page has a colorbar to denote the number of contacts of each agent.
+An agent with higher number of contact will be represented with a darker shade of red.
 
 |visual|
 
