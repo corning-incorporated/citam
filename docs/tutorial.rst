@@ -150,7 +150,7 @@ command as follow (assuming ):
 
     $ citam engine update-floorplan TF2 0 -m ../../TF2_edited.svg -v
 
-To verify that the floorplan looks good, you can export it again using the the export-floorplan
+To verify that the floorplan looks good, you can export it again using the export-floorplan
 command:
 
 .. code-block:: console
