@@ -4,11 +4,11 @@
 Facility Data Requirements
 ============================
 
-The CITAM platform requires a Simplified Vector Graphic (SVG) representation of the facility drawing you wish to use as input. The model has simple but specific requirements for the SVG format. Although the platform can act upon SVG’s produced by free online converters there are expectations about the format of the initial drawing that must be met in order for this to work. Free converters typically produce unnecessarily bloated files, which can cause performance issues within the platform. The model performs most efficiently against a lightweight representation of the SVG.
+The CITAM platform requires a Simplified Vector Graphic (SVG) representation of the facility drawing you wish to use as input. The model has simple but specific requirements for the SVG format. Although the platform can act upon SVG’s produced by free online converters there are expectations about the format of the initial drawing that must be met in order for this to work. Free converters typically produce unnecessarily bloated files, which can cause performance issues within the platform.
 
 This document will explain what a lightweight SVG will need to consist of - and what it doesn’t. We recognize that there are many drawing formats that can be the starting point for producing an SVG file. The focus of this process document will be to represent the most stripped down components required within the SVG file used by the model. It will also describe what information is required within the SVG in order for the model to best simulate real life scenarios.
 
-The general idea is to relay a clear understanding of what the converted end point should look like, regardless of a users starting point,. We will leave it up to the end user to determine the best method to arrive at this format. Producing such a representation of your drawing will likely require some custom scripting. We will provide an example of what this would look like in the form of a VBA script that is designed to convert an AutoDesk DWG file to the desired simplified SVG format.
+The general idea is to relay a clear understanding of what the converted end point should look like, regardless of a user's starting point,. We will leave it up to the end user to determine the best method to arrive at this format. Producing such a representation of your drawing will likely require some custom scripting. We will provide an example of what this would look like in the form of a VBA script that is designed to convert an AutoDesk DWG file to the desired simplified SVG format.
 Scripting to accommodate other drawing sources are in consideration for future releases. We also welcome community contributions.
 
 .. _svg_bare_essentials:
@@ -98,7 +98,7 @@ Facilities
 
 Groups
 *******
-All groups or subsections within a building section must be labeled with the following key words. All other subsections are ingnored.
+All groups or subsections within a building section must be labeled with the following key words. All other subsections are ignored.
 * *spaces* - to represent stairways
 * *doors* - represent elevators
 
