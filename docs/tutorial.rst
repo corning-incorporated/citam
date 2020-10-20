@@ -44,12 +44,12 @@ Adding a facility
 
 To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
 each space in "path" elements. CITAM also needs information about the function of
-each space so it can build realistic schedules for them. Those information can be
+each space so it can build realistic schedules for the individuals who use them. Those information can be
 provided in a companion CSV file where the "id" of each space is used to match them with the
 SVG file.
 
-For this tutorial, we will use example files provided with CITAM in the examples/
-directory. Please download those files from GitHub if you don't have them.
+For this tutorial, we will use example files provided with CITAM in the `examples/
+directory <https://www.github.com/corning-incorporated/citam/examples/>`_. Please download those files from GitHub if you don't have them.
 
 The example floorplan that we will use can be found in the **examples/basic_example_2**
 folder located inside the main citam folder. The files that we need for now are named **TF2.csv** and **TF2.svg**
@@ -61,7 +61,7 @@ Fig. 1 shows how the floor plan given by TF2.svg looks like. You can use any SVG
 Fig. 1: Layout of the floorplan used in this tutorial. Notice how the boundaries for each space are clearly shown.
 
 Before ingestion, let's take a look at the content of TF2.svg. Use a text editor such
-as notepad++ to open the file and inspect its contents. Here is the top 30 lines of this file:
+as `notepad++ <https://www.notepad-plus-plus.org>`_ to open the file and inspect its contents. Here is the top 30 lines of this file:
 
 .. literalinclude:: assets/TF2.svg
     :language: xml
@@ -83,9 +83,9 @@ The second file of interest in TF2.csv. Let's take a closer look at it:
     :encoding: UTF-8
     :linenos:
 
-As you can see, this file simply contains additional information about each space as given by their ID.
+As you can see, this file simply contains additional information about each space as identified by their ID.
 For example, we can see that space ID "1" is an office on floor "0". For a list of supported values and
-metadata please go to the "inputs requirements" page of the documentation. The ID field is read as a string. The only requirement is that it is unique. The space information provided in the CSV file can also be added to the SVG file (supported soon).
+metadata please go to the :ref:`svg_requirements` page of the documentation. The ID field is read as a string. The only requirement is that it is unique. The space information provided in the CSV file can also be added to the SVG file (supported soon).
 
 Now that we know what's in those two input files, let's ingest this floor plan using the ``citam engine ingest`` command as follow (from the
 main citam directory):
@@ -94,20 +94,20 @@ main citam directory):
 
     $ citam engine ingest TF2 0 --csv examples/basic_examples/TFI.csv --map examples/basic_example/TFI.svg -v
 
-`TF2` is the name under which this floorplan will be saved and `0` is the name of this floor. For all
-subsequent operations on this floor plan, the facility and floor names will have to be provided. Alternatively, you might need to use:
+`TF2` is the name of the facility under which this floorplan will be saved and `0` is the name of this floor. For all
+subsequent operations on this facility, the same facility name must be provided. Alternatively, you may use:
 
 .. code-block:: console
 
     $ citam engine ingest TF2 0 -csv examples/basic_examples/TFI.csv -svg examples/basic_example/TFI.svg -v
 
 
-The ``-v`` argument is for verbose, so you can have some detailed explanation about the process.
+The ``-v`` argument is for verbose, to show more information as the ingestion process progresses.
 
 After successful ingestion, you can export the ingested floorplans as an SVG file for inspection and validation.
-This step is important because in the next step, you will build the navigation network which can be a fairly expensive
-process depending on the size of your facility. You definitely want to make sure everything looks good before getting there so
-you don't have to repeat the navnet building step.
+This step is important because in the next step, you will build the navigation network (navnet) which can be a fairly expensive
+process (it takes a few hours for large facilities) depending on the size of your facility. You definitely want to make sure the ingested facility looks good before building the navnet so
+you don't have to repeat that step.
 Let's export the ingested floorplan into a file named `TF2_ingested.svg`,
 you can use the ``citam engine export-floorplan`` command as follow:
 
@@ -115,7 +115,7 @@ you can use the ``citam engine export-floorplan`` command as follow:
 
     $ citam engine export-floorplan TF2 0 -o TF2_ingested.svg -v
 
-Use any SVG viewer (like your web browser) to visualize the exported file. Fig. 2 shows
+Use any SVG viewer (such as your web browser) to visualize the exported file. Fig. 2 shows
 what the ingested floor plan looks like. CITAM has removed walls that it thinks are unnecessary
 (based on whether they fall between two hallways). CITAM has also added doors to each
 space.
@@ -128,9 +128,13 @@ Fig. 2: The ingestion process will remove walls that are between hallways and ad
 
 As you can see, the TF2 facility does not have an entrance and some valid walls have been mistakenly removed.
 The good news, is that you can edit the SVG file to add the walls and doors that are missing. For that,
-you will need an SVG editor such as Inkscape. To add a wall, you just need to draw straight lines where
-they should be. To add doors, you also draw lines where they should be, but you need to assign an ID to
-the lines with the keyword "door" in it.
+you will need an SVG editor such  `Inkscape <https://www.inkscape.com>`_ (free and open-source). These are the actions permitted:
+
+1. Add a wall: To add a wall, you just need to draw a straight line where it should be.
+2. Delete a wall: To delete an existing wall, simply delete the corresponding line in the drawing.
+3. Modify a Wall: To modify a wall (make it shorter, or longer, or change its position), just manipulate the corresponding line in the drawing accordingly.
+4. Add a door: To add a new door, you also need to draw a line where it should be, but you must assign an ID that contains the keyword "door" to it. Note that you can draw a door line an an existing wall line. CITAM will know to carve out the door from the wall.
+5. Remove a door: To remove a door, you have to extend an existing wall or create a new wall to completely cover the door opening.
 
 An example of the floor plan after using Inkscape to include wall features is as shown in Fig. 3.
 
@@ -146,7 +150,7 @@ command as follow (assuming ):
 
     $ citam engine update-floorplan TF2 0 -m ../../TF2_edited.svg -v
 
-To verify that the floorplan looks good, you can export it again using the the export-floorplan
+To verify that the floorplan looks good, you can export it again using the export-floorplan
 command:
 
 .. code-block:: console
@@ -204,6 +208,9 @@ Below is an example input file.
         "shifts": [{"name":"1", "start_time": 0, "percent_workforce": 1.0}]
     }
 
+
+A detailed description of the input parameters can be found in :ref:`input_requirements`.
+
 Copy and paste the contents above in your input file, then save and close the file.
 
 Now navigate to your SIMULATION_FOLDER and start a new simulation using:
@@ -245,3 +252,15 @@ Exploring Policies
 --------------------
 
 Coming soon
+
+To Learn More
+---------------
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+
+   input_requirements
+   facility_data_requirement
+   outputs_description
+   visualize_results
