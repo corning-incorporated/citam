@@ -380,7 +380,7 @@ class NavigationBuilder:
         """
         for i, seg in enumerate(segments):
             if len(seg) in [0, 1]:
-                continue
+                raise ValueError("Each segment must have two points.")
 
             coords1 = (seg[0].x, seg[0].y)
             self.floor_navnet.add_node(coords1, node_type="step")
