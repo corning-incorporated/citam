@@ -70,7 +70,8 @@ def test_build_schedule_item(sample_empty_schedule_object):
     assert item.duration <= sched.scheduling_rules[OFFICE_WORK]["max_duration"]
 
 
-# Test build schedule item to make sure office work happens in assigned office space
+# Add build_schedule_item test to make sure office work happens
+# in assigned office space
 
 
 def test_find_next_schedule_item_first_item(sample_empty_schedule_object):
