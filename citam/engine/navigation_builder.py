@@ -379,8 +379,8 @@ class NavigationBuilder:
 
         """
         for i, seg in enumerate(segments):
-            if len(seg) == 0 or len(seg) == 1:
-                continue
+            if len(seg) in [0, 1]:
+                raise ValueError("Each segment must have two points.")
 
             coords1 = (seg[0].x, seg[0].y)
             self.floor_navnet.add_node(coords1, node_type="step")
@@ -427,21 +427,21 @@ class NavigationBuilder:
             return
 
         old_space = spaces[0]
-        if old_space is not None:
-            if old_space.is_space_a_hallway():
-                self.hallways_graph.add_node(old_space.unique_name)
+        if old_space is not None and old_space.is_space_a_hallway():
+            self.hallways_graph.add_node(old_space.unique_name)
 
         for current_space in spaces[1:]:
-            if old_space != current_space:
-                if current_space is not None and old_space is not None:
-                    if (
-                        old_space.is_space_a_hallway()
-                        and current_space.is_space_a_hallway()
-                    ):
+            if (
+                old_space != current_space
+                and current_space is not None
+                and old_space is not None
+                and old_space.is_space_a_hallway()
+                and current_space.is_space_a_hallway()
+            ):
 
-                        self.hallways_graph.add_edge(
-                            old_space.unique_name, current_space.unique_name
-                        )
+                self.hallways_graph.add_edge(
+                    old_space.unique_name, current_space.unique_name
+                )
             old_space = current_space
 
         return
@@ -563,10 +563,12 @@ class NavigationBuilder:
                     )
                     # TODO: Change test_line to be the last segment!
                     for wall in self.current_floorplan.walls:
-                        if wall.length() > 1:
-                            if len(test_line.intersect(wall)) > 0:
-                                wall_found = True
-                                break
+                        if (
+                            wall.length() > 1
+                            and len(test_line.intersect(wall)) > 0
+                        ):
+                            wall_found = True
+                            break
 
                     if wall_found:
                         continue
@@ -601,9 +603,10 @@ class NavigationBuilder:
                             segments.append([segments[-1][-1], new_point])
                             segment_spaces.append(current_space)
 
-                if stop_at_existing_segments:
-                    if self.floor_navnet.has_node((new_point.x, new_point.y)):
-                        break
+                if stop_at_existing_segments and self.floor_navnet.has_node(
+                    (new_point.x, new_point.y)
+                ):
+                    break
 
         if len(segments) != len(segment_spaces):
             LOG.fatal("Number of segments should equal number of spaces")
@@ -672,7 +675,7 @@ class NavigationBuilder:
                         self.floor_navnet.add_edge(
                             edge[0], coords2, half_width=half_width
                         )
-                    # TODO: implemet support for case when edge crosses
+                    # TODO: implement support for case when edge crosses
                     # multiple walls
                     #     new_edge = (edge[0], inter_coords,
                     #                 {'half_width': half_width})
@@ -878,7 +881,7 @@ class NavigationBuilder:
             Points 1 and 2 form the first line
         point3: tuple of x, y coordinates
         point4: tuple of x, y coordinates
-            Poitns 3 and 4 form the second line
+            Points 3 and 4 form the second line
 
         Results
         --------
@@ -900,9 +903,8 @@ class NavigationBuilder:
         intersects = line1.intersect(line2)
         if len(intersects) > 0:
             t1, t2 = intersects[0]
-            if t1 == 0.0 or t1 == 1.0:
-                if t2 == 0 or t2 == 1.0:
-                    return None
+            if t1 in (0.0, 1.0) and t2 in (0.0, 1.0):
+                return
 
             intersect_point = (
                 round(line1.point(t1).real),
@@ -917,6 +919,7 @@ class NavigationBuilder:
                 self.floor_navnet.remove_edge(point1, point2)
             else:
                 half_width1 = 1
+
             if self.floor_navnet.has_edge(point2, point1):
                 self.floor_navnet.remove_edge(point2, point1)
 
@@ -926,6 +929,7 @@ class NavigationBuilder:
                 self.floor_navnet.remove_edge(point3, point4)
             else:
                 half_width2 = 1
+
             if self.floor_navnet.has_edge(point4, point3):
                 self.floor_navnet.remove_edge(point4, point3)
 
@@ -933,37 +937,21 @@ class NavigationBuilder:
                 self.floor_navnet.add_edge(
                     point1, intersect_point, half_width=half_width1
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point1,
-                #                            half_width=half_width1
-                #                            )
 
             if point2 != intersect_point:
                 self.floor_navnet.add_edge(
                     point2, intersect_point, half_width=half_width1
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point2,
-                #                            half_width=half_width1
-                #                            )
 
             if point3 != intersect_point:
                 self.floor_navnet.add_edge(
                     point3, intersect_point, half_width=half_width2
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point3,
-                #                            half_width=half_width2
-                #                            )
 
             if point4 != intersect_point:
                 self.floor_navnet.add_edge(
                     point4, intersect_point, half_width=half_width2
                 )
-                # self.floor_navnet.add_edge(intersect_point,
-                #                            point4,
-                #                            half_width=half_width2
-                #                            )
 
         return intersect_point
 
@@ -1014,8 +1002,10 @@ class NavigationBuilder:
             Whether the export is successful or not
 
         """
+
         nav_nodes = []
         nav_paths = []
+
         for e in list(self.floor_navnet.edges):
             nav_nodes.append(e[0])
             nav_nodes.append(e[1])
@@ -1023,6 +1013,7 @@ class NavigationBuilder:
                 start=complex(e[0][0], e[0][1]), end=complex(e[1][0], e[1][1])
             )
             nav_paths.append(p)
+
         LOG.info("Exporting...")
         try:
             bv.export_nav_network_to_svg(
@@ -1037,18 +1028,15 @@ class NavigationBuilder:
         return True
 
     def load_nav_segments_from_svg_file(self, svg_file):
-
         if not os.path.isfile(svg_file):
             return []
 
         paths, attributes = svg2paths(svg_file)
-        new_nav_segments = []
-        for path, attr in zip(paths, attributes):
-            if "id" in attr:
-                if "nav" in attr["id"]:
-                    new_nav_segments.append(path)
-
-        return new_nav_segments
+        return [
+            path
+            for path, attr in zip(paths, attributes)
+            if "id" in attr and "nav" in attr["id"]
+        ]
 
     def update_network_from_svg_file(self, svg_file):
         """Update the navigation file using paths defined in an svg file.
@@ -1070,8 +1058,8 @@ class NavigationBuilder:
         self.floor_navnet = self.floor_navnet.to_undirected()
         edges = list(self.floor_navnet.edges)
         new_nav_segments = self.load_nav_segments_from_svg_file(svg_file)
-        for nav_seg in new_nav_segments:
 
+        for nav_seg in new_nav_segments:
             point1 = (round(nav_seg.start.real), round(nav_seg.start.imag))
             self.floor_navnet.add_node(point1)
 
@@ -1088,6 +1076,7 @@ class NavigationBuilder:
                 self.find_and_add_intersection_node_to_graph(
                     point1, point2, point3, point4
                 )
+
         self.floor_navnet = self.floor_navnet.to_directed()
 
         return True
@@ -1120,20 +1109,20 @@ class NavigationBuilder:
             )
             return False
 
-        if not os.path.isfile(navnet_pkl_file):
-            LOG.error("File does not exist. %s", navnet_pkl_file)
+        try:
+            with open(navnet_pkl_file, "rb") as f:
+                self.floor_navnet = pickle.load(f)
+        except FileNotFoundError:
+            LOG.error("File does not exist: %s", navnet_pkl_file)
             return False
 
-        if not os.path.isfile(hallway_graph_pkl_file):
+        try:
+            with open(hallway_graph_pkl_file, "rb") as f:
+                self.hallways_graph = pickle.load(f)
+        except FileNotFoundError:
             LOG.error(
                 "Hallway graph file does not exist: %s", hallway_graph_pkl_file
             )
             return False
-
-        with open(navnet_pkl_file, "rb") as f:
-            self.floor_navnet = pickle.load(f)
-
-        with open(hallway_graph_pkl_file, "rb") as f:
-            self.hallways_graph = pickle.load(f)
 
         return True

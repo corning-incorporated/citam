@@ -1,7 +1,7 @@
 from citam.engine.navigation import (
     Navigation,
     unroll_route,
-    remove_unncessary_coords,
+    remove_unnecessary_coords,
 )
 import pytest
 import os
@@ -271,25 +271,25 @@ def test_get_multifloor_route(
     assert len(route) == 11
 
 
-def test_remove_unncessary_coords_same_floor():
+def test_remove_unnecessary_coords_same_floor():
     route = [(0, 0), (10, 0), (15, 0), (15, 20)]
-    route = remove_unncessary_coords(route)
+    route = remove_unnecessary_coords(route)
     assert len(route) == 3
 
 
-def test_remove_unncessary_coords_same_floor2():
+def test_remove_unnecessary_coords_same_floor2():
     route = [(0, 0), (10, 0), (10, 20), (15, 20), (25, 20)]
-    route = remove_unncessary_coords(route)
+    route = remove_unnecessary_coords(route)
     assert len(route) == 4
 
 
-def test_remove_unncessary_coords_2_floors():
+def test_remove_unnecessary_coords_2_floors():
     route = [(0, 0, 0), (10, 0, 0), (10, 0, 1), (15, 0, 1), (15, 20, 1)]
-    route = remove_unncessary_coords(route)
+    route = remove_unnecessary_coords(route)
     assert len(route) == 5
 
 
-def test_remove_unncessary_coords_2_floors2():
+def test_remove_unnecessary_coords_2_floors2():
     route = [
         (0, 0, 0),
         (5, 0, 0),
@@ -298,7 +298,7 @@ def test_remove_unncessary_coords_2_floors2():
         (15, 0, 1),
         (15, 20, 1),
     ]
-    route = remove_unncessary_coords(route)
+    route = remove_unnecessary_coords(route)
     assert len(route) == 5
 
 
