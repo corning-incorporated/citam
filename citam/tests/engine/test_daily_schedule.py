@@ -6,7 +6,6 @@ from citam.engine.constants import (
     OFFICE_WORK,
     MEETING,
     CAFETERIA_VISIT,
-    LAB_WORK,
     RESTROOM_VISIT,
 )
 import os
