@@ -61,21 +61,18 @@ class Space:
 
     def is_point_on_space_walls(self, test_point):
 
-        for wall in self.path:
-            if wall.length() > 1.0:
-                if gsu.is_point_on_line(wall, test_point):
-                    return True
-
-        return False
+        return any(
+            wall.length() > 1.0 and gsu.is_point_on_line(wall, test_point)
+            for wall in self.path
+        )
 
     def is_point_on_space_boundaries(self, test_point):
 
-        for bound_line in self.boundaries:
-            if bound_line.length() > 1.0:
-                if gsu.is_point_on_line(bound_line, test_point):
-                    return True
-
-        return False
+        return any(
+            bound_line.length() > 1.0
+            and gsu.is_point_on_line(bound_line, test_point)
+            for bound_line in self.boundaries
+        )
 
     def is_point_inside_space(
         self, test_point, include_boundaries=False, verbose=False
@@ -164,66 +161,45 @@ class Space:
 
     def is_space_a_hallway(self):
 
-        if (
+        return (
             "circulation" in self.space_function.lower()
             or "aisle" in self.space_function.lower()
             or "lobby" in self.space_function.lower()
             or "vestibule" in self.space_function.lower()
-        ):
-            return True
-        else:
-            return False
+        )
 
     def is_space_an_office(self):
 
-        if (
+        return (
             "office" in self.space_function.lower()
             or "workstation" in self.space_function.lower()
-        ):
-            return True
-        else:
-            return False
+        )
 
     def is_space_a_cafeteria(self):
 
-        if "cafe" in self.space_function.lower():
-            return True
-        else:
-            return False
+        return "cafe" in self.space_function.lower()
 
     def is_space_a_lab(self):
 
-        if "lab" in self.space_function.lower():
-            return True
-        else:
-            return False
+        return "lab" in self.space_function.lower()
 
     def is_space_a_meeting_room(self):
 
-        if (
+        return (
             "conference" in self.space_function.lower()
             or "meeting" in self.space_function.lower()
-        ):
-            return True
-        else:
-            return False
+        )
 
     def is_space_a_restroom(self):
 
-        if "restroom" in self.space_function.lower():
-            return True
-        else:
-            return False
+        return "restroom" in self.space_function.lower()
 
     def is_space_vertical(self):
 
-        if (
+        return (
             "stair" in self.space_function.lower()
             or "elev" in self.space_function.lower()
-        ) and "evac" not in self.space_function.lower():
-            return True
-        else:
-            return False
+        ) and "evac" not in self.space_function.lower()
 
     def get_space_coords(self):  # Use geometric center of the space
         """Compute coordinates of the geometric center of this space

@@ -32,10 +32,7 @@ class Point:
         return "(" + str(self.x) + ", " + str(self.y) + ")"
 
     def __eq__(self, other):
-        if self.x == other.x and self.y == other.y:
-            return True
-        else:
-            return False
+        return self.x == other.x and self.y == other.y
 
     def convert_to_cartesian(self):
 
