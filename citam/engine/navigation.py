@@ -581,7 +581,7 @@ def remove_unnecessary_coords(route):
     """
     while True:
         index_of_coords_to_delete = None
-        for i in range(1, len(route)-1):
+        for i in range(1, len(route) - 1):
             pos = route[i]
             if len(pos) == 3 and (
                 route[i - 1][2] != pos[2] or pos[2] != route[i + 1][2]
