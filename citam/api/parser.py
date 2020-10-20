@@ -46,7 +46,7 @@ def get_trajectories(sim_id: str, floor: str or int = None) -> Dict:
         step_num = result_file.readline().strip()
         step_num = step_num.replace("step :", "")  # noqa
         step = []
-        for i in range(num_contacts):
+        for _ in range(num_contacts):
             data = result_file.readline().strip().split("\t")
 
             if floor is not None and int(data[3]) != floor:
@@ -66,11 +66,10 @@ def get_trajectories(sim_id: str, floor: str or int = None) -> Dict:
 
     LOG.info("trajectory file parsing process is complete")
     try:
-        max_contacts = max(max([y["count"] for x in steps for y in x]), 100)
+        max_contacts = max(max(y["count"] for x in steps for y in x), 100)
     except ValueError:  # pragma: nocover
         max_contacts = 100
-    output = {"data": steps, "statistics": {"max_contacts": max_contacts}}
-    return output
+    return {"data": steps, "statistics": {"max_contacts": max_contacts}}
 
 
 def get_contacts(sim_id: str, floor: str) -> List[List[Dict]]:
@@ -90,7 +89,7 @@ def get_contacts(sim_id: str, floor: str) -> List[List[Dict]]:
         step_num = result_file.readline().strip()
         step_num = step_num.replace("step :", "")  # noqa
         step = []
-        for i in range(num_contacts):
+        for _ in range(num_contacts):
             data = result_file.readline().strip().split("\t")
             step.append(
                 {
