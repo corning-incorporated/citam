@@ -23,13 +23,25 @@ from citam.engine.constants import (
     RESTROOM_VISIT,
     MEETING,
     LAST_SCHEDULE_ITEM_CUTOFF,
+    MEETING_BUFFER,
 )
 
 LOG = logging.getLogger(__name__)
 
 
+class ScheduleItem:
+    def __init__(self, purpose, location, floor_number, duration):
+        self.purpose = purpose
+        self.location = location
+        self.floor_number = floor_number
+        self.duration = duration
+
+
 class Schedule:
-    """Create and manage agents schedule and itinerary"""
+    """
+    Create and manage agents schedule and itinerary based on given
+    policies and navigation object.
+    """
 
     def __init__(
         self,
@@ -119,17 +131,16 @@ class Schedule:
 
         return
 
-    def build_schedule_item(
-        self, purpose, details, next_meeting_start_time, meeting_buffer
-    ):
+    def build_schedule_item(self, purpose, next_meeting_start_time):
         """Given a purpose and additional properties such as meeting duration,
         build a schedule item for this agent.
         """
         # Choose a duration
         remaining_daylength = self.daylength - len(self.itinerary)
+        details = self.scheduling_rules[OFFICE_WORK]
         max_duration = min([details["max_duration"], remaining_daylength])
         if next_meeting_start_time is not None:
-            max_end_time = next_meeting_start_time - meeting_buffer
+            max_end_time = next_meeting_start_time - MEETING_BUFFER
             if len(self.itinerary) + max_duration > max_end_time:
                 max_duration = max_end_time - len(self.itinerary)
 
@@ -160,12 +171,12 @@ class Schedule:
             location = np.random.choice(possible_locations[floor_number])
 
         # Setup schedule item
-        schedule_item = {
-            "purpose": purpose,
-            "location": location,
-            "floor_number": floor_number,
-            "duration": duration,
-        }
+        schedule_item = ScheduleItem(
+            purpose=purpose,
+            location=location,
+            floor_number=floor_number,
+            duration=duration,
+        )
         return schedule_item
 
     def find_next_schedule_item(self, current_location=None):
@@ -173,39 +184,35 @@ class Schedule:
         to the next meeting on this agent's calendar or to a randomly selected
         item from a list of valid purposes.
         """
-        meeting_buffer = 60 * 15
+
         next_meeting_start_time = None
         # Handle meetings first
         if len(self.meetings) > 0:
             next_meeting = self.meetings[0]
             next_meeting_start_time = next_meeting.start_time
             # Check if meeting is happening within 15 timestep of now, if so
-            if next_meeting.start_time - len(self.itinerary) <= meeting_buffer:
-                schedule_item = {
-                    "purpose": MEETING,
-                    "duration": next_meeting.duration,
-                    "location": next_meeting.location,
-                    "floor_number": next_meeting.floor_number,
-                }
+            if next_meeting.start_time - len(self.itinerary) <= MEETING_BUFFER:
+                schedule_item = ScheduleItem(
+                    purpose=MEETING,
+                    duration=next_meeting.duration,
+                    location=next_meeting.location,
+                    floor_number=next_meeting.floor_number,
+                )
                 return schedule_item
 
         if len(self.schedule_items) == 0:  # First item for the day
 
-            item_details = self.scheduling_rules[OFFICE_WORK]
             schedule_item = self.build_schedule_item(
                 OFFICE_WORK,
-                item_details,
                 next_meeting_start_time,
-                meeting_buffer,
             )
             return schedule_item
 
         # If no upcoming meeting and agent is already in facility, let's pick
         # a purpose using the scheduling policy
         purpose = self.choose_valid_scheduling_purpose()
-        item_details = self.scheduling_rules[purpose]
         schedule_item = self.build_schedule_item(
-            purpose, item_details, next_meeting_start_time, meeting_buffer
+            purpose, next_meeting_start_time
         )
 
         return schedule_item
@@ -241,7 +248,7 @@ class Schedule:
         for employee_item in self.schedule_items:
             # Current items already in this employee's schedule
             for i, purpose in enumerate(purposes_under_consideration):
-                if purpose == employee_item["purpose"]:
+                if purpose == employee_item.purpose:
                     n_items[i] += 1
                     break
 
@@ -256,7 +263,7 @@ class Schedule:
         # No consecutive restroom visits
         if (
             RESTROOM_VISIT in valid_purposes
-            and self.schedule_items[-1]["purpose"] == RESTROOM_VISIT
+            and self.schedule_items[-1].purpose == RESTROOM_VISIT
         ):
             valid_purposes.remove(RESTROOM_VISIT)
 
@@ -300,8 +307,8 @@ class Schedule:
         Given a route and a next schedule item, update this agent's itinerary
         accordingly
         """
-        next_location = schedule_item["location"]
-        next_floor_number = schedule_item["floor_number"]
+        next_location = schedule_item.location
+        next_floor_number = schedule_item.floor_number
         if route is not None:
 
             # Update itinerary
@@ -320,21 +327,19 @@ class Schedule:
             self.itinerary.append([prev_coords, prev_floor_number])
 
             # Stay in this location for the given duration
-            for _ in range(schedule_item["duration"]):
+            for _ in range(schedule_item.duration):
                 self.itinerary.append([prev_coords, prev_floor_number])
 
             # update list of schedule items
             if len(self.schedule_items) > 0:
                 last_item = self.schedule_items[-1]
                 if (
-                    last_item["purpose"] == schedule_item["purpose"]
-                    and last_item["location"] == prev_location
+                    last_item.purpose == schedule_item.purpose
+                    and last_item.location == prev_location
                 ):
                     # If this purpose and location are the same as the last
                     # one, just update the last one
-                    self.schedule_items[-1]["duration"] += schedule_item[
-                        "duration"
-                    ]
+                    self.schedule_items[-1].duration += schedule_item.duration
                 else:
                     self.schedule_items.append(schedule_item)
             else:
@@ -361,8 +366,8 @@ class Schedule:
 
             schedule_item = self.find_next_schedule_item()
 
-            next_location = schedule_item["location"]
-            next_floor_number = schedule_item["floor_number"]
+            next_location = schedule_item.location
+            next_floor_number = schedule_item.floor_number
             floor_scale = self.navigation.floorplans[next_floor_number].scale
             agent_pace = self.get_pace(floor_scale)
             route = self.navigation.get_route(
@@ -411,19 +416,19 @@ class Schedule:
         self.itinerary.append([None, None])
 
         self.schedule_items.append(
-            {
-                "location": None,
-                "duration": 0,
-                "floor_number": self.exit_floor,
-                "purpose": "Leave for the day",
-            }
+            ScheduleItem(
+                location=None,
+                duration=0,
+                floor_number=self.exit_floor,
+                purpose="Leave for the day",
+            )
         )
 
         return self
 
     def __str__(self):
         """Convert current schedule to a str for output purposes"""
-        day_length = sum(item["duration"] for item in self.schedule_items)
+        day_length = sum(item.duration for item in self.schedule_items)
 
         string_repr = (
             "\nSchedule\n-----------------------\n"
@@ -435,12 +440,12 @@ class Schedule:
         )
 
         for i, item in enumerate(self.schedule_items):
-            if item["location"] is None:
+            if item.location is None:
                 location_id = "None"
             else:
                 location_id = (
-                    self.navigation.floorplans[item["floor_number"]]
-                    .spaces[item["location"]]
+                    self.navigation.floorplans[item.floor_number]
+                    .spaces[item.location]
                     .unique_name
                 )
             string_repr += (
@@ -448,9 +453,9 @@ class Schedule:
                 + ". "
                 + location_id
                 + ": "
-                + str(round(item["duration"] / 60.0, 2))
+                + str(round(item.duration / 60.0, 2))
                 + " min\t"
-                + item["purpose"]
+                + item.purpose
                 + "\n"
             )
 
