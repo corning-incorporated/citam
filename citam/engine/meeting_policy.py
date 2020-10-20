@@ -48,7 +48,7 @@ class Meeting:
         self.location == other.location
         self.floor_number == other.floor_number
         self.attendees == other.attendees
-        self.start_time == start_time
+        self.start_time == other.start_time
         self.end_time == other.end_time
 
 

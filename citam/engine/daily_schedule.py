@@ -68,6 +68,7 @@ class Schedule:
         self.daylength = exit_time - start_time
         self.timestep = timestep
         self.meetings = meetings
+        self.next_meeting_index = 0
         if meetings is None:
             self.meetings = []
 
@@ -191,7 +192,7 @@ class Schedule:
         next_meeting_start_time = None
         # Handle meetings first
         if len(self.meetings) > 0:
-            next_meeting = self.meetings[0]
+            next_meeting = self.meetings[self.next_meeting_index]
             next_meeting_start_time = next_meeting.start_time
             # Check if meeting is happening within 15 timestep of now, if so
             print("Next meeting start time: ", next_meeting_start_time)
@@ -202,7 +203,7 @@ class Schedule:
                     location=next_meeting.location,
                     floor_number=next_meeting.floor_number,
                 )
-                del self.meetings[0]
+                self.next_meeting_index += 1
                 return schedule_item
 
         if len(self.schedule_items) == 0:  # First item for the day
