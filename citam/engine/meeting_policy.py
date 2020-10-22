@@ -16,6 +16,7 @@
 import numpy as np
 import logging
 import progressbar as pb
+from typing import List
 
 from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 
@@ -34,7 +35,8 @@ class Meeting:
         str_repr = "Meeting Details: \n"
         str_repr += ">>>>>> attendees :" + str(self.attendees) + "\n"
         str_repr += ">>>>>> start time :" + str(self.start_time) + "\n"
-        str_repr += ">>>>>> start time :" + str(self.end_time) + "\n"
+        str_repr += ">>>>>> end time :" + str(self.end_time) + "\n"
+        str_repr += ">>>>>> location :" + str(self.location) + "\n"
 
         return str_repr
 
@@ -42,8 +44,8 @@ class Meeting:
 class MeetingPolicy:
     def __init__(
         self,
-        meeting_rooms,
-        agent_ids,
+        meeting_rooms: List[List[int]],
+        agent_ids: List[int],
         policy_params=None,
     ):
         super().__init__()
@@ -79,6 +81,12 @@ class MeetingPolicy:
             "min_attendees_per_meeting"
         ]
 
+        # Timing between meetings
+        self.min_buffer_between_meetings = \
+            policy_params["min_buffer_between_meetings"]
+        self.max_buffer_between_meetings = \
+            policy_params["max_buffer_between_meetings"]
+
         n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
         LOG.info("Meeting rooms in policy: " + str(n_meeting_rooms))
 
@@ -109,13 +117,13 @@ class MeetingPolicy:
                 # TODO: Create first and last meeting then add extra meetings
                 # to avoid all meetings happening in the morning
 
-                last_meeting_end_time = 15 * 60
-                # No meeting earlier than 15 min in
+                last_meeting_end_time = 0
                 for i in range(n_meetings):
-                    # Start next meeting within 1 hour of last meeting ending
+                    # Start next meeting within buffer time of last meeting ending
                     start_time = last_meeting_end_time + np.random.randint(
-                        3600
-                    )
+                                    self.min_buffer_between_meetings,
+                                    self.max_buffer_between_meetings
+                                )
                     # Randomly set the duration
                     n_blocks = np.random.randint(tot_blocks)
                     duration = self.min_meeting_duration
@@ -136,31 +144,59 @@ class MeetingPolicy:
                         self.min_attendees_per_meeting, capacity
                     )
 
-                    pot_attendees = [int(k) for k in self.attendee_pool]
-                    if n_attendees >= len(pot_attendees):
-                        attendees = pot_attendees
-                    else:
-                        attendees = np.random.choice(
-                            pot_attendees, n_attendees
-                        )
+                    pot_attendees = self._find_potential_attendees(
+                                        start_time,
+                                        end_time
+                                    )
+                    print("Pot attendees: ", pot_attendees, n_attendees)
+                    if pot_attendees:
 
-                    if len(attendees) > 0:
+                        if n_attendees >= len(pot_attendees):
+                            attendees = pot_attendees
+                        else:
+                            attendees = np.random.choice(
+                                pot_attendees, n_attendees, replace=False
+                            )
+
                         for attendee in attendees:
                             self.attendee_pool[attendee] += 1
 
                         new_meeting.attendees = attendees
                         self.meetings.append(new_meeting)
+                        last_meeting_end_time = end_time
                         self._update_attendee_pool()
 
                     if len(self.attendee_pool) == 0:
                         break
         return
 
+    def _find_potential_attendees(
+        self,
+        start_time: int,
+        end_time: int
+    ) -> List[int]:
+        """
+        Find all individuals in attendee pool who are free between start and
+        end time.
+        """
+
+        # Find if there is another meeting at that same time
+        pot_attendees = [k for k in self.attendee_pool]   # copy of the list
+        for meeting in self.meetings:
+            if start_time < meeting.end_time and end_time > meeting.start_time:
+                # this is an overlap, attendees are not available
+                for a in meeting.attendees:
+                    if a in pot_attendees:
+                        pot_attendees.remove(a)
+
+        return pot_attendees
+
     def _update_attendee_pool(self):
         """Update the attendee pool to ensure the average
         number of meetings per agent is not exceeded
         """
-        # if the avg is greater than desired, remove the highest value
+        # if the avg is greater than desired, remove the attendee with the most
+        # meetings from the attendee pool
 
         current_avg = np.average([int(v) for v in self.attendee_pool.values()])
 
@@ -179,7 +215,7 @@ class MeetingPolicy:
             current_avg = np.average(values)
         return
 
-    def get_daily_meetings(self, agent_id):
+    def get_daily_meetings(self, agent_id: int):
         """Returns list of meetings for this agent"""
 
         return [
