@@ -111,7 +111,7 @@ DEFAULT_MEETINGS_POLICY = {
     "min_attendees_per_meeting": 3,
     # Meeting timing
     "min_buffer_between_meetings": 0,
-    "max_buffer_between_meetings": 3600
+    "max_buffer_between_meetings": 10800,
 }
 
 MEETING_BUFFER = 60 * 15

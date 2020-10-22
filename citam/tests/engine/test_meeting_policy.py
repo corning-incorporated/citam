@@ -19,40 +19,43 @@ def sample_policy_params():
         "min_attendees_per_meeting": 3,
         # Meeting timing
         "min_buffer_between_meetings": 0,
-        "max_buffer_between_meetings": 3600
+        "max_buffer_between_meetings": 3600,
     }
 
 
 @pytest.fixture
 def sample_meeting_policy(sample_policy_params, simple_facility_floorplan):
 
-
-    meeting_rooms = [space for space in simple_facility_floorplan.spaces
-                     if not space.is_space_a_hallway()
-                    ]
+    meeting_rooms = [
+        space
+        for space in simple_facility_floorplan.spaces
+        if not space.is_space_a_hallway()
+    ]
 
     meeting_policy = MeetingPolicy(
-                        meeting_rooms=[meeting_rooms],
-                        agent_ids=[0, 1, 2],
-                        daylength=3600*8,
-                        policy_params=sample_policy_params
-                    )
+        meeting_rooms=[meeting_rooms],
+        agent_ids=[0, 1, 2],
+        daylength=3600 * 8,
+        policy_params=sample_policy_params,
+    )
 
     return meeting_policy
 
 
 def test__init(sample_policy_params, simple_facility_floorplan):
 
-    meeting_rooms = [space for space in simple_facility_floorplan.spaces
-                     if not space.is_space_a_hallway()
-                    ]
+    meeting_rooms = [
+        space
+        for space in simple_facility_floorplan.spaces
+        if not space.is_space_a_hallway()
+    ]
     agent_ids = [0, 1, 2]
     meeting_policy = MeetingPolicy(
-                        meeting_rooms=[meeting_rooms],
-                        agent_ids=agent_ids,
-                        daylength=8*3600,
-                        policy_params=sample_policy_params
-                    )
+        meeting_rooms=[meeting_rooms],
+        agent_ids=agent_ids,
+        daylength=8 * 3600,
+        policy_params=sample_policy_params,
+    )
 
     assert len(meeting_policy.attendee_pool) == len(agent_ids)
 
