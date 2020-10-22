@@ -24,10 +24,16 @@ LOG = logging.getLogger(__name__)
 
 
 class Meeting:
-    def __init__(self, location, start_time, end_time):
+    def __init__(
+        self, location, floor_number, start_time, end_time, attendees=None
+    ):
         super().__init__()
         self.location = location
-        self.attendees = []  # ID of all the participants
+        self.floor_number = floor_number
+        if attendees is None:
+            self.attendees = []  # ID of all the participants
+        else:
+            self.attendees = attendees
         self.start_time = start_time
         self.end_time = end_time
 
@@ -39,6 +45,13 @@ class Meeting:
         str_repr += ">>>>>> location :" + str(self.location) + "\n"
 
         return str_repr
+
+    def __eq__(self, other):
+        self.location == other.location
+        self.floor_number == other.floor_number
+        self.attendees == other.attendees
+        self.start_time == other.start_time
+        self.end_time == other.end_time
 
 
 class MeetingPolicy:
@@ -101,7 +114,7 @@ class MeetingPolicy:
 
         # Create the meetings
         print("Creating meetings...")
-        for floor_rooms in self.meeting_rooms:
+        for floor_number, floor_rooms in enumerate(self.meeting_rooms):
             if len(self.attendee_pool) == 0:
                 break
             for meeting_room in pb.progressbar(floor_rooms):
@@ -133,6 +146,7 @@ class MeetingPolicy:
                     # Create new meeting
                     new_meeting = Meeting(
                         location=meeting_room,
+                        floor_number=floor_number,
                         start_time=start_time,
                         end_time=end_time,
                     )
