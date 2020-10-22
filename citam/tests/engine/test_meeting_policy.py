@@ -13,7 +13,7 @@ def sample_policy_params():
         "meeting_duration_increment": 15 * 60,  # 15 min
         # Meetings frequency
         "avg_meetings_per_room": 3,
-        "avg_percent_meeting_rooms_used": 0.6,  # Less than 1.0
+        "avg_percent_meeting_rooms_used": 1.0,  # Less than 1.0
         # Meetings participants
         "avg_meetings_per_person": 3,
         "min_attendees_per_meeting": 3,
@@ -24,24 +24,33 @@ def sample_policy_params():
 
 
 @pytest.fixture
-def sample_meeting_policy(sample_policy_params):
+def sample_meeting_policy(sample_policy_params, simple_facility_floorplan):
+
+
+    meeting_rooms = [space for space in simple_facility_floorplan.spaces
+                     if not space.is_space_a_hallway()
+                    ]
 
     meeting_policy = MeetingPolicy(
-                        meeting_rooms=[[1,2, 3]],
+                        meeting_rooms=[meeting_rooms],
                         agent_ids=[0, 1, 2],
+                        daylength=3600*8,
                         policy_params=sample_policy_params
                     )
 
     return meeting_policy
 
 
-def test__init(sample_policy_params):
+def test__init(sample_policy_params, simple_facility_floorplan):
 
-    meeting_rooms = [[1,2, 3]]
+    meeting_rooms = [space for space in simple_facility_floorplan.spaces
+                     if not space.is_space_a_hallway()
+                    ]
     agent_ids = [0, 1, 2]
     meeting_policy = MeetingPolicy(
-                        meeting_rooms=meeting_rooms,
+                        meeting_rooms=[meeting_rooms],
                         agent_ids=agent_ids,
+                        daylength=8*3600,
                         policy_params=sample_policy_params
                     )
 
@@ -50,12 +59,12 @@ def test__init(sample_policy_params):
 
 def test_create_meetings(sample_meeting_policy):
 
-    sample_meeting_policy.create_meetings()
+    sample_meeting_policy.create_all_meetings()
 
     for meeting in sample_meeting_policy.meetings:
         print("One more meeting: ", meeting)
 
-    assert len(sample_meeting_policy.meetings) == 0
+    assert len(sample_meeting_policy.meetings) > 0
 
 
 def test__update_attendee_pool(sample_meeting_policy):
