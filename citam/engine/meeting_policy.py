@@ -64,13 +64,11 @@ class MeetingPolicy:
         policy_params=None,
     ):
 
-        self.meeting_rooms = meeting_rooms
-        self.agent_ids = agent_ids
         self.meetings = []
         self.daylength = daylength
 
         # Attendee pool
-        self.attendee_pool = {agent_id: 0 for agent_id in self.agent_ids}
+        self.attendee_pool = {agent_id: 0 for agent_id in agent_ids}
 
         if policy_params is None:
             policy_params = DEFAULT_MEETINGS_POLICY
@@ -84,8 +82,8 @@ class MeetingPolicy:
 
         # Meetings frequency
         self.avg_meetings_per_room = policy_params["avg_meetings_per_room"]
-        self.avg_percent_meeting_rooms_used = policy_params[
-            "avg_percent_meeting_rooms_used"
+        self.percent_meeting_rooms_used = policy_params[
+            "percent_meeting_rooms_used"
         ]
 
         # Meetings participants
@@ -106,8 +104,20 @@ class MeetingPolicy:
             self.max_meeting_length / self.meeting_duration_increment
         )
 
+        self.meeting_rooms = []
+        for floor in meeting_rooms:
+            self.meeting_rooms.append([])
+            for room in floor:
+                if (
+                    room.capacity
+                    and room.capacity >= self.min_attendees_per_meeting
+                ):
+                    self.meeting_rooms[-1].append(room)
+
         n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
-        LOG.info("Meeting rooms in policy: " + str(n_meeting_rooms))
+        LOG.info(
+            "Valid meeting rooms for this policy: " + str(n_meeting_rooms)
+        )
 
     def _create_meetings_for_room(
         self, meeting_room: Space, floor_number: int
@@ -196,18 +206,25 @@ class MeetingPolicy:
     def create_all_meetings(self) -> None:
         """Create meetings with no conflicts (room nor agent)"""
 
-        # Create the meetings
-        print("Creating meetings...")
-        for floor_number, floor_rooms in enumerate(self.meeting_rooms):
-            if len(self.attendee_pool) == 0:
-                break
-            for meeting_room in pb.progressbar(floor_rooms):
-                # Maybe sample from a gaussian distribution instead ???
-                random_number = np.random.rand()
-                if random_number > self.avg_percent_meeting_rooms_used:
-                    continue
+        n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
+        if n_meeting_rooms == 0:
+            LOG.warning("No valid meeting room found")
+            return
 
-                self._create_meetings_for_room(meeting_room, floor_number)
+        # Randomly select rooms
+        available_rooms = []
+        for floor_number, floor_rooms in enumerate(self.meeting_rooms):
+            for i in range(len(floor_rooms)):
+                available_rooms.append(str(floor_number) + "-" + str(i))
+
+        n_rooms = int(self.percent_meeting_rooms_used * len(available_rooms))
+        rooms = np.random.choice(available_rooms, n_rooms, replace=False)
+
+        print("Creating meetings...")
+        for roomkey in pb.progressbar(rooms):
+            fn, i = roomkey.split("-")
+            room = self.meeting_rooms[int(fn)][int(i)]
+            self._create_meetings_for_room(room, int(fn))
 
     def _find_potential_attendees(
         self, start_time: int, end_time: int

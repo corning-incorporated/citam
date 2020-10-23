@@ -307,9 +307,13 @@ class FacilityTransmissionModel:
         self.meeting_policy = MeetingPolicy(
             meeting_room_objects,
             agent_ids,
+            daylength=self.daylength,
             policy_params=self.meetings_policy_params,
         )
-        self.meeting_policy.create_meetings()
+
+        n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
+        if n_meeting_rooms > 0:
+            self.meeting_policy.create_all_meetings()
 
         # Create schedule and itinerary for each agent
         self.add_agents_and_build_schedules()
