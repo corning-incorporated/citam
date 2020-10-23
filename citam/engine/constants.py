@@ -101,14 +101,17 @@ DEFAULT_SCHEDULING_RULES = {
 DEFAULT_MEETINGS_POLICY = {
     # Meetings duration
     "min_meeting_duration": 15 * 60,  # 15 min
-    "max_meeting_length": 3600,  # 1 hour
+    "max_meeting_length": 7200,  # 2 hours
     "meeting_duration_increment": 15 * 60,  # 15 min
     # Meetings frequency
     "avg_meetings_per_room": 3,
-    "avg_percent_meeting_rooms_used": 0.6,  # Less than 1.0
+    "percent_meeting_rooms_used": 0.6,  # Less than 1.0
     # Meetings participants
     "avg_meetings_per_person": 3,
     "min_attendees_per_meeting": 3,
+    # Meeting timing
+    "min_buffer_between_meetings": 0,
+    "max_buffer_between_meetings": 10800,
 }
 
 MEETING_BUFFER = 60 * 15

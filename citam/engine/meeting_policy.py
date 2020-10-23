@@ -16,8 +16,10 @@
 import numpy as np
 import logging
 import progressbar as pb
+from typing import List
 
 from citam.engine.constants import DEFAULT_MEETINGS_POLICY
+from citam.engine.space import Space
 
 LOG = logging.getLogger(__name__)
 
@@ -26,7 +28,6 @@ class Meeting:
     def __init__(
         self, location, floor_number, start_time, end_time, attendees=None
     ):
-        super().__init__()
         self.location = location
         self.floor_number = floor_number
         if attendees is None:
@@ -40,7 +41,9 @@ class Meeting:
         str_repr = "Meeting Details: \n"
         str_repr += ">>>>>> attendees :" + str(self.attendees) + "\n"
         str_repr += ">>>>>> start time :" + str(self.start_time) + "\n"
-        str_repr += ">>>>>> start time :" + str(self.end_time) + "\n"
+        str_repr += ">>>>>> end time :" + str(self.end_time) + "\n"
+        str_repr += ">>>>>> location :" + str(self.location.unique_name) + "\n"
+        str_repr += ">>>>>> floor_number :" + str(self.floor_number) + "\n"
 
         return str_repr
 
@@ -55,20 +58,17 @@ class Meeting:
 class MeetingPolicy:
     def __init__(
         self,
-        meeting_rooms,
-        agent_ids,
+        meeting_rooms: List[List[Space]],
+        agent_ids: List[int],
+        daylength: int,
         policy_params=None,
     ):
-        super().__init__()
 
-        self.meeting_rooms = meeting_rooms
-        self.agent_ids = agent_ids
         self.meetings = []
+        self.daylength = daylength
 
         # Attendee pool
-        self.attendee_pool = {}
-        for agent_id in self.agent_ids:
-            self.attendee_pool[agent_id] = 0
+        self.attendee_pool = {agent_id: 0 for agent_id in agent_ids}
 
         if policy_params is None:
             policy_params = DEFAULT_MEETINGS_POLICY
@@ -82,8 +82,8 @@ class MeetingPolicy:
 
         # Meetings frequency
         self.avg_meetings_per_room = policy_params["avg_meetings_per_room"]
-        self.avg_percent_meeting_rooms_used = policy_params[
-            "avg_percent_meeting_rooms_used"
+        self.percent_meeting_rooms_used = policy_params[
+            "percent_meeting_rooms_used"
         ]
 
         # Meetings participants
@@ -92,89 +92,164 @@ class MeetingPolicy:
             "min_attendees_per_meeting"
         ]
 
-        n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
-        LOG.info("Meeting rooms in policy: " + str(n_meeting_rooms))
+        # Timing between meetings
+        self.min_buffer_between_meetings = policy_params[
+            "min_buffer_between_meetings"
+        ]
+        self.max_buffer_between_meetings = policy_params[
+            "max_buffer_between_meetings"
+        ]
 
-        return
-
-    def create_meetings(self):
-        """Create meetings with no conflicts (room nor agent)"""
-
-        tot_blocks = int(
+        self.total_time_blocks = int(
             self.max_meeting_length / self.meeting_duration_increment
         )
 
-        # Create the meetings
-        print("Creating meetings...")
-        for floor_number, floor_rooms in enumerate(self.meeting_rooms):
-            if len(self.attendee_pool) == 0:
+        self.meeting_rooms = []
+        for floor in meeting_rooms:
+            self.meeting_rooms.append([])
+            for room in floor:
+                if (
+                    room.capacity
+                    and room.capacity >= self.min_attendees_per_meeting
+                ):
+                    self.meeting_rooms[-1].append(room)
+
+        n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
+        LOG.info(
+            "Valid meeting rooms for this policy: " + str(n_meeting_rooms)
+        )
+
+    def _create_meetings_for_room(
+        self, meeting_room: Space, floor_number: int
+    ) -> None:
+        """
+        Create all meetings to take place in this specific room.
+        """
+
+        n_meetings = round(np.random.normal(self.avg_meetings_per_room))
+
+        # TODO: Create first and last meeting then add extra meetings
+        # to avoid all meetings happening in the morning
+
+        last_meeting_end_time = 0
+        for i in range(n_meetings):
+
+            if last_meeting_end_time >= self.daylength:
                 break
-            for meeting_room in pb.progressbar(floor_rooms):
 
-                # Maybe sample from a gaussian distribution instead ???
-                random_number = np.random.rand()
-                if random_number > self.avg_percent_meeting_rooms_used:
-                    continue
+            # Start next meeting within min and max buffer time
+            start_time = last_meeting_end_time + np.random.randint(
+                self.min_buffer_between_meetings,
+                self.max_buffer_between_meetings,
+            )
+            # Randomly set the duration
+            n_blocks = np.random.randint(self.total_time_blocks)
+            duration = self.min_meeting_duration
+            duration += n_blocks * self.meeting_duration_increment
 
-                n_meetings = np.random.normal(self.avg_meetings_per_room)
-                n_meetings = int(round(n_meetings))
+            # Set end time
+            end_time = start_time + duration
+            if end_time > self.daylength:
+                end_time = self.daylength
 
-                # TODO: Create first and last meeting then add extra meetings
-                # to avoid all meetings happening in the morning
+            attendees = self._generate_meeting_attendee_list(
+                meeting_room, start_time, end_time
+            )
 
-                last_meeting_end_time = 15 * 60
-                # No meeting earlier than 15 min in
-                for i in range(n_meetings):
-                    # Start next meeting within 1 hour of last meeting ending
-                    start_time = last_meeting_end_time + np.random.randint(
-                        3600
-                    )
-                    # Randomly set the duration
-                    n_blocks = np.random.randint(tot_blocks)
-                    duration = self.min_meeting_duration
-                    duration += n_blocks * self.meeting_duration_increment
-                    # Set end time
-                    end_time = start_time + duration
-                    # Create new meeting
-                    new_meeting = Meeting(
+            if len(attendees) > 1:
+                for attendee in attendees:
+                    self.attendee_pool[attendee] += 1
+
+                # Create new meeting
+                self.meetings.append(
+                    Meeting(
                         location=meeting_room,
                         floor_number=floor_number,
                         start_time=start_time,
                         end_time=end_time,
+                        attendees=attendees,
                     )
+                )
 
-                    # Add participants,
-                    # TODO: get capacity from meeting room obj
-                    capacity = 25
-                    n_attendees = np.random.randint(
-                        self.min_attendees_per_meeting, capacity
-                    )
+                last_meeting_end_time = end_time
+                self._update_attendee_pool()
 
-                    pot_attendees = [int(k) for k in self.attendee_pool]
-                    if n_attendees >= len(pot_attendees):
-                        attendees = pot_attendees
-                    else:
-                        attendees = np.random.choice(
-                            pot_attendees, n_attendees
-                        )
+            if len(self.attendee_pool) == 0:
+                break
 
-                    if len(attendees) > 0:
-                        for attendee in attendees:
-                            self.attendee_pool[attendee] += 1
+    def _generate_meeting_attendee_list(
+        self, meeting_room: Space, start_time: int, end_time: int
+    ) -> List[int]:
 
-                        new_meeting.attendees = attendees
-                        self.meetings.append(new_meeting)
-                        self._update_attendee_pool()
+        pot_attendees = self._find_potential_attendees(start_time, end_time)
+        if not pot_attendees:
+            return []
 
-                    if len(self.attendee_pool) == 0:
-                        break
-        return
+        attendees = []
+        n_attendees = meeting_room.capacity
+        if self.min_attendees_per_meeting < meeting_room.capacity:
+            n_attendees = np.random.randint(
+                self.min_attendees_per_meeting, meeting_room.capacity
+            )
 
-    def _update_attendee_pool(self):
+        if n_attendees >= len(pot_attendees):
+            # We need more attendees than currently available
+            attendees = pot_attendees
+        elif n_attendees > 1:
+            attendees = list(
+                np.random.choice(pot_attendees, n_attendees, replace=False)
+            )
+
+        return attendees
+
+    def create_all_meetings(self) -> None:
+        """Create meetings with no conflicts (room nor agent)"""
+
+        n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
+        if n_meeting_rooms == 0:
+            LOG.warning("No valid meeting room found")
+            return
+
+        # Randomly select rooms
+        available_rooms = [
+            f"{floor_number}-{i}"
+            for floor_number, floor_rooms in enumerate(self.meeting_rooms)
+            for i in range(len(floor_rooms))
+        ]
+
+        n_rooms = int(self.percent_meeting_rooms_used * len(available_rooms))
+        rooms = np.random.choice(available_rooms, n_rooms, replace=False)
+
+        print("Creating meetings...")
+        for roomkey in pb.progressbar(rooms):
+            fn, i = roomkey.split("-")
+            room = self.meeting_rooms[int(fn)][int(i)]
+            self._create_meetings_for_room(room, int(fn))
+
+    def _find_potential_attendees(
+        self, start_time: int, end_time: int
+    ) -> List[int]:
+        """
+        Find all individuals in attendee pool who are free between start and
+        end time.
+        """
+        # Find if there is another meeting at that same time
+        pot_attendees = [k for k in self.attendee_pool]  # copy of the list
+        for meeting in self.meetings:
+            if start_time < meeting.end_time and end_time > meeting.start_time:
+                # this is an overlap, attendees are not available
+                for a in meeting.attendees:
+                    if a in pot_attendees:
+                        pot_attendees.remove(a)
+
+        return pot_attendees
+
+    def _update_attendee_pool(self) -> None:
         """Update the attendee pool to ensure the average
         number of meetings per agent is not exceeded
         """
-        # if the avg is greater than desired, remove the highest value
+        # if the avg is greater than desired, remove the attendee with the most
+        # meetings from the attendee pool
 
         current_avg = np.average([int(v) for v in self.attendee_pool.values()])
 
@@ -191,9 +266,8 @@ class MeetingPolicy:
 
             values = [int(v) for v in self.attendee_pool.values()]
             current_avg = np.average(values)
-        return
 
-    def get_daily_meetings(self, agent_id):
+    def get_daily_meetings(self, agent_id: int) -> List[Meeting]:
         """Returns list of meetings for this agent"""
 
         return [
