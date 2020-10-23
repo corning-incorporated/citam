@@ -182,9 +182,12 @@ class MeetingPolicy:
     ) -> List[int]:
 
         attendees = []
-        n_attendees = np.random.randint(
-            self.min_attendees_per_meeting, meeting_room.capacity
-        )
+        if self.min_attendees_per_meeting == meeting_room.capacity:
+            n_attendees = meeting_room.capacity
+        else:
+            n_attendees = np.random.randint(
+                self.min_attendees_per_meeting, meeting_room.capacity
+            )
 
         if n_attendees > 1:
             pot_attendees = self._find_potential_attendees(
