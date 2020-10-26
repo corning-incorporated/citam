@@ -181,28 +181,24 @@ class MeetingPolicy:
         self, meeting_room: Space, start_time: int, end_time: int
     ) -> List[int]:
 
+        pot_attendees = self._find_potential_attendees(start_time, end_time)
+        if not pot_attendees:
+            return []
+
         attendees = []
-        if self.min_attendees_per_meeting == meeting_room.capacity:
-            n_attendees = meeting_room.capacity
-        else:
+        n_attendees = meeting_room.capacity
+        if self.min_attendees_per_meeting < meeting_room.capacity:
             n_attendees = np.random.randint(
                 self.min_attendees_per_meeting, meeting_room.capacity
             )
 
-        if n_attendees > 1:
-            pot_attendees = self._find_potential_attendees(
-                start_time, end_time
+        if n_attendees >= len(pot_attendees):
+            # We need more attendees than currently available
+            attendees = pot_attendees
+        elif n_attendees > 1:
+            attendees = list(
+                np.random.choice(pot_attendees, n_attendees, replace=False)
             )
-            if pot_attendees and n_attendees > 1:
-                if n_attendees >= len(pot_attendees):
-                    # We need more attendees than currently available
-                    attendees = pot_attendees
-                else:
-                    attendees = list(
-                        np.random.choice(
-                            pot_attendees, n_attendees, replace=False
-                        )
-                    )
 
         return attendees
 
@@ -215,10 +211,11 @@ class MeetingPolicy:
             return
 
         # Randomly select rooms
-        available_rooms = []
-        for floor_number, floor_rooms in enumerate(self.meeting_rooms):
-            for i in range(len(floor_rooms)):
-                available_rooms.append(str(floor_number) + "-" + str(i))
+        available_rooms = [
+            f"{floor_number}-{i}"
+            for floor_number, floor_rooms in enumerate(self.meeting_rooms)
+            for i in range(len(floor_rooms))
+        ]
 
         n_rooms = int(self.percent_meeting_rooms_used * len(available_rooms))
         rooms = np.random.choice(available_rooms, n_rooms, replace=False)
