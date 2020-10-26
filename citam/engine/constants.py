@@ -53,9 +53,15 @@ SUPPORTED_SPACE_FUNCTIONS = [
     "conference room",
     "auditorium",
     "pantry",
+    "break room",
     "mailroom",
+    "service",
     "other",
-    "printer room"
+    "printer room",
+    "printer area",
+    "retail",
+    "vending area",
+    "parking"
 ]
 
 RESTROOM_VISIT = "Restroom visit"
