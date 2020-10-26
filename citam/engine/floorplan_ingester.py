@@ -181,14 +181,9 @@ class FloorplanIngester:
         for path in door:
             if type(path) == CubicBezier:
                 door_lines = gsu.find_door_line(path)
-                test_points.append(Point(complex_coords=path.point(0.5)))
-                test_points.append(Point(complex_coords=path.start))
-                test_points.append(Point(complex_coords=path.end))
-            else:
-                test_points.append(Point(complex_coords=path.point(0.5)))
-                test_points.append(Point(complex_coords=path.start))
-                test_points.append(Point(complex_coords=path.end))
-
+            test_points.append(Point(complex_coords=path.point(0.5)))
+            test_points.append(Point(complex_coords=path.start))
+            test_points.append(Point(complex_coords=path.end))
         # Use the test points to find the space to which this door belongs
         space_index = None
         for test_point in test_points:
@@ -237,15 +232,14 @@ class FloorplanIngester:
                 ) = gsu.calculate_dot_product_and_distance_between_walls(
                     wall, door_line
                 )
-                if dot_product is not None:
-                    if (
-                        abs(dot_product - 1.0) < 1e-1
-                        and distance < max_distance
-                        and distance < current_min_distance
-                    ):
-                        current_min_distance = distance
-                        wall_index = w
-                        best_door_line = door_line
+                if dot_product is not None and (
+                    abs(dot_product - 1.0) < 1e-1
+                    and distance < max_distance
+                    and distance < current_min_distance
+                ):
+                    current_min_distance = distance
+                    wall_index = w
+                    best_door_line = door_line
 
         return wall_index, best_door_line
 
@@ -541,12 +535,10 @@ class FloorplanIngester:
         LOG.info("Now working with rooms and hallways...")
 
         valid_walls = []
-        i = 0
         for hallway_wall in pb.progressbar(valid_hallway_walls):
             valid_walls += self.find_and_remove_overlaps(
                 hallway_wall, room_walls, room_ids, add_door=True
             )
-            i += 1
 
         for hallway_wall in pb.progressbar(invalid_hallway_walls):
             self.find_and_remove_overlaps(
@@ -555,15 +547,10 @@ class FloorplanIngester:
 
         return room_walls, valid_walls
 
-    def export_data_to_pickle_file(self, pickle_file):
-        """Export extracted floorplan data to a pickle file.
-
-        :param str pickle_file: file location where to save the data
-        :return: boolean indicating if the operation was successful or not
-        :rtype: bool:
-        """
+    @property
+    def _data_to_save(self):
         special_walls = []
-        data_to_save = [
+        return [
             self.spaces,
             self.doors,
             self.walls,
@@ -573,9 +560,17 @@ class FloorplanIngester:
             1000,
             self.scale,
         ]
+
+    def export_data_to_pickle_file(self, pickle_file):
+        """Export extracted floorplan data to a pickle file.
+
+        :param str pickle_file: file location where to save the data
+        :return: boolean indicating if the operation was successful or not
+        :rtype: bool:
+        """
         try:
             with open(pickle_file, "wb") as f:
-                pickle.dump(data_to_save, f)
+                pickle.dump(self._data_to_save, f)
             return True
         except Exception as e:
             LOG.exception(e)

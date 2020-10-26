@@ -66,10 +66,6 @@ class NodeJSBuild(Command):
             return
 
         try:
-            LOG.info("Cleaning previously generated NodeJS artifacts")
-            if os.path.exists(CITAM_STATIC_DIR):
-                shutil.rmtree(CITAM_STATIC_DIR, ignore_errors=True)
-
             LOG.info("Building NodeJS artifacts")
             original_dir = os.getcwd()
             os.chdir(NODE_ROOT)
@@ -85,6 +81,10 @@ class NodeJSBuild(Command):
                            check=True, env=env, shell=shell)
 
             # TODO: Make JS compile directly to CITAM_STATIC_DIR
+            LOG.info("Cleaning previously generated NodeJS artifacts")
+            if os.path.exists(CITAM_STATIC_DIR):
+                shutil.rmtree(CITAM_STATIC_DIR, ignore_errors=True)
+
             LOG.info("Copying NodeJS artifacts into package")
             shutil.copytree(NODE_OUTPUT_DIR, CITAM_STATIC_DIR)
             os.chdir(original_dir)

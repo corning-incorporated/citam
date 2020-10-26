@@ -172,16 +172,16 @@ class FacilityTransmissionModel:
             self.restrooms.append(floor_restrooms)
             self.meeting_rooms.append(floor_meeting_rooms)
 
-        n_rooms = sum([len(rooms) for rooms in self.labs])
+        n_rooms = sum(len(rooms) for rooms in self.labs)
         LOG.info("Total labs is " + str(n_rooms))
 
-        n_rooms = sum([len(rooms) for rooms in self.cafes])
+        n_rooms = sum(len(rooms) for rooms in self.cafes)
         LOG.info("Total cafeterias: " + str(n_rooms))
 
-        n_rooms = sum([len(rooms) for rooms in self.restrooms])
+        n_rooms = sum(len(rooms) for rooms in self.restrooms)
         LOG.info("Total restrooms: " + str(n_rooms))
 
-        n_rooms = sum([len(rooms) for rooms in self.meeting_rooms])
+        n_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
         LOG.info("Total meeting rooms: " + str(n_rooms))
 
     def find_valid_floor_office_spaces(self, floor_number, verify_route=False):
@@ -307,9 +307,13 @@ class FacilityTransmissionModel:
         self.meeting_policy = MeetingPolicy(
             meeting_room_objects,
             agent_ids,
+            daylength=self.daylength,
             policy_params=self.meetings_policy_params,
         )
-        self.meeting_policy.create_meetings()
+
+        n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
+        if n_meeting_rooms > 0:
+            self.meeting_policy.create_all_meetings()
 
         # Create schedule and itinerary for each agent
         self.add_agents_and_build_schedules()
@@ -381,7 +385,7 @@ class FacilityTransmissionModel:
         LOG.info("\tRooms with doors: " + str(n_rooms_with_doors))
         LOG.info("\tRooms with no doors: " + str(n_rooms_with_no_doors))
 
-        total_spaces = sum([len(fp.spaces) for fp in self.floorplans])
+        total_spaces = sum(len(fp.spaces) for fp in self.floorplans)
         LOG.info("\tNumber of spaces: " + str(total_spaces))
 
     def find_possible_entrance_doors(self, entrance_floor, entrance_space):
@@ -394,13 +398,13 @@ class FacilityTransmissionModel:
             if door.space1 is not None and door.space2 is not None:
                 # The door has to lead to outside of the facility
                 continue
-            if door.space1 is not None:
-                if door.space1.unique_name == entrance_space.unique_name:
-                    possible_entrance_doors.append(door)
-            elif door.space2 is not None:
-                if door.space2.unique_name == entrance_space.unique_name:
-                    possible_entrance_doors.append(door)
-
+            if (
+                door.space1 is not None
+                and door.space1.unique_name == entrance_space.unique_name
+                or door.space2 is not None
+                and door.space2.unique_name == entrance_space.unique_name
+            ):
+                possible_entrance_doors.append(door)
         return possible_entrance_doors
 
     def find_space_by_name(self, fp_index, ename):
@@ -527,11 +531,10 @@ class FacilityTransmissionModel:
             route = self.navigation.get_route(
                 entrance_coords, entrance_floor, office_id, office_floor, 1.0
             )
-            if route is not None:
-                if len(route) < min_length:
-                    min_length = len(route)
-                    best_entrance_door = entrance_door
-                    best_entrance_floor = entrance_floor
+            if route is not None and len(route) < min_length:
+                min_length = len(route)
+                best_entrance_door = entrance_door
+                best_entrance_floor = entrance_floor
 
         if best_entrance_door is None:
             office = self.floorplans[office_floor].spaces[office_id]
@@ -558,7 +561,7 @@ class FacilityTransmissionModel:
             LOG.info("\tNumber of agents: " + str(n_shift_agents))
             LOG.info("\tAverage starting step: " + str(shift_start_time))
 
-            for i in pb.progressbar(shift_agents):
+            for _ in pb.progressbar(shift_agents):
 
                 entrance_door = None
 
@@ -639,9 +642,7 @@ class FacilityTransmissionModel:
         # contact distance
         dists = scipy.spatial.distance.pdist(positions_vector)
         dist_matrix = scipy.spatial.distance.squareform(dists)
-        indices = np.argwhere(dist_matrix < self.contact_distance)
-
-        return indices
+        return np.argwhere(dist_matrix < self.contact_distance)
 
     def identify_contacts(self, agents):
         """Iterate over agents, compute whether they fall within the contact
@@ -705,7 +706,10 @@ class FacilityTransmissionModel:
         self.contact_events.add_contact(
             agent1, agent2, self.current_step, contact_pos
         )
-        if agent1.pos not in self.step_contact_locations[agent1.current_floor]:
+        if (
+            contact_pos
+            not in self.step_contact_locations[agent1.current_floor]
+        ):
             self.step_contact_locations[agent1.current_floor][contact_pos] = 1
         else:
             self.step_contact_locations[agent1.current_floor][contact_pos] += 1
@@ -714,18 +718,17 @@ class FacilityTransmissionModel:
 
     def step(self, traj_outfile=None, contact_outfiles=None):
         """Move the simulation by one step"""
-        self.step_contact_locations = []
-        for floor in range(self.number_of_floors):  # One per floor
-            self.step_contact_locations.append({})
+        self.step_contact_locations = [
+            {}
+        ] * self.number_of_floors  # One per floor
 
         active_agents, moving_agents = self.move_agents()
 
         if len(moving_agents) > 1 and not self.dry_run:
             # At least 2 agents required
-            moving_active_agents = []
-            for a in moving_agents:
-                if a.current_location is not None:
-                    moving_active_agents.append(a)
+            moving_active_agents = [
+                a for a in moving_agents if a.current_location is not None
+            ]
             self.identify_contacts(moving_active_agents)
 
         if traj_outfile is not None:
@@ -807,11 +810,10 @@ class FacilityTransmissionModel:
         """
         Save manifest file, used by the dashboard to show results.
         """
-        floors = []
-        for floor in range(self.number_of_floors):
-            floors.append(
-                {"name": str(floor), "directory": "floor_" + str(floor) + "/"}
-            )
+        floors = [
+            {"name": str(floor), "directory": "floor_" + str(floor) + "/"}
+            for floor in range(self.number_of_floors)
+        ]
 
         LOG.info("Saving manifest file...")
         # TODO: total over all floors

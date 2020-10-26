@@ -14,6 +14,7 @@
 
 <template>
   <div id="app" style="position: relative">
+    <div id="controls" ref="controls"></div>
     <div id="map" ref="mapRoot"></div>
   </div>
 </template>
@@ -51,7 +52,8 @@ export default {
       floor: "1",
     };
     /** Create Control Panel */
-    this.gui = GUI = new dat.GUI();
+    this.gui = GUI = new dat.GUI({autoPlace: false});
+    this.$refs.controls.appendChild(this.gui.domElement);
 
     let guiFloorWidget = GUI.add(animationParams, 'floor', animationParams.floorOptions)
         .name('Floor')
@@ -97,5 +99,10 @@ export default {
 </script>
 
 <style scoped>
+#controls {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
 
 </style>
