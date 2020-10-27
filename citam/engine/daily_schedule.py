@@ -376,7 +376,9 @@ class Schedule:
         next_location = schedule_item.location
         next_floor_number = schedule_item.floor_number
 
-        # Update itinerary
+        if not route:
+            raise ValueError("Route cannot be 'None'")
+
         self.itinerary += route
 
         # Choose random point inside destination as last coords
