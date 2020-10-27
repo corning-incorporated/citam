@@ -83,6 +83,8 @@ def parse_csv_metadata_file(csv_file):
                         raise ValueError(msg)
             else:
                 row_data = {}
+                if len(row) != len(header):
+                    raise ValueError(f"Wrong number of columsn in row {i+1}")
                 for c, name in enumerate(header):
                     value = row[c]
                     if str(value) == "" and name in required_data:
