@@ -396,8 +396,6 @@ class Schedule:
         # update schedule items
         self.update_schedule_items(schedule_item)
 
-
-
     def build(self):
         """Build this agent's schedule and corresponding itinerary."""
         prev_coords = (
@@ -430,9 +428,18 @@ class Schedule:
                 if len(self.schedule_items) == 0:
                     raise ValueError("No route to primary office")
                 else:
-                    prev_loc_name = self.navigation.floorplans[prev_floor_number].spaces[prev_location].unique_name
-                    dest_name = self.navigation.floorplans[next_floor_number].spaces[next_location].unique_name
-                    msg = f"No route found between these 2 locations: {prev_loc_name} and {dest_name}."
+                    prev_loc_name = (
+                        self.navigation.floorplans[prev_floor_number]
+                        .spaces[prev_location]
+                        .unique_name
+                    )
+                    dest_name = (
+                        self.navigation.floorplans[next_floor_number]
+                        .spaces[next_location]
+                        .unique_name
+                    )
+                    msg = f"No route found between these 2 locations: \
+                            {prev_loc_name} and {dest_name}."
                     raise ValueError(msg)
 
             self.update_itinerary(route, schedule_item)

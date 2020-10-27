@@ -61,7 +61,7 @@ SUPPORTED_SPACE_FUNCTIONS = [
     "printer area",
     "retail",
     "vending area",
-    "parking"
+    "parking",
 ]
 
 RESTROOM_VISIT = "Restroom visit"
