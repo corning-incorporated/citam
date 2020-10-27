@@ -122,13 +122,15 @@ def _add_engine_commands(subparser, global_args):
         required=True,
         help="Map properties file as CSV",
     )
-    ingest.add_argument("-s", "--svg", type=str, required=True, help="")
+    ingest.add_argument("-s", "--svg", type=str, required=True, help="Map file to ingest in SVG format.")
     ingest.add_argument(
         "--output_dir",
         type=str,
         required=False,
         help="Directory to save ingestion files",
     )
+    ingest.add_argument("-b", "--buildings", type=str, nargs="+", required=True, help="Buildings to process. Default to 'all'.")
+
 
     update_floorplan = engine_commands.add_parser(
         "update-floorplan",

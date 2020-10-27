@@ -375,32 +375,28 @@ class Schedule:
         """
         next_location = schedule_item.location
         next_floor_number = schedule_item.floor_number
-        if route is not None:
 
-            # Update itinerary
-            self.itinerary += route
+        # Update itinerary
+        self.itinerary += route
 
-            # Choose random point inside destination as last coords
-            internal_point = (
-                self.navigation.floorplans[next_floor_number]
-                .spaces[next_location]
-                .get_random_internal_point()
-            )
+        # Choose random point inside destination as last coords
+        internal_point = (
+            self.navigation.floorplans[next_floor_number]
+            .spaces[next_location]
+            .get_random_internal_point()
+        )
 
-            next_coords = (internal_point.x, internal_point.y)
+        next_coords = (internal_point.x, internal_point.y)
+        self.itinerary.append([next_coords, next_floor_number])
+
+        # Stay in this location for the given duration
+        for _ in range(schedule_item.duration):
             self.itinerary.append([next_coords, next_floor_number])
 
-            # Stay in this location for the given duration
-            for _ in range(schedule_item.duration):
-                self.itinerary.append([next_coords, next_floor_number])
+        # update schedule items
+        self.update_schedule_items(schedule_item)
 
-            # update schedule items
-            self.update_schedule_items(schedule_item)
 
-        elif len(self.schedule_items) == 0:
-            raise ValueError("No route to primary office")
-        else:
-            raise ValueError("No route to location.")
 
     def build(self):
         """Build this agent's schedule and corresponding itinerary."""
@@ -429,6 +425,15 @@ class Schedule:
                 next_floor_number,
                 agent_pace,
             )
+
+            if not route:
+                if len(self.schedule_items) == 0:
+                    raise ValueError("No route to primary office")
+                else:
+                    prev_loc_name = self.navigation.floorplans[prev_floor_number].spaces[prev_location].unique_name
+                    dest_name = self.navigation.floorplans[next_floor_number].spaces[next_location].unique_name
+                    msg = f"No route found between these 2 locations: {prev_loc_name} and {dest_name}."
+                    raise ValueError(msg)
 
             self.update_itinerary(route, schedule_item)
             prev_location = schedule_item.location
