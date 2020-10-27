@@ -59,15 +59,13 @@ class FloorplanIngester:
         self.maxx = None
         self.maxy = None
 
-        self.buildings = []
+        self.buildings = set()
 
-        self.excluded_buildings = excluded_buildings
-        if self.excluded_buildings is None:
-            self.excluded_buildings = []
+        self.excluded_buildings = excluded_buildings # TODO: Implement this
 
         self.buildings_to_keep = buildings_to_keep
-        if self.buildings_to_keep is None:
-            self.buildings_to_keep = ["all"]
+        if buildings_to_keep:
+            self.buildings_to_keep = [b.lower() for b in buildings_to_keep]
 
         if self.svg_file is not None and self.csv_file is not None:
             self.read_input_files()
@@ -82,14 +80,15 @@ class FloorplanIngester:
         if len(self.space_data) < len(self.space_paths):
             raise ValueError("Each good path in svg must have metadata")
 
-        for space_path, space_attr in zip(
+        for _path, _attr in zip(
             self.space_paths, self.space_attributes
         ):
-            for space_data in self.space_data:
-                if space_data["id"] == space_attr["id"]:
-                    if space_data["building"] not in self.buildings:
-                        self.buildings.append(space_data["building"])
-                    for i, line in enumerate(space_path):
+            for _data in self.space_data:
+                if _data["id"] == _attr["id"]:
+                    self.buildings.add(_data["building"])
+                    if self.buildings_to_keep and _data["building"] not in self.buildings_to_keep:
+                        continue
+                    for i, line in enumerate(_path):
                         new_start = complex(
                             int(round(line.start.real)),
                             int(round(line.start.imag)),
@@ -99,14 +98,23 @@ class FloorplanIngester:
                             int(round(line.end.imag)),
                         )
                         new_line = Line(start=new_start, end=new_end)
-                        space_path[i] = new_line
+                        _path[i] = new_line
                         space = Space(
-                            boundaries=space_path,
-                            path=copy.deepcopy(space_path),
-                            **space_data,
+                            boundaries=_path,
+                            path=copy.deepcopy(_path),
+                            **_data,
                         )
                     self.spaces.append(space)
                     break
+
+        # Validate building names
+        if self.buildings_to_keep:
+            for building in self.buildings_to_keep:
+                if building not in self.buildings:
+                    msg = f"Building not found: {building}. Valid buildings are: {self.buildings}"
+                    raise ValueError(msg)
+        else:
+            self.buildings_to_keep = self.buildings
 
     def read_input_files(self):
         """Read and parse csv and svg files"""
@@ -136,7 +144,7 @@ class FloorplanIngester:
 
         self.building_walls = {}
         all_room_walls, all_hallway_walls = [], []
-        for building in self.buildings:
+        for building in self.buildings_to_keep:
             room_walls, hallway_walls = self.find_walls_and_create_doors(
                 building
             )
