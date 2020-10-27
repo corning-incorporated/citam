@@ -96,7 +96,9 @@ def parse_csv_metadata_file(csv_file):
                             and value.lower() not in SUPPORTED_SPACE_FUNCTIONS
                         ):
 
-                            msg = f"Invalid space function: '{value}' in row {i+1}. Valid entries are: {SUPPORTED_SPACE_FUNCTIONS}"
+                            msg = f"Invalid space function: '{value}' in row \
+                                    {i+1}. Valid entries are: \
+                                    {SUPPORTED_SPACE_FUNCTIONS}"
                             raise ValueError(msg)
 
                 space_info.append(row_data)

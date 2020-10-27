@@ -77,7 +77,8 @@ def ingest_floorplan(
     :param scale: The scale of the drawing (default = 1/12)
     :param floor: Name of this floor (default=0)
     :param output_directory: Custom location to store output (default=cache)
-    :param buildings: List of buildings to process(default to all buildings found in SVG file)
+    :param buildings: List of buildings to process(default to all buildings
+            found in SVG file)
     :raise FileNotFoundError: If input files are not found
     """
 
@@ -98,12 +99,18 @@ def ingest_floorplan(
 
     fp_pickle_file = os.path.join(floor_directory, "floorplan.pkl")
     if os.path.isfile(fp_pickle_file):
-        LOG.error("This floorplan already exists. Please choose another facility or floor name.")
+        LOG.error(
+            "Floorplan exists. Please choose another facility or floor name."
+        )
         return
 
     LOG.info("Ingesting floorplan...")
     floorplan_ingester = FloorplanIngester(
-        svg, csv, scale, buildings_to_keep=buildings, extract_doors_from_file=True
+        svg,
+        csv,
+        scale,
+        buildings_to_keep=buildings,
+        extract_doors_from_file=True,
     )
     floorplan_ingester.run()
 

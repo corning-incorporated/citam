@@ -61,7 +61,7 @@ class FloorplanIngester:
 
         self.buildings = set()
 
-        self.excluded_buildings = excluded_buildings # TODO: Implement this
+        self.excluded_buildings = excluded_buildings  # TODO: Implement this
 
         self.buildings_to_keep = buildings_to_keep
         if buildings_to_keep:
@@ -80,13 +80,14 @@ class FloorplanIngester:
         if len(self.space_data) < len(self.space_paths):
             raise ValueError("Each good path in svg must have metadata")
 
-        for _path, _attr in zip(
-            self.space_paths, self.space_attributes
-        ):
+        for _path, _attr in zip(self.space_paths, self.space_attributes):
             for _data in self.space_data:
                 if _data["id"] == _attr["id"]:
                     self.buildings.add(_data["building"])
-                    if self.buildings_to_keep and _data["building"] not in self.buildings_to_keep:
+                    if (
+                        self.buildings_to_keep
+                        and _data["building"] not in self.buildings_to_keep
+                    ):
                         continue
                     for i, line in enumerate(_path):
                         new_start = complex(
@@ -111,7 +112,8 @@ class FloorplanIngester:
         if self.buildings_to_keep:
             for building in self.buildings_to_keep:
                 if building not in self.buildings:
-                    msg = f"Building not found: {building}. Valid buildings are: {self.buildings}"
+                    msg = f"Building not found: {building}. \
+                            Valid buildings are: {self.buildings}"
                     raise ValueError(msg)
         else:
             self.buildings_to_keep = self.buildings
