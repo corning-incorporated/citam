@@ -109,6 +109,10 @@ class NavigationBuilder:
         LOG.info("Processing doors for each space...")
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
+
+            if door.space2 and door.space2.id == '58828':
+                print("Is door in excluded list? ", door in self.excluded_doors)
+
             self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             if door in self.excluded_doors:
                 # Add short segment between current coords for door and the
@@ -127,9 +131,6 @@ class NavigationBuilder:
             door_width = door.path.length()
             door_normal = door.path.normal(0.5)
 
-            # if door.space1 and door.space2:
-            #     if door.space1.id == '61281' or door.space2.id == '61281':
-            #         print("Found door!!!")
             segments, seg_spaces = self.compute_nav_segments(
                 door.midpoint,
                 door_normal,
@@ -166,6 +167,8 @@ class NavigationBuilder:
 
         # Convert to directed graph
         self.floor_navnet = self.floor_navnet.to_directed()
+
+
         LOG.info("Done.")
         return
 
@@ -629,7 +632,7 @@ class NavigationBuilder:
             LOG.info(
                 "We have: {%d} * {%d}", len(segments), len(segment_spaces)
             )
-            quit()
+            raise ValueError("Failed to build nav segments in this floorplan")
 
         good_segments = []
         good_segment_spaces = []
