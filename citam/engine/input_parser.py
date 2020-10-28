@@ -154,7 +154,7 @@ def parse_svg_floorplan_file(svg_file):
             new_line = Line(start=new_start, end=new_end)
             path[i] = new_line
 
-        if "id" not in attr:
+        if "id" not in attr or "door" in attr["id"]:
             door_paths.append(path)
         else:
             space_paths.append(path)
