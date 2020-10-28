@@ -16,7 +16,7 @@ import copy
 import logging
 import pickle
 import queue
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import progressbar as pb
 from svgpathtools import Line, CubicBezier, Path
@@ -171,10 +171,11 @@ class FloorplanIngester:
 
         LOG.info("Done loading floorplan from files.")
         LOG.info(
-            "Number of spaces: %d, aisles: %d, walls: %d",
+            "Number of spaces: %d, aisles: %d, walls: %d, doors: %d",
             len(self.spaces),
             len(self.aisles),
             len(self.walls),
+            len(self.doors)
         )
 
         return
@@ -284,7 +285,7 @@ class FloorplanIngester:
                     if space_index in results:
                         results[space_index].append(wall_index_in_space)
                     else:
-                        results[space2_index] = [wall_index_in_space]
+                        results[space_index] = [wall_index_in_space]
 
         return results
 
@@ -322,9 +323,6 @@ class FloorplanIngester:
         V_perp = Point(V_perp[0], V_perp[1])
         door_line = door_line.translated(V_perp.complex_coords)
 
-        if self.spaces[space_index].id == '61227':
-            print("We indeed found it: ", door_line)
-
         return door_line
 
     def _create_door_object(self, door_line, space_indices):
@@ -352,8 +350,6 @@ class FloorplanIngester:
             for wall_index in overlapping_walls[space_index]:
                 wall = self.spaces[space_index].path[wall_index]
                 new_walls = gsu.remove_segment_from_wall(wall, door_line)
-
-                # Delete walls that have been broken down
                 del self.spaces[space_index].path[wall_index]
                 for new_wall in new_walls:
                     self.spaces[space_index].path.append(new_wall)
@@ -383,7 +379,7 @@ class FloorplanIngester:
                 LOG.warning("This door is connecting more than 2 spaces. %s. This is generally not the case.", door_line)
 
             # Create door object and add door line to space
-            self._create_door_object(door_line, overlapping_walls.keys())
+            self._create_door_object(door_line, list(overlapping_walls.keys()))
 
             # Remove door from overlapping walls
             self._remove_door_from_overlapping_walls(door_line, overlapping_walls)
@@ -417,10 +413,14 @@ class FloorplanIngester:
             )
 
             if len(overlapping_walls) > 2:
-                LOG.warning("This door is connecting more than 2 spaces. %s. This is generally not the case.", door_line)
+                space_ids = []
+                for space_index in overlapping_walls:
+                    space_ids.append(self.spaces[space_index].unique_name)
+                msg = "Door connecting more than 2 spaces. This is not typical: "
+                LOG.warning(msg + str(space_ids))
 
             # Create door object and add door line to spaces
-            self._create_door_object(door_line, overlapping_walls.keys())
+            self._create_door_object(door_line, list(overlapping_walls.keys()))
 
             # Remove door from overlapping walls
             self._remove_door_from_overlapping_walls(
@@ -531,6 +531,32 @@ class FloorplanIngester:
 
         return valid_hallway_walls, invalid_hallway_walls
 
+    def get_building_walls(
+        self, building: str
+    ) -> Tuple[list, list, list, list]:
+        """
+        Extract all walls from building separated by room and hallways.
+        """
+        hallway_walls, room_walls = [], []
+        hallway_indices, room_ids = [], []
+        # Seperate spaces between hallways and rooms
+        for i, space in enumerate(self.spaces):
+
+            if space.building != building:
+                continue
+
+            if space.is_space_a_hallway():
+                for line in space.path:
+                    hallway_indices.append(i)
+                    hallway_walls.append(line)
+            else:
+                for line in space.path:
+                    room_ids.append(i)
+                    room_walls.append(line)
+
+        return room_ids, room_walls, hallway_indices, hallway_walls
+
+
     def find_valid_walls_and_create_doors(self, building):
         """Create missing doors and remove walls between hallways
 
@@ -545,27 +571,8 @@ class FloorplanIngester:
         """
 
         LOG.info("Creating doors in building %s", building)
-        hallway_walls, room_walls = [], []
-        hallway_indices, room_ids = [], []
+        room_ids, room_walls, _, hallway_walls = self.get_building_walls(building)
 
-        # Seperate spaces between hallways and rooms
-        n_hallways = 0
-        for i, space in enumerate(self.spaces):
-
-            if space.building != building:
-                continue
-
-            if space.is_space_a_hallway():
-                n_hallways += 1
-                for line in space.path:
-                    hallway_indices.append(i)
-                    hallway_walls.append(line)
-            else:
-                for line in space.path:
-                    room_ids.append(i)
-                    room_walls.append(line)
-
-        LOG.info("Hallways identified: %d", n_hallways)
         LOG.info("Room walls identified: %d", len(room_walls))
         LOG.info("Hallway walls identified: %d", len(hallway_walls))
 
@@ -587,6 +594,9 @@ class FloorplanIngester:
             self.find_and_remove_overlaps_between_walls(
                 hallway_wall, room_walls, room_ids, add_door=True
             )
+
+        _, room_walls, _, _ = self.get_building_walls(building)
+
 
         return room_walls, valid_walls
 
