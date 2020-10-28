@@ -269,6 +269,7 @@ class FloorplanIngester:
         space2_index = None
         wall2_index = None
         new_walls2 = []
+        results = []
         for j, space in enumerate(self.spaces):
             if space != self.spaces[space_index]:
                 for k, other_wall in enumerate(space.path):
@@ -278,13 +279,11 @@ class FloorplanIngester:
                         new_walls2 = gsu.remove_segment_from_wall(
                             other_wall, door_line
                         )
+                        results.append([space2_index, wall2_index, new_walls2])
                         if not space.is_space_a_hallway():
                             space.doors.append(door_line)
-                        break
-            if space2_index is not None:
-                break
 
-        return wall2_index, space2_index, new_walls2
+        return results
 
     def process_doors(self):
         """Iterate over the door paths extracted from the SVG file, find
@@ -329,7 +328,7 @@ class FloorplanIngester:
             V_perp = Point(V_perp[0], V_perp[1])
             door_line = door_line.translated(V_perp.complex_coords)
 
-            # Find adjacent space
+            # Find adjacent space and corresponding wall
             wall2_index, space2_index, new_walls2 = self.find_adjacent_space(
                 space_index, door_line
             )
