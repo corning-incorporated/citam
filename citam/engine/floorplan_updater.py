@@ -102,13 +102,8 @@ class FloorplanUpdater:
         new_or_edited_walls = [
             wall for wall in svg_wall_paths if wall not in self.floorplan.walls
         ]
-
-        n_new_walls = len(new_or_edited_walls)
-        LOG.info("We found %d updated walls", n_new_walls)
-
+        LOG.info("We found %d updated walls", len(new_or_edited_walls))
         self.floorplan.special_walls = new_or_edited_walls
-
-        return
 
     def remove_door_from_spaces(self, door):
         """
@@ -156,6 +151,7 @@ class FloorplanUpdater:
         """
         if self.svg_file is not None:
             svg_wall_paths, svg_door_paths = self.read_updated_svg_file()
+            print("New door is: ", svg_door_paths)
             self.update_from_SVG_data(svg_wall_paths, svg_door_paths)
 
         if self.csv_file is not None:
@@ -273,8 +269,8 @@ class FloorplanUpdater:
         Verify if new door lines overlap with existing walls,
         if so, update wall accordingly and update door as well
         """
-
-        for i, wall in enumerate(self.floorplan.walls):
+        n_initial_walls = len(self.floorplan.walls)
+        for i, wall in enumerate(self.floorplan.walls + self.floorplan.special_walls):
             xo, yo = gsu.calculate_x_and_y_overlap(wall, new_door)
             if xo < 1.0 and yo < 1.0:
                 continue
@@ -291,7 +287,6 @@ class FloorplanUpdater:
                 # door and wall overlap
                 # if gsu.do_walls_overlap(wall, new_door):
 
-                del self.floorplan.walls[i]
                 new_door = gsu.align_to_reference(wall, new_door)
                 V_perp = gsu.calculate_normal_vector_between_walls(
                     new_door, wall
@@ -301,7 +296,13 @@ class FloorplanUpdater:
                 new_wall_segments = gsu.remove_segment_from_wall(
                     wall, new_door
                 )
-                self.floorplan.walls += new_wall_segments
+
+                if i < n_initial_walls:
+                    del self.floorplan.walls[i]
+                    self.floorplan.walls += new_wall_segments
+                else:
+                    del self.floorplan.special_walls[i-n_initial_walls]
+                    self.floorplan.special_walls += new_wall_segments
 
         return new_door
 
