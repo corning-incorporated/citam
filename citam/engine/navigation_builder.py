@@ -109,10 +109,6 @@ class NavigationBuilder:
         LOG.info("Processing doors for each space...")
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
-
-            if door.space2 and door.space2.id == '58828':
-                print("Is door in excluded list? ", door in self.excluded_doors)
-
             self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             if door in self.excluded_doors:
                 # Add short segment between current coords for door and the
@@ -167,7 +163,6 @@ class NavigationBuilder:
 
         # Convert to directed graph
         self.floor_navnet = self.floor_navnet.to_directed()
-
 
         LOG.info("Done.")
         return
@@ -479,7 +474,7 @@ class NavigationBuilder:
         first_point: Point,
         direction_vector: complex,
         width: float,
-        stop_at_existing_segments: bool=False,
+        stop_at_existing_segments: bool = False,
     ) -> Tuple[List, List]:
         """Compute navigation segments from a given point and direction.
         2 segments are created from the starting point going in opposite
@@ -577,7 +572,6 @@ class NavigationBuilder:
                         ):
                             # We encountered a wall, let's end this segment
                             end_segment = True
-                            # print("Stopping because we found a wall, for real!", new_point, direction)
                             break
 
                     if end_segment:
@@ -589,18 +583,13 @@ class NavigationBuilder:
                     if new_space is None:
                         # We are probably outside the facility. Let's double
                         # check.
-
-                        # boundary_spaces = self._is_point_on_boundaries(
-                        #     new_point
-                        # )
-                        # Edge Case: small gap present between valid spaces
-                            # Look ahead in case there is a gap (3 unit max)
                         test_point = Point(
                             x=round(new_point.x + 3 * direction * dx),
                             y=round(new_point.y + 3 * direction * dy),
                         )
-                        test_point_space, _ = \
-                            self._find_location_of_point(test_point)
+                        test_point_space, _ = self._find_location_of_point(
+                            test_point
+                        )
                         if test_point_space is None:
                             # we are definitely outside of the facility
                             end_segment = True
@@ -842,7 +831,6 @@ class NavigationBuilder:
             n_segments = len(self.space_nav_segments[key])
             exit_loop = False
             # if '198' in key:
-            #     print('Getting ready to iterate over segments:\n')
             for i in range(n_segments - 1):
                 for j in range(i + 1, n_segments):
                     seg1 = self.space_nav_segments[key][i]

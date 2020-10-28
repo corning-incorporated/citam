@@ -270,7 +270,9 @@ class FloorplanUpdater:
         if so, update wall accordingly and update door as well
         """
         n_initial_walls = len(self.floorplan.walls)
-        for i, wall in enumerate(self.floorplan.walls + self.floorplan.special_walls):
+        for i, wall in enumerate(
+            self.floorplan.walls + self.floorplan.special_walls
+        ):
             xo, yo = gsu.calculate_x_and_y_overlap(wall, new_door)
             if xo < 1.0 and yo < 1.0:
                 continue
@@ -301,7 +303,7 @@ class FloorplanUpdater:
                     del self.floorplan.walls[i]
                     self.floorplan.walls += new_wall_segments
                 else:
-                    del self.floorplan.special_walls[i-n_initial_walls]
+                    del self.floorplan.special_walls[i - n_initial_walls]
                     self.floorplan.special_walls += new_wall_segments
 
         return new_door

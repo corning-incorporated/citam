@@ -439,9 +439,13 @@ class FacilityTransmissionModel:
         Verify that this door is part of the navnet.
         """
         door_mid_point = entrance_door.path.point(0.5)
-        print("quick test: ", self.navigation.navnet_per_floor[entrance_floor].has_node(
-            door_mid_point
-        ), entrance_door.is_intersect_and_midpoint_same())
+        print(
+            "quick test: ",
+            self.navigation.navnet_per_floor[entrance_floor].has_node(
+                door_mid_point
+            ),
+            entrance_door.is_intersect_and_midpoint_same(),
+        )
         entrance_coords = entrance_door.intersect_coords
         if self.navigation.navnet_per_floor[entrance_floor].has_node(
             entrance_coords
