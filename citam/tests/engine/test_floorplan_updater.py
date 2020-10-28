@@ -33,7 +33,7 @@ def test_update_from_SVG_data(rect_floorplan, datadir):
     assert len(walls_removed) == 3  # 2 walls removed
     assert len(fp_updater.floorplan.walls) == 7  # 4 walls added leading to 7
     assert len(fp_updater.floorplan.doors) == 2  # Existing door is removed
-    assert len(fp_updater.floorplan.special_walls) == 2  # 2 new walls found
+    assert len(fp_updater.floorplan.special_walls) == 3  # 2 new walls found
 
 
 def test_update_from_CSV_data(datadir):
