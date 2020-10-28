@@ -499,32 +499,32 @@ def create_parallel_line(line, side=1):
     )
 
 
-def create_door_in_room_wall(room_wall, door_size=2.0):
+def compute_new_door_line(room_wall, door_size=2.0):
 
     # Add a door to room wall
     start_x = room_wall.start.real
     start_y = room_wall.start.imag
 
     # vector between start and end points
-
     Vx = room_wall.end.real - room_wall.start.real
     Vy = room_wall.end.imag - room_wall.start.imag
     V_norm = math.sqrt(Vx ** 2 + Vy ** 2)
     if V_norm == 0:
         return None
 
+    # Unit vector
     Vx = Vx / V_norm
     Vy = Vy / V_norm
 
+    # End point of door
     end_x = start_x + door_size * Vx
     end_y = start_y + door_size * Vy
 
+    # Start and end poitns of door line
     p = Point(start_x, start_y)
     q = Point(end_x, end_y)
 
-    door = Line(start=p.complex_coords, end=q.complex_coords)
-
-    return door
+    return Line(start=p.complex_coords, end=q.complex_coords)
 
 
 def find_door_line(cubic_bezier):  # TODO: Create unit test for this function
