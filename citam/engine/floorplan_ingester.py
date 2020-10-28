@@ -592,6 +592,8 @@ class FloorplanIngester:
                 hallway_wall, room_walls, room_ids, add_door=True
             )
 
+        _, room_walls, _, _ = self.get_building_walls(building)
+
         return room_walls, valid_walls
 
     @property
