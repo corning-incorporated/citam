@@ -266,11 +266,12 @@ class FloorplanIngester:
         """
         # TODO: Handle case where more than 2 spaces are involved.
         # Find which other space this wall is shared with
-        space2_index = None
-        wall2_index = None
-        new_walls2 = []
+
         results = []
         for j, space in enumerate(self.spaces):
+            space2_index = None
+            wall2_index = None
+            new_walls2 = []
             if space != self.spaces[space_index]:
                 for k, other_wall in enumerate(space.path):
                     if gsu.do_walls_overlap(other_wall, door_line):
