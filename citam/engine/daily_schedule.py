@@ -430,18 +430,20 @@ class Schedule:
                 if len(self.schedule_items) == 0:
                     raise ValueError("No route to primary office")
                 else:
-                    prev_loc_name = (
+                    current_loc = (
                         self.navigation.floorplans[prev_floor_number]
                         .spaces[prev_location]
-                        .unique_name
                     )
-                    dest_name = (
+                    dest = (
                         self.navigation.floorplans[next_floor_number]
                         .spaces[next_location]
-                        .unique_name
                     )
-                    msg = f"No route found between these 2 locations: \
-                            {prev_loc_name} and {dest_name}."
+
+                    LOG.info(f"Doors in current loc: {current_loc.doors}")
+                    LOG.info(f"Doors in destination: {dest.doors}")
+                    msg = f"No route found between these 2 locations: " \
+                        + f"{current_loc.unique_name} ({current_loc.id}) " \
+                        + f" and {dest.unique_name} ({dest.id})."
                     raise ValueError(msg)
 
             self.update_itinerary(route, schedule_item)

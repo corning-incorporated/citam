@@ -345,6 +345,8 @@ class FloorplanIngester:
             self.doors.append(door_obj)
             n_success += 1
 
+
+
             # Delete walls that have been broken down
             del self.spaces[space_index].path[wall_index]
             for new_wall in new_walls:

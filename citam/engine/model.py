@@ -438,6 +438,10 @@ class FacilityTransmissionModel:
         """
         Verify that this door is part of the navnet.
         """
+        door_mid_point = entrance_door.path.point(0.5)
+        print("quick test: ", self.navigation.navnet_per_floor[entrance_floor].has_node(
+            door_mid_point
+        ), entrance_door.is_intersect_and_midpoint_same())
         entrance_coords = entrance_door.intersect_coords
         if self.navigation.navnet_per_floor[entrance_floor].has_node(
             entrance_coords
@@ -487,7 +491,7 @@ class FacilityTransmissionModel:
             entrance_door = np.random.choice(possible_entrance_doors)
 
             if not self.is_door_in_navnet(entrance_floor, entrance_door):
-                raise ValueError("Cannot use this entrance %s", ename)
+                raise ValueError(f"Cannot use this entrance: {ename}")
 
     def choose_best_entrance(
         self, office_floor: int, office_id: int

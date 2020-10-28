@@ -14,7 +14,7 @@
 import logging
 import os
 import pickle
-from typing import Tuple
+from typing import Tuple, List
 
 import networkx as nx
 import progressbar as pb
@@ -126,12 +126,17 @@ class NavigationBuilder:
             # Add mid-point of door path to navnet as a door node
             door_width = door.path.length()
             door_normal = door.path.normal(0.5)
+
+            # if door.space1 and door.space2:
+            #     if door.space1.id == '61281' or door.space2.id == '61281':
+            #         print("Found door!!!")
             segments, seg_spaces = self.compute_nav_segments(
                 door.midpoint,
                 door_normal,
                 door_width,
                 stop_at_existing_segments=True,
             )
+
             if len(segments) == 0:
                 LOG.warning("No nav segments found. This is not typical.")
                 LOG.info("Door is: %s", door)
@@ -161,7 +166,7 @@ class NavigationBuilder:
 
         # Convert to directed graph
         self.floor_navnet = self.floor_navnet.to_directed()
-
+        LOG.info("Done.")
         return
 
     def _update_navnet(self, segments, seg_spaces, width):
@@ -468,11 +473,11 @@ class NavigationBuilder:
 
     def compute_nav_segments(
         self,
-        first_point,
-        direction_vector,
-        width,
-        stop_at_existing_segments=False,
-    ):
+        first_point: Point,
+        direction_vector: complex,
+        width: float,
+        stop_at_existing_segments: bool=False,
+    ) -> Tuple[List, List]:
         """Compute navigation segments from a given point and direction.
         2 segments are created from the starting point going in opposite
         directions.
@@ -540,8 +545,8 @@ class NavigationBuilder:
 
             segment_spaces.append(current_space)
 
-            wall_found = False
-            while not wall_found:
+            end_segment = False
+            while not end_segment:
                 # move one point in the given direction
                 new_point = Point(
                     x=round(new_point.x + direction * dx),
@@ -567,26 +572,37 @@ class NavigationBuilder:
                             wall.length() > 1
                             and len(test_line.intersect(wall)) > 0
                         ):
-                            wall_found = True
+                            # We encountered a wall, let's end this segment
+                            end_segment = True
+                            # print("Stopping because we found a wall, for real!", new_point, direction)
                             break
 
-                    if wall_found:
+                    if end_segment:
                         continue
 
+                    # At this point, we are 100% sure our nav segment has NOT
+                    # encoutered any real wall.
+
                     if new_space is None:
-                        boundary_spaces = self._is_point_on_boundaries(
-                            new_point
+                        # We are probably outside the facility. Let's double
+                        # check.
+
+                        # boundary_spaces = self._is_point_on_boundaries(
+                        #     new_point
+                        # )
+                        # Edge Case: small gap present between valid spaces
+                            # Look ahead in case there is a gap (3 unit max)
+                        test_point = Point(
+                            x=round(new_point.x + 3 * direction * dx),
+                            y=round(new_point.y + 3 * direction * dy),
                         )
+                        test_point_space, _ = \
+                            self._find_location_of_point(test_point)
+                        if test_point_space is None:
+                            # we are definitely outside of the facility
+                            end_segment = True
 
-                        if len(boundary_spaces) == 0:
-                            wall_found = True  # Outside of the facility
-
-                        if len(boundary_spaces) == 1:  # on exterior wall
-                            coords, door = self.find_door_intersect(test_line)
-                            if coords is None:  # There is no door here
-                                wall_found = True
-
-                    if not wall_found:
+                    if not end_segment:
                         # Is this a door?
                         coords, door = self.find_door_intersect(test_line)
                         if coords is not None:
