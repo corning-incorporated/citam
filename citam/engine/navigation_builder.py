@@ -105,10 +105,17 @@ class NavigationBuilder:
                         # self.current_space = space
                         self.create_nav_segment_for_aisle(aisle)
 
+        # test_coords = None
+
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
         LOG.info("Processing doors for each space...")
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
+            # if door.space1 and door.space2:
+                # if door.space1.id == '61387' or door.space2.id == '61387':
+                #     print("Found this door here instead!!!", i)
+                #     test_coords = door.intersect_coords
+
             self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             if door in self.excluded_doors:
                 # Add short segment between current coords for door and the
@@ -139,6 +146,11 @@ class NavigationBuilder:
                 LOG.info("Door is: %s", door)
             self._add_spaces_to_hallway_graph(seg_spaces)
             self._update_navnet(segments, seg_spaces, door_width)
+
+        # print("Did not find door!!!")
+        # print("part of navnet:", self.floor_navnet.has_node(test_coords))
+        # print("number of edges:", len(self.floor_navnet.edges(test_coords)))
+        # quit()
 
         # Simplify nav network by removing unncesssary edges and nodes
         LOG.info("Removing unnecessary nodes from nav network...")
@@ -469,6 +481,88 @@ class NavigationBuilder:
 
         return coords, door_found
 
+    def find_if_valid_nearby_space_exits(self, new_point, direction, dx, dy):
+
+        boundary_spaces = self._is_point_on_boundaries(new_point)
+        if len(boundary_spaces) == 0:
+            raise ValueError(
+                "Unable to compute a nav segment from %s",
+                str(new_point),
+            )
+        elif len(boundary_spaces) == 1:
+            LOG.info(
+                "{%s} on space boundary. Is it an entrance?", new_point
+            )
+            current_space = boundary_spaces[0]
+            return current_space
+        else:
+            test_point = Point(
+                x=round(new_point.x + direction * dx),
+                y=round(new_point.y + direction * dy),
+            )
+            current_space, _ = self._find_location_of_point(test_point)
+            if current_space is None:
+                raise ValueError(
+                    "Unable to compute a nav segment from %s",
+                    str(new_point),
+                )
+        return current_space
+
+    def _update_segments(self, new_point, direction, segments):
+
+        if direction == -1:
+            segments[-1] = [new_point] + segments[-1]
+        else:
+            segments[-1].append(new_point)
+
+    def _is_crossing_wall(self, first_point, new_point):
+        """
+        """
+        test_line = Line(
+            start=first_point.complex_coords,
+            end=new_point.complex_coords,
+        )
+        # TODO: Change test_line to be the last segment!
+        for wall in self.current_floorplan.walls:
+            if (
+                wall.length() > 1
+                and len(test_line.intersect(wall)) > 0
+            ):
+                # We encountered a wall!!!
+                return True
+
+        return False
+
+    def _is_heading_outside_facility(self, new_point, direction, dx, dy):
+
+        test_point = Point(
+            x=round(new_point.x + 3 * direction * dx),
+            y=round(new_point.y + 3 * direction * dy),
+        )
+        test_point_space, _ = self._find_location_of_point(
+            test_point
+        )
+        if test_point_space is None:
+            return True
+
+        return False
+
+    def _handle_potential_door(self, first_point, new_point):
+        """
+        """
+        test_line = Line(
+            start=first_point.complex_coords,
+            end=new_point.complex_coords,
+        )
+        coords, door = self.find_door_intersect(test_line)
+        if coords is not None:
+            door.intersect_coords = coords
+            self.excluded_doors.append(door)
+            # TODO: Stop current segment and start new one
+            return True
+
+        return False
+
     def compute_nav_segments(
         self,
         first_point: Point,
@@ -513,38 +607,17 @@ class NavigationBuilder:
         dy = direction_vector.imag
 
         for direction in [-1, 1]:
+
             new_point = first_point
             segments.append([new_point])
-            current_space, _ = self._find_location_of_point(new_point)
 
+            current_space, _ = self._find_location_of_point(new_point)
             if current_space is None:
-                boundary_spaces = self._is_point_on_boundaries(new_point)
-                if len(boundary_spaces) == 0:
-                    raise ValueError(
-                        "Unable to compute a nav segment from %s",
-                        str(new_point),
-                    )
-                elif len(boundary_spaces) == 1:
-                    LOG.info(
-                        "{%s} on space boundary. Is it an entrance?", new_point
-                    )
-                    current_space = boundary_spaces[0]
-                else:
-                    test_point = Point(
-                        x=round(new_point.x + direction * dx),
-                        y=round(new_point.y + direction * dy),
-                    )
-                    current_space, _ = self._find_location_of_point(test_point)
-                    if current_space is None:
-                        raise ValueError(
-                            "Unable to compute a nav segment from %s",
-                            str(new_point),
-                        )
+                current_space = self.find_if_valid_nearby_space_exits(new_point, direction, dx, dy)
 
             segment_spaces.append(current_space)
 
-            end_segment = False
-            while not end_segment:
+            while True:
                 # move one point in the given direction
                 new_point = Point(
                     x=round(new_point.x + direction * dx),
@@ -552,64 +625,28 @@ class NavigationBuilder:
                 )
 
                 if current_space.is_point_inside_space(new_point):
-                    if direction == -1:
-                        segments[-1] = [new_point] + segments[-1]
-                    else:
-                        segments[-1].append(new_point)
+                    self._update_segments(new_point, direction, segments)
                 else:
+                    # Check if this is a wall
+                    if self._is_crossing_wall(first_point, new_point):
+                        break
+
                     new_space, _ = self._find_location_of_point(new_point)
-                    # Check if this is a wall, in which case we end the
-                    # nav segment
-                    test_line = Line(
-                        start=first_point.complex_coords,
-                        end=new_point.complex_coords,
-                    )
-                    # TODO: Change test_line to be the last segment!
-                    for wall in self.current_floorplan.walls:
-                        if (
-                            wall.length() > 1
-                            and len(test_line.intersect(wall)) > 0
-                        ):
-                            # We encountered a wall, let's end this segment
-                            end_segment = True
-                            break
 
-                    if end_segment:
-                        continue
+                    # Check if heading outside facility
+                    if new_space is None and self._is_heading_outside_facility(new_point, direction, dx, dy):
+                        break
 
-                    # At this point, we are 100% sure our nav segment has NOT
-                    # encoutered any real wall.
+                    # Is this a door?
+                    door_found = self._handle_potential_door(first_point, new_point)
 
-                    if new_space is None:
-                        # We are probably outside the facility. Let's double
-                        # check.
-                        test_point = Point(
-                            x=round(new_point.x + 3 * direction * dx),
-                            y=round(new_point.y + 3 * direction * dy),
-                        )
-                        test_point_space, _ = self._find_location_of_point(
-                            test_point
-                        )
-                        if test_point_space is None:
-                            # we are definitely outside of the facility
-                            end_segment = True
+                    # We can keep adding point to segment
+                    self._update_segments(new_point, direction, segments)
 
-                    if not end_segment:
-                        # Is this a door?
-                        coords, door = self.find_door_intersect(test_line)
-                        if coords is not None:
-                            door.intersect_coords = coords
-                            self.excluded_doors.append(door)
-
-                        # We can keep adding point to segment
-                        if direction == -1:
-                            segments[-1] = [new_point] + segments[-1]
-                        else:
-                            segments[-1].append(new_point)
-                        if new_space is not None:
-                            current_space = new_space
-                            segments.append([segments[-1][-1], new_point])
-                            segment_spaces.append(current_space)
+                    if new_space is not None:
+                        current_space = new_space
+                        segments.append([segments[-1][-1], new_point])
+                        segment_spaces.append(current_space)
 
                 if stop_at_existing_segments and self.floor_navnet.has_node(
                     (new_point.x, new_point.y)

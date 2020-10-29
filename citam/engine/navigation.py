@@ -458,7 +458,7 @@ class Navigation:
         ]
         if not valid_exit_nodes:
             if isinstance(location, int):
-                loc_name = self.floorplans[floor_number].spaces[location]
+                loc_name = self.floorplans[floor_number].spaces[location].id
             else:
                 loc_name = location
             LOG.error("Exit coordinates not in navnet or disconnected: %s", str(loc_name))
@@ -483,12 +483,17 @@ class Navigation:
                 return None
             exit_nodes = [(coor[0], coor[1]) for coor in exit_coords]
 
+        print("Exit nodes are: ", exit_nodes)
         valid_exit_nodes = [ node for node in exit_nodes
             if self.navnet_per_floor[floor_number].has_node(node) and len(self.navnet_per_floor[floor_number].edges(node)) >= 1
         ]
+        print("Valid exit nodes", valid_exit_nodes,
+            self.navnet_per_floor[floor_number].has_node(exit_nodes[0]),
+            len(self.navnet_per_floor[floor_number].edges(exit_nodes[0]))
+        )
         if not valid_exit_nodes:
             if isinstance(location, int):
-                loc_name = self.floorplans[floor_number].spaces[location]
+                loc_name = self.floorplans[floor_number].spaces[location].id
             else:
                 loc_name = location
             LOG.error("Exit coordinates not in navnet or disconnected: %s", str(loc_name))
