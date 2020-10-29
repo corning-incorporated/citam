@@ -91,8 +91,8 @@ class NavigationBuilder:
         """
 
         # Create nav segements for all aisles and doors
-        LOG.info("Creating nav segments for each aisle...")
-        self._create_nav_segments_for_aisles()
+        # LOG.info("Creating nav segments for each aisle...")
+        # self._create_nav_segments_for_aisles()
 
         LOG.info("Processing doors for each space...")
         self._create_nav_segments_for_doors()
@@ -123,15 +123,17 @@ class NavigationBuilder:
         LOG.info("Done.")
 
     def _create_nav_segments_for_doors(self):
-
-        # test_coords = None
+        """Iterate over each door in floorplan and create perpendicular nav
+        segments for each.
+        """
+        test_coords = None
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
-            # if door.space1 and door.space2:
-                # if door.space1.id == '61387' or door.space2.id == '61387':
-                #     print("Found this door here instead!!!", i)
-                #     test_coords = door.intersect_coords
+            if door.space1 and door.space2:
+                if door.space1.id == '61387' or door.space2.id == '61387':
+                    print("Found this door here instead!!!", i)
+                    test_coords = door.intersect_coords
 
             self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             if door in self.excluded_doors:
@@ -151,12 +153,17 @@ class NavigationBuilder:
             door_width = door.path.length()
             door_normal = door.path.normal(0.5)
 
-            segments, seg_spaces = self.compute_nav_segments(
-                door.midpoint,
-                door_normal,
-                door_width,
-                stop_at_existing_segments=True,
-            )
+            if door.space1 and door.space2:
+                if door.space1.id == '61344' or door.space2.id == '61344':
+                    print("Found first door here <>")
+
+                segments, seg_spaces = self.compute_nav_segments(
+                    door.midpoint,
+                    door_normal,
+                    door_width,
+                    stop_at_existing_segments=True,
+                )
+                quit()
 
             if len(segments) == 0:
                 LOG.warning("No nav segments found. This is not typical.")
@@ -164,10 +171,10 @@ class NavigationBuilder:
             self._add_spaces_to_hallway_graph(seg_spaces)
             self._update_navnet(segments, seg_spaces, door_width)
 
-        # print("Did not find door!!!")
-        # print("part of navnet:", self.floor_navnet.has_node(test_coords))
-        # print("number of edges:", len(self.floor_navnet.edges(test_coords)))
-        # quit()
+        print("Details for door of interest -->")
+        print("part of navnet:", self.floor_navnet.has_node(test_coords))
+        print("number of edges:", len(self.floor_navnet.edges(test_coords)))
+        quit()
 
     def _create_nav_segments_for_aisles(self):
         """Iterate over each hallway and create nav segments along each aisle.
