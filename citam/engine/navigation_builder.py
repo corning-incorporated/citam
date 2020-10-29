@@ -90,25 +90,42 @@ class NavigationBuilder:
 
         """
 
+        # Create nav segements for all aisles and doors
         LOG.info("Creating nav segments for each aisle...")
-        pbar = pb.ProgressBar(max_value=len(self.current_floorplan.spaces))
-        for i, space in enumerate(self.current_floorplan.spaces):
-            pbar.update(i)
-            if space.is_space_a_hallway():
-                valid_boundaries = space.boundaries
-                # self._find_valid_boundaries(space)
-                aisles = fu.find_aisles(
-                    space, valid_boundaries, no_repeat=False
-                )
-                for aisle in aisles:
-                    if not self._aisle_has_nav_segment(aisle, space):
-                        # self.current_space = space
-                        self.create_nav_segment_for_aisle(aisle)
+        self._create_nav_segments_for_aisles()
+
+        LOG.info("Processing doors for each space...")
+        self._create_nav_segments_for_doors()
+
+        # Simplify nav network by removing unncesssary edges and nodes
+        LOG.info("Removing unnecessary nodes from nav network...")
+        self.simplify_navigation_network()
+
+        # Make sure no intersection was missed
+        if self.add_all_nav_points:
+            for space in list(set(self.current_floorplan.spaces)):
+                self.find_intersections_in_space(space)
+
+        # Ensure no nav path crosses a special wall
+        LOG.info("Make sure nav paths do not cross any walls...")
+        self.sanitize_graph()
+
+        # Label all intersection nodes accordingly
+        nodes = list(self.floor_navnet.nodes())
+        for node in nodes:
+            nneigh = list(self.floor_navnet.neighbors(node))
+            if len(nneigh) > 2:
+                self.floor_navnet.nodes[node]["node_type"] = "intersection"
+
+        # Convert to directed graph
+        self.floor_navnet = self.floor_navnet.to_directed()
+
+        LOG.info("Done.")
+
+    def _create_nav_segments_for_doors(self):
 
         # test_coords = None
-
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
-        LOG.info("Processing doors for each space...")
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
             # if door.space1 and door.space2:
@@ -152,34 +169,27 @@ class NavigationBuilder:
         # print("number of edges:", len(self.floor_navnet.edges(test_coords)))
         # quit()
 
-        # Simplify nav network by removing unncesssary edges and nodes
-        LOG.info("Removing unnecessary nodes from nav network...")
-        self.simplify_navigation_network()
-
-        # Make sure no intersection was missed, in case they happen between
-        # grid points
-        if self.add_all_nav_points:
-            for space in list(set(self.current_floorplan.spaces)):
-                self.find_intersections_in_space(space)
-
-        # Ensure no nav path crosses a special wall
-        LOG.info("Make sure nav paths do not cross any walls...")
-        self.sanitize_graph()
-
-        # Label all intersection nodes accordingly
-        nodes = list(self.floor_navnet.nodes())
-        for node in nodes:
-            nneigh = list(self.floor_navnet.neighbors(node))
-            if len(nneigh) > 2:
-                self.floor_navnet.nodes[node]["node_type"] = "intersection"
-
-        # Convert to directed graph
-        self.floor_navnet = self.floor_navnet.to_directed()
-
-        LOG.info("Done.")
-        return
+    def _create_nav_segments_for_aisles(self):
+        """Iterate over each hallway and create nav segments along each aisle.
+        """
+        pbar = pb.ProgressBar(max_value=len(self.current_floorplan.spaces))
+        for i, space in enumerate(self.current_floorplan.spaces):
+            pbar.update(i)
+            if space.is_space_a_hallway():
+                valid_boundaries = space.boundaries
+                # self._find_valid_boundaries(space)
+                aisles = fu.find_aisles(
+                    space, valid_boundaries, no_repeat=False
+                )
+                for aisle in aisles:
+                    if not self._aisle_has_nav_segment(aisle, space):
+                        # self.current_space = space
+                        self.create_nav_segment_for_aisle(aisle)
 
     def _update_navnet(self, segments, seg_spaces, width):
+        """For each segment in list of nav segments, create nodes and edges
+        in navnet. Also keep track in which space each segment falls.
+        """
         # Add segments to navnet
         self._add_segments_to_navnet(segments, seg_spaces, width)
 
@@ -199,7 +209,7 @@ class NavigationBuilder:
                 self.find_intersections_in_space(seg_space)
                 self.find_and_remove_overlaps(seg_space)
                 # TODO: Also look for overlapping segments and merge them while
-                # keeping all existing intersections. Would also be great to
+                # keeping all existing intersections. Would be great to
                 # merge parallel segments as well
         return
 
@@ -255,7 +265,7 @@ class NavigationBuilder:
         return False
 
     def _find_valid_boundaries(self, space):
-        """Iterate over boundary walls of a space and returns only the
+        """Iterate over boundary walls of a space and return only the
          ones that are not between two hallways.
 
         Parameters
@@ -509,14 +519,15 @@ class NavigationBuilder:
         return current_space
 
     def _update_segments(self, new_point, direction, segments):
-
+        """Given a valid new point, update navigation segments.
+        """
         if direction == -1:
             segments[-1] = [new_point] + segments[-1]
         else:
             segments[-1].append(new_point)
 
     def _is_crossing_wall(self, first_point, new_point):
-        """
+        """Verify if that the current nav segment has touched an existing wall.
         """
         test_line = Line(
             start=first_point.complex_coords,
@@ -533,11 +544,13 @@ class NavigationBuilder:
 
         return False
 
-    def _is_heading_outside_facility(self, new_point, direction, dx, dy):
-
+    def _is_heading_outside_facility(self, new_point, direction, dx, dy, look_ahead_dist=3):
+        """Verify if current nav segment is moving outside the facility
+        within a given look ahead distance.
+        """
         test_point = Point(
-            x=round(new_point.x + 3 * direction * dx),
-            y=round(new_point.y + 3 * direction * dy),
+            x=round(new_point.x + look_ahead_dist * direction * dx),
+            y=round(new_point.y + look_ahead_dist * direction * dy),
         )
         test_point_space, _ = self._find_location_of_point(
             test_point
@@ -548,7 +561,8 @@ class NavigationBuilder:
         return False
 
     def _handle_potential_door(self, first_point, new_point):
-        """
+        """Verify if current nav segment is crossing a door, if so add door
+        to list of excluded doors (from processing) and update segements accordingly.
         """
         test_line = Line(
             start=first_point.complex_coords,
