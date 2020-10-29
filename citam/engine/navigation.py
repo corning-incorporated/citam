@@ -410,96 +410,120 @@ class Navigation:
             between the given starting location and destination
         """
         if len(self.floorplans) == 1:
-            route = self.get_route_same_floor(
+            routes = self.get_all_possible_routes_same_floor(
                 starting_floor_number, starting_location, destination
             )
-            tmp_route = unroll_route(route, pace)
-            if tmp_route is None:
-                return None
-            route = [[r, starting_floor_number] for r in tmp_route]
         else:
-            route = self.get_multifloor_route(
+            routes = self.get_all_possible_routes_multifloor(
                 starting_location,
                 starting_floor_number,
                 destination,
                 destination_floor_number,
             )
-            tmp_route = unroll_route(route, pace)
-            if tmp_route is None:
-                return None
+
+        if not routes:
+            return None
+
+        routes.sort(key = lambda route: len(route))
+
+        tmp_route = unroll_route(routes[0], pace)
+        if len(self.floorplans) == 1:
+            route = [[r, starting_floor_number] for r in tmp_route]
+        else:
             route = [[(r[0], r[1]), r[2]] for r in tmp_route]
 
         return route
 
-    def get_multifloor_route(
+    def get_valid_multifloor_exit_nodes(self, location, floor_number):
+        """Find list of exit coords that corresponds to a valid node in the
+        navigation network.
+        """
+        if isinstance(location, tuple):
+            exit_nodes = [(
+                location[0],
+                location[1],
+                floor_number
+            )]
+        else:
+            exit_coords = self.floorplans[
+                floor_number
+            ].get_room_exit_coords(location)
+            if exit_coords is None:
+                LOG.error("No exit from this room. Check the navnet")
+                return None
+            exit_nodes = [(coor[0], coor[1], floor_number) for coor in exit_coords]
+
+        valid_exit_nodes = [ node for node in exit_nodes
+            if self.multifloor_navnet.has_node(node) and len(self.multifloor_navnet.edges(node)) >= 1
+        ]
+        if not valid_exit_nodes:
+            if isinstance(location, int):
+                loc_name = self.floorplans[floor_number].spaces[location]
+            else:
+                loc_name = location
+            LOG.error("Exit coordinates not in navnet or disconnected: %s", str(loc_name))
+
+        return valid_exit_nodes
+
+    def get_valid_single_floor_exit_nodes(self, location, floor_number):
+        """Find list of exit coords that corresponds to a valid node in the
+        navigation network.
+        """
+        if isinstance(location, tuple):
+            exit_nodes = [(
+                location[0],
+                location[1]
+            )]
+        else:
+            exit_coords = self.floorplans[
+                floor_number
+            ].get_room_exit_coords(location)
+            if exit_coords is None:
+                LOG.error("No exit from this room. Check the navnet")
+                return None
+            exit_nodes = [(coor[0], coor[1]) for coor in exit_coords]
+
+        valid_exit_nodes = [ node for node in exit_nodes
+            if self.navnet_per_floor[floor_number].has_node(node) and len(self.navnet_per_floor[floor_number].edges(node)) >= 1
+        ]
+        if not valid_exit_nodes:
+            if isinstance(location, int):
+                loc_name = self.floorplans[floor_number].spaces[location]
+            else:
+                loc_name = location
+            LOG.error("Exit coordinates not in navnet or disconnected: %s", str(loc_name))
+
+        return valid_exit_nodes
+
+    def get_all_possible_routes_multifloor(
         self,
         starting_location,
         starting_floor_number,
         destination,
-        destination_floor_number,
+        destination_floor_number
     ):
-
         # Start node
-        if isinstance(starting_location, tuple):
-            start_node = (
-                starting_location[0],
-                starting_location[1],
-                starting_floor_number,
-            )
-        else:
-            coords = self.floorplans[
-                starting_floor_number
-            ].get_room_exit_coords(starting_location)
-            if coords is None:
-                LOG.error("No exit from this room. Check the navnet")
-                return None
-            start_node = (coords[0], coords[1], starting_floor_number)
-        if self.multifloor_navnet.has_node(start_node):
-            n_edges = self.multifloor_navnet.edges(start_node)
-            if n_edges == 1:
-                LOG.error("No exit from this room. Check the navnet")
-                return None
-        else:
-            LOG.error("Start coordinates not in navnet: %s", str(start_node))
+        starting_nodes = self.get_valid_multifloor_exit_nodes(starting_location, starting_floor_number)
 
         # End node
-        if isinstance(destination, tuple):
-            end_node = (
-                destination[0],
-                destination[1],
-                destination_floor_number,
-            )
-        else:
-            coords = self.floorplans[
-                destination_floor_number
-            ].get_room_exit_coords(destination)
-            if coords is None:
-                LOG.error("No exit from this room. Check the navnet")
-                return None
-            end_node = (coords[0], coords[1], destination_floor_number)
+        exit_nodes = self.get_valid_multifloor_exit_nodes(destination, destination_floor_number)
 
-        if self.multifloor_navnet.has_node(end_node):
-            n_edges = self.multifloor_navnet.edges(end_node)
-            if n_edges == 1:
-                LOG.error("No exit from this room. Check the navnet")
-                return None
-        else:
-            LOG.error("Dest coordinates not in navnet: %s", str(end_node))
-            return None
+        # Get possible routes
+        valid_routes = []
+        for s_node, e_node in product(starting_nodes, exit_nodes):
 
-        # Get route
-        try:
-            route = nx.astar_path(self.multifloor_navnet, start_node, end_node)
-        except Exception as e:
-            LOG.exception("Here is the exception: %s", e)
-            LOG.error(
-                "No route between: %s, %s", starting_location, destination
-            )
-            return None
+            try:
+                route = nx.astar_path(self.multifloor_navnet, s_node, e_node)
+                valid_routes.append(route)
+            except Exception as e:
+                LOG.exception("Here is the exception: %s", e)
+                LOG.warning(
+                    "No route between: %s, %s", starting_location, destination
+                )
 
-        return route
+        return valid_routes
 
-    def get_route_same_floor(
+    def get_all_possible_routes_same_floor(
         self, floor_number, current_location, destination
     ):
         """Find the best route between two locations on the same floor.
@@ -514,64 +538,26 @@ class Navigation:
         --------
         route : list of (x, y) positions
         """
-        # Pace expected in unit length of the floormap per simulation timestep
-        floorplan = self.floorplans[floor_number]
+         # Start node
+        starting_nodes = self.get_valid_single_floor_exit_nodes(current_location, floor_number)
 
-        if isinstance(current_location, tuple):
-            start_coords = current_location
-        else:
-            start_coords = floorplan.get_room_exit_coords(current_location)
-            if self.navnet_per_floor[floor_number].has_node(start_coords):
-                n_edges = self.navnet_per_floor[floor_number].edges(
-                    start_coords
+        # End node
+        exit_nodes = self.get_valid_single_floor_exit_nodes(destination, floor_number)
+
+        # Get possible routes
+        valid_routes = []
+        for s_node, e_node in product(starting_nodes, exit_nodes):
+
+            try:
+                route = nx.astar_path(self.navnet_per_floor[floor_number], s_node, e_node)
+                valid_routes.append(route)
+            except Exception as e:
+                LOG.exception("Here is the exception: %s", e)
+                LOG.warning(
+                    "No route between: %s, %s", current_location, destination
                 )
-                if n_edges == 1:
-                    LOG.error("No exit from this room. Check the navnet")
-                    return None
 
-        if isinstance(destination, tuple):
-            end_coords = destination
-        else:
-            end_coords = floorplan.get_room_exit_coords(destination)
-            if self.navnet_per_floor[floor_number].has_node(end_coords):
-                n_edges = self.navnet_per_floor[floor_number].edges(end_coords)
-                if n_edges == 1:
-                    LOG.error("No exit from this room. Check the navnet")
-                    return None
-
-        if start_coords is None or end_coords is None:
-            return None
-
-        if not self.navnet_per_floor[floor_number].has_node(start_coords):
-            LOG.error("Start coordinates not in nav network: %s", start_coords)
-            return None
-
-        if not self.navnet_per_floor[floor_number].has_node(end_coords):
-            if not (isinstance(destination, tuple)):
-                dest_space = self.floorplans[floor_number].spaces[destination]
-                dest_name = dest_space.unique_name
-                # This should never happen but for now, here is a workaround.
-            else:
-                dest_name = destination
-            LOG.error(
-                "End coordinates not in nav network: %s. Destination %s",
-                end_coords,
-                dest_name,
-            )
-            return None
-
-        try:
-            route = nx.astar_path(
-                self.navnet_per_floor[floor_number], start_coords, end_coords
-            )
-        except Exception as e:
-            LOG.exception("Here is the exception: %s", str(e))
-            LOG.info(
-                "No route between: (%s, %s)", current_location, destination
-            )
-            return None
-
-        return route
+        return valid_routes
 
 
 def remove_unnecessary_coords(route):
