@@ -598,6 +598,9 @@ class FacilityTransmissionModel:
         # 2. agents are in different spaces but only if the spaces
         #    are not neighbors in the hallway graphs
 
+        if not agents:
+            return
+
         positions_vector = np.array([a.pos for a in agents])
         proximity_indices = self.identify_xy_proximity(positions_vector)
 
