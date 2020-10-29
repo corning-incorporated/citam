@@ -250,7 +250,6 @@ class Navigation:
         --------
 
         """
-        print("Combining navigation networks...")
         self.multifloor_navnet = nx.DiGraph()
         # Relabel nodes in each floor navnet
         for fn in range(len(self.floorplans)):
@@ -308,7 +307,6 @@ class Navigation:
         match the desired traffic pattern.
         """
         LOG.info("Applying this policy {%s}: ", policy)
-        print(policy)
         if policy["direction"] == TWO_WAY_TRAFFIC:
             return
 
@@ -424,7 +422,7 @@ class Navigation:
         if not routes:
             return None
 
-        routes.sort(key = lambda route: len(route))
+        routes.sort(key=lambda route: len(route))
 
         tmp_route = unroll_route(routes[0], pace)
         if len(self.floorplans) == 1:
@@ -439,29 +437,33 @@ class Navigation:
         navigation network.
         """
         if isinstance(location, tuple):
-            exit_nodes = [(
-                location[0],
-                location[1],
-                floor_number
-            )]
+            exit_nodes = [(location[0], location[1], floor_number)]
         else:
-            exit_coords = self.floorplans[
-                floor_number
-            ].get_room_exit_coords(location)
+            exit_coords = self.floorplans[floor_number].get_room_exit_coords(
+                location
+            )
             if exit_coords is None:
                 LOG.error("No exit from this room. Check the navnet")
                 return None
-            exit_nodes = [(coor[0], coor[1], floor_number) for coor in exit_coords]
+            exit_nodes = [
+                (coor[0], coor[1], floor_number) for coor in exit_coords
+            ]
 
-        valid_exit_nodes = [ node for node in exit_nodes
-            if self.multifloor_navnet.has_node(node) and len(self.multifloor_navnet.edges(node)) >= 1
+        valid_exit_nodes = [
+            node
+            for node in exit_nodes
+            if self.multifloor_navnet.has_node(node)
+            and len(self.multifloor_navnet.edges(node)) >= 1
         ]
         if not valid_exit_nodes:
             if isinstance(location, int):
                 loc_name = self.floorplans[floor_number].spaces[location].id
             else:
                 loc_name = location
-            LOG.error("Exit coordinates not in navnet or disconnected: %s", str(loc_name))
+            LOG.error(
+                "Exit coordinates not in navnet or disconnected: %s",
+                str(loc_name),
+            )
 
         return valid_exit_nodes
 
@@ -470,33 +472,32 @@ class Navigation:
         navigation network.
         """
         if isinstance(location, tuple):
-            exit_nodes = [(
-                location[0],
-                location[1]
-            )]
+            exit_nodes = [(location[0], location[1])]
         else:
-            exit_coords = self.floorplans[
-                floor_number
-            ].get_room_exit_coords(location)
+            exit_coords = self.floorplans[floor_number].get_room_exit_coords(
+                location
+            )
             if exit_coords is None:
                 LOG.error("No exit from this room. Check the navnet")
                 return None
             exit_nodes = [(coor[0], coor[1]) for coor in exit_coords]
 
-        print("Exit nodes are: ", exit_nodes)
-        valid_exit_nodes = [ node for node in exit_nodes
-            if self.navnet_per_floor[floor_number].has_node(node) and len(self.navnet_per_floor[floor_number].edges(node)) >= 1
+        valid_exit_nodes = [
+            node
+            for node in exit_nodes
+            if self.navnet_per_floor[floor_number].has_node(node)
+            and len(self.navnet_per_floor[floor_number].edges(node)) >= 1
         ]
-        print("Valid exit nodes", valid_exit_nodes,
-            self.navnet_per_floor[floor_number].has_node(exit_nodes[0]),
-            len(self.navnet_per_floor[floor_number].edges(exit_nodes[0]))
-        )
+
         if not valid_exit_nodes:
             if isinstance(location, int):
                 loc_name = self.floorplans[floor_number].spaces[location].id
             else:
                 loc_name = location
-            LOG.error("Exit coordinates not in navnet or disconnected: %s", str(loc_name))
+            LOG.error(
+                "Exit coordinates not in navnet or disconnected: %s",
+                str(loc_name),
+            )
 
         return valid_exit_nodes
 
@@ -505,13 +506,17 @@ class Navigation:
         starting_location,
         starting_floor_number,
         destination,
-        destination_floor_number
+        destination_floor_number,
     ):
         # Start node
-        starting_nodes = self.get_valid_multifloor_exit_nodes(starting_location, starting_floor_number)
+        starting_nodes = self.get_valid_multifloor_exit_nodes(
+            starting_location, starting_floor_number
+        )
 
         # End node
-        exit_nodes = self.get_valid_multifloor_exit_nodes(destination, destination_floor_number)
+        exit_nodes = self.get_valid_multifloor_exit_nodes(
+            destination, destination_floor_number
+        )
 
         # Get possible routes
         valid_routes = []
@@ -543,18 +548,24 @@ class Navigation:
         --------
         route : list of (x, y) positions
         """
-         # Start node
-        starting_nodes = self.get_valid_single_floor_exit_nodes(current_location, floor_number)
+        # Start node
+        starting_nodes = self.get_valid_single_floor_exit_nodes(
+            current_location, floor_number
+        )
 
         # End node
-        exit_nodes = self.get_valid_single_floor_exit_nodes(destination, floor_number)
+        exit_nodes = self.get_valid_single_floor_exit_nodes(
+            destination, floor_number
+        )
 
         # Get possible routes
         valid_routes = []
         for s_node, e_node in product(starting_nodes, exit_nodes):
 
             try:
-                route = nx.astar_path(self.navnet_per_floor[floor_number], s_node, e_node)
+                route = nx.astar_path(
+                    self.navnet_per_floor[floor_number], s_node, e_node
+                )
                 valid_routes.append(route)
             except Exception as e:
                 LOG.exception("Here is the exception: %s", e)

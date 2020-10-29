@@ -23,7 +23,7 @@ Date Created: May 12, 2020
 import itertools
 import numpy as np
 import math
-from svgpathtools import Line, Path, CubicBezier
+from svgpathtools import Line, Path
 
 from citam.engine.point import Point
 
@@ -573,7 +573,6 @@ def find_door_line(cubic_bezier):  # TODO: Create unit test for this function
     arc_start = Point(x=round(Ax), y=round(Ay))
     arc_end = Point(x=round(Cx), y=round(Cy))
 
-    # print('New control point: ', x, y)
     # Finally, the line of interest is line 3 below based on
     # assuming that the start point of the bezier is where
     # the door starts
@@ -675,19 +674,3 @@ def remove_segment_from_wall(wall, segment, verbose=False):
     valid_lines = [vl for vl in valid_lines if vl.length() > 1]
 
     return valid_lines
-
-
-if __name__ == "__main__":
-
-    cubic_bezier = CubicBezier(
-        start=(3455.0684 + 2204.5262j),
-        control1=(3456.1214 + 2189.3597j),
-        control2=(3468.8934 + 2177.69j),
-        end=(3484.0928 + 2178.006j),
-    )
-
-    door = find_door_line(cubic_bezier)
-
-    print("Correct answer: 3455 to 3486 and y = 2208")
-
-    pass
