@@ -204,7 +204,9 @@ def test_oneway_policy_missing_network(
         )
 
 
-def test_get_best_possible_routes_same_floor(simple_facility_floorplan, monkeypatch, datadir):
+def test_get_best_possible_routes_same_floor(
+    simple_facility_floorplan, monkeypatch, datadir
+):
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
     nav = Navigation([simple_facility_floorplan], "test_simple_facility", None)
     floor_number = 0
