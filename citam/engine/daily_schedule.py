@@ -195,7 +195,6 @@ class Schedule:
             next_meeting = self.meetings[self.next_meeting_index]
             next_meeting_start_time = next_meeting.start_time
             # Check if meeting is happening within 15 timestep of now, if so
-            print("Next meeting start time: ", next_meeting_start_time)
             if next_meeting.start_time - len(self.itinerary) <= MEETING_BUFFER:
                 schedule_item = ScheduleItem(
                     purpose=MEETING,
@@ -273,7 +272,6 @@ class Schedule:
 
         # TODO: refactor this function to add to valid purpose only after all
         # the tests have passed
-        print("Getting valid purposes...")
         # Count how many items of each type is already in the schedule
         n_items = [0 for i in self.possible_purposes]
         for employee_item in self.schedule_items:

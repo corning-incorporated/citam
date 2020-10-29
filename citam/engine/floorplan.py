@@ -176,7 +176,7 @@ class Floorplan:
         for room_door in room.doors:
             x = round(room_door.point(0.5).real)
             y = round(room_door.point(0.5).imag)
-            exit_coords.append((x,y))
+            exit_coords.append((x, y))
 
         return exit_coords
 

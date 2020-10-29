@@ -126,16 +126,9 @@ class NavigationBuilder:
         """Iterate over each door in floorplan and create perpendicular nav
         segments for each.
         """
-        test_coords = None
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
-            # if door.space1 and door.space2:
-            #     if door.space1.id == '61387' or door.space2.id == '61387':
-            #         print("Found the door of interest!!!")
-            #         print("Door path is:", door.path)
-            #         test_coords = door.intersect_coords
-
             self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             if door in self.excluded_doors:
                 # Add short segment between current coords for door and the
@@ -161,30 +154,15 @@ class NavigationBuilder:
                 stop_at_existing_segments=True,
             )
 
-
-            # if door.space1 and door.space2:
-            #     if door.space1.id == '61344' or door.space2.id == '61344':
-            #         print("Found first door here <>")
-            #         print("Segements found: ", len(segments), [seg.id for seg in seg_spaces])
-            #         for seg in segments:
-            #             print(seg[0], seg[-1])
-
-
             if len(segments) == 0:
                 LOG.warning("No nav segments found. This is not typical.")
                 LOG.info("Door is: %s", door)
             self._add_spaces_to_hallway_graph(seg_spaces)
             self._update_navnet(segments, seg_spaces, door_width)
 
-                    # quit()
-
-        # print("Details for door of interest (coords) --> ", test_coords)
-        # print("part of navnet:", self.floor_navnet.has_node(test_coords))
-        # print("number of edges:", len(self.floor_navnet.edges(test_coords)))
-        # quit()
-
     def _create_nav_segments_for_aisles(self):
-        """Iterate over each hallway and create nav segments along each aisle.
+        """Iterate over each hallway and create nav segments along each
+        aisle.
         """
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.spaces))
         for i, space in enumerate(self.current_floorplan.spaces):
@@ -421,10 +399,6 @@ class NavigationBuilder:
             if len(seg) in [0, 1]:
                 raise ValueError("Each segment must have two points.")
 
-            for seg_space in seg_spaces:
-                if seg_space.id == '61387':
-                    print("We are indeed doing this", seg[0], seg[-1])
-
             coords1 = (seg[0].x, seg[0].y)
             self.floor_navnet.add_node(coords1, node_type="step")
             if self.add_all_nav_points:
@@ -518,9 +492,7 @@ class NavigationBuilder:
                 str(new_point),
             )
         elif len(boundary_spaces) == 1:
-            LOG.info(
-                "{%s} on space boundary. Is it an entrance?", new_point
-            )
+            LOG.info("{%s} on space boundary. Is it an entrance?", new_point)
             current_space = boundary_spaces[0]
             return current_space
         else:
@@ -537,15 +509,15 @@ class NavigationBuilder:
         return current_space
 
     def _update_segments(self, new_point, direction, segments):
-        """Given a valid new point, update navigation segments.
-        """
+        """Given a valid new point, update navigation segments."""
         if direction == -1:
             segments[-1] = [new_point] + segments[-1]
         else:
             segments[-1].append(new_point)
 
     def _is_crossing_wall(self, first_point, new_point):
-        """Verify if that the current nav segment has touched an existing wall.
+        """Verify if that the current nav segment has touched an existing
+        wall.
         """
         test_line = Line(
             start=first_point.complex_coords,
@@ -553,16 +525,15 @@ class NavigationBuilder:
         )
         # TODO: Change test_line to be the last segment!
         for wall in self.current_floorplan.walls:
-            if (
-                wall.length() > 1
-                and len(test_line.intersect(wall)) > 0
-            ):
+            if wall.length() > 1 and len(test_line.intersect(wall)) > 0:
                 # We encountered a wall!!!
                 return True
 
         return False
 
-    def _is_heading_outside_facility(self, new_point, direction, dx, dy, look_ahead_dist=3):
+    def _is_heading_outside_facility(
+        self, new_point, direction, dx, dy, look_ahead_dist=3
+    ):
         """Verify if current nav segment is moving outside the facility
         within a given look ahead distance.
         """
@@ -570,9 +541,7 @@ class NavigationBuilder:
             x=round(new_point.x + look_ahead_dist * direction * dx),
             y=round(new_point.y + look_ahead_dist * direction * dy),
         )
-        test_point_space, _ = self._find_location_of_point(
-            test_point
-        )
+        test_point_space, _ = self._find_location_of_point(test_point)
         if test_point_space is None:
             return True
 
@@ -580,7 +549,8 @@ class NavigationBuilder:
 
     def _is_crossing_door(self, first_point, new_point):
         """Verify if current nav segment is crossing a door, if so add door
-        to list of excluded doors (from processing) and update segements accordingly.
+        to list of excluded doors (from processing) and update segements
+        accordingly.
         """
         test_line = Line(
             start=first_point.complex_coords,
@@ -590,7 +560,6 @@ class NavigationBuilder:
         if coords is not None:
             door.intersect_coords = coords
             self.excluded_doors.append(door)
-            # print("Comparison between new point and door coords:",new_point, coords)
             return coords
 
         return None
@@ -645,7 +614,9 @@ class NavigationBuilder:
 
             current_space, _ = self._find_location_of_point(new_point)
             if current_space is None:
-                current_space = self.find_if_valid_nearby_space_exits(new_point, direction, dx, dy)
+                current_space = self.find_if_valid_nearby_space_exits(
+                    new_point, direction, dx, dy
+                )
 
             segment_spaces.append(current_space)
 
@@ -666,33 +637,43 @@ class NavigationBuilder:
                     new_space, _ = self._find_location_of_point(new_point)
 
                     # Check if heading outside facility
-                    if new_space is None and self._is_heading_outside_facility(new_point, direction, dx, dy):
+                    if (
+                        new_space is None
+                        and self._is_heading_outside_facility(
+                            new_point, direction, dx, dy
+                        )
+                    ):
                         break
 
-                    if new_space is not None:
+                    if new_space:
+
                         current_space = new_space
-                        if direction == 1:
-                            segments.append([segments[-1][-1], new_point])
-                        else:
-                            segments.append([new_point, segments[-1][0]])
-
                         segment_spaces.append(current_space)
+                        door_inters_coords = self._is_crossing_door(
+                            first_point, new_point
+                        )
 
-                    # Is this a door
-                    door_inters_coords = self._is_crossing_door(first_point, new_point)
+                        if door_inters_coords:
+                            # create new segment from intersect coords
+                            inters_point = Point(
+                                door_inters_coords[0], door_inters_coords[1]
+                            )
+                            self._update_segments(
+                                inters_point, direction, segments
+                            )
+                            segments.append([inters_point])
+                            current_space = new_space
 
-                    # if door_inters_coords:
+                        else:  # Create new segment from last point
+                            if direction == 1:
+                                segments.append([segments[-1][-1], new_point])
+                            else:
+                                segments.append([new_point, segments[-1][0]])
 
-                    #     # We can keep adding points to segment
-                    # else:
-                    #     self._update_segments(new_point, direction, segments)
-                    #     if new_space is not None:
-                    #         if direction == 1:
-                    #             segments.append([segments[-1][-1], new_point])
-                    #         else:
-                    #             segments.append([new_point, segments[-1][0]])
-
-                    #         segment_spaces.append(current_space)
+                    else:
+                        # Just update segment. This is to support edge case
+                        # where a small gap exists between valid spaces
+                        self._update_segments(new_point, direction, segments)
 
                 if stop_at_existing_segments and self.floor_navnet.has_node(
                     (new_point.x, new_point.y)

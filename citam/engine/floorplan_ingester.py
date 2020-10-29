@@ -259,7 +259,7 @@ class FloorplanIngester:
         return wall_index, best_door_line
 
     def _find_all_overlapping_walls(
-        self,  door_line: Line
+        self, door_line: Line
     ) -> Dict[int, List[int]]:
         """
         Given a door and one of the spaces that it connects, find the other
@@ -290,9 +290,7 @@ class FloorplanIngester:
             space_ids = []
             for space_index in results:
                 space_ids.append(self.spaces[space_index].unique_name)
-            msg = (
-                "Door connecting more than 2 spaces. This is not typical: "
-            )
+            msg = "Door connecting more than 2 spaces. This is not typical: "
             LOG.warning(msg + str(space_ids))
 
         return results

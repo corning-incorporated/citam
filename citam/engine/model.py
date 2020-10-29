@@ -96,23 +96,6 @@ class FacilityTransmissionModel:
             self.floorplans, self.facility_name, self.traffic_policy
         )
 
-        # # #### DEBUGGING
-        # start_location, end_location = None, None
-        # for i, space in enumerate(self.floorplans[0].spaces):
-        #     if space.id == '61387':
-        #         start_location = i
-        #         print("Number of doors: ", len(space.doors))
-        #     if space.id == '61220':
-        #         end_location = i
-        #     if start_location and end_location:
-        #         break
-        # route = self.navigation.get_route(start_location, 0, end_location, 0, 10.0)
-        # if route:
-        #     print("Route is: ", len(route))
-        # else:
-        #     print("Route not found!!!")
-        # quit()
-
         # remove spaces that have no exit from the pool
         self.remove_unreachable_rooms()
 
@@ -455,14 +438,6 @@ class FacilityTransmissionModel:
         """
         Verify that this door is part of the navnet.
         """
-        door_mid_point = entrance_door.path.point(0.5)
-        print(
-            "quick test: ",
-            self.navigation.navnet_per_floor[entrance_floor].has_node(
-                door_mid_point
-            ),
-            entrance_door.is_intersect_and_midpoint_same(),
-        )
         entrance_coords = entrance_door.intersect_coords
         if self.navigation.navnet_per_floor[entrance_floor].has_node(
             entrance_coords
@@ -930,8 +905,6 @@ class FacilityTransmissionModel:
         filter_elem.append(blur_elem)
         root.append(filter_elem)
         color_scale = cm.get_cmap("RdYlGn")
-
-        print("Number of contact coord: ", len(contacts_per_coord))
 
         for key, v in contacts_per_coord.items():
             x, y = key
