@@ -204,19 +204,20 @@ def test_oneway_policy_missing_network(
         )
 
 
-def test_get_route_same_floor(simple_facility_floorplan, monkeypatch, datadir):
+def test_get_best_possible_routes_same_floor(simple_facility_floorplan, monkeypatch, datadir):
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
     nav = Navigation([simple_facility_floorplan], "test_simple_facility", None)
     floor_number = 0
     current_location = 1
     destination = 8
-    route = nav.get_route_same_floor(
+    routes = nav.get_best_possible_routes_same_floor(
         floor_number, current_location, destination
     )
-    assert len(route) == 8
+    assert len(routes) == 1
+    assert len(routes[0]) == 8
 
 
-def test_get_multifloor_route_no_stairs(
+def test_get_best_possible_routes_multifloor_no_stairs(
     simple_facility_floorplan_2_floors, monkeypatch, datadir
 ):
 
@@ -233,16 +234,16 @@ def test_get_multifloor_route_no_stairs(
     destination = 8
     destination_floor_number = 1
 
-    route = nav.get_multifloor_route(
+    routes = nav.get_best_possible_routes_multifloor(
         starting_location,
         starting_floor_number,
         destination,
         destination_floor_number,
     )
-    assert route is None
+    assert routes == []
 
 
-def test_get_multifloor_route(
+def test_get_best_possible_routes_multifloor(
     simple_facility_floorplan_2_floors, monkeypatch, datadir
 ):
 
@@ -262,13 +263,14 @@ def test_get_multifloor_route(
     destination = 8
     destination_floor_number = 1
 
-    route = nav.get_multifloor_route(
+    routes = nav.get_best_possible_routes_multifloor(
         starting_location,
         starting_floor_number,
         destination,
         destination_floor_number,
     )
-    assert len(route) == 11
+    assert len(routes) == 1
+    assert len(routes[0]) == 11
 
 
 def test_remove_unnecessary_coords_same_floor():

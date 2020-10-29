@@ -408,11 +408,11 @@ class Navigation:
             between the given starting location and destination
         """
         if len(self.floorplans) == 1:
-            routes = self.get_all_possible_routes_same_floor(
+            routes = self.get_best_possible_routes_same_floor(
                 starting_floor_number, starting_location, destination
             )
         else:
-            routes = self.get_all_possible_routes_multifloor(
+            routes = self.get_best_possible_routes_multifloor(
                 starting_location,
                 starting_floor_number,
                 destination,
@@ -501,7 +501,7 @@ class Navigation:
 
         return valid_exit_nodes
 
-    def get_all_possible_routes_multifloor(
+    def get_best_possible_routes_multifloor(
         self,
         starting_location,
         starting_floor_number,
@@ -526,14 +526,14 @@ class Navigation:
                 route = nx.astar_path(self.multifloor_navnet, s_node, e_node)
                 valid_routes.append(route)
             except Exception as e:
-                # LOG.exception("Here is the exception: %s", e)
+                LOG.exception("Here is the exception: %s", e)
                 LOG.warning(
                     "No route between: %s, %s", starting_location, destination
                 )
 
         return valid_routes
 
-    def get_all_possible_routes_same_floor(
+    def get_best_possible_routes_same_floor(
         self, floor_number, current_location, destination
     ):
         """Find the best route between two locations on the same floor.
@@ -568,7 +568,7 @@ class Navigation:
                 )
                 valid_routes.append(route)
             except Exception as e:
-                # LOG.exception("Here is the exception: %s", e)
+                LOG.exception("Here is the exception: %s", e)
                 LOG.warning(
                     "No route between: %s, %s", current_location, destination
                 )

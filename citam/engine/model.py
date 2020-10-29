@@ -179,8 +179,9 @@ class FacilityTransmissionModel:
             self.restrooms.append(floor_restrooms)
             self.meeting_rooms.append(floor_meeting_rooms)
 
-
-        self.total_offices = sum(len(rooms) for rooms in self.all_office_spaces)
+        self.total_offices = sum(
+            len(rooms) for rooms in self.all_office_spaces
+        )
         LOG.info("Total offices is " + str(self.total_offices))
 
         n_rooms = sum(len(rooms) for rooms in self.labs)
@@ -335,7 +336,7 @@ class FacilityTransmissionModel:
     def find_possible_entrance_doors(self, entrance_floor, entrance_space):
         """
         Iterate over all doors in the facility to identify any that belong to
-        the entrance floor and entrance spaceand are outside facing.
+        the entrance floor and entrance space and are outside facing.
         """
         possible_entrance_doors = []
         for door in self.navigation.floorplans[entrance_floor].doors:
