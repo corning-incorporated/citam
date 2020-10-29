@@ -526,7 +526,7 @@ class Navigation:
                 route = nx.astar_path(self.multifloor_navnet, s_node, e_node)
                 valid_routes.append(route)
             except Exception as e:
-                LOG.exception("Here is the exception: %s", e)
+                # LOG.exception("Here is the exception: %s", e)
                 LOG.warning(
                     "No route between: %s, %s", starting_location, destination
                 )
@@ -568,7 +568,7 @@ class Navigation:
                 )
                 valid_routes.append(route)
             except Exception as e:
-                LOG.exception("Here is the exception: %s", e)
+                # LOG.exception("Here is the exception: %s", e)
                 LOG.warning(
                     "No route between: %s, %s", current_location, destination
                 )
