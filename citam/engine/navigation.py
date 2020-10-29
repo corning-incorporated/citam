@@ -17,6 +17,7 @@ import logging
 import math
 import os
 import pickle
+from itertools import product
 
 import networkx as nx
 from svgpathtools import Line
@@ -213,22 +214,25 @@ class Navigation:
             if not space2.is_space_vertical():
                 continue
 
-            # add edges between room the exit coords of the vertical spaces
-            # (TODO: maybe create edges between an xy coords inside rooms?)
-            node1 = (coords1[0], coords1[1], floor_number1)
             coords2 = self.floorplans[floor_number2].get_room_exit_coords(j)
             if coords2 is None:
                 continue
-            node2 = (coords2[0], coords2[1], floor_number2)
 
-            if self.multifloor_navnet.has_node(
-                node1
-            ) and self.multifloor_navnet.has_node(node2):
-                self.multifloor_navnet.add_edge(node1, node2)
-                self.multifloor_navnet.add_edge(node2, node1)
-                n_vert_edges += 1
-            else:
-                LOG.warning("%s or %s not found in graph", node1, node2)
+            # add edges between room the exit coords of the vertical spaces
+            # TODO: create edge between a random xy coords inside rooms
+
+            for c1, c2 in product(coords1, coords2):
+                node1 = (c1[0], c1[1], floor_number1)
+                node2 = (c2[0], c2[1], floor_number2)
+
+                if self.multifloor_navnet.has_node(
+                    node1
+                ) and self.multifloor_navnet.has_node(node2):
+                    self.multifloor_navnet.add_edge(node1, node2)
+                    self.multifloor_navnet.add_edge(node2, node1)
+                    n_vert_edges += 1
+                else:
+                    LOG.warning("%s or %s not found in graph", node1, node2)
         return n_vert_edges
 
     def create_multifloor_navnet(self):

@@ -96,6 +96,23 @@ class FacilityTransmissionModel:
             self.floorplans, self.facility_name, self.traffic_policy
         )
 
+        # #### DEBUGGING
+        start_location, end_location = None, None
+        for i, space in enumerate(self.floorplans[0].spaces):
+            if space.id == '61227':
+                start_location = i
+                print("Number of doors: ", len(space.doors))
+            if space.id == '61228':
+                end_location = i
+            if start_location and end_location:
+                break
+        route = self.navigation.get_route(start_location, 0, end_location, 0, 10.0)
+        if route:
+            print("Route is: ", len(route))
+        else:
+            print("Route not found!!!")
+        quit()
+
         # remove spaces that have no exit from the pool
         self.remove_unreachable_rooms()
 
