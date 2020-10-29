@@ -151,7 +151,6 @@ class FloorplanUpdater:
         """
         if self.svg_file is not None:
             svg_wall_paths, svg_door_paths = self.read_updated_svg_file()
-            print("New door is: ", svg_door_paths)
             self.update_from_SVG_data(svg_wall_paths, svg_door_paths)
 
         if self.csv_file is not None:
