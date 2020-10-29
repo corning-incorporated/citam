@@ -15,22 +15,22 @@ def test_parse_csv_metadata_file_file_not_found():
 def test_parse_csv_metadata_file_missing_column(datadir):
     # Test if missing column is handled
     csv_file = datadir.join("missing_column.csv")
-    data = parse_csv_metadata_file(csv_file)
-    assert len(data) == 0
+    with pytest.raises(ValueError):
+        parse_csv_metadata_file(csv_file)
 
 
 def test_parse_csv_metadata_file_missing_value(datadir):
     # Test if missing value is handled
     csv_file = datadir.join("missing_value.csv")
-    data = parse_csv_metadata_file(csv_file)
-    assert len(data) == 0
+    with pytest.raises(ValueError):
+        parse_csv_metadata_file(csv_file)
 
 
 def test_parse_csv_metadata_file_invalid_value(datadir):
     # Test if invalid value for space function is handled well
     csv_file = datadir.join("invalid_value.csv")
-    data = parse_csv_metadata_file(csv_file)
-    assert len(data) == 0
+    with pytest.raises(ValueError):
+        parse_csv_metadata_file(csv_file)
 
 
 def test_parse_csv_metadata_file_correct_number_of_rows(datadir):

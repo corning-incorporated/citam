@@ -80,23 +80,28 @@ def parse_csv_metadata_file(csv_file):
                 for required_data in REQUIRED_SPACE_METADATA:
                     if required_data not in header:
                         msg = f"{required_data} column is missing in csv file"
-                        LOG.error(msg)
-                        return []
+                        raise ValueError(msg)
             else:
                 row_data = {}
+                if len(row) != len(header):
+                    raise ValueError(f"Wrong number of columsn in row {i+1}")
                 for c, name in enumerate(header):
                     value = row[c]
-                    if str(value) == "":
-                        LOG.error("No %s found in this row %s", name, row)
-                        return []
+                    if str(value) == "" and name in required_data:
+                        msg = f"No '{name}' found in this row {i+1}"
+                        raise ValueError(msg)
+
                     if header[c] in supported_columns:
                         row_data[header[c]] = value.lower()
                         if (
                             header[c] == "space_function"
                             and value.lower() not in SUPPORTED_SPACE_FUNCTIONS
                         ):
-                            LOG.error("Invalid space function: %s", value)
-                            return []
+
+                            msg = f"Invalid space function: '{value}' in row \
+                                    {i+1}. Valid entries are: \
+                                    {SUPPORTED_SPACE_FUNCTIONS}"
+                            raise ValueError(msg)
 
                 space_info.append(row_data)
 

@@ -84,6 +84,10 @@ def find_aisles(space, valid_boundaries, no_repeat=True):
             continue
 
         wall2 = find_closest_parallel_wall(valid_boundaries, wall1)
+
+        if not wall2:
+            continue
+
         if wall2.length() <= 1.0:
             continue
 

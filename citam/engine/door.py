@@ -17,7 +17,7 @@ from citam.engine.point import Point
 
 
 class Door:
-    _intersect_coords: tuple
+    _intersect_coords: tuple = None
 
     def __init__(
         self,
