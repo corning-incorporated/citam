@@ -91,8 +91,8 @@ class NavigationBuilder:
         """
 
         # Create nav segements for all aisles and doors
-        # LOG.info("Creating nav segments for each aisle...")
-        # self._create_nav_segments_for_aisles()
+        LOG.info("Creating nav segments for each aisle...")
+        self._create_nav_segments_for_aisles()
 
         LOG.info("Processing doors for each space...")
         self._create_nav_segments_for_doors()
@@ -130,10 +130,11 @@ class NavigationBuilder:
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
-            if door.space1 and door.space2:
-                if door.space1.id == '61387' or door.space2.id == '61387':
-                    print("Found this door here instead!!!", i)
-                    test_coords = door.intersect_coords
+            # if door.space1 and door.space2:
+            #     if door.space1.id == '61387' or door.space2.id == '61387':
+            #         print("Found the door of interest!!!")
+            #         print("Door path is:", door.path)
+            #         test_coords = door.intersect_coords
 
             self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             if door in self.excluded_doors:
@@ -153,17 +154,21 @@ class NavigationBuilder:
             door_width = door.path.length()
             door_normal = door.path.normal(0.5)
 
-            if door.space1 and door.space2:
-                if door.space1.id == '61344' or door.space2.id == '61344':
-                    print("Found first door here <>")
+            segments, seg_spaces = self.compute_nav_segments(
+                door.midpoint,
+                door_normal,
+                door_width,
+                stop_at_existing_segments=True,
+            )
 
-                segments, seg_spaces = self.compute_nav_segments(
-                    door.midpoint,
-                    door_normal,
-                    door_width,
-                    stop_at_existing_segments=True,
-                )
-                quit()
+
+            # if door.space1 and door.space2:
+            #     if door.space1.id == '61344' or door.space2.id == '61344':
+            #         print("Found first door here <>")
+            #         print("Segements found: ", len(segments), [seg.id for seg in seg_spaces])
+            #         for seg in segments:
+            #             print(seg[0], seg[-1])
+
 
             if len(segments) == 0:
                 LOG.warning("No nav segments found. This is not typical.")
@@ -171,10 +176,12 @@ class NavigationBuilder:
             self._add_spaces_to_hallway_graph(seg_spaces)
             self._update_navnet(segments, seg_spaces, door_width)
 
-        print("Details for door of interest -->")
-        print("part of navnet:", self.floor_navnet.has_node(test_coords))
-        print("number of edges:", len(self.floor_navnet.edges(test_coords)))
-        quit()
+                    # quit()
+
+        # print("Details for door of interest (coords) --> ", test_coords)
+        # print("part of navnet:", self.floor_navnet.has_node(test_coords))
+        # print("number of edges:", len(self.floor_navnet.edges(test_coords)))
+        # quit()
 
     def _create_nav_segments_for_aisles(self):
         """Iterate over each hallway and create nav segments along each aisle.
@@ -214,7 +221,7 @@ class NavigationBuilder:
         if not self.add_all_nav_points:
             for seg_space in list(set(seg_spaces)):
                 self.find_intersections_in_space(seg_space)
-                self.find_and_remove_overlaps(seg_space)
+                # self.find_and_remove_overlaps(seg_space)
                 # TODO: Also look for overlapping segments and merge them while
                 # keeping all existing intersections. Would be great to
                 # merge parallel segments as well
@@ -414,6 +421,10 @@ class NavigationBuilder:
             if len(seg) in [0, 1]:
                 raise ValueError("Each segment must have two points.")
 
+            for seg_space in seg_spaces:
+                if seg_space.id == '61387':
+                    print("We are indeed doing this", seg[0], seg[-1])
+
             coords1 = (seg[0].x, seg[0].y)
             self.floor_navnet.add_node(coords1, node_type="step")
             if self.add_all_nav_points:
@@ -567,7 +578,7 @@ class NavigationBuilder:
 
         return False
 
-    def _handle_potential_door(self, first_point, new_point):
+    def _is_crossing_door(self, first_point, new_point):
         """Verify if current nav segment is crossing a door, if so add door
         to list of excluded doors (from processing) and update segements accordingly.
         """
@@ -579,10 +590,10 @@ class NavigationBuilder:
         if coords is not None:
             door.intersect_coords = coords
             self.excluded_doors.append(door)
-            # TODO: Stop current segment and start new one
-            return True
+            # print("Comparison between new point and door coords:",new_point, coords)
+            return coords
 
-        return False
+        return None
 
     def compute_nav_segments(
         self,
@@ -658,16 +669,30 @@ class NavigationBuilder:
                     if new_space is None and self._is_heading_outside_facility(new_point, direction, dx, dy):
                         break
 
-                    # Is this a door?
-                    door_found = self._handle_potential_door(first_point, new_point)
-
-                    # We can keep adding point to segment
-                    self._update_segments(new_point, direction, segments)
-
                     if new_space is not None:
                         current_space = new_space
-                        segments.append([segments[-1][-1], new_point])
+                        if direction == 1:
+                            segments.append([segments[-1][-1], new_point])
+                        else:
+                            segments.append([new_point, segments[-1][0]])
+
                         segment_spaces.append(current_space)
+
+                    # Is this a door
+                    door_inters_coords = self._is_crossing_door(first_point, new_point)
+
+                    # if door_inters_coords:
+
+                    #     # We can keep adding points to segment
+                    # else:
+                    #     self._update_segments(new_point, direction, segments)
+                    #     if new_space is not None:
+                    #         if direction == 1:
+                    #             segments.append([segments[-1][-1], new_point])
+                    #         else:
+                    #             segments.append([new_point, segments[-1][0]])
+
+                    #         segment_spaces.append(current_space)
 
                 if stop_at_existing_segments and self.floor_navnet.has_node(
                     (new_point.x, new_point.y)
@@ -861,6 +886,8 @@ class NavigationBuilder:
         any.
         """
 
+        raise NotImplementedError("Not implemented yet")
+
         return
 
     def find_intersections_in_space(self, space):
@@ -963,6 +990,9 @@ class NavigationBuilder:
             start=complex(point3[0], point3[1]),
             end=complex(point4[0], point4[1]),
         )
+
+        if line1.length() <= 1.0 or line2.length() <= 1.0:
+            return
 
         intersect_point = None
         intersects = line1.intersect(line2)
