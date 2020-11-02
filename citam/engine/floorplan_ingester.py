@@ -278,9 +278,6 @@ class FloorplanIngester:
         for space_index, space in enumerate(self.spaces):
             for wall_index_in_space, other_wall in enumerate(space.path):
                 if gsu.do_walls_overlap(other_wall, door_line):
-                    # new_walls2 = gsu.remove_segment_from_wall(
-                    #     other_wall, door_line
-                    # )
                     if space_index in results:
                         results[space_index].append(wall_index_in_space)
                     else:
