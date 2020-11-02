@@ -166,26 +166,19 @@ class Floorplan:
         """Given a room id, find the exit coords (xy point at the middle of
         the door)
         """
+
         room = self.spaces[room_id]
-        room_door = None
-
         if len(room.doors) == 0:
-            for door in self.doors:
-                if self.spaces[room_id] in [door.space1, door.space2]:
-                    room_door = door
-                    break
-            if room_door is None:
-                space_name = str(self.spaces[room_id].unique_name)
-                LOG.warning(space_name + " has no door")
-                return None
+            LOG.warning(f"{room.unique_name} has no door")
+            return None
 
-        else:
-            room_door = room.doors[0]
-
-        x = round(room_door.point(0.5).real)
-        y = round(room_door.point(0.5).imag)
-
-        return (x, y)
+        return [
+            (
+                round(room_door.point(0.5).real),
+                round(room_door.point(0.5).imag),
+            )
+            for room_door in room.doors
+        ]
 
     def export_to_svg(self, svg_file, include_doors=False):
         """Export the current floorplan to an SVG file.

@@ -74,20 +74,12 @@ class Space:
             for bound_line in self.boundaries
         )
 
-    def is_point_inside_space(
-        self, test_point, include_boundaries=False, verbose=False
-    ):
-
+    def is_point_inside_space(self, test_point, include_boundaries=False):
         # check if point is outside bounding box
-
         minx, maxx, miny, maxy = self.path.bbox()
         if test_point.x < round(minx) or test_point.x > round(maxx):
-            if verbose:
-                print("X is outside bounds")
             return False
         elif test_point.y < round(miny) or test_point.y > round(maxy):
-            if verbose:
-                print("Y is outside bounds")
             return False
 
         # Check if point is on the door line, for a room
@@ -137,12 +129,7 @@ class Space:
 
             # Return true if count is odd, false otherwise
             if count % 2 == 1:
-                if verbose:
-                    print("Count is: ", count)
                 return True
-
-        if verbose:
-            print("Final count is: ", count)
 
         return False
 
