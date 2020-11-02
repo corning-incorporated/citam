@@ -23,7 +23,7 @@ Date Created: May 12, 2020
 import itertools
 import numpy as np
 import math
-from svgpathtools import Line, Path, CubicBezier
+from svgpathtools import Line, Path
 
 from citam.engine.point import Point
 
@@ -499,32 +499,32 @@ def create_parallel_line(line, side=1):
     )
 
 
-def create_door_in_room_wall(room_wall, door_size=2.0):
+def compute_new_door_line(room_wall, door_size=2.0):
 
     # Add a door to room wall
     start_x = room_wall.start.real
     start_y = room_wall.start.imag
 
     # vector between start and end points
-
     Vx = room_wall.end.real - room_wall.start.real
     Vy = room_wall.end.imag - room_wall.start.imag
     V_norm = math.sqrt(Vx ** 2 + Vy ** 2)
     if V_norm == 0:
         return None
 
+    # Unit vector
     Vx = Vx / V_norm
     Vy = Vy / V_norm
 
+    # End point of door
     end_x = start_x + door_size * Vx
     end_y = start_y + door_size * Vy
 
+    # Start and end poitns of door line
     p = Point(start_x, start_y)
     q = Point(end_x, end_y)
 
-    door = Line(start=p.complex_coords, end=q.complex_coords)
-
-    return door
+    return Line(start=p.complex_coords, end=q.complex_coords)
 
 
 def find_door_line(cubic_bezier):  # TODO: Create unit test for this function
@@ -573,7 +573,6 @@ def find_door_line(cubic_bezier):  # TODO: Create unit test for this function
     arc_start = Point(x=round(Ax), y=round(Ay))
     arc_end = Point(x=round(Cx), y=round(Cy))
 
-    # print('New control point: ', x, y)
     # Finally, the line of interest is line 3 below based on
     # assuming that the start point of the bezier is where
     # the door starts
@@ -675,19 +674,3 @@ def remove_segment_from_wall(wall, segment, verbose=False):
     valid_lines = [vl for vl in valid_lines if vl.length() > 1]
 
     return valid_lines
-
-
-if __name__ == "__main__":
-
-    cubic_bezier = CubicBezier(
-        start=(3455.0684 + 2204.5262j),
-        control1=(3456.1214 + 2189.3597j),
-        control2=(3468.8934 + 2177.69j),
-        end=(3484.0928 + 2178.006j),
-    )
-
-    door = find_door_line(cubic_bezier)
-
-    print("Correct answer: 3455 to 3486 and y = 2208")
-
-    pass

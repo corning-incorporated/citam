@@ -85,7 +85,6 @@ def test_identify_xy_proximity_same_coords(simple_facility_model):
     positions_vector = np.array([[1, 1], [1, 1]])
     indices = model.identify_xy_proximity(positions_vector)
 
-    print(indices)
     assert indices.shape == (4, 2)
     assert (indices[0] == np.array([0, 0])).all()
 
