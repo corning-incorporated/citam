@@ -174,9 +174,10 @@ class Floorplan:
 
         return [
             (
-             round(room_door.point(0.5).real),
-             round(room_door.point(0.5).imag)
-            ) for room_door in room.doors
+                round(room_door.point(0.5).real),
+                round(room_door.point(0.5).imag),
+            )
+            for room_door in room.doors
         ]
 
     def export_to_svg(self, svg_file, include_doors=False):
