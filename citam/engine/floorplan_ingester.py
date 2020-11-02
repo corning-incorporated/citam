@@ -288,7 +288,7 @@ class FloorplanIngester:
             for space_index in results:
                 space_ids.append(self.spaces[space_index].unique_name)
             msg = "Door connecting more than 2 spaces. This is not typical: "
-            LOG.warning(msg + str(space_ids))
+            LOG.warning(f"{msg}: {', '.join(space_ids)}")
 
         return results
 
