@@ -169,16 +169,15 @@ class Floorplan:
 
         room = self.spaces[room_id]
         if len(room.doors) == 0:
-            LOG.warning(str(room.unique_name) + " has no door")
+            LOG.warning(f"{room.unique_name} has no door")
             return None
 
-        exit_coords = []
-        for room_door in room.doors:
-            x = round(room_door.point(0.5).real)
-            y = round(room_door.point(0.5).imag)
-            exit_coords.append((x, y))
-
-        return exit_coords
+        return [
+            (
+             round(room_door.point(0.5).real),
+             round(room_door.point(0.5).imag)
+            ) for room_door in room.doors
+        ]
 
     def export_to_svg(self, svg_file, include_doors=False):
         """Export the current floorplan to an SVG file.
