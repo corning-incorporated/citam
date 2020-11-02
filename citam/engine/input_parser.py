@@ -88,7 +88,7 @@ def parse_csv_metadata_file(csv_file):
                 for c, name in enumerate(header):
                     value = row[c]
                     if str(value) == "" and name in required_data:
-                        msg = f"No '{name}'' found in this row {i+1}"
+                        msg = f"No '{name}' found in this row {i+1}"
                         raise ValueError(msg)
 
                     if header[c] in supported_columns:
