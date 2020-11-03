@@ -55,7 +55,7 @@ class FacilityTransmissionModel:
         contact_distance,
         shifts,
         meetings_policy_params=None,
-        create_meetings=False,
+        create_meetings=True,
         scheduling_policy=None,
         traffic_policy=None,
         dry_run=False,
@@ -228,8 +228,10 @@ class FacilityTransmissionModel:
                 fp.doors,
                 fp.walls,
                 fp.aisles,
-                fp.width,
-                fp.height,
+                fp.minx,
+                fp.miny,
+                fp.maxx,
+                fp.maxy,
                 fp.floor_name,
                 fp.special_walls,
                 fp.traffic_policy,
@@ -769,6 +771,8 @@ class FacilityTransmissionModel:
             n_one_way_aisles = len(
                 [p for p in self.traffic_policy if p["direction"] != 0]
             )
+
+        fp_width = self.floorplans[0].maxx - self.floorplans[0].minx
         manifest_dict = {
             "TimestepInSec": 1,
             "NumberOfFloors": self.number_of_floors,
@@ -786,7 +790,7 @@ class FacilityTransmissionModel:
             "trajectory_file": "trajectory.txt",
             "floors": floors,
             "scaleMultiplier": max(
-                1, round(self.floorplans[0].width / 1500.0)
+                1, round(fp_width / 1500.0)
             ),
             "timestep": 1,
         }
@@ -818,10 +822,10 @@ class FacilityTransmissionModel:
                 current_time=None,
                 show_colobar=False,
                 viewbox=[
-                    -10,
-                    -10,
-                    self.floorplans[floor_number].width + 50,
-                    self.floorplans[floor_number].height + 50,
+                    self.floorplans[floor_number].minx - 50,
+                    self.floorplans[floor_number].miny - 50,
+                    self.floorplans[floor_number].maxx + 50,
+                    self.floorplans[floor_number].maxy + 50,
                 ],
             )
 
