@@ -15,24 +15,6 @@ def test_init_correct_number_of_objects(datadir):
     assert fi.walls == []
 
 
-# def test_read_input_files(datadir):
-
-#     svg_file = datadir + '/good_floorplan.svg'
-#     csv_file = datadir + '/TF1.csv'
-#     scale = 0.8
-#     fi = FloorplanIngester(svg_file,
-#                            csv_file,
-#                            scale,
-#                            extract_doors_from_file=True
-#                            )
-
-#     fi.read_input_files()
-#     assert len(fi.space_paths) == 214
-#     assert len(fi.door_paths) == 0
-#     assert len(fi.space_attributes) == 214
-#     assert len(fi.space_data) == 214
-
-
 def test_create_spaces_correct_number_of_spaces(rect_floorplan_ingester_data):
     rect_floorplan_ingester_data.create_spaces()
     assert len(rect_floorplan_ingester_data.spaces) == 10

@@ -20,8 +20,10 @@ def test_floorplan_from_directory(floorplan_pickle):
         walls,
         special_walls,
         aisles,
-        width,
-        height,
+        minx,
+        miny,
+        maxx,
+        maxy,
         scale,
     ) = pickle.load(open(floorplan_pickle, "rb"))
 
@@ -32,8 +34,10 @@ def test_floorplan_from_directory(floorplan_pickle):
     assert fp.walls == walls
     assert fp.special_walls == special_walls
     assert fp.aisles == aisles
-    assert fp.width == width
-    assert fp.height == height
+    assert fp.minx == minx
+    assert fp.miny == miny
+    assert fp.maxx == maxx
+    assert fp.maxy == maxy
     assert fp.scale == scale
 
 
@@ -44,8 +48,10 @@ def test_floorplan_from_directory_custom_floor_name(floorplan_pickle):
         walls,
         special_walls,
         aisles,
-        width,
-        height,
+        minx,
+        miny,
+        maxx,
+        maxy,
         scale,
     ) = pickle.load(open(floorplan_pickle, "rb"))
 
@@ -57,8 +63,10 @@ def test_floorplan_from_directory_custom_floor_name(floorplan_pickle):
     assert fp.walls == walls
     assert fp.special_walls == special_walls
     assert fp.aisles == aisles
-    assert fp.width == width
-    assert fp.height == height
+    assert fp.minx == minx
+    assert fp.miny == miny
+    assert fp.maxx == maxx
+    assert fp.maxy == maxy
     assert fp.scale == scale
     assert fp.floor_name == fn
 
@@ -70,8 +78,10 @@ def test_floorplan_from_directory_with_kwargs(floorplan_pickle):
         walls,
         special_walls,
         aisles,
-        width,
-        height,
+        minx,
+        miny,
+        maxx,
+        maxy,
         scale,
     ) = pickle.load(open(floorplan_pickle, "rb"))
 
@@ -84,6 +94,8 @@ def test_floorplan_from_directory_with_kwargs(floorplan_pickle):
     assert fp.walls == walls
     assert fp.special_walls == special_walls
     assert fp.aisles == aisles
-    assert fp.width == width
-    assert fp.height == height
+    assert fp.minx == minx
+    assert fp.miny == miny
+    assert fp.maxx == maxx
+    assert fp.maxy == maxy
     assert fp.scale == custom_scale

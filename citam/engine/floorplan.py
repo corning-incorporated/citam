@@ -296,7 +296,6 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
                 "miny",
                 "maxx",
                 "maxy",
-                "height",
                 "scale",
             )
             fp_inputs = {k: v for k, v in zip(fields, pickle.load(f))}
