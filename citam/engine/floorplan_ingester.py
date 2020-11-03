@@ -27,6 +27,7 @@ import citam.engine.input_parser as parser
 from citam.engine.door import Door
 from citam.engine.point import Point
 from citam.engine.space import Space
+import math as m
 
 LOG = logging.getLogger(__name__)
 
@@ -178,7 +179,7 @@ class FloorplanIngester:
             len(self.doors),
         )
 
-        self.compute_width_and_height()
+        self.find_min_and_max_coordinates()
 
         return
 
@@ -593,6 +594,25 @@ class FloorplanIngester:
 
         return room_walls, valid_walls
 
+    def find_min_and_max_coordinates(self):
+        """
+        Find the min and max coordinates for both x and y.
+        """
+        self.minx = m.inf
+        self.miny = m.inf
+        self.maxx = -m.inf
+        self.maxy = -m.inf
+        for wall in self.walls:
+            for x in (wall.start.real, wall.end.real):
+                if x < self.minx:
+                    self.minx = x
+                elif x > self.maxx:
+                    self.maxx = x
+            for y in (wall.start.imag, wall.end.imag):
+                if y < self.miny:
+                    self.miny = y
+                elif y > self.maxx:
+                    self.maxy = y
     @property
     def _data_to_save(self):
         special_walls = []
