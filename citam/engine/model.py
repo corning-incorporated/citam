@@ -55,6 +55,7 @@ class FacilityTransmissionModel:
         contact_distance,
         shifts,
         meetings_policy_params=None,
+        create_meetings=False,
         scheduling_policy=None,
         traffic_policy=None,
         dry_run=False,
@@ -82,6 +83,7 @@ class FacilityTransmissionModel:
         self.simulation_name = None
         self.simid = None
         self.step_contact_locations = [{} for f in floorplans]
+        self.create_meetings = create_meetings
 
         # Handle scheduling rules
         if scheduling_policy is None:
@@ -296,7 +298,7 @@ class FacilityTransmissionModel:
         )
 
         n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
-        if n_meeting_rooms > 0:
+        if n_meeting_rooms > 0 and self.create_meetings:
             self.meeting_policy.create_all_meetings()
 
         # Create schedule and itinerary for each agent
