@@ -178,6 +178,8 @@ class FloorplanIngester:
             len(self.doors),
         )
 
+        self.compute_width_and_height()
+
         return
 
     def find_space_index_for_door(self, door):
@@ -600,9 +602,11 @@ class FloorplanIngester:
             self.walls,
             special_walls,
             self.aisles,
-            1000,
-            1000,
-            self.scale,
+            self.minx,
+            self.miny,
+            self.maxx,
+            self.maxy,
+            self.scale
         ]
 
     def export_data_to_pickle_file(self, pickle_file):
