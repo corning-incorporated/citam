@@ -233,8 +233,10 @@ def test__generate_meeting_attendee_list2(sample_meeting_policy):
 
 
 def test__create_meetings_for_room(sample_meeting_policy):
-    meeting_room = Space("", "", capacity=5)
+    n_meetings = 0
+    for _ in range(5):
+        meeting_room = Space("", "", capacity=5)
+        sample_meeting_policy._create_meetings_for_room(meeting_room, 0)
+        n_meetings += len(sample_meeting_policy.meetings)
 
-    sample_meeting_policy._create_meetings_for_room(meeting_room, 0)
-
-    assert len(sample_meeting_policy.meetings) > 0
+    assert n_meetings/5.0 > 0
