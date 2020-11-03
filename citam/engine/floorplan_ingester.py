@@ -620,6 +620,7 @@ class FloorplanIngester:
                     self.miny = y
                 elif y > self.maxx:
                     self.maxy = y
+
     @property
     def _data_to_save(self):
         special_walls = []
@@ -633,7 +634,7 @@ class FloorplanIngester:
             self.miny,
             self.maxx,
             self.maxy,
-            self.scale
+            self.scale,
         ]
 
     def export_data_to_pickle_file(self, pickle_file):

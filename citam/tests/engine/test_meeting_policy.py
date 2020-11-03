@@ -239,4 +239,4 @@ def test__create_meetings_for_room(sample_meeting_policy):
         sample_meeting_policy._create_meetings_for_room(meeting_room, 0)
         n_meetings += len(sample_meeting_policy.meetings)
 
-    assert n_meetings/5.0 > 0
+    assert n_meetings / 5.0 > 0
