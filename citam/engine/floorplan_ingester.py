@@ -334,6 +334,8 @@ class FloorplanIngester:
         """
         Given a door line and space indices, create new door object
         """
+        if not space_indices:
+            return
         door_obj = Door(path=door_line, space1=self.spaces[space_indices[0]])
         if not self.spaces[space_indices[0]].is_space_a_hallway():
             self.spaces[space_indices[0]].doors.append(door_line)
@@ -416,7 +418,12 @@ class FloorplanIngester:
         if door_line is not None:
             # Find overlapping walls
             overlapping_walls = self._find_all_overlapping_walls(door_line)
-
+            if not overlapping_walls:
+                space_name = self.spaces[room_id].unique_name
+                LOG.warning(
+                    f"Unable to add a door to this space: {space_name}"
+                )
+                return
             # Create door object and add door line to spaces
             self._create_door_object(door_line, list(overlapping_walls.keys()))
 
