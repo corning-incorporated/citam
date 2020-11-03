@@ -403,6 +403,21 @@ class FacilityTransmissionModel:
             LOG.info("Door coords not in navnet: %s", entrance_coords)
             return False
 
+    def get_entrance_floor_and_space_id(self, entrance):
+
+        ename = entrance["name"].lower()
+        efloor = entrance["floor"]
+
+        entrance_floor = self.find_floor_by_name(efloor)
+        if entrance_floor is None:
+            raise ValueError("Unknown entrance floor: %s", efloor)
+
+        entrance_space_id = self.find_space_by_name(entrance_floor, ename)
+        if entrance_space_id is None:
+            raise ValueError("Unknown space: ", ename)
+
+        return entrance_floor, entrance_space_id
+
     def validate_entrances(self):
         """
         Iterate over possible entrances and verify that there is indeed
@@ -410,23 +425,14 @@ class FacilityTransmissionModel:
         """
         for entrance in self.entrances:
 
-            ename = entrance["name"].lower()
-            efloor = entrance["floor"]
-
-            entrance_floor = self.find_floor_by_name(efloor)
-            if entrance_floor is None:
-                raise ValueError("Unknown entrance floor: %s", efloor)
-            entrance["floor_index"] = entrance_floor
-
-            entrance_space_id = self.find_space_by_name(entrance_floor, ename)
-            if entrance_space_id is None:
-                raise ValueError("Unknown space: ", ename)
-            entrance["space_index"] = entrance_space_id
+            (
+                entrance_floor,
+                entrance_space_id,
+            ) = self.get_entrance_floor_and_space_id(entrance)
 
             entrance_space = self.navigation.floorplans[entrance_floor].spaces[
                 entrance_space_id
             ]
-
             possible_entrance_doors = self.find_possible_entrance_doors(
                 entrance_floor, entrance_space
             )
@@ -436,7 +442,9 @@ class FacilityTransmissionModel:
             entrance_door = np.random.choice(possible_entrance_doors)
 
             if not self.is_door_in_navnet(entrance_floor, entrance_door):
-                raise ValueError(f"Cannot use this entrance: {ename}")
+                raise ValueError(
+                    f"Cannot use this entrance: {entrance['name']}"
+                )
 
     def choose_best_entrance(
         self, office_floor: int, office_id: int
@@ -456,17 +464,19 @@ class FacilityTransmissionModel:
         min_length = 1e10
 
         for entrance in self.entrances:
-            # chosen_entrance = np.random.choice(self.entrances)
-            entrance_floor = entrance["floor_index"]
-            entrance_room_id = entrance["space_index"]
+
+            (
+                entrance_floor,
+                entrance_space_id,
+            ) = self.get_entrance_floor_and_space_id(entrance)
+
             entrance_space = self.navigation.floorplans[entrance_floor].spaces[
-                entrance_room_id
+                entrance_space_id
             ]
 
             possible_entrance_doors = self.find_possible_entrance_doors(
                 entrance_floor, entrance_space
             )
-
             entrance_door = np.random.choice(possible_entrance_doors)
             door_mid_point = entrance_door.path.point(0.5)
             entrance_coords = (
@@ -789,9 +799,7 @@ class FacilityTransmissionModel:
             "EntranceScreening": False,
             "trajectory_file": "trajectory.txt",
             "floors": floors,
-            "scaleMultiplier": max(
-                1, round(fp_width / 1500.0)
-            ),
+            "scaleMultiplier": max(1, round(fp_width / 1500.0)),
             "timestep": 1,
         }
 
