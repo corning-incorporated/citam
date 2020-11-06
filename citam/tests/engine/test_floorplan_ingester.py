@@ -294,7 +294,7 @@ def test_find_walls_and_create_doors(rect_floorplan_ingester):
     (
         room_walls,
         valid_hw_walls,
-    ) = rect_floorplan_ingester.find_walls_and_create_doors("TF1")
+    ) = rect_floorplan_ingester.find_valid_walls_and_create_doors("TF1")
 
     assert len(room_walls) == 36
     assert len(valid_hw_walls) == 3

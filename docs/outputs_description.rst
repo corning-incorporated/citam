@@ -4,7 +4,7 @@
 Output Description
 ===================
 
-Outputs from a CITAM simulation are as follow.
+Outputs from a CITAM simulation are as follows.
 
 ::
 
@@ -39,10 +39,10 @@ a description of each result file:
 
 * contacts.txt
     A time-based non-cumulative list of positions where contacts take place. Notice that this does not take into account how many contacts
-    take place in each location. This file is used in the dashboard to give an idea of where and when contacts take place on this floor.
+    take place in each location. This file is used in the dashboard visualizer to plot contact locations as a function of time on this floor.
 
 * heatmap.svg
-    A heatmap highlighting the locations and cumulative number of contacts that take place on this floor.
+    A heatmap highlighting the locations and cumulative number of contacts that take place on this floor. This of visual representation of contact_dist_per_coord.csv.
 
 * map.svg
     A bare map of this floor for use by the dashboard visualizer to display time-based data.
@@ -76,11 +76,11 @@ CITAM also includes results that pertain to the entire facility. Here is a descr
     A dictionary of dictionaries with raw contact data information. It's there in case users want to dive deeper into the data.
 
 * statistics.json
-    Key data (e.g. total contact duration) from this simulation. Used by the dashboard to show key statistics.
+    Key summary data (e.g. total contact duration) from this simulation. Used by the dashboard to show key statistics.
 
 * timing.txt
     How long it took to run this simulation.
 
 * trajectory.txt
     This file contains the time-based x, y, f positions of all the agents for the entire duration of the simulation (f is the floor number).
-    This is can be used to generate a "video" of the simulation as implemented in the dashboard.
+    This can be used to generate a "video" of the simulation as implemented in the dashboard visualizer.

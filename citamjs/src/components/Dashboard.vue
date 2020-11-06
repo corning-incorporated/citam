@@ -17,14 +17,14 @@
     <nav class="topnav navbar navbar-expand navbar-dark bg-dark">
       <span class="navbar-brand">Dashboard</span>
     </nav>
-    <div id="layoutSidenav">
-      <div id="layoutSidenav_content">
+    <div id="layout-sidenav">
+      <div id="layout-sidenav-content">
         <main>
           <div class="container-fluid">
             <div class="row page-heading">
               <div class="col-5">
-                <button v-show="showDetails!==0" class="btn btn-link order-1 order-lg-0" id="backMain"
-                        @click="backToMaintable">
+                <button v-show="showDetails!==0" class="btn btn-link order-1 order-lg-0" id="back-main"
+                        @click="backToMainTable">
                   <font-awesome-icon icon="arrow-alt-circle-left"></font-awesome-icon>
                   Back
                 </button>
@@ -32,7 +32,7 @@
               <div class="col-auto">
                 <div v-if="showDetails === 0"> Dashboard</div>
                 <div v-else>
-                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <ul class="nav nav-tabs" id="my-tab" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link active" id="summary-tab" data-toggle="tab" href="" role="tab"
                      aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Summary</a>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable">
+                    <table class="table table-bordered" id="data-table">
                       <thead>
                       <tr>
                         <th>Plots</th>
@@ -84,7 +84,7 @@
             </div>
             <div id="details-view" v-if="showDetails === 1">
 
-              <!--  Crads -->
+              <!--  Summary Cards -->
               <statcards v-if="currSimId" :simid="currSimId"></statcards>
               <div class="row">
                 <div class="col-xl-6">
@@ -172,13 +172,12 @@ import _ from "lodash";
 library.add(faChartBar, faChartArea, faTable, faArrowAltCircleLeft, faSort, faMap)
 
 export default {
-  name: "Dashbaord",
+  name: "Dashboard",
   components: {Scatterplot, Histogram, Statcards, PlotVisualization},
   data() {
     return {
       runList: [],
       runAttributes: [],
-      // showDashboard: true,
       showDetails: 0,
       showViz: false,
       currSimId: '',
@@ -217,7 +216,7 @@ export default {
       })
     },
 
-    backToMaintable() {
+    backToMainTable() {
       this.showDetails = 0;
     },
 
@@ -226,7 +225,6 @@ export default {
     },
 
     toVizToggle(e){
-      console.log(e.target.id)
       this.showDetails = e.target.id === 'viz-tab'? 2 : 1;
     },
 
@@ -238,7 +236,6 @@ export default {
       this.heatmapSrc = '';
       axios.get(`/${simId}/heatmap`)
           .then(response=> {
-            // console.log(response.data)
             if(response.data){
               this.heatmapSrc = response.data;
               const canvas = this.$refs.canvas;
