@@ -82,7 +82,7 @@ class Door:
         return id(self)
 
     def _as_dict(self):
-        d = super()._as_dict()
+        d = {}
         d['path'] = self.path
         d['space1'] = None
         if self.space1:
