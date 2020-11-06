@@ -25,6 +25,7 @@ def x_floorplan():
     x_space = Space(
         boundaries=x_boundaries,
         path=x_boundaries,
+        id="test",
         unique_name="test",
         space_function="circulation",
         building="TEST",
@@ -54,6 +55,7 @@ def rect_floorplan():
     rect_space = Space(
         boundaries=rect_boundaries,
         path=walls,
+        id="test",
         unique_name="test",
         space_function="circulation",
         building="TEST",
@@ -74,6 +76,7 @@ def rect_floorplan2():
     rect1_space = Space(
         boundaries=rect1_boundaries,
         path=rect1_boundaries,
+        id="test",
         unique_name="rect1",
         space_function="circulation",
         building="TEST",
@@ -84,6 +87,7 @@ def rect_floorplan2():
     rect2_space = Space(
         boundaries=rect2_boundaries,
         path=rect2_boundaries,
+        id="test",
         unique_name="rect2",
         space_function="circulation",
         building="TEST",
@@ -113,6 +117,7 @@ def x_space():
     x_space = Space(
         boundaries=x_boundaries,
         path=x_boundaries,
+        id="test",
         unique_name="x_space",
         space_function="circulation",
         building="TEST",
@@ -128,6 +133,7 @@ def rect_space():
     rect_space = Space(
         boundaries=rect_boundaries,
         path=rect_boundaries,
+        id="test",
         unique_name="rect_space",
         space_function="circulation",
         building="TEST",
