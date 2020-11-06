@@ -1,5 +1,5 @@
 from citam.engine.floorplan_ingester import FloorplanIngester
-from svgpathtools import Path, Line, parse_path
+from svgpathtools import parse_path
 from citam.engine.space import Space
 
 import pytest
@@ -11,7 +11,7 @@ def rect_floorplan_ingester_data():
     """Basic rect floorplan with one main aisle, 4 office spaces on each side
     and a big room at the end of the hallway
     """
-    rect_fi = FloorplanIngester(None, 1.0, csv_file='')
+    rect_fi = FloorplanIngester(None, 1.0, csv_file="")
     rect_fi.space_data = []
     rect_fi.space_paths = []
     rect_fi.space_attributes = []
@@ -263,8 +263,8 @@ def test_create_spaces_correct_number_of_spaces(rect_floorplan_ingester_data):
 
 
 def test_create_spaces_correct_number_of_spaces_no_csv(
-        rect_floorplan_ingester_data_no_csv
-    ):
+    rect_floorplan_ingester_data_no_csv,
+):
     rect_floorplan_ingester_data_no_csv.create_spaces_from_svg_data()
     assert len(rect_floorplan_ingester_data_no_csv.spaces) == 10
     assert len(rect_floorplan_ingester_data_no_csv.doors) == 0
@@ -281,8 +281,8 @@ def test_run_correct_number_of_objects(rect_floorplan_ingester_data):
 
 
 def test_run_correct_number_of_objects_no_csv(
-        rect_floorplan_ingester_data_no_csv
-    ):
+    rect_floorplan_ingester_data_no_csv,
+):
     rect_floorplan_ingester_data_no_csv.run()
 
     assert len(rect_floorplan_ingester_data_no_csv.doors) == 10

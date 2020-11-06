@@ -5,12 +5,10 @@ from svgpathtools import Path, Line, parse_path
 from citam.engine.space import Space
 from citam.engine.floorplan import Floorplan
 from citam.engine.door import Door
-from citam.engine.floorplan_ingester import FloorplanIngester
 
 from distutils import dir_util
 import pytest
 import os
-import copy
 from copy import deepcopy
 
 import pickle
