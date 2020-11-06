@@ -14,8 +14,10 @@
 from typing import Tuple
 
 from citam.engine.point import Point
+from citam.engine.serializer import serializer
 
 
+@serializer
 class Door:
     _intersect_coords: tuple = None
 
@@ -29,7 +31,6 @@ class Door:
         special_access=False,
     ):
 
-        super().__init__()
         self.path = path
         self.space1 = space1
         self.space2 = space2
@@ -79,3 +80,17 @@ class Door:
 
     def __hash__(self):
         return id(self)
+
+    def _as_dict(self):
+        d = super()._as_dict()
+        d['path'] = self.path
+        d['space1'] = None
+        if self.space1:
+            d['space1'] = self.space1.id
+        d['space2'] = None
+        if self.space2:
+            d['space2'] = self.space2.id
+        d['in_service'] = self.in_service
+        d['.emergency_only'] = self.emergency_only
+        d['special_access'] = special_access
+        return d
