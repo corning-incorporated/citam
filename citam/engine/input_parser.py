@@ -280,7 +280,7 @@ def parse_input_file(input_file):
     if not isinstance(buffer, int):
         raise TypeError("entrance time must be an integer")
 
-    if daylength < buffer + 3600:
+    if daylength < buffer + 1800:
         raise ValueError(
             "Daylength is too short (min is 30 min after entrance time)"
         )
