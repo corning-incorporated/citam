@@ -43,6 +43,8 @@ SUPPORTED_SPACE_FUNCTIONS = [
     "circulation",
     "office",
     "lab",
+    "restroom (men)",
+    "restroom (women)",
     "restroom",
     "cafeteria",
     "stair",
@@ -53,7 +55,16 @@ SUPPORTED_SPACE_FUNCTIONS = [
     "conference",
     "conference room",
     "auditorium",
+    "pantry",
+    "break room",
+    "mailroom",
+    "service",
     "other",
+    "printer room",
+    "printer area",
+    "retail",
+    "vending area",
+    "parking",
 ]
 
 RESTROOM_VISIT = "Restroom visit"
@@ -104,14 +115,17 @@ DEFAULT_SCHEDULING_RULES = {
 DEFAULT_MEETINGS_POLICY = {
     # Meetings duration
     "min_meeting_duration": 15 * 60,  # 15 min
-    "max_meeting_length": 3600,  # 1 hour
+    "max_meeting_length": 7200,  # 2 hours
     "meeting_duration_increment": 15 * 60,  # 15 min
     # Meetings frequency
     "avg_meetings_per_room": 3,
-    "avg_percent_meeting_rooms_used": 0.6,  # Less than 1.0
+    "percent_meeting_rooms_used": 0.6,  # Less than 1.0
     # Meetings participants
     "avg_meetings_per_person": 3,
     "min_attendees_per_meeting": 3,
+    # Meeting timing
+    "min_buffer_between_meetings": 0,
+    "max_buffer_between_meetings": 10800,
 }
 
-LAST_SCHEDULE_ITEM_CUTOFF = 60
+MEETING_BUFFER = 60 * 15

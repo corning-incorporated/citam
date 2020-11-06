@@ -14,12 +14,12 @@
 
 <template>
   <div id="app">
-          <dashbaord></dashbaord>
+          <dashboard></dashboard>
     </div>
 </template>
 
 <script>
-import Dashbaord from "@/components/Dashboard";
+import Dashboard from "@/components/Dashboard";
 
 import axios from 'axios'
 
@@ -28,7 +28,7 @@ axios.defaults.baseURL = '/v1';
 export default {
   name: 'App',
   components: {
-    Dashbaord
+    Dashboard
   },
 }
 </script>

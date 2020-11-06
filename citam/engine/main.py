@@ -19,6 +19,7 @@ import os
 import pickle
 import time
 from copy import deepcopy
+from typing import List
 
 import networkx as nx
 from svgpathtools import Line
@@ -62,6 +63,7 @@ def ingest_floorplan(
     facility: str,
     scale: float = 1 / 12,
     floor: str = "0",
+    buildings: List[str] = None,
     output_directory=None,
     **kwargs
 ):  # noqa
@@ -75,6 +77,8 @@ def ingest_floorplan(
     :param scale: The scale of the drawing (default = 1/12)
     :param floor: Name of this floor (default=0)
     :param output_directory: Custom location to store output (default=cache)
+    :param buildings: List of buildings to process(default to all buildings
+            found in SVG file)
     :raise FileNotFoundError: If input files are not found
     """
 
@@ -93,14 +97,24 @@ def ingest_floorplan(
         if not os.path.isdir(floor_directory):
             os.mkdir(floor_directory)
 
+    fp_pickle_file = os.path.join(floor_directory, "floorplan.pkl")
+    if os.path.isfile(fp_pickle_file):
+        LOG.error(
+            "Floorplan exists. Please choose another facility or floor name."
+        )
+        return
+
     LOG.info("Ingesting floorplan...")
     floorplan_ingester = FloorplanIngester(
-        svg, scale, csv_file=csv, extract_doors_from_file=True
+        svg,
+        csv,
+        scale,
+        buildings_to_keep=buildings,
+        extract_doors_from_file=True,
     )
     floorplan_ingester.run()
 
     LOG.info("Saving floorplan to pickle file...")
-    fp_pickle_file = os.path.join(floor_directory, "floorplan.pkl")
     floorplan_ingester.export_data_to_pickle_file(fp_pickle_file)
     LOG.info("Done.")
 
@@ -387,7 +401,7 @@ def find_and_save_potential_one_way_aisles(
 
     # Save oneway network to pickle file
     oneway_net_pkl_file = os.path.join(
-        floorplan_directory, "onewway_network.pkl"
+        floorplan_directory, "oneway_network.pkl"
     )
     with open(oneway_net_pkl_file, "wb") as f:
         pickle.dump(oneway_network, f)

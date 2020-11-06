@@ -41,8 +41,8 @@ def export_possible_oneway_aisles_to_svg(walls, oneway_network, svgfile):
         for p in paths
     ]
 
+    color = "red"
     for e in list(oneway_network.edges(data=True)):
-        color = "red"
         p = Line(
             start=complex(e[0][0], e[0][1]), end=complex(e[1][0], e[1][1])
         )

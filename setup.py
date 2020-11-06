@@ -11,33 +11,9 @@
 #  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
-
-from distutils.command.build import build
-
 import setuptools
-from setuptools.command.develop import develop
-from setuptools.command.sdist import sdist
 
 from build_tasks import NodeJSBuild
-
-
-class develop_custom(develop):
-    """Custom develop command which includes the build_js subcommand"""
-
-    def run(self):
-        super().run()
-        self.run_command('build_js')
-
-
-class sdist_custom(sdist):
-    """Custom sdist command which includes the build_js subcommand"""
-    sub_commands = [('build_js', None)] + sdist.sub_commands
-
-
-class build_custom(build):
-    """Custom build command which includes the build_js subcommand"""
-    sub_commands = [('build_js', None)] + build.sub_commands
-
 
 setuptools.setup(
     name="CITAM",
@@ -51,12 +27,7 @@ setuptools.setup(
     entry_points={
         'console_scripts': ['citam=citam.cli:main']
     },
-    cmdclass={
-        'build_js': NodeJSBuild,
-        'sdist': sdist_custom,
-        'build': build_custom,
-        'develop': develop_custom,
-    },
+    cmdclass={'build_js': NodeJSBuild},
     include_package_data=True,
     zip_safe=True,
     install_requires=[

@@ -84,6 +84,10 @@ def find_aisles(space, valid_boundaries, no_repeat=True):
             continue
 
         wall2 = find_closest_parallel_wall(valid_boundaries, wall1)
+
+        if not wall2:
+            continue
+
         if wall2.length() <= 1.0:
             continue
 
@@ -115,11 +119,7 @@ def is_this_wall_part_of_an_aisle(wall, aisles):
         Whether this wall is already part of an aisle or not
     """
 
-    for aisle in aisles:
-        if wall == aisle[0] or wall == aisle[1]:
-            return True
-
-    return False
+    return any(wall in [aisle[0], aisle[1]] for aisle in aisles)
 
 
 def get_aisle_center_point_and_width(aisle):
@@ -175,10 +175,7 @@ def is_this_an_aisle(wall1: Line, wall2: Line, space: Space):
 
     aisle = (wall1, wall2)
     center_point, _ = get_aisle_center_point_and_width(aisle)
-    if space.is_point_inside_space(center_point):
-        return True
-
-    return False
+    return bool(space.is_point_inside_space(center_point))
 
 
 def compute_bounding_box(walls):

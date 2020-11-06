@@ -99,10 +99,12 @@ class Floorplan:
         LOG.info("Number of walls: " + str(len(self.walls)))
         LOG.info("Total number of doors: " + str(len(self.doors)))
 
-        n_outside_doors = 0
-        for door in self.doors:
-            if door.space1 is None or door.space2 is None:
-                n_outside_doors += 1
+        n_outside_doors = sum(
+            1
+            for door in self.doors
+            if door.space1 is None or door.space2 is None
+        )
+
         LOG.info("Number of outside doors: " + str(n_outside_doors))
 
         self.agent_locations = {}
@@ -164,26 +166,19 @@ class Floorplan:
         """Given a room id, find the exit coords (xy point at the middle of
         the door)
         """
+
         room = self.spaces[room_id]
-        room_door = None
-
         if len(room.doors) == 0:
-            for door in self.doors:
-                if self.spaces[room_id] in [door.space1, door.space2]:
-                    room_door = door
-                    break
-            if room_door is None:
-                space_name = str(self.spaces[room_id].unique_name)
-                LOG.warning(space_name + " has no door")
-                return None
+            LOG.warning(f"{room.unique_name} has no door")
+            return None
 
-        else:
-            room_door = room.doors[0]
-
-        x = round(room_door.point(0.5).real)
-        y = round(room_door.point(0.5).imag)
-
-        return (x, y)
+        return [
+            (
+                round(room_door.point(0.5).real),
+                round(room_door.point(0.5).imag),
+            )
+            for room_door in room.doors
+        ]
 
     def export_to_svg(self, svg_file, include_doors=False):
         """Export the current floorplan to an SVG file.
@@ -219,16 +214,12 @@ class Floorplan:
         door_dict_list = []
 
         for door in self.doors:
-            if door.space1 is not None:
-                name1 = door.space1.unique_name
-            else:
-                name1 = None
-
-            if door.space2 is not None:
-                name2 = door.space2.unique_name
-            else:
-                name2 = None
-
+            name1 = (
+                door.space1.unique_name if door.space1 is not None else None
+            )
+            name2 = (
+                door.space2.unique_name if door.space2 is not None else None
+            )
             door_dict = {"path": door.path, "space1": name1, "space2": name2}
             door_dict_list.append(door_dict)
 
