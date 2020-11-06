@@ -27,7 +27,6 @@ from io import TextIOWrapper
 from citam.engine.agent import Agent
 from citam.engine.floorplan import Floorplan
 from citam.engine.door import Door
-from citam.engine.space import Space
 from citam.engine.navigation import Navigation
 from citam.engine.daily_schedule import Schedule
 import citam.engine.basic_visualization as bv
@@ -385,9 +384,7 @@ class FacilityTransmissionModel:
         return fp_index
 
     def is_door_in_navnet(
-        self,
-        entrance_floor: int,
-        entrance_door: Door
+        self, entrance_floor: int, entrance_door: Door
     ) -> bool:
         """
         Verify if a given door is part of the navnet.
@@ -448,9 +445,7 @@ class FacilityTransmissionModel:
                 raise ValueError(f"Cannot use this entrance: {ename}")
 
     def choose_best_entrance(
-        self,
-        office_floor: int,
-        office_id: int
+        self, office_floor: int, office_id: int
     ) -> Tuple[Door, int]:
         """
         Find the facility entrance that offers the fastest route to an agent's
@@ -679,7 +674,7 @@ class FacilityTransmissionModel:
     def step(
         self,
         traj_outfile: TextIOWrapper = None,
-        contact_outfiles:  List[TextIOWrapper] = None
+        contact_outfiles: List[TextIOWrapper] = None,
     ) -> None:
         """Move the simulation by one step"""
         self.step_contact_locations = [
@@ -760,7 +755,7 @@ class FacilityTransmissionModel:
         return active_agents, moving_agents
 
     def extract_contact_distribution_per_agent(
-        self
+        self,
     ) -> Tuple[List[int], List[int]]:
         """
         Compute total contacts per agent.
@@ -859,7 +854,7 @@ class FacilityTransmissionModel:
     def create_svg_heatmap(
         self,
         contacts_per_coord: Dict[Tuple[int, int], int],
-        floor_directory: str
+        floor_directory: str,
     ) -> None:
         """Create and save a heatmap from coordinate contact data
 

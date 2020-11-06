@@ -144,7 +144,7 @@ class FloorplanIngester:
         """
         Make sure we take all user-provided building names into account
         """
-                # Validate building names
+        # Validate building names
         if self.buildings_to_keep:
             for building in self.buildings_to_keep:
                 if building not in self.buildings:
@@ -154,13 +154,13 @@ class FloorplanIngester:
         else:
             self.buildings_to_keep = self.buildings
 
-
     def read_data_from_svg_file(self):
         """Read and parse floorplan from svg file"""
-        (self.space_paths,
-         self.space_attributes,
-         self.door_pathsparser
-         ) = parser.parse_standalone_svg_floorplan_file(self.svg_file)
+        (
+            self.space_paths,
+            self.space_attributes,
+            self.door_pathsparser,
+        ) = parser.parse_standalone_svg_floorplan_file(self.svg_file)
 
     def read_data_from_csv_and_svg_files(self):
         """Read and parse csv and svg files"""

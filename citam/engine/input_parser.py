@@ -26,7 +26,7 @@ from svgpathtools import svg2paths, Line, parse_path, Path
 from citam.engine.constants import (
     REQUIRED_SPACE_METADATA,
     OPTIONAL_SPACE_METADATA,
-    SUPPORTED_SPACE_FUNCTIONS
+    SUPPORTED_SPACE_FUNCTIONS,
 )
 
 LOG = logging.getLogger(__name__)
@@ -94,7 +94,7 @@ def parse_csv_metadata_file(csv_file: str) -> List[Dict[str, str]]:
 
 
 def parse_standalone_svg_floorplan_file(
-    svg_file: str
+    svg_file: str,
 ) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
     """
     Read standalone svg input file to extract floorplan information.
@@ -111,12 +111,12 @@ def parse_standalone_svg_floorplan_file(
     contents_elem = None
     possible_content_elems = []
     for elem in root:
-        _, _, elem.tag = elem.tag.rpartition('}')  # Remove namespace
-        if elem.tag == 'g' and 'id' in elem.attrib:
+        _, _, elem.tag = elem.tag.rpartition("}")  # Remove namespace
+        if elem.tag == "g" and "id" in elem.attrib:
             possible_content_elems.append(elem)
 
     for level in possible_content_elems:
-        if level.attrib['id'].lower() == 'contents':
+        if level.attrib["id"].lower() == "contents":
             contents_elem = level
             break
 
@@ -124,20 +124,15 @@ def parse_standalone_svg_floorplan_file(
         error = "An element with tag 'g' & id==contents is required"
         raise InvalidSVGError(error)
 
-    # Can we remove this level with id==contents completely?
-    #   No
-    # If not, is the 'ID' tag necessary?
-    #   Yes
-    # What if we have multiple levels with id == contents?
-    #   For now, we only consider the first one
-
     # Verify that there is data at least for one building
     buildings = []
     for building_elem in contents_elem:
-        if 'id' not in building_elem.attrib or \
-                'class' not in building_elem.attrib:
+        if (
+            "id" not in building_elem.attrib
+            or "class" not in building_elem.attrib
+        ):
             continue
-        if building_elem.attrib['class'].lower() != 'floorplan':
+        if building_elem.attrib["class"].lower() != "floorplan":
             continue
         buildings.append(building_elem)
 
@@ -154,7 +149,7 @@ def parse_standalone_svg_floorplan_file(
 
 
 def _load_buildings_data(
-    contents_elem: ET.Element
+    contents_elem: ET.Element,
 ) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
     """
     Given a SVG tree element with sub-elements with building information,
@@ -173,14 +168,15 @@ def _load_buildings_data(
     # For each building, extract space paths, space attr and door paths
     for building_elem in contents_elem:
 
-        building_name = building_elem.attrib['id']
+        building_name = building_elem.attrib["id"]
+        doors_elem, spaces_elem = None, None
 
         for sub_elem in building_elem:
-            if 'class' not in sub_elem.attrib:
+            if "class" not in sub_elem.attrib:
                 continue
-            if sub_elem.attrib['class'].lower() == 'spaces':
+            if sub_elem.attrib["class"].lower() == "spaces":
                 spaces_elem = sub_elem
-            elif sub_elem.attrib['class'].lower() == 'doors':
+            elif sub_elem.attrib["class"].lower() == "doors":
                 doors_elem = sub_elem
 
         if spaces_elem is None:
@@ -197,8 +193,7 @@ def _load_buildings_data(
 
 
 def _extract_spaces(
-    spaces_elem: ET.Element,
-    building_name: str
+    spaces_elem: ET.Element, building_name: str
 ) -> Tuple[List[Path], List[Dict[str, str]]]:
     """
     Given a SVG tree element, extract all space paths and attributes
@@ -211,31 +206,34 @@ def _extract_spaces(
 
     for space_elem in spaces_elem:
         # Remove namespace
-        _, _, space_elem.tag = space_elem.tag.rpartition('}')
+        _, _, space_elem.tag = space_elem.tag.rpartition("}")
         # Extract space data
-        if space_elem.tag == 'path' and 'd' in space_elem.attrib:
-            space_path = parse_path(space_elem.attrib['d'])
+        if space_elem.tag == "path" and "d" in space_elem.attrib:
+            space_path = parse_path(space_elem.attrib["d"])
 
             # Add space metadata
             space_metadata = {}
-            if 'id' in space_elem.attrib and 'class' in space_elem.attrib:
+            if "id" in space_elem.attrib and "class" in space_elem.attrib:
 
-                space_metadata['id'] = space_elem.attrib['id']
-                if 'unique_name' not in space_elem.attrib:
-                    space_metadata['unique_name'] = space_elem.attrib['id']
+                space_metadata["id"] = space_elem.attrib["id"]
+                if "unique_name" not in space_elem.attrib:
+                    space_metadata["unique_name"] = space_elem.attrib["id"]
 
-                space_function = space_elem.attrib['class']
+                space_function = space_elem.attrib["class"]
                 if space_function.lower() not in SUPPORTED_SPACE_FUNCTIONS:
                     raise ValueError(
-                        'Unsupported space function %s', space_function
+                        "Unsupported space function %s", space_function
                     )
-                space_metadata['space_function'] = space_function
+                space_metadata["space_function"] = space_function
 
-                space_metadata['building'] = building_name
+                space_metadata["building"] = building_name
 
-                if 'capacity' in space_elem.attrib:
-                    space_metadata['capacity'] = space_elem.attrib['capacity']
-
+                if "capacity" in space_elem.attrib:
+                    space_metadata["capacity"] = space_elem.attrib["capacity"]
+            else:
+                raise ValueError(
+                    "'id' and 'class' attributes required for space paths"
+                )
             space_paths.append(space_path)
             space_attributes.append(space_metadata)
 
@@ -253,9 +251,9 @@ def _extract_doors(doors_elem: ET.Element) -> List[Path]:
     door_paths = []
     for door_elem in doors_elem:
         # Remove namespace
-        _, _, door_elem.tag = door_elem.tag.rpartition('}')
-        if door_elem.tag == 'path' and 'd' in door_elem.attrib:
-            door_path = parse_path(door_elem.attrib['d'])
+        _, _, door_elem.tag = door_elem.tag.rpartition("}")
+        if door_elem.tag == "path" and "d" in door_elem.attrib:
+            door_path = parse_path(door_elem.attrib["d"])
             door_paths.append(door_path)
 
     return door_paths
@@ -315,7 +313,7 @@ def parse_svg_floorplan_file(svg_file):
 
 
 def parse_meetings_policy_file(
-    json_filepath: str
+    json_filepath: str,
 ) -> Dict[str, int or str or float or dict]:
     """Read and parse the json meeting policy file.
 
@@ -338,7 +336,7 @@ def parse_meetings_policy_file(
 
 
 def parse_scheduling_policy_file(
-    json_filepath: str
+    json_filepath: str,
 ) -> Dict[str, int or str or float or dict]:
     """Read and parse the json scheduling policy file.
 
@@ -364,7 +362,7 @@ def parse_scheduling_policy_file(
 
 
 def parse_input_file(
-    input_file: str
+    input_file: str,
 ) -> Dict[str, str or int or dict or float]:
     """Read primary simulation input file in json format, validate values,
     load floorplans and returns dictionary of model inputs.
