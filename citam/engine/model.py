@@ -96,31 +96,37 @@ class FacilityTransmissionModel:
             self.floorplans, self.facility_name, self.traffic_policy
         )
 
-        # remove spaces that have no exit from the pool
-        self.remove_unreachable_rooms()
-
         # Validate entrances
         self.validate_entrances()
 
         # Find offices and verify that they are accessible from at least one
         # entrance
-        self.find_and_validate_offices()
+        self.find_and_remove_unreachable_rooms()
 
         # Find and group all remaining spaces in this facility
         self.group_remaining_spaces()
 
-    def find_and_validate_offices(self):
+    def find_and_remove_unreachable_rooms(self):
         """
-        Iterate over all spaces to find and validate offices
+        Iterate over all spaces and remove the unreachable ones.
         """
-        self.total_offices = 0
-        self.all_office_spaces = []
-        for fn in range(self.number_of_floors):
-            floor_office_spaces = self.find_valid_floor_office_spaces(fn)
-            self.all_office_spaces.append(floor_office_spaces)
-            self.total_offices += len(floor_office_spaces)
 
-        LOG.info("Total office spaces: %d", self.total_offices)
+        for fn, floorplan in enumerate(self.floorplans):
+            tmp_spaces = []
+            for space_index, space in enumerate(floorplan.spaces):
+                if space.is_space_a_hallway():
+                    tmp_spaces.append(space)
+                elif len(space.doors) > 0:
+                    exit_coords = floorplan.get_room_exit_coords(space_index)
+                    if exit_coords:
+                        best_entrance, _ = self.choose_best_entrance(
+                            fn, space_index
+                        )
+                        if best_entrance is not None:
+                            tmp_spaces.append(space)
+            n_unreachable = len(floorplan.spaces) - len(tmp_spaces)
+            LOG.info("Unreachable rooms on floor %d: %d", fn, n_unreachable)
+            self.floorplans[fn].spaces = tmp_spaces
 
     def group_remaining_spaces(self):
         """
@@ -132,7 +138,7 @@ class FacilityTransmissionModel:
             self.labs,
             self.cafes,
             self.restrooms,
-            self.offices,
+            self.all_office_spaces,
         ) = (
             [],
             [],
@@ -167,10 +173,16 @@ class FacilityTransmissionModel:
                 elif space.is_space_a_meeting_room():
                     floor_meeting_rooms.append(index)
 
+            self.all_office_spaces.append(floor_offices)
             self.labs.append(floor_labs)
             self.cafes.append(floor_cafes)
             self.restrooms.append(floor_restrooms)
             self.meeting_rooms.append(floor_meeting_rooms)
+
+        self.total_offices = sum(
+            len(rooms) for rooms in self.all_office_spaces
+        )
+        LOG.info("Total offices is " + str(self.total_offices))
 
         n_rooms = sum(len(rooms) for rooms in self.labs)
         LOG.info("Total labs is " + str(n_rooms))
@@ -183,34 +195,6 @@ class FacilityTransmissionModel:
 
         n_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
         LOG.info("Total meeting rooms: " + str(n_rooms))
-
-    def find_valid_floor_office_spaces(self, floor_number, verify_route=False):
-        """Go through office spaces and verify that they are reachable from
-        at least one of the predefined entrances.
-        """
-        # Find all office spaces on this floor
-        floorplan = self.floorplans[floor_number]
-        floor_office_spaces = []
-        n_unreachable_offices = 0
-
-        pbar = pb.ProgressBar(max_value=len(floorplan.spaces))
-        for index, space in enumerate(floorplan.spaces):
-            pbar.update(index)
-            if space.is_space_an_office():
-                if verify_route:
-                    best_entrance, _ = self.choose_best_entrance(
-                        floor_number, index
-                    )
-                    if best_entrance is not None:
-                        floor_office_spaces.append(index)
-                    else:
-                        n_unreachable_offices += 1
-                else:
-                    floor_office_spaces.append(index)
-
-        LOG.info("Unreachable offices: " + str(n_unreachable_offices))
-
-        return floor_office_spaces
 
     def create_simid(self):
         """Use simulation inputs, scheduling policy, meetings policy,
@@ -349,49 +333,10 @@ class FacilityTransmissionModel:
 
         return True
 
-    def remove_unreachable_rooms(self):
-        """
-        Iterate through every space that is not a hallway in every floor
-        and exclude the ones with no door.
-        """
-        total_spaces = sum([len(fp.spaces) for fp in self.floorplans])
-        LOG.info("Number of spaces before " + str(total_spaces) + "...")
-
-        n_hallways = 0
-        n_rooms_with_doors = 0
-        n_rooms_with_no_doors = 0
-        n_rooms_with_doors_but_no_exit = 0
-
-        for fn, floorplan in enumerate(self.floorplans):
-            tmp_spaces = []
-            for i, space in enumerate(floorplan.spaces):
-                if space.is_space_a_hallway():
-                    tmp_spaces.append(space)
-                    n_hallways += 1
-                elif len(space.doors) > 0:
-                    n_rooms_with_doors += 1
-                    exit_coords = floorplan.get_room_exit_coords(i)
-                    if exit_coords is not None:
-                        tmp_spaces.append(space)
-                    else:
-                        n_rooms_with_doors_but_no_exit += 1
-                else:
-                    n_rooms_with_no_doors += 1
-
-            self.floorplans[fn].spaces = tmp_spaces
-
-        LOG.info("After sanitizing...")
-        LOG.info("\tNumber of hallways: " + str(n_hallways))
-        LOG.info("\tRooms with doors: " + str(n_rooms_with_doors))
-        LOG.info("\tRooms with no doors: " + str(n_rooms_with_no_doors))
-
-        total_spaces = sum(len(fp.spaces) for fp in self.floorplans)
-        LOG.info("\tNumber of spaces: " + str(total_spaces))
-
     def find_possible_entrance_doors(self, entrance_floor, entrance_space):
         """
         Iterate over all doors in the facility to identify any that belong to
-        the entrance floor and entrance spaceand are outside facing.
+        the entrance floor and entrance space and are outside facing.
         """
         possible_entrance_doors = []
         for door in self.navigation.floorplans[entrance_floor].doors:
@@ -438,11 +383,7 @@ class FacilityTransmissionModel:
         """
         Verify that this door is part of the navnet.
         """
-        door_mid_point = entrance_door.path.point(0.5)
-        entrance_coords = (
-            round(door_mid_point.real),
-            round(door_mid_point.imag),
-        )
+        entrance_coords = entrance_door.intersect_coords
         if self.navigation.navnet_per_floor[entrance_floor].has_node(
             entrance_coords
         ):
@@ -491,7 +432,7 @@ class FacilityTransmissionModel:
             entrance_door = np.random.choice(possible_entrance_doors)
 
             if not self.is_door_in_navnet(entrance_floor, entrance_door):
-                raise ValueError("Cannot use this entrance %s", entrance_door)
+                raise ValueError(f"Cannot use this entrance: {ename}")
 
     def choose_best_entrance(
         self, office_floor: int, office_id: int
@@ -656,6 +597,9 @@ class FacilityTransmissionModel:
         # 1. agents are in different floors
         # 2. agents are in different spaces but only if the spaces
         #    are not neighbors in the hallway graphs
+
+        if not agents:
+            return
 
         positions_vector = np.array([a.pos for a in agents])
         proximity_indices = self.identify_xy_proximity(positions_vector)
@@ -909,8 +853,6 @@ class FacilityTransmissionModel:
         filter_elem.append(blur_elem)
         root.append(filter_elem)
         color_scale = cm.get_cmap("RdYlGn")
-
-        print("Number of contact coord: ", len(contacts_per_coord))
 
         for key, v in contacts_per_coord.items():
             x, y = key
