@@ -38,6 +38,11 @@ class Door:
         self.emergency_only = emergency_only
         self.special_access = special_access
 
+        if not self.space1:
+            raise ValueError(
+                "Doors must be associated with at least one space"
+            )
+
     @property
     def intersect_coords(self) -> tuple:
         if self._intersect_coords:
@@ -91,6 +96,6 @@ class Door:
         if self.space2:
             d['space2'] = self.space2.id
         d['in_service'] = self.in_service
-        d['.emergency_only'] = self.emergency_only
-        d['special_access'] = special_access
+        d['emergency_only'] = self.emergency_only
+        d['special_access'] = self.special_access
         return d

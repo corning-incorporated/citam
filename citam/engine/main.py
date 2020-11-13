@@ -16,7 +16,6 @@
 import errno
 import logging
 import os
-import pickle
 import time
 from copy import deepcopy
 from typing import List
@@ -97,8 +96,8 @@ def ingest_floorplan(
         if not os.path.isdir(floor_directory):
             os.mkdir(floor_directory)
 
-    fp_pickle_file = os.path.join(floor_directory, "floorplan.pkl")
-    if os.path.isfile(fp_pickle_file):
+    fp_file = os.path.join(floor_directory, "floorplan.json")
+    if os.path.isfile(fp_file):
         LOG.error(
             "Floorplan exists. Please choose another facility or floor name."
         )
@@ -115,7 +114,8 @@ def ingest_floorplan(
     floorplan_ingester.run()
 
     LOG.info("Saving floorplan to pickle file...")
-    floorplan_ingester.export_data_to_pickle_file(fp_pickle_file)
+    floorplan = floorplan_ingester.get_floorplan()
+    floorplan.to_json(fp_file)
     LOG.info("Done.")
 
 
@@ -196,10 +196,10 @@ def update_floorplan_from_svg_file(
     fp_updater = FloorplanUpdater(floorplan, svg_file=svg)
     fp_updater.run()
 
-    updated_pickle_file = os.path.join(
-        floorplan_directory, "updated_floorplan.pkl"
+    updated_json_file = os.path.join(
+        floorplan_directory, "updated_floorplan.json"
     )
-    fp_updater.export_floorplan_to_pickle_file(updated_pickle_file)
+    fp_updater.floorplan.to_json(updated_json_file)
 
 
 def export_navigation_graph_to_svg(

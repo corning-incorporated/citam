@@ -14,7 +14,6 @@
 
 import copy
 import logging
-import pickle
 import queue
 from typing import Dict, List, Tuple
 
@@ -27,6 +26,9 @@ import citam.engine.input_parser as parser
 from citam.engine.door import Door
 from citam.engine.point import Point
 from citam.engine.space import Space
+from citam.engine import serializer
+from citam.engine.floorplan import Floorplan
+import json
 
 LOG = logging.getLogger(__name__)
 
@@ -656,31 +658,18 @@ class FloorplanIngester:
 
         return room_walls, valid_walls
 
-    @property
-    def _data_to_save(self):
-        special_walls = []
-        return [
+    def get_floorplan(self):
+        """
+        Return the ingested floorplan object.
+        """
+        width = self.maxx - self.minx
+        height = self.maxy - self.miny
+        return Floorplan(
+            self.scale,
             self.spaces,
             self.doors,
             self.walls,
-            special_walls,
             self.aisles,
-            1000,
-            1000,
-            self.scale,
-        ]
-
-    def export_data_to_pickle_file(self, pickle_file):
-        """Export extracted floorplan data to a pickle file.
-
-        :param str pickle_file: file location where to save the data
-        :return: boolean indicating if the operation was successful or not
-        :rtype: bool:
-        """
-        try:
-            with open(pickle_file, "wb") as f:
-                pickle.dump(self._data_to_save, f)
-            return True
-        except Exception as e:
-            LOG.exception(e)
-            return False
+            width,
+            height
+        )
