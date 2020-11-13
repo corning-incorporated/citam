@@ -844,10 +844,10 @@ class FacilityTransmissionModel:
                 current_time=None,
                 show_colobar=False,
                 viewbox=[
-                    -10,
-                    -10,
-                    self.floorplans[floor_number].width + 50,
-                    self.floorplans[floor_number].height + 50,
+                    self.floorplans[floor_number].minx - 10,
+                    self.floorplans[floor_number].miny - 10,
+                    self.floorplans[floor_number].maxx + 50,
+                    self.floorplans[floor_number].maxy + 50,
                 ],
             )
 
