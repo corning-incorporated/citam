@@ -89,6 +89,10 @@ class Door:
         return id(self)
 
     def _as_dict(self):
+        """
+        Return this class as a dictionary. Note that only the space ids
+        are kept.
+        """
         d = {}
         d['path'] = self.path
         d['space1_id'] = None

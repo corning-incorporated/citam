@@ -67,6 +67,7 @@ class Floorplan:
         floor_name="0",
         special_walls=None,  # Walls not attached to any space
         traffic_policy=None,
+        assign_doors_on_load=False
     ):
         super().__init__()
 
@@ -90,13 +91,14 @@ class Floorplan:
         if any(ele is None for ele in [doors, spaces, walls, aisles]):
             raise ValueError("Invalid inputs for floorplan.")
 
+        if assign_doors_on_load:
+            self.match_doors_and_spaces()
+
         n_rooms_with_doors = 0
         n_rooms = 0
         for space in self.spaces:
-
             if space.building not in self.buildings:
                 self.buildings.append(space.building)
-
             if not space.is_space_a_hallway():
                 n_rooms += 1
                 if len(space.doors) > 0:
@@ -120,6 +122,33 @@ class Floorplan:
         self.traffic_policy = traffic_policy
 
         return
+
+    def match_doors_and_spaces(self):
+        """
+        Iterate over all doors and create references to corresponding spaces.
+        """
+        for door in self.doors:
+            if door.space1_id:
+                space1 = self.find_space_by_id(door.space1_id)
+                if space1:
+                    space1.doors.append(door)
+                    door.space1 = space1
+            if door.space2_id:
+                space2 = self.find_space_by_id(door.space2_id)
+                if space2:
+                    space2.doors.append(door)
+                    door.space2 = space2
+        return
+
+    def find_space_by_id(self, space_id):
+        """
+        Find and return the space object that has the given id
+        """
+        for space in self.spaces:
+            if space.id == space_id:
+                return space
+
+        return None
 
     def place_agent(self, agent, pos):
         """Position an agent in a given x, y position on this floor"""
@@ -218,7 +247,11 @@ class Floorplan:
         return
 
     def _as_dict(self):
-
+        """
+        Return the floorplan as a dictionary. The "assign_doors_on_load" flag
+        is added so that doors can be reassigned to the appropirate spaces
+        when the object is recreated.
+        """
         d = {}
         d['scale'] = self.scale
         d['spaces'] = self.spaces
@@ -228,6 +261,7 @@ class Floorplan:
         d['width'] = self.width
         d['height'] = self.height
         d['special_walls'] = self.special_walls
+        d['assign_doors_on_load'] = True
 
         return d
 

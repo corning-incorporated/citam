@@ -66,10 +66,14 @@ class Space:
         return id(self)
 
     def __str__(self):
-
         return str(self.__dict__.items())
 
     def _as_dict(self):
+        """
+        Return this space object as a dictionary. Note: this operation
+        ignores any reference to door objects which must be recreated
+        at the floorplan level when this object is to be recreated.
+        """
         d = {}
         d['id'] = self.id
         d['boundaries'] = self.boundaries  # This is a list of objects!
@@ -81,7 +85,6 @@ class Space:
         d['capacity'] = self.capacity
         d['department'] = self.department
         d['square_footage'] = self.square_footage
-        # d['doors'] = self.doors  # This is a list of references
         d['facility'] = self.facility
         d['floor'] = self.floor
 
