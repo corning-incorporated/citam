@@ -338,8 +338,14 @@ class Navigation:
                 for i in range(n_coords - 1):
                     for j in range(i, n_coords):
                         if navnet_type == "singlefloor":
-                            test_edge1 = (tuple(all_coords[i]), tuple(all_coords[j]))
-                            test_edge2 = (tuple(all_coords[j]), tuple(all_coords[i]))
+                            test_edge1 = (
+                                tuple(all_coords[i]),
+                                tuple(all_coords[j]),
+                            )
+                            test_edge2 = (
+                                tuple(all_coords[j]),
+                                tuple(all_coords[i]),
+                            )
                         else:
                             test_edge1 = (
                                 tuple(all_coords[i]),
