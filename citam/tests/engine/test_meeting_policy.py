@@ -213,7 +213,7 @@ def test__find_potential_attendees_2(sample_meeting_policy):
 
 def test__generate_meeting_attendee_list(sample_meeting_policy):
 
-    meeting_room = Space("", "", capacity=25)
+    meeting_room = Space("", "", "", "", "", "", capacity=25)
 
     attendees = sample_meeting_policy._generate_meeting_attendee_list(
         meeting_room, 0, 3600
@@ -223,7 +223,7 @@ def test__generate_meeting_attendee_list(sample_meeting_policy):
 
 def test__generate_meeting_attendee_list2(sample_meeting_policy):
 
-    meeting_room = Space("", "", capacity=5)
+    meeting_room = Space("", "", "", "", "", "", capacity=5)
     sample_meeting_policy.attendee_pool.update({4: 0, 5: 0, 6: 0, 7: 0, 8: 0})
 
     attendees = sample_meeting_policy._generate_meeting_attendee_list(
@@ -235,7 +235,7 @@ def test__generate_meeting_attendee_list2(sample_meeting_policy):
 def test__create_meetings_for_room(sample_meeting_policy):
     n_meetings = 0
     for _ in range(5):
-        meeting_room = Space("", "", capacity=5)
+        meeting_room = Space("", "", "", "", "", "", capacity=5)
         sample_meeting_policy._create_meetings_for_room(meeting_room, 0)
         n_meetings += len(sample_meeting_policy.meetings)
 
