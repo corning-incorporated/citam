@@ -36,14 +36,11 @@ class Door:
         self.path = path
         self.space1 = space1
         self.space2 = space2
+        self.space1_id = space1_id
+        self.space2_id = space2_id
         self.in_service = in_service
         self.emergency_only = emergency_only
         self.special_access = special_access
-
-        if not self.space1:
-            raise ValueError(
-                "Doors must be associated with at least one space"
-            )
 
     @property
     def intersect_coords(self) -> tuple:

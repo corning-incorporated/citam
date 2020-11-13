@@ -116,7 +116,7 @@ def ingest_floorplan(
 
     LOG.info("Saving floorplan to pickle file...")
     floorplan = floorplan_ingester.get_floorplan()
-    floorplan.to_json(fp_file)
+    floorplan.to_json_file(fp_file)
     LOG.info("Done.")
 
 
@@ -200,7 +200,7 @@ def update_floorplan_from_svg_file(
     updated_json_file = os.path.join(
         floorplan_directory, "updated_floorplan.json"
     )
-    fp_updater.floorplan.to_json(updated_json_file)
+    fp_updater.floorplan.to_json_file(updated_json_file)
 
 
 def export_navigation_graph_to_svg(
