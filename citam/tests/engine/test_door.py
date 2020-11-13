@@ -1,4 +1,3 @@
-
 from citam.engine.serializer import serializer
 from citam.engine.door import Door
 

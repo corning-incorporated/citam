@@ -1115,7 +1115,9 @@ class NavigationBuilder:
 
         return True
 
-    def export_navdata_to_json(self, navnet_json_file, hallway_graph_json_file):
+    def export_navdata_to_json(
+        self, navnet_json_file, hallway_graph_json_file
+    ):
         """Export the navigation network data to json file for later use.
 
         Parameters
@@ -1128,19 +1130,18 @@ class NavigationBuilder:
         """
 
         nav_dict = nx.readwrite.json_graph.node_link_data(
-                    self.floor_navnet,
-                    # {"link": "edges", "source": "from", "target": "to"}
-                )
+            self.floor_navnet,
+            # {"link": "edges", "source": "from", "target": "to"}
+        )
         with open(navnet_json_file, "w") as f:
             json.dump(nav_dict, f)
 
         hg_dict = nx.readwrite.json_graph.node_link_data(
-                    self.hallways_graph,
-                    # {"link": "edges", "source": "from", "target": "to"}
-                )
+            self.hallways_graph,
+            # {"link": "edges", "source": "from", "target": "to"}
+        )
         with open(hallway_graph_json_file, "w") as f:
             json.dump(hg_dict, f)
-
 
     def load_navdata_from_json_files(
         self, navnet_json_file, hallway_graph_json_file
@@ -1168,9 +1169,11 @@ class NavigationBuilder:
             )
 
         with open(navnet_json_file, "r") as f:
-            self.floor_navnet = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
+            self.floor_navnet = json.load(
+                f, object_hook=nx.readwrite.json_graph.node_link_graph
+            )
 
         with open(hallway_graph_json_file, "r") as f:
-            self.hallways_graph = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
-
-
+            self.hallways_graph = json.load(
+                f, object_hook=nx.readwrite.json_graph.node_link_graph
+            )

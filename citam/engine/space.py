@@ -24,6 +24,7 @@ from citam.engine.point import Point
 from citam.engine.serializer import serializer
 from citam.engine.constants import DEFAULT_MEETING_ROOM_CAPACITY
 
+
 @serializer
 class Space:
     def __init__(
@@ -39,7 +40,8 @@ class Space:
         space_category=None,
         capacity=None,
         department=None,
-        square_footage=None):
+        square_footage=None,
+    ):
 
         self.id = id
         self.boundaries = boundaries
@@ -75,18 +77,18 @@ class Space:
         at the floorplan level when this object is to be recreated.
         """
         d = {}
-        d['id'] = self.id
-        d['boundaries'] = self.boundaries  # This is a list of objects!
-        d['path'] = self.path   # This is a list of objects
-        d['building'] = self.building
-        d['unique_name'] = self.unique_name
-        d['space_function'] = self.space_function
-        d['space_category'] = self.space_category
-        d['capacity'] = self.capacity
-        d['department'] = self.department
-        d['square_footage'] = self.square_footage
-        d['facility'] = self.facility
-        d['floor'] = self.floor
+        d["id"] = self.id
+        d["boundaries"] = self.boundaries  # This is a list of objects!
+        d["path"] = self.path  # This is a list of objects
+        d["building"] = self.building
+        d["unique_name"] = self.unique_name
+        d["space_function"] = self.space_function
+        d["space_category"] = self.space_category
+        d["capacity"] = self.capacity
+        d["department"] = self.department
+        d["square_footage"] = self.square_footage
+        d["facility"] = self.facility
+        d["floor"] = self.floor
 
         return d
 
