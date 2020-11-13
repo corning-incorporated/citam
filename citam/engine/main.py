@@ -229,9 +229,9 @@ def export_navigation_graph_to_svg(
         raise FileNotFoundError(nav_network_file)
 
     with open(nav_network_file, "r") as f:
-        nav_graph = json.load(
-            f, object_hook=nx.readwrite.json_graph.node_link_graph
-        )
+        nav_data = json.load(f)
+
+    nav_graph = nx.readwrite.json_graph.node_link_graph(nav_data)
 
     nav_nodes = []
     nav_paths = []
