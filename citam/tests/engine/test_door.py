@@ -17,7 +17,7 @@ def test_serialize(rect_space):
 
     assert test_door.path == door_decoded.path
     assert test_door.emergency_only == door_decoded.emergency_only
-    assert test_door.space1.id == door_decoded.space1
+    assert test_door.space1.id == door_decoded.space1_id
     assert test_door.space2 == door_decoded.space2
     assert test_door.in_service == door_decoded.in_service
     assert test_door.special_access == door_decoded.special_access
@@ -33,7 +33,7 @@ def test_serialize2(rect_space, x_space):
 
     assert test_door.path == door_decoded.path
     assert test_door.emergency_only == door_decoded.emergency_only
-    assert test_door.space1.id == door_decoded.space1
-    assert test_door.space2.id == door_decoded.space2
+    assert test_door.space1.id == door_decoded.space1_id
+    assert test_door.space2.id == door_decoded.space2_id
     assert test_door.in_service == door_decoded.in_service
     assert test_door.special_access == door_decoded.special_access
