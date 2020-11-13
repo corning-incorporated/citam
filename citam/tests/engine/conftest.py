@@ -11,9 +11,10 @@ import pytest
 import os
 from copy import deepcopy
 
-import pickle
 from citam.engine.floorplan_ingester import FloorplanIngester
 import copy
+import json
+from citam.engine.serializer import serializer
 
 
 @pytest.fixture
@@ -311,23 +312,13 @@ def simple_facility_floorplan(request, monkeypatch):
     )
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
 
-    floorplan_pickle_file = os.path.join(
-        datadir, "test_simple_facility/", "floor_0", "updated_floorplan.pkl"
+    floorplan_json_file = os.path.join(
+        datadir, "test_simple_facility/", "floor_0", "updated_floorplan.json"
     )
-    with open(floorplan_pickle_file, "rb") as f:
-        (
-            spaces,
-            doors,
-            walls,
-            special_walls,
-            aisles,
-            minx,
-            miny,
-            maxx,
-            maxy,
-            scale,
-        ) = pickle.load(f)
-    fp = Floorplan(scale, spaces, doors, walls, aisles, minx, miny, maxx, maxy)
+
+    with open(floorplan_json_file, 'r') as f:
+        fp = json.load(f, object_hook=serializer.decoder_hook)
+
     return fp
 
 
