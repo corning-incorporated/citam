@@ -243,10 +243,9 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
 def test_init_correct_number_of_objects(datadir):
 
     svg_file = None  # datadir + '/TF1.svg'
-    csv_file = None  # datadir + '/TF1.csv'
     scale = 0.8
     fi = FloorplanIngester(
-        svg_file, csv_file, scale, extract_doors_from_file=True
+        svg_file, scale, extract_doors_from_file=True
     )
 
     assert fi.spaces == []
