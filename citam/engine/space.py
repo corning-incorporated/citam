@@ -31,9 +31,11 @@ class Space:
         path,
         boundaries,
         id,
-        building,
         unique_name,
+        building,
         space_function,
+        facility=None,
+        floor=None,
         space_category=None,
         capacity=None,
         department=None,
@@ -44,6 +46,8 @@ class Space:
         self.path = path
         self.building = building
         self.unique_name = unique_name
+        self.facility = facility
+        self.floor = floor
         self.space_function = space_function
         self.space_category = space_category
         self.capacity = capacity
@@ -67,6 +71,7 @@ class Space:
 
     def _as_dict(self):
         d = {}
+        d['id'] = self.id
         d['boundaries'] = self.boundaries  # This is a list of objects!
         d['path'] = self.path   # This is a list of objects
         d['building'] = self.building
@@ -76,11 +81,11 @@ class Space:
         d['capacity'] = self.capacity
         d['department'] = self.department
         d['square_footage'] = self.square_footage
-        d['doors'] = self.doors  # This is a list of references
+        # d['doors'] = self.doors  # This is a list of references
+        d['facility'] = self.facility
+        d['floor'] = self.floor
 
         return d
-
-
 
     def __sizeof__(self):
 
