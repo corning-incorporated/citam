@@ -32,6 +32,7 @@ from citam.engine.floorplan_updater import FloorplanUpdater
 from citam.engine.model import FacilityTransmissionModel
 from citam.engine.navigation_builder import NavigationBuilder
 from citam.engine.point import Point
+import pickle
 
 LOG = logging.getLogger(__name__)
 

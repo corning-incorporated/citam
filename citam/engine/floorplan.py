@@ -43,10 +43,14 @@ class Floorplan:
     walls : list of Line objects
         list of all the walls in the floorplan. Used to generate the final
         map of the facility and to have realistic navigation.
-    width : int
-        the overall width of the facility  in units of the SVG drawing
-    height : int
-        the overall height of the facility in units of the SVG drawing
+    minx : int
+        the minimum x-value of the facility  in units of the SVG drawing
+    miny : int
+        the minimum y-value of the facility in units of the SVG drawing
+    maxx : int
+        the maximum x-value of the facility  in units of the SVG drawing
+    maxy : int
+        the maximum y-value of the facility in units of the SVG drawing
     """
 
     def __init__(
@@ -56,8 +60,10 @@ class Floorplan:
         doors,
         walls,
         aisles,
-        width,
-        height,
+        minx,
+        miny,
+        maxx,
+        maxy,
         floor_name="0",
         special_walls=None,  # Walls not attached to any space
         traffic_policy=None,
@@ -76,10 +82,10 @@ class Floorplan:
         self.doors = doors
         self.walls = walls
         self.aisles = aisles
-        self.width = width
-        self.height = height
-        self.minx = 0
-        self.miny = 0
+        self.maxx = maxx
+        self.maxy = maxy
+        self.minx = minx
+        self.miny = miny
 
         if any(ele is None for ele in [doors, spaces, walls, aisles]):
             raise ValueError("Invalid inputs for floorplan.")
