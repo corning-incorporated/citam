@@ -88,11 +88,12 @@ class Navigation:
         """Load the hallway graph"""
         hg = None
         floor_hallway_graph_file = os.path.join(
-            floorplan_directory, "hallways_graph.pkl"
+            floorplan_directory, "hallways_graph.json"
         )
         if os.path.isfile(floor_hallway_graph_file):
-            with open(floor_hallway_graph_file, "rb") as f:
-                hg = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
+            with open(floor_hallway_graph_file, "r") as f:
+                hg_data = json.load(f)
+            hg = nx.readwrite.json_graph.node_link_graph(hg_data)
             LOG.info("Success!")
         else:
             raise FileNotFoundError(
@@ -126,7 +127,8 @@ class Navigation:
         floor_navnet_file = os.path.join(floorplan_directory, "routes.json")
         if os.path.isfile(floor_navnet_file):
             with open(floor_navnet_file, "r") as f:
-                navnet = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
+                navnet_data = json.load(f)
+            navnet = nx.readwrite.json_graph.node_link_graph(navnet_data)
             LOG.info("Success!")
         else:
             raise FileNotFoundError(
