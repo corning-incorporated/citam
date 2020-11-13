@@ -346,7 +346,7 @@ def test_load_navdata_from_json_files_1(x_floorplan, tmp_path):
     hallway_graph_file = d / "hallway_graph.json"
     nav_builder.export_navdata_to_json(navnet_file, hallway_graph_file)
     nav_builder.floor_navnet.clear()
-    load_result = nav_builder.load_navdata_from_json_files(
+    nav_builder.load_navdata_from_json_files(
         navnet_file, hallway_graph_file
     )
 

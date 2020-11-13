@@ -26,9 +26,7 @@ import citam.engine.input_parser as parser
 from citam.engine.door import Door
 from citam.engine.point import Point
 from citam.engine.space import Space
-from citam.engine import serializer
 from citam.engine.floorplan import Floorplan
-import json
 import math as m
 
 LOG = logging.getLogger(__name__)
@@ -672,8 +670,6 @@ class FloorplanIngester:
         """
         Return the ingested floorplan object.
         """
-        width = self.maxx - self.minx
-        height = self.maxy - self.miny
         return Floorplan(
             self.scale,
             self.spaces,
