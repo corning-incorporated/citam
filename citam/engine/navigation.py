@@ -16,7 +16,6 @@ import errno
 import logging
 import math
 import os
-import pickle
 from itertools import product
 
 import networkx as nx
@@ -30,6 +29,7 @@ from citam.engine.constants import (
     TWO_WAY_TRAFFIC,
 )
 from citam.engine.point import Point
+import json
 
 LOG = logging.getLogger(__name__)
 
@@ -92,7 +92,7 @@ class Navigation:
         )
         if os.path.isfile(floor_hallway_graph_file):
             with open(floor_hallway_graph_file, "rb") as f:
-                hg = pickle.load(f)
+                hg = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
             LOG.info("Success!")
         else:
             raise FileNotFoundError(
@@ -107,11 +107,12 @@ class Navigation:
         """Load the oneway network"""
         oneway_net = None
         oneway_net_file = os.path.join(
-            floorplan_directory, "oneway_network.pkl"
+            floorplan_directory, "oneway_network.json"
         )
         if os.path.isfile(oneway_net_file):
-            with open(oneway_net_file, "rb") as f:
-                oneway_net = pickle.load(f)
+            with open(oneway_net_file, "r") as f:
+                oneway_net = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
+
             LOG.info("Success!")
         else:
             raise FileNotFoundError(
@@ -122,10 +123,10 @@ class Navigation:
     def load_floor_navnet(self, floorplan_directory):
         """Load the navigation network."""
         navnet = None
-        floor_navnet_file = os.path.join(floorplan_directory, "routes.pkl")
+        floor_navnet_file = os.path.join(floorplan_directory, "routes.json")
         if os.path.isfile(floor_navnet_file):
-            with open(floor_navnet_file, "rb") as f:
-                navnet = pickle.load(f)
+            with open(floor_navnet_file, "r") as f:
+                navnet = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
             LOG.info("Success!")
         else:
             raise FileNotFoundError(

@@ -145,7 +145,7 @@ def test_init_navnet_not_found(
     os.remove(
         os.path.join(
             datadir,
-            "floorplans_and_nav_data/test_simple_facility/floor_0/routes.pkl",
+            "floorplans_and_nav_data/test_simple_facility/floor_0/routes.json",
         )
     )
     with pytest.raises(FileNotFoundError):
