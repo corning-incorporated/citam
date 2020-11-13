@@ -14,7 +14,6 @@
 
 import logging
 import os
-import pickle
 import json
 
 import citam.engine.basic_visualization as bv
@@ -131,12 +130,12 @@ class Floorplan:
             if door.space1_id:
                 space1 = self.find_space_by_id(door.space1_id)
                 if space1:
-                    space1.doors.append(door)
+                    space1.doors.append(door.path)
                     door.space1 = space1
             if door.space2_id:
                 space2 = self.find_space_by_id(door.space2_id)
                 if space2:
-                    space2.doors.append(door)
+                    space2.doors.append(door.path)
                     door.space2 = space2
         return
 

@@ -65,7 +65,7 @@ def rect_floorplan():
 
     door_path = Line(start=complex(120, 0), end=complex(130, 0))
     doors = [Door(path=door_path, space1=rect_space)]
-    rect_space.doors = doors
+    rect_space.doors.append(doors[0].path)  #TODO: CHANGE TO WHOLE DOOR OBJECT
     aisles = []
     fp = Floorplan(1.0, [rect_space], doors, walls, aisles, 0, 0, 200, 200)
 
