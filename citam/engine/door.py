@@ -91,14 +91,14 @@ class Door:
         are kept.
         """
         d = {}
-        d['path'] = self.path
-        d['space1_id'] = None
+        d["path"] = self.path
+        d["space1_id"] = None
         if self.space1:
-            d['space1_id'] = self.space1.id
-        d['space2_id'] = None
+            d["space1_id"] = self.space1.id
+        d["space2_id"] = None
         if self.space2:
-            d['space2_id'] = self.space2.id
-        d['in_service'] = self.in_service
-        d['emergency_only'] = self.emergency_only
-        d['special_access'] = self.special_access
+            d["space2_id"] = self.space2.id
+        d["in_service"] = self.in_service
+        d["emergency_only"] = self.emergency_only
+        d["special_access"] = self.special_access
         return d

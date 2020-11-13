@@ -33,7 +33,3 @@ def test_serialize_2(x_space):
     assert x_space_decoded.floor == x_space.floor
     assert x_space_decoded.capacity == x_space.capacity
     assert x_space_decoded.building == x_space.building
-
-
-
-

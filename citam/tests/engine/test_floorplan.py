@@ -29,7 +29,9 @@ def test_floorplan_from_directory(floorplan_json, simple_facility_floorplan):
     assert fp.scale == simple_facility_floorplan.scale
 
 
-def test_floorplan_from_directory_custom_floor_name(floorplan_json, simple_facility_floorplan):
+def test_floorplan_from_directory_custom_floor_name(
+    floorplan_json, simple_facility_floorplan
+):
 
     fn = "foo_floor_19862"
     json_dir = os.path.dirname(floorplan_json)
@@ -47,7 +49,9 @@ def test_floorplan_from_directory_custom_floor_name(floorplan_json, simple_facil
     assert fp.floor_name == fn
 
 
-def test_floorplan_from_directory_with_kwargs(floorplan_json, simple_facility_floorplan):
+def test_floorplan_from_directory_with_kwargs(
+    floorplan_json, simple_facility_floorplan
+):
     custom_scale = 24
     json_dir = os.path.dirname(floorplan_json)
     fp = floorplan_from_directory(json_dir, "floor_0", scale=custom_scale)
@@ -102,12 +106,12 @@ def test_serialize2(rect_floorplan):
 
 
 def test_to_json_file(x_floorplan, tmpdir):
-    json_file = os.path.join(tmpdir, 'test.json')
+    json_file = os.path.join(tmpdir, "test.json")
     x_floorplan.to_json_file(json_file)
     assert os.path.isfile(json_file)
 
 
 def test_export_to_svg(x_floorplan, tmpdir):
-    svg_file = os.path.join(tmpdir, 'test.svg')
+    svg_file = os.path.join(tmpdir, "test.svg")
     x_floorplan.export_to_svg(svg_file)
     assert os.path.isfile(svg_file)

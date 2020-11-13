@@ -112,7 +112,9 @@ class Navigation:
         )
         if os.path.isfile(oneway_net_file):
             with open(oneway_net_file, "r") as f:
-                oneway_net = json.load(f, object_hook=nx.readwrite.json_graph.node_link_graph)
+                oneway_net = json.load(
+                    f, object_hook=nx.readwrite.json_graph.node_link_graph
+                )
 
             LOG.info("Success!")
         else:

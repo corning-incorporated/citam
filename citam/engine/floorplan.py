@@ -66,7 +66,7 @@ class Floorplan:
         floor_name="0",
         special_walls=None,  # Walls not attached to any space
         traffic_policy=None,
-        assign_doors_on_load=False
+        assign_doors_on_load=False,
     ):
         super().__init__()
 
@@ -252,17 +252,17 @@ class Floorplan:
         when the object is recreated.
         """
         d = {}
-        d['scale'] = self.scale
-        d['spaces'] = self.spaces
-        d['doors'] = self.doors
-        d['walls'] = self.walls
-        d['aisles'] = self.aisles
-        d['minx'] = self.minx
-        d['maxx'] = self.maxx
-        d['miny'] = self.miny
-        d['maxy'] = self.maxy
-        d['special_walls'] = self.special_walls
-        d['assign_doors_on_load'] = True
+        d["scale"] = self.scale
+        d["spaces"] = self.spaces
+        d["doors"] = self.doors
+        d["walls"] = self.walls
+        d["aisles"] = self.aisles
+        d["minx"] = self.minx
+        d["maxx"] = self.maxx
+        d["miny"] = self.miny
+        d["maxy"] = self.maxy
+        d["special_walls"] = self.special_walls
+        d["assign_doors_on_load"] = True
 
         return d
 
@@ -295,7 +295,7 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
         fp_file = os.path.join(path, "floorplan.json")
 
     if os.path.isfile(fp_file):
-        with open(fp_file, 'r') as infile:
+        with open(fp_file, "r") as infile:
             floorplan = json.load(infile, object_hook=serializer.decoder_hook)
         LOG.info("Floorplan successfully loaded.")
 
