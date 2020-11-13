@@ -46,8 +46,6 @@ class FloorplanIngester:
         buildings_to_keep=None,
         excluded_buildings=None,
     ):
-        super().__init__()
-
         self.svg_file = svg_file
         self.csv_file = csv_file
         self.extract_doors_from_file = extract_doors_from_file

@@ -112,10 +112,8 @@ class Navigation:
         )
         if os.path.isfile(oneway_net_file):
             with open(oneway_net_file, "r") as f:
-                oneway_net = json.load(
-                    f, object_hook=nx.readwrite.json_graph.node_link_graph
-                )
-
+                oneway_data = json.load(f)
+            oneway_net = nx.readwrite.json_graph.node_link_graph(oneway_data)
             LOG.info("Success!")
         else:
             raise FileNotFoundError(
@@ -340,17 +338,17 @@ class Navigation:
                 for i in range(n_coords - 1):
                     for j in range(i, n_coords):
                         if navnet_type == "singlefloor":
-                            test_edge1 = (all_coords[i], all_coords[j])
-                            test_edge2 = (all_coords[j], all_coords[i])
+                            test_edge1 = (tuple(all_coords[i]), tuple(all_coords[j]))
+                            test_edge2 = (tuple(all_coords[j]), tuple(all_coords[i]))
                         else:
                             test_edge1 = (
-                                all_coords[i],
-                                all_coords[j],
+                                tuple(all_coords[i]),
+                                tuple(all_coords[j]),
                                 floor_number,
                             )
                             test_edge2 = (
-                                all_coords[j],
-                                all_coords[i],
+                                tuple(all_coords[j]),
+                                tuple(all_coords[i]),
                                 floor_number,
                             )
                         for test_edge in [test_edge1, test_edge2]:

@@ -1131,14 +1131,12 @@ class NavigationBuilder:
 
         nav_dict = nx.readwrite.json_graph.node_link_data(
             self.floor_navnet,
-            # {"link": "edges", "source": "from", "target": "to"}
         )
         with open(navnet_json_file, "w") as f:
             json.dump(nav_dict, f)
 
         hg_dict = nx.readwrite.json_graph.node_link_data(
             self.hallways_graph,
-            # {"link": "edges", "source": "from", "target": "to"}
         )
         with open(hallway_graph_json_file, "w") as f:
             json.dump(hg_dict, f)

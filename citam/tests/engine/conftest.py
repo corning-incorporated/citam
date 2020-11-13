@@ -183,7 +183,7 @@ def rect_floorplan_ingester_data():
     and a big room at the end of the hallway. (This floorplan is also used for
     simple facility).
     """
-    rect_fi = FloorplanIngester(None, None, 1.0)
+    rect_fi = FloorplanIngester(None, 1.0, csv_file="")
     rect_fi.space_data = []
     rect_fi.space_paths = []
     rect_fi.space_attributes = []

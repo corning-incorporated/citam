@@ -355,9 +355,8 @@ def find_and_save_potential_one_way_aisles(
         raise FileNotFoundError(nav_network_file)
 
     with open(nav_network_file, "r") as f:
-        nav_graph = json.load(
-            f, object_hook=nx.readwrite.json_graph.node_link_graph
-        )
+        navnet_data = json.load(f)
+    nav_graph = nx.readwrite.json_graph.node_link_graph(navnet_data)
 
     LOG.info("Finding possible one way aisles from navigation network...")
     oneway_network = nx.Graph()
@@ -405,14 +404,14 @@ def find_and_save_potential_one_way_aisles(
         oneway_network[edge[0]][edge[1]]["id"] = str(i)
 
     # Save oneway network to json file
-    oneway_net_pkl_file = os.path.join(
+    oneway_net_json_file = os.path.join(
         floorplan_directory, "oneway_network.json"
     )
-    with open(oneway_net_pkl_file, "w") as f:
-        json.dump(
-            oneway_network, f, default=nx.readwrite.json_graph.node_link_data
-        )
-        LOG.info("File saved: %s", oneway_net_pkl_file)
+    oneway_dict = nx.readwrite.json_graph.node_link_data(oneway_network)
+    with open(oneway_net_json_file, "w") as f:
+        json.dump(oneway_dict, f)
+
+    LOG.info("File saved: %s", oneway_net_json_file)
 
     bv.export_possible_oneway_aisles_to_svg(
         floorplan.walls, oneway_network, outputfile
