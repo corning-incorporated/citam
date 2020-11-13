@@ -24,8 +24,10 @@ class Door:
     def __init__(
         self,
         path,
-        space1,
+        space1=None,
         space2=None,
+        space1_id=None,
+        space2_id=None,
         in_service=True,
         emergency_only=False,
         special_access=False,
@@ -89,12 +91,12 @@ class Door:
     def _as_dict(self):
         d = {}
         d['path'] = self.path
-        d['space1'] = None
+        d['space1_id'] = None
         if self.space1:
-            d['space1'] = self.space1.id
-        d['space2'] = None
+            d['space1_id'] = self.space1.id
+        d['space2_id'] = None
         if self.space2:
-            d['space2'] = self.space2.id
+            d['space2_id'] = self.space2.id
         d['in_service'] = self.in_service
         d['emergency_only'] = self.emergency_only
         d['special_access'] = self.special_access
