@@ -29,6 +29,7 @@ from citam.engine.space import Space
 from citam.engine import serializer
 from citam.engine.floorplan import Floorplan
 import json
+import math as m
 
 LOG = logging.getLogger(__name__)
 
@@ -247,6 +248,10 @@ class FloorplanIngester:
             len(self.doors),
         )
 
+        self.find_min_and_max_coordinates()
+
+        return
+
     def find_space_index_for_door(self, door):
         """
         Given a door SVG element, find the index of the space to which it
@@ -398,6 +403,8 @@ class FloorplanIngester:
         """
         Given a door line and space indices, create new door object
         """
+        if not space_indices:
+            return
         door_obj = Door(path=door_line, space1=self.spaces[space_indices[0]])
         if not self.spaces[space_indices[0]].is_space_a_hallway():
             self.spaces[space_indices[0]].doors.append(door_line)
@@ -480,7 +487,12 @@ class FloorplanIngester:
         if door_line is not None:
             # Find overlapping walls
             overlapping_walls = self._find_all_overlapping_walls(door_line)
-
+            if not overlapping_walls:
+                space_name = self.spaces[room_id].unique_name
+                LOG.warning(
+                    f"Unable to add a door to this space: {space_name}"
+                )
+                return
             # Create door object and add door line to spaces
             self._create_door_object(door_line, list(overlapping_walls.keys()))
 
@@ -670,6 +682,28 @@ class FloorplanIngester:
             self.doors,
             self.walls,
             self.aisles,
-            width,
-            height
+            self.minx,
+            self.miny,
+            self.maxx,
+            self.maxy,
         )
+
+    def find_min_and_max_coordinates(self):
+        """
+        Find the min and max coordinates for both x and y.
+        """
+        self.minx = m.inf
+        self.miny = m.inf
+        self.maxx = -m.inf
+        self.maxy = -m.inf
+        for wall in self.walls:
+            for x in (wall.start.real, wall.end.real):
+                if x < self.minx:
+                    self.minx = x
+                elif x > self.maxx:
+                    self.maxx = x
+            for y in (wall.start.imag, wall.end.imag):
+                if y < self.miny:
+                    self.miny = y
+                elif y > self.maxx:
+                    self.maxy = y
