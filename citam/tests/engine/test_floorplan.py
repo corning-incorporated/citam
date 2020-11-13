@@ -7,87 +7,60 @@ from citam.engine.serializer import serializer
 from citam.engine.floorplan import floorplan_from_directory
 
 
-# @pytest.fixture
-# def floorplan_pickle(simple_facility_floorplan, tmp_path):
-#     pkl_path = os.path.join(tmp_path, "floorplan.pkl")
-#     simple_facility_floorplan.export_data_to_pickle_file(pkl_path)
-#     return pkl_path
+@pytest.fixture
+def floorplan_json(simple_facility_floorplan, tmp_path):
+    pkl_path = os.path.join(tmp_path, "floorplan.json")
+    simple_facility_floorplan.to_json_file(pkl_path)
+    return pkl_path
 
 
-# def test_floorplan_from_directory(floorplan_pickle):
-#     (
-#         spaces,
-#         doors,
-#         walls,
-#         special_walls,
-#         aisles,
-#         width,
-#         height,
-#         scale,
-#     ) = pickle.load(open(floorplan_pickle, "rb"))
-
-#     pickle_dir = os.path.dirname(floorplan_pickle)
-#     fp = floorplan_from_directory(pickle_dir, "floor_0")
-#     assert fp.spaces == spaces
-#     assert fp.doors == doors
-#     assert fp.walls == walls
-#     assert fp.special_walls == special_walls
-#     assert fp.aisles == aisles
-#     assert fp.width == width
-#     assert fp.height == height
-#     assert fp.scale == scale
+def test_floorplan_from_directory(floorplan_json, simple_facility_floorplan):
+    json_dir = os.path.dirname(floorplan_json)
+    fp = floorplan_from_directory(json_dir, "floor_0")
+    assert fp.spaces == simple_facility_floorplan.spaces
+    assert fp.doors == simple_facility_floorplan.doors
+    assert fp.walls == simple_facility_floorplan.walls
+    assert fp.special_walls == simple_facility_floorplan.special_walls
+    assert fp.aisles == simple_facility_floorplan.aisles
+    assert fp.minx == simple_facility_floorplan.minx
+    assert fp.maxx == simple_facility_floorplan.maxx
+    assert fp.miny == simple_facility_floorplan.miny
+    assert fp.maxy == simple_facility_floorplan.maxy
+    assert fp.scale == simple_facility_floorplan.scale
 
 
-# def test_floorplan_from_directory_custom_floor_name(floorplan_pickle):
-#     (
-#         spaces,
-#         doors,
-#         walls,
-#         special_walls,
-#         aisles,
-#         width,
-#         height,
-#         scale,
-#     ) = pickle.load(open(floorplan_pickle, "rb"))
+def test_floorplan_from_directory_custom_floor_name(floorplan_json, simple_facility_floorplan):
 
-#     fn = "foo_floor_19862"
-#     pickle_dir = os.path.dirname(floorplan_pickle)
-#     fp = floorplan_from_directory(pickle_dir, fn)
-#     assert fp.spaces == spaces
-#     assert fp.doors == doors
-#     assert fp.walls == walls
-#     assert fp.special_walls == special_walls
-#     assert fp.aisles == aisles
-#     assert fp.width == width
-#     assert fp.height == height
-#     assert fp.scale == scale
-#     assert fp.floor_name == fn
+    fn = "foo_floor_19862"
+    json_dir = os.path.dirname(floorplan_json)
+    fp = floorplan_from_directory(json_dir, fn)
+    assert fp.spaces == simple_facility_floorplan.spaces
+    assert fp.doors == simple_facility_floorplan.doors
+    assert fp.walls == simple_facility_floorplan.walls
+    assert fp.special_walls == simple_facility_floorplan.special_walls
+    assert fp.aisles == simple_facility_floorplan.aisles
+    assert fp.minx == simple_facility_floorplan.minx
+    assert fp.maxx == simple_facility_floorplan.maxx
+    assert fp.miny == simple_facility_floorplan.miny
+    assert fp.maxy == simple_facility_floorplan.maxy
+    assert fp.scale == simple_facility_floorplan.scale
+    assert fp.floor_name == fn
 
 
-# def test_floorplan_from_directory_with_kwargs(floorplan_pickle):
-#     (
-#         spaces,
-#         doors,
-#         walls,
-#         special_walls,
-#         aisles,
-#         width,
-#         height,
-#         scale,
-#     ) = pickle.load(open(floorplan_pickle, "rb"))
-
-#     custom_scale = 24
-
-#     pickle_dir = os.path.dirname(floorplan_pickle)
-#     fp = floorplan_from_directory(pickle_dir, "floor_0", scale=custom_scale)
-#     assert fp.spaces == spaces
-#     assert fp.doors == doors
-#     assert fp.walls == walls
-#     assert fp.special_walls == special_walls
-#     assert fp.aisles == aisles
-#     assert fp.width == width
-#     assert fp.height == height
-#     assert fp.scale == custom_scale
+def test_floorplan_from_directory_with_kwargs(floorplan_json, simple_facility_floorplan):
+    custom_scale = 24
+    json_dir = os.path.dirname(floorplan_json)
+    fp = floorplan_from_directory(json_dir, "floor_0", scale=custom_scale)
+    assert fp.spaces == simple_facility_floorplan.spaces
+    assert fp.doors == simple_facility_floorplan.doors
+    assert fp.walls == simple_facility_floorplan.walls
+    assert fp.special_walls == simple_facility_floorplan.special_walls
+    assert fp.aisles == simple_facility_floorplan.aisles
+    assert fp.minx == simple_facility_floorplan.minx
+    assert fp.maxx == simple_facility_floorplan.maxx
+    assert fp.miny == simple_facility_floorplan.miny
+    assert fp.maxy == simple_facility_floorplan.maxy
+    assert fp.scale == custom_scale
 
 
 def test_serialize(x_floorplan):

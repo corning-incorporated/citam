@@ -298,6 +298,19 @@ def floorplan_from_directory(path: str, floor: str, **kwargs) -> Floorplan:
         with open(fp_file, 'r') as infile:
             floorplan = json.load(infile, object_hook=serializer.decoder_hook)
         LOG.info("Floorplan successfully loaded.")
-        return floorplan
+
     else:
         raise FileNotFoundError("Could not find floorplan file")
+
+    fp_inputs = {}
+    if kwargs.items():
+        no_none_kwargs = {k: v for k, v in kwargs.items() if v is not None}
+        LOG.debug("Updating fp_inputs with kwargs %s", no_none_kwargs)
+        fp_inputs.update(**no_none_kwargs)
+
+    floorplan.floor_name = floor
+
+    if "scale" in fp_inputs:
+        floorplan.scale = fp_inputs["scale"]
+
+    return floorplan
