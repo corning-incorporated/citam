@@ -258,19 +258,21 @@ class Floorplan:
         d['doors'] = self.doors
         d['walls'] = self.walls
         d['aisles'] = self.aisles
-        d['width'] = self.width
-        d['height'] = self.height
+        d['minx'] = self.minx
+        d['maxx'] = self.maxx
+        d['miny'] = self.miny
+        d['maxy'] = self.maxy
         d['special_walls'] = self.special_walls
         d['assign_doors_on_load'] = True
 
         return d
 
-    def to_json(self, json_file: str):
+    def to_json_file(self, json_file: str):
         """Export extracted floorplan data to a json file.
 
         :param str json_file: file location where to save the data
         """
-        with open(json_file, "wb") as outfile:
+        with open(json_file, "w") as outfile:
             json.dump(self, outfile, default=serializer.encoder_default)
 
 
