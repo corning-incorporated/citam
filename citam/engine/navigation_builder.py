@@ -1129,15 +1129,11 @@ class NavigationBuilder:
             Full file path to save the hallways graph
         """
 
-        nav_dict = nx.readwrite.json_graph.node_link_data(
-            self.floor_navnet,
-        )
+        nav_dict = nx.readwrite.json_graph.node_link_data(self.floor_navnet)
         with open(navnet_json_file, "w") as f:
             json.dump(nav_dict, f)
 
-        hg_dict = nx.readwrite.json_graph.node_link_data(
-            self.hallways_graph,
-        )
+        hg_dict = nx.readwrite.json_graph.node_link_data(self.hallways_graph)
         with open(hallway_graph_json_file, "w") as f:
             json.dump(hg_dict, f)
 
@@ -1167,11 +1163,9 @@ class NavigationBuilder:
             )
 
         with open(navnet_json_file, "r") as f:
-            self.floor_navnet = json.load(
-                f, object_hook=nx.readwrite.json_graph.node_link_graph
-            )
+            navdata = json.load(f)
+        self.floor_navnet = nx.readwrite.json_graph.node_link_graph(navdata)
 
         with open(hallway_graph_json_file, "r") as f:
-            self.hallways_graph = json.load(
-                f, object_hook=nx.readwrite.json_graph.node_link_graph
-            )
+            hgdata = json.load(f)
+        self.hallways_graph = nx.readwrite.json_graph.node_link_graph(hgdata)

@@ -4,6 +4,7 @@ from svgpathtools import Line
 
 import networkx as nx
 import os
+import pytest
 
 
 def test__init(x_floorplan):
@@ -304,15 +305,15 @@ def test_build_navnet_for_2_adjacent_rect_spaces(rect_floorplan2):
     assert n_edges2 == 1
 
 
-def test_export_navdata_to_pkl(x_floorplan, tmp_path):
+def test_export_navdata_to_json(x_floorplan, tmp_path):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
 
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.pkl"
-    hallway_graph_file = d / "hallway_graph.pkl"
+    navnet_file = d / "navnet.json"
+    hallway_graph_file = d / "hallway_graph.json"
 
-    nav_builder.export_navdata_to_pkl(navnet_file, hallway_graph_file)
+    nav_builder.export_navdata_to_json(navnet_file, hallway_graph_file)
 
     assert os.path.isfile(navnet_file)
     assert os.path.isfile(hallway_graph_file)
@@ -328,12 +329,12 @@ def test_export_navnet_to_svg(x_floorplan, tmp_path):
     d.mkdir()
     svg_file = d / "navnet.svg"
 
-    nav_builder.export_navnet_to_svg(svg_file)
+    nav_builder.export_navnet_to_svg(str(svg_file))
 
     assert os.path.isfile(svg_file)
 
 
-def test_load_navdata_from_pkl_files_1(x_floorplan, tmp_path):
+def test_load_navdata_from_json_files_1(x_floorplan, tmp_path):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     nav_builder.floor_navnet.add_node((0, 40))
     nav_builder.floor_navnet.add_node((250, 40))
@@ -341,47 +342,46 @@ def test_load_navdata_from_pkl_files_1(x_floorplan, tmp_path):
 
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.pkl"
-    hallway_graph_file = d / "hallway_graph.pkl"
-    nav_builder.export_navdata_to_pkl(navnet_file, hallway_graph_file)
+    navnet_file = d / "navnet.json"
+    hallway_graph_file = d / "hallway_graph.json"
+    nav_builder.export_navdata_to_json(navnet_file, hallway_graph_file)
     nav_builder.floor_navnet.clear()
-    load_result = nav_builder.load_navdata_from_pkl_files(
+    load_result = nav_builder.load_navdata_from_json_files(
         navnet_file, hallway_graph_file
     )
 
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     n_edges = nav_builder.floor_navnet.number_of_edges()
 
-    assert load_result is True
     assert n_nodes == 2
     assert n_edges == 1
 
 
-def test_load_navdata_from_pkl_files_2(x_floorplan, tmp_path):
+def test_load_navdata_from_json_files_2(x_floorplan, tmp_path):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "ntest.pkl"
-    hallway_graph_file = d / "htest.pkl"
-    load_result = nav_builder.load_navdata_from_pkl_files(
-        navnet_file, hallway_graph_file
-    )
+    navnet_file = d / "ntest.json"
+    hallway_graph_file = d / "htest.json"
 
-    assert load_result is False
+    with pytest.raises(FileNotFoundError):
+        nav_builder.load_navdata_from_json_files(
+            navnet_file, hallway_graph_file
+        )
 
 
-def test_load_navdata_from_pkl_files_3(x_floorplan, tmp_path):
+def test_load_navdata_from_json_files_3(x_floorplan, tmp_path):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     nav_builder.build()
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.pkl"
-    hallway_graph_file = d / "hallway_graph.pkl"
-    load_result = nav_builder.load_navdata_from_pkl_files(
-        navnet_file, hallway_graph_file
-    )
+    navnet_file = d / "navnet.json"
+    hallway_graph_file = d / "hallway_graph.json"
 
-    assert load_result is False
+    with pytest.raises(ValueError):
+        nav_builder.load_navdata_from_json_files(
+            navnet_file, hallway_graph_file
+        )
 
 
 def test_load_nav_segments_from_svg_file(x_floorplan):
