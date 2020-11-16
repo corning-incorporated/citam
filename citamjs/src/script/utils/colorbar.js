@@ -45,7 +45,7 @@ const DEFAULT_PARAMS = {
 export class Colorbar {
   constructor(parameters) {
     const params = Object.assign({}, DEFAULT_PARAMS, parameters);
-    this._draggable = new Draggable('Colorbar');
+    this._draggable = new Draggable('Individuals Number of Contacts');
     this.domElement = this._draggable.domElement;
     this.domElement.style.position = 'absolute';
     this.domElement.style.top = '25%';
