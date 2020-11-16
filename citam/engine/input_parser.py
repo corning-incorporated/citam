@@ -12,21 +12,22 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-"""
-    Author: Mardochee Reveil
 
-"""
 import csv
 import os
 import logging
 import errno
 import json
+from typing import List, Tuple, Dict
+import xml.etree.ElementTree as ET
 
-from svgpathtools import svg2paths, Line
+from svgpathtools import svg2paths, Line, parse_path, Path
 
-from citam.engine.constants import REQUIRED_SPACE_METADATA
-from citam.engine.constants import OPTIONAL_SPACE_METADATA
-from citam.engine.constants import SUPPORTED_SPACE_FUNCTIONS
+from citam.engine.constants import (
+    REQUIRED_SPACE_METADATA,
+    OPTIONAL_SPACE_METADATA,
+    SUPPORTED_SPACE_FUNCTIONS,
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -35,32 +36,16 @@ class MissingInputError(TypeError):
     pass
 
 
-def parse_csv_metadata_file(csv_file):
+class InvalidSVGError(ValueError):
+    pass
+
+
+def parse_csv_metadata_file(csv_file: str) -> List[Dict[str, str]]:
     """Read and parse CSV floorplan metadata file.
 
-    Ensure all expected columns are present, there is no missing
-    entry and values are valid. Ignore unncessary columns. The expected
-    columns are (see constants.py for full updated list):
-    - ID
-    - Campus
-    - Building
-    - Unique_name
-    - Space_function
-    - Space_category (optional)
-    - Department (optional)
-    - Capacity (optional)
-    - Square_Footage (optional)
-
-    Parameters
-    ----------
-    csv_file: str
-        Absolute path to csv file
-
-    Returns
-    --------
-    list
-        List of dictionaries (one dict per entry in the CSV file) with column
-        headers as keys
+    :param str csv_file: path to csv file
+    :return: List of dictionaries (one dict per entry in the CSV file) with
+        column headers as keys
     """
 
     if not os.path.isfile(csv_file):
@@ -108,6 +93,172 @@ def parse_csv_metadata_file(csv_file):
     return space_info
 
 
+def parse_standalone_svg_floorplan_file(
+    svg_file: str,
+) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
+    """
+    Read standalone svg input file to extract floorplan information.
+
+    :param str svg_file: Floorplan input file in SVG format to parse.
+    :return: Tuple with list of space paths, list of space attributes and
+        list of door paths
+    """
+    # Load XML and get root elem
+    tree = ET.parse(svg_file)
+    root = tree.getroot()
+
+    # Find element with tag 'g' and id == contents
+    contents_elem = None
+    possible_content_elems = []
+    for elem in root:
+        _, _, elem.tag = elem.tag.rpartition("}")  # Remove namespace
+        if elem.tag == "g" and "id" in elem.attrib:
+            possible_content_elems.append(elem)
+
+    for level in possible_content_elems:
+        if level.attrib["id"].lower() == "contents":
+            contents_elem = level
+            break
+
+    if contents_elem is None:
+        error = "An element with tag 'g' & id==contents is required"
+        raise InvalidSVGError(error)
+
+    # Verify that there is data at least for one building
+    buildings = []
+    for building_elem in contents_elem:
+        if (
+            "id" not in building_elem.attrib
+            or "class" not in building_elem.attrib
+        ):
+            continue
+        if building_elem.attrib["class"].lower() != "floorplan":
+            continue
+        buildings.append(building_elem)
+
+    if len(buildings) == 0:
+        errmsg = "At least 1 building element with class=='floorplan' required"
+        raise InvalidSVGError(errmsg)
+
+    space_paths, space_attrib, door_paths = _load_buildings_data(buildings)
+
+    if len(space_paths) == 0:
+        raise InvalidSVGError("No space data found in SVG file")
+
+    return space_paths, space_attrib, door_paths
+
+
+def _load_buildings_data(
+    contents_elem: ET.Element,
+) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
+    """
+    Given a SVG tree element with sub-elements with building information,
+    extract data for each building and add to overall list of space paths,
+    space attributes and doors for this floorplan.
+
+    :param ET.ElementTree contents_elem: Element from the SVG file with
+        data for each building as subelements.
+    :return: tuple with list of space paths, list of space attributes and list
+        of door paths.
+    """
+    space_paths = []
+    space_attributes = []
+    door_paths = []
+
+    # For each building, extract space paths, space attr and door paths
+    for building_elem in contents_elem:
+
+        building_name = building_elem.attrib["id"]
+        doors_elem, spaces_elem = None, None
+
+        for sub_elem in building_elem:
+            if "class" not in sub_elem.attrib:
+                continue
+            if sub_elem.attrib["class"].lower() == "spaces":
+                spaces_elem = sub_elem
+            elif sub_elem.attrib["class"].lower() == "doors":
+                doors_elem = sub_elem
+
+        if spaces_elem is None:
+            raise InvalidSVGError("Sub-element of class 'spaces' required")
+
+        sp_paths, sp_attr = _extract_spaces(spaces_elem, building_name)
+        space_paths += sp_paths
+        space_attributes += sp_attr
+
+        if doors_elem is not None:
+            door_paths += _extract_doors(doors_elem)
+
+    return space_paths, space_attributes, door_paths
+
+
+def _extract_spaces(
+    spaces_elem: ET.Element, building_name: str
+) -> Tuple[List[Path], List[Dict[str, str]]]:
+    """
+    Given a SVG tree element, extract all space paths and attributes
+
+    :param xml.etree.ElementTree.Element spaces_elem: SVG element with each
+        subelement representing a path.
+    :return: list of space paths and attributes.
+    """
+    space_paths, space_attributes = [], []
+
+    for space_elem in spaces_elem:
+        # Remove namespace
+        _, _, space_elem.tag = space_elem.tag.rpartition("}")
+        # Extract space data
+        if space_elem.tag == "path" and "d" in space_elem.attrib:
+            space_path = parse_path(space_elem.attrib["d"])
+
+            # Add space metadata
+            space_metadata = {}
+            if "id" in space_elem.attrib and "class" in space_elem.attrib:
+
+                space_metadata["id"] = space_elem.attrib["id"]
+                if "unique_name" not in space_elem.attrib:
+                    space_metadata["unique_name"] = space_elem.attrib["id"]
+
+                space_function = space_elem.attrib["class"]
+                if space_function.lower() not in SUPPORTED_SPACE_FUNCTIONS:
+                    raise ValueError(
+                        "Unsupported space function %s", space_function
+                    )
+                space_metadata["space_function"] = space_function
+
+                space_metadata["building"] = building_name
+
+                if "capacity" in space_elem.attrib:
+                    space_metadata["capacity"] = space_elem.attrib["capacity"]
+            else:
+                raise ValueError(
+                    "'id' and 'class' attributes required for space paths"
+                )
+            space_paths.append(space_path)
+            space_attributes.append(space_metadata)
+
+    return space_paths, space_attributes
+
+
+def _extract_doors(doors_elem: ET.Element) -> List[Path]:
+    """
+    Given a SVG tree element, extract all door paths.
+
+    :param xml.etree.ElementTree.Element doors_elem: SVG element with each
+        subelement representing a door.
+    :return: list of door paths.
+    """
+    door_paths = []
+    for door_elem in doors_elem:
+        # Remove namespace
+        _, _, door_elem.tag = door_elem.tag.rpartition("}")
+        if door_elem.tag == "path" and "d" in door_elem.attrib:
+            door_path = parse_path(door_elem.attrib["d"])
+            door_paths.append(door_path)
+
+    return door_paths
+
+
 def parse_svg_floorplan_file(svg_file):
 
     """Read and parse SVG floorplan file.
@@ -115,13 +266,8 @@ def parse_svg_floorplan_file(svg_file):
     Each space is represented by a path element with and id that matches the
     id in the csv file.
 
-    Parameters
-    ----------
-    svg_file: str
-        Absolute path to csv file
-
-    Returns
-    --------
+    :param str svg_file: path to csv file
+    :return:
     space_paths: list of Path
         List of path elements
     space_attributes: list of dict
@@ -166,25 +312,32 @@ def parse_svg_floorplan_file(svg_file):
     return space_paths, space_attributes, door_paths
 
 
-def parse_meetings_policy_file(json_filepath):
+def parse_meetings_policy_file(
+    json_filepath: str,
+) -> Dict[str, int or str or float or dict]:
     """Read and parse the json meeting policy file.
 
     The meetings policy for a given facility exposes parameters
     for when, where, how often and how long meetings take place
     in the facility.
+
+    :param str json_filepath: path to the scheduling policy file
+    :return: data extracted from the file as a dictionary
     """
     meetings_policy_params = None
     if os.path.isfile(json_filepath):
         with open(json_filepath, "r") as f:
             meetings_policy_params = json.load(f)
     else:
-        LOG.error("Could not find input file: {%s}", json_filepath)
+        LOG.error("Could not find input file: %s", json_filepath)
         raise FileNotFoundError(json_filepath)
 
     return meetings_policy_params
 
 
-def parse_scheduling_policy_file(json_filepath):
+def parse_scheduling_policy_file(
+    json_filepath: str,
+) -> Dict[str, int or str or float or dict]:
     """Read and parse the json scheduling policy file.
 
     Together with the meetings policy file, this file encodes
@@ -195,29 +348,27 @@ def parse_scheduling_policy_file(json_filepath):
 
     TODO: Each employee group can have their own scheduling policy (e.g.
     managers vs technicians).
+
+    :param str json_filepath: path to the scheduling policy file
+    :return: data extracted from the file as a dictionary
     """
     if os.path.isfile(json_filepath):
         with open(json_filepath, "r") as f:
             scheduling_policy = json.load(f)
         return scheduling_policy
     else:
-        LOG.error("Could not find input file: {%s}", json_filepath)
+        LOG.error("Could not find input file: %s", json_filepath)
         raise FileNotFoundError(json_filepath)
 
 
-def parse_input_file(input_file):
+def parse_input_file(
+    input_file: str,
+) -> Dict[str, str or int or dict or float]:
     """Read primary simulation input file in json format, validate values,
     load floorplans and returns dictionary of model inputs.
 
-    Parameters
-    -----------
-    input_file: str
-        Full path to input file expected in json format
-
-    Returns
-    --------
-    dict
-        The dictionary of inputs
+    :param str input_file: path to input file expected in json format
+    :return: dictionary of inputs
     """
 
     if os.path.isfile(input_file):
