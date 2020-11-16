@@ -1,6 +1,7 @@
 from citam.engine.floorplan_ingester import FloorplanIngester
 from svgpathtools import parse_path
 
+
 def test_init_correct_number_of_objects(datadir):
 
     svg_file = None  # datadir + '/TF1.svg'
@@ -58,6 +59,7 @@ def test__find_all_overlapping_walls(rect_floorplan_ingester):
     results = rect_floorplan_ingester._find_all_overlapping_walls(door_line)
 
     assert len(results) == 1
+
 
 def test__find_all_overlapping_walls2(rect_floorplan_ingester):
     door_path_str = "M 60,80 L 80,80"
