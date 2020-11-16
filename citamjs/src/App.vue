@@ -14,8 +14,8 @@
 
 <template>
   <div id="app">
-<!--          <dashboard v-if="showDash"></dashboard>-->
-    <home v-show!="showDash"></home>
+<!--<dashboard v-if="showDash"></dashboard>-->
+    <home></home>
     </div>
 </template>
 
@@ -25,9 +25,9 @@ import Home from "@/components/Home";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faChartBar, faChartArea, faTable, faArrowAltCircleLeft,
   faSort, faMap, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
-import {faGithubSquare} from '@fortawesome/free-brands-svg-icons'
+import {faGithub} from '@fortawesome/free-brands-svg-icons'
 
-library.add(faGithubSquare, faChartBar, faChartArea, faTable,
+library.add(faGithub, faChartBar, faChartArea, faTable,
     faArrowAltCircleLeft, faSort, faMap, faQuestionCircle)
 
 import axios from 'axios'
