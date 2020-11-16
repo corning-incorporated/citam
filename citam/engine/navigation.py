@@ -425,6 +425,7 @@ class Navigation:
         routes.sort(key=lambda route: len(route))
 
         tmp_route = unroll_route(routes[0], pace)
+
         if len(self.floorplans) == 1:
             route = [[r, starting_floor_number] for r in tmp_route]
         else:
@@ -514,13 +515,13 @@ class Navigation:
         )
 
         # End node
-        exit_nodes = self.get_valid_multifloor_exit_nodes(
+        dest_nodes = self.get_valid_multifloor_exit_nodes(
             destination, destination_floor_number
         )
 
         # Get possible routes
         valid_routes = []
-        for s_node, e_node in product(starting_nodes, exit_nodes):
+        for s_node, e_node in product(starting_nodes, dest_nodes):
 
             try:
                 route = nx.astar_path(self.multifloor_navnet, s_node, e_node)
@@ -554,13 +555,13 @@ class Navigation:
         )
 
         # End node
-        exit_nodes = self.get_valid_single_floor_exit_nodes(
+        dest_nodes = self.get_valid_single_floor_exit_nodes(
             destination, floor_number
         )
 
         # Get possible routes
         valid_routes = []
-        for s_node, e_node in product(starting_nodes, exit_nodes):
+        for s_node, e_node in product(starting_nodes, dest_nodes):
 
             try:
                 route = nx.astar_path(
@@ -599,7 +600,7 @@ def remove_unnecessary_coords(route):
                 end=complex(route[i + 1][0], route[i + 1][1]),
             )
             test_point = Point(x=pos[0], y=pos[1])
-            if gsu.is_point_on_line(test_line, test_point, tol=1e-1):
+            if gsu.is_point_on_line(test_line, test_point, tol=1e-3):
                 index_of_coords_to_delete = i
                 break
         if index_of_coords_to_delete is not None:
