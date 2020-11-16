@@ -286,7 +286,7 @@ class FloorplanIngester:
                     else:
                         results[space_index] = [wall_index_in_space]
                     print(space_index, space.unique_name, other_wall)
-                    print(results, '\n')
+                    print(results, "\n")
 
         if len(results) > 2:
             space_ids = set()
