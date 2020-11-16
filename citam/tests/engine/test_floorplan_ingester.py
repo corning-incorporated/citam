@@ -1,4 +1,5 @@
 from citam.engine.floorplan_ingester import FloorplanIngester
+from svgpathtools import parse_path
 
 
 def test_init_correct_number_of_objects(datadir):
@@ -13,24 +14,6 @@ def test_init_correct_number_of_objects(datadir):
     assert fi.spaces == []
     assert fi.doors == []
     assert fi.walls == []
-
-
-# def test_read_input_files(datadir):
-
-#     svg_file = datadir + '/good_floorplan.svg'
-#     csv_file = datadir + '/TF1.csv'
-#     scale = 0.8
-#     fi = FloorplanIngester(svg_file,
-#                            csv_file,
-#                            scale,
-#                            extract_doors_from_file=True
-#                            )
-
-#     fi.read_input_files()
-#     assert len(fi.space_paths) == 214
-#     assert len(fi.door_paths) == 0
-#     assert len(fi.space_attributes) == 214
-#     assert len(fi.space_data) == 214
 
 
 def test_create_spaces_correct_number_of_spaces(rect_floorplan_ingester_data):
@@ -57,3 +40,30 @@ def test_find_walls_and_create_doors(rect_floorplan_ingester):
 
     assert len(room_walls) == 36
     assert len(valid_hw_walls) == 3
+
+
+def test_find_min_and_max_coordinates(rect_floorplan_ingester):
+
+    rect_floorplan_ingester.run()
+    rect_floorplan_ingester.find_min_and_max_coordinates()
+
+    assert rect_floorplan_ingester.minx == 0
+    assert rect_floorplan_ingester.maxx == 350
+    assert rect_floorplan_ingester.miny == -120
+    assert rect_floorplan_ingester.maxy == 200
+
+
+def test__find_all_overlapping_walls(rect_floorplan_ingester):
+    door_path_str = "M 0,20 L 0,60"
+    door_line = parse_path(door_path_str)
+    results = rect_floorplan_ingester._find_all_overlapping_walls(door_line)
+
+    assert len(results) == 1
+
+
+def test__find_all_overlapping_walls2(rect_floorplan_ingester):
+    door_path_str = "M 60,80 L 80,80"
+    door_line = parse_path(door_path_str)
+    results = rect_floorplan_ingester._find_all_overlapping_walls(door_line)
+
+    assert len(results) == 2
