@@ -317,7 +317,6 @@ def export_world_to_svg(
         svg_attributes = {
             "width": "100%",
             "height": "100%",
-            "debug": False,
             "viewBox": viewbox_str,
         }
     else:
