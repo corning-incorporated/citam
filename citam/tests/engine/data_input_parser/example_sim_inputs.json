@@ -3,7 +3,7 @@
     "simulation_name" : "test_run_1",
     "floors" : ["0"],
     "entrances" : [ {"name":"AISLE213", "floor": 0}],
-    "daylength" : 1800,
+    "daylength" : 2000,
     "entrance_time" : 100,
     "n_agents" : 20,
     "occupancy_rate" : null,

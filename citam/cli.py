@@ -141,7 +141,7 @@ def _add_engine_commands(subparser, global_args):
         "--buildings",
         type=str,
         nargs="+",
-        required=True,
+        required=False,
         help="Buildings to process. Default to 'all'.",
     )
 

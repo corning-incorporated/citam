@@ -1,5 +1,6 @@
 from citam.engine.floorplan_ingester import FloorplanIngester
 from svgpathtools import parse_path
+<<<<<<< HEAD
 from citam.engine.space import Space
 
 import pytest
@@ -238,6 +239,8 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
         rfid.spaces.append(space)
 
     return rfid
+=======
+>>>>>>> 8a95664991dbc712d26176f712ffc1cd1fe92f11
 
 
 def test_init_correct_number_of_objects(datadir):
@@ -298,3 +301,30 @@ def test_find_walls_and_create_doors(rect_floorplan_ingester):
 
     assert len(room_walls) == 36
     assert len(valid_hw_walls) == 3
+
+
+def test_find_min_and_max_coordinates(rect_floorplan_ingester):
+
+    rect_floorplan_ingester.run()
+    rect_floorplan_ingester.find_min_and_max_coordinates()
+
+    assert rect_floorplan_ingester.minx == 0
+    assert rect_floorplan_ingester.maxx == 350
+    assert rect_floorplan_ingester.miny == -120
+    assert rect_floorplan_ingester.maxy == 200
+
+
+def test__find_all_overlapping_walls(rect_floorplan_ingester):
+    door_path_str = "M 0,20 L 0,60"
+    door_line = parse_path(door_path_str)
+    results = rect_floorplan_ingester._find_all_overlapping_walls(door_line)
+
+    assert len(results) == 1
+
+
+def test__find_all_overlapping_walls2(rect_floorplan_ingester):
+    door_path_str = "M 60,80 L 80,80"
+    door_line = parse_path(door_path_str)
+    results = rect_floorplan_ingester._find_all_overlapping_walls(door_line)
+
+    assert len(results) == 2
