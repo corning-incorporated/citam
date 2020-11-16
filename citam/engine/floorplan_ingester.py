@@ -27,6 +27,7 @@ import citam.engine.input_parser as parser
 from citam.engine.door import Door
 from citam.engine.point import Point
 from citam.engine.space import Space
+import math as m
 
 LOG = logging.getLogger(__name__)
 
@@ -178,6 +179,8 @@ class FloorplanIngester:
             len(self.doors),
         )
 
+        self.find_min_and_max_coordinates()
+
         return
 
     def find_space_index_for_door(self, door):
@@ -273,7 +276,7 @@ class FloorplanIngester:
         """
         # TODO: Handle case where more than 2 spaces are involved.
         # Find which other space this wall is shared with
-
+        print("------> Door Line: ", door_line)
         results = {}
         for space_index, space in enumerate(self.spaces):
             for wall_index_in_space, other_wall in enumerate(space.path):
@@ -282,13 +285,15 @@ class FloorplanIngester:
                         results[space_index].append(wall_index_in_space)
                     else:
                         results[space_index] = [wall_index_in_space]
+                    print(space_index, space.unique_name, other_wall)
+                    print(results, "\n")
 
         if len(results) > 2:
-            space_ids = []
+            space_ids = set()
             for space_index in results:
-                space_ids.append(self.spaces[space_index].unique_name)
+                space_ids.add(self.spaces[space_index].unique_name)
             msg = "Door connecting more than 2 spaces. This is not typical: "
-            LOG.warning(f"{msg}: {', '.join(space_ids)}")
+            LOG.warning(f"Door: {door_line} --> {msg}: {', '.join(space_ids)}")
 
         return results
 
@@ -331,6 +336,8 @@ class FloorplanIngester:
         """
         Given a door line and space indices, create new door object
         """
+        if not space_indices:
+            return
         door_obj = Door(path=door_line, space1=self.spaces[space_indices[0]])
         if not self.spaces[space_indices[0]].is_space_a_hallway():
             self.spaces[space_indices[0]].doors.append(door_line)
@@ -413,7 +420,12 @@ class FloorplanIngester:
         if door_line is not None:
             # Find overlapping walls
             overlapping_walls = self._find_all_overlapping_walls(door_line)
-
+            if not overlapping_walls:
+                space_name = self.spaces[room_id].unique_name
+                LOG.warning(
+                    f"Unable to add a door to this space: {space_name}"
+                )
+                return
             # Create door object and add door line to spaces
             self._create_door_object(door_line, list(overlapping_walls.keys()))
 
@@ -591,6 +603,26 @@ class FloorplanIngester:
 
         return room_walls, valid_walls
 
+    def find_min_and_max_coordinates(self):
+        """
+        Find the min and max coordinates for both x and y.
+        """
+        self.minx = m.inf
+        self.miny = m.inf
+        self.maxx = -m.inf
+        self.maxy = -m.inf
+        for wall in self.walls:
+            for x in (wall.start.real, wall.end.real):
+                if x < self.minx:
+                    self.minx = x
+                elif x > self.maxx:
+                    self.maxx = x
+            for y in (wall.start.imag, wall.end.imag):
+                if y < self.miny:
+                    self.miny = y
+                elif y > self.maxx:
+                    self.maxy = y
+
     @property
     def _data_to_save(self):
         special_walls = []
@@ -600,8 +632,10 @@ class FloorplanIngester:
             self.walls,
             special_walls,
             self.aisles,
-            1000,
-            1000,
+            self.minx,
+            self.miny,
+            self.maxx,
+            self.maxy,
             self.scale,
         ]
 

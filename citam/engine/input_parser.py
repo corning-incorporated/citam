@@ -280,6 +280,17 @@ def parse_input_file(input_file):
     if not isinstance(buffer, int):
         raise TypeError("entrance time must be an integer")
 
+    if daylength < buffer + 1800:
+        raise ValueError(
+            "Daylength is too short (min is 30 min after entrance time)"
+        )
+
+    if buffer < 0:
+        raise ValueError("Buffer must be a positive value.")
+
+    if n_agents <= 1:
+        raise ValueError("At least one agent is required.")
+
     # Optional arguments
     upload_results = False
     if "upload_results" in input_dict:
