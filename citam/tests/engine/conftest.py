@@ -5,12 +5,10 @@ from svgpathtools import Path, Line, parse_path
 from citam.engine.space import Space
 from citam.engine.floorplan import Floorplan
 from citam.engine.door import Door
-from citam.engine.floorplan_ingester import FloorplanIngester
 
 from distutils import dir_util
 import pytest
 import os
-import copy
 from copy import deepcopy
 
 import pickle
@@ -167,131 +165,6 @@ def aisle_from_x_floorplan2(x_floorplan):
     wall1 = list(x_floorplan.spaces[0].boundaries)[3]
     wall2 = list(x_floorplan.spaces[0].boundaries)[5]
     return (wall1, wall2)
-
-
-@pytest.fixture
-def rect_floorplan_ingester_data():
-    """Basic rect floorplan with one main aisle, 4 office spaces on each side
-    and a big room at the end of the hallway. (This floorplan is also used for
-    simple facility).
-    """
-    rect_fi = FloorplanIngester(None, None, 1.0)
-    rect_fi.space_data = []
-    rect_fi.space_paths = []
-    rect_fi.space_attributes = []
-
-    # Main aisle
-    space_id = 1
-    rect_fi.space_attributes.append({"id": space_id})
-    aisle = parse_path("M 0,0 L 250,0 L 250,80 L 0,80 Z")
-    rect_fi.space_paths.append(aisle)
-    rect_fi.space_data.append(
-        {
-            "id": space_id,
-            "facility": "TF",
-            "building": "TF1",
-            "unique_name": str(space_id),
-            "space_function": "aisle",
-        }
-    )
-
-    # Rooms
-    for i in range(5):
-        if i == 2:
-            continue
-        x = i * 50
-        space_id += 1
-        path_str = (
-            "M "
-            + str(x)
-            + ",0"
-            + " L "
-            + str(x)
-            + ",-120 "
-            + "L "
-            + str(x + 50)
-            + ",-120"
-            + " L "
-            + str(x + 50)
-            + ",0 Z"
-        )
-        rect_fi.space_paths.append(parse_path(path_str))
-        rect_fi.space_attributes.append({"id": space_id})
-        rect_fi.space_data.append(
-            {
-                "id": space_id,
-                "facility": "TF",
-                "building": "TF1",
-                "unique_name": str(space_id),
-                "space_function": "office",
-            }
-        )
-
-        space_id += 1
-        path_str = (
-            "M "
-            + str(x)
-            + ",80"
-            + " L "
-            + str(x)
-            + ",200 "
-            + "L "
-            + str(x + 50)
-            + ",200"
-            + " L "
-            + str(x + 50)
-            + ",80 Z"
-        )
-        rect_fi.space_paths.append(parse_path(path_str))
-        rect_fi.space_attributes.append({"id": space_id})
-        rect_fi.space_data.append(
-            {
-                "id": space_id,
-                "facility": "TF",
-                "building": "TF1",
-                "unique_name": str(space_id),
-                "space_function": "office",
-            }
-        )
-
-    # Main door
-    door_path_str = "M 0,20 L 0,60"
-    rect_fi.door_paths = [parse_path(door_path_str)]
-
-    # big room door
-    door_path_str = "M 250,20 L 250,60"
-    rect_fi.door_paths.append(parse_path(door_path_str))
-
-    # Office door
-    door_path_str = "M 60,80 L 80,80"
-    rect_fi.door_paths.append(parse_path(door_path_str))
-
-    # Big room
-    space_id += 1
-    path_str = "M 250,-120 L 350,-120 L 350,200 L 250,200 Z"
-    rect_fi.space_paths.append(parse_path(path_str))
-    rect_fi.space_data.append(
-        {
-            "id": space_id,
-            "facility": "TF",
-            "building": "TF1",
-            "unique_name": str(space_id),
-            "space_function": "cafeteria",
-        }
-    )
-    rect_fi.space_attributes.append({"id": space_id})
-
-    return rect_fi
-
-
-@pytest.fixture
-def rect_floorplan_ingester(rect_floorplan_ingester_data):
-    rfid = rect_floorplan_ingester_data
-    for path, data in zip(rfid.space_paths, rfid.space_data):
-        space = Space(boundaries=path, path=copy.deepcopy(path), **data)
-        rfid.spaces.append(space)
-
-    return rfid
 
 
 @pytest.fixture

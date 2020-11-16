@@ -12,7 +12,7 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 import numpy as np
 import scipy.spatial.distance
 from collections import OrderedDict
@@ -22,8 +22,11 @@ import logging
 import hashlib
 import networkx as nx
 from matplotlib import cm
+from io import TextIOWrapper
 
 from citam.engine.agent import Agent
+from citam.engine.floorplan import Floorplan
+from citam.engine.door import Door
 from citam.engine.navigation import Navigation
 from citam.engine.daily_schedule import Schedule
 import citam.engine.basic_visualization as bv
@@ -44,16 +47,16 @@ LOG = logging.getLogger(__name__)
 class FacilityTransmissionModel:
     def __init__(
         self,
-        floorplans,
-        daylength,
-        n_agents,
-        occupancy_rate,
-        buffer,
-        timestep,
-        entrances,
-        facility_name,
-        contact_distance,
-        shifts,
+        floorplans: List[Floorplan],
+        daylength: int,
+        n_agents: int,
+        occupancy_rate: float,
+        buffer: int,
+        timestep: float,
+        entrances: List[Dict],
+        facility_name: str,
+        contact_distance: float,
+        shifts: List[Dict],
         meetings_policy_params=None,
         create_meetings=True,
         scheduling_policy=None,
@@ -61,7 +64,7 @@ class FacilityTransmissionModel:
         dry_run=False,
         *args,
         **kwargs,
-    ):
+    ) -> None:
 
         self.floorplans = floorplans
         self.daylength = daylength
@@ -130,7 +133,7 @@ class FacilityTransmissionModel:
             LOG.info("Unreachable rooms on floor %d: %d", fn, n_unreachable)
             self.floorplans[fn].spaces = tmp_spaces
 
-    def group_remaining_spaces(self):
+    def group_remaining_spaces(self) -> None:
         """
         Iterate over all other spaces and group them according to their
         function
@@ -251,15 +254,11 @@ class FacilityTransmissionModel:
         self.simid = m.hexdigest()
         self.simulation_name = self.simid
 
-    def run_serial(self, workdir):
+    def run_serial(self, workdir: str) -> None:
         """Runs an citam simulation serially.
 
-        :param str sim_name: user-defined name of this simulation
         :param str workdir: directory to save the files for this simulation
-        :return: True or False to indicate if the simulation was successful
-        :rtype: boolean
         """
-
         if self.n_agents is not None:
             self.occupancy_rate = round(
                 self.n_agents * 1.0 / self.total_offices, 2
@@ -356,9 +355,14 @@ class FacilityTransmissionModel:
                 possible_entrance_doors.append(door)
         return possible_entrance_doors
 
-    def find_space_by_name(self, fp_index, ename):
+    def find_space_by_name(self, fp_index: int, ename: str) -> int:
         """
-        Find the space that corresponds to the given name.
+        Find the space that corresponds to a given name. Mostly used to find
+        the space that corresponds to a user-given entrance.
+
+        :param int fp_index: index of the floorplan that contains the space
+        :param str ename: name of the space.
+        :return: index of the space. None if not found.
         """
         space_index = None
         for i, space in enumerate(self.floorplans[fp_index].spaces):
@@ -368,7 +372,7 @@ class FacilityTransmissionModel:
 
         return space_index
 
-    def find_floor_by_name(self, floor_name):
+    def find_floor_by_name(self, floor_name: str) -> int:
         """
         Find the floor that corresponds to this name.
 
@@ -383,9 +387,15 @@ class FacilityTransmissionModel:
 
         return fp_index
 
-    def is_door_in_navnet(self, entrance_floor, entrance_door):
+    def is_door_in_navnet(
+        self, entrance_floor: int, entrance_door: Door
+    ) -> bool:
         """
-        Verify that this door is part of the navnet.
+        Verify if a given door is part of the navnet.
+
+        :param int entrance_floor: index of the entrance floor.
+        :param Door entrance_door: door object to check.
+        :return: True if door is part of navnet, False otherwise.
         """
         entrance_coords = entrance_door.intersect_coords
         if self.navigation.navnet_per_floor[entrance_floor].has_node(
@@ -448,7 +458,7 @@ class FacilityTransmissionModel:
 
     def choose_best_entrance(
         self, office_floor: int, office_id: int
-    ) -> Tuple[Dict, int]:
+    ) -> Tuple[Door, int]:
         """
         Find the facility entrance that offers the fastest route to an agent's
         assigned office space.
@@ -493,10 +503,10 @@ class FacilityTransmissionModel:
 
         if best_entrance_door is None:
             office = self.floorplans[office_floor].spaces[office_id]
-            LOG.info("\tNo entrance found for office: " + office.unique_name)
+            LOG.info("No entrance found for office: %s", office.unique_name)
         return best_entrance_door, best_entrance_floor
 
-    def add_agents_and_build_schedules(self):
+    def add_agents_and_build_schedules(self) -> None:
         """
         Add the specified number of agents to the facility and create a
         schedule and an itinerary for each of them.
@@ -578,11 +588,12 @@ class FacilityTransmissionModel:
                 schedule.build()
                 LOG.info("Schedule for agent: " + str(current_agent))
                 LOG.info("\t" + str(schedule))
-                LOG.info("\n")
 
                 current_agent += 1
 
-    def identify_xy_proximity(self, positions_vector):
+    def identify_xy_proximity(
+        self, positions_vector: np.ndarray
+    ) -> np.ndarray:
         """Compute pairwise distances, given a vector of xy positions and
         return the indices of the ones that fall within the given contact
         distance.
@@ -591,7 +602,7 @@ class FacilityTransmissionModel:
             of all active agents
         :return: list of indices of agents that are within the contact
             distance of each other
-        :rtype: list[int]
+        :rtype: np.ndarray
         """
         # Compute pairwise distances and find indices of agents within
         # contact distance
@@ -599,7 +610,7 @@ class FacilityTransmissionModel:
         dist_matrix = scipy.spatial.distance.squareform(dists)
         return np.argwhere(dist_matrix < self.contact_distance)
 
-    def identify_contacts(self, agents):
+    def identify_contacts(self, agents: List[Agent]) -> None:
         """Iterate over agents, compute whether they fall within the contact
         distance or not and verify that they are indeed making contact (based
         on whether they are in the same space or not).
@@ -674,7 +685,11 @@ class FacilityTransmissionModel:
 
         return
 
-    def step(self, traj_outfile=None, contact_outfiles=None):
+    def step(
+        self,
+        traj_outfile: TextIOWrapper = None,
+        contact_outfiles: List[TextIOWrapper] = None,
+    ) -> None:
         """Move the simulation by one step"""
         self.step_contact_locations = [
             {}
@@ -728,7 +743,7 @@ class FacilityTransmissionModel:
                     )
         self.current_step += 1
 
-    def move_agents(self):
+    def move_agents(self) -> Tuple[List[Agent], List[Agent]]:
         """
         Iterate over agents and move them to the next position in their
         itinerary. Active agents are agents currently in the facility and
@@ -753,9 +768,14 @@ class FacilityTransmissionModel:
 
         return active_agents, moving_agents
 
-    def extract_contact_distribution_per_agent(self):
+    def extract_contact_distribution_per_agent(
+        self,
+    ) -> Tuple[List[int], List[int]]:
         """
         Compute total contacts per agent.
+
+        :return: List of agent ids and list of corresponding number of
+            contacts.
         """
         agent_ids, n_contacts = [], []
         for unique_id, agent in self.agents.items():
@@ -764,9 +784,12 @@ class FacilityTransmissionModel:
 
         return agent_ids, n_contacts
 
-    def save_manifest(self, work_directory):
+    def save_manifest(self, work_directory: str) -> None:
         """
         Save manifest file, used by the dashboard to show results.
+
+        :param str work_directory: top level directory where all simulation
+            outputs are saved.
         """
         floors = [
             {"name": str(floor), "directory": "floor_" + str(floor) + "/"}
@@ -807,8 +830,13 @@ class FacilityTransmissionModel:
         with open(manifest_file, "w") as json_file:
             json.dump(manifest_dict, json_file, indent=4)
 
-    def save_maps(self, work_directory):
-        """Save svg maps for each floor for visualization."""
+    def save_maps(self, work_directory: str) -> None:
+        """Save svg maps for each floor for visualization. Each floor map is
+            saved in a separate subdirectory (created if not found).
+
+        :param str work_directory: top level directory where all simulation
+            outputs are saved.
+        """
         for floor_number in range(self.number_of_floors):
 
             floor_directory = os.path.join(
@@ -837,8 +865,17 @@ class FacilityTransmissionModel:
                 ],
             )
 
-    def create_svg_heatmap(self, contacts_per_coord, floor_directory):
-        """Create and save a heatmap from coordinate contact data"""
+    def create_svg_heatmap(
+        self,
+        contacts_per_coord: Dict[Tuple[int, int], int],
+        floor_directory: str,
+    ) -> None:
+        """Create and save a heatmap from coordinate contact data
+
+        :param dict contacts_per_coord: dictionary where each key is an (x,y )
+            tuple and values are the number of contacts in that location.
+        :param str floor_directory: directory to save the heatmap file.
+        """
         heatmap_file = os.path.join(floor_directory, "heatmap.svg")
         map_file = os.path.join(floor_directory, "map.svg")
 
@@ -880,15 +917,9 @@ class FacilityTransmissionModel:
             new_elem.set("filter", "url(#blurMe)")
             root.append(new_elem)
 
-        try:
-            tree.write(heatmap_file)
-        except Exception as e:
-            LOG.exception(e)
-            return False
+        tree.write(heatmap_file)
 
-        return True
-
-    def save_outputs(self, work_directory):
+    def save_outputs(self, work_directory: str) -> None:
         """Write output files to the output directory
 
         :param str work_directory: directory where all output files are to be

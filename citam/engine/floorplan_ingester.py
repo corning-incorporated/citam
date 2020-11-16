@@ -38,8 +38,8 @@ class FloorplanIngester:
     def __init__(
         self,
         svg_file,
-        csv_file,
         scale,
+        csv_file=None,
         extract_doors_from_file=False,
         buildings_to_keep=None,
         excluded_buildings=None,
@@ -61,6 +61,8 @@ class FloorplanIngester:
         self.maxx = None
         self.maxy = None
 
+        print("CSV file is: ", csv_file)
+
         self.buildings = set()
 
         self.excluded_buildings = excluded_buildings  # TODO: Implement this
@@ -70,13 +72,15 @@ class FloorplanIngester:
             self.buildings_to_keep = [b.lower() for b in buildings_to_keep]
 
         if self.svg_file is not None and self.csv_file is not None:
-            self.read_input_files()
+            self.read_data_from_csv_and_svg_files()
+        elif self.svg_file is not None:
+            self.read_data_from_svg_file()
         else:
             LOG.warning("No svg and/or csv file provided.")
 
         return
 
-    def create_spaces(self):
+    def create_spaces_from_csv_and_svg_data(self):
         """Create space objects from data extracted in csv and svg files"""
 
         if len(self.space_data) < len(self.space_paths):
@@ -109,7 +113,38 @@ class FloorplanIngester:
                         )
                     self.spaces.append(space)
                     break
+        self.validate_buildings()
 
+    def create_spaces_from_svg_data(self):
+        """Create space objects from data extracted in standalone svg file"""
+
+        for space_path, space_attr in zip(
+            self.space_paths, self.space_attributes
+        ):
+            self.buildings.add(space_attr["building"])
+            for i, line in enumerate(space_path):
+                new_start = complex(
+                    int(round(line.start.real)),
+                    int(round(line.start.imag)),
+                )
+                new_end = complex(
+                    int(round(line.end.real)),
+                    int(round(line.end.imag)),
+                )
+                new_line = Line(start=new_start, end=new_end)
+                space_path[i] = new_line
+                space = Space(
+                    boundaries=space_path,
+                    path=copy.deepcopy(space_path),
+                    **space_attr,
+                )
+            self.spaces.append(space)
+        self.validate_buildings()
+
+    def validate_buildings(self):
+        """
+        Make sure we take all user-provided building names into account
+        """
         # Validate building names
         if self.buildings_to_keep:
             for building in self.buildings_to_keep:
@@ -120,6 +155,33 @@ class FloorplanIngester:
         else:
             self.buildings_to_keep = self.buildings
 
+    def read_data_from_svg_file(self):
+        """Read and parse floorplan from svg file"""
+        (
+            self.space_paths,
+            self.space_attributes,
+            self.door_pathsparser,
+        ) = parser.parse_standalone_svg_floorplan_file(self.svg_file)
+
+    def read_data_from_csv_and_svg_files(self):
+        """Read and parse csv and svg files"""
+        self.space_data = parser.parse_csv_metadata_file(self.csv_file)
+
+        if len(self.space_data) == 0:
+            raise ValueError("Could not load any space data from CSV file")
+
+        n_data = len(self.space_data)
+        LOG.info("Successfully loaded %d rows from csv file", n_data)
+
+        svg_data = parser.parse_svg_floorplan_file(self.svg_file)
+
+        if len(svg_data[0]) == 0:
+            raise ValueError("Could not load any space path from SVG file")
+
+        self.space_paths = svg_data[0]
+        self.space_attributes = svg_data[1]
+        self.door_paths = svg_data[2]
+
     def read_input_files(self):
         """Read and parse csv and svg files"""
         self.space_data = parser.parse_csv_metadata_file(self.csv_file)
@@ -128,7 +190,7 @@ class FloorplanIngester:
             raise ValueError("Could not load any space data from CSV file")
 
         n_data = len(self.space_data)
-        LOG.info(f"Successfully loaded {n_data} rows from csv file")
+        LOG.info("Successfully loaded %d rows from csv file", n_data)
 
         svg_data = parser.parse_svg_floorplan_file(self.svg_file)
 
@@ -146,7 +208,12 @@ class FloorplanIngester:
 
     def run(self):
         """Perform the ingestion process"""
-        self.create_spaces()
+
+        if self.csv_file is None:
+            self.create_spaces_from_svg_data()
+        else:
+            self.create_spaces_from_csv_and_svg_data()
+
         self.process_doors()
 
         self.building_walls = {}
