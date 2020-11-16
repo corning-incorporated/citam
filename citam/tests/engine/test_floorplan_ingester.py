@@ -1,6 +1,5 @@
 from citam.engine.floorplan_ingester import FloorplanIngester
 from svgpathtools import parse_path
-<<<<<<< HEAD
 from citam.engine.space import Space
 
 import pytest
@@ -239,8 +238,6 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
         rfid.spaces.append(space)
 
     return rfid
-=======
->>>>>>> 8a95664991dbc712d26176f712ffc1cd1fe92f11
 
 
 def test_init_correct_number_of_objects(datadir):
