@@ -341,7 +341,7 @@ class FloorplanIngester:
         """
         # TODO: Handle case where more than 2 spaces are involved.
         # Find which other space this wall is shared with
-
+        print("------> Door Line: ", door_line)
         results = {}
         for space_index, space in enumerate(self.spaces):
             for wall_index_in_space, other_wall in enumerate(space.path):
@@ -350,13 +350,15 @@ class FloorplanIngester:
                         results[space_index].append(wall_index_in_space)
                     else:
                         results[space_index] = [wall_index_in_space]
+                    print(space_index, space.unique_name, other_wall)
+                    print(results, "\n")
 
         if len(results) > 2:
-            space_ids = []
+            space_ids = set()
             for space_index in results:
-                space_ids.append(self.spaces[space_index].unique_name)
+                space_ids.add(self.spaces[space_index].unique_name)
             msg = "Door connecting more than 2 spaces. This is not typical: "
-            LOG.warning(f"{msg}: {', '.join(space_ids)}")
+            LOG.warning(f"Door: {door_line} --> {msg}: {', '.join(space_ids)}")
 
         return results
 
