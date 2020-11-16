@@ -5,16 +5,14 @@ from svgpathtools import Path, Line, parse_path
 from citam.engine.space import Space
 from citam.engine.floorplan import Floorplan
 from citam.engine.door import Door
+from citam.engine.serializer import serializer
 
 from distutils import dir_util
 import pytest
 import os
 from copy import deepcopy
-
-from citam.engine.floorplan_ingester import FloorplanIngester
-import copy
 import json
-from citam.engine.serializer import serializer
+from citam.engine.floorplan_ingester import FloorplanIngester
 
 
 @pytest.fixture
@@ -206,3 +204,117 @@ def simple_facility_floorplan_2_floors(simple_facility_floorplan):
     fp2.floor_name = "1"
 
     return [simple_facility_floorplan, fp2]
+
+
+@pytest.fixture
+def rect_floorplan_ingester_data():
+    """Basic rect floorplan with one main aisle, 4 office spaces on each side
+    and a big room at the end of the hallway
+    """
+    rect_fi = FloorplanIngester(None, 1.0, csv_file="")
+    rect_fi.space_data = []
+    rect_fi.space_paths = []
+    rect_fi.space_attributes = []
+
+    # Main aisle
+    space_id = 1
+    rect_fi.space_attributes.append({"id": space_id})
+    aisle = parse_path("M 0,0 L 250,0 L 250,80 L 0,80 Z")
+    rect_fi.space_paths.append(aisle)
+    rect_fi.space_data.append(
+        {
+            "id": space_id,
+            "facility": "TF",
+            "building": "TF1",
+            "unique_name": str(space_id),
+            "space_function": "aisle",
+        }
+    )
+
+    # Rooms
+    for i in range(5):
+        if i == 2:
+            continue
+        x = i * 50
+        space_id += 1
+        path_str = (
+            "M "
+            + str(x)
+            + ",0"
+            + " L "
+            + str(x)
+            + ",-120 "
+            + "L "
+            + str(x + 50)
+            + ",-120"
+            + " L "
+            + str(x + 50)
+            + ",0 Z"
+        )
+        rect_fi.space_paths.append(parse_path(path_str))
+        rect_fi.space_attributes.append({"id": space_id})
+        rect_fi.space_data.append(
+            {
+                "id": space_id,
+                "facility": "TF",
+                "building": "TF1",
+                "unique_name": str(space_id),
+                "space_function": "office",
+            }
+        )
+
+        space_id += 1
+        path_str = (
+            "M "
+            + str(x)
+            + ",80"
+            + " L "
+            + str(x)
+            + ",200 "
+            + "L "
+            + str(x + 50)
+            + ",200"
+            + " L "
+            + str(x + 50)
+            + ",80 Z"
+        )
+        rect_fi.space_paths.append(parse_path(path_str))
+        rect_fi.space_attributes.append({"id": space_id})
+        rect_fi.space_data.append(
+            {
+                "id": space_id,
+                "facility": "TF",
+                "building": "TF1",
+                "unique_name": str(space_id),
+                "space_function": "office",
+            }
+        )
+
+    # Main door
+    door_path_str = "M 0,20 L 0,60"
+    rect_fi.door_paths = [parse_path(door_path_str)]
+
+    # big room door
+    door_path_str = "M 250,20 L 250,60"
+    rect_fi.door_paths.append(parse_path(door_path_str))
+
+    # Office door
+    door_path_str = "M 60,80 L 80,80"
+    rect_fi.door_paths.append(parse_path(door_path_str))
+
+    # Big room
+    space_id += 1
+    path_str = "M 250,-120 L 350,-120 L 350,200 L 250,200 Z"
+    rect_fi.space_paths.append(parse_path(path_str))
+    rect_fi.space_data.append(
+        {
+            "id": space_id,
+            "facility": "TF",
+            "building": "TF1",
+            "unique_name": str(space_id),
+            "space_function": "cafeteria",
+        }
+    )
+    rect_fi.space_attributes.append({"id": space_id})
+
+    return rect_fi
