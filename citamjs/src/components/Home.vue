@@ -25,7 +25,7 @@
           <a :href="helpLink" target="_blank">
             <font-awesome-icon icon="question-circle" size="lg"/></a></div>
             <div class="mr-sm-2 navbar-text">
-              <img src="../assets/CorningLogo_White.png" width="82" height="12" alt=""></div>        
+              <img src="../assets/CorningLogo.png" width="82" height="12" alt=""></div>        
       </form>
     </nav>
 
