@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Map2D from '../script/basic_map';
+import Map2D from '../../script/basic_map';
 import * as dat from 'dat.gui';
 import {getSummary} from '@/script/data_service';
 
