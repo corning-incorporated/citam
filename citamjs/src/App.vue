@@ -15,19 +15,25 @@
 <template>
   <div id="app">
 <!--          <dashboard v-if="showDash"></dashboard>-->
-    <home v-show!="showDash"></home>
-    </div>
+    <the-navigation></the-navigation>
+    <main>
+      <router-view>
+      <home v-show="showDash"></home>
+      </router-view>
+    </main>
+  </div>
 </template>
 
 <script>
 // import Dashboard from "@/components/Dashboard";
-import Home from "@/components/Home";
+import TheNavigation from '@/components/nav/Navigation'
+import Home from '@/components/Home';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faChartBar, faChartArea, faTable, faArrowAltCircleLeft,
   faSort, faMap, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
-import {faGithubSquare} from '@fortawesome/free-brands-svg-icons'
+import {faGithub} from '@fortawesome/free-brands-svg-icons'
 
-library.add(faGithubSquare, faChartBar, faChartArea, faTable,
+library.add(faGithub, faChartBar, faChartArea, faTable,
     faArrowAltCircleLeft, faSort, faMap, faQuestionCircle)
 
 import axios from 'axios'
@@ -38,9 +44,13 @@ export default {
   name: 'App',
   components: {
     Home,
+    TheNavigation
     // Dashboard
   },
-  data(){return {showDash: false}}
+  data(){return {
+    showDash: true,
+    
+    }}
 }
 </script>
 

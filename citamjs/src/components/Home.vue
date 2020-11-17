@@ -13,20 +13,6 @@
 <!--  ==============================================================================-->
 <template>
   <div id="mainLayout">
-    <nav class="topnav navbar navbar-expand sticky-top navbar-light justify-content-between">
-      <span class="navbar-brand">CITAM</span>
-      <form class="form-inline">
-        <span class="mr-sm-2 navbar-text">
-          <a href="https://github.com/corning-incorporated/citam/blob/alpha/README.md" target="_blank">About</a></span>
-        <span class="mr-sm-2 navbar-text"><a href="https://github.com/corning-incorporated/citam" target="_blank">
-          GitHub <font-awesome-icon icon="github-square"/></a></span>
-        <span class="mr-sm-2 navbar-text">
-          <a href="https://github.com/corning-incorporated/citam/blob/alpha/docs/index.rst" target="_blank">
-          Help <font-awesome-icon icon="question-circle"/></a></span>
-        <span class="mr-sm-2 navbar-text">CORNING</span>
-      </form>
-    </nav>
-
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" id="summary-tab" data-toggle="tab" href="" role="tab"
