@@ -143,11 +143,11 @@ class Floorplan:
         """
         Find and return the space object that has the given id
         """
-        for space in self.spaces:
-            if space.id == space_id:
-                return space
 
-        return None
+        return next(
+            (space for space in self.spaces if space.id == space_id),
+            None
+        )
 
     def place_agent(self, agent, pos):
         """Position an agent in a given x, y position on this floor"""
