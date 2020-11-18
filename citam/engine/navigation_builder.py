@@ -13,7 +13,6 @@
 # ==============================================================================
 import logging
 import os
-import pickle
 from typing import Tuple, List
 
 import networkx as nx
@@ -25,6 +24,7 @@ import citam.engine.floorplan_utils as fu
 import citam.engine.geometry_and_svg_utils as gsu
 from citam.engine.door import Door
 from citam.engine.point import Point
+import json
 
 LOG = logging.getLogger(__name__)
 
@@ -1031,36 +1031,6 @@ class NavigationBuilder:
 
         return intersect_point
 
-    def export_navdata_to_pkl(self, navnet_pkl_file, hallway_graph_pkl_file):
-        """Export the navigation network to a pickle file for later use.
-
-        Parameters
-        -----------
-        navnet_pkl_file: str
-            Full path to where to save the navigation network pickle file
-
-        hallway_graph_pkl_file: str
-            Full file path to save the hallways graph
-
-        Returns
-        --------
-        bool
-            Whether the export is successful or not
-
-        """
-
-        try:
-            with open(navnet_pkl_file, "wb") as f:
-                pickle.dump(self.floor_navnet, f)
-
-            with open(hallway_graph_pkl_file, "wb") as f:
-                pickle.dump(self.hallways_graph, f)
-        except Exception as e:
-            LOG.error(e)
-            return False
-
-        return True
-
     def export_navnet_to_svg(self, svg_file):
         """Export the navigation network to an svg file for visualization.
 
@@ -1071,11 +1041,6 @@ class NavigationBuilder:
         -----------
         svg_file: str
             Full path the svg file to export to
-
-        Returns
-        --------
-        bool
-            Whether the export is successful or not
 
         """
 
@@ -1091,17 +1056,10 @@ class NavigationBuilder:
             nav_paths.append(p)
 
         LOG.info("Exporting...")
-        try:
-            bv.export_nav_network_to_svg(
-                self.current_floorplan.walls, nav_paths, nav_nodes, svg_file
-            )
-        except Exception as e:
-            LOG.error(e)
-            return False
-
+        bv.export_nav_network_to_svg(
+            self.current_floorplan.walls, nav_paths, nav_nodes, svg_file
+        )
         LOG.info("Navigation network exported to: %s", svg_file)
-
-        return True
 
     def load_nav_segments_from_svg_file(self, svg_file):
         if not os.path.isfile(svg_file):
@@ -1129,7 +1087,7 @@ class NavigationBuilder:
         """
 
         if not os.path.isfile(svg_file):
-            return False
+            raise FileNotFoundError(svg_file)
 
         self.floor_navnet = self.floor_navnet.to_undirected()
         edges = list(self.floor_navnet.edges)
@@ -1157,23 +1115,40 @@ class NavigationBuilder:
 
         return True
 
-    def load_navdata_from_pkl_files(
-        self, navnet_pkl_file, hallway_graph_pkl_file
+    def export_navdata_to_json(
+        self, navnet_json_file, hallway_graph_json_file
     ):
-        """Load the navigation network and the hallway grpah from pickle files.
+        """Export the navigation network data to json file for later use.
+
+        Parameters
+        -----------
+        navnet_pkl_file: str
+            Full path to where to save the navigation network json file
+
+        hallway_graph_pkl_file: str
+            Full file path to save the hallways graph
+        """
+
+        nav_dict = nx.readwrite.json_graph.node_link_data(self.floor_navnet)
+        with open(navnet_json_file, "w") as f:
+            json.dump(nav_dict, f)
+
+        hg_dict = nx.readwrite.json_graph.node_link_data(self.hallways_graph)
+        with open(hallway_graph_json_file, "w") as f:
+            json.dump(hg_dict, f)
+
+    def load_navdata_from_json_files(
+        self, navnet_json_file, hallway_graph_json_file
+    ):
+        """Load the navigation network and the hallway graph from json files.
 
         Parameters:
         ------------
         navnet_pkl_file: string
-            Full path to the navigation graph pickle file
+            Full path to the navigation graph json file
 
         hallway_graph_pkl_file: str
-            Full path to the hallway graph pickle file
-
-        Returns
-        -------
-        bool
-            Whether the data was successfully loaded or not
+            Full path to the hallway graph json file
         """
 
         n_nodes = self.floor_navnet.number_of_nodes()
@@ -1183,22 +1158,14 @@ class NavigationBuilder:
                 "network currently has %d. Please remove them first.",
                 n_nodes,
             )
-            return False
-
-        try:
-            with open(navnet_pkl_file, "rb") as f:
-                self.floor_navnet = pickle.load(f)
-        except FileNotFoundError:
-            LOG.error("File does not exist: %s", navnet_pkl_file)
-            return False
-
-        try:
-            with open(hallway_graph_pkl_file, "rb") as f:
-                self.hallways_graph = pickle.load(f)
-        except FileNotFoundError:
-            LOG.error(
-                "Hallway graph file does not exist: %s", hallway_graph_pkl_file
+            raise ValueError(
+                "A navnet currently exists. Cannot load new network."
             )
-            return False
 
-        return True
+        with open(navnet_json_file, "r") as f:
+            navdata = json.load(f)
+        self.floor_navnet = nx.readwrite.json_graph.node_link_graph(navdata)
+
+        with open(hallway_graph_json_file, "r") as f:
+            hgdata = json.load(f)
+        self.hallways_graph = nx.readwrite.json_graph.node_link_graph(hgdata)

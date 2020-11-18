@@ -295,6 +295,7 @@ class Schedule:
         # No consecutive restroom visits #TODO: Add this to scheduling rules
         if (
             RESTROOM_VISIT in valid_purposes
+            and self.schedule_items
             and self.schedule_items[-1].purpose == RESTROOM_VISIT
         ):
             valid_purposes.remove(RESTROOM_VISIT)

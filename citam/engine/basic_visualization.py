@@ -230,7 +230,6 @@ def export_nav_network_to_svg(
         attributes.append(
             {"fill": color, "stroke": color, "stroke-width": 0.1}
         )
-
     wsvg(paths, attributes=attributes, filename=filename)
 
     return
