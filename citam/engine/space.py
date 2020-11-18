@@ -74,7 +74,7 @@ class Space:
         """
         Return this space object as a dictionary. Note: this operation
         ignores any reference to door objects which must be recreated
-        at the floorplan level when this object is to be recreated.
+        at the floorplan level when a space object is to be recreated.
         """
         d = {}
         d["id"] = self.id
