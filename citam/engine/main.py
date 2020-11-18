@@ -16,7 +16,6 @@
 import errno
 import logging
 import os
-import pickle
 import time
 from copy import deepcopy
 from typing import List
@@ -33,6 +32,7 @@ from citam.engine.floorplan_updater import FloorplanUpdater
 from citam.engine.model import FacilityTransmissionModel
 from citam.engine.navigation_builder import NavigationBuilder
 from citam.engine.point import Point
+import json
 
 LOG = logging.getLogger(__name__)
 
@@ -97,8 +97,8 @@ def ingest_floorplan(
         if not os.path.isdir(floor_directory):
             os.mkdir(floor_directory)
 
-    fp_pickle_file = os.path.join(floor_directory, "floorplan.pkl")
-    if os.path.isfile(fp_pickle_file):
+    fp_file = os.path.join(floor_directory, "floorplan.json")
+    if os.path.isfile(fp_file):
         LOG.error(
             "Floorplan exists. Please choose another facility or floor name."
         )
@@ -114,8 +114,9 @@ def ingest_floorplan(
     )
     floorplan_ingester.run()
 
-    LOG.info("Saving floorplan to pickle file...")
-    floorplan_ingester.export_data_to_pickle_file(fp_pickle_file)
+    LOG.info("Saving floorplan to json file...")
+    floorplan = floorplan_ingester.get_floorplan()
+    floorplan.to_json_file(fp_file)
     LOG.info("Done.")
 
 
@@ -164,10 +165,10 @@ def build_navigation_network(
     navbuilder = NavigationBuilder(floorplan)
     navbuilder.build()
 
-    hw_graph_file = os.path.join(floorplan_directory, "hallways_graph.pkl")
-    floor_navnet_file = os.path.join(floorplan_directory, "routes.pkl")
+    hw_graph_file = os.path.join(floorplan_directory, "hallways_graph.json")
+    floor_navnet_file = os.path.join(floorplan_directory, "routes.json")
 
-    navbuilder.export_navdata_to_pkl(floor_navnet_file, hw_graph_file)
+    navbuilder.export_navdata_to_json(floor_navnet_file, hw_graph_file)
 
 
 def update_floorplan_from_svg_file(
@@ -196,10 +197,10 @@ def update_floorplan_from_svg_file(
     fp_updater = FloorplanUpdater(floorplan, svg_file=svg)
     fp_updater.run()
 
-    updated_pickle_file = os.path.join(
-        floorplan_directory, "updated_floorplan.pkl"
+    updated_json_file = os.path.join(
+        floorplan_directory, "updated_floorplan.json"
     )
-    fp_updater.export_floorplan_to_pickle_file(updated_pickle_file)
+    fp_updater.floorplan.to_json_file(updated_json_file)
 
 
 def export_navigation_graph_to_svg(
@@ -223,12 +224,14 @@ def export_navigation_graph_to_svg(
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
-    nav_network_file = os.path.join(floorplan_directory, "routes.pkl")
+    nav_network_file = os.path.join(floorplan_directory, "routes.json")
     if not os.path.isfile(nav_network_file):
         raise FileNotFoundError(nav_network_file)
 
-    with open(nav_network_file, "rb") as f:
-        nav_graph = pickle.load(f)
+    with open(nav_network_file, "r") as f:
+        nav_data = json.load(f)
+
+    nav_graph = nx.readwrite.json_graph.node_link_graph(nav_data)
 
     nav_nodes = []
     nav_paths = []
@@ -347,12 +350,13 @@ def find_and_save_potential_one_way_aisles(
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
-    nav_network_file = os.path.join(floorplan_directory, "routes.pkl")
+    nav_network_file = os.path.join(floorplan_directory, "routes.json")
     if not os.path.isfile(nav_network_file):
         raise FileNotFoundError(nav_network_file)
 
-    with open(nav_network_file, "rb") as f:
-        nav_graph = pickle.load(f)
+    with open(nav_network_file, "r") as f:
+        navnet_data = json.load(f)
+    nav_graph = nx.readwrite.json_graph.node_link_graph(navnet_data)
 
     LOG.info("Finding possible one way aisles from navigation network...")
     oneway_network = nx.Graph()
@@ -399,13 +403,15 @@ def find_and_save_potential_one_way_aisles(
     for i, edge in enumerate(list(oneway_network.edges())):
         oneway_network[edge[0]][edge[1]]["id"] = str(i)
 
-    # Save oneway network to pickle file
-    oneway_net_pkl_file = os.path.join(
-        floorplan_directory, "oneway_network.pkl"
+    # Save oneway network to json file
+    oneway_net_json_file = os.path.join(
+        floorplan_directory, "oneway_network.json"
     )
-    with open(oneway_net_pkl_file, "wb") as f:
-        pickle.dump(oneway_network, f)
-        LOG.info("File saved: %s", oneway_net_pkl_file)
+    oneway_dict = nx.readwrite.json_graph.node_link_data(oneway_network)
+    with open(oneway_net_json_file, "w") as f:
+        json.dump(oneway_dict, f)
+
+    LOG.info("File saved: %s", oneway_net_json_file)
 
     bv.export_possible_oneway_aisles_to_svg(
         floorplan.walls, oneway_network, outputfile

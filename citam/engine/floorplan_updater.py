@@ -373,9 +373,3 @@ class FloorplanUpdater:
                     break
 
         return indices
-
-    def export_floorplan_to_pickle_file(self, pickle_file):
-
-        self.floorplan.export_data_to_pickle_file(pickle_file)
-
-        return

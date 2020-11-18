@@ -21,23 +21,45 @@ from svgpathtools import Line
 
 import citam.engine.geometry_and_svg_utils as gsu
 from citam.engine.point import Point
+from citam.engine.serializer import serializer
+from citam.engine.constants import DEFAULT_MEETING_ROOM_CAPACITY
 
 
+@serializer
 class Space:
-    def __init__(self, path, boundaries, **attributes):
+    def __init__(
+        self,
+        path,
+        boundaries,
+        id,
+        unique_name,
+        building,
+        space_function,
+        facility=None,
+        floor=None,
+        space_category=None,
+        capacity=None,
+        department=None,
+        square_footage=None,
+    ):
+
+        self.id = id
         self.boundaries = boundaries
         self.path = path
-        for key, value in attributes.items():
-            setattr(self, key, value)
-        self.pick_weight = 1.0
+        self.building = building
+        self.unique_name = unique_name
+        self.facility = facility
+        self.floor = floor
+        self.space_function = space_function
+        self.space_category = space_category
+        self.capacity = capacity
+        self.department = department
+        self.square_footage = square_footage
         self.doors: List[Line] = []
 
-        if "capacity" not in attributes:
-            if self.is_space_a_meeting_room():
-                # TODO: Use square footage instead, if available
-                self.capacity = np.random.randint(25)
-            else:
-                self.capacity = None
+        if not self.capacity and self.is_space_a_meeting_room():
+            # default meeting room capacity
+            self.capacity = np.random.randint(DEFAULT_MEETING_ROOM_CAPACITY)
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
@@ -46,8 +68,29 @@ class Space:
         return id(self)
 
     def __str__(self):
-
         return str(self.__dict__.items())
+
+    def _as_dict(self):
+        """
+        Return this space object as a dictionary. Note: this operation
+        ignores any reference to door objects which must be recreated
+        at the floorplan level when a space object is to be recreated.
+        """
+        d = {}
+        d["id"] = self.id
+        d["boundaries"] = self.boundaries  # This is a list of objects!
+        d["path"] = self.path  # This is a list of objects
+        d["building"] = self.building
+        d["unique_name"] = self.unique_name
+        d["space_function"] = self.space_function
+        d["space_category"] = self.space_category
+        d["capacity"] = self.capacity
+        d["department"] = self.department
+        d["square_footage"] = self.square_footage
+        d["facility"] = self.facility
+        d["floor"] = self.floor
+
+        return d
 
     def __sizeof__(self):
 

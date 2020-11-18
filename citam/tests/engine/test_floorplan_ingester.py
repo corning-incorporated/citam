@@ -7,120 +7,6 @@ import copy
 
 
 @pytest.fixture
-def rect_floorplan_ingester_data():
-    """Basic rect floorplan with one main aisle, 4 office spaces on each side
-    and a big room at the end of the hallway
-    """
-    rect_fi = FloorplanIngester(None, 1.0, csv_file="")
-    rect_fi.space_data = []
-    rect_fi.space_paths = []
-    rect_fi.space_attributes = []
-
-    # Main aisle
-    space_id = 1
-    rect_fi.space_attributes.append({"id": space_id})
-    aisle = parse_path("M 0,0 L 250,0 L 250,80 L 0,80 Z")
-    rect_fi.space_paths.append(aisle)
-    rect_fi.space_data.append(
-        {
-            "id": space_id,
-            "facility": "TF",
-            "building": "TF1",
-            "unique_name": str(space_id),
-            "space_function": "aisle",
-        }
-    )
-
-    # Rooms
-    for i in range(5):
-        if i == 2:
-            continue
-        x = i * 50
-        space_id += 1
-        path_str = (
-            "M "
-            + str(x)
-            + ",0"
-            + " L "
-            + str(x)
-            + ",-120 "
-            + "L "
-            + str(x + 50)
-            + ",-120"
-            + " L "
-            + str(x + 50)
-            + ",0 Z"
-        )
-        rect_fi.space_paths.append(parse_path(path_str))
-        rect_fi.space_attributes.append({"id": space_id})
-        rect_fi.space_data.append(
-            {
-                "id": space_id,
-                "facility": "TF",
-                "building": "TF1",
-                "unique_name": str(space_id),
-                "space_function": "office",
-            }
-        )
-
-        space_id += 1
-        path_str = (
-            "M "
-            + str(x)
-            + ",80"
-            + " L "
-            + str(x)
-            + ",200 "
-            + "L "
-            + str(x + 50)
-            + ",200"
-            + " L "
-            + str(x + 50)
-            + ",80 Z"
-        )
-        rect_fi.space_paths.append(parse_path(path_str))
-        rect_fi.space_attributes.append({"id": space_id})
-        rect_fi.space_data.append(
-            {
-                "id": space_id,
-                "facility": "TF",
-                "building": "TF1",
-                "unique_name": str(space_id),
-                "space_function": "office",
-            }
-        )
-
-    # Main door
-    door_path_str = "M 0,20 L 0,60"
-    rect_fi.door_paths = [parse_path(door_path_str)]
-
-    # big room door
-    door_path_str = "M 250,20 L 250,60"
-    rect_fi.door_paths.append(parse_path(door_path_str))
-
-    # Office door
-    door_path_str = "M 60,80 L 80,80"
-    rect_fi.door_paths.append(parse_path(door_path_str))
-
-    # Big room
-    space_id += 1
-    path_str = "M 250,-120 L 350,-120 L 350,200 L 250,200 Z"
-    rect_fi.space_paths.append(parse_path(path_str))
-    rect_fi.space_data.append(
-        {
-            "id": space_id,
-            "facility": "TF",
-            "building": "TF1",
-            "unique_name": str(space_id),
-            "space_function": "cafeteria",
-        }
-    )
-    rect_fi.space_attributes.append({"id": space_id})
-
-    return rect_fi
-
-
-@pytest.fixture
 def rect_floorplan_ingester_data_no_csv():
     """Basic rect floorplan with one main aisle, 4 office spaces on each side
     and a big room at the end of the hallway.
@@ -243,11 +129,8 @@ def rect_floorplan_ingester(rect_floorplan_ingester_data):
 def test_init_correct_number_of_objects(datadir):
 
     svg_file = None  # datadir + '/TF1.svg'
-    csv_file = None  # datadir + '/TF1.csv'
     scale = 0.8
-    fi = FloorplanIngester(
-        svg_file, csv_file, scale, extract_doors_from_file=True
-    )
+    fi = FloorplanIngester(svg_file, scale, extract_doors_from_file=True)
 
     assert fi.spaces == []
     assert fi.doors == []

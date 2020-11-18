@@ -130,7 +130,7 @@ def test_init_hallway_graph_not_found(
     floor_dir = os.path.join(
         datadir, "floorplans_and_nav_data/test_simple_facility/floor_0/"
     )
-    os.remove(os.path.join(floor_dir, "hallways_graph.pkl"))
+    os.remove(os.path.join(floor_dir, "hallways_graph.json"))
 
     with pytest.raises(FileNotFoundError):
 
@@ -145,7 +145,7 @@ def test_init_navnet_not_found(
     os.remove(
         os.path.join(
             datadir,
-            "floorplans_and_nav_data/test_simple_facility/floor_0/routes.pkl",
+            "floorplans_and_nav_data/test_simple_facility/floor_0/routes.json",
         )
     )
     with pytest.raises(FileNotFoundError):
