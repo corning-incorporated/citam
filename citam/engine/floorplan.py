@@ -145,8 +145,7 @@ class Floorplan:
         """
 
         return next(
-            (space for space in self.spaces if space.id == space_id),
-            None
+            (space for space in self.spaces if space.id == space_id), None
         )
 
     def place_agent(self, agent, pos):
