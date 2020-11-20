@@ -25,8 +25,8 @@ from matplotlib import cm
 from io import TextIOWrapper
 
 from citam.engine.agent import Agent
-from citam.engine.floorplan import Floorplan
-from citam.engine.door import Door
+from citam.engine.map.floorplan import Floorplan
+from citam.engine.map.door import Door
 from citam.engine.navigation import Navigation
 from citam.engine.daily_schedule import Schedule
 import citam.engine.basic_visualization as bv
