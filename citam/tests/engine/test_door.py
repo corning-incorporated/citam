@@ -1,5 +1,5 @@
 from citam.engine.serializer import serializer
-from citam.engine.door import Door
+from citam.engine.map.door import Door
 
 
 from svgpathtools import parse_path
