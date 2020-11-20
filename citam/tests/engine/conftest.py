@@ -2,9 +2,9 @@ from __future__ import unicode_literals
 
 from svgpathtools import Path, Line, parse_path
 
-from citam.engine.space import Space
-from citam.engine.floorplan import Floorplan
-from citam.engine.door import Door
+from citam.engine.map.space import Space
+from citam.engine.map.floorplan import Floorplan
+from citam.engine.map.door import Door
 from citam.engine.serializer import serializer
 
 from distutils import dir_util
@@ -12,7 +12,7 @@ import pytest
 import os
 from copy import deepcopy
 import json
-from citam.engine.floorplan_ingester import FloorplanIngester
+from citam.engine.map.ingester import FloorplanIngester
 
 
 @pytest.fixture

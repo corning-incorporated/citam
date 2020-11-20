@@ -1,6 +1,6 @@
-from citam.engine.floorplan_ingester import FloorplanIngester
+from citam.engine.map.ingester import FloorplanIngester
 from svgpathtools import parse_path
-from citam.engine.space import Space
+from citam.engine.map.space import Space
 
 import pytest
 import copy
