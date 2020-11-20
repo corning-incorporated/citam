@@ -19,7 +19,7 @@ import progressbar as pb
 from typing import List
 
 from citam.engine.constants import DEFAULT_MEETINGS_POLICY
-from citam.engine.space import Space
+from citam.engine.map.space import Space
 
 LOG = logging.getLogger(__name__)
 

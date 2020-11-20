@@ -14,7 +14,7 @@
 
 import citam.engine.geometry_and_svg_utils as gsu
 from citam.engine.point import Point
-from citam.engine.space import Space
+from citam.engine.map.space import Space
 
 from svgpathtools import Line
 
