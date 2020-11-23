@@ -208,9 +208,7 @@ class Floorplan:
             LOG.warning(f"{room.unique_name} has no door")
             return None
 
-        return [
-           room_door.intersect_coords for room_door in room.doors
-        ]
+        return [room_door.intersect_coords for room_door in room.doors]
 
     def export_to_svg(self, svg_file, include_doors=False):
         """Export the current floorplan to an SVG file.
