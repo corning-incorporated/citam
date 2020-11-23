@@ -59,7 +59,7 @@ class FacilityTransmissionModel:
         meetings_policy_params=None,
         create_meetings=True,
         scheduling_policy=None,
-        dry_run=False
+        dry_run=False,
     ) -> None:
 
         self.facility = facility
@@ -249,13 +249,22 @@ class FacilityTransmissionModel:
 
                 while entrance_door is None:
 
-                    office_floor = np.random.randint(self.facility.number_of_floors)
-                    n_offices = len(self.facility.all_office_spaces[office_floor])
+                    office_floor = np.random.randint(
+                        self.facility.number_of_floors
+                    )
+                    n_offices = len(
+                        self.facility.all_office_spaces[office_floor]
+                    )
                     rint = np.random.randint(n_offices)
-                    office_id = self.facility.all_office_spaces[office_floor].pop(rint)
+                    office_id = self.facility.all_office_spaces[
+                        office_floor
+                    ].pop(rint)
 
                     # Choose the closest entrance to office
-                    entrance_door, entrance_floor = self.facility.choose_best_entrance(
+                    (
+                        entrance_door,
+                        entrance_floor,
+                    ) = self.facility.choose_best_entrance(
                         office_floor, office_id
                     )
 
@@ -355,7 +364,9 @@ class FacilityTransmissionModel:
 
                     else:
                         hallways_graph = (
-                            self.facility.navigation.hallways_graph_per_floor[fn]
+                            self.facility.navigation.hallways_graph_per_floor[
+                                fn
+                            ]
                         )
                         if hallways_graph is None:
                             continue
@@ -510,10 +521,16 @@ class FacilityTransmissionModel:
             n_one_way_aisles = 0
         else:
             n_one_way_aisles = len(
-                [p for p in self.facility.traffic_policy if p["direction"] != 0]
+                [
+                    p
+                    for p in self.facility.traffic_policy
+                    if p["direction"] != 0
+                ]
             )
 
-        fp_width = self.facility.floorplans[0].maxx - self.facility.floorplans[0].minx
+        fp_width = (
+            self.facility.floorplans[0].maxx - self.facility.floorplans[0].minx
+        )
         manifest_dict = {
             "TimestepInSec": 1,
             "NumberOfFloors": self.facility.number_of_floors,

@@ -38,6 +38,7 @@ def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
 
     return model
 
+
 def test_create_simid(simple_facility_model):
     model = simple_facility_model
     model.create_simid()
