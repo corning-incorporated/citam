@@ -25,7 +25,7 @@ import numpy as np
 import math
 from svgpathtools import Line, Path
 
-from citam.engine.point import Point
+from citam.engine.map.point import Point
 
 
 def on_segment(p, q, r):

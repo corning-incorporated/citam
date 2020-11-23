@@ -12,7 +12,7 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-from citam.engine.agent import Agent
+from citam.engine.core.agent import Agent
 
 from typing import Tuple, Dict, List
 

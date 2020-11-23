@@ -13,8 +13,8 @@
 # ==============================================================================
 from typing import Tuple
 
-from citam.engine.point import Point
-from citam.engine.serializer import serializer
+from citam.engine.map.point import Point
+from citam.engine.io.serializer import serializer
 
 
 @serializer

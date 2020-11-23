@@ -1,6 +1,6 @@
 import json
 
-from citam.engine.serializer import serializer
+from citam.engine.io.serializer import serializer
 
 
 def test_serialize(rect_space):

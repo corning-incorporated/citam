@@ -23,15 +23,15 @@ from typing import List
 import networkx as nx
 from svgpathtools import Line
 
-import citam.engine.basic_visualization as bv
-import citam.engine.geometry_and_svg_utils as gsu
-import citam.engine.storage_utils as su
+import citam.engine.io.visualization as bv
+import citam.engine.map.geometry as gsu
+import citam.engine.io.storage_utils as su
 from citam.engine.map.floorplan import floorplan_from_directory
 from citam.engine.map.ingester import FloorplanIngester
 from citam.engine.map.updater import FloorplanUpdater
-from citam.engine.model import FacilityTransmissionModel
+from citam.engine.core.model import FacilityTransmissionModel
 from citam.engine.navigation_builder import NavigationBuilder
-from citam.engine.point import Point
+from citam.engine.map.point import Point
 import json
 
 LOG = logging.getLogger(__name__)

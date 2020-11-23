@@ -1,5 +1,5 @@
-from citam.engine.contact_events import ContactEvents, ContactEvent
-from citam.engine.agent import Agent
+from citam.engine.core.contacts import ContactEvents, ContactEvent
+from citam.engine.core.agent import Agent
 
 import pytest
 from copy import deepcopy

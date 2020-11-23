@@ -1,4 +1,4 @@
-from citam.engine.serializer import serializer
+from citam.engine.io.serializer import serializer
 from citam.engine.map.door import Door
 
 
