@@ -1,4 +1,4 @@
-from citam.engine.navigation import (
+from citam.engine.facility.navigation import (
     Navigation,
     unroll_route,
     remove_unnecessary_coords,
