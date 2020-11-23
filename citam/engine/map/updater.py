@@ -340,10 +340,10 @@ class FloorplanUpdater:
                 door_obj = Door(path=new_door, space1=space1, space2=space2)
                 updated_doors.append(door_obj)
 
-                if not space1.is_space_a_hallway():
+                if space1 and not space1.is_space_a_hallway():
                     self.space1.doors.append(door_obj)
 
-                if not space2.is_space_a_hallway():
+                if space2 and not space2.is_space_a_hallway():
                     self.space2.doors.append(door_obj)
             else:
                 LOG.warning("Could not add this door: %s", new_door)

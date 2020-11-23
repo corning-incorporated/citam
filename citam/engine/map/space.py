@@ -62,7 +62,34 @@ class Space:
             self.capacity = np.random.randint(DEFAULT_MEETING_ROOM_CAPACITY)
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        """
+        Verify that two spaces are the same. Avoid comparing door objects
+        directly as they hold references to space objects and would cause
+        recursion error.
+        """
+        if (
+            self.boundaries == other.boundaries
+            and self.path == other.path
+            and self.building == other.building
+            and self.unique_name == other.unique_name
+            and self.facility == other.facility
+            and self.floor == other.floor
+            and self.space_function == other.space_function
+            and self.space_category == other.space_category
+            and self.capacity == other.capacity
+            and self.department == other.department
+            and len(self.doors) == len(other.doors)
+        ):
+            doors_match = True
+            for i in range(len(self.doors)):
+                if self.doors[i].path != other.doors[i].path:
+                    doors_match = False
+                    break
+
+            if doors_match:
+                return True
+
+        return False
 
     def __hash__(self):
         return id(self)
@@ -128,8 +155,8 @@ class Space:
         # Check if point is on the door line, for a room
         if not self.is_space_a_hallway() and len(self.doors) > 0:
             for door in self.doors:
-                start_door = Point(complex_coords=door.start)
-                end_door = Point(complex_coords=door.end)
+                start_door = Point(complex_coords=door.path.start)
+                end_door = Point(complex_coords=door.path.end)
                 if gsu.on_segment(start_door, test_point, end_door):
                     return True
 
