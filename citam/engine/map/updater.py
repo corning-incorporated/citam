@@ -16,10 +16,10 @@ import logging
 
 from svgpathtools import Line, svg2paths
 
-import citam.engine.geometry_and_svg_utils as gsu
+import citam.engine.map.geometry as gsu
 from citam.engine.map.door import Door
-from citam.engine.input_parser import parse_csv_metadata_file
-from citam.engine.point import Point
+from citam.engine.io.input_parser import parse_csv_metadata_file
+from citam.engine.map.point import Point
 from citam.engine.map.space import Space
 
 LOG = logging.getLogger(__name__)

@@ -1,5 +1,5 @@
 from citam.engine.navigation_builder import NavigationBuilder
-from citam.engine.point import Point
+from citam.engine.map.point import Point
 from svgpathtools import Line
 
 import networkx as nx

@@ -21,10 +21,10 @@ import progressbar as pb
 from svgpathtools import Line, CubicBezier, Path
 
 import citam.engine.map.utils as fu
-import citam.engine.geometry_and_svg_utils as gsu
-import citam.engine.input_parser as parser
+import citam.engine.map.geometry as gsu
+import citam.engine.io.input_parser as parser
 from citam.engine.map.door import Door
-from citam.engine.point import Point
+from citam.engine.map.point import Point
 from citam.engine.map.space import Space
 from citam.engine.map.floorplan import Floorplan
 import math as m

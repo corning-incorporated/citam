@@ -19,9 +19,9 @@ from typing import List
 import numpy as np
 from svgpathtools import Line
 
-import citam.engine.geometry_and_svg_utils as gsu
-from citam.engine.point import Point
-from citam.engine.serializer import serializer
+import citam.engine.map.geometry as gsu
+from citam.engine.map.point import Point
+from citam.engine.io.serializer import serializer
 from citam.engine.constants import DEFAULT_MEETING_ROOM_CAPACITY
 
 

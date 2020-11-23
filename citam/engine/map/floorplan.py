@@ -16,9 +16,9 @@ import logging
 import os
 import json
 
-import citam.engine.basic_visualization as bv
-from citam.engine.point import Point
-from citam.engine.serializer import serializer
+import citam.engine.io.visualization as bv
+from citam.engine.map.point import Point
+from citam.engine.io.serializer import serializer
 
 LOG = logging.getLogger(__name__)
 
