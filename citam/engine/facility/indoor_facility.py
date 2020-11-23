@@ -14,25 +14,10 @@
 
 from typing import Dict, Tuple, List
 import numpy as np
-import scipy.spatial.distance
-from collections import OrderedDict
-import json
-import os
 import logging
-import os
-from typing import Tuple, List
 
-import networkx as nx
-import progressbar as pb
-from svgpathtools import Line, svg2paths
-
-import citam.engine.io.visualization as bv
-import citam.engine.map.utils as fu
-import citam.engine.map.geometry as gsu
 from citam.engine.map.door import Door
-from citam.engine.map.point import Point
 from citam.engine.map.floorplan import Floorplan
-import json
 from citam.engine.facility.navigation import Navigation
 
 LOG = logging.getLogger(__name__)
