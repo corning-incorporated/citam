@@ -1,5 +1,5 @@
-from citam.engine.model import FacilityTransmissionModel
-from citam.engine.agent import Agent
+from citam.engine.core.model import FacilityTransmissionModel
+from citam.engine.core.agent import Agent
 
 import os
 import pytest

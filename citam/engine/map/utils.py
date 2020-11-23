@@ -12,8 +12,8 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-import citam.engine.geometry_and_svg_utils as gsu
-from citam.engine.point import Point
+import citam.engine.map.geometry as gsu
+from citam.engine.map.point import Point
 from citam.engine.map.space import Space
 
 from svgpathtools import Line

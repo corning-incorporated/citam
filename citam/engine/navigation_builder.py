@@ -19,11 +19,11 @@ import networkx as nx
 import progressbar as pb
 from svgpathtools import Line, svg2paths
 
-import citam.engine.basic_visualization as bv
+import citam.engine.io.visualization as bv
 import citam.engine.map.utils as fu
-import citam.engine.geometry_and_svg_utils as gsu
+import citam.engine.map.geometry as gsu
 from citam.engine.map.door import Door
-from citam.engine.point import Point
+from citam.engine.map.point import Point
 import json
 
 LOG = logging.getLogger(__name__)

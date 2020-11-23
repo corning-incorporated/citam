@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 from matplotlib import cm, colors
 from svgpathtools import wsvg, Arc, Line, parse_path
 
-from citam.engine.point import Point
+from citam.engine.map.point import Point
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
 ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
