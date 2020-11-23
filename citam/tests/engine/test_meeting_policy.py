@@ -2,7 +2,7 @@ import pytest
 from copy import deepcopy
 
 from citam.engine.meeting_policy import MeetingPolicy, Meeting
-from citam.engine.space import Space
+from citam.engine.map.space import Space
 
 
 @pytest.fixture

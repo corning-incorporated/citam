@@ -4,7 +4,7 @@ import json
 import pytest
 
 from citam.engine.serializer import serializer
-from citam.engine.floorplan import floorplan_from_directory
+from citam.engine.map.floorplan import floorplan_from_directory
 
 
 @pytest.fixture
