@@ -1,5 +1,6 @@
 from citam.engine.core.model import FacilityTransmissionModel
 from citam.engine.core.agent import Agent
+from citam.engine.facility.indoor_facility import Facility
 
 import os
 import pytest
@@ -14,39 +15,28 @@ def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
     datadir = os.path.join(test_dir, "data_navigation")
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
 
-    model = FacilityTransmissionModel(
+    facility = Facility(
         [simple_facility_floorplan],
+        facility_name="test_simple_facility",
+        entrances=[{"name": "1", "floor": "0"}],
+        traffic_policy=None,
+    )
+
+    model = FacilityTransmissionModel(
+        facility=facility,
         daylength=3600,
         n_agents=2,
         occupancy_rate=None,
         buffer=100,
         timestep=1.0,
-        entrances=[{"name": "1", "floor": "0"}],
-        facility_name="test_simple_facility",
         contact_distance=6.0,
         shifts=[{"name": "1", "start_time": 0, "percent_workforce": 1.0}],
         meetings_policy_params=None,
         scheduling_policy=None,
-        traffic_policy=None,
         dry_run=False,
     )
 
     return model
-
-
-def test_init(simple_facility_model):
-
-    # TODO: this will be unnecessary when the facility class is created
-    model = simple_facility_model
-
-    assert model.total_offices == 8
-    assert len(model.entrances) == 1
-
-    assert len(model.cafes) == 1
-    assert len(model.cafes[0]) == 1
-
-    assert len(model.meeting_rooms) == 1
-    assert len(model.meeting_rooms[0]) == 0
 
 
 def test_create_simid(simple_facility_model):
@@ -343,17 +333,3 @@ def test_save_outputs(tmpdir, simple_facility_model):
     )
 
     # TODO: validate contents of each file
-
-
-# TODO: Move the functions below to a new class called Facility
-
-# def test_find_and_validate_offices():
-# def test_group_remaining_spaces():
-# def test_find_valid_floor_office_spaces():
-# def test_remove_unreachable_rooms():
-# def test_find_possible_entrance_doors():
-# def test_find_space_by_name():
-# def test_find_floor_by_name():
-# def test_is_door_in_navnet():
-# def test_validate_entrances():
-# def test_choose_best_entrance():
