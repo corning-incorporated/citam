@@ -32,6 +32,7 @@ from citam.engine.map.updater import FloorplanUpdater
 from citam.engine.core.model import FacilityTransmissionModel
 from citam.engine.facility.navbuilder import NavigationBuilder
 from citam.engine.map.point import Point
+from citam.engine.facility.indoor_facility import Facility
 import json
 
 LOG = logging.getLogger(__name__)
@@ -286,11 +287,19 @@ def run_simulation(inputs: dict):
 
     if len(floorplans) > 0:
         model_inputs = deepcopy(inputs)
-        model_inputs["floorplans"] = floorplans
         del model_inputs["upload_results"]
         del model_inputs["upload_location"]
         del model_inputs["floors"]
         del model_inputs["output_directory"]
+        facility = Facility(
+            floorplans,
+            model_inputs["entrances"],
+            model_inputs["facility_name"],
+        )
+        del model_inputs["entrances"]
+        del model_inputs["facility_name"]
+
+        model_inputs["facility"] = facility
         my_model = FacilityTransmissionModel(**model_inputs)
     else:
         raise ValueError("At least one floorplan must be provided.")
