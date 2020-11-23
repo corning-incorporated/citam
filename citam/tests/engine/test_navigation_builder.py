@@ -1,4 +1,4 @@
-from citam.engine.navigation_builder import NavigationBuilder
+from citam.engine.facility.navbuilder import NavigationBuilder
 from citam.engine.map.point import Point
 from svgpathtools import Line
 

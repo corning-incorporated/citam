@@ -30,7 +30,7 @@ from citam.engine.map.floorplan import floorplan_from_directory
 from citam.engine.map.ingester import FloorplanIngester
 from citam.engine.map.updater import FloorplanUpdater
 from citam.engine.core.model import FacilityTransmissionModel
-from citam.engine.navigation_builder import NavigationBuilder
+from citam.engine.facility.navbuilder import NavigationBuilder
 from citam.engine.map.point import Point
 import json
 
