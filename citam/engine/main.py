@@ -291,7 +291,11 @@ def run_simulation(inputs: dict):
         del model_inputs["upload_location"]
         del model_inputs["floors"]
         del model_inputs["output_directory"]
-        facility = Facility(floorplans, model_inputs["entrances"], model_inputs["facility_name"])
+        facility = Facility(
+            floorplans,
+            model_inputs["entrances"],
+            model_inputs["facility_name"],
+        )
         del model_inputs["entrances"]
         del model_inputs["facility_name"]
 
