@@ -1,4 +1,4 @@
-import citam.engine.floorplan_utils as fu
+import citam.engine.map.utils as fu
 
 from svgpathtools import Line
 
