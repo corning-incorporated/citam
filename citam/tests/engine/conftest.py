@@ -5,7 +5,7 @@ from svgpathtools import Path, Line, parse_path
 from citam.engine.map.space import Space
 from citam.engine.map.floorplan import Floorplan
 from citam.engine.map.door import Door
-from citam.engine.serializer import serializer
+from citam.engine.io.serializer import serializer
 
 from distutils import dir_util
 import pytest

@@ -21,14 +21,14 @@ from itertools import product
 import networkx as nx
 from svgpathtools import Line
 
-import citam.engine.geometry_and_svg_utils as gsu
-import citam.engine.storage_utils as su
+import citam.engine.map.geometry as gsu
+import citam.engine.io.storage_utils as su
 from citam.engine.constants import (
     ONEWAY_TRAFFIC_NEGATIVE_DIRECTION,
     ONEWAY_TRAFFIC_POSITIVE_DIRECTION,
     TWO_WAY_TRAFFIC,
 )
-from citam.engine.point import Point
+from citam.engine.map.point import Point
 import json
 
 LOG = logging.getLogger(__name__)

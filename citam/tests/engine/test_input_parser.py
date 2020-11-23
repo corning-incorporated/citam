@@ -1,5 +1,5 @@
 import pytest
-from citam.engine.input_parser import (
+from citam.engine.io.input_parser import (
     parse_csv_metadata_file,
     parse_svg_floorplan_file,
     parse_input_file,
