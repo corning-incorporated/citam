@@ -27,11 +27,11 @@ from io import TextIOWrapper
 from citam.engine.core.agent import Agent
 from citam.engine.map.floorplan import Floorplan
 from citam.engine.map.door import Door
-from citam.engine.navigation import Navigation
-from citam.engine.daily_schedule import Schedule
+from citam.engine.facility.navigation import Navigation
+from citam.engine.policy.daily_schedule import Schedule
 import citam.engine.io.visualization as bv
 import citam.engine.core.contacts as cev
-from citam.engine.meeting_policy import MeetingPolicy
+from citam.engine.policy.meetings import MeetingPolicy
 from citam.engine.constants import DEFAULT_SCHEDULING_RULES
 
 import progressbar as pb
