@@ -39,13 +39,12 @@ LOG = logging.getLogger(__name__)
 
 
 class Facility:
-
     def __init__(
         self,
         floorplans: List[Floorplan],
         entrances: List[Dict],
         facility_name: str,
-        traffic_policy=None
+        traffic_policy=None,
     ):
 
         self.floorplans = floorplans
@@ -54,7 +53,7 @@ class Facility:
         self.facility_name = facility_name
         self.traffic_policy = traffic_policy
 
-         # Initialize navigation network
+        # Initialize navigation network
         self.navigation = Navigation(
             self.floorplans, self.facility_name, self.traffic_policy
         )
@@ -68,7 +67,6 @@ class Facility:
 
         # Find and group all remaining spaces in this facility
         self.group_remaining_spaces()
-
 
     def choose_best_entrance(
         self, office_floor: int, office_id: int
