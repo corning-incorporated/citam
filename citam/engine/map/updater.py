@@ -248,16 +248,12 @@ class FloorplanUpdater:
         indices = self.find_spaces_of_point(new_point1)
         if len(indices) > 0:
             space1 = self.floorplan.spaces[indices[0]]
-            if not space1.is_space_a_hallway():
-                self.floorplan.spaces[indices[0]].doors.append(door_path)
         else:
             space1 = None
 
         indices = self.find_spaces_of_point(new_point2)
         if len(indices) > 0:
             space2 = self.floorplan.spaces[indices[0]]
-            if not space2.is_space_a_hallway():
-                self.floorplan.spaces[indices[0]].doors.append(door_path)
         else:
             space2 = None
 
@@ -341,9 +337,14 @@ class FloorplanUpdater:
 
             if space1 is not None or space2 is not None:
                 new_door = self.overlap_door_with_wall(new_door)
-
                 door_obj = Door(path=new_door, space1=space1, space2=space2)
                 updated_doors.append(door_obj)
+
+                if not space1.is_space_a_hallway():
+                    self.space1.doors.append(door_obj)
+
+                if not space2.is_space_a_hallway():
+                    self.space2.doors.append(door_obj)
             else:
                 LOG.warning("Could not add this door: %s", new_door)
         LOG.info("New doors processed: %d", len(svg_door_paths))

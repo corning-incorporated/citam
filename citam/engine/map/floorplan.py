@@ -130,12 +130,12 @@ class Floorplan:
             if door.space1_id:
                 space1 = self.find_space_by_id(door.space1_id)
                 if space1:
-                    space1.doors.append(door.path)
+                    space1.doors.append(door)
                     door.space1 = space1
             if door.space2_id:
                 space2 = self.find_space_by_id(door.space2_id)
                 if space2:
-                    space2.doors.append(door.path)
+                    space2.doors.append(door)
                     door.space2 = space2
         return
 
@@ -209,11 +209,7 @@ class Floorplan:
             return None
 
         return [
-            (
-                round(room_door.point(0.5).real),
-                round(room_door.point(0.5).imag),
-            )
-            for room_door in room.doors
+           room_door.intersect_coords for room_door in room.doors
         ]
 
     def export_to_svg(self, svg_file, include_doors=False):
