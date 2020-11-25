@@ -85,9 +85,7 @@ class Space:
                 if self.doors[i].path != other.doors[i].path:
                     doors_match = False
                     break
-
-            if doors_match:
-                return True
+            return doors_match
 
         return False
 
