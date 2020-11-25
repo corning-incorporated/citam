@@ -137,6 +137,7 @@ class ResultsResource:
         resp.media = parser.get_policy_json(sim_id)
         resp.status = falcon.HTTP_200
 
+
 # noinspection PyUnusedLocal
 class RedocResource:
     """API Documentation Page"""
