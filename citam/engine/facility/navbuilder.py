@@ -129,21 +129,11 @@ class NavigationBuilder:
         pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
         for i, door in enumerate(self.current_floorplan.doors):
             pbar.update(i)
-            self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             if door in self.excluded_doors:
-                # Add short segment between current coords for door and the
-                # midpoint coord
-                if not door.is_intersect_and_midpoint_same():
-                    self.floor_navnet.add_node(
-                        door.intersect_coords, node_type="door"
-                    )
-                    self.floor_navnet.add_edge(
-                        door.intersect_coords,
-                        door.midpoint_coords,
-                        half_width=1.0,
-                    )
                 continue
+
             # Add mid-point of door path to navnet as a door node
+            self.floor_navnet.add_node(door.midpoint_coords, node_type="door")
             door_width = door.path.length()
             door_normal = door.path.normal(0.5)
 

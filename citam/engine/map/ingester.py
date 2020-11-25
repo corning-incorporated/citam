@@ -405,12 +405,12 @@ class FloorplanIngester:
             return
         door_obj = Door(path=door_line, space1=self.spaces[space_indices[0]])
         if not self.spaces[space_indices[0]].is_space_a_hallway():
-            self.spaces[space_indices[0]].doors.append(door_line)
+            self.spaces[space_indices[0]].doors.append(door_obj)
 
         if len(space_indices) > 1:
             door_obj.space2 = self.spaces[space_indices[1]]
             if not self.spaces[space_indices[1]].is_space_a_hallway():
-                self.spaces[space_indices[1]].doors.append(door_line)
+                self.spaces[space_indices[1]].doors.append(door_obj)
 
         self.doors.append(door_obj)
 

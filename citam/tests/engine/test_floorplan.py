@@ -99,7 +99,10 @@ def test_serialize2(rect_floorplan):
         assert enc_space.id == dec_space.id
         assert len(enc_space.doors) == len(dec_space.doors)
         for enc_door, dec_door in zip(enc_space.doors, dec_space.doors):
-            assert enc_door == dec_door
+            print(enc_door, dec_door)
+            assert enc_door.path == dec_door.path
+            assert enc_door.space1.id == dec_door.space1.id
+            assert enc_door.space2 == dec_door.space2
             # assert enc_door.path == dec_door.path
             # assert enc_door.space1.id == dec_door.space1.id
             # assert enc_door.space2 == dec_door.space2
