@@ -38,6 +38,7 @@ class LocalStorageDriver(BaseStorageDriver):
         super().__init__()
         self.search_path = search_path
         self.result_dirs = {}
+        self.runs = []
 
         if os.path.isdir(search_path):
             LOG.info(
@@ -66,7 +67,10 @@ class LocalStorageDriver(BaseStorageDriver):
         for manifest in manifests:
             with open(manifest, "r") as manifest_file:
                 try:
-                    name = json.load(manifest_file)["SimulationName"]
+                    manifest_data = json.load(manifest_file)
+                    sim_id = manifest_data["SimulationID"]
+                    policy_id = manifest_data["PolicyID"]
+                    facility_name = manifest["FacilityName"]
                 except KeyError:
                     LOG.warning(
                         '"%s" does not define "SimulationName". '
@@ -75,7 +79,8 @@ class LocalStorageDriver(BaseStorageDriver):
                     )
                     continue
 
-                self.result_dirs[name] = os.path.dirname(manifest)
+                self.result_dirs[sim_id] = os.path.dirname(manifest)
+                self.runs.append({"sim_id": sim_id, "policy_id": policy_id, "facility_name": facility_name})
 
         if len(self.result_dirs.keys()) == 0:
             raise NoResultsFoundError(
@@ -84,7 +89,7 @@ class LocalStorageDriver(BaseStorageDriver):
             )
 
     def list_runs(self):
-        return list(self.result_dirs.keys())
+        return self.runs
 
     def get_coordinate_distribution_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
@@ -149,4 +154,9 @@ class LocalStorageDriver(BaseStorageDriver):
     def get_statistics_file(self, sim_id):
         return open(
             os.path.join(self.result_dirs[sim_id], "statistics.json"), "r"
+        )
+
+    def get_policy_file(self, sim_id):
+        return open(
+            os.path.join(self.result_dirs[sim_id], "policy.json"), "r"
         )

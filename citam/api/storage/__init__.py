@@ -106,6 +106,13 @@ class BaseStorageDriver(abc.ABC):
         :param sim_id: simulation identifier
         """
 
+    @abc.abstractmethod
+    def get_policy_file(self, sim_id: str) -> TextIO:
+        """Get the statistics file for a simulation
+
+        :param sim_id: simulation identifier
+        """
+
     def get_manifest(self, sim_id: str) -> Dict:
         """
         Return the parsed manifest for a simulation

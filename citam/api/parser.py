@@ -185,3 +185,13 @@ def get_statistics_json(sim_id: str) -> List[Dict]:
         )
         return []
     return result_dict["data"]
+
+
+def get_policy_json(sim_id: str) -> List[Dict]:
+
+    result_dict = json.loads(
+        settings.storage_driver.get_policy_file(sim_id).read()
+    )
+    LOG.info("Statistics JSON file parsing process started")
+
+    return
