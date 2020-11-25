@@ -1,9 +1,9 @@
 {
     "TimestepInSec": 1,
     "NumberOfFloors": 1,
-    "SimulationName": "sim_id_0001",
-    "SimulationID": "UNIQUE_SIMULATION_ID_1",
-    "PolicyID": "UNIQUE_POL_1",
+    "SimulationName": "sim_name_0001",
+    "SimulationID": "sim_id_0001",
+    "PolicyID": "pol_id_0001",
     "FacilityName": "TEST",
     "trajectory_file": "trajectory.txt",
     "floors": [

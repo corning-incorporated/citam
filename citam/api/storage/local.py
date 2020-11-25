@@ -70,7 +70,7 @@ class LocalStorageDriver(BaseStorageDriver):
                     manifest_data = json.load(manifest_file)
                     sim_id = manifest_data["SimulationID"]
                     policy_id = manifest_data["PolicyID"]
-                    facility_name = manifest["FacilityName"]
+                    facility_name = manifest_data["FacilityName"]
                 except KeyError:
                     LOG.warning(
                         '"%s" does not define "SimulationName". '

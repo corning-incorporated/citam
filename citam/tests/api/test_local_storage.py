@@ -57,8 +57,8 @@ def test_no_results_found():
 
 def test_list_runs():
     expected = [
-        "sim_id_0001",
-        "sim_id_0002",
+        {"sim_id": "sim_id_0001", "facility_name": "TEST", "policy_id": "pol_id_0001"},
+        {"sim_id": "sim_id_0002", "facility_name": "TEST", "policy_id": "pol_id_0001"},
         # the result in TFBAD has a malformed manifest and should be ignored
     ]
     driver = LocalStorageDriver(search_path=search_root)
@@ -94,3 +94,8 @@ def test_get_coordinate_distribution_file():
 def test_get_manifest():
     driver = LocalStorageDriver(search_path=search_root)
     driver.get_manifest("sim_id_0001")
+
+def test_get_policy_file():
+    driver = LocalStorageDriver(search_path=search_root)
+    policy_file = driver.get_policy_file("sim_id_0001").readlines()
+    assert len(policy_file) >= 10
