@@ -535,7 +535,7 @@ class FacilityTransmissionModel:
             "NumberOfEmployees": len(self.agents),
             "SimulationName": self.simulation_name,
             "SimulationID": self.simid,
-            "Campus": self.facility.facility_name,
+            "FacilityName": self.facility.facility_name,
             "FacilityOccupancy": self.occupancy_rate,  # between 0.0 and 1.0
             "MaxRoomOccupancy": 1.0,
             "NumberOfShifts": 1,
