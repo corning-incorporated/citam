@@ -194,4 +194,4 @@ def get_policy_json(sim_id: str) -> List[Dict]:
     )
     LOG.info("Statistics JSON file parsing process started")
 
-    return
+    return result_dict

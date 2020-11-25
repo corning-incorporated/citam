@@ -80,7 +80,13 @@ class LocalStorageDriver(BaseStorageDriver):
                     continue
 
                 self.result_dirs[sim_id] = os.path.dirname(manifest)
-                self.runs.append({"sim_id": sim_id, "policy_id": policy_id, "facility_name": facility_name})
+                self.runs.append(
+                    {
+                        "sim_id": sim_id,
+                        "policy_id": policy_id,
+                        "facility_name": facility_name,
+                    }
+                )
 
         if len(self.result_dirs.keys()) == 0:
             raise NoResultsFoundError(
@@ -157,6 +163,4 @@ class LocalStorageDriver(BaseStorageDriver):
         )
 
     def get_policy_file(self, sim_id):
-        return open(
-            os.path.join(self.result_dirs[sim_id], "policy.json"), "r"
-        )
+        return open(os.path.join(self.result_dirs[sim_id], "policy.json"), "r")
