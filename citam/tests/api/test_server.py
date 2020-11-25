@@ -85,6 +85,11 @@ def test_get_heatmap(client):
     assert result.status_code == 200
 
 
+def test_get_policy(client):
+    result = client.simulate_get("/v1/sim_id_0001/policy")
+    assert result.status_code == 200
+
+
 def test_get_statistics(client):
     result = client.simulate_get("/v1/sim_id_0001/statistics")
     assert result.status_code == 200
@@ -106,8 +111,11 @@ def test_list_response(client):
     assert result.status_code == 200
     assert isinstance(result.json, list)
     assert len(result.json) == 2
-    assert "sim_id_0001" in result.json
-    assert "sim_id_0002" in result.json
+    assert "sim_id" in result.json[0]
+    assert "policy_id" in result.json[0]
+    assert "facility_name" in result.json[0]
+    assert "sim_id_0001" in result.json[0]["sim_id"]
+    assert "sim_id_0002" in result.json[1]["sim_id"]
 
 
 def test_redoc(client):
