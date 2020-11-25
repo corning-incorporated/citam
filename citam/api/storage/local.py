@@ -91,7 +91,7 @@ class LocalStorageDriver(BaseStorageDriver):
         if len(self.result_dirs.keys()) == 0:
             raise NoResultsFoundError(
                 "LocalStorageDriver did not find any valid manifest.json"
-                "files in the directory '{search_path}'"
+                f"files in the directory '{search_path}'"
             )
 
     def list_runs(self):
