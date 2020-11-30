@@ -1,4 +1,4 @@
-from citam.engine.floorplan_updater import FloorplanUpdater
+from citam.engine.map.updater import FloorplanUpdater
 from svgpathtools import Line
 from copy import deepcopy
 

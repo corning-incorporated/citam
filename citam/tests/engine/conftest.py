@@ -2,18 +2,17 @@ from __future__ import unicode_literals
 
 from svgpathtools import Path, Line, parse_path
 
-from citam.engine.space import Space
-from citam.engine.floorplan import Floorplan
-from citam.engine.door import Door
-from citam.engine.floorplan_ingester import FloorplanIngester
+from citam.engine.map.space import Space
+from citam.engine.map.floorplan import Floorplan
+from citam.engine.map.door import Door
+from citam.engine.io.serializer import serializer
 
 from distutils import dir_util
 import pytest
 import os
-import copy
 from copy import deepcopy
-
-import pickle
+import json
+from citam.engine.map.ingester import FloorplanIngester
 
 
 @pytest.fixture
@@ -27,6 +26,7 @@ def x_floorplan():
     x_space = Space(
         boundaries=x_boundaries,
         path=x_boundaries,
+        id="test",
         unique_name="test",
         space_function="circulation",
         building="TEST",
@@ -34,7 +34,7 @@ def x_floorplan():
     walls = list(x_boundaries)
     doors = []
     aisles = []
-    fp = Floorplan(1.0, [x_space], doors, walls, aisles, 200, 200)
+    fp = Floorplan(1.0, [x_space], doors, walls, aisles, 0, 0, 200, 200)
 
     return fp
 
@@ -56,6 +56,7 @@ def rect_floorplan():
     rect_space = Space(
         boundaries=rect_boundaries,
         path=walls,
+        id="test",
         unique_name="test",
         space_function="circulation",
         building="TEST",
@@ -63,8 +64,9 @@ def rect_floorplan():
 
     door_path = Line(start=complex(120, 0), end=complex(130, 0))
     doors = [Door(path=door_path, space1=rect_space)]
+    rect_space.doors.append(doors[0])
     aisles = []
-    fp = Floorplan(1.0, [rect_space], doors, walls, aisles, 200, 200)
+    fp = Floorplan(1.0, [rect_space], doors, walls, aisles, 0, 0, 200, 200)
 
     return fp
 
@@ -76,6 +78,7 @@ def rect_floorplan2():
     rect1_space = Space(
         boundaries=rect1_boundaries,
         path=rect1_boundaries,
+        id="test",
         unique_name="rect1",
         space_function="circulation",
         building="TEST",
@@ -86,6 +89,7 @@ def rect_floorplan2():
     rect2_space = Space(
         boundaries=rect2_boundaries,
         path=rect2_boundaries,
+        id="test",
         unique_name="rect2",
         space_function="circulation",
         building="TEST",
@@ -99,7 +103,7 @@ def rect_floorplan2():
     doors = []
     aisles = []
     spaces = [rect1_space, rect2_space]
-    fp = Floorplan(1.0, spaces, doors, walls, aisles, 200, 200)
+    fp = Floorplan(1.0, spaces, doors, walls, aisles, 0, 0, 200, 200)
 
     return fp
 
@@ -115,6 +119,7 @@ def x_space():
     x_space = Space(
         boundaries=x_boundaries,
         path=x_boundaries,
+        id="test",
         unique_name="x_space",
         space_function="circulation",
         building="TEST",
@@ -130,6 +135,7 @@ def rect_space():
     rect_space = Space(
         boundaries=rect_boundaries,
         path=rect_boundaries,
+        id="test",
         unique_name="rect_space",
         space_function="circulation",
         building="TEST",
@@ -170,11 +176,42 @@ def aisle_from_x_floorplan2(x_floorplan):
 
 
 @pytest.fixture
+def simple_facility_floorplan(request, monkeypatch):
+    filename = request.module.__file__
+    test_dir = os.path.dirname(filename)
+
+    datadir = os.path.join(
+        test_dir, "data_navigation", "floorplans_and_nav_data"
+    )
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+
+    floorplan_json_file = os.path.join(
+        datadir, "test_simple_facility/", "floor_0", "updated_floorplan.json"
+    )
+
+    with open(floorplan_json_file, "r") as f:
+        fp = json.load(f, object_hook=serializer.decoder_hook)
+
+    return fp
+
+
+@pytest.fixture
+def simple_facility_floorplan_2_floors(simple_facility_floorplan):
+
+    fp2 = deepcopy(simple_facility_floorplan)
+    for space in fp2.spaces:
+        space.unique_name = space.unique_name + "_2"
+    fp2.floor_name = "1"
+
+    return [simple_facility_floorplan, fp2]
+
+
+@pytest.fixture
 def rect_floorplan_ingester_data():
     """Basic rect floorplan with one main aisle, 4 office spaces on each side
     and a big room at the end of the hallway
     """
-    rect_fi = FloorplanIngester(None, None, 1.0)
+    rect_fi = FloorplanIngester(None, 1.0, csv_file="")
     rect_fi.space_data = []
     rect_fi.space_paths = []
     rect_fi.space_attributes = []
@@ -281,52 +318,3 @@ def rect_floorplan_ingester_data():
     rect_fi.space_attributes.append({"id": space_id})
 
     return rect_fi
-
-
-@pytest.fixture
-def rect_floorplan_ingester(rect_floorplan_ingester_data):
-    rfid = rect_floorplan_ingester_data
-    for path, data in zip(rfid.space_paths, rfid.space_data):
-        space = Space(boundaries=path, path=copy.deepcopy(path), **data)
-        rfid.spaces.append(space)
-
-    return rfid
-
-
-@pytest.fixture
-def simple_facility_floorplan(request, monkeypatch):
-    filename = request.module.__file__
-    test_dir = os.path.dirname(filename)
-
-    datadir = os.path.join(
-        test_dir, "data_navigation", "floorplans_and_nav_data"
-    )
-    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-
-    floorplan_pickle_file = os.path.join(
-        datadir, "test_simple_facility/", "floor_0", "updated_floorplan.pkl"
-    )
-    with open(floorplan_pickle_file, "rb") as f:
-        (
-            spaces,
-            doors,
-            walls,
-            special_walls,
-            aisles,
-            width,
-            height,
-            scale,
-        ) = pickle.load(f)
-    fp = Floorplan(scale, spaces, doors, walls, aisles, width, height)
-    return fp
-
-
-@pytest.fixture
-def simple_facility_floorplan_2_floors(simple_facility_floorplan):
-
-    fp2 = deepcopy(simple_facility_floorplan)
-    for space in fp2.spaces:
-        space.unique_name = space.unique_name + "_2"
-    fp2.floor_name = "1"
-
-    return [simple_facility_floorplan, fp2]
