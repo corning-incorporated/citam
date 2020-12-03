@@ -161,10 +161,10 @@
 
 
 import axios from 'axios'
-import PlotVisualization from '@/components/PlotVisualization.vue'
-import Scatterplot from '@/components/Scatterplot';
-import Histogram from "@/components/Histogram";
-import Statcards from "@/components/Statcards";
+import PlotVisualization from '@/components/run/PlotVisualization.vue'
+import Scatterplot from '@/components/run/dataplots/Scatterplot';
+import Histogram from "@/components/run/dataplots/Histogram";
+import Statcards from "@/components/run/dataplots/Statcards";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faChartBar, faChartArea, faTable, faArrowAltCircleLeft, faSort, faMap} from '@fortawesome/free-solid-svg-icons'
 import _ from "lodash";
