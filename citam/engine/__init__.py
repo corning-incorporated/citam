@@ -21,7 +21,7 @@
 import logging
 import os
 
-from citam.engine.input_parser import parse_input_file
+from citam.engine.io.input_parser import parse_input_file
 from citam.engine.main import run_simulation
 
 LOG = logging.getLogger(__name__)

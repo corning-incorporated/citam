@@ -1,6 +1,6 @@
-from citam.engine.daily_schedule import Schedule, ScheduleItem
-from citam.engine.navigation import Navigation
-from citam.engine.meeting_policy import Meeting
+from citam.engine.policy.daily_schedule import Schedule, ScheduleItem
+from citam.engine.facility.navigation import Navigation
+from citam.engine.policy.meetings import Meeting
 from citam.engine.constants import (
     DEFAULT_SCHEDULING_RULES,
     OFFICE_WORK,
@@ -14,7 +14,10 @@ import pytest
 
 @pytest.fixture
 def sample_empty_schedule_object(
-    simple_facility_floorplan, request, monkeypatch
+    simple_facility_floorplan,
+    request,
+    monkeypatch,
+    rect_floorplan_ingester_data,
 ):
 
     filename = request.module.__file__

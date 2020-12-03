@@ -26,5 +26,5 @@ def test_ingest_floorplan_no_issues(datadir, tmpdir):
         facility=facility_name,
         output_directory=tmpdir,
     )
-    output_filename = os.path.join(tmpdir, "floorplan.pkl")
+    output_filename = os.path.join(tmpdir, "floorplan.json")
     assert os.path.isfile(output_filename)
