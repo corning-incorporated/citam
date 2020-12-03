@@ -9,6 +9,6 @@ def test_build_navigation_network_no_issues(datadir, monkeypatch):
     floor_dir = os.path.join(datadir, "floorplans_and_nav_data")
     floor_dir = os.path.join(floor_dir, "TEST")
     floor_dir = os.path.join(floor_dir, "floor_0")
-    nav_file = os.path.join(floor_dir, "routes.pkl")
+    nav_file = os.path.join(floor_dir, "routes.json")
 
     assert os.path.isfile(nav_file)

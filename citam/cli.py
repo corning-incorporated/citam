@@ -119,8 +119,9 @@ def _add_engine_commands(subparser, global_args):
         "-c",
         "--csv",
         type=str,
-        required=True,
-        help="Map properties file as CSV",
+        required=False,
+        default=None,
+        help="CSV file with metadata for each space found in map file",
     )
     ingest.add_argument(
         "-s",
@@ -140,7 +141,7 @@ def _add_engine_commands(subparser, global_args):
         "--buildings",
         type=str,
         nargs="+",
-        required=True,
+        required=False,
         help="Buildings to process. Default to 'all'.",
     )
 

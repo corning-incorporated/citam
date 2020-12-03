@@ -1,0 +1,12 @@
+<svg id="TestDrawing" viewBox="-264 -5064 7728 5328" xmlns="http://www.w3.org/2000/svg">
+	<style type="text/css">.spaces {stroke:red;  stroke-width:2;  fill: grey; fill-opacity: 0.1}.floors {stroke:blue; stroke-width:10; fill: none; fill-opacity: 0.1}.doors {stroke:green;  stroke-width:2;  fill: none; fill-opacity: 0.2}.Office {fill: blue}.Lab {fill: orange}.Meeting {fill: magenta}.Elevator {fill: green}.Stairs {fill: yellow}.Circulation {fill: cyan}.Restroom {fill: red}</style>
+	<g id="Contents">
+		<g id="TestDrawing" class="floorplan">
+			<g class="floors">
+				<path id="FI_3D29" d="M-24 24 7224 24 7224 -4824 -24 -4824Z"/>
+			</g>
+			<g class="spaces">
+			</g>
+		</g>
+	</g>
+</svg>
