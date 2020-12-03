@@ -13,19 +13,18 @@
 <!--  ==============================================================================-->
 <template>
   <div>
-    <nav class="topnav navbar navbar-expand sticky-top navbar-light justify-content-between">
+    <nav class="topnav navbar navbar-expand sticky-top navbar-dark justify-content-between">
       <div class="navbar-brand title"><router-link to="/"> CITAM </router-link> 
-      (COVID-19 Indoor Transmission Agent-based Modeling) is an open source project initiated by Corning, Inc.</div>
+      COVID-19 Indoor Transmission Agent-based Modeling</div>
       <form class="form-inline">
-        <div class="mr-sm-2 navbar-text abt-text">
-          <a :href="aboutLink" target="_blank">ABOUT</a></div>
-        <div class="mr-sm-2 navbar-text"><a :href="gitHubLink" target="_blank">
-           <font-awesome-icon :icon="['fab','github']" size="lg"/></a></div>
-        <div class="mr-sm-2 navbar-text">
-          <a :href="helpLink" target="_blank">
-            <font-awesome-icon icon="question-circle" size="lg"/></a></div>
-        <div class="mr-sm-2 navbar-text">
-          <img src="../../assets/CorningLogo.png" width="82" height="12" alt=""></div>        
+        <div class="mr-sm-2 navbar-text text">
+          <a :href="docLink" target="_blank">Documentation</a></div> 
+        <div class="mr-sm-2 navbar-text text">
+          <a :href="aboutLink" target="_blank">About</a></div>
+        <div class="mr-sm-2 navbar-text text">
+          <a :href="aboutLink" target="_blank">Tutorials</a></div>  
+       <div class="mr-sm-2 navbar-text"><a :href="gitHubLink" target="_blank">
+           <font-awesome-icon :icon="['fab','github']" size="lg"/></a></div>       
       </form>
     </nav>
   </div>
@@ -37,7 +36,7 @@ export default {
   data(){return{
   aboutLink:'https://github.com/corning-incorporated/citam/blob/alpha/README.md',
   gitHubLink:'https://github.com/corning-incorporated/citam',
-  helpLink:'https://github.com/corning-incorporated/citam/blob/alpha/docs/index.rst'
+  docLink:'https://github.com/corning-incorporated/citam/blob/alpha/docs/index.rst'
   }}
 }
 </script>
@@ -48,17 +47,17 @@ export default {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
-
 .navbar-brand.title{
 font-family: Barlow;
 font-style: normal;
-font-weight: 500;
+font-weight: 600;
 font-size: 14px;
+line-height: 15px;
+display: flex;
 align-items: center;
-color: #607080 !important;
+color: #DAE0E6 !important;
 margin-left: 115px;
 }
-
 .navbar-brand a{
 position: absolute;
 left: 2.41%;
@@ -67,34 +66,31 @@ top: 16.67%;
 bottom: 22.92%;
 font-family: Barlow;
 font-style: normal;
-font-weight: 1000;
+font-weight: bold;
 font-size: 24px;
 line-height: 29px;
 display: flex;
 align-items: center;
-color: #FC2474;
+color: #0080FF;
 } 
-
- .navbar-brand a.router-link-active{
+.navbar-brand a.router-link-active{
   text-decoration: none;
 }
-
-.navbar-light {
-  background-color: #F7F9FA;
+.navbar-dark {
   height: 48px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1), 0px 1px 2px -1px rgba(0, 0, 0, 0.16);
+  margin-bottom: 10px;
 }
-
 .form-inline > .navbar-text{
   margin-right: 25px !important;
 }
-
-.form-inline > .navbar-text.abt-text{
-font-family: Barlow;
-font-style: normal;
-font-weight: 600;
-font-size: 12px;
-color: #607080;
+.mr-sm-2.navbar-text.text a {
+    color: #0080FF;
+    font-family: Barlow;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
 }
-
 </style>
