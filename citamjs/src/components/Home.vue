@@ -27,11 +27,11 @@
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
            aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Simulations</a>
       </li>
-        <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
            aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Policies</a>
       </li>
-        <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
            aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Floor Plans</a>
       </li>
