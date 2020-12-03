@@ -14,11 +14,6 @@
 
 <template>
   <div id="app">
-<<<<<<< HEAD
-<!--<dashboard v-if="showDash"></dashboard>-->
-    <home></home>
-    </div>
-=======
 <!--          <dashboard v-if="showDash"></dashboard>-->
     <the-navigation></the-navigation>
     <main>
@@ -27,7 +22,6 @@
       </router-view>
     </main>
   </div>
->>>>>>> CITAM-118-New-Layout
 </template>
 
 <script>
