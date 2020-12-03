@@ -59,8 +59,6 @@ class FloorplanIngester:
         self.maxx = None
         self.maxy = None
 
-        print("CSV file is: ", csv_file)
-
         self.buildings = set()
 
         self.excluded_buildings = excluded_buildings  # TODO: Implement this
@@ -341,7 +339,6 @@ class FloorplanIngester:
         """
         # TODO: Handle case where more than 2 spaces are involved.
         # Find which other space this wall is shared with
-        print("------> Door Line: ", door_line)
         results = {}
         for space_index, space in enumerate(self.spaces):
             for wall_index_in_space, other_wall in enumerate(space.path):
@@ -350,8 +347,6 @@ class FloorplanIngester:
                         results[space_index].append(wall_index_in_space)
                     else:
                         results[space_index] = [wall_index_in_space]
-                    print(space_index, space.unique_name, other_wall)
-                    print(results, "\n")
 
         if len(results) > 2:
             space_ids = set()
@@ -438,6 +433,8 @@ class FloorplanIngester:
 
         n_success = 0
         n_no_match = 0
+
+        LOG.info(f"Door paths found in input files: {len(self.door_paths)}")
 
         i = -1
         for door in pb.progressbar(self.door_paths):

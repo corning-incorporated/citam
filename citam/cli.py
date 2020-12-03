@@ -144,6 +144,12 @@ def _add_engine_commands(subparser, global_args):
         required=False,
         help="Buildings to process. Default to 'all'.",
     )
+    ingest.add_argument(
+        "-f",
+        "--force_overwrite",
+        action='store_true',
+        help="Force overwrite of existing files.",
+    )
 
     update_floorplan = engine_commands.add_parser(
         "update-floorplan",
