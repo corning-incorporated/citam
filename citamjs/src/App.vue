@@ -14,14 +14,26 @@
 
 <template>
   <div id="app">
+<<<<<<< HEAD
 <!--<dashboard v-if="showDash"></dashboard>-->
     <home></home>
     </div>
+=======
+<!--          <dashboard v-if="showDash"></dashboard>-->
+    <the-navigation></the-navigation>
+    <main>
+      <router-view>
+      <home v-show="showDash"></home>
+      </router-view>
+    </main>
+  </div>
+>>>>>>> CITAM-118-New-Layout
 </template>
 
 <script>
 // import Dashboard from "@/components/Dashboard";
-import Home from "@/components/Home";
+import TheNavigation from '@/components/nav/Navigation'
+import Home from '@/components/Home';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faChartBar, faChartArea, faTable, faArrowAltCircleLeft,
   faSort, faMap, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
@@ -38,9 +50,13 @@ export default {
   name: 'App',
   components: {
     Home,
+    TheNavigation
     // Dashboard
   },
-  data(){return {showDash: false}}
+  data(){return {
+    showDash: true,
+    
+    }}
 }
 </script>
 

@@ -38,7 +38,7 @@ def test_update_floorplan_from_svg_file_no_issues(
     floor_dir = os.path.join(datadir, "floorplans_and_nav_data")
     floor_dir = os.path.join(floor_dir, "TEST")
     floor_dir = os.path.join(floor_dir, "floor_0")
-    outputfile = os.path.join(floor_dir, "updated_floorplan.pkl")
+    outputfile = os.path.join(floor_dir, "updated_floorplan.json")
 
     assert os.path.isfile(outputfile)
 
