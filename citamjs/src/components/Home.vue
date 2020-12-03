@@ -20,13 +20,20 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Facility B</a>
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Overview</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Facility C</a>
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Simulations</a>
       </li>
-
+      <li class="nav-item">
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Policies</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Floor Plans</a>
+      </li>
     </ul>
     <footer class="footer">
       <div class="container">
@@ -51,64 +58,18 @@ export default {
     floorPlan(){
       alert("You are viewing a floor")
     }
-  },
-  data(){return{
-  aboutLink:'https://github.com/corning-incorporated/citam/blob/alpha/README.md',
-  gitHubLink:'https://github.com/corning-incorporated/citam',
-  helpLink:'https://github.com/corning-incorporated/citam/blob/alpha/docs/index.rst'
-  }}
+  }
 }
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Barlow');
 .navbar {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
 
-.navbar-brand.title{
-font-family: Barlow;
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-align-items: center;
-color: #607080 !important;
-margin-left: 115px;
-}
-
-.navbar-brand span{
-position: absolute;
-left: 2.41%;
-right: 92.55%;
-top: 16.67%;
-bottom: 22.92%;
-font-family: Barlow;
-font-style: normal;
-font-weight: 1000;
-font-size: 24px;
-line-height: 29px;
-display: flex;
-align-items: center;
-color: #FC2474;
-} 
-
 .navbar-light {
-  background-color: #F7F9FA;
-  height: 48px;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1), 0px 1px 2px -1px rgba(0, 0, 0, 0.16);
-}
-
-.form-inline > .navbar-text{
-  margin-right: 25px !important;
-}
-
-.form-inline > .navbar-text.abt-text{
-font-family: Barlow;
-font-style: normal;
-font-weight: 600;
-font-size: 12px;
-color: #607080;
+  background-color: #f0f0f0;
 }
 
 .footer {
