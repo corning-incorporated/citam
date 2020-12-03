@@ -30,11 +30,11 @@ import TheNavigation from '@/components/nav/Navigation'
 import Home from '@/components/Home';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faChartBar, faChartArea, faTable, faArrowAltCircleLeft,
-  faSort, faMap, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
+  faSort, faMap, faQuestionCircle, faChevronDown, faChevronRight} from '@fortawesome/free-solid-svg-icons'
 import {faGithub} from '@fortawesome/free-brands-svg-icons'
 
 library.add(faGithub, faChartBar, faChartArea, faTable,
-    faArrowAltCircleLeft, faSort, faMap, faQuestionCircle)
+    faArrowAltCircleLeft, faSort, faMap, faQuestionCircle, faChevronDown, faChevronRight)
 
 import axios from 'axios'
 
