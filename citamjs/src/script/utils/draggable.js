@@ -31,7 +31,6 @@ library.add(faGripVertical);
 dom.watch();
 
 const DRAGGABLE_TEMPLATE = `<div class="drag-title-bar">
-  <i class="fas fa-xs fa-grip-vertical"></i>
   <span class="drag-title">{{title}}</span>
 </div>`;
 

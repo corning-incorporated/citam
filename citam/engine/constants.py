@@ -25,13 +25,13 @@ TWO_WAY_TRAFFIC = 0
 
 REQUIRED_SPACE_METADATA = [
     "id",
-    "facility",
     "building",
     "unique_name",
     "space_function",
 ]
 
 OPTIONAL_SPACE_METADATA = [
+    "facility",
     "space_category",
     "floor",
     "department",
@@ -47,9 +47,12 @@ SUPPORTED_SPACE_FUNCTIONS = [
     "restroom (women)",
     "restroom",
     "cafeteria",
+    "stair",
     "stairs",
     "elevator",
     "meeting room",
+    "meeting",
+    "conference",
     "conference room",
     "auditorium",
     "pantry",
@@ -126,3 +129,4 @@ DEFAULT_MEETINGS_POLICY = {
 }
 
 MEETING_BUFFER = 60 * 15
+DEFAULT_MEETING_ROOM_CAPACITY = 25
