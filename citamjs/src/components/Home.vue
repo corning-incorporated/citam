@@ -14,19 +14,27 @@
 <template>
   <div id="mainLayout">
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
-      <li class="nav-item">
+      <li class="nav-item facility">
         <a class="nav-link active" id="summary-tab" data-toggle="tab" href="" role="tab"
-           aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Facility A</a>
+           aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Facility Name A 
+           <span><font-awesome-icon icon="chevron-down"/></span></a>           
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Facility B</a>
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Overview</a>
       </li>
-      <li class="nav-item">
+        <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Facility C</a>
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Simulations</a>
       </li>
-
+        <li class="nav-item">
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Policies</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Floor Plans</a>
+      </li>
     </ul>
     <footer class="footer">
       <div class="container">
@@ -56,6 +64,10 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+#mainLayout {
+margin: 0 30px 0 30px;
+}
 .navbar {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
@@ -63,6 +75,50 @@ export default {
 
 .navbar-light {
   background-color: #f0f0f0;
+}
+
+.nav-tabs .nav-item {
+width: 140px;
+height: 50px;
+border-right: 1px solid black !important;
+background-color: #EBEFF2;
+}
+.nav-tabs .nav-item.facility {
+width:250px;
+text-align: left;
+height: 50px;
+background-color: #32404D;
+}
+
+.nav-tabs .nav-item.facility a{
+font-family: Inter;
+font-style: normal;
+font-weight: 600;
+font-size: 16px;
+color: #FFFFFF;
+background-color: #32404D;
+}
+
+.nav-tabs .nav-link { 
+  color: #607080;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+}
+.nav-tabs .nav-link.active {
+  color: #0080FF;
+  background-color: #fff;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  height: 50px;
+}
+
+.nav-tabs .nav-link:hover {
+  border: none;
 }
 
 .footer {

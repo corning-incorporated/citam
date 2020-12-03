@@ -1,0 +1,13 @@
+{
+    "facility_name" : "foo_facility",
+    "simulation_name" : "test_run_1",
+    "floors" : ["foo_floor"],
+    "entrances" : [ {"name":"AISLE213", "floor": "foo_floor"}],
+    "daylength" : 1800,
+    "entrance_time" : 100,
+    "n_agents" : 20,
+    "occupancy_rate" : null,
+    "floorplan_scale": 0.08333333333,
+    "contact_distance": 6,
+    "shifts": [{"name":"1", "start_time": 0, "percent_workforce": 1.0}]
+}
