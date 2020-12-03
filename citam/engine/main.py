@@ -86,9 +86,6 @@ def ingest_floorplan(
     if not os.path.isfile(svg):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), svg)
 
-    if not os.path.isfile(csv):
-        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), csv)
-
     if output_directory is None:
         floor_directory = su.get_datadir(facility, floor)
         if not os.path.isdir(floor_directory):
@@ -109,7 +106,7 @@ def ingest_floorplan(
     floorplan_ingester = FloorplanIngester(
         svg,
         scale,
-        csv,
+        csv_file=csv,
         buildings_to_keep=buildings,
         extract_doors_from_file=True,
     )

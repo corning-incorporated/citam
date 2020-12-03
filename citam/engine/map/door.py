@@ -44,6 +44,12 @@ class Door:
 
     @property
     def intersect_coords(self) -> tuple:
+        """
+        Return the x, y coordinates where the navnet crosses this door.
+
+        :return: x,y coordinates
+        :rtype: tuple
+        """
         if self._intersect_coords:
             return self._intersect_coords
         return self.midpoint_coords
@@ -54,6 +60,11 @@ class Door:
 
     @property
     def midpoint(self) -> Point:
+        """[summary]
+
+        :return: [description]
+        :rtype: Point
+        """
         return Point(
             x=round(self.path.point(0.5).real),
             y=round(self.path.point(0.5).imag),
