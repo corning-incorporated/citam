@@ -123,6 +123,7 @@ def export_floorplan_to_svg(
     facility: str,
     floor: str,
     outputfile: str,
+    doors=False,
     floorplan_directory: str = None,
     **kwargs
 ):  # noqa
@@ -140,7 +141,7 @@ def export_floorplan_to_svg(
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
-    floorplan.export_to_svg(outputfile)
+    floorplan.export_to_svg(outputfile, include_doors=doors)
     LOG.info("Floorplan exported to: %s", outputfile)
 
 
