@@ -1,0 +1,737 @@
+<svg id="TestDrawing" viewBox="-264 -5064 7728 5328" xmlns="http://www.w3.org/2000/svg">
+	<style type="text/css">.spaces {stroke:red;  stroke-width:2;  fill: grey; fill-opacity: 0.1}.floors {stroke:blue; stroke-width:10; fill: none; fill-opacity: 0.1}.doors {stroke:green;  stroke-width:2;  fill: none; fill-opacity: 0.2}.Office {fill: blue}.Lab {fill: orange}.Meeting {fill: magenta}.Elevator {fill: green}.Stairs {fill: yellow}.Circulation {fill: cyan}.Restroom {fill: red}</style>
+	<g id="Contents">
+			<g class="floors">
+				<path id="FI_3D29" d="M-24 24 7224 24 7224 -4824 -24 -4824Z"/>
+			</g>
+			<g class="spaces">
+				<path id="SI_3DBF" class="Lab" d="M3240 0 0 0 0 -600 3240 -600Z"/>
+				<path id="SI_3DC0" class="Meeting" d="M3060 -600 2418 -600 2418 -1200 3060 -1200Z"/>
+				<path id="SI_3DC2" class="Lab" d="M0 -600 1704 -600 1704 -1200 0 -1200Z"/>
+				<path id="SI_3DC3" class="Lab" d="M0 -1200 1704 -1200 1704 -2280 0 -2280Z"/>
+				<path id="SI_3DD7" class="Stair" d="M3480 -240 3240 -240 3240 0 3480 0Z"/>
+				<path id="SI_3DD8" class="Elevator" d="M3480 -240 3240 -240 3240 -480 3480 -480Z"/>
+				<path id="SI_3EBF" class="Circulation" d="M0 -2280 3480 -2280 3480 -2520 0 -2520Z"/>
+				<path id="SI_3EC0" class="Circulation" d="M3480 -4800 3720 -4800 3720 -3504 3768 -3504 3768 -3384 3720 -3384 3720 -1416 3768 -1416 3768 -1296 3720 -1296 3720 0 3480 0 3480 -1296 3432 -1296 3432 -1416 3480 -1416 3480 -3384 3432 -3384 3432 -3504 3480 -3504Z"/>
+				<path id="SI_3EC1" class="Circulation" d="M1704 -2280 1776 -2280 1776 -1416 1824 -1416 1824 -1296 1776 -1296 1776 -600 1704 -600Z"/>
+				<path id="SI_3EC5" class="Circulation" d="M3240 -480 3480 -480 3480 -600 3240 -600Z"/>
+				<path id="SI_4075" class="Restroom" d="M3060 -600 3480 -600 3480 -864 3060 -864Z"/>
+				<path id="SI_4076" class="Restroom" d="M3480 -936 3060 -936 3060 -1200 3480 -1200Z"/>
+				<path id="SI_40B2" class="Meeting" d="M1776 -600 2418 -600 2418 -1200 1776 -1200Z"/>
+				<path id="SI_40BA" class="Circulation" d="M3060 -864 3480 -864 3480 -936 3060 -936Z"/>
+				<path id="SI_42C2" class="Office" d="M2004 -1392 2100 -1392 2100 -1488 2004 -1488Z"/>
+				<path id="SI_42E6" class="Office" d="M2100 -1392 2196 -1392 2196 -1488 2100 -1488Z"/>
+				<path id="SI_42E7" class="Office" d="M2196 -1392 2292 -1392 2292 -1488 2196 -1488Z"/>
+				<path id="SI_42E8" class="Office" d="M2292 -1392 2388 -1392 2388 -1488 2292 -1488Z"/>
+				<path id="SI_42E9" class="Office" d="M2388 -1392 2484 -1392 2484 -1488 2388 -1488Z"/>
+				<path id="SI_42EA" class="Office" d="M2484 -1392 2580 -1392 2580 -1488 2484 -1488Z"/>
+				<path id="SI_42ED" class="Office" d="M2676 -1392 2772 -1392 2772 -1488 2676 -1488Z"/>
+				<path id="SI_42EE" class="Office" d="M2772 -1392 2868 -1392 2868 -1488 2772 -1488Z"/>
+				<path id="SI_42EF" class="Office" d="M2868 -1392 2964 -1392 2964 -1488 2868 -1488Z"/>
+				<path id="SI_42F0" class="Office" d="M2964 -1392 3060 -1392 3060 -1488 2964 -1488Z"/>
+				<path id="SI_42F1" class="Office" d="M3060 -1392 3156 -1392 3156 -1488 3060 -1488Z"/>
+				<path id="SI_42F2" class="Office" d="M3156 -1392 3252 -1392 3252 -1488 3156 -1488Z"/>
+				<path id="SI_42F6" class="Office" d="M2004 -1488 2100 -1488 2100 -1584 2004 -1584Z"/>
+				<path id="SI_42F7" class="Office" d="M2100 -1488 2196 -1488 2196 -1584 2100 -1584Z"/>
+				<path id="SI_42F8" class="Office" d="M2196 -1488 2292 -1488 2292 -1584 2196 -1584Z"/>
+				<path id="SI_42F9" class="Office" d="M2292 -1488 2388 -1488 2388 -1584 2292 -1584Z"/>
+				<path id="SI_42FA" class="Office" d="M2388 -1488 2484 -1488 2484 -1584 2388 -1584Z"/>
+				<path id="SI_42FB" class="Office" d="M2484 -1488 2580 -1488 2580 -1584 2484 -1584Z"/>
+				<path id="SI_42FC" class="Office" d="M2676 -1488 2772 -1488 2772 -1584 2676 -1584Z"/>
+				<path id="SI_42FD" class="Office" d="M2772 -1488 2868 -1488 2868 -1584 2772 -1584Z"/>
+				<path id="SI_42FE" class="Office" d="M2868 -1488 2964 -1488 2964 -1584 2868 -1584Z"/>
+				<path id="SI_42FF" class="Office" d="M2964 -1488 3060 -1488 3060 -1584 2964 -1584Z"/>
+				<path id="SI_4300" class="Office" d="M3060 -1488 3156 -1488 3156 -1584 3060 -1584Z"/>
+				<path id="SI_4301" class="Office" d="M3156 -1488 3252 -1488 3252 -1584 3156 -1584Z"/>
+				<path id="SI_4304" class="Office" d="M2004 -1656 2100 -1656 2100 -1752 2004 -1752Z"/>
+				<path id="SI_4305" class="Office" d="M2100 -1656 2196 -1656 2196 -1752 2100 -1752Z"/>
+				<path id="SI_4306" class="Office" d="M2196 -1656 2292 -1656 2292 -1752 2196 -1752Z"/>
+				<path id="SI_4307" class="Office" d="M2292 -1656 2388 -1656 2388 -1752 2292 -1752Z"/>
+				<path id="SI_4308" class="Office" d="M2388 -1656 2484 -1656 2484 -1752 2388 -1752Z"/>
+				<path id="SI_4309" class="Office" d="M2484 -1656 2580 -1656 2580 -1752 2484 -1752Z"/>
+				<path id="SI_430A" class="Office" d="M2676 -1656 2772 -1656 2772 -1752 2676 -1752Z"/>
+				<path id="SI_430B" class="Office" d="M2772 -1656 2868 -1656 2868 -1752 2772 -1752Z"/>
+				<path id="SI_430C" class="Office" d="M2868 -1656 2964 -1656 2964 -1752 2868 -1752Z"/>
+				<path id="SI_430D" class="Office" d="M2964 -1656 3060 -1656 3060 -1752 2964 -1752Z"/>
+				<path id="SI_430E" class="Office" d="M3060 -1656 3156 -1656 3156 -1752 3060 -1752Z"/>
+				<path id="SI_430F" class="Office" d="M3156 -1656 3252 -1656 3252 -1752 3156 -1752Z"/>
+				<path id="SI_4312" class="Office" d="M2004 -1752 2100 -1752 2100 -1848 2004 -1848Z"/>
+				<path id="SI_4313" class="Office" d="M2100 -1752 2196 -1752 2196 -1848 2100 -1848Z"/>
+				<path id="SI_4314" class="Office" d="M2196 -1752 2292 -1752 2292 -1848 2196 -1848Z"/>
+				<path id="SI_4315" class="Office" d="M2292 -1752 2388 -1752 2388 -1848 2292 -1848Z"/>
+				<path id="SI_4316" class="Office" d="M2388 -1752 2484 -1752 2484 -1848 2388 -1848Z"/>
+				<path id="SI_4317" class="Office" d="M2484 -1752 2580 -1752 2580 -1848 2484 -1848Z"/>
+				<path id="SI_4318" class="Office" d="M2676 -1752 2772 -1752 2772 -1848 2676 -1848Z"/>
+				<path id="SI_4319" class="Office" d="M2772 -1752 2868 -1752 2868 -1848 2772 -1848Z"/>
+				<path id="SI_431A" class="Office" d="M2868 -1752 2964 -1752 2964 -1848 2868 -1848Z"/>
+				<path id="SI_431B" class="Office" d="M2964 -1752 3060 -1752 3060 -1848 2964 -1848Z"/>
+				<path id="SI_431C" class="Office" d="M3060 -1752 3156 -1752 3156 -1848 3060 -1848Z"/>
+				<path id="SI_431D" class="Office" d="M3156 -1752 3252 -1752 3252 -1848 3156 -1848Z"/>
+				<path id="SI_4320" class="Office" d="M2004 -1920 2100 -1920 2100 -2016 2004 -2016Z"/>
+				<path id="SI_4321" class="Office" d="M2100 -1920 2196 -1920 2196 -2016 2100 -2016Z"/>
+				<path id="SI_4322" class="Office" d="M2196 -1920 2292 -1920 2292 -2016 2196 -2016Z"/>
+				<path id="SI_4323" class="Office" d="M2292 -1920 2388 -1920 2388 -2016 2292 -2016Z"/>
+				<path id="SI_4324" class="Office" d="M2388 -1920 2484 -1920 2484 -2016 2388 -2016Z"/>
+				<path id="SI_4325" class="Office" d="M2484 -1920 2580 -1920 2580 -2016 2484 -2016Z"/>
+				<path id="SI_4326" class="Office" d="M2676 -1920 2772 -1920 2772 -2016 2676 -2016Z"/>
+				<path id="SI_4327" class="Office" d="M2772 -1920 2868 -1920 2868 -2016 2772 -2016Z"/>
+				<path id="SI_4328" class="Office" d="M2868 -1920 2964 -1920 2964 -2016 2868 -2016Z"/>
+				<path id="SI_4329" class="Office" d="M2964 -1920 3060 -1920 3060 -2016 2964 -2016Z"/>
+				<path id="SI_432A" class="Office" d="M3060 -1920 3156 -1920 3156 -2016 3060 -2016Z"/>
+				<path id="SI_432B" class="Office" d="M3156 -1920 3252 -1920 3252 -2016 3156 -2016Z"/>
+				<path id="SI_432E" class="Office" d="M2004 -2016 2100 -2016 2100 -2112 2004 -2112Z"/>
+				<path id="SI_432F" class="Office" d="M2100 -2016 2196 -2016 2196 -2112 2100 -2112Z"/>
+				<path id="SI_4330" class="Office" d="M2196 -2016 2292 -2016 2292 -2112 2196 -2112Z"/>
+				<path id="SI_4331" class="Office" d="M2292 -2016 2388 -2016 2388 -2112 2292 -2112Z"/>
+				<path id="SI_4332" class="Office" d="M2388 -2016 2484 -2016 2484 -2112 2388 -2112Z"/>
+				<path id="SI_4333" class="Office" d="M2484 -2016 2580 -2016 2580 -2112 2484 -2112Z"/>
+				<path id="SI_4334" class="Office" d="M2676 -2016 2772 -2016 2772 -2112 2676 -2112Z"/>
+				<path id="SI_4335" class="Office" d="M2772 -2016 2868 -2016 2868 -2112 2772 -2112Z"/>
+				<path id="SI_4336" class="Office" d="M2868 -2016 2964 -2016 2964 -2112 2868 -2112Z"/>
+				<path id="SI_4337" class="Office" d="M2964 -2016 3060 -2016 3060 -2112 2964 -2112Z"/>
+				<path id="SI_4338" class="Office" d="M3060 -2016 3156 -2016 3156 -2112 3060 -2112Z"/>
+				<path id="SI_4339" class="Office" d="M3156 -2016 3252 -2016 3252 -2112 3156 -2112Z"/>
+				<path id="SI_433C" class="Office" d="M2004 -2184 2100 -2184 2100 -2280 2004 -2280Z"/>
+				<path id="SI_433D" class="Office" d="M2100 -2184 2196 -2184 2196 -2280 2100 -2280Z"/>
+				<path id="SI_433E" class="Office" d="M2196 -2184 2292 -2184 2292 -2280 2196 -2280Z"/>
+				<path id="SI_433F" class="Office" d="M2292 -2184 2388 -2184 2388 -2280 2292 -2280Z"/>
+				<path id="SI_4340" class="Office" d="M2388 -2184 2484 -2184 2484 -2280 2388 -2280Z"/>
+				<path id="SI_4341" class="Office" d="M2484 -2184 2580 -2184 2580 -2280 2484 -2280Z"/>
+				<path id="SI_4342" class="Office" d="M2676 -2184 2772 -2184 2772 -2280 2676 -2280Z"/>
+				<path id="SI_4343" class="Office" d="M2772 -2184 2868 -2184 2868 -2280 2772 -2280Z"/>
+				<path id="SI_4344" class="Office" d="M2868 -2184 2964 -2184 2964 -2280 2868 -2280Z"/>
+				<path id="SI_4345" class="Office" d="M2964 -2184 3060 -2184 3060 -2280 2964 -2280Z"/>
+				<path id="SI_4346" class="Office" d="M3060 -2184 3156 -2184 3156 -2280 3060 -2280Z"/>
+				<path id="SI_4347" class="Office" d="M3156 -2184 3252 -2184 3252 -2280 3156 -2280Z"/>
+				<path id="SI_434A" class="Office" d="M3336 -2136 3480 -2136 3480 -2280 3336 -2280Z"/>
+				<path id="SI_434C" class="Office" d="M3336 -2136 3480 -2136 3480 -1992 3336 -1992Z"/>
+				<path id="SI_434E" class="Office" d="M3336 -1848 3480 -1848 3480 -1992 3336 -1992Z"/>
+				<path id="SI_4350" class="Office" d="M3336 -1848 3480 -1848 3480 -1704 3336 -1704Z"/>
+				<path id="SI_4352" class="Office" d="M3336 -1560 3480 -1560 3480 -1704 3336 -1704Z"/>
+				<path id="SI_4354" class="Office" d="M3336 -1560 3480 -1560 3480 -1416 3336 -1416Z"/>
+				<path id="SI_4358" class="Office" d="M1920 -2136 1776 -2136 1776 -2280 1920 -2280Z"/>
+				<path id="SI_435A" class="Office" d="M1920 -2136 1776 -2136 1776 -1992 1920 -1992Z"/>
+				<path id="SI_435C" class="Office" d="M1920 -1848 1776 -1848 1776 -1992 1920 -1992Z"/>
+				<path id="SI_435E" class="Office" d="M1920 -1848 1776 -1848 1776 -1704 1920 -1704Z"/>
+				<path id="SI_4360" class="Office" d="M1920 -1560 1776 -1560 1776 -1704 1920 -1704Z"/>
+				<path id="SI_4362" class="Office" d="M1920 -1560 1776 -1560 1776 -1416 1920 -1416Z"/>
+				<path id="SI_4365" class="Office" d="M2004 -1200 2100 -1200 2100 -1296 2004 -1296Z"/>
+				<path id="SI_4366" class="Office" d="M2100 -1200 2196 -1200 2196 -1296 2100 -1296Z"/>
+				<path id="SI_4367" class="Office" d="M2196 -1200 2292 -1200 2292 -1296 2196 -1296Z"/>
+				<path id="SI_4368" class="Office" d="M2292 -1200 2388 -1200 2388 -1296 2292 -1296Z"/>
+				<path id="SI_4369" class="Office" d="M2388 -1200 2484 -1200 2484 -1296 2388 -1296Z"/>
+				<path id="SI_436A" class="Office" d="M2484 -1200 2580 -1200 2580 -1296 2484 -1296Z"/>
+				<path id="SI_436B" class="Office" d="M2676 -1200 2772 -1200 2772 -1296 2676 -1296Z"/>
+				<path id="SI_436C" class="Office" d="M2772 -1200 2868 -1200 2868 -1296 2772 -1296Z"/>
+				<path id="SI_436D" class="Office" d="M2868 -1200 2964 -1200 2964 -1296 2868 -1296Z"/>
+				<path id="SI_436E" class="Office" d="M2964 -1200 3060 -1200 3060 -1296 2964 -1296Z"/>
+				<path id="SI_436F" class="Office" d="M3060 -1200 3156 -1200 3156 -1296 3060 -1296Z"/>
+				<path id="SI_4370" class="Office" d="M3156 -1200 3252 -1200 3252 -1296 3156 -1296Z"/>
+				<path id="SI_4371" class="Office" d="M3336 -1200 3480 -1200 3480 -1296 3336 -1296Z"/>
+				<path id="SI_4374" class="Office" d="M1920 -1200 1776 -1200 1776 -1296 1920 -1296Z"/>
+				<path id="SI_4376" class="Circulation" d="M1824 -1416 1920 -1416 1920 -2280 2004 -2280 2004 -1200 1920 -1200 1920 -1296 1824 -1296Z"/>
+				<path id="SI_4378" class="Circulation" d="M2004 -2112 2580 -2112 2580 -2184 2004 -2184Z"/>
+				<path id="SI_4379" class="Circulation" d="M2004 -1848 2580 -1848 2580 -1920 2004 -1920Z"/>
+				<path id="SI_437A" class="Circulation" d="M2004 -1584 2580 -1584 2580 -1656 2004 -1656Z"/>
+				<path id="SI_437C" class="Circulation" d="M2676 -2112 3252 -2112 3252 -2184 2676 -2184Z"/>
+				<path id="SI_437D" class="Circulation" d="M2676 -1848 3252 -1848 3252 -1920 2676 -1920Z"/>
+				<path id="SI_437E" class="Circulation" d="M2676 -1584 3252 -1584 3252 -1656 2676 -1656Z"/>
+				<path id="SI_4381" class="Circulation" d="M2580 -2280 2676 -2280 2676 -1392 3252 -1392 3252 -1296 2004 -1296 2004 -1392 2580 -1392Z"/>
+				<path id="SI_439F" class="Circulation" d="M3432 -1416 3336 -1416 3336 -2280 3252 -2280 3252 -1200 3336 -1200 3336 -1296 3432 -1296Z"/>
+				<path id="SI_43BC" class="Office" d="M2580 -1200 2676 -1200 2676 -1296 2580 -1296Z"/>
+				<path id="SI_43BD" class="Lab" d="M3240 -4800 0 -4800 0 -4200 3240 -4200Z"/>
+				<path id="SI_43BE" class="Meeting" d="M3060 -4200 2418 -4200 2418 -3600 3060 -3600Z"/>
+				<path id="SI_43BF" class="Lab" d="M0 -4200 1704 -4200 1704 -3600 0 -3600Z"/>
+				<path id="SI_43C0" class="Lab" d="M0 -3600 1704 -3600 1704 -2520 0 -2520Z"/>
+				<path id="SI_43C1" class="Stair" d="M3480 -4560 3240 -4560 3240 -4800 3480 -4800Z"/>
+				<path id="SI_43C2" class="Elevator" d="M3480 -4560 3240 -4560 3240 -4320 3480 -4320Z"/>
+				<path id="SI_43C5" class="Circulation" d="M1704 -2520 1776 -2520 1776 -3384 1824 -3384 1824 -3504 1776 -3504 1776 -4200 1704 -4200Z"/>
+				<path id="SI_43C6" class="Circulation" d="M3240 -4320 3480 -4320 3480 -4200 3240 -4200Z"/>
+				<path id="SI_43C7" class="Restroom" d="M3060 -4200 3480 -4200 3480 -3936 3060 -3936Z"/>
+				<path id="SI_43C8" class="Restroom" d="M3480 -3864 3060 -3864 3060 -3600 3480 -3600Z"/>
+				<path id="SI_43CA" class="Meeting" d="M1776 -4200 2418 -4200 2418 -3600 1776 -3600Z"/>
+				<path id="SI_43CB" class="Circulation" d="M3060 -3936 3480 -3936 3480 -3864 3060 -3864Z"/>
+				<path id="SI_43CC" class="Office" d="M2004 -3408 2100 -3408 2100 -3312 2004 -3312Z"/>
+				<path id="SI_43CD" class="Office" d="M2100 -3408 2196 -3408 2196 -3312 2100 -3312Z"/>
+				<path id="SI_43CE" class="Office" d="M2196 -3408 2292 -3408 2292 -3312 2196 -3312Z"/>
+				<path id="SI_43CF" class="Office" d="M2292 -3408 2388 -3408 2388 -3312 2292 -3312Z"/>
+				<path id="SI_43D0" class="Office" d="M2388 -3408 2484 -3408 2484 -3312 2388 -3312Z"/>
+				<path id="SI_43D1" class="Office" d="M2484 -3408 2580 -3408 2580 -3312 2484 -3312Z"/>
+				<path id="SI_43D2" class="Office" d="M2676 -3408 2772 -3408 2772 -3312 2676 -3312Z"/>
+				<path id="SI_43D3" class="Office" d="M2772 -3408 2868 -3408 2868 -3312 2772 -3312Z"/>
+				<path id="SI_43D4" class="Office" d="M2868 -3408 2964 -3408 2964 -3312 2868 -3312Z"/>
+				<path id="SI_43D5" class="Office" d="M2964 -3408 3060 -3408 3060 -3312 2964 -3312Z"/>
+				<path id="SI_43D6" class="Office" d="M3060 -3408 3156 -3408 3156 -3312 3060 -3312Z"/>
+				<path id="SI_43D7" class="Office" d="M3156 -3408 3252 -3408 3252 -3312 3156 -3312Z"/>
+				<path id="SI_43D8" class="Office" d="M2004 -3312 2100 -3312 2100 -3216 2004 -3216Z"/>
+				<path id="SI_43D9" class="Office" d="M2100 -3312 2196 -3312 2196 -3216 2100 -3216Z"/>
+				<path id="SI_43DA" class="Office" d="M2196 -3312 2292 -3312 2292 -3216 2196 -3216Z"/>
+				<path id="SI_43DB" class="Office" d="M2292 -3312 2388 -3312 2388 -3216 2292 -3216Z"/>
+				<path id="SI_43DC" class="Office" d="M2388 -3312 2484 -3312 2484 -3216 2388 -3216Z"/>
+				<path id="SI_43DD" class="Office" d="M2484 -3312 2580 -3312 2580 -3216 2484 -3216Z"/>
+				<path id="SI_43DE" class="Office" d="M2676 -3312 2772 -3312 2772 -3216 2676 -3216Z"/>
+				<path id="SI_43DF" class="Office" d="M2772 -3312 2868 -3312 2868 -3216 2772 -3216Z"/>
+				<path id="SI_43E0" class="Office" d="M2868 -3312 2964 -3312 2964 -3216 2868 -3216Z"/>
+				<path id="SI_43E1" class="Office" d="M2964 -3312 3060 -3312 3060 -3216 2964 -3216Z"/>
+				<path id="SI_43E2" class="Office" d="M3060 -3312 3156 -3312 3156 -3216 3060 -3216Z"/>
+				<path id="SI_43E3" class="Office" d="M3156 -3312 3252 -3312 3252 -3216 3156 -3216Z"/>
+				<path id="SI_43E4" class="Office" d="M2004 -3144 2100 -3144 2100 -3048 2004 -3048Z"/>
+				<path id="SI_43E5" class="Office" d="M2100 -3144 2196 -3144 2196 -3048 2100 -3048Z"/>
+				<path id="SI_43E6" class="Office" d="M2196 -3144 2292 -3144 2292 -3048 2196 -3048Z"/>
+				<path id="SI_43E7" class="Office" d="M2292 -3144 2388 -3144 2388 -3048 2292 -3048Z"/>
+				<path id="SI_43E8" class="Office" d="M2388 -3144 2484 -3144 2484 -3048 2388 -3048Z"/>
+				<path id="SI_43E9" class="Office" d="M2484 -3144 2580 -3144 2580 -3048 2484 -3048Z"/>
+				<path id="SI_43EA" class="Office" d="M2676 -3144 2772 -3144 2772 -3048 2676 -3048Z"/>
+				<path id="SI_43EB" class="Office" d="M2772 -3144 2868 -3144 2868 -3048 2772 -3048Z"/>
+				<path id="SI_43EC" class="Office" d="M2868 -3144 2964 -3144 2964 -3048 2868 -3048Z"/>
+				<path id="SI_43ED" class="Office" d="M2964 -3144 3060 -3144 3060 -3048 2964 -3048Z"/>
+				<path id="SI_43EE" class="Office" d="M3060 -3144 3156 -3144 3156 -3048 3060 -3048Z"/>
+				<path id="SI_43EF" class="Office" d="M3156 -3144 3252 -3144 3252 -3048 3156 -3048Z"/>
+				<path id="SI_43F0" class="Office" d="M2004 -3048 2100 -3048 2100 -2952 2004 -2952Z"/>
+				<path id="SI_43F1" class="Office" d="M2100 -3048 2196 -3048 2196 -2952 2100 -2952Z"/>
+				<path id="SI_43F2" class="Office" d="M2196 -3048 2292 -3048 2292 -2952 2196 -2952Z"/>
+				<path id="SI_43F3" class="Office" d="M2292 -3048 2388 -3048 2388 -2952 2292 -2952Z"/>
+				<path id="SI_43F4" class="Office" d="M2388 -3048 2484 -3048 2484 -2952 2388 -2952Z"/>
+				<path id="SI_43F5" class="Office" d="M2484 -3048 2580 -3048 2580 -2952 2484 -2952Z"/>
+				<path id="SI_43F6" class="Office" d="M2676 -3048 2772 -3048 2772 -2952 2676 -2952Z"/>
+				<path id="SI_43F7" class="Office" d="M2772 -3048 2868 -3048 2868 -2952 2772 -2952Z"/>
+				<path id="SI_43F8" class="Office" d="M2868 -3048 2964 -3048 2964 -2952 2868 -2952Z"/>
+				<path id="SI_43F9" class="Office" d="M2964 -3048 3060 -3048 3060 -2952 2964 -2952Z"/>
+				<path id="SI_43FA" class="Office" d="M3060 -3048 3156 -3048 3156 -2952 3060 -2952Z"/>
+				<path id="SI_43FB" class="Office" d="M3156 -3048 3252 -3048 3252 -2952 3156 -2952Z"/>
+				<path id="SI_43FC" class="Office" d="M2004 -2880 2100 -2880 2100 -2784 2004 -2784Z"/>
+				<path id="SI_43FD" class="Office" d="M2100 -2880 2196 -2880 2196 -2784 2100 -2784Z"/>
+				<path id="SI_43FE" class="Office" d="M2196 -2880 2292 -2880 2292 -2784 2196 -2784Z"/>
+				<path id="SI_43FF" class="Office" d="M2292 -2880 2388 -2880 2388 -2784 2292 -2784Z"/>
+				<path id="SI_4400" class="Office" d="M2388 -2880 2484 -2880 2484 -2784 2388 -2784Z"/>
+				<path id="SI_4401" class="Office" d="M2484 -2880 2580 -2880 2580 -2784 2484 -2784Z"/>
+				<path id="SI_4402" class="Office" d="M2676 -2880 2772 -2880 2772 -2784 2676 -2784Z"/>
+				<path id="SI_4403" class="Office" d="M2772 -2880 2868 -2880 2868 -2784 2772 -2784Z"/>
+				<path id="SI_4404" class="Office" d="M2868 -2880 2964 -2880 2964 -2784 2868 -2784Z"/>
+				<path id="SI_4405" class="Office" d="M2964 -2880 3060 -2880 3060 -2784 2964 -2784Z"/>
+				<path id="SI_4406" class="Office" d="M3060 -2880 3156 -2880 3156 -2784 3060 -2784Z"/>
+				<path id="SI_4407" class="Office" d="M3156 -2880 3252 -2880 3252 -2784 3156 -2784Z"/>
+				<path id="SI_4408" class="Office" d="M2004 -2784 2100 -2784 2100 -2688 2004 -2688Z"/>
+				<path id="SI_4409" class="Office" d="M2100 -2784 2196 -2784 2196 -2688 2100 -2688Z"/>
+				<path id="SI_440A" class="Office" d="M2196 -2784 2292 -2784 2292 -2688 2196 -2688Z"/>
+				<path id="SI_440B" class="Office" d="M2292 -2784 2388 -2784 2388 -2688 2292 -2688Z"/>
+				<path id="SI_440C" class="Office" d="M2388 -2784 2484 -2784 2484 -2688 2388 -2688Z"/>
+				<path id="SI_440D" class="Office" d="M2484 -2784 2580 -2784 2580 -2688 2484 -2688Z"/>
+				<path id="SI_440E" class="Office" d="M2676 -2784 2772 -2784 2772 -2688 2676 -2688Z"/>
+				<path id="SI_440F" class="Office" d="M2772 -2784 2868 -2784 2868 -2688 2772 -2688Z"/>
+				<path id="SI_4410" class="Office" d="M2868 -2784 2964 -2784 2964 -2688 2868 -2688Z"/>
+				<path id="SI_4411" class="Office" d="M2964 -2784 3060 -2784 3060 -2688 2964 -2688Z"/>
+				<path id="SI_4412" class="Office" d="M3060 -2784 3156 -2784 3156 -2688 3060 -2688Z"/>
+				<path id="SI_4413" class="Office" d="M3156 -2784 3252 -2784 3252 -2688 3156 -2688Z"/>
+				<path id="SI_4414" class="Office" d="M2004 -2616 2100 -2616 2100 -2520 2004 -2520Z"/>
+				<path id="SI_4415" class="Office" d="M2100 -2616 2196 -2616 2196 -2520 2100 -2520Z"/>
+				<path id="SI_4416" class="Office" d="M2196 -2616 2292 -2616 2292 -2520 2196 -2520Z"/>
+				<path id="SI_4417" class="Office" d="M2292 -2616 2388 -2616 2388 -2520 2292 -2520Z"/>
+				<path id="SI_4418" class="Office" d="M2388 -2616 2484 -2616 2484 -2520 2388 -2520Z"/>
+				<path id="SI_4419" class="Office" d="M2484 -2616 2580 -2616 2580 -2520 2484 -2520Z"/>
+				<path id="SI_441A" class="Office" d="M2676 -2616 2772 -2616 2772 -2520 2676 -2520Z"/>
+				<path id="SI_441B" class="Office" d="M2772 -2616 2868 -2616 2868 -2520 2772 -2520Z"/>
+				<path id="SI_441C" class="Office" d="M2868 -2616 2964 -2616 2964 -2520 2868 -2520Z"/>
+				<path id="SI_441D" class="Office" d="M2964 -2616 3060 -2616 3060 -2520 2964 -2520Z"/>
+				<path id="SI_441E" class="Office" d="M3060 -2616 3156 -2616 3156 -2520 3060 -2520Z"/>
+				<path id="SI_441F" class="Office" d="M3156 -2616 3252 -2616 3252 -2520 3156 -2520Z"/>
+				<path id="SI_4420" class="Office" d="M3336 -2664 3480 -2664 3480 -2520 3336 -2520Z"/>
+				<path id="SI_4422" class="Office" d="M3336 -2664 3480 -2664 3480 -2808 3336 -2808Z"/>
+				<path id="SI_4424" class="Office" d="M3336 -2952 3480 -2952 3480 -2808 3336 -2808Z"/>
+				<path id="SI_4426" class="Office" d="M3336 -2952 3480 -2952 3480 -3096 3336 -3096Z"/>
+				<path id="SI_4428" class="Office" d="M3336 -3240 3480 -3240 3480 -3096 3336 -3096Z"/>
+				<path id="SI_442A" class="Office" d="M3336 -3240 3480 -3240 3480 -3384 3336 -3384Z"/>
+				<path id="SI_442C" class="Office" d="M1920 -2664 1776 -2664 1776 -2520 1920 -2520Z"/>
+				<path id="SI_442E" class="Office" d="M1920 -2664 1776 -2664 1776 -2808 1920 -2808Z"/>
+				<path id="SI_4430" class="Office" d="M1920 -2952 1776 -2952 1776 -2808 1920 -2808Z"/>
+				<path id="SI_4432" class="Office" d="M1920 -2952 1776 -2952 1776 -3096 1920 -3096Z"/>
+				<path id="SI_4434" class="Office" d="M1920 -3240 1776 -3240 1776 -3096 1920 -3096Z"/>
+				<path id="SI_4436" class="Office" d="M1920 -3240 1776 -3240 1776 -3384 1920 -3384Z"/>
+				<path id="SI_4438" class="Office" d="M2004 -3600 2100 -3600 2100 -3504 2004 -3504Z"/>
+				<path id="SI_4439" class="Office" d="M2100 -3600 2196 -3600 2196 -3504 2100 -3504Z"/>
+				<path id="SI_443A" class="Office" d="M2196 -3600 2292 -3600 2292 -3504 2196 -3504Z"/>
+				<path id="SI_443B" class="Office" d="M2292 -3600 2388 -3600 2388 -3504 2292 -3504Z"/>
+				<path id="SI_443C" class="Office" d="M2388 -3600 2484 -3600 2484 -3504 2388 -3504Z"/>
+				<path id="SI_443D" class="Office" d="M2484 -3600 2580 -3600 2580 -3504 2484 -3504Z"/>
+				<path id="SI_443E" class="Office" d="M2676 -3600 2772 -3600 2772 -3504 2676 -3504Z"/>
+				<path id="SI_443F" class="Office" d="M2772 -3600 2868 -3600 2868 -3504 2772 -3504Z"/>
+				<path id="SI_4440" class="Office" d="M2868 -3600 2964 -3600 2964 -3504 2868 -3504Z"/>
+				<path id="SI_4441" class="Office" d="M2964 -3600 3060 -3600 3060 -3504 2964 -3504Z"/>
+				<path id="SI_4442" class="Office" d="M3060 -3600 3156 -3600 3156 -3504 3060 -3504Z"/>
+				<path id="SI_4443" class="Office" d="M3156 -3600 3252 -3600 3252 -3504 3156 -3504Z"/>
+				<path id="SI_4444" class="Office" d="M3336 -3600 3480 -3600 3480 -3504 3336 -3504Z"/>
+				<path id="SI_4446" class="Office" d="M1920 -3600 1776 -3600 1776 -3504 1920 -3504Z"/>
+				<path id="SI_4448" class="Circulation" d="M1824 -3384 1920 -3384 1920 -2520 2004 -2520 2004 -3600 1920 -3600 1920 -3504 1824 -3504Z"/>
+				<path id="SI_4449" class="Circulation" d="M2004 -2688 2580 -2688 2580 -2616 2004 -2616Z"/>
+				<path id="SI_444A" class="Circulation" d="M2004 -2952 2580 -2952 2580 -2880 2004 -2880Z"/>
+				<path id="SI_444B" class="Circulation" d="M2004 -3216 2580 -3216 2580 -3144 2004 -3144Z"/>
+				<path id="SI_444C" class="Circulation" d="M2676 -2688 3252 -2688 3252 -2616 2676 -2616Z"/>
+				<path id="SI_444D" class="Circulation" d="M2676 -2952 3252 -2952 3252 -2880 2676 -2880Z"/>
+				<path id="SI_444E" class="Circulation" d="M2676 -3216 3252 -3216 3252 -3144 2676 -3144Z"/>
+				<path id="SI_444F" class="Circulation" d="M2580 -2520 2676 -2520 2676 -3408 3252 -3408 3252 -3504 2004 -3504 2004 -3408 2580 -3408Z"/>
+				<path id="SI_445A" class="Circulation" d="M3432 -3384 3336 -3384 3336 -2520 3252 -2520 3252 -3600 3336 -3600 3336 -3504 3432 -3504Z"/>
+				<path id="SI_4477" class="Office" d="M2580 -3600 2676 -3600 2676 -3504 2580 -3504Z"/>
+				<path id="SI_447A" class="Lab" d="M3960 0 7200 0 7200 -600 3960 -600Z"/>
+				<path id="SI_447B" class="Meeting" d="M3720 -600 4782 -600 4782 -1200 3720 -1200Z"/>
+				<path id="SI_447C" class="Lab" d="M7200 -600 5496 -600 5496 -1200 7200 -1200Z"/>
+				<path id="SI_447D" class="Lab" d="M7200 -1200 5496 -1200 5496 -2280 7200 -2280Z"/>
+				<path id="SI_447E" class="Stair" d="M3720 -240 3960 -240 3960 0 3720 0Z"/>
+				<path id="SI_447F" class="Elevator" d="M3720 -240 3960 -240 3960 -480 3720 -480Z"/>
+				<path id="SI_4482" class="Circulation" d="M7200 -2280 3720 -2280 3720 -2520 7200 -2520Z"/>
+				<path id="SI_4483" class="Circulation" d="M5496 -2280 5424 -2280 5424 -1416 5376 -1416 5376 -1296 5424 -1296 5424 -600 5496 -600Z"/>
+				<path id="SI_4484" class="Circulation" d="M3960 -480 3720 -480 3720 -600 3960 -600Z"/>
+				<path id="SI_4488" class="Meeting" d="M5424 -600 4782 -600 4782 -1200 5424 -1200Z"/>
+				<path id="SI_448A" class="Office" d="M5196 -1392 5100 -1392 5100 -1488 5196 -1488Z"/>
+				<path id="SI_448B" class="Office" d="M5100 -1392 5004 -1392 5004 -1488 5100 -1488Z"/>
+				<path id="SI_448C" class="Office" d="M5004 -1392 4908 -1392 4908 -1488 5004 -1488Z"/>
+				<path id="SI_448D" class="Office" d="M4908 -1392 4812 -1392 4812 -1488 4908 -1488Z"/>
+				<path id="SI_448E" class="Office" d="M4812 -1392 4716 -1392 4716 -1488 4812 -1488Z"/>
+				<path id="SI_448F" class="Office" d="M4716 -1392 4620 -1392 4620 -1488 4716 -1488Z"/>
+				<path id="SI_4490" class="Office" d="M4524 -1392 4428 -1392 4428 -1488 4524 -1488Z"/>
+				<path id="SI_4491" class="Office" d="M4428 -1392 4332 -1392 4332 -1488 4428 -1488Z"/>
+				<path id="SI_4492" class="Office" d="M4332 -1392 4236 -1392 4236 -1488 4332 -1488Z"/>
+				<path id="SI_4493" class="Office" d="M4236 -1392 4140 -1392 4140 -1488 4236 -1488Z"/>
+				<path id="SI_4494" class="Office" d="M4140 -1392 4044 -1392 4044 -1488 4140 -1488Z"/>
+				<path id="SI_4495" class="Office" d="M4044 -1392 3948 -1392 3948 -1488 4044 -1488Z"/>
+				<path id="SI_4496" class="Office" d="M5196 -1488 5100 -1488 5100 -1584 5196 -1584Z"/>
+				<path id="SI_4497" class="Office" d="M5100 -1488 5004 -1488 5004 -1584 5100 -1584Z"/>
+				<path id="SI_4498" class="Office" d="M5004 -1488 4908 -1488 4908 -1584 5004 -1584Z"/>
+				<path id="SI_4499" class="Office" d="M4908 -1488 4812 -1488 4812 -1584 4908 -1584Z"/>
+				<path id="SI_449A" class="Office" d="M4812 -1488 4716 -1488 4716 -1584 4812 -1584Z"/>
+				<path id="SI_449B" class="Office" d="M4716 -1488 4620 -1488 4620 -1584 4716 -1584Z"/>
+				<path id="SI_449C" class="Office" d="M4524 -1488 4428 -1488 4428 -1584 4524 -1584Z"/>
+				<path id="SI_449D" class="Office" d="M4428 -1488 4332 -1488 4332 -1584 4428 -1584Z"/>
+				<path id="SI_449E" class="Office" d="M4332 -1488 4236 -1488 4236 -1584 4332 -1584Z"/>
+				<path id="SI_449F" class="Office" d="M4236 -1488 4140 -1488 4140 -1584 4236 -1584Z"/>
+				<path id="SI_44A0" class="Office" d="M4140 -1488 4044 -1488 4044 -1584 4140 -1584Z"/>
+				<path id="SI_44A1" class="Office" d="M4044 -1488 3948 -1488 3948 -1584 4044 -1584Z"/>
+				<path id="SI_44A2" class="Office" d="M5196 -1656 5100 -1656 5100 -1752 5196 -1752Z"/>
+				<path id="SI_44A3" class="Office" d="M5100 -1656 5004 -1656 5004 -1752 5100 -1752Z"/>
+				<path id="SI_44A4" class="Office" d="M5004 -1656 4908 -1656 4908 -1752 5004 -1752Z"/>
+				<path id="SI_44A5" class="Office" d="M4908 -1656 4812 -1656 4812 -1752 4908 -1752Z"/>
+				<path id="SI_44A6" class="Office" d="M4812 -1656 4716 -1656 4716 -1752 4812 -1752Z"/>
+				<path id="SI_44A7" class="Office" d="M4716 -1656 4620 -1656 4620 -1752 4716 -1752Z"/>
+				<path id="SI_44A8" class="Office" d="M4524 -1656 4428 -1656 4428 -1752 4524 -1752Z"/>
+				<path id="SI_44A9" class="Office" d="M4428 -1656 4332 -1656 4332 -1752 4428 -1752Z"/>
+				<path id="SI_44AA" class="Office" d="M4332 -1656 4236 -1656 4236 -1752 4332 -1752Z"/>
+				<path id="SI_44AB" class="Office" d="M4236 -1656 4140 -1656 4140 -1752 4236 -1752Z"/>
+				<path id="SI_44AC" class="Office" d="M4140 -1656 4044 -1656 4044 -1752 4140 -1752Z"/>
+				<path id="SI_44AD" class="Office" d="M4044 -1656 3948 -1656 3948 -1752 4044 -1752Z"/>
+				<path id="SI_44AE" class="Office" d="M5196 -1752 5100 -1752 5100 -1848 5196 -1848Z"/>
+				<path id="SI_44AF" class="Office" d="M5100 -1752 5004 -1752 5004 -1848 5100 -1848Z"/>
+				<path id="SI_44B0" class="Office" d="M5004 -1752 4908 -1752 4908 -1848 5004 -1848Z"/>
+				<path id="SI_44B1" class="Office" d="M4908 -1752 4812 -1752 4812 -1848 4908 -1848Z"/>
+				<path id="SI_44B2" class="Office" d="M4812 -1752 4716 -1752 4716 -1848 4812 -1848Z"/>
+				<path id="SI_44B3" class="Office" d="M4716 -1752 4620 -1752 4620 -1848 4716 -1848Z"/>
+				<path id="SI_44B4" class="Office" d="M4524 -1752 4428 -1752 4428 -1848 4524 -1848Z"/>
+				<path id="SI_44B5" class="Office" d="M4428 -1752 4332 -1752 4332 -1848 4428 -1848Z"/>
+				<path id="SI_44B6" class="Office" d="M4332 -1752 4236 -1752 4236 -1848 4332 -1848Z"/>
+				<path id="SI_44B7" class="Office" d="M4236 -1752 4140 -1752 4140 -1848 4236 -1848Z"/>
+				<path id="SI_44B8" class="Office" d="M4140 -1752 4044 -1752 4044 -1848 4140 -1848Z"/>
+				<path id="SI_44B9" class="Office" d="M4044 -1752 3948 -1752 3948 -1848 4044 -1848Z"/>
+				<path id="SI_44BA" class="Office" d="M5196 -1920 5100 -1920 5100 -2016 5196 -2016Z"/>
+				<path id="SI_44BB" class="Office" d="M5100 -1920 5004 -1920 5004 -2016 5100 -2016Z"/>
+				<path id="SI_44BC" class="Office" d="M5004 -1920 4908 -1920 4908 -2016 5004 -2016Z"/>
+				<path id="SI_44BD" class="Office" d="M4908 -1920 4812 -1920 4812 -2016 4908 -2016Z"/>
+				<path id="SI_44BE" class="Office" d="M4812 -1920 4716 -1920 4716 -2016 4812 -2016Z"/>
+				<path id="SI_44BF" class="Office" d="M4716 -1920 4620 -1920 4620 -2016 4716 -2016Z"/>
+				<path id="SI_44C0" class="Office" d="M4524 -1920 4428 -1920 4428 -2016 4524 -2016Z"/>
+				<path id="SI_44C1" class="Office" d="M4428 -1920 4332 -1920 4332 -2016 4428 -2016Z"/>
+				<path id="SI_44C2" class="Office" d="M4332 -1920 4236 -1920 4236 -2016 4332 -2016Z"/>
+				<path id="SI_44C3" class="Office" d="M4236 -1920 4140 -1920 4140 -2016 4236 -2016Z"/>
+				<path id="SI_44C4" class="Office" d="M4140 -1920 4044 -1920 4044 -2016 4140 -2016Z"/>
+				<path id="SI_44C5" class="Office" d="M4044 -1920 3948 -1920 3948 -2016 4044 -2016Z"/>
+				<path id="SI_44C6" class="Office" d="M5196 -2016 5100 -2016 5100 -2112 5196 -2112Z"/>
+				<path id="SI_44C7" class="Office" d="M5100 -2016 5004 -2016 5004 -2112 5100 -2112Z"/>
+				<path id="SI_44C8" class="Office" d="M5004 -2016 4908 -2016 4908 -2112 5004 -2112Z"/>
+				<path id="SI_44C9" class="Office" d="M4908 -2016 4812 -2016 4812 -2112 4908 -2112Z"/>
+				<path id="SI_44CA" class="Office" d="M4812 -2016 4716 -2016 4716 -2112 4812 -2112Z"/>
+				<path id="SI_44CB" class="Office" d="M4716 -2016 4620 -2016 4620 -2112 4716 -2112Z"/>
+				<path id="SI_44CC" class="Office" d="M4524 -2016 4428 -2016 4428 -2112 4524 -2112Z"/>
+				<path id="SI_44CD" class="Office" d="M4428 -2016 4332 -2016 4332 -2112 4428 -2112Z"/>
+				<path id="SI_44CE" class="Office" d="M4332 -2016 4236 -2016 4236 -2112 4332 -2112Z"/>
+				<path id="SI_44CF" class="Office" d="M4236 -2016 4140 -2016 4140 -2112 4236 -2112Z"/>
+				<path id="SI_44D0" class="Office" d="M4140 -2016 4044 -2016 4044 -2112 4140 -2112Z"/>
+				<path id="SI_44D1" class="Office" d="M4044 -2016 3948 -2016 3948 -2112 4044 -2112Z"/>
+				<path id="SI_44D2" class="Office" d="M5196 -2184 5100 -2184 5100 -2280 5196 -2280Z"/>
+				<path id="SI_44D3" class="Office" d="M5100 -2184 5004 -2184 5004 -2280 5100 -2280Z"/>
+				<path id="SI_44D4" class="Office" d="M5004 -2184 4908 -2184 4908 -2280 5004 -2280Z"/>
+				<path id="SI_44D5" class="Office" d="M4908 -2184 4812 -2184 4812 -2280 4908 -2280Z"/>
+				<path id="SI_44D6" class="Office" d="M4812 -2184 4716 -2184 4716 -2280 4812 -2280Z"/>
+				<path id="SI_44D7" class="Office" d="M4716 -2184 4620 -2184 4620 -2280 4716 -2280Z"/>
+				<path id="SI_44D8" class="Office" d="M4524 -2184 4428 -2184 4428 -2280 4524 -2280Z"/>
+				<path id="SI_44D9" class="Office" d="M4428 -2184 4332 -2184 4332 -2280 4428 -2280Z"/>
+				<path id="SI_44DA" class="Office" d="M4332 -2184 4236 -2184 4236 -2280 4332 -2280Z"/>
+				<path id="SI_44DB" class="Office" d="M4236 -2184 4140 -2184 4140 -2280 4236 -2280Z"/>
+				<path id="SI_44DC" class="Office" d="M4140 -2184 4044 -2184 4044 -2280 4140 -2280Z"/>
+				<path id="SI_44DD" class="Office" d="M4044 -2184 3948 -2184 3948 -2280 4044 -2280Z"/>
+				<path id="SI_44DE" class="Office" d="M3864 -2136 3720 -2136 3720 -2280 3864 -2280Z"/>
+				<path id="SI_44E0" class="Office" d="M3864 -2136 3720 -2136 3720 -1992 3864 -1992Z"/>
+				<path id="SI_44E2" class="Office" d="M3864 -1848 3720 -1848 3720 -1992 3864 -1992Z"/>
+				<path id="SI_44E4" class="Office" d="M3864 -1848 3720 -1848 3720 -1704 3864 -1704Z"/>
+				<path id="SI_44E6" class="Office" d="M3864 -1560 3720 -1560 3720 -1704 3864 -1704Z"/>
+				<path id="SI_44E8" class="Office" d="M3864 -1560 3720 -1560 3720 -1416 3864 -1416Z"/>
+				<path id="SI_44EA" class="Office" d="M5280 -2136 5424 -2136 5424 -2280 5280 -2280Z"/>
+				<path id="SI_44EC" class="Office" d="M5280 -2136 5424 -2136 5424 -1992 5280 -1992Z"/>
+				<path id="SI_44EE" class="Office" d="M5280 -1848 5424 -1848 5424 -1992 5280 -1992Z"/>
+				<path id="SI_44F0" class="Office" d="M5280 -1848 5424 -1848 5424 -1704 5280 -1704Z"/>
+				<path id="SI_44F2" class="Office" d="M5280 -1560 5424 -1560 5424 -1704 5280 -1704Z"/>
+				<path id="SI_44F4" class="Office" d="M5280 -1560 5424 -1560 5424 -1416 5280 -1416Z"/>
+				<path id="SI_44F6" class="Office" d="M5196 -1200 5100 -1200 5100 -1296 5196 -1296Z"/>
+				<path id="SI_44F7" class="Office" d="M5100 -1200 5004 -1200 5004 -1296 5100 -1296Z"/>
+				<path id="SI_44F8" class="Office" d="M5004 -1200 4908 -1200 4908 -1296 5004 -1296Z"/>
+				<path id="SI_44F9" class="Office" d="M4908 -1200 4812 -1200 4812 -1296 4908 -1296Z"/>
+				<path id="SI_44FA" class="Office" d="M4812 -1200 4716 -1200 4716 -1296 4812 -1296Z"/>
+				<path id="SI_44FB" class="Office" d="M4716 -1200 4620 -1200 4620 -1296 4716 -1296Z"/>
+				<path id="SI_44FC" class="Office" d="M4524 -1200 4428 -1200 4428 -1296 4524 -1296Z"/>
+				<path id="SI_44FD" class="Office" d="M4428 -1200 4332 -1200 4332 -1296 4428 -1296Z"/>
+				<path id="SI_44FE" class="Office" d="M4332 -1200 4236 -1200 4236 -1296 4332 -1296Z"/>
+				<path id="SI_44FF" class="Office" d="M4236 -1200 4140 -1200 4140 -1296 4236 -1296Z"/>
+				<path id="SI_4500" class="Office" d="M4140 -1200 4044 -1200 4044 -1296 4140 -1296Z"/>
+				<path id="SI_4501" class="Office" d="M4044 -1200 3948 -1200 3948 -1296 4044 -1296Z"/>
+				<path id="SI_4502" class="Office" d="M3864 -1200 3720 -1200 3720 -1296 3864 -1296Z"/>
+				<path id="SI_4504" class="Office" d="M5280 -1200 5424 -1200 5424 -1296 5280 -1296Z"/>
+				<path id="SI_4506" class="Circulation" d="M5376 -1416 5280 -1416 5280 -2280 5196 -2280 5196 -1200 5280 -1200 5280 -1296 5376 -1296Z"/>
+				<path id="SI_4507" class="Circulation" d="M5196 -2112 4620 -2112 4620 -2184 5196 -2184Z"/>
+				<path id="SI_4508" class="Circulation" d="M5196 -1848 4620 -1848 4620 -1920 5196 -1920Z"/>
+				<path id="SI_4509" class="Circulation" d="M5196 -1584 4620 -1584 4620 -1656 5196 -1656Z"/>
+				<path id="SI_450A" class="Circulation" d="M4524 -2112 3948 -2112 3948 -2184 4524 -2184Z"/>
+				<path id="SI_450B" class="Circulation" d="M4524 -1848 3948 -1848 3948 -1920 4524 -1920Z"/>
+				<path id="SI_450C" class="Circulation" d="M4524 -1584 3948 -1584 3948 -1656 4524 -1656Z"/>
+				<path id="SI_450D" class="Circulation" d="M4620 -2280 4524 -2280 4524 -1392 3948 -1392 3948 -1296 5196 -1296 5196 -1392 4620 -1392Z"/>
+				<path id="SI_4516" class="Circulation" d="M3768 -1416 3864 -1416 3864 -2280 3948 -2280 3948 -1200 3864 -1200 3864 -1296 3768 -1296Z"/>
+				<path id="SI_4533" class="Office" d="M4620 -1200 4524 -1200 4524 -1296 4620 -1296Z"/>
+				<path id="SI_4534" class="Lab" d="M3960 -4800 7200 -4800 7200 -4200 3960 -4200Z"/>
+				<path id="SI_4536" class="Lab" d="M7200 -4200 5496 -4200 5496 -3600 7200 -3600Z"/>
+				<path id="SI_4537" class="Lab" d="M7200 -3600 5496 -3600 5496 -2520 7200 -2520Z"/>
+				<path id="SI_4538" class="Stair" d="M3720 -4560 3960 -4560 3960 -4800 3720 -4800Z"/>
+				<path id="SI_4539" class="Elevator" d="M3720 -4560 3960 -4560 3960 -4320 3720 -4320Z"/>
+				<path id="SI_453C" class="Circulation" d="M5496 -2520 5424 -2520 5424 -3384 5376 -3384 5376 -3504 5424 -3504 5424 -4200 5496 -4200Z"/>
+				<path id="SI_453D" class="Circulation" d="M3960 -4320 3720 -4320 3720 -4200 3960 -4200Z"/>
+				<path id="SI_4541" class="Meeting" d="M5424 -4200 4782 -4200 4782 -3600 5424 -3600Z"/>
+				<path id="SI_4543" class="Office" d="M5196 -3408 5100 -3408 5100 -3312 5196 -3312Z"/>
+				<path id="SI_4544" class="Office" d="M5100 -3408 5004 -3408 5004 -3312 5100 -3312Z"/>
+				<path id="SI_4545" class="Office" d="M5004 -3408 4908 -3408 4908 -3312 5004 -3312Z"/>
+				<path id="SI_4546" class="Office" d="M4908 -3408 4812 -3408 4812 -3312 4908 -3312Z"/>
+				<path id="SI_4547" class="Office" d="M4812 -3408 4716 -3408 4716 -3312 4812 -3312Z"/>
+				<path id="SI_4548" class="Office" d="M4716 -3408 4620 -3408 4620 -3312 4716 -3312Z"/>
+				<path id="SI_4549" class="Office" d="M4524 -3408 4428 -3408 4428 -3312 4524 -3312Z"/>
+				<path id="SI_454A" class="Office" d="M4428 -3408 4332 -3408 4332 -3312 4428 -3312Z"/>
+				<path id="SI_454B" class="Office" d="M4332 -3408 4236 -3408 4236 -3312 4332 -3312Z"/>
+				<path id="SI_454C" class="Office" d="M4236 -3408 4140 -3408 4140 -3312 4236 -3312Z"/>
+				<path id="SI_454D" class="Office" d="M4140 -3408 4044 -3408 4044 -3312 4140 -3312Z"/>
+				<path id="SI_454E" class="Office" d="M4044 -3408 3948 -3408 3948 -3312 4044 -3312Z"/>
+				<path id="SI_454F" class="Office" d="M5196 -3312 5100 -3312 5100 -3216 5196 -3216Z"/>
+				<path id="SI_4550" class="Office" d="M5100 -3312 5004 -3312 5004 -3216 5100 -3216Z"/>
+				<path id="SI_4551" class="Office" d="M5004 -3312 4908 -3312 4908 -3216 5004 -3216Z"/>
+				<path id="SI_4552" class="Office" d="M4908 -3312 4812 -3312 4812 -3216 4908 -3216Z"/>
+				<path id="SI_4553" class="Office" d="M4812 -3312 4716 -3312 4716 -3216 4812 -3216Z"/>
+				<path id="SI_4554" class="Office" d="M4716 -3312 4620 -3312 4620 -3216 4716 -3216Z"/>
+				<path id="SI_4555" class="Office" d="M4524 -3312 4428 -3312 4428 -3216 4524 -3216Z"/>
+				<path id="SI_4556" class="Office" d="M4428 -3312 4332 -3312 4332 -3216 4428 -3216Z"/>
+				<path id="SI_4557" class="Office" d="M4332 -3312 4236 -3312 4236 -3216 4332 -3216Z"/>
+				<path id="SI_4558" class="Office" d="M4236 -3312 4140 -3312 4140 -3216 4236 -3216Z"/>
+				<path id="SI_4559" class="Office" d="M4140 -3312 4044 -3312 4044 -3216 4140 -3216Z"/>
+				<path id="SI_455A" class="Office" d="M4044 -3312 3948 -3312 3948 -3216 4044 -3216Z"/>
+				<path id="SI_455B" class="Office" d="M5196 -3144 5100 -3144 5100 -3048 5196 -3048Z"/>
+				<path id="SI_455C" class="Office" d="M5100 -3144 5004 -3144 5004 -3048 5100 -3048Z"/>
+				<path id="SI_455D" class="Office" d="M5004 -3144 4908 -3144 4908 -3048 5004 -3048Z"/>
+				<path id="SI_455E" class="Office" d="M4908 -3144 4812 -3144 4812 -3048 4908 -3048Z"/>
+				<path id="SI_455F" class="Office" d="M4812 -3144 4716 -3144 4716 -3048 4812 -3048Z"/>
+				<path id="SI_4560" class="Office" d="M4716 -3144 4620 -3144 4620 -3048 4716 -3048Z"/>
+				<path id="SI_4561" class="Office" d="M4524 -3144 4428 -3144 4428 -3048 4524 -3048Z"/>
+				<path id="SI_4562" class="Office" d="M4428 -3144 4332 -3144 4332 -3048 4428 -3048Z"/>
+				<path id="SI_4563" class="Office" d="M4332 -3144 4236 -3144 4236 -3048 4332 -3048Z"/>
+				<path id="SI_4564" class="Office" d="M4236 -3144 4140 -3144 4140 -3048 4236 -3048Z"/>
+				<path id="SI_4565" class="Office" d="M4140 -3144 4044 -3144 4044 -3048 4140 -3048Z"/>
+				<path id="SI_4566" class="Office" d="M4044 -3144 3948 -3144 3948 -3048 4044 -3048Z"/>
+				<path id="SI_4567" class="Office" d="M5196 -3048 5100 -3048 5100 -2952 5196 -2952Z"/>
+				<path id="SI_4568" class="Office" d="M5100 -3048 5004 -3048 5004 -2952 5100 -2952Z"/>
+				<path id="SI_4569" class="Office" d="M5004 -3048 4908 -3048 4908 -2952 5004 -2952Z"/>
+				<path id="SI_456A" class="Office" d="M4908 -3048 4812 -3048 4812 -2952 4908 -2952Z"/>
+				<path id="SI_456B" class="Office" d="M4812 -3048 4716 -3048 4716 -2952 4812 -2952Z"/>
+				<path id="SI_456C" class="Office" d="M4716 -3048 4620 -3048 4620 -2952 4716 -2952Z"/>
+				<path id="SI_456D" class="Office" d="M4524 -3048 4428 -3048 4428 -2952 4524 -2952Z"/>
+				<path id="SI_456E" class="Office" d="M4428 -3048 4332 -3048 4332 -2952 4428 -2952Z"/>
+				<path id="SI_456F" class="Office" d="M4332 -3048 4236 -3048 4236 -2952 4332 -2952Z"/>
+				<path id="SI_4570" class="Office" d="M4236 -3048 4140 -3048 4140 -2952 4236 -2952Z"/>
+				<path id="SI_4571" class="Office" d="M4140 -3048 4044 -3048 4044 -2952 4140 -2952Z"/>
+				<path id="SI_4572" class="Office" d="M4044 -3048 3948 -3048 3948 -2952 4044 -2952Z"/>
+				<path id="SI_4573" class="Office" d="M5196 -2880 5100 -2880 5100 -2784 5196 -2784Z"/>
+				<path id="SI_4574" class="Office" d="M5100 -2880 5004 -2880 5004 -2784 5100 -2784Z"/>
+				<path id="SI_4575" class="Office" d="M5004 -2880 4908 -2880 4908 -2784 5004 -2784Z"/>
+				<path id="SI_4576" class="Office" d="M4908 -2880 4812 -2880 4812 -2784 4908 -2784Z"/>
+				<path id="SI_4577" class="Office" d="M4812 -2880 4716 -2880 4716 -2784 4812 -2784Z"/>
+				<path id="SI_4578" class="Office" d="M4716 -2880 4620 -2880 4620 -2784 4716 -2784Z"/>
+				<path id="SI_4579" class="Office" d="M4524 -2880 4428 -2880 4428 -2784 4524 -2784Z"/>
+				<path id="SI_457A" class="Office" d="M4428 -2880 4332 -2880 4332 -2784 4428 -2784Z"/>
+				<path id="SI_457B" class="Office" d="M4332 -2880 4236 -2880 4236 -2784 4332 -2784Z"/>
+				<path id="SI_457C" class="Office" d="M4236 -2880 4140 -2880 4140 -2784 4236 -2784Z"/>
+				<path id="SI_457D" class="Office" d="M4140 -2880 4044 -2880 4044 -2784 4140 -2784Z"/>
+				<path id="SI_457E" class="Office" d="M4044 -2880 3948 -2880 3948 -2784 4044 -2784Z"/>
+				<path id="SI_457F" class="Office" d="M5196 -2784 5100 -2784 5100 -2688 5196 -2688Z"/>
+				<path id="SI_4580" class="Office" d="M5100 -2784 5004 -2784 5004 -2688 5100 -2688Z"/>
+				<path id="SI_4581" class="Office" d="M5004 -2784 4908 -2784 4908 -2688 5004 -2688Z"/>
+				<path id="SI_4582" class="Office" d="M4908 -2784 4812 -2784 4812 -2688 4908 -2688Z"/>
+				<path id="SI_4583" class="Office" d="M4812 -2784 4716 -2784 4716 -2688 4812 -2688Z"/>
+				<path id="SI_4584" class="Office" d="M4716 -2784 4620 -2784 4620 -2688 4716 -2688Z"/>
+				<path id="SI_4585" class="Office" d="M4524 -2784 4428 -2784 4428 -2688 4524 -2688Z"/>
+				<path id="SI_4586" class="Office" d="M4428 -2784 4332 -2784 4332 -2688 4428 -2688Z"/>
+				<path id="SI_4587" class="Office" d="M4332 -2784 4236 -2784 4236 -2688 4332 -2688Z"/>
+				<path id="SI_4588" class="Office" d="M4236 -2784 4140 -2784 4140 -2688 4236 -2688Z"/>
+				<path id="SI_4589" class="Office" d="M4140 -2784 4044 -2784 4044 -2688 4140 -2688Z"/>
+				<path id="SI_458A" class="Office" d="M4044 -2784 3948 -2784 3948 -2688 4044 -2688Z"/>
+				<path id="SI_458B" class="Office" d="M5196 -2616 5100 -2616 5100 -2520 5196 -2520Z"/>
+				<path id="SI_458C" class="Office" d="M5100 -2616 5004 -2616 5004 -2520 5100 -2520Z"/>
+				<path id="SI_458D" class="Office" d="M5004 -2616 4908 -2616 4908 -2520 5004 -2520Z"/>
+				<path id="SI_458E" class="Office" d="M4908 -2616 4812 -2616 4812 -2520 4908 -2520Z"/>
+				<path id="SI_458F" class="Office" d="M4812 -2616 4716 -2616 4716 -2520 4812 -2520Z"/>
+				<path id="SI_4590" class="Office" d="M4716 -2616 4620 -2616 4620 -2520 4716 -2520Z"/>
+				<path id="SI_4591" class="Office" d="M4524 -2616 4428 -2616 4428 -2520 4524 -2520Z"/>
+				<path id="SI_4592" class="Office" d="M4428 -2616 4332 -2616 4332 -2520 4428 -2520Z"/>
+				<path id="SI_4593" class="Office" d="M4332 -2616 4236 -2616 4236 -2520 4332 -2520Z"/>
+				<path id="SI_4594" class="Office" d="M4236 -2616 4140 -2616 4140 -2520 4236 -2520Z"/>
+				<path id="SI_4595" class="Office" d="M4140 -2616 4044 -2616 4044 -2520 4140 -2520Z"/>
+				<path id="SI_4596" class="Office" d="M4044 -2616 3948 -2616 3948 -2520 4044 -2520Z"/>
+				<path id="SI_4597" class="Office" d="M3864 -2664 3720 -2664 3720 -2520 3864 -2520Z"/>
+				<path id="SI_4599" class="Office" d="M3864 -2664 3720 -2664 3720 -2808 3864 -2808Z"/>
+				<path id="SI_459B" class="Office" d="M3864 -2952 3720 -2952 3720 -2808 3864 -2808Z"/>
+				<path id="SI_459D" class="Office" d="M3864 -2952 3720 -2952 3720 -3096 3864 -3096Z"/>
+				<path id="SI_459F" class="Office" d="M3864 -3240 3720 -3240 3720 -3096 3864 -3096Z"/>
+				<path id="SI_45A1" class="Office" d="M3864 -3240 3720 -3240 3720 -3384 3864 -3384Z"/>
+				<path id="SI_45A3" class="Office" d="M5280 -2664 5424 -2664 5424 -2520 5280 -2520Z"/>
+				<path id="SI_45A5" class="Office" d="M5280 -2664 5424 -2664 5424 -2808 5280 -2808Z"/>
+				<path id="SI_45A7" class="Office" d="M5280 -2952 5424 -2952 5424 -2808 5280 -2808Z"/>
+				<path id="SI_45A9" class="Office" d="M5280 -2952 5424 -2952 5424 -3096 5280 -3096Z"/>
+				<path id="SI_45AB" class="Office" d="M5280 -3240 5424 -3240 5424 -3096 5280 -3096Z"/>
+				<path id="SI_45AD" class="Office" d="M5280 -3240 5424 -3240 5424 -3384 5280 -3384Z"/>
+				<path id="SI_45AF" class="Office" d="M5196 -3600 5100 -3600 5100 -3504 5196 -3504Z"/>
+				<path id="SI_45B0" class="Office" d="M5100 -3600 5004 -3600 5004 -3504 5100 -3504Z"/>
+				<path id="SI_45B1" class="Office" d="M5004 -3600 4908 -3600 4908 -3504 5004 -3504Z"/>
+				<path id="SI_45B2" class="Office" d="M4908 -3600 4812 -3600 4812 -3504 4908 -3504Z"/>
+				<path id="SI_45B3" class="Office" d="M4812 -3600 4716 -3600 4716 -3504 4812 -3504Z"/>
+				<path id="SI_45B4" class="Office" d="M4716 -3600 4620 -3600 4620 -3504 4716 -3504Z"/>
+				<path id="SI_45B5" class="Office" d="M4524 -3600 4428 -3600 4428 -3504 4524 -3504Z"/>
+				<path id="SI_45B6" class="Office" d="M4428 -3600 4332 -3600 4332 -3504 4428 -3504Z"/>
+				<path id="SI_45B7" class="Office" d="M4332 -3600 4236 -3600 4236 -3504 4332 -3504Z"/>
+				<path id="SI_45B8" class="Office" d="M4236 -3600 4140 -3600 4140 -3504 4236 -3504Z"/>
+				<path id="SI_45B9" class="Office" d="M4140 -3600 4044 -3600 4044 -3504 4140 -3504Z"/>
+				<path id="SI_45BA" class="Office" d="M4044 -3600 3948 -3600 3948 -3504 4044 -3504Z"/>
+				<path id="SI_45BB" class="Office" d="M3864 -3600 3720 -3600 3720 -3504 3864 -3504Z"/>
+				<path id="SI_45BD" class="Office" d="M5280 -3600 5424 -3600 5424 -3504 5280 -3504Z"/>
+				<path id="SI_45BF" class="Circulation" d="M5376 -3384 5280 -3384 5280 -2520 5196 -2520 5196 -3600 5280 -3600 5280 -3504 5376 -3504Z"/>
+				<path id="SI_45C0" class="Circulation" d="M5196 -2688 4620 -2688 4620 -2616 5196 -2616Z"/>
+				<path id="SI_45C1" class="Circulation" d="M5196 -2952 4620 -2952 4620 -2880 5196 -2880Z"/>
+				<path id="SI_45C2" class="Circulation" d="M5196 -3216 4620 -3216 4620 -3144 5196 -3144Z"/>
+				<path id="SI_45C3" class="Circulation" d="M4524 -2688 3948 -2688 3948 -2616 4524 -2616Z"/>
+				<path id="SI_45C4" class="Circulation" d="M4524 -2952 3948 -2952 3948 -2880 4524 -2880Z"/>
+				<path id="SI_45C5" class="Circulation" d="M4524 -3216 3948 -3216 3948 -3144 4524 -3144Z"/>
+				<path id="SI_45C6" class="Circulation" d="M4620 -2520 4524 -2520 4524 -3408 3948 -3408 3948 -3504 5196 -3504 5196 -3408 4620 -3408Z"/>
+				<path id="SI_45CF" class="Circulation" d="M3768 -3384 3864 -3384 3864 -2520 3948 -2520 3948 -3600 3864 -3600 3864 -3504 3768 -3504Z"/>
+				<path id="SI_45EC" class="Office" d="M4620 -3600 4524 -3600 4524 -3504 4620 -3504Z"/>
+				<path id="SI_45EF" class="Meeting" d="M3720 -3600 4782 -3600 4782 -4200 3720 -4200Z"/>
+			</g>
+			<g class="doors">
+				<path d="M3336 -2141 3336,-2177 3372,-2141Z"/>
+				<path d="M3336 -2131 3336,-2095 3372,-2131Z"/>
+				<path d="M3336 -1853 3336,-1889 3372,-1853Z"/>
+				<path d="M3336 -1843 3336,-1807 3372,-1843Z"/>
+				<path d="M3336 -1565 3336,-1601 3372,-1565Z"/>
+				<path d="M3336 -1555 3336,-1519 3372,-1555Z"/>
+				<path d="M1920 -2141 1920,-2177 1884,-2141Z"/>
+				<path d="M1920 -2131 1920,-2095 1884,-2131Z"/>
+				<path d="M1920 -1853 1920,-1889 1884,-1853Z"/>
+				<path d="M1920 -1843 1920,-1807 1884,-1843Z"/>
+				<path d="M1920 -1565 1920,-1601 1884,-1565Z"/>
+				<path d="M1920 -1555 1920,-1519 1884,-1555Z"/>
+				<path d="M3336 -1205 3336,-1241 3372,-1205Z"/>
+				<path d="M1920 -1205 1920,-1241 1884,-1205Z"/>
+				<path d="M1998 -2280 1962,-2280 1998,-2316Z"/>
+				<path d="M1926 -2280 1962,-2280 1926,-2316Z"/>
+				<path d="M2664 -2280 2628,-2280 2664,-2316Z"/>
+				<path d="M2592 -2280 2628,-2280 2592,-2316Z"/>
+				<path d="M3330 -2280 3294,-2280 3330,-2316Z"/>
+				<path d="M3258 -2280 3294,-2280 3258,-2316Z"/>
+				<path d="M3564 0 3600,0 3564,36Z"/>
+				<path d="M3636 0 3600,0 3636,36Z"/>
+				<path d="M1824 -1320 1824,-1356 1788,-1320Z"/>
+				<path d="M1824 -1392 1824,-1356 1788,-1392Z"/>
+				<path d="M3432 -1320 3432,-1356 3468,-1320Z"/>
+				<path d="M3432 -1392 3432,-1356 3468,-1392Z"/>
+				<path d="M1704 -1320 1704,-1356 1668,-1320Z"/>
+				<path d="M1704 -1392 1704,-1356 1668,-1392Z"/>
+				<path d="M1776 -864 1776,-900 1812,-864Z"/>
+				<path d="M1776 -936 1776,-900 1812,-936Z"/>
+				<path d="M1704 -864 1704,-900 1668,-864Z"/>
+				<path d="M1704 -936 1704,-900 1668,-936Z"/>
+				<path d="M2418 -864 2418,-900 2382,-864Z"/>
+				<path d="M2418 -936 2418,-900 2382,-936Z"/>
+				<path d="M816 -600 852,-600 816,-564Z"/>
+				<path d="M888 -600 852,-600 888,-564Z"/>
+				<path d="M1704 -600 1740,-600 1704,-564Z"/>
+				<path d="M1776 -600 1740,-600 1776,-564Z"/>
+				<path d="M3234 -864 3270,-864 3234,-828Z"/>
+				<path d="M3306 -864 3270,-864 3306,-828Z"/>
+				<path d="M3234 -936 3270,-936 3234,-972Z"/>
+				<path d="M3306 -936 3270,-936 3306,-972Z"/>
+				<path d="M3060 -864 3060,-900 3024,-864Z"/>
+				<path d="M3060 -936 3060,-900 3024,-936Z"/>
+				<path d="M3240 -504 3240,-540 3204,-504Z"/>
+				<path d="M3240 -576 3240,-540 3204,-576Z"/>
+				<path d="M816 -1200 852,-1200 816,-1164Z"/>
+				<path d="M888 -1200 852,-1200 888,-1164Z"/>
+				<path d="M816 -2280 852,-2280 816,-2244Z"/>
+				<path d="M888 -2280 852,-2280 888,-2244Z"/>
+				<path d="M3324 -480 3360,-480 3324,-444Z"/>
+				<path d="M3396 -480 3360,-480 3396,-444Z"/>
+				<path d="M3336 -2659 3336,-2623 3372,-2659Z"/>
+				<path d="M3336 -2669 3336,-2705 3372,-2669Z"/>
+				<path d="M3336 -2947 3336,-2911 3372,-2947Z"/>
+				<path d="M3336 -2957 3336,-2993 3372,-2957Z"/>
+				<path d="M3336 -3235 3336,-3199 3372,-3235Z"/>
+				<path d="M3336 -3245 3336,-3281 3372,-3245Z"/>
+				<path d="M1920 -2659 1920,-2623 1884,-2659Z"/>
+				<path d="M1920 -2669 1920,-2705 1884,-2669Z"/>
+				<path d="M1920 -2947 1920,-2911 1884,-2947Z"/>
+				<path d="M1920 -2957 1920,-2993 1884,-2957Z"/>
+				<path d="M1920 -3235 1920,-3199 1884,-3235Z"/>
+				<path d="M1920 -3245 1920,-3281 1884,-3245Z"/>
+				<path d="M3336 -3595 3336,-3559 3372,-3595Z"/>
+				<path d="M1920 -3595 1920,-3559 1884,-3595Z"/>
+				<path d="M1998 -2520 1962,-2520 1998,-2484Z"/>
+				<path d="M1926 -2520 1962,-2520 1926,-2484Z"/>
+				<path d="M2664 -2520 2628,-2520 2664,-2484Z"/>
+				<path d="M2592 -2520 2628,-2520 2592,-2484Z"/>
+				<path d="M3330 -2520 3294,-2520 3330,-2484Z"/>
+				<path d="M3258 -2520 3294,-2520 3258,-2484Z"/>
+				<path d="M3564 -4800 3600,-4800 3564,-4836Z"/>
+				<path d="M3636 -4800 3600,-4800 3636,-4836Z"/>
+				<path d="M1824 -3480 1824,-3444 1788,-3480Z"/>
+				<path d="M1824 -3408 1824,-3444 1788,-3408Z"/>
+				<path d="M3432 -3480 3432,-3444 3468,-3480Z"/>
+				<path d="M3432 -3408 3432,-3444 3468,-3408Z"/>
+				<path d="M1704 -3480 1704,-3444 1668,-3480Z"/>
+				<path d="M1704 -3408 1704,-3444 1668,-3408Z"/>
+				<path d="M1776 -3936 1776,-3900 1812,-3936Z"/>
+				<path d="M1776 -3864 1776,-3900 1812,-3864Z"/>
+				<path d="M1704 -3936 1704,-3900 1668,-3936Z"/>
+				<path d="M1704 -3864 1704,-3900 1668,-3864Z"/>
+				<path d="M2418 -3936 2418,-3900 2382,-3936Z"/>
+				<path d="M2418 -3864 2418,-3900 2382,-3864Z"/>
+				<path d="M816 -4200 852,-4200 816,-4236Z"/>
+				<path d="M888 -4200 852,-4200 888,-4236Z"/>
+				<path d="M1704 -4200 1740,-4200 1704,-4236Z"/>
+				<path d="M1776 -4200 1740,-4200 1776,-4236Z"/>
+				<path d="M3234 -3936 3270,-3936 3234,-3972Z"/>
+				<path d="M3306 -3936 3270,-3936 3306,-3972Z"/>
+				<path d="M3234 -3864 3270,-3864 3234,-3828Z"/>
+				<path d="M3306 -3864 3270,-3864 3306,-3828Z"/>
+				<path d="M3060 -3936 3060,-3900 3024,-3936Z"/>
+				<path d="M3060 -3864 3060,-3900 3024,-3864Z"/>
+				<path d="M3240 -4296 3240,-4260 3204,-4296Z"/>
+				<path d="M3240 -4224 3240,-4260 3204,-4224Z"/>
+				<path d="M816 -3600 852,-3600 816,-3636Z"/>
+				<path d="M888 -3600 852,-3600 888,-3636Z"/>
+				<path d="M816 -2520 852,-2520 816,-2556Z"/>
+				<path d="M888 -2520 852,-2520 888,-2556Z"/>
+				<path d="M3324 -4320 3360,-4320 3324,-4356Z"/>
+				<path d="M3396 -4320 3360,-4320 3396,-4356Z"/>
+				<path d="M0 -2364 0,-2400 36,-2364Z"/>
+				<path d="M0 -2436 0,-2400 36,-2436Z"/>
+				<path d="M3864 -2141 3864,-2177 3828,-2141Z"/>
+				<path d="M3864 -2131 3864,-2095 3828,-2131Z"/>
+				<path d="M3864 -1853 3864,-1889 3828,-1853Z"/>
+				<path d="M3864 -1843 3864,-1807 3828,-1843Z"/>
+				<path d="M3864 -1565 3864,-1601 3828,-1565Z"/>
+				<path d="M3864 -1555 3864,-1519 3828,-1555Z"/>
+				<path d="M5280 -2141 5280,-2177 5316,-2141Z"/>
+				<path d="M5280 -2131 5280,-2095 5316,-2131Z"/>
+				<path d="M5280 -1853 5280,-1889 5316,-1853Z"/>
+				<path d="M5280 -1843 5280,-1807 5316,-1843Z"/>
+				<path d="M5280 -1565 5280,-1601 5316,-1565Z"/>
+				<path d="M5280 -1555 5280,-1519 5316,-1555Z"/>
+				<path d="M3864 -1205 3864,-1241 3828,-1205Z"/>
+				<path d="M5280 -1205 5280,-1241 5316,-1205Z"/>
+				<path d="M5202 -2280 5238,-2280 5202,-2316Z"/>
+				<path d="M5274 -2280 5238,-2280 5274,-2316Z"/>
+				<path d="M4536 -2280 4572,-2280 4536,-2316Z"/>
+				<path d="M4608 -2280 4572,-2280 4608,-2316Z"/>
+				<path d="M3870 -2280 3906,-2280 3870,-2316Z"/>
+				<path d="M3942 -2280 3906,-2280 3942,-2316Z"/>
+				<path d="M5376 -1320 5376,-1356 5412,-1320Z"/>
+				<path d="M5376 -1392 5376,-1356 5412,-1392Z"/>
+				<path d="M3768 -1320 3768,-1356 3732,-1320Z"/>
+				<path d="M3768 -1392 3768,-1356 3732,-1392Z"/>
+				<path d="M5496 -1320 5496,-1356 5532,-1320Z"/>
+				<path d="M5496 -1392 5496,-1356 5532,-1392Z"/>
+				<path d="M5424 -864 5424,-900 5388,-864Z"/>
+				<path d="M5424 -936 5424,-900 5388,-936Z"/>
+				<path d="M5496 -864 5496,-900 5532,-864Z"/>
+				<path d="M5496 -936 5496,-900 5532,-936Z"/>
+				<path d="M4782 -864 4782,-900 4818,-864Z"/>
+				<path d="M4782 -936 4782,-900 4818,-936Z"/>
+				<path d="M6384 -600 6348,-600 6384,-564Z"/>
+				<path d="M6312 -600 6348,-600 6312,-564Z"/>
+				<path d="M5496 -600 5460,-600 5496,-564Z"/>
+				<path d="M5424 -600 5460,-600 5424,-564Z"/>
+				<path d="M3720 -864 3720,-900 3756,-864Z"/>
+				<path d="M3720 -936 3720,-900 3756,-936Z"/>
+				<path d="M3960 -504 3960,-540 3996,-504Z"/>
+				<path d="M3960 -576 3960,-540 3996,-576Z"/>
+				<path d="M6384 -1200 6348,-1200 6384,-1164Z"/>
+				<path d="M6312 -1200 6348,-1200 6312,-1164Z"/>
+				<path d="M6384 -2280 6348,-2280 6384,-2244Z"/>
+				<path d="M6312 -2280 6348,-2280 6312,-2244Z"/>
+				<path d="M3876 -480 3840,-480 3876,-444Z"/>
+				<path d="M3804 -480 3840,-480 3804,-444Z"/>
+				<path d="M3864 -2659 3864,-2623 3828,-2659Z"/>
+				<path d="M3864 -2669 3864,-2705 3828,-2669Z"/>
+				<path d="M3864 -2947 3864,-2911 3828,-2947Z"/>
+				<path d="M3864 -2957 3864,-2993 3828,-2957Z"/>
+				<path d="M3864 -3235 3864,-3199 3828,-3235Z"/>
+				<path d="M3864 -3245 3864,-3281 3828,-3245Z"/>
+				<path d="M5280 -2659 5280,-2623 5316,-2659Z"/>
+				<path d="M5280 -2669 5280,-2705 5316,-2669Z"/>
+				<path d="M5280 -2947 5280,-2911 5316,-2947Z"/>
+				<path d="M5280 -2957 5280,-2993 5316,-2957Z"/>
+				<path d="M5280 -3235 5280,-3199 5316,-3235Z"/>
+				<path d="M5280 -3245 5280,-3281 5316,-3245Z"/>
+				<path d="M3864 -3595 3864,-3559 3828,-3595Z"/>
+				<path d="M5280 -3595 5280,-3559 5316,-3595Z"/>
+				<path d="M5202 -2520 5238,-2520 5202,-2484Z"/>
+				<path d="M5274 -2520 5238,-2520 5274,-2484Z"/>
+				<path d="M4536 -2520 4572,-2520 4536,-2484Z"/>
+				<path d="M4608 -2520 4572,-2520 4608,-2484Z"/>
+				<path d="M3870 -2520 3906,-2520 3870,-2484Z"/>
+				<path d="M3942 -2520 3906,-2520 3942,-2484Z"/>
+				<path d="M5376 -3480 5376,-3444 5412,-3480Z"/>
+				<path d="M5376 -3408 5376,-3444 5412,-3408Z"/>
+				<path d="M3768 -3480 3768,-3444 3732,-3480Z"/>
+				<path d="M3768 -3408 3768,-3444 3732,-3408Z"/>
+				<path d="M5496 -3480 5496,-3444 5532,-3480Z"/>
+				<path d="M5496 -3408 5496,-3444 5532,-3408Z"/>
+				<path d="M5424 -3936 5424,-3900 5388,-3936Z"/>
+				<path d="M5424 -3864 5424,-3900 5388,-3864Z"/>
+				<path d="M5496 -3936 5496,-3900 5532,-3936Z"/>
+				<path d="M5496 -3864 5496,-3900 5532,-3864Z"/>
+				<path d="M4782 -3936 4782,-3900 4818,-3936Z"/>
+				<path d="M4782 -3864 4782,-3900 4818,-3864Z"/>
+				<path d="M6384 -4200 6348,-4200 6384,-4236Z"/>
+				<path d="M6312 -4200 6348,-4200 6312,-4236Z"/>
+				<path d="M5496 -4200 5460,-4200 5496,-4236Z"/>
+				<path d="M5424 -4200 5460,-4200 5424,-4236Z"/>
+				<path d="M3720 -3936 3720,-3900 3756,-3936Z"/>
+				<path d="M3720 -3864 3720,-3900 3756,-3864Z"/>
+				<path d="M3960 -4296 3960,-4260 3996,-4296Z"/>
+				<path d="M3960 -4224 3960,-4260 3996,-4224Z"/>
+				<path d="M6384 -3600 6348,-3600 6384,-3636Z"/>
+				<path d="M6312 -3600 6348,-3600 6312,-3636Z"/>
+				<path d="M6384 -2520 6348,-2520 6384,-2556Z"/>
+				<path d="M6312 -2520 6348,-2520 6312,-2556Z"/>
+				<path d="M3876 -4320 3840,-4320 3876,-4356Z"/>
+				<path d="M3804 -4320 3840,-4320 3804,-4356Z"/>
+				<path d="M7200 -2364 7200,-2400 7164,-2364Z"/>
+				<path d="M7200 -2436 7200,-2400 7164,-2436Z"/>
+			</g>
+		</g>
+</svg>
