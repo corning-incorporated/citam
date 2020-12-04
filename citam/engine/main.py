@@ -294,9 +294,11 @@ def run_simulation(inputs: dict):
             floorplans,
             model_inputs["entrances"],
             model_inputs["facility_name"],
+            traffic_policy=model_inputs["traffic_policy"]
         )
         del model_inputs["entrances"]
         del model_inputs["facility_name"]
+        del model_inputs["traffic_policy"]
 
         model_inputs["facility"] = facility
         my_model = FacilityTransmissionModel(**model_inputs)
