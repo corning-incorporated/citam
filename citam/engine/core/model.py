@@ -411,12 +411,12 @@ class FacilityTransmissionModel:
             {}
         ] * self.facility.number_of_floors  # One per floor
 
-        active_agents, moving_agents = self.move_agents()
+        active_agents, _ = self.move_agents()
 
-        if len(moving_agents) > 1 and not self.dry_run:
+        if len(active_agents) > 1 and not self.dry_run:
             # At least 2 agents required
             moving_active_agents = [
-                a for a in moving_agents if a.current_location is not None
+                a for a in active_agents if a.current_location is not None
             ]
             self.identify_contacts(moving_active_agents)
 
