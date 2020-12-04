@@ -147,7 +147,7 @@ def _add_engine_commands(subparser, global_args):
     ingest.add_argument(
         "-f",
         "--force_overwrite",
-        action='store_true',
+        action="store_true",
         help="Force overwrite of existing files.",
     )
 
@@ -184,7 +184,7 @@ def _add_engine_commands(subparser, global_args):
     export_floorplan.add_argument(
         "-d",
         "--doors",
-        action='store_true',
+        action="store_true",
         help="Include doors in output.",
     )
 

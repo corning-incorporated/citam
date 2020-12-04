@@ -294,7 +294,7 @@ def run_simulation(inputs: dict):
             floorplans,
             model_inputs["entrances"],
             model_inputs["facility_name"],
-            traffic_policy=model_inputs["traffic_policy"]
+            traffic_policy=model_inputs["traffic_policy"],
         )
         del model_inputs["entrances"]
         del model_inputs["facility_name"]
