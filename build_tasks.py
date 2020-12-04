@@ -21,9 +21,9 @@ import warnings
 from distutils.core import Command
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-NODE_ROOT = os.path.join(BASE_DIR, 'citamjs')
-NODE_OUTPUT_DIR = os.path.join(NODE_ROOT, 'dist')
-CITAM_STATIC_DIR = os.path.join(BASE_DIR, 'citam', 'api', 'static', 'dash')
+NODE_ROOT = os.path.join(BASE_DIR, "citamjs")
+NODE_OUTPUT_DIR = os.path.join(NODE_ROOT, "dist")
+CITAM_STATIC_DIR = os.path.join(BASE_DIR, "citam", "api", "static", "dash")
 LOG = logging.getLogger(__name__)
 
 
@@ -56,13 +56,15 @@ class NodeJSBuild(Command):
         env = os.environ.copy()
 
         # shell=True is required for subprocess in windows
-        shell = True if sys.platform == 'win32' else False
+        shell = True if sys.platform == "win32" else False
 
         try:
-            subprocess.check_call(['npm', '-v'], env=env, shell=shell)
+            subprocess.check_call(["npm", "-v"], env=env, shell=shell)
         except (subprocess.SubprocessError, FileNotFoundError):
-            warnings.warn('Unable to detect NodeJS installation. Skipping '
-                          'NodeJS build step')
+            warnings.warn(
+                "Unable to detect NodeJS installation. Skipping "
+                "NodeJS build step"
+            )
             return
 
         try:
@@ -71,14 +73,19 @@ class NodeJSBuild(Command):
             os.chdir(NODE_ROOT)
 
             # NODE_ENV=development is set to install dev_dependencies
-            env['NODE_ENV'] = 'development'
-            subprocess.run(['npm', 'install', '--progress=false'],
-                           check=True, env=env, shell=shell)
+            env["NODE_ENV"] = "development"
+            subprocess.run(
+                ["npm", "install", "--progress=false"],
+                check=True,
+                env=env,
+                shell=shell,
+            )
 
             # NODE_ENV=production triggers build-time optimizations
-            env['NODE_ENV'] = 'production'
-            subprocess.run(['npm', 'run', 'build'],
-                           check=True, env=env, shell=shell)
+            env["NODE_ENV"] = "production"
+            subprocess.run(
+                ["npm", "run", "build"], check=True, env=env, shell=shell
+            )
 
             # TODO: Make JS compile directly to CITAM_STATIC_DIR
             LOG.info("Cleaning previously generated NodeJS artifacts")
@@ -89,6 +96,8 @@ class NodeJSBuild(Command):
             shutil.copytree(NODE_OUTPUT_DIR, CITAM_STATIC_DIR)
             os.chdir(original_dir)
         except (subprocess.SubprocessError, FileNotFoundError):
-            warnings.warn('NodeJS build Failed. '
-                          'The CITAM dashboard will not be available')
+            warnings.warn(
+                "NodeJS build Failed. "
+                "The CITAM dashboard will not be available"
+            )
             return
