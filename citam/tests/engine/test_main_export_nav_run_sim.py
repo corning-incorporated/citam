@@ -29,6 +29,7 @@ def test_run_simulation_no_issues(datadir, tmpdir, monkeypatch):
         "meetings_policy_params": None,
         "scheduling_policy": None,
         "output_directory": tmpdir,
+        "traffic_policy": None
     }
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
     main.run_simulation(inputs_dict)
