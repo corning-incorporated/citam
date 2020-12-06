@@ -368,36 +368,11 @@ def test_close_dining(simple_facility_floorplan, monkeypatch, request):
     assert CAFETERIA_VISIT not in model.scheduling_rules
 
 
-def test_no_meetings(simple_facility_floorplan, monkeypatch, request):
+def test_no_meetings(simple_facility_model, request):
 
     filename = request.module.__file__
     test_dir = os.path.dirname(filename)
-    datadir = os.path.join(test_dir, "data_navigation")
-    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+    simple_facility_model.create_meetings=False
+    simple_facility_model.run_serial(test_dir)
 
-    facility = Facility(
-        [simple_facility_floorplan],
-        facility_name="test_simple_facility",
-        entrances=[{"name": "1", "floor": "0"}],
-        traffic_policy=None,
-    )
-
-    model = FacilityTransmissionModel(
-        facility=facility,
-        daylength=3600,
-        n_agents=2,
-        occupancy_rate=None,
-        buffer=100,
-        timestep=1.0,
-        contact_distance=6.0,
-        shifts=[{"name": "1", "start_time": 0, "percent_workforce": 1.0}],
-        meetings_policy_params=None,
-        scheduling_policy=None,
-        dry_run=False,
-        close_dining=True,
-        create_meetings=False,
-    )
-
-    model.run_serial(test_dir)
-
-    assert len(model.meeting_policy.meetings) == 0
+    assert len(simple_facility_model.meeting_policy.meetings) == 0
