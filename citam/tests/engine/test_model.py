@@ -372,7 +372,7 @@ def test_no_meetings(simple_facility_model, request):
 
     filename = request.module.__file__
     test_dir = os.path.dirname(filename)
-    simple_facility_model.create_meetings=False
+    simple_facility_model.create_meetings = False
     simple_facility_model.run_serial(test_dir)
 
     assert len(simple_facility_model.meeting_policy.meetings) == 0
