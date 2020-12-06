@@ -443,6 +443,14 @@ def parse_input_file(
         raise ValueError("At least one agent is required.")
 
     # Optional arguments
+    create_meetings = True
+    if "create_meetings" in input_dict:
+        create_meetings = input_dict["create_meetings"]
+
+    close_dining = False
+    if "close_dining" in input_dict:
+        close_dining = input_dict["close_dining"]
+
     upload_results = False
     if "upload_results" in input_dict:
         upload_results = input_dict["upload_results"]
@@ -536,4 +544,6 @@ def parse_input_file(
         "scheduling_policy": scheduling_policy,
         "traffic_policy": traffic_policy,
         "output_directory": os.getcwd() + "/",
+        "create_meetings": create_meetings,
+        "close_dining": close_dining
     }

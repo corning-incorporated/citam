@@ -1,6 +1,7 @@
 from citam.engine.core.model import FacilityTransmissionModel
 from citam.engine.core.agent import Agent
 from citam.engine.facility.indoor_facility import Facility
+from citam.engine.constants import CAFETERIA_VISIT
 
 import os
 import pytest
@@ -333,3 +334,69 @@ def test_save_outputs(tmpdir, simple_facility_model):
     )
 
     # TODO: validate contents of each file
+
+def test_close_dining(simple_facility_floorplan, monkeypatch, request):
+
+    filename = request.module.__file__
+    test_dir = os.path.dirname(filename)
+    datadir = os.path.join(test_dir, "data_navigation")
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+
+    facility = Facility(
+        [simple_facility_floorplan],
+        facility_name="test_simple_facility",
+        entrances=[{"name": "1", "floor": "0"}],
+        traffic_policy=None,
+    )
+
+    model = FacilityTransmissionModel(
+        facility=facility,
+        daylength=3600,
+        n_agents=2,
+        occupancy_rate=None,
+        buffer=100,
+        timestep=1.0,
+        contact_distance=6.0,
+        shifts=[{"name": "1", "start_time": 0, "percent_workforce": 1.0}],
+        meetings_policy_params=None,
+        scheduling_policy=None,
+        dry_run=False,
+        close_dining=True
+    )
+
+    assert CAFETERIA_VISIT not in model.scheduling_rules
+
+
+def test_no_meetings(simple_facility_floorplan, monkeypatch, request):
+
+    filename = request.module.__file__
+    test_dir = os.path.dirname(filename)
+    datadir = os.path.join(test_dir, "data_navigation")
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+
+    facility = Facility(
+        [simple_facility_floorplan],
+        facility_name="test_simple_facility",
+        entrances=[{"name": "1", "floor": "0"}],
+        traffic_policy=None,
+    )
+
+    model = FacilityTransmissionModel(
+        facility=facility,
+        daylength=3600,
+        n_agents=2,
+        occupancy_rate=None,
+        buffer=100,
+        timestep=1.0,
+        contact_distance=6.0,
+        shifts=[{"name": "1", "start_time": 0, "percent_workforce": 1.0}],
+        meetings_policy_params=None,
+        scheduling_policy=None,
+        dry_run=False,
+        close_dining=True,
+        create_meetings=False
+    )
+
+    model.run_serial()
+
+    assert  len(model.meeting_policy.meetings) == 0
