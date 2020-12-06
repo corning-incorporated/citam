@@ -545,5 +545,5 @@ def parse_input_file(
         "traffic_policy": traffic_policy,
         "output_directory": os.getcwd() + "/",
         "create_meetings": create_meetings,
-        "close_dining": close_dining
+        "close_dining": close_dining,
     }

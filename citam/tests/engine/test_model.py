@@ -335,6 +335,7 @@ def test_save_outputs(tmpdir, simple_facility_model):
 
     # TODO: validate contents of each file
 
+
 def test_close_dining(simple_facility_floorplan, monkeypatch, request):
 
     filename = request.module.__file__
@@ -361,7 +362,7 @@ def test_close_dining(simple_facility_floorplan, monkeypatch, request):
         meetings_policy_params=None,
         scheduling_policy=None,
         dry_run=False,
-        close_dining=True
+        close_dining=True,
     )
 
     assert CAFETERIA_VISIT not in model.scheduling_rules
@@ -394,9 +395,9 @@ def test_no_meetings(simple_facility_floorplan, monkeypatch, request):
         scheduling_policy=None,
         dry_run=False,
         close_dining=True,
-        create_meetings=False
+        create_meetings=False,
     )
 
-    model.run_serial()
+    model.run_serial(test_dir)
 
-    assert  len(model.meeting_policy.meetings) == 0
+    assert len(model.meeting_policy.meetings) == 0

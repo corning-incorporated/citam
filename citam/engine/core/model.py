@@ -87,7 +87,6 @@ class FacilityTransmissionModel:
         if close_dining and CAFETERIA_VISIT in self.scheduling_rules:
             del self.scheduling_rules[CAFETERIA_VISIT]
 
-
         self.meetings_policy_params = meetings_policy_params
 
     def create_simid(self):
