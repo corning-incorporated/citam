@@ -276,8 +276,7 @@ def extract_facility_stats(facility, facility_directory: str = None, **kwargs):
 
     if not facility_directory:
         facility_directory = os.path.join(
-            su.get_floorplans_directory(),
-            facility
+            su.get_floorplans_directory(), facility
         )
     n_meeting_rooms = 0
     n_offices = 0
