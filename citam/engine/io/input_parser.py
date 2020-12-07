@@ -477,9 +477,7 @@ def parse_input_file(
     if "contact_distance" in input_dict:
         contact_distance = input_dict["contact_distance"]
 
-    shifts = [
-        {"name": "primary", "start_time": buffer, "percent_workforce": 1.0}
-    ]
+    shifts = [{"name": "primary", "start_time": buffer, "percent_agents": 1.0}]
     if "shifts" in input_dict:
         shifts = input_dict["shifts"]
     if not isinstance(shifts, list):
@@ -488,17 +486,17 @@ def parse_input_file(
         if (
             "name" not in s
             or "start_time" not in s
-            or "percent_workforce" not in s
+            or "percent_agents" not in s
         ):
             raise ValueError(
-                "A shift must define a name, start time and percent workforce"
+                "A shift must define a name, start time and percent agents"
             )
         if (
-            not isinstance(s["percent_workforce"], float)
-            or s["percent_workforce"] > 1.0
-            or s["percent_workforce"] <= 0.0
+            not isinstance(s["percent_agents"], float)
+            or s["percent_agents"] > 1.0
+            or s["percent_agents"] <= 0.0
         ):
-            raise TypeError("Percent workforce must be between 0.0 than 1.0")
+            raise TypeError("Percent agents must be between 0.0 than 1.0")
 
     scheduling_policy = None
     if "scheduling_policy_file" in input_dict:
@@ -534,9 +532,9 @@ def parse_input_file(
                 )
         traffic_policy = input_dict["traffic_policy"]
 
-    total_percent: float = sum(s["percent_workforce"] for s in shifts)
+    total_percent: float = sum(s["percent_agents"] for s in shifts)
     if total_percent > 1.0:
-        raise ValueError("Total percent workforce greater than 1.0")
+        raise ValueError("Total percent of agents cannot be greater than 1.0")
 
     LOG.info("Number of agents: %d", n_agents)
     LOG.info("User provided floorplan scale is: %s", floorplan_scale)

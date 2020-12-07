@@ -186,10 +186,10 @@ class ContactEvents:
                 )
 
     def extract_statistics(self) -> List[Dict[str, Any]]:
-        """Extract key contact statistics from contact data.
+        """Extract important contact statistics from contact data.
 
-        :return: list of dictionaries of key statistics. Each stat is given
-            by its name, value and unit.
+        :return: list of dictionaries of important statistics. Each stat is
+                given by its name, value and unit.
         :rtype: list[dict[str, Dict]]
         """
         statistics = []
