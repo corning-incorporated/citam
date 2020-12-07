@@ -181,6 +181,12 @@ def _add_engine_commands(subparser, global_args):
     export_floorplan.add_argument(
         "-o", "--outputfile", type=str, required=True, help="Path to svg file"
     )
+    export_floorplan.add_argument(
+        "-d",
+        "--doors",
+        action="store_true",
+        help="Include doors in output.",
+    )
 
     export_navnet = engine_commands.add_parser(
         "export-navnet",
