@@ -158,7 +158,7 @@ class FloorplanIngester:
         (
             self.space_paths,
             self.space_attributes,
-            self.door_pathsparser,
+            self.door_paths,
         ) = parser.parse_standalone_svg_floorplan_file(self.svg_file)
 
     def read_data_from_csv_and_svg_files(self):
