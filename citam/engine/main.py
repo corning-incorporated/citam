@@ -29,7 +29,7 @@ import citam.engine.io.storage_utils as su
 from citam.engine.map.floorplan import floorplan_from_directory
 from citam.engine.map.ingester import FloorplanIngester
 from citam.engine.map.updater import FloorplanUpdater
-from citam.engine.core.model import FacilityTransmissionModel
+from citam.engine.core.simulation import Simulation
 from citam.engine.facility.navbuilder import NavigationBuilder
 from citam.engine.map.point import Point
 from citam.engine.facility.indoor_facility import Facility
@@ -301,7 +301,7 @@ def run_simulation(inputs: dict):
         del model_inputs["traffic_policy"]
 
         model_inputs["facility"] = facility
-        my_model = FacilityTransmissionModel(**model_inputs)
+        my_model = Simulation(**model_inputs)
     else:
         raise ValueError("At least one floorplan must be provided.")
 
