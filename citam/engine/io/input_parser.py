@@ -443,6 +443,14 @@ def parse_input_file(
         raise ValueError("At least one agent is required.")
 
     # Optional arguments
+    create_meetings = True
+    if "create_meetings" in input_dict:
+        create_meetings = input_dict["create_meetings"]
+
+    close_dining = False
+    if "close_dining" in input_dict:
+        close_dining = input_dict["close_dining"]
+
     upload_results = False
     if "upload_results" in input_dict:
         upload_results = input_dict["upload_results"]
@@ -476,6 +484,21 @@ def parse_input_file(
         shifts = input_dict["shifts"]
     if not isinstance(shifts, list):
         raise TypeError("shifts must be a list")
+    for s in shifts:
+        if (
+            "name" not in s
+            or "start_time" not in s
+            or "percent_workforce" not in s
+        ):
+            raise ValueError(
+                "A shift must define a name, start time and percent workforce"
+            )
+        if (
+            not isinstance(s["percent_workforce"], float)
+            or s["percent_workforce"] > 1.0
+            or s["percent_workforce"] <= 0.0
+        ):
+            raise TypeError("Percent workforce must be between 0.0 than 1.0")
 
     scheduling_policy = None
     if "scheduling_policy_file" in input_dict:
@@ -511,7 +534,7 @@ def parse_input_file(
                 )
         traffic_policy = input_dict["traffic_policy"]
 
-    total_percent = sum(s["percent_workforce"] for s in shifts)
+    total_percent: float = sum(s["percent_workforce"] for s in shifts)
     if total_percent > 1.0:
         raise ValueError("Total percent workforce greater than 1.0")
 
@@ -536,4 +559,6 @@ def parse_input_file(
         "scheduling_policy": scheduling_policy,
         "traffic_policy": traffic_policy,
         "output_directory": os.getcwd() + "/",
+        "create_meetings": create_meetings,
+        "close_dining": close_dining,
     }
