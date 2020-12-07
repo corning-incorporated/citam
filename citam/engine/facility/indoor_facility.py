@@ -60,7 +60,7 @@ class Facility:
         Find the facility entrance that offers the fastest route to an agent's
         assigned office space.
 
-        :param int offcie_floor: index of the floor where this office is
+        :param int office_floor: index of the floor where this office is
             located
         :param int office_id: index of the office space
         :return: best_entrance_door, best_entrance_floor
