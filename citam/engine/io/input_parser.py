@@ -453,7 +453,7 @@ def parse_input_file(
 
     occupancy_rate = input_dict.get("occupancy_rate", None)
 
-    floorplan_scale = input_dict.get(["floorplan_scale"], 1.0 / 12.0)
+    floorplan_scale = input_dict.get("floorplan_scale", 1.0 / 12.0)
     if not isinstance(floorplan_scale, (int, float)):
         raise TypeError("Floorplan scale must be a float or an int")
 
