@@ -26,6 +26,7 @@ from citam.engine.main import build_navigation_network
 from citam.engine.main import update_floorplan_from_svg_file
 from citam.engine.main import export_navigation_graph_to_svg
 from citam.engine.main import find_and_save_potential_one_way_aisles
+from citam.engine.main import extract_facility_stats
 
 
 def main():
@@ -187,6 +188,14 @@ def _add_engine_commands(subparser, global_args):
         action="store_true",
         help="Include doors in output.",
     )
+
+    extract_stats = engine_commands.add_parser(
+        "stats",
+        parents=[global_args],
+        help="Extract high level info on a given facility",
+    )
+    extract_stats.set_defaults(func=extract_facility_stats)
+    extract_stats.add_argument("facility", type=str, help="facility name")
 
     export_navnet = engine_commands.add_parser(
         "export-navnet",

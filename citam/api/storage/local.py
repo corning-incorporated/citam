@@ -68,12 +68,35 @@ class LocalStorageDriver(BaseStorageDriver):
             with open(manifest, "r") as manifest_file:
                 try:
                     manifest_data = json.load(manifest_file)
+                except ValueError:
+                    LOG.warning(
+                        '"%s" is not a valid json file. '
+                        "The results for this manifest will be ignored ",
+                        manifest,
+                    )
+                try:
                     sim_id = manifest_data["SimulationID"]
+                except KeyError:
+                    LOG.warning(
+                        '"%s" does not define "SimulationID". '
+                        "The results for this manifest will be ignored ",
+                        manifest,
+                    )
+                    continue
+                try:
                     policy_id = manifest_data["PolicyID"]
+                except KeyError:
+                    LOG.warning(
+                        '"%s" does not define "PolicyID". '
+                        "The results for this manifest will be ignored ",
+                        manifest,
+                    )
+                    continue
+                try:
                     facility_name = manifest_data["FacilityName"]
                 except KeyError:
                     LOG.warning(
-                        '"%s" does not define "SimulationName". '
+                        '"%s" does not define "FacilityName". '
                         "The results for this manifest will be ignored ",
                         manifest,
                     )

@@ -272,6 +272,44 @@ def load_floorplans(floors, facility_name, user_scale=None):
     return floorplans
 
 
+def extract_facility_stats(facility, facility_directory: str = None, **kwargs):
+
+    if not facility_directory:
+        facility_directory = os.path.join(
+            su.get_floorplans_directory(),
+            facility
+        )
+    n_meeting_rooms = 0
+    n_offices = 0
+    n_labs = 0
+    n_cafes = 0
+    n_restrooms = 0
+    n_floors = 0
+    for floor in os.listdir(facility_directory):
+        floorplan_directory = os.path.join(facility_directory, floor)
+        floorplan = floorplan_from_directory(floorplan_directory, floor)
+        for space in floorplan.spaces:
+            if space.is_space_a_meeting_room():
+                n_meeting_rooms += 1
+            elif space.is_space_an_office():
+                n_offices += 1
+            elif space.is_space_a_cafeteria():
+                n_cafes += 1
+            elif space.is_space_a_restroom():
+                n_restrooms += 1
+            elif space.is_space_a_lab():
+                n_labs += 1
+        n_floors += 1
+
+    print("Here are the stats for ", facility)
+    print("\tNumber of floors", n_floors)
+    print("\tNumber of offices:", n_offices)
+    print("\tNumber of restrooms:", n_restrooms)
+    print("\tNumber of cafeterias:", n_cafes)
+    print("\tNumber of meeting rooms:", n_meeting_rooms)
+    print("\tNumber of labs:", n_labs)
+
+
 def run_simulation(inputs: dict):
     """Perform an agent-based simulation given a dictionary of input values
 
