@@ -13,14 +13,6 @@
 # ==============================================================================
 
 
-VERTICAL_AISLE = 1
-HORIZONTAL_AISLE = 2
-DIAGONAL_AISLE = 3
-
-ONEWAY_TRAFFIC_POSITIVE_DIRECTION = 1
-ONEWAY_TRAFFIC_NEGATIVE_DIRECTION = -1
-TWO_WAY_TRAFFIC = 0
-
 # Constants related to floorplan data
 
 REQUIRED_SPACE_METADATA = [
@@ -67,6 +59,8 @@ SUPPORTED_SPACE_FUNCTIONS = [
     "parking",
 ]
 
+# Constants related to scheduling
+# TODO: Move everything below to settings
 RESTROOM_VISIT = "Restroom visit"
 MEETING = "Meeting"
 LAB_WORK = "Lab work"
