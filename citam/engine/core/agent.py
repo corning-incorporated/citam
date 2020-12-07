@@ -13,28 +13,65 @@
 # ==============================================================================
 
 
+from citam.engine.policy.daily_schedule import Schedule
+
+
 class Agent:
-    def __init__(self, name, schedule):
+    """The agent in Agent-based modeling. An agent represents a user of the
+    facility (employee or otherwise). An agent has a schedule (and associated
+    itinerary) that they follow throughout the day. This also keeps track of
+    the number of contacts that this agent has had so far.
+    """
+
+    def __init__(
+        self,
+        unique_id: int,
+        schedule: Schedule,
+        name: str = None,
+        office_id: int = None,
+        job_function: str = None,
+    ):
+        """
+        Initialize an agent object.
+
+        Create a new agent object to represent a facility user.
+
+        :param unique_id: The unique identifier of this agent.
+        :type unique_id: int
+        :param schedule: The schedule of this agent.
+        :type schedule: Schedule
+        :param name: The name of this agent, defaults to None
+        :type name: str, optional
+        :param office_id: ID of the office space assigned to this agent,
+            defaults to None
+        :type office_id: int, optional
+        :param job_function: job function of this agent, defaults to None
+        :type job_function: str, optional
+        """
+        self.unique_id = unique_id
+        self.schedule = schedule
 
         self.name = name
-        self.unique_id = name
-
-        self.status = "S"
-        self.office = None
-        self.job_function = None
+        self.office_id = office_id
+        self.job_function = job_function
 
         self.n_contacts = 0
-
         self.pos = None
         self.current_location = None
         self.current_floor = None
 
-        self.schedule = schedule
-
         return
 
     def step(self):
+        """
+        Move this agent one step forward in its itinerary.
 
+        This updates the agent's current position only if the agent's itinerary
+        indicates a different location.
+
+        :return: whether the agent has moved from its current location or not.
+        :rtype: bool
+        """
         xy_position, floor_number = self.schedule.get_next_position()
         has_moved = False
 
