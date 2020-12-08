@@ -244,6 +244,12 @@ class Navigation:
                 )
             fid = int(floor_identifier)
             if fid > 0:
+                if len(name1) < fid:
+                    raise ValueError(
+                        f"This multifloor type {self.multifloor_type} cannot \
+                        be used for the current naming (e.g. {name1}). please \
+                        update (must be less than name lenght)"
+                    )
                 name2 = (
                     name1[fid - 1]
                     + str(dest_floor + 1)
@@ -610,8 +616,8 @@ class Navigation:
         return valid_exit_nodes
 
     def get_valid_single_floor_exit_nodes(
-        self, location: int, floor_number: int
-    ) -> List[Tuple[int, int]]:
+        self, location: Union[int, tuple], floor_number: int
+    ) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]:
         """
         Find list of exit coords that corresponds to a valid node in the
         navigation network.
@@ -623,8 +629,7 @@ class Navigation:
         :return: List of exit coordinates.
         :rtype: List[Tuple[int,int]]
         """
-        """
-        """
+
         if isinstance(location, tuple):
             exit_nodes = [(location[0], location[1])]
         else:
@@ -661,7 +666,7 @@ class Navigation:
         starting_floor_number: int,
         destination: int,
         destination_floor_number: int,
-    ) -> List[List[[Tuple[int, ...]]]]:
+    ) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]:
         """
         Get list of valid routes between a starting space and a destination
         space in the current multifloor facility.
@@ -704,7 +709,7 @@ class Navigation:
 
     def get_best_possible_routes_same_floor(
         self, floor_number: int, current_location: int, destination: int
-    ) -> List[List[Tuple[int, ...]]]:
+    ) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]:
         """
         Find list of possible routes between two locations on the same floor in
         this facility.
@@ -747,7 +752,9 @@ class Navigation:
         return valid_routes
 
 
-def remove_unnecessary_coords(route: List[Tuple[int, ...]]):
+def remove_unnecessary_coords(
+    route: List[Union[Tuple[int, int], Tuple[int, int, int]]]
+) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]:
     """
     Inspect a route given by a set of coordinates and remove any intermediate
     coords that's collinear with its two neighbors.
