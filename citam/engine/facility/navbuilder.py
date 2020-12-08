@@ -12,52 +12,59 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 import logging
+import pathlib
 import os
-from typing import Tuple, List
+from typing import Tuple, List, Dict, Optional, Union
+import json
 
 import networkx as nx
 import progressbar as pb
-from svgpathtools import Line, svg2paths
+from svgpathtools import Line, svg2paths, Path
 
 import citam.engine.io.visualization as bv
 import citam.engine.map.utils as fu
 import citam.engine.map.geometry as gsu
 from citam.engine.map.door import Door
 from citam.engine.map.point import Point
-import json
+from citam.engine.map.floorplan import Floorplan
+from citam.engine.map.space import Space
 
 LOG = logging.getLogger(__name__)
 
 
 class NavigationBuilder:
-    """Create the navigation network (navnet) for a given floorplan.
+    """
+    Create the navigation network (navnet) for a given floorplan.
 
     Each node in the navigation network is a notable xy coordinate in the
     floorplan corresponding to entrances to various spaces and intersections
     between navigation segments. The correspondence between nodes and
     actual locations is handled at the floorplan and navigation (see the
     navigation class) level.
-
-    Parameters
-    -----------
-    floorplan: Floorplan
-        The floorplan to build the navigation network for
-    add_all_nav_points: bool
-        Whether to add all points from navigation segments to the network or
-        just the endpoints.  In both cases the final simplification process
-        will remove any unnecessary nodes. The tradeoff is how easy it is to
-        find intersections between segments. If all points are added,
-        intersections are found almost for free (nodes with more than 2 edges)
-        but the simplification process takes longer. If only the endpoints are
-        added, an iteration over pairs of nav segments that fall within the
-        same space is required.
     """
 
-    def __init__(self, current_floorplan, add_all_nav_points=False):
-        """This is the init doc"""
-        super().__init__()
+    def __init__(self, floorplan: Floorplan, add_all_nav_points=False):
+        """
+        Initialize a new navnet builder.
 
-        self.current_floorplan = current_floorplan
+        Whether 'add_all_nav_points' is True of False, the final simplification
+        process will remove any unnecessary nodes in the last step of the
+        navnet creation process. The tradeoff here is the speed of finding
+        intersections between segments. If all points are added, intersections
+        are found almost for free (nodes with more than 2 edges) but the
+        simplification process takes longer because there are more superfluous
+        points to remove. If only the endpoints are added, an iteration over
+        pairs of nav segments that fall within the same space is required to
+        find intersections.
+
+        :param current_floorplan: The floorplan for which to create the navnet.
+        :type current_floorplan: Floorplan
+        :param add_all_nav_points: whether to add all points from navigation
+            segments to the network or just the endpoints, defaults to False
+        :type add_all_nav_points: bool, optional
+        """
+
+        self.floorplan = floorplan
         self.add_all_nav_points = add_all_nav_points
 
         self.floor_navnet = nx.Graph()
@@ -65,29 +72,23 @@ class NavigationBuilder:
 
         # Keys will be space unique names and each entry will be a list of nav
         # segments where each segment is a tuple of the 2 endpoints
-        self.space_nav_segments = {}
+        self.space_nav_segments: Dict[str, List[Tuple[Point, Point]]] = {}
 
         # self.current_space = None  # for testing and debugging purposes
 
-        # To avoid parallel nav segments!
-        self.excluded_doors = []
+        # To avoid parallel nav segments (if a door is already part of the
+        # navnet, no need to use it to start new nav segments)
+        self.excluded_doors: List[Door] = []
 
         return
 
     def build(self):
-        """Build the navigation network (navnet) for a given floorplan.
+        """
+        Build the navigation network (navnet) for a given floorplan.
 
         The navigation network is created by adding a navigation segment
-        at the center of each aisle and then adding navigation segments
-        from each side of a door in a perpendicular direction.
-
-        Parameters
-        -----------
-
-        Returns
-        --------
-        None
-
+        at the center of each aisle and then adding perpendicular nav segments
+        acroos each door that hasn't been added to the navnet yet.
         """
 
         # Create nav segements for all aisles and doors
@@ -103,12 +104,12 @@ class NavigationBuilder:
 
         # Make sure no intersection was missed
         if self.add_all_nav_points:
-            for space in list(set(self.current_floorplan.spaces)):
+            for space in list(set(self.floorplan.spaces)):
                 self.find_intersections_in_space(space)
 
         # Ensure no nav path crosses a special wall
         LOG.info("Make sure nav paths do not cross any walls...")
-        self.sanitize_graph()
+        self.sanitize_navnet()
 
         # Label all intersection nodes accordingly
         nodes = list(self.floor_navnet.nodes())
@@ -123,11 +124,12 @@ class NavigationBuilder:
         LOG.info("Done.")
 
     def _create_nav_segments_for_doors(self):
-        """Iterate over each door in floorplan and create perpendicular nav
+        """
+        Iterate over each door in floorplan and create perpendicular nav
         segments for each.
         """
-        pbar = pb.ProgressBar(max_value=len(self.current_floorplan.doors))
-        for i, door in enumerate(self.current_floorplan.doors):
+        pbar = pb.ProgressBar(max_value=len(self.floorplan.doors))
+        for i, door in enumerate(self.floorplan.doors):
             pbar.update(i)
             if door in self.excluded_doors:
                 continue
@@ -151,11 +153,12 @@ class NavigationBuilder:
             self._update_navnet(segments, seg_spaces, door_width)
 
     def _create_nav_segments_for_aisles(self):
-        """Iterate over each hallway and create nav segments along each
+        """
+        Iterate over each hallway and create nav segments along each
         aisle.
         """
-        pbar = pb.ProgressBar(max_value=len(self.current_floorplan.spaces))
-        for i, space in enumerate(self.current_floorplan.spaces):
+        pbar = pb.ProgressBar(max_value=len(self.floorplan.spaces))
+        for i, space in enumerate(self.floorplan.spaces):
             pbar.update(i)
             if space.is_space_a_hallway():
                 valid_boundaries = space.boundaries
@@ -168,16 +171,33 @@ class NavigationBuilder:
                         # self.current_space = space
                         self.create_nav_segment_for_aisle(aisle)
 
-    def _update_navnet(self, segments, seg_spaces, width):
-        """For each segment in list of nav segments, create nodes and edges
-        in navnet. Also keep track in which space each segment falls.
+    def _update_navnet(
+        self,
+        segments: List[List[Point]],
+        seg_spaces: List[Space],
+        width: float,
+    ) -> None:
         """
+        For each segment in list of nav segments, create nodes and edges
+        in navnet. Also keep track in which space each segment falls.
+
+        [extended_summary]
+
+        :param segments: List of segments where each segment is a list of
+             points.
+        :type segments: List[List[Point]]
+        :param seg_spaces: List of spaces where each segment falls.
+        :type seg_spaces: List[Space]
+        :param width: Width of each edge to be added to navent.
+        :type width: float
+        """
+
         # Add segments to navnet
         self._add_segments_to_navnet(segments, seg_spaces, width)
 
         # Add segments to space
         for seg, seg_space in zip(segments, seg_spaces):
-            full_line = [seg[0], seg[-1]]
+            full_line: Tuple[Point, Point] = (seg[0], seg[-1])
             if seg_space.unique_name in self.space_nav_segments:
                 self.space_nav_segments[seg_space.unique_name].append(
                     full_line
@@ -193,21 +213,21 @@ class NavigationBuilder:
                 # TODO: Also look for overlapping segments and merge them while
                 # keeping all existing intersections. Would be great to
                 # merge parallel segments as well
-        return
 
-    def _aisle_has_nav_segment(self, aisle, space):
-        """Check if aisle already has a navigation segment.
-
-        Parameters
-        -----------
-        aisle: tuple
-            Tuple of wall 1 and wall 2
-
-        Returns
-        --------
-        bool
-            Whether a nav segment was found or not
+    def _aisle_has_nav_segment(
+        self, aisle: Tuple[Line, Line], space: Space
+    ) -> bool:
         """
+        Check if aisle already has a navigation segment.
+
+        :param aisle: Aisle, given as a tuple of 2 walls.
+        :type aisle: Tuple[Line, Line]
+        :param space: The space where this aisle is located.
+        :type space: Space
+        :return: Whether a nav segment was found in this aisle or not.
+        :rtype: bool
+        """
+
         if space.unique_name not in self.space_nav_segments:
             return False
 
@@ -246,20 +266,17 @@ class NavigationBuilder:
 
         return False
 
-    def _find_valid_boundaries(self, space):
-        """Iterate over boundary walls of a space and return only the
+    def _find_valid_boundaries(self, space: Space) -> List[Line]:
+        """
+        Iterate over boundary walls of a space and return only the
          ones that are not between two hallways.
 
-        Parameters
-        -----------
-        space: Space
-            Space of interest
-
-        Returns
-        --------
-        list
-            List of lines representing valid boundaries
+        :param space: The space of interest.
+        :type space: Space
+        :return: List of valid boundaries.
+        :rtype: List[Line]
         """
+
         valid_boundaries = []
         for wall in space.boundaries:
             if wall.length() <= 1.0:
@@ -293,20 +310,15 @@ class NavigationBuilder:
 
         return valid_boundaries
 
-    def create_nav_segment_for_aisle(self, aisle: tuple):
-        """Create navigation segements (edges in the navnet) to handle
+    def create_nav_segment_for_aisle(self, aisle: tuple) -> None:
+        """
+        Create navigation segements (edges in the navnet) to handle
         circulation in this aisle.
 
-        Parameters
-        -----------
-        aisle: tuple
-            Tuple with the first and second wall
-
-        Returns
-        --------
-        None
-
+        :param aisle: An aisle, given by two parallel walls.
+        :type aisle: Tuple[Line, Line]
         """
+
         # use one of the walls to find the direction vector
         wall1 = aisle[0]
         p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
@@ -321,70 +333,67 @@ class NavigationBuilder:
         self._add_spaces_to_hallway_graph(seg_spaces)
         self._update_navnet(segments, seg_spaces, width)
 
-        return
+    def _find_location_of_point(
+        self, point: Point
+    ) -> Tuple[Optional[Space], Optional[int]]:
+        """
+        Find the space inside which this point is located.
 
-    def _find_location_of_point(self, point):
-        """Find the space inside which this point is located.
-
-        Parameters
-        -----------
-        point: Point
-            The point of interest
-
-        Returns
-        --------
-        Space:
-            Space object where the point is located (None if not found)
-
-        int:
-            index of the space where the point is located (None if not found)
-
+        :param point: The point of interest
+        :type point: Point
+        :return: Space object where the point is located (None if not found)
+                and its index in the list of spaces (None if not found).
+        :rtype: Tuple[Optional[Space], Optional[int]]
         """
 
-        for i, space in enumerate(self.current_floorplan.spaces):
+        for i, space in enumerate(self.floorplan.spaces):
             if space.is_point_inside_space(point):
                 return space, i
 
         return None, None
 
-    def _is_point_on_boundaries(self, point):
-        """Check if point falls on any boundary and return list of
+    def _is_point_on_boundaries(self, point: Point) -> List[Space]:
+        """
+        Check if point falls on any boundary and return list of
         corresponding spaces. If only one space, then this is an exterior
         boundary.
 
-        Parameters
-        -----------
-        point: Point
-
-        Returns
-        --------
-        list:
-            List of spaces
+        :param point: The point of interest.
+        :type point: Point
+        :return: List of spaces on which boundaries this point lies.
+        :rtype: List[Space]
         """
+
         boundary_spaces = []
-        for i, space in enumerate(self.current_floorplan.spaces):
+        for i, space in enumerate(self.floorplan.spaces):
             if space.is_point_on_space_boundaries(point):
                 boundary_spaces.append(space)
 
         return boundary_spaces
 
-    def _add_segments_to_navnet(self, segments, seg_spaces, width):
-        """Add a collection of nodes and edges to the navigation network
+    def _add_segments_to_navnet(
+        self,
+        segments: List[List[Point]],
+        seg_spaces: List[Space],
+        width: float,
+    ) -> None:
+        """
+        Add nodes and edges to the navigation network based on a given list of
+        nav segments.
 
-        Each point in each segment is added as a node to the nav network
+        Each point in each segment is added as a node in the nav network
         and a connection (edge) is created between each successive pair of
         points.
 
-        Parameters
-        -----------
-        segments: list of list<Point>
-            The list of segments to add to the navigation graph (navnet)
-
-        Returns
-        --------
-        None
-
+        :param segments: List of segments to consider.
+        :type segments: List[List[Point]]
+        :param seg_spaces: List of spaces where the segments fall.
+        :type seg_spaces: List[Space]
+        :param width: Width to assign to each edge in the navnet.
+        :type width: float
+        :raises ValueError: If a segment has less than 2 points.
         """
+
         for i, seg in enumerate(segments):
             if len(seg) in [0, 1]:
                 raise ValueError("Each segment must have two points.")
@@ -408,24 +417,16 @@ class NavigationBuilder:
                         coords1, coords2, half_width=round(width / 2)
                     )
 
-        return
-
-    def _add_spaces_to_hallway_graph(self, spaces):
-        """Add hallways to the hallway graph
+    def _add_spaces_to_hallway_graph(self, spaces: List[Space]) -> None:
+        """
+        Add hallways to the hallway graph.
 
         The hallway graph keeps track of which hallway is accessible from
         which hallway. A connection is created between each space given
         as input.
 
-        Parameters
-        -----------
-        spaces: list of Space
-            The list of space objects to add to the graph.
-
-        Returns
-        --------
-        None
-
+        :param spaces: The list of space objects to add to the graph.
+        :type spaces: List[Space]
         """
 
         if len(spaces) == 0:
@@ -451,13 +452,24 @@ class NavigationBuilder:
                 )
             old_space = current_space
 
-        return
+    def find_door_intersect(
+        self, test_line: Line
+    ) -> Tuple[Optional[Tuple[int, int]], Optional[Door]]:
+        """
+        Check if the given line intersects with a door.
 
-    def find_door_intersect(self, test_line) -> Tuple[tuple, Door]:
-        """Check if the given line intersects with a door."""
+        Intersect coords are to the nearest integer.
+
+        :param test_line: The line of interest.
+        :type test_line: Line
+        :return: The intersect xy coordinates and the door object, (None, None)
+                if not found.
+        :rtype: Tuple[Optional[Tuple[int, int]], Optional[Door]]
+        """
+        """"""
         coords = None
         door_found = None
-        for door in self.current_floorplan.doors:
+        for door in self.floorplan.doors:
             intersects = test_line.intersect(door.path)
             if len(intersects) > 0:
                 t1 = intersects[0][0]
@@ -473,48 +485,95 @@ class NavigationBuilder:
 
         return coords, door_found
 
-    def find_if_valid_nearby_space_exits(self, new_point, direction, dx, dy):
+    def find_if_valid_nearby_space_exits(
+        self, current_point: Point, direction: int, dx: float, dy: float
+    ) -> Space:
+        """
+        Given a point and direction, look ahead by (dx, dy) to verify if a
+        valid space exists there and return that space.
 
-        boundary_spaces = self._is_point_on_boundaries(new_point)
+        This function is expected to be used to decide whether to continue with
+        a navigation segment or not when crossing the boundaries of the current
+        space (hence the direction parameter). Keep in mind that a boundary
+        does not need to correspond to a wall).
+
+        :param new_point: The current point that falls on the boundaries.
+        :type new_point: Point
+        :param direction: The current direction of the nav segment.
+        :type direction: int
+        :param dx: The look ahead distance in the x direction.
+        :type dx: float
+        :param dy: The look ahead distance in the y direction.
+        :type dy: float
+        :raises ValueError: If point is not on any boundary.
+        :raises ValueError: If space is found to be on the boundary of 2 or
+                more spaces but no space is found ahead (clearly something is
+                wrong).
+        :return: The space ahead
+        :rtype: Space
+        """
+        boundary_spaces = self._is_point_on_boundaries(current_point)
         if len(boundary_spaces) == 0:
             raise ValueError(
                 "Unable to compute a nav segment from %s",
-                str(new_point),
+                str(current_point),
             )
         elif len(boundary_spaces) == 1:
-            LOG.info("{%s} on space boundary. Is it an entrance?", new_point)
+            LOG.info(
+                "{%s} on space boundary. Is it an entrance?", current_point
+            )
             current_space = boundary_spaces[0]
             return current_space
         else:
             test_point = Point(
-                x=round(new_point.x + direction * dx),
-                y=round(new_point.y + direction * dy),
+                x=round(current_point.x + direction * dx),
+                y=round(current_point.y + direction * dy),
             )
             current_space, _ = self._find_location_of_point(test_point)
             if current_space is None:
                 raise ValueError(
                     "Unable to compute a nav segment from %s",
-                    str(new_point),
+                    str(current_point),
                 )
         return current_space
 
-    def _update_segments(self, new_point, direction, segments):
-        """Given a valid new point, update navigation segments."""
+    def _update_segments(
+        self, new_point: Point, direction: int, segments: List[Point]
+    ) -> None:
+        """
+        Given a valid new point, update the current navigation segments.
+
+        :param new_point: The new point to add to one of the segments
+        :type new_point: Point
+        :param direction: The current direction of the nav segment.
+        :type direction: int
+        :param segments: The current list of segments
+        :type segments: List[Point]
+        """
+
         if direction == -1:
             segments[-1] = [new_point] + segments[-1]
         else:
             segments[-1].append(new_point)
 
-    def _is_crossing_wall(self, first_point, new_point):
-        """Verify if that the current nav segment has touched an existing
-        wall.
+    def _is_crossing_wall(self, first_point: Point, new_point: Point) -> bool:
         """
+        Verify if the current nav segment has reached an existing wall.
+
+        :param first_point: The very first point of the navigation segment.
+        :type first_point: Point
+        :param new_point: The current point in the navigation segment.
+        :type new_point: Point
+        :return: Whether a wall is reached or not.
+        :rtype: bool
+        """
+
         test_line = Line(
             start=first_point.complex_coords,
             end=new_point.complex_coords,
         )
         # TODO: Change test_line to be the last segment!
-        for wall in self.current_floorplan.walls:
+        for wall in self.floorplan.walls:
             if wall.length() > 1 and len(test_line.intersect(wall)) > 0:
                 # We encountered a wall!!!
                 return True
@@ -522,11 +581,38 @@ class NavigationBuilder:
         return False
 
     def _is_heading_outside_facility(
-        self, new_point, direction, dx, dy, look_ahead_dist=3
-    ):
-        """Verify if current nav segment is moving outside the facility
-        within a given look ahead distance.
+        self,
+        new_point: Point,
+        direction: int,
+        dx: float,
+        dy: float,
+        look_ahead_dist=3,
+    ) -> bool:
         """
+        Verify if current nav segment is heading outside the facility
+        within a given look ahead distance.
+
+        [extended_summary]
+
+        :param new_point: The current point of the nav segment.
+        :type new_point: Point
+        :param direction: The direction (positive or negative) where the
+            segment is headed.
+        :type direction: int
+        :param dx: look ahead distance in the x direction
+        :type dx: float
+        :param dy: look ahead distance in the y direction
+        :type dy: float
+        :param look_ahead_dist: look-ahead distance multiplier, defaults to 3
+        :type look_ahead_dist: int, optional
+        :raises ValueError: If value for the direction is invalid.
+        :return: Whether the position ahead is outside the facility or not.
+        :rtype: bool
+        """
+
+        if direction not in [-1, 1]:
+            raise ValueError("Direction must be 1 or -1.")
+
         test_point = Point(
             x=round(new_point.x + look_ahead_dist * direction * dx),
             y=round(new_point.y + look_ahead_dist * direction * dy),
@@ -537,17 +623,29 @@ class NavigationBuilder:
 
         return False
 
-    def _is_crossing_door(self, first_point, new_point):
-        """Verify if current nav segment is crossing a door, if so add door
-        to list of excluded doors (from processing) and update segements
-        accordingly.
+    def _is_crossing_door(
+        self, first_point: Point, current_point: Point
+    ) -> Optional[Tuple[int, int]]:
         """
+        Verify if current nav segment is crossing a door, if so add door
+        to list of excluded doors and update segments accordingly.
+
+        ..Note: Expected to cross only one door at a time.
+
+        :param first_point: The very first point in the current nav segment.
+        :type first_point: Point
+        :param new_point: The current point in the nav segment.
+        :type new_point: Point
+        :return: The intersect coordinates with a door, if any, None otherwise.
+        :rtype: Optional[Tuple[int, int]]
+        """
+
         test_line = Line(
             start=first_point.complex_coords,
-            end=new_point.complex_coords,
+            end=current_point.complex_coords,
         )
         coords, door = self.find_door_intersect(test_line)
-        if coords is not None:
+        if coords is not None and door is not None:
             door.intersect_coords = coords
             self.excluded_doors.append(door)
             return coords
@@ -561,7 +659,8 @@ class NavigationBuilder:
         width: float,
         stop_at_existing_segments: bool = False,
     ) -> Tuple[List, List]:
-        """Compute navigation segments from a given point and direction.
+        """
+        Compute navigation segments from a given point and direction.
         2 segments are created from the starting point going in opposite
         directions.
 
@@ -569,28 +668,24 @@ class NavigationBuilder:
         connecting 2 nodes (usually doors or walls marking the end of the
         navigation segment).
 
-        Parameters
-        -----------
-        first_point: Point
-            The initial point from which to start the segments
-
-        direction_vector: complex
-            Vector indicating the directions (positive and negative)
-            of the segments.
-
-        width: float
-            The width to assign to the edges corresponding to the segments
-            created in the navigation graph
-
-        stop_at_existing_segments: true
-            Whether to stop if the segment crosses an existing navigation
-            segment in the navnet or not
-
-        Returns
-        --------
-        (segments, segment_spaces): tuple of 2 lists
-
+        :param first_point: The initial point from which to start the segments
+        :type first_point: Point
+        :param direction_vector: Vector indicating the directions (positive and
+                 negative) of the segments.
+        :type direction_vector: complex
+        :param width: The width to assign to edges in the navnet.
+        :type width: float
+        :param stop_at_existing_segments: Whether to stop if the segment
+             crosses an existing navigation segment in the navnet or not,
+             defaults to False
+        :type stop_at_existing_segments: bool, optional
+        :raises ValueError: if the number of segments is different from the
+            number of spaces at the end of the process, indicating that
+            something went wrong.
+        :return: list of segments and corresponding space ids where they fall.
+        :rtype: Tuple[List, List]
         """
+
         segments = []
         segment_spaces = []
 
@@ -686,20 +781,13 @@ class NavigationBuilder:
 
         return good_segments, good_segment_spaces
 
-    def sanitize_graph(self):
-        """Make sure navigation paths do not cross any walls, including
+    def sanitize_navnet(self) -> None:
+        """
+        Make sure navigation paths do not cross any walls, including
         standalone walls.
-
-        Parameters
-        -----------
-
-        Returns
-        -------
-        None
-
         """
 
-        if len(self.current_floorplan.special_walls) == 0:
+        if len(self.floorplan.special_walls) == 0:
             return
 
         n_intersect = 0
@@ -717,7 +805,7 @@ class NavigationBuilder:
             if path_line.length() <= 1:
                 i += 1
                 continue
-            for wall in self.current_floorplan.special_walls:
+            for wall in self.floorplan.special_walls:
                 intersects = path_line.intersect(wall)
                 if len(intersects) > 0:
                     intersection_point = path_line.point(intersects[0][0])
@@ -767,21 +855,12 @@ class NavigationBuilder:
         LOG.info("Number of intersections removed: %d", n_intersect)
         LOG.info("Number of edges: %d", n_edges)
 
-        return
+    def simplify_navigation_network(self) -> None:
+        """
+        Remove unnecessary edges and nodes in navigation network.
 
-    def simplify_navigation_network(self):
-        """Remove unnecessary edges and nodes in navigation network.
-
-        A node is unnecessary if it only has 2 neighbors and they together
+        A node is unnecessary if it only has 2 neighbors and all 3 together
         form a straight line.
-
-        Parameters
-        ------------
-
-        Returns
-        --------
-        None
-
         """
 
         if "is_simplified" in self.floor_navnet.graph:
@@ -793,7 +872,7 @@ class NavigationBuilder:
             n_edges = self.floor_navnet.number_of_edges()
             LOG.info("Starting number of edges: %d", n_edges)
 
-            door_paths = [d.path for d in self.current_floorplan.doors]
+            door_paths = [d.path for d in self.floorplan.doors]
             # for space in floorplan.spaces:
             #     door_paths += space.doors
 
@@ -850,31 +929,22 @@ class NavigationBuilder:
             LOG.info("New number of edges: %d", n_edges)
             self.floor_navnet.graph["is_simplified"] = True
 
-        return
-
-    def find_and_remove_overlaps(self, space):
-        """Iterate over segments in this space, test for overlap and remove
-        any.
+    def find_and_remove_overlaps(self, space: Space) -> None:
         """
-
+        Iterate over segments in this space, test for overlap (parallel
+        segments) and remove any.
+        """
         raise NotImplementedError("Not implemented yet")
 
-        return
+    def find_intersections_in_space(self, space: Space) -> None:
+        """
+        Iterate through all nav segment pairs in this space, find any
+        intersections and add to navnet.
 
-    def find_intersections_in_space(self, space):
-        """Iterate through all nav segment pairs in this space, and add
-        any interesection found to navnet.
+        An intersection is when 2 nav segments cross each other.
 
-        An intersectin is when 2 nav segments cross each other.
-
-        Parameters
-        -----------
-        space: Space
-            The space of interest
-
-        Returns
-        --------
-        None
+        :param space: The space of interest
+        :type space: Space
         """
 
         key = space.unique_name
@@ -918,7 +988,7 @@ class NavigationBuilder:
                         )
                         for point in [point1, point2, point3, point4]:
                             if point != new_point:
-                                new_segment = [point, new_point]
+                                new_segment = (point, new_point)
                                 self.space_nav_segments[key].append(
                                     new_segment
                                 )
@@ -929,109 +999,106 @@ class NavigationBuilder:
                     done = False
                     break
 
-        return
-
     def find_and_add_intersection_node_to_graph(
-        self, point1, point2, point3, point4
-    ):
-        """Given four points forming 2 lines, check if they intersect
-        and if so add new node to graph and create new edges
+        self,
+        coords1: Tuple[int, int],
+        coords2: Tuple[int, int],
+        coords3: Tuple[int, int],
+        coords4: Tuple[int, int],
+    ) -> Point:
+        """
+        Given four points forming 2 lines, check if they intersect
+        and if so add new node to graph and create new edges.
 
-        Parameters
-        ----------
-        point1: tuple of x, y coordinates
-        point2: tuple of x, y coordinates
-            Points 1 and 2 form the first line
-        point3: tuple of x, y coordinates
-        point4: tuple of x, y coordinates
-            Points 3 and 4 form the second line
-
-        Results
-        --------
-        tuple
-            Interesect point in the form of (x,y) coordinates. Returns None if
-            no interesect was found.
+        :param coords1: Coordinates of first point.
+        :type coords1: Tuple[int, int]
+        :param coords2: Coordinates of first point.
+        :type coords2: Tuple[int, int]
+        :param coords3: Coordinates of first point.
+        :type coords3: Tuple[int, int]
+        :param coords4: Coordinates of first point.
+        :type coords4: Tuple[int, int]
+        :return: xy coordinates of the intersection. None if none.
+        :rtype: Point
         """
 
         line1 = Line(
-            start=complex(point1[0], point1[1]),
-            end=complex(point2[0], point2[1]),
+            start=complex(coords1[0], coords1[1]),
+            end=complex(coords2[0], coords2[1]),
         )
         line2 = Line(
-            start=complex(point3[0], point3[1]),
-            end=complex(point4[0], point4[1]),
+            start=complex(coords3[0], coords3[1]),
+            end=complex(coords4[0], coords4[1]),
         )
 
         if line1.length() <= 1.0 or line2.length() <= 1.0:
             return
 
-        intersect_point = None
+        intersect_coords = None
         intersects = line1.intersect(line2)
         if len(intersects) > 0:
             t1, t2 = intersects[0]
             if t1 in (0.0, 1.0) and t2 in (0.0, 1.0):
                 return
 
-            intersect_point = (
+            intersect_coords = (
                 round(line1.point(t1).real),
                 round(line1.point(t1).imag),
             )
 
-            self.floor_navnet.add_node(intersect_point)
+            self.floor_navnet.add_node(intersect_coords)
 
-            if self.floor_navnet.has_edge(point1, point2):
-                edge1 = self.floor_navnet.get_edge_data(point1, point2)
+            if self.floor_navnet.has_edge(coords1, coords2):
+                edge1 = self.floor_navnet.get_edge_data(coords1, coords2)
                 half_width1 = edge1["half_width"]
-                self.floor_navnet.remove_edge(point1, point2)
+                self.floor_navnet.remove_edge(coords1, coords2)
             else:
                 half_width1 = 1
 
-            if self.floor_navnet.has_edge(point2, point1):
-                self.floor_navnet.remove_edge(point2, point1)
+            if self.floor_navnet.has_edge(coords2, coords1):
+                self.floor_navnet.remove_edge(coords2, coords1)
 
-            if self.floor_navnet.has_edge(point3, point4):
-                edge2 = self.floor_navnet.get_edge_data(point3, point4)
+            if self.floor_navnet.has_edge(coords3, coords4):
+                edge2 = self.floor_navnet.get_edge_data(coords3, coords4)
                 half_width2 = edge2["half_width"]
-                self.floor_navnet.remove_edge(point3, point4)
+                self.floor_navnet.remove_edge(coords3, coords4)
             else:
                 half_width2 = 1
 
-            if self.floor_navnet.has_edge(point4, point3):
-                self.floor_navnet.remove_edge(point4, point3)
+            if self.floor_navnet.has_edge(coords4, coords3):
+                self.floor_navnet.remove_edge(coords4, coords3)
 
-            if point1 != intersect_point:
+            if coords1 != intersect_coords:
                 self.floor_navnet.add_edge(
-                    point1, intersect_point, half_width=half_width1
+                    coords1, intersect_coords, half_width=half_width1
                 )
 
-            if point2 != intersect_point:
+            if coords2 != intersect_coords:
                 self.floor_navnet.add_edge(
-                    point2, intersect_point, half_width=half_width1
+                    coords2, intersect_coords, half_width=half_width1
                 )
 
-            if point3 != intersect_point:
+            if coords3 != intersect_coords:
                 self.floor_navnet.add_edge(
-                    point3, intersect_point, half_width=half_width2
+                    coords3, intersect_coords, half_width=half_width2
                 )
 
-            if point4 != intersect_point:
+            if coords4 != intersect_coords:
                 self.floor_navnet.add_edge(
-                    point4, intersect_point, half_width=half_width2
+                    coords4, intersect_coords, half_width=half_width2
                 )
 
-        return intersect_point
+        return intersect_coords
 
-    def export_navnet_to_svg(self, svg_file):
-        """Export the navigation network to an svg file for visualization.
+    def export_navnet_to_svg(self, svg_file: Union[str, pathlib.Path]) -> None:
+        """
+        Export the navigation network to an svg file for visualization.
 
         Superimposes the navigation network on top of the floorplan for easier
         interpretation.
 
-        Parameters
-        -----------
-        svg_file: str
-            Full path the svg file to export to
-
+        :param svg_file: path the svg file to export to.
+        :type svg_file: Union[str, pathlib.Path]
         """
 
         nav_nodes = []
@@ -1047,11 +1114,22 @@ class NavigationBuilder:
 
         LOG.info("Exporting...")
         bv.export_nav_network_to_svg(
-            self.current_floorplan.walls, nav_paths, nav_nodes, svg_file
+            self.floorplan.walls, nav_paths, nav_nodes, svg_file
         )
         LOG.info("Navigation network exported to: %s", svg_file)
 
-    def load_nav_segments_from_svg_file(self, svg_file):
+    def load_nav_paths_from_svg_file(
+        self, svg_file: Union[str, pathlib.Path]
+    ) -> List[Path]:
+        """
+        Load all the nav segments found in an SVG file. Nav segments are paths
+        tagged with a 'nav' in their id attribute.
+
+        :param svg_file: Path to the SVG file
+        :type svg_file: Union[str, pathlib.Path]
+        :return: List of nav paths found in SVG file.
+        :rtype: List[Path]
+        """
         if not os.path.isfile(svg_file):
             return []
 
@@ -1062,18 +1140,17 @@ class NavigationBuilder:
             if "id" in attr and "nav" in attr["id"]
         ]
 
-    def update_network_from_svg_file(self, svg_file):
-        """Update the navigation file using paths defined in an svg file.
+    def update_network_from_svg_file(
+        self, svg_file: Union[str, pathlib.Path]
+    ) -> None:
+        """
+        Update the navigation file using nav paths defined in an svg file. Can
+        be used to allow a user to edit the navnet after the fact to add, edit
+        or remove segments.
 
-        Parameters:
-        ------------
-        svg_file: string
-            full path to the svg file
-
-        Returns
-        -------
-        bool
-            If network was successfully updated or not
+        :param svg_file: full path to the svg file.
+        :type svg_file: Union[str, pathlib.Path]
+        :raises FileNotFoundError: If the svg file is not found.
         """
 
         if not os.path.isfile(svg_file):
@@ -1081,7 +1158,7 @@ class NavigationBuilder:
 
         self.floor_navnet = self.floor_navnet.to_undirected()
         edges = list(self.floor_navnet.edges)
-        new_nav_segments = self.load_nav_segments_from_svg_file(svg_file)
+        new_nav_segments = self.load_nav_paths_from_svg_file(svg_file)
 
         for nav_seg in new_nav_segments:
             point1 = (round(nav_seg.start.real), round(nav_seg.start.imag))
@@ -1103,20 +1180,21 @@ class NavigationBuilder:
 
         self.floor_navnet = self.floor_navnet.to_directed()
 
-        return True
-
     def export_navdata_to_json(
-        self, navnet_json_file, hallway_graph_json_file
-    ):
-        """Export the navigation network data to json file for later use.
+        self,
+        navnet_json_file: Union[str, pathlib.Path],
+        hallway_graph_json_file: Union[str, pathlib.Path],
+    ) -> None:
+        """
+        Export the navigation network data to json file for later use.
 
-        Parameters
-        -----------
-        navnet_pkl_file: str
-            Full path to where to save the navigation network json file
+        [extended_summary]
 
-        hallway_graph_pkl_file: str
-            Full file path to save the hallways graph
+        :param navnet_json_file: path to location to save navnet json file
+        :type navnet_json_file: Union[str, pathlib.Path]
+        :param hallway_graph_json_file: path to location to save the hallways
+             graph
+        :type hallway_graph_json_file: Union[str, pathlib.Path]
         """
 
         nav_dict = nx.readwrite.json_graph.node_link_data(self.floor_navnet)
@@ -1128,17 +1206,23 @@ class NavigationBuilder:
             json.dump(hg_dict, f)
 
     def load_navdata_from_json_files(
-        self, navnet_json_file, hallway_graph_json_file
-    ):
-        """Load the navigation network and the hallway graph from json files.
+        self,
+        navnet_json_file: Union[str, pathlib.Path],
+        hallway_graph_json_file: Union[str, pathlib.Path],
+    ) -> None:
+        """
+        Load the navigation network and the hallway graph from json files.
 
-        Parameters:
-        ------------
-        navnet_pkl_file: string
-            Full path to the navigation graph json file
+        Used to initialize the navnet and hallway graph using data from
+        existing files.
 
-        hallway_graph_pkl_file: str
-            Full path to the hallway graph json file
+        :param navnet_json_file: Full path to the navigation graph json file
+        :type navnet_json_file: Union[str, pathlib.Path]
+        :param hallway_graph_json_file: Full path to the hallway graph json
+                file
+        :type hallway_graph_json_file: Union[str, pathlib.Path]
+        :raises ValueError: If a navnet or hallway graph currently exists, to
+                avoid accidental overwrite.
         """
 
         n_nodes = self.floor_navnet.number_of_nodes()

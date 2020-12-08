@@ -361,7 +361,6 @@ class ContactEvents:
         :param filename: The file path to save the data
         :type filename: str
         """
-
         data_to_save = {
             key: [v.__dict__ for v in value]
             for key, value in self.contact_data.items()
