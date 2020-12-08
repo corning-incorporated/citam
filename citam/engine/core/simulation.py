@@ -47,7 +47,8 @@ class Simulation:
     Implements a CITAM indoor Agent-Based Modeling simulation.
 
     Given a facility and simulation inputs, this implements routines to
-    initialize the agents and their scheduels and run a simulation.
+    initialize the agents and their scheduels, run a simulation and output
+    results to file.
     """
 
     def __init__(
