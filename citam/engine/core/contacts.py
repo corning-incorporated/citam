@@ -241,7 +241,8 @@ class ContactEvents:
         avg_n_contacts_per_agent = 0
         if n_agents_with_contact > 0:
             avg_n_contacts_per_agent = (
-                sum(total_contacts_per_agent.values()) / n_agents_with_contact
+                sum(total_contacts_per_agent.values()) /  # type: ignore
+                n_agents_with_contact  # type: ignore
             )
         statistics.append(
             {
@@ -254,9 +255,10 @@ class ContactEvents:
         total_contact_duration = sum(total_contact_duration_per_agent.values())
         avg_contact_duration_per_agent = 0
         if n_agents_with_contact > 0:
-            avg_contact_duration_per_agent = total_contact_duration / (
-                n_agents_with_contact * 2.0
-            )
+            avg_contact_duration_per_agent = \
+                total_contact_duration / (  # type: ignore
+                    n_agents_with_contact * 2.0
+                )
         statistics.append(
             {
                 "name": "avg_contact_duration_per_agent",
@@ -276,7 +278,7 @@ class ContactEvents:
         avg_number_of_people_per_agent = 0
         if n_agents_with_contact > 0:
             avg_number_of_people_per_agent = (
-                sum(n_others.values()) / n_agents_with_contact
+                sum(n_others.values()) / n_agents_with_contact  # type: ignore
             )
         statistics.append(
             {
