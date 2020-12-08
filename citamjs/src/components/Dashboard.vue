@@ -142,16 +142,6 @@
             <div id="viz-view" v-if="showDetails === 2"><plot-visualization :simid="currSimId"></plot-visualization></div>
           </div>
         </main>
-        <footer class="py-4 bg-light mt-auto">
-          <div class="container-fluid">
-            <div class="d-flex align-items-center justify-content-between small">
-              <div class="text-muted"> &copy; CITAM</div>
-              <div>
-                <a href="https://github.com/corning-incorporated/citam/blob/main/LICENSE" target="_blank">License</a>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   </div>
@@ -177,6 +167,7 @@ export default {
   data() {
     return {
       runList: [],
+      listData: [],
       runAttributes: [],
       showDetails: 0,
       showViz: false,
@@ -192,14 +183,14 @@ export default {
   created() {
     axios.get('/list')
         .then((response) => {
-          return axios.all(response.data.map(x => axios.get(`/${x}`)))
+          return axios.all(response.data.map(x => axios.get(`/${x.sim_id}`)))
         })
         .then((runResponse) => {
           // eslint-disable-next-line no-unused-vars
           this.runList = runResponse.map(run => run.data).map(({floors, timestep, floor_dict, scaleMultiplier, trajectory_file,
                                                                  ...item
                                                                }) => item)
-          this.runAttributes = Object.keys(this.runList[0]);
+          //this.runAttributes = Object.keys(this.runList[0]);
         })
   },
   methods: {
@@ -221,7 +212,7 @@ export default {
     },
 
     sortTable(att) {
-      this.runList = _.sortBy(this.runList, [att])
+      this.runList = _.sortBy(this.runList, [att]);
     },
 
     toVizToggle(e){
