@@ -15,6 +15,7 @@
 from citam.engine.core.agent import Agent
 
 from typing import Tuple, Dict, List, Union, Hashable, Any
+import typing
 
 
 def update_data_dictionary(
@@ -185,6 +186,7 @@ class ContactEvents:
                     + "\n"
                 )
 
+    @typing.no_type_check
     def extract_statistics(self) -> List[Dict[str, Any]]:
         """Extract important contact statistics from contact data.
 
@@ -241,8 +243,7 @@ class ContactEvents:
         avg_n_contacts_per_agent = 0
         if n_agents_with_contact > 0:
             avg_n_contacts_per_agent = (
-                sum(total_contacts_per_agent.values()) /  # type: ignore
-                n_agents_with_contact  # type: ignore
+                sum(total_contacts_per_agent.values()) / n_agents_with_contact
             )
         statistics.append(
             {
@@ -255,10 +256,9 @@ class ContactEvents:
         total_contact_duration = sum(total_contact_duration_per_agent.values())
         avg_contact_duration_per_agent = 0
         if n_agents_with_contact > 0:
-            avg_contact_duration_per_agent = \
-                total_contact_duration / (  # type: ignore
-                    n_agents_with_contact * 2.0
-                )
+            avg_contact_duration_per_agent = total_contact_duration / (
+                n_agents_with_contact * 2.0
+            )
         statistics.append(
             {
                 "name": "avg_contact_duration_per_agent",
@@ -278,7 +278,7 @@ class ContactEvents:
         avg_number_of_people_per_agent = 0
         if n_agents_with_contact > 0:
             avg_number_of_people_per_agent = (
-                sum(n_others.values()) / n_agents_with_contact  # type: ignore
+                sum(n_others.values()) / n_agents_with_contact
             )
         statistics.append(
             {

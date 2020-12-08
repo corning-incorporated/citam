@@ -564,7 +564,7 @@ class Navigation:
         if len(self.floorplans) == 1:
             route = [(r, starting_floor_number) for r in tmp_route]
         else:
-            route = [((r[0], r[1]), r[2]) for r in tmp_route]
+            route = [((r[0], r[1]), r[2]) for r in tmp_route]  # type: ignore
 
         return route
 
@@ -772,8 +772,9 @@ def remove_unnecessary_coords(
         for i in range(1, len(route) - 1):
             pos = route[i]
             if len(pos) == 3 and (
-                route[i - 1][2] != pos[2] or pos[2] != route[i + 1][2]
-            ):
+                route[i - 1][2] != pos[2]  # type: ignore
+                or pos[2] != route[i + 1][2]  # type: ignore
+            ):  # pos can have a length of 3
                 continue
             # Check if this point and the points before and after are collinear
             test_line = Line(
@@ -793,8 +794,8 @@ def remove_unnecessary_coords(
 
 
 def unroll_route(
-    route: List[Tuple[int, ...]], pace: float
-) -> List[Tuple[int, ...]]:
+    route: List[Union[Tuple[int, int], Tuple[int, int, int]]], pace: float
+) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]:
     """
     Use the given pace to find intermediate coordinates between each
     pair of nodes in this route.
@@ -803,12 +804,12 @@ def unroll_route(
     points (e.g. turns at intersections)
 
     :param route: initial route with only notable coordinates.
-    :type route: List[Tuple[int, ...]]
+    :type route: List[Union[Tuple[int, int], Tuple[int, int, int]]]
     :param pace: The desired pace in units of [dist/time]
     :type pace: float
     :return: list of all coordinates required to navigate this route at the
             desired pace.
-    :rtype: List[Tuple[int, ...]]
+    :rtype: List[Union[Tuple[int, int], Tuple[int, int, int]]]
     """
 
     if route is None:
@@ -823,7 +824,7 @@ def unroll_route(
         last_x, last_y = route[i][0], route[i][1]
 
         # Check if this is between 2 floors
-        if len(pos) == 3 and pos[2] != route[i][2]:
+        if len(pos) == 3 and pos[2] != route[i][2]:  # type: ignore
             full_route.append(pos)
             continue
 
@@ -845,7 +846,7 @@ def unroll_route(
                     new_pos = (
                         last_x + step * dx,  # type: ignore
                         last_y + step * dy,
-                        pos[2],
+                        pos[2],  # type: ignore
                     )
                 full_route.append(new_pos)
 
