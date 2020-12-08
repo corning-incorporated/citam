@@ -23,7 +23,7 @@ As a simulation platform, CITAM does not implement nor does it support real-worl
 [License](#license)
 
 
-## [Basic Requirements]
+## Basic Requirements
 
 The primary requirement to use CITAM is to have a map of each floor of each facility in SVG format for ingestion as well as some metadata about each space in each floorplan. For a list of required metadata, please visit the input requirements section of the documentation. Example input files are also available in the [examples](examples/) folder in this git repository.
 
@@ -39,7 +39,7 @@ Once a facility is successfully ingested into CITAM, any number of simulations c
 
 CITAM is built as a cross-platform software compatible with all major operating systems. The primary way of using CITAM is currently through the command-line. CITAM is also shipped with a web-based dashboard to visualize simulation results.
 
-## [Install CITAM]
+## Install CITAM
 
 ### Pre-requisite: Python 3.x
 
@@ -118,7 +118,7 @@ $citam -h
 ```
    For a walkthrough example of how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation.
 
-## [Add Facilities]
+## Add Facilities
 
 Currently, the primary way to use CITAM is through the CLI. To get a list of commands, do:
 
@@ -194,7 +194,7 @@ The svg file can then be visualized using any SVG viewer.
 This process can be repeated for as many facilities as needed. But it is only done once for each facility.
 
 
-## [Run Simulations]
+## Run Simulations
 
 Assuming at least one facility was successfully added and validated, any number of simulations can be run on that facility. Example input files can also be found in the [citam/examples](examples/) directory. It is recommended to create separate folders for each simulation with their own input file.
 
@@ -215,7 +215,7 @@ To run the simulation:
 Wait for your simulation to complete successfully before moving to the next section.
 
 
-## [Visualize Results]
+## Visualize Results
 
 The dashboard provides contact details and visual representation of simulation results and can be accessed at [http://localhost:8000](http://localhost:8000) after firing
 the server using.
@@ -248,7 +248,7 @@ page. By clicking on `View Details`; you will be taken to a screen with detailed
 
  You can also access interactive visual map of floors and time-based individuals movement by clicking on the `Visualization` tab.
 
-## [Contributing]
+## Contributing
 -----
 The code is divided into multiple components:
 + **Engine**: the core simulation engine to manage facilities and run simulations (written in Python).
@@ -258,7 +258,7 @@ The code is divided into multiple components:
 
 We welcome your contributions to any or all of these components. We also welcome bug reports and feature requests. For detailed instructions, please refer to the "[How to Contribute](contributing.md)" document.
 
-## [License]
+## License
 ------------
 CITAM is made available to the public under GPLv3.
 
