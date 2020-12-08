@@ -12,7 +12,7 @@ def test__init(x_floorplan):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
 
     assert isinstance(nav_builder.floor_navnet, type(nx.Graph()))
-    assert nav_builder.current_floorplan == x_floorplan
+    assert nav_builder.floorplan == x_floorplan
     assert isinstance(nav_builder.hallways_graph, type(nx.Graph()))
 
 
@@ -239,7 +239,7 @@ def test_sanitize_graph(
     nav_builder.create_nav_segment_for_aisle(aisle_from_x_floorplan)
     nav_builder.create_nav_segment_for_aisle(aisle_from_x_floorplan2)
     nav_builder.simplify_navigation_network()
-    nav_builder.sanitize_graph()
+    nav_builder.sanitize_navnet()
 
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     assert n_nodes == 5
@@ -261,7 +261,7 @@ def test_sanitize_graph_2(rect_floorplan):
     assert n_nodes == 2
     assert n_edges == 1
 
-    nav_builder.sanitize_graph()
+    nav_builder.sanitize_navnet()
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     n_edges = nav_builder.floor_navnet.number_of_edges()
     assert n_nodes == 4
@@ -386,7 +386,7 @@ def test_load_nav_segments_from_svg_file(x_floorplan):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     dir_name = os.path.dirname(os.path.realpath(__file__))
     test_svg_file = dir_name + "/sample_results/new_nav_seg.svg"
-    segs = nav_builder.load_nav_segments_from_svg_file(test_svg_file)
+    segs = nav_builder.load_nav_paths_from_svg_file(test_svg_file)
 
     assert len(segs) == 2
 
@@ -396,15 +396,11 @@ def test_update_network_from_svg_file(x_floorplan):
     nav_builder.build()
     dir_name = os.path.dirname(os.path.realpath(__file__))
     test_svg_file = dir_name + "/sample_results/new_nav_seg.svg"
-    res = nav_builder.update_network_from_svg_file(test_svg_file)
+    nav_builder.update_network_from_svg_file(test_svg_file)
 
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     n_edges = nav_builder.floor_navnet.number_of_edges()
 
-    # svg_file = 'test_nav_seg.svg'
-    # nav_builder.export_navnet_to_svg(svg_file)
-
-    assert res is True
     assert n_nodes == 12 + 10
     assert n_edges == 60
 
