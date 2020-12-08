@@ -12,52 +12,55 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-  <div id="mainLayout">
+  <div>
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
       <li class="nav-item facility">
-        <a class="nav-link active" id="summary-tab" data-toggle="tab" href="" role="tab"
+        <a class="nav-link" id="summary-tab" data-toggle="tab" href="" role="tab"
            aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Facility Name A 
            <span><font-awesome-icon icon="chevron-down"/></span></a>           
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Overview</a>
+        <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab" href=""
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('overview')">Overview</a>
       </li>
         <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Simulations</a>
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulation-maps')">Simulations</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Policies</a>
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('policies')">Policies</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Floor Plans</a>
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('floor-plans')">Floor Plans</a>
       </li>
     </ul>
-    <footer class="footer">
-      <div class="container">
-        <h5>Floor Plans</h5>
-        <div class="flex-container">
-          <div @click="floorPlan()">Floor plan 1</div>
-          <div>Floor plan 2</div>
-          <div>Floor plan 3</div>
-          <div>Floor plan 4</div>
-          <div>Floor plan 5</div>
-          <div>Add floor plan</div>
-        </div>
-      </div>
-    </footer>
-  </div>
+    <div>     
+      <component :is="selectedComponent"></component>
+    </div>
+  </div>  
 </template>
 
 <script>
+//import axios from 'axios'
+//import AddPolicy from '@/components/AddPolicy';
+import SimulationMaps from './simulations/SimulationMaps.vue';
+import Policies from './Policies.vue';
+import FloorPlans from './FloorPlans.vue';
+import Overview from './Overview.vue';
+
 export default {
   name: "Home",
+  components: {SimulationMaps, Policies, FloorPlans, Overview},
   methods:{
-    floorPlan(){
-      alert("You are viewing a floor")
+    setSelectedComponent(cmp){
+      this.selectedComponent = cmp;
+    }
+  },
+  data() {
+    return {
+      selectedComponent: 'overview',
     }
   }
 }
@@ -65,9 +68,6 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
-#mainLayout {
-margin: 0 30px 0 30px;
-}
 .navbar {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
@@ -92,7 +92,6 @@ background-color: #32404D;
 
 .nav-tabs .nav-item.facility a{
 font-family: Inter;
-font-style: normal;
 font-weight: 600;
 font-size: 16px;
 color: #FFFFFF;
@@ -102,7 +101,6 @@ background-color: #32404D;
 .nav-tabs .nav-link { 
   color: #607080;
   font-family: Inter;
-  font-style: normal;
   font-weight: 600;
   font-size: 16px;
   border: none;
@@ -111,7 +109,6 @@ background-color: #32404D;
   color: #0080FF;
   background-color: #fff;
   font-family: Inter;
-  font-style: normal;
   font-weight: 600;
   font-size: 16px;
   height: 50px;

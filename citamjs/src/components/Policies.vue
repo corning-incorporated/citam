@@ -11,3 +11,20 @@
 <!--  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION-->
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
+
+<template>
+    <div id="policiesLayout">I'm in policies</div>   
+</template>
+
+<script>
+export default {
+    
+}
+</script>
+
+><style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+#policiesLayout {
+background-color: #ffff;
+}
+</style>

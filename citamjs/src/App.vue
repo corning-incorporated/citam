@@ -14,18 +14,28 @@
 
 <template>
   <div id="app">
-<!--          <dashboard v-if="showDash"></dashboard>-->
     <the-navigation></the-navigation>
-    <main>
+    <main id="mainLayout">            
       <router-view>
-      <home v-show="showDash"></home>
+      <home v-show="showDash"></home>      
       </router-view>
+      <dashboard v-if="showDash"></dashboard>
     </main>
+    <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid">
+      <div class="d-flex align-items-center justify-content-between small">
+        <div class="text-muted"> &copy; CITAM</div>
+          <div>
+            <a href="https://github.com/corning-incorporated/citam/blob/main/LICENSE" target="_blank">License</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script>
-// import Dashboard from "@/components/Dashboard";
+import Dashboard from "@/components/Dashboard";
 import TheNavigation from '@/components/nav/Navigation'
 import Home from '@/components/Home';
 import {library} from '@fortawesome/fontawesome-svg-core'
@@ -44,8 +54,8 @@ export default {
   name: 'App',
   components: {
     Home,
-    TheNavigation
-    // Dashboard
+    TheNavigation,
+    Dashboard
   },
   data(){return {
     showDash: true,
@@ -62,5 +72,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: black;
+}
+#mainLayout {
+margin: 0 30px 0 30px;
 }
 </style>
