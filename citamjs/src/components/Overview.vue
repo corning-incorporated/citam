@@ -103,6 +103,7 @@ export default {
             policyList : [],
             statsList: [],
             runList: [],
+            policyData : [],
             overviewData: [],
         }
     },
@@ -133,6 +134,7 @@ export default {
         this.policyList = _.sortBy(this.policyList, [att]);
         this.runList = _.sortBy(this.runList, [att]);
         this.statsList = _.sortBy(this.statsList, [att]); 
+        this.policyData = _.sortBy(this.policyData, [att]);
         this.overviewData = _.sortBy(this.overviewData, [att]);              
         },
 
@@ -141,32 +143,50 @@ export default {
         },
 
         getOverviewData(){
-            this.policyList.forEach((policy) => {               
-                var isUniqueFacility = this.pushUniqueItems(policy.facility_name, "facility")
-                if(isUniqueFacility){
-                    //this.overviewData.push({facilityName:policy.facility_name})
-                    var isUniquePolicy = this.pushUniqueItems(policy.policy_id, "policy")
-                        if(isUniquePolicy){
-                            this.overviewData.push({policyName:policy.policy_id, facilityName:policy.facility_name})
-                            //this.overviewData = Vue.set(policy, 'policyName', policy.policy_id)
-                            //Vue.set(this.overviewData, 'policy', {policyName:policy.policy_id, facilityName:policy.facility_name})
-                        }
+            this.overviewData = [],            
+            this.policyList.forEach((policy) => {                                               
+                if(this.pushUniqueItems(policy.facility_name, "facility")){ 
+                    this.policyData.push({facilityName:policy.facility_name, policies:[{policyName:policy.policy_id, simulationRuns:[{simName:policy.sim_id}]}]})
+                    ////simulationRuns:[[{simName:policy.sim_id}]]}]})
                 }
-                //if(this.overviewData.length > 0){
-                    //this.overviewData[x].push({simulationName: policy.sim_id})
-                    this.overviewData.forEach((data) =>  {
-                        //data.push({...{simulationName: policy.sim_id}})
-                        Vue.set(data, 'simulationName', policy.sim_id)
-                        //this.overviewData.push(Object.assign({}, x,{simulationName: policy.sim_id}))
+                else{
+                    this.policyData.forEach((data, x) =>{                                                
+                        data.policies[x].simulationRuns.push({simName: policy.sim_id}) 
+                        
+                        this.runList.forEach((run, y) => {
+                            if(run.sim_id === data.policies[x].simulationRuns[y].simName){
+                                //data.policies[x].simulationRuns[y].push({totalFloors:run.NumberOfFloors,timeStep:run.TimestepInSec,scaleMultiplier:run.scaleMultiplier})
+                                Vue.set(data.policies[x].simulationRuns[y], "totalFloors", run.NumberOfFloors)
+                                Vue.set(data.policies[x].simulationRuns[y], "timeStep", run.TimestepInSec)
+                                Vue.set(data.policies[x].simulationRuns[y], "scaleMultiplier", run.scaleMultiplier)
+                                
+                                this.statsList.forEach((stats, z) => {
+                                    if(stats.sim_id === data.policies[x].simulationRuns[z].simName){
+                                        stats.forEach((item) => {
+                                        item.name = item.name.replace(/[^a-zA-Z0-9]/g, " ")
+                                        Vue.set(data.policies[x].simulationRuns[y], item.name, item.value)                                        
+                                        })                                        
+                                    }
+                                })
+                            }                 
+                        })
                     })
-                    //Vue.set(this.overviewData, 'simulationName', policy.sim_id)
-                    //Vue.set(this.overviewData, x, {simulationName :policy.sim_id})
-                //}
+
+
+
+
+
+
+
+
+                    this.overviewData.push(this.policyData)
+                    this.policyData = []                   
+                }                                                                               
             });
         },
 
         pushUniqueItems(item, type){
-             var index = this.overviewData.map(function(e){
+             var index = this.policyData.map(function(e){
                 return type =="policy"? e.policyName : e.facilityName;
             }).indexOf(item)
             return (index === -1) ? true: false;
