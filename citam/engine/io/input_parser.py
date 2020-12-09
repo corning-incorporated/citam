@@ -18,8 +18,9 @@ import os
 import logging
 import errno
 import json
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Union
 import xml.etree.ElementTree as ET
+import pathlib
 
 from svgpathtools import svg2paths, Line, parse_path, Path
 
@@ -40,12 +41,22 @@ class InvalidSVGError(ValueError):
     pass
 
 
-def parse_csv_metadata_file(csv_file: str) -> List[Dict[str, str]]:
-    """Read and parse CSV floorplan metadata file.
+def parse_csv_metadata_file(
+    csv_file: Union[str, pathlib.Path]
+) -> List[Dict[str, str]]:
+    """
+    Read and parse CSV floorplan metadata file.
 
-    :param str csv_file: path to csv file
+    :param csv_file: path to csv file.
+    :type csv_file: Union[str, pathlib.Path]
+    :raises FileNotFoundError: If CSV file is not found.
+    :raises ValueError: If a required column is missing from file.
+    :raises ValueError: The wrong number of values is found in a row.
+    :raises ValueError: An invalid value is used as space function.
+    :raises ValueError: A required value is left blank in a row.
     :return: List of dictionaries (one dict per entry in the CSV file) with
-        column headers as keys
+            column headers as keys
+    :rtype: List[Dict[str, str]]
     """
 
     if not os.path.isfile(csv_file):
@@ -94,14 +105,21 @@ def parse_csv_metadata_file(csv_file: str) -> List[Dict[str, str]]:
 
 
 def parse_standalone_svg_floorplan_file(
-    svg_file: str,
+    svg_file: Union[str, pathlib.Path],
 ) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
     """
-    Read standalone svg input file to extract floorplan information.
+    Read standalone svg input file to extract floorplan information. The SVG
+    file should include and ID and a function for each space.
 
-    :param str svg_file: Floorplan input file in SVG format to parse.
+    :param svg_file: input file in SVG format to parse.
+    :type svg_file: Union[str, pathlib.Path]
+    :raises InvalidSVGError: If no element with id=contents is found
+    :raises InvalidSVGError: If no element with class=floorplan is found.
+    :raises InvalidSVGError: If no buildings were found (elements with
+            id=spaces and id=doors)
     :return: Tuple with list of space paths, list of space attributes and
-        list of door paths
+            list of door paths
+    :rtype: Tuple[List[Path], List[Dict[str, str]], List[Path]]
     """
     # Load XML and get root elem
     tree = ET.parse(svg_file)
@@ -149,17 +167,20 @@ def parse_standalone_svg_floorplan_file(
 
 
 def _load_buildings_data(
-    contents_elem: ET.Element,
+    contents_elem: List[ET.Element],
 ) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
     """
     Given a SVG tree element with sub-elements with building information,
     extract data for each building and add to overall list of space paths,
     space attributes and doors for this floorplan.
 
-    :param ET.ElementTree contents_elem: Element from the SVG file with
-        data for each building as subelements.
+    :param contents_elem: Element from the SVG file with data for each building
+            as subelements.
+    :type contents_elem: List[ET.Element]
+    :raises InvalidSVGError: If no sub-element with class spaces were found.
     :return: tuple with list of space paths, list of space attributes and list
         of door paths.
+    :rtype: Tuple[List[Path], List[Dict[str, str]], List[Path]]
     """
     space_paths = []
     space_attributes = []
@@ -196,12 +217,18 @@ def _extract_spaces(
     spaces_elem: ET.Element, building_name: str
 ) -> Tuple[List[Path], List[Dict[str, str]]]:
     """
-    Given a SVG tree element, extract all space paths and attributes
+    Given a SVG tree element, extract all space paths and attributes.
 
-    :param xml.etree.ElementTree.Element spaces_elem: SVG element with each
-        subelement representing a path.
+    :param spaces_elem: SVG element with each subelement representing a space.
+    :type spaces_elem: ET.Element
+    :param building_name: The name of the building
+    :type building_name: str
+    :raises ValueError: If the function assigned to the space is unknown.
+    :raises ValueError: If the space path has no ID or function specified.
     :return: list of space paths and attributes.
+    :rtype: Tuple[List[Path], List[Dict[str, str]]]
     """
+
     space_paths, space_attributes = [], []
 
     for space_elem in spaces_elem:
@@ -213,13 +240,13 @@ def _extract_spaces(
 
             # Add space metadata
             space_metadata = {}
-            if "id" in space_elem.attrib and "class" in space_elem.attrib:
+            if "id" in space_elem.attrib and "function" in space_elem.attrib:
 
                 space_metadata["id"] = space_elem.attrib["id"]
                 if "unique_name" not in space_elem.attrib:
                     space_metadata["unique_name"] = space_elem.attrib["id"]
 
-                space_function = space_elem.attrib["class"]
+                space_function = space_elem.attrib["function"]
                 if space_function.lower() not in SUPPORTED_SPACE_FUNCTIONS:
                     raise ValueError(
                         "Unsupported space function %s", space_function
@@ -244,9 +271,10 @@ def _extract_doors(doors_elem: ET.Element) -> List[Path]:
     """
     Given a SVG tree element, extract all door paths.
 
-    :param xml.etree.ElementTree.Element doors_elem: SVG element with each
-        subelement representing a door.
+    :param doors_elem: SVG element with each subelement representing a door.
+    :type doors_elem: ET.Element
     :return: list of door paths.
+    :rtype: List[Path]
     """
     door_paths = []
     for door_elem in doors_elem:
@@ -259,21 +287,20 @@ def _extract_doors(doors_elem: ET.Element) -> List[Path]:
     return door_paths
 
 
-def parse_svg_floorplan_file(svg_file):
+def parse_svg_floorplan_file(
+    svg_file: Union[str, pathlib.Path]
+) -> Tuple[List[Path], List[Dict[str, str]], List[Path]]:
+    """
+    Read and parse SVG floorplan file.
 
-    """Read and parse SVG floorplan file.
-
-    Each space is represented by a path element with and id that matches the
+     Each space is represented by a path element with and id that matches the
     id in the csv file.
 
-    :param str svg_file: path to csv file
-    :return:
-    space_paths: list of Path
-        List of path elements
-    space_attributes: list of dict
-        List of attributres (key:value) pairs found in the svg file
-    door_paths: list of Path
-        Paths labeled as doors in the svg file
+    :param svg_file: path to csv file
+    :type svg_file: Union[str, pathlib.Path]
+    :raises FileNotFoundError: If SVG file is not found.
+    :return: List of path elements and their attributes as well as door paths.
+    :rtype: Tuple[List[Path], List[Dict[str, str]], List[Path]]
     """
 
     if not os.path.isfile(svg_file):
@@ -313,16 +340,20 @@ def parse_svg_floorplan_file(svg_file):
 
 
 def parse_meetings_policy_file(
-    json_filepath: str,
-) -> Dict[str, int or str or float or dict]:
-    """Read and parse the json meeting policy file.
+    json_filepath: Union[str, pathlib.Path],
+) -> Dict[str, Union[int, str, float, dict]:
+    """
+    Read and parse the json meeting policy file.
 
     The meetings policy for a given facility exposes parameters
     for when, where, how often and how long meetings take place
     in the facility.
 
-    :param str json_filepath: path to the scheduling policy file
+    :param json_filepath: path to the scheduling policy file.
+    :type json_filepath: Union[str, pathlib.Path]
+    :raises FileNotFoundError: IIf the file is not found.
     :return: data extracted from the file as a dictionary
+    :rtype: Dict[str, Union[int, str, float, dict]
     """
     meetings_policy_params = None
     if os.path.isfile(json_filepath):
@@ -336,9 +367,10 @@ def parse_meetings_policy_file(
 
 
 def parse_scheduling_policy_file(
-    json_filepath: str,
-) -> Dict[str, int or str or float or dict]:
-    """Read and parse the json scheduling policy file.
+    json_filepath: Union[str, pathlib.Path],
+) -> Dict[str, Union[int, str, float, dict]]:
+    """
+    Read and parse the json scheduling policy file.
 
     Together with the meetings policy file, this file encodes
     how and when people will be moving within a given facility.
@@ -346,12 +378,13 @@ def parse_scheduling_policy_file(
     purpose" which ties them to a category of space in the floorplan.
     See the documentation for more information.
 
-    TODO: Each employee group can have their own scheduling policy (e.g.
-    managers vs technicians).
-
-    :param str json_filepath: path to the scheduling policy file
-    :return: data extracted from the file as a dictionary
+    :param json_filepath: path to the scheduling policy file.
+    :type json_filepath: Union[str, pathlib.Path]
+    :raises FileNotFoundError: [description]
+    :return: data extracted from the file as a dictionary.
+    :rtype: Dict[str, Union[int, str, float, dict]]
     """
+
     if os.path.isfile(json_filepath):
         with open(json_filepath, "r") as f:
             scheduling_policy = json.load(f)
@@ -362,13 +395,25 @@ def parse_scheduling_policy_file(
 
 
 def parse_input_file(
-    input_file: str,
-) -> Dict[str, str or int or dict or float]:
-    """Read primary simulation input file in json format, validate values,
+    input_file: Union[str, pathlib.Path],
+) -> Dict[str, Union[str, int, dict, float]:
+    """
+    Read primary simulation input file in json format, validate values,
     load floorplans and returns dictionary of model inputs.
 
-    :param str input_file: path to input file expected in json format
+    :param input_file: path to input file expected in json format
+    :type input_file: Union[str, pathlib.Path]
+    :raises ValueError: If unable to decode JSON file.
+    :raises FileNotFoundError: If the file is not found.
+    :raises MissingInputError: If a required value is not found
+    :raises TypeError: If incorrect value type is found for one or more inputs.
+    :raises ValueError: If an input value is invalid.
+    :raises FileNotFoundError: If path to another to a meetings policy is file
+            is not valid.
+    :raises FileNotFoundError: If path to another to a scheduling policy is
+            file is not valid.
     :return: dictionary of inputs
+    :rtype: Dict[str, Union[str, int, dict, float]
     """
 
     if os.path.isfile(input_file):
