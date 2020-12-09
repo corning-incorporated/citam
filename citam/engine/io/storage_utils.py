@@ -13,11 +13,19 @@
 # ==============================================================================
 
 import os
+from typing import Union
+import pathlib
 from appdirs import user_data_dir
 
 
-def get_user_cache():
-    """Returns the user cache directory for citam"""
+def get_user_cache() -> Union[str, pathlib.Path]:
+    """
+    Get the path to this user's OS cache directory. The cache directory is
+    used to save facility and policy information.
+
+    :return: path to the cache directory
+    :rtype: Union[str, pathlib.Path]
+    """
     citam_cache_directory = os.environ.get("CITAM_CACHE_DIRECTORY")
     if citam_cache_directory is None:
         citam_cache_directory = user_data_dir("CITAM")
@@ -32,13 +40,25 @@ def get_user_cache():
     return citam_cache_directory
 
 
-def get_floorplans_directory():
+def get_floorplans_directory() -> Union[str, pathlib.Path]:
     citam_cache_directory = get_user_cache()
     return os.path.join(citam_cache_directory, "floorplans_and_nav_data/")
 
 
-def create_datadir(facility_name, floor_name):
-    """Create directory to save data for a given facility and floor."""
+def create_datadir(
+    facility_name: str, floor_name: str
+) -> Union[str, pathlib.Path]:
+    """
+    Create a new directory in the user's cache to save data for a given
+    facility and floor.
+
+    :param facility_name: The name of the facility
+    :type facility_name: str
+    :param floor_name: The name of the floor.
+    :type floor_name: str
+    :return: The path of the newly created directory.
+    :rtype: Union[str, pathlib.Path]
+    """
     floorplan_directory = get_floorplans_directory()
     if not os.path.isdir(floorplan_directory):
         os.mkdir(floorplan_directory)
@@ -56,9 +76,21 @@ def create_datadir(facility_name, floor_name):
     return floor_directory
 
 
-def get_datadir(facility_name, floor_name):
-    """Get the directory where data for a given facility and floor are
-    saved."""
+def get_datadir(
+    facility_name: str, floor_name: str
+) -> Union[str, pathlib.Path]:
+    """
+    Get the directory where data for a given facility and floor are saved.
+
+    :param facility_name: The name of the facility.
+    :type facility_name: str
+    :param floor_name: The name of the floor.
+    :type floor_name: str
+    :return: path of the directory where data for this facility and floor are
+            found.
+    :rtype: Union[str, pathlib.Path]
+    """
+    """"""
     citam_cache_directory = get_user_cache()
     return os.path.join(
         citam_cache_directory,

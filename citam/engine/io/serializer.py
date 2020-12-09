@@ -2,6 +2,10 @@ from svgpathtools import Path, Line, parse_path
 
 
 class _Serializer:
+    """
+    Helper class to manage encoding and decoding classes to/from JSON.
+    """
+
     def __init__(self, classname_key="__class__"):
         self._key = classname_key
         self._classes = {}  # to keep a reference to the classes used
@@ -10,7 +14,7 @@ class _Serializer:
         self._classes[class_.__name__] = class_
         return class_
 
-    def decoder_hook(self, d):
+    def decoder_hook(self, d: dict):
         classname = d.pop(self._key, None)
         if classname:
             if classname == "Path":
