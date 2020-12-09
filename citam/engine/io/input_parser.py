@@ -341,7 +341,7 @@ def parse_svg_floorplan_file(
 
 def parse_meetings_policy_file(
     json_filepath: Union[str, pathlib.Path],
-) -> Dict[str, Union[int, str, float, dict]:
+) -> Dict[str, Union[int, str, float, dict]]:
     """
     Read and parse the json meeting policy file.
 
@@ -396,7 +396,7 @@ def parse_scheduling_policy_file(
 
 def parse_input_file(
     input_file: Union[str, pathlib.Path],
-) -> Dict[str, Union[str, int, dict, float]:
+) -> Dict[str, Union[str, int, dict, float]]:
     """
     Read primary simulation input file in json format, validate values,
     load floorplans and returns dictionary of model inputs.
