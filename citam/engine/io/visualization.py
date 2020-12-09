@@ -300,7 +300,7 @@ def export_world_to_svg(
     svg_file: Union[str, pathlib.Path],
     marker_locations: List[Tuple[int, int, int]] = [],
     marker_type: int = None,
-    arrows: Tuple[Tuple[int, int], Tuple[int, int]] = [],
+    arrows: List[Tuple[Tuple[int, int], Tuple[int, int]]] = [],
     doors: List[Path] = [],
     max_contacts: int = 100,
     current_time: int = None,

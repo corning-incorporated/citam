@@ -18,7 +18,7 @@ import os
 import logging
 import errno
 import json
-from typing import List, Tuple, Dict, Union
+from typing import List, Tuple, Dict, Union, Any
 import xml.etree.ElementTree as ET
 import pathlib
 
@@ -396,7 +396,7 @@ def parse_scheduling_policy_file(
 
 def parse_input_file(
     input_file: Union[str, pathlib.Path],
-) -> Dict[str, Union[str, int, dict, float]]:
+) -> Dict[str, Any]:
     """
     Read primary simulation input file in json format, validate values,
     load floorplans and returns dictionary of model inputs.
@@ -413,7 +413,7 @@ def parse_input_file(
     :raises FileNotFoundError: If path to another to a scheduling policy is
             file is not valid.
     :return: dictionary of inputs
-    :rtype: Dict[str, Union[str, int, dict, float]
+    :rtype: Dict[str, Any]
     """
 
     if os.path.isfile(input_file):
@@ -577,8 +577,8 @@ def parse_input_file(
                 )
         traffic_policy = input_dict["traffic_policy"]
 
-    total_percent: float = sum(s["percent_agents"] for s in shifts)
-    if total_percent > 1.0:
+    total_percent = sum(s["percent_agents"] for s in shifts)  # type: ignore
+    if total_percent > 1.0:  # type: ignore
         raise ValueError("Total percent of agents cannot be greater than 1.0")
 
     LOG.info("Number of agents: %d", n_agents)
