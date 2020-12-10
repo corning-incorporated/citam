@@ -66,6 +66,7 @@ def ingest_floorplan(
     floor: str = "0",
     buildings: List[str] = None,
     output_directory=None,
+    force_overwrite=False,
     **kwargs
 ):  # noqa
     """Ingest raw floorplan and data files for a given floor of a facility.
@@ -86,9 +87,6 @@ def ingest_floorplan(
     if not os.path.isfile(svg):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), svg)
 
-    if not os.path.isfile(csv):
-        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), csv)
-
     if output_directory is None:
         floor_directory = su.get_datadir(facility, floor)
         if not os.path.isdir(floor_directory):
@@ -99,7 +97,7 @@ def ingest_floorplan(
             os.mkdir(floor_directory)
 
     fp_file = os.path.join(floor_directory, "floorplan.json")
-    if os.path.isfile(fp_file):
+    if os.path.isfile(fp_file) and force_overwrite is False:
         LOG.error(
             "Floorplan exists. Please choose another facility or floor name."
         )
@@ -109,7 +107,7 @@ def ingest_floorplan(
     floorplan_ingester = FloorplanIngester(
         svg,
         scale,
-        csv,
+        csv_file=csv,
         buildings_to_keep=buildings,
         extract_doors_from_file=True,
     )
@@ -125,6 +123,7 @@ def export_floorplan_to_svg(
     facility: str,
     floor: str,
     outputfile: str,
+    doors=False,
     floorplan_directory: str = None,
     **kwargs
 ):  # noqa
@@ -142,7 +141,7 @@ def export_floorplan_to_svg(
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
-    floorplan.export_to_svg(outputfile)
+    floorplan.export_to_svg(outputfile, include_doors=doors)
     LOG.info("Floorplan exported to: %s", outputfile)
 
 
@@ -295,9 +294,11 @@ def run_simulation(inputs: dict):
             floorplans,
             model_inputs["entrances"],
             model_inputs["facility_name"],
+            traffic_policy=model_inputs["traffic_policy"],
         )
         del model_inputs["entrances"]
         del model_inputs["facility_name"]
+        del model_inputs["traffic_policy"]
 
         model_inputs["facility"] = facility
         my_model = FacilityTransmissionModel(**model_inputs)
