@@ -29,7 +29,7 @@ from citam.engine.policy.daily_schedule import Schedule
 import citam.engine.io.visualization as bv
 import citam.engine.core.contacts as cev
 from citam.engine.policy.meetings import MeetingPolicy
-from citam.engine.constants import DEFAULT_SCHEDULING_RULES
+from citam.engine.constants import DEFAULT_SCHEDULING_RULES, CAFETERIA_VISIT
 from citam.engine.facility.indoor_facility import Facility
 
 import progressbar as pb
@@ -55,6 +55,7 @@ class FacilityTransmissionModel:
         shifts: List[Dict],
         meetings_policy_params=None,
         create_meetings=True,
+        close_dining=False,
         scheduling_policy=None,
         dry_run=False,
     ) -> None:
@@ -82,6 +83,9 @@ class FacilityTransmissionModel:
             self.scheduling_rules = DEFAULT_SCHEDULING_RULES
         else:
             self.scheduling_rules = scheduling_policy
+
+        if close_dining and CAFETERIA_VISIT in self.scheduling_rules:
+            del self.scheduling_rules[CAFETERIA_VISIT]
 
         self.meetings_policy_params = meetings_policy_params
 
@@ -411,12 +415,12 @@ class FacilityTransmissionModel:
             {}
         ] * self.facility.number_of_floors  # One per floor
 
-        active_agents, moving_agents = self.move_agents()
+        active_agents, _ = self.move_agents()
 
-        if len(moving_agents) > 1 and not self.dry_run:
+        if len(active_agents) > 1 and not self.dry_run:
             # At least 2 agents required
             moving_active_agents = [
-                a for a in moving_agents if a.current_location is not None
+                a for a in active_agents if a.current_location is not None
             ]
             self.identify_contacts(moving_active_agents)
 

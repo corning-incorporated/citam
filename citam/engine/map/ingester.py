@@ -59,8 +59,6 @@ class FloorplanIngester:
         self.maxx = None
         self.maxy = None
 
-        print("CSV file is: ", csv_file)
-
         self.buildings = set()
 
         self.excluded_buildings = excluded_buildings  # TODO: Implement this
@@ -158,7 +156,7 @@ class FloorplanIngester:
         (
             self.space_paths,
             self.space_attributes,
-            self.door_pathsparser,
+            self.door_paths,
         ) = parser.parse_standalone_svg_floorplan_file(self.svg_file)
 
     def read_data_from_csv_and_svg_files(self):
@@ -341,26 +339,27 @@ class FloorplanIngester:
         """
         # TODO: Handle case where more than 2 spaces are involved.
         # Find which other space this wall is shared with
-        print("------> Door Line: ", door_line)
-        results = {}
+        wall_overlaps_by_space: Dict[int, list] = {}
         for space_index, space in enumerate(self.spaces):
             for wall_index_in_space, other_wall in enumerate(space.path):
                 if gsu.do_walls_overlap(other_wall, door_line):
-                    if space_index in results:
-                        results[space_index].append(wall_index_in_space)
+                    if space_index in wall_overlaps_by_space:
+                        wall_overlaps_by_space[space_index].append(
+                            wall_index_in_space
+                        )
                     else:
-                        results[space_index] = [wall_index_in_space]
-                    print(space_index, space.unique_name, other_wall)
-                    print(results, "\n")
+                        wall_overlaps_by_space[space_index] = [
+                            wall_index_in_space
+                        ]
 
-        if len(results) > 2:
+        if len(wall_overlaps_by_space) > 2:
             space_ids = set()
-            for space_index in results:
+            for space_index in wall_overlaps_by_space:
                 space_ids.add(self.spaces[space_index].unique_name)
             msg = "Door connecting more than 2 spaces. This is not typical: "
             LOG.warning(f"Door: {door_line} --> {msg}: {', '.join(space_ids)}")
 
-        return results
+        return wall_overlaps_by_space
 
     def build_door_line(self, door: Path) -> Line:
         """
