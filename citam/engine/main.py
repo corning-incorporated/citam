@@ -66,6 +66,7 @@ def ingest_floorplan(
     floor: str = "0",
     buildings: List[str] = None,
     output_directory=None,
+    force_overwrite=False,
     **kwargs
 ):  # noqa
     """Ingest raw floorplan and data files for a given floor of a facility.
@@ -96,7 +97,7 @@ def ingest_floorplan(
             os.mkdir(floor_directory)
 
     fp_file = os.path.join(floor_directory, "floorplan.json")
-    if os.path.isfile(fp_file):
+    if os.path.isfile(fp_file) and force_overwrite is False:
         LOG.error(
             "Floorplan exists. Please choose another facility or floor name."
         )
@@ -122,6 +123,7 @@ def export_floorplan_to_svg(
     facility: str,
     floor: str,
     outputfile: str,
+    doors=False,
     floorplan_directory: str = None,
     **kwargs
 ):  # noqa
@@ -139,7 +141,7 @@ def export_floorplan_to_svg(
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
-    floorplan.export_to_svg(outputfile)
+    floorplan.export_to_svg(outputfile, include_doors=doors)
     LOG.info("Floorplan exported to: %s", outputfile)
 
 
