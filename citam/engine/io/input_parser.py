@@ -443,39 +443,43 @@ def parse_input_file(
         raise ValueError("At least one agent is required.")
 
     # Optional arguments
-    upload_results = False
-    if "upload_results" in input_dict:
-        upload_results = input_dict["upload_results"]
-
-    upload_location = None
-    if "upload_location" in input_dict:
-        upload_location = input_dict["upload_location"]
+    create_meetings = input_dict.get("create_meetings", True)
+    close_dining = input_dict.get("close_dining", False)
+    upload_results = input_dict.get("upload_results", False)
+    upload_location = input_dict.get("upload_location", None)
 
     if upload_results and upload_location is None:
         raise ValueError("upload_location must be specified.")
 
-    occupancy_rate = None
-    if "occupancy_rate" in input_dict:
-        occupancy_rate = input_dict["occupancy_rate"]
+    occupancy_rate = input_dict.get("occupancy_rate", None)
 
-    floorplan_scale = 1.0 / 12.0
-    if "floorplan_scale" in input_dict:
-        floorplan_scale = input_dict["floorplan_scale"]
+    floorplan_scale = input_dict.get("floorplan_scale", 1.0 / 12.0)
+    if not isinstance(floorplan_scale, (int, float)):
+        raise TypeError("Floorplan scale must be a float or an int")
 
-    if not isinstance(floorplan_scale, float):
-        raise TypeError("Floorplan scale must be a float")
+    contact_distance = input_dict.get("contact_distance", 6.0)
 
-    contact_distance = 6.0
-    if "contact_distance" in input_dict:
-        contact_distance = input_dict["contact_distance"]
-
-    shifts = [
-        {"name": "primary", "start_time": buffer, "percent_workforce": 1.0}
-    ]
-    if "shifts" in input_dict:
-        shifts = input_dict["shifts"]
+    shifts = input_dict.get(
+        "shifts",
+        [{"name": "primary", "start_time": buffer, "percent_workforce": 1.0}],
+    )
     if not isinstance(shifts, list):
         raise TypeError("shifts must be a list")
+    for s in shifts:
+        if (
+            "name" not in s
+            or "start_time" not in s
+            or "percent_workforce" not in s
+        ):
+            raise ValueError(
+                "A shift must define a name, start time and percent workforce"
+            )
+        if (
+            not isinstance(s["percent_workforce"], (int, float))
+            or s["percent_workforce"] > 1.0
+            or s["percent_workforce"] <= 0.0
+        ):
+            raise TypeError("Percent workforce must be between 0.0 than 1.0")
 
     scheduling_policy = None
     if "scheduling_policy_file" in input_dict:
@@ -509,9 +513,18 @@ def parse_input_file(
                     "A dictionary with these keys expected:"
                     + "floor, segment_id, direction"
                 )
+            if (
+                "floor" not in pol
+                or "segment_id" not in pol
+                or "direction" not in pol
+            ):
+                raise TypeError(
+                    "The following keys are expected in each policy:"
+                    + "floor, segment_id, direction"
+                )
         traffic_policy = input_dict["traffic_policy"]
 
-    total_percent = sum(s["percent_workforce"] for s in shifts)
+    total_percent: float = sum(s["percent_workforce"] for s in shifts)
     if total_percent > 1.0:
         raise ValueError("Total percent workforce greater than 1.0")
 
@@ -536,4 +549,6 @@ def parse_input_file(
         "scheduling_policy": scheduling_policy,
         "traffic_policy": traffic_policy,
         "output_directory": os.getcwd() + "/",
+        "create_meetings": create_meetings,
+        "close_dining": close_dining,
     }

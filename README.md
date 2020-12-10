@@ -2,12 +2,28 @@
 
 Covid-19 Indoor Transmission Agent-based Modeling platform.
 
-When you use CITAM to model your facility (e.g. a school, a manufacturing facility, an office building, etc.), it creates a "virtual" version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts and traffic patterns and compare the contact statistics to find the best mitigation strategy to limit transmission within your facility.
+When you use CITAM to model your facility (e.g. a manufacturing facility, an office building, etc.), it creates a "virtual" version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts, scheduling rules, etc. and compare contact statistics to find the best mitigation strategy to limit transmission within your facility.
 
-As a simulation platform, CITAM does not implement nor does it support real-world tracking of visitors, employees or other people within the facilities of interest. CITAM actually provides an alternative to that approach by allowing a simulation to be used to assess and understand the implications of
-various mitigation policies. At its core, CITAM is an agent-based
-modeling platform. However, CITAM implements special features that make it
-possible to mimic daily activities in various indoor environments.
+As a simulation platform, CITAM does not implement nor does it support real-world tracking of visitors, employees or other people within the facilities of interest. CITAM actually provides an alternative to that approach by allowing a simulation to be used to assess and understand the implications of various mitigation policies. At its core, CITAM is an agent-based modeling platform. However, CITAM implements special features that make it possible to mimic daily activities in various indoor environments.
+
+## Contents  
+
+[Basic Requirements](#basic-requirements)
+
+[Installaton](#install-citam)
+
+[Add New Facilities](#add-facilities)
+
+[Run Simulations](#run-simulations)
+
+[Visualize Results](#visualize-results)
+
+[Contributing](#contributing)
+
+[License](#license)
+
+
+## Basic Requirements
 
 The primary requirement to use CITAM is to have a map of each floor of each facility in SVG format for ingestion as well as some metadata about each space in each floorplan. For a list of required metadata, please visit the input requirements section of the documentation. Example input files are also available in the [examples](examples/) folder in this git repository.
 
@@ -23,8 +39,6 @@ Once a facility is successfully ingested into CITAM, any number of simulations c
 
 CITAM is built as a cross-platform software compatible with all major operating systems. The primary way of using CITAM is currently through the command-line. CITAM is also shipped with a web-based dashboard to visualize simulation results.
 
-## Getting Started
---------------
 ## Install CITAM
 
 ### Pre-requisite: Python 3.x
@@ -41,7 +55,7 @@ Below are the different ways to install CITAM.
 
 ### From Python-Wheel (Recommended)
 
-1. Download the python-wheel [here](https://github.com/corning-incorporated/citam/actions/runs/292437599) (TODO: Update link to a release tag).
+1. Download the python-wheel [here](https://github.com/corning-incorporated/citam/suites/1623194277/artifacts/29845594) (TODO: Update link to a release tag).
 2. Extract the compressed file locally, 
 3. change directory to the extracted python-wheel folder.  Do not rename this file.
 4. run `pip install <citam wheel>` where citam_wheel is the extracted .whl file
