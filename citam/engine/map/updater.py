@@ -17,6 +17,7 @@ import logging
 from svgpathtools import Line, svg2paths
 
 import citam.engine.map.geometry as gsu
+import citam.engine.map.utils as fu
 from citam.engine.map.door import Door
 from citam.engine.io.input_parser import parse_csv_metadata_file
 from citam.engine.map.point import Point
@@ -138,7 +139,7 @@ class FloorplanUpdater:
         doors_to_remove = []
         for door in self.floorplan.doors:
             for wall in self.floorplan.special_walls:
-                if gsu.do_walls_overlap(wall, door.path):
+                if fu.do_walls_overlap(wall, door.path):
                     # remove the wall from the door so as to shorten or
                     # completely remove the door
                     doors_to_remove.append(door)
@@ -281,9 +282,6 @@ class FloorplanUpdater:
                 abs(dot_product - 1.0) < 1e-1
                 and distance < max_distance_to_walls
             ):
-                # door and wall overlap
-                # if gsu.do_walls_overlap(wall, new_door):
-
                 new_door = gsu.align_to_reference(wall, new_door)
                 V_perp = gsu.calculate_normal_vector_between_walls(
                     new_door, wall

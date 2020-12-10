@@ -342,7 +342,7 @@ class FloorplanIngester:
         wall_overlaps_by_space: Dict[int, list] = {}
         for space_index, space in enumerate(self.spaces):
             for wall_index_in_space, other_wall in enumerate(space.path):
-                if gsu.do_walls_overlap(other_wall, door_line):
+                if fu.do_walls_overlap(other_wall, door_line):
                     if space_index in wall_overlaps_by_space:
                         wall_overlaps_by_space[space_index].append(
                             wall_index_in_space
@@ -542,7 +542,7 @@ class FloorplanIngester:
 
                 # if hallway and room walls overlap, add room to door and
                 # remove overlap from hallway wall
-                if gsu.do_walls_overlap(h_wall, room_wall):
+                if fu.do_walls_overlap(h_wall, room_wall):
                     room = self.spaces[room_id]
                     n_overlaps += 1
                     if add_door and len(room.doors) == 0:
@@ -587,7 +587,7 @@ class FloorplanIngester:
                 if wall2.start == wall2.end:  # This is just one point.
                     continue
 
-                if gsu.do_walls_overlap(wall1, wall2, max_distance=2.0):
+                if fu.do_walls_overlap(wall1, wall2, max_distance=2.0):
                     if wall1 not in invalid_hallway_walls:
                         invalid_hallway_walls.append(wall1)
                     if wall2 not in invalid_hallway_walls:
