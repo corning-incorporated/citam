@@ -15,7 +15,8 @@
 import copy
 import logging
 import queue
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union, Set, Optional
+import pathlib
 
 import progressbar as pb
 from svgpathtools import Line, CubicBezier, Path
@@ -37,29 +38,48 @@ class FloorplanIngester:
 
     def __init__(
         self,
-        svg_file,
-        scale,
-        csv_file=None,
-        extract_doors_from_file=False,
-        buildings_to_keep=None,
-        excluded_buildings=None,
-    ):
+        svg_file: Union[str, pathlib.Path],
+        scale: float,
+        csv_file: Union[str, pathlib.Path] = None,
+        extract_doors_from_file: bool = False,
+        buildings_to_keep: List[str] = None,
+        excluded_buildings: List[str] = None,
+    ) -> None:
+        """
+        Initialize a new floorplan ingester object.
+
+        :param svg_file: path to the SVG file.
+        :type svg_file: Union[str, pathlib.Path]
+        :param scale: The scale of the floorplan.
+        :type scale: float
+        :param csv_file: path to the CSV file, defaults to None
+        :type csv_file: Union[str, pathlib.Path], optional
+        :param extract_doors_from_file: Whether to extract doors from the SVG
+             file or not, defaults to False
+        :type extract_doors_from_file: bool, optional
+        :param buildings_to_keep: List of buildings to keep, all other
+             buildings will be ignored., defaults to None
+        :type buildings_to_keep: bool, optional
+        :param excluded_buildings: List of buildings to exclude,
+            defaults to None
+        :type excluded_buildings: bool, optional
+        """
         self.svg_file = svg_file
         self.csv_file = csv_file
         self.extract_doors_from_file = extract_doors_from_file
         self.scale = scale
 
-        self.spaces = []
-        self.doors = []
-        self.aisles = []
-        self.walls = []
+        self.spaces: List[Space] = []
+        self.doors: List[Door] = []
+        self.aisles: List[Tuple[Line]] = []
+        self.walls: List[Line] = []
 
         self.minx = None
         self.miny = None
         self.maxx = None
         self.maxy = None
 
-        self.buildings = set()
+        self.buildings: Set[str] = set()
 
         self.excluded_buildings = excluded_buildings  # TODO: Implement this
 
@@ -74,10 +94,10 @@ class FloorplanIngester:
         else:
             LOG.warning("No svg and/or csv file provided.")
 
-        return
-
-    def create_spaces_from_csv_and_svg_data(self):
-        """Create space objects from data extracted in csv and svg files"""
+    def create_spaces_from_csv_and_svg_data(self) -> None:
+        """
+        Create space objects from data extracted in csv and svg files
+        """
 
         if len(self.space_data) < len(self.space_paths):
             raise ValueError("Each good path in svg must have metadata")
@@ -111,8 +131,10 @@ class FloorplanIngester:
                     break
         self.validate_buildings()
 
-    def create_spaces_from_svg_data(self):
-        """Create space objects from data extracted in standalone svg file"""
+    def create_spaces_from_svg_data(self) -> None:
+        """
+        Create space objects from data extracted in standalone svg file
+        """
 
         for space_path, space_attr in zip(
             self.space_paths, self.space_attributes
@@ -137,7 +159,7 @@ class FloorplanIngester:
             self.spaces.append(space)
         self.validate_buildings()
 
-    def validate_buildings(self):
+    def validate_buildings(self) -> None:
         """
         Make sure we take all user-provided building names into account
         """
@@ -149,18 +171,22 @@ class FloorplanIngester:
                             Valid buildings are: {self.buildings}"
                     raise ValueError(msg)
         else:
-            self.buildings_to_keep = self.buildings
+            self.buildings_to_keep = self.buildings  # type: ignore
 
-    def read_data_from_svg_file(self):
-        """Read and parse floorplan from svg file"""
+    def read_data_from_svg_file(self) -> None:
+        """
+        Read and parse floorplan from svg file
+        """
         (
             self.space_paths,
             self.space_attributes,
             self.door_paths,
         ) = parser.parse_standalone_svg_floorplan_file(self.svg_file)
 
-    def read_data_from_csv_and_svg_files(self):
-        """Read and parse csv and svg files"""
+    def read_data_from_csv_and_svg_files(self) -> None:
+        """
+        Read and parse csv and svg files
+        """
         self.space_data = parser.parse_csv_metadata_file(self.csv_file)
 
         if len(self.space_data) == 0:
@@ -178,8 +204,10 @@ class FloorplanIngester:
         self.space_attributes = svg_data[1]
         self.door_paths = svg_data[2]
 
-    def read_input_files(self):
-        """Read and parse csv and svg files"""
+    def read_input_files(self) -> None:
+        """
+        Read and parse csv and svg files
+        """
         self.space_data = parser.parse_csv_metadata_file(self.csv_file)
 
         if len(self.space_data) == 0:
@@ -202,8 +230,10 @@ class FloorplanIngester:
         LOG.info(f"Number of spaces extracted from SVG file {n_spaces}")
         LOG.info(f"Number of doors extracted from SVG file: {n_doors}")
 
-    def run(self):
-        """Perform the ingestion process"""
+    def run(self) -> None:
+        """
+        Perform the ingestion process
+        """
 
         if self.csv_file is None:
             self.create_spaces_from_svg_data()
@@ -214,7 +244,7 @@ class FloorplanIngester:
 
         self.building_walls = {}
         all_room_walls, all_hallway_walls = [], []
-        for building in self.buildings_to_keep:
+        for building in self.buildings_to_keep:  # type: ignore
             room_walls, hallway_walls = self.find_valid_walls_and_create_doors(
                 building
             )
@@ -246,12 +276,15 @@ class FloorplanIngester:
 
         return
 
-    def find_space_index_for_door(self, door):
+    def find_space_index_for_door(
+        self, door: Path
+    ) -> Tuple[Optional[int], List[Line]]:
         """
         Given a door SVG element, find the index of the space to which it
         belongs.
 
-        :param Path door: path element representing a door in the drawing
+        :param door: path element representing a door in the drawing
+        :type: Door
         :return: space_index and door lines
         :rtype: (int,list[Line])
         """
@@ -280,21 +313,23 @@ class FloorplanIngester:
         return space_index, door_lines
 
     def find_closest_wall_and_best_door_line(
-        self, space_index, door_lines, max_distance=10.0
-    ):
+        self, space_index: int, door_lines: List[Line], max_distance=10.0
+    ) -> Tuple[Optional[int], Optional[Line]]:
         """
         Given a number of lines in the door SVG element, find the best line
         based on proximity to a wall.
 
-        :param int space_index: index of the space where this door is located
-        :param list door_lines: list of Line elements that represent the door
-        :param float max_distance: max distance beyond which a wall is
-            considered too far from the door.
-        :return: wall index and best_door_line
-                index of the closest wall to any given line and Line that is
-                closest to that wall
-        :rtype: (int, Line)
+        :param space_index: index of the space where this door is located.
+        :type space_index: int
+        :param door_lines: list of Line elements that represent the door
+        :type door_lines: List[Line]
+        :param max_distance: max distance beyond which a wall is considered too
+             far from the door., defaults to 10.0
+        :type max_distance: float, optional
+        :return: The index of the space and the best door line
+        :rtype: Tuple[Optional[int], Optional[Line]]
         """
+
         wall_index = None
         current_min_distance = 100.0
         best_door_line = None
@@ -328,14 +363,12 @@ class FloorplanIngester:
         self, door_line: Line
     ) -> Dict[int, List[int]]:
         """
-        Given a door and one of the spaces that it connects, find the other
-        space.
+        Given a door line, find all overlapping walls.
 
-        :param int space_index: index of the space of interest
-        :param Line door_line: Line representing the door
-        :return: wall_index, space_index, new_walls after extracting door from
-                wall
-        :rtype: dict
+        :param door_line: Line representing the door
+        :type door_line: Line
+        :return: Dictionary with all the overallping walls.
+        :rtype: Dict[int, List[int]]
         """
         # TODO: Handle case where more than 2 spaces are involved.
         # Find which other space this wall is shared with
@@ -366,7 +399,13 @@ class FloorplanIngester:
         Take a door path (Line or Bezier Curve) and return a Line that
         corresponds to where it acutally falls on the map based on
         overlap with existing walls.
+
+        :param door: The door path
+        :type door: Path
+        :return: The best line to represent the door.
+        :rtype: Line
         """
+
         # Find the space where this door belongs
         space_index, door_lines = self.find_space_index_for_door(door)
 
@@ -396,9 +435,17 @@ class FloorplanIngester:
 
         return door_line
 
-    def _create_door_object(self, door_line, space_indices):
+    def _create_door_object(
+        self, door_line: Line, space_indices: List[int]
+    ) -> None:
         """
-        Given a door line and space indices, create new door object
+        Given a door line and space indices, create new door object and add it
+        to the list of doors for this floorplan.
+
+        :param door_line: The door line of interest.
+        :type door_line: Line
+        :param space_indices: Indices of the spaces that this door connects
+        :type space_indices: List[int]
         """
         if not space_indices:
             return
@@ -414,12 +461,17 @@ class FloorplanIngester:
         self.doors.append(door_obj)
 
     def _remove_door_from_overlapping_walls(
-        self, door_line, overlapping_walls
-    ):
+        self, door_line: Line, overlapping_walls: Dict[int, List[int]]
+    ) -> None:
         """
         Given a door line and a dict of overlapping walls grouped by their
         corresponding space index, carve out the door in each wall and update
         walls accordingly.
+
+        :param door_line: The door line.
+        :type door_line: Line
+        :param overlapping_walls: A dictionary of overlapping walls.
+        :type overlapping_walls: Dict[int, List[int]]
         """
         for space_index in overlapping_walls:
             for wall_index in overlapping_walls[space_index]:
@@ -429,8 +481,9 @@ class FloorplanIngester:
                 for new_wall in new_walls:
                     self.spaces[space_index].path.append(new_wall)
 
-    def process_doors(self):
-        """Iterate over the door paths extracted from the SVG file, find
+    def process_doors(self) -> None:
+        """
+        Iterate over the door paths extracted from the SVG file, find
         associated spaces and create door objects.
         """
         LOG.info("Processing doors from SVG file...")
@@ -469,16 +522,14 @@ class FloorplanIngester:
             n_success,
         )
 
-        return
-
-    def create_new_door_to_room(self, room_wall, room_id):
+    def create_new_door_to_room(self, room_wall: Line, room_id: int) -> None:
         """
         Add door to access a given room from a given wall.
 
-        :param Space room: the room to add door to
-        :param svgpathtools.Line room_wall: the wall to carve out the door
-        :param int room_id: index of the room of interest
-        :return: the door created. None if unsuccessful.
+        :param room_wall: the wall to carve out the door from.
+        :type room_wall: Line
+        :param room_id: index of the room of interest.
+        :type room_id: int
         """
         door_line = gsu.compute_new_door_line(room_wall, door_size=12.0)
         if door_line is not None:
@@ -500,26 +551,33 @@ class FloorplanIngester:
 
     def find_and_remove_overlaps_between_walls(
         self,
-        hallway_wall,
-        other_walls,
-        other_space_ids,
+        hallway_wall: Line,
+        other_walls: List[Line],
+        other_space_ids: List[int],
         add_door=True,
-    ):
-        """Given a hallway wall, iterate over all other walls to test for
-        overap. If found, remove overlap.
+    ) -> List[Line]:
+        """
+        Given a hallway wall, iterate over all other walls to test for overlap.
+        If found, remove overlap.
 
-        :param Line hallway_wall: Line representing one of the walls
-        :param list[svgpathtools.Line] other_walls: list of other walls from
-            which to look for overlap with this wall
-        :param list[int] other_space_ids: list of indices of the space to
-            which each wall belongs
-        :param boolean add_door: Whether to add a wall or not to the otehr
-            wall if an overlap is found
+        :param hallway_wall: Line representing one of the walls
+        :type hallway_wall: Line
+        :param other_walls: list of other walls from which to look for overlap
+             with this wall
+        :type other_walls: List[Line]
+        :param other_space_ids: list of indices of the space to which each wall
+             belongs
+        :type other_space_ids: List[int]
+        :param add_door: Whether to add doors to the wall or not,
+             defaults to True
+        :type add_door: bool, optional
+        :return: The list of wall fragments after removing overlaps.
+        :rtype: List[Line]
         """
         wall_fragments = []
         processed_segments = []
 
-        processing_queue = queue.Queue()
+        processing_queue = queue.Queue()  # type: ignore
         processing_queue.put(hallway_wall)
 
         n_overlaps = 0
@@ -561,13 +619,16 @@ class FloorplanIngester:
 
         return wall_fragments
 
-    def find_invalid_walls(self, hallway_walls):
-        """Find and remove walls that are between 2 hallways (or aisles)
+    def find_invalid_walls(
+        self, hallway_walls: List[Line]
+    ) -> Tuple[List[Line], List[Line]]:
+        """
+        Find and remove any wall that seperates 2 hallways (or aisles)
 
-        :param list[Line] hallway_walls: list of lines representing the walls
-            to check.
-        :return valid_hallway_walls, invalid_hallway_walls
-        :rtype: (list[svgpathtools.Line], list[svgpathtools.Line])
+        :param hallway_walls: list of lines representing the walls to check.
+        :type hallway_walls: List[Line]
+        :return: list of valid walls and list of invalid_hallway_walls
+        :rtype: Tuple[List[Line], List[Line]]
         """
         valid_hallway_walls = []
         invalid_hallway_walls = []
@@ -602,7 +663,14 @@ class FloorplanIngester:
         self, building: str
     ) -> Tuple[list, list, list, list]:
         """
-        Extract all walls from building separated by room and hallways.
+        Extract all walls from building and return the room walls and hallway
+        walls seperately.
+
+        :param building: The name of the building
+        :type building: str
+        :return: List of room indices and walls as well as hallway indices
+            and walls.
+        :rtype: Tuple[list, list, list, list]
         """
         hallway_walls, room_walls = [], []
         hallway_indices, room_ids = [], []
@@ -623,17 +691,17 @@ class FloorplanIngester:
 
         return room_ids, room_walls, hallway_indices, hallway_walls
 
-    def find_valid_walls_and_create_doors(self, building):
-        """Create missing doors and remove walls between hallways
+    def find_valid_walls_and_create_doors(
+        self, building: str
+    ) -> Tuple[List[Line], List[Line]]:
+        """
+        Remove all invalid walls, create missing doors and return the remaining
+        walls.
 
-        If a wall belongs to 2 aisles or hallways, it is likely invalid.
-        Similarly, if a wall belongs to a hallway but also belongs
-        to a room, it is likely that there is a door to the room, unless
-        the room already has a door.
-
-        :param str building: Name of the building of interest
-        :return: list of valid room and hallway walls: room_walls, valid_walls
-        :rtype (list[svgpathtools.Line], list[svgpathtools.Line])
+        :param building: The name of the building.
+        :type building: str
+        :return: The list of all rooms and the list of the valid ones.
+        :rtype: Tuple[List[Line], List[Line]]
         """
 
         LOG.info("Creating doors in building %s", building)
