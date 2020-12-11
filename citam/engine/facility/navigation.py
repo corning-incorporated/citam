@@ -17,21 +17,23 @@ import logging
 import math
 import os
 from itertools import product
+from enum import Enum
+import json
 
 import networkx as nx
 from svgpathtools import Line
 
 import citam.engine.map.geometry as gsu
 import citam.engine.io.storage_utils as su
-from citam.engine.constants import (
-    ONEWAY_TRAFFIC_NEGATIVE_DIRECTION,
-    ONEWAY_TRAFFIC_POSITIVE_DIRECTION,
-    TWO_WAY_TRAFFIC,
-)
 from citam.engine.map.point import Point
-import json
 
 LOG = logging.getLogger(__name__)
+
+
+class TrafficPattern(Enum):
+    ONEWAY_POSITIVE_DIRECTION = 1
+    ONEWAY_NEGATIVE_DIRECTION = -1
+    TWO_WAY = 0
 
 
 class Navigation:
@@ -310,24 +312,24 @@ class Navigation:
         match the desired traffic pattern.
         """
         LOG.info("Applying this policy {%s}: ", policy)
-        if policy["direction"] == TWO_WAY_TRAFFIC:
+        if policy["direction"] == TrafficPattern.TWO_WAY:
             return
 
         if (
-            policy["direction"] != ONEWAY_TRAFFIC_NEGATIVE_DIRECTION
-            and policy["direction"] != ONEWAY_TRAFFIC_POSITIVE_DIRECTION
+            policy["direction"]
+            != TrafficPattern.ONEWAY_NEGATIVE_DIRECTION.value
+            and policy["direction"]
+            != TrafficPattern.ONEWAY_POSITIVE_DIRECTION.value
         ):
-            LOG.fatal(
-                "Unknown direction in traffic policy input {%s}",
-                policy["direction"],
-            )
             LOG.info(
                 "Supported values are {%d}, {%d} and {%d}. See docs.",
-                ONEWAY_TRAFFIC_POSITIVE_DIRECTION,
-                ONEWAY_TRAFFIC_NEGATIVE_DIRECTION,
-                TWO_WAY_TRAFFIC,
+                TrafficPattern.ONEWAY_POSITIVE_DIRECTION.value,
+                TrafficPattern.ONEWAY_NEGATIVE_DIRECTION.value,
+                TrafficPattern.TWO_WAY.value,
             )
-            raise ValueError()
+            raise ValueError(
+                f"Unknown direction in traffic policy: {policy['direction']}"
+            )
 
         # Find edges of interest and remove them from navnet if they don't
         # match the desired traffic direction
@@ -383,9 +385,9 @@ class Navigation:
         alpha = math.degrees(math.atan2(dy, dx))
 
         if (alpha >= 0 and alpha <= 90) or (alpha > 180 and alpha <= 360):
-            edge_direction = ONEWAY_TRAFFIC_POSITIVE_DIRECTION
+            edge_direction = TrafficPattern.ONEWAY_POSITIVE_DIRECTION.value
         else:
-            edge_direction = ONEWAY_TRAFFIC_NEGATIVE_DIRECTION
+            edge_direction = TrafficPattern.ONEWAY_NEGATIVE_DIRECTION.value
 
         return desired_direction == edge_direction
 
