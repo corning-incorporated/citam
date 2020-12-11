@@ -42,8 +42,8 @@ class FloorplanIngester:
         scale: float,
         csv_file: Union[str, pathlib.Path] = None,
         extract_doors_from_file: bool = False,
-        buildings_to_keep: List[str] = None,
-        excluded_buildings: List[str] = None,
+        buildings_to_keep: Set[str] = None,
+        excluded_buildings: Set[str] = None,
     ) -> None:
         """
         Initialize a new floorplan ingester object.
@@ -81,11 +81,13 @@ class FloorplanIngester:
 
         self.buildings: Set[str] = set()
 
-        self.excluded_buildings = excluded_buildings  # TODO: Implement this
+        self.excluded_buildings = set(
+            excluded_buildings if excluded_buildings else []
+        )
 
-        self.buildings_to_keep = buildings_to_keep
-        if buildings_to_keep:
-            self.buildings_to_keep = [b.lower() for b in buildings_to_keep]
+        self.buildings_to_keep = set(
+            [b.lower() for b in buildings_to_keep] if buildings_to_keep else []
+        )
 
         if self.svg_file is not None and self.csv_file is not None:
             self.read_data_from_csv_and_svg_files()
@@ -171,7 +173,7 @@ class FloorplanIngester:
                             Valid buildings are: {self.buildings}"
                     raise ValueError(msg)
         else:
-            self.buildings_to_keep = self.buildings  # type: ignore
+            self.buildings_to_keep = self.buildings
 
     def read_data_from_svg_file(self) -> None:
         """
@@ -244,7 +246,7 @@ class FloorplanIngester:
 
         self.building_walls = {}
         all_room_walls, all_hallway_walls = [], []
-        for building in self.buildings_to_keep:  # type: ignore
+        for building in self.buildings_to_keep:
             room_walls, hallway_walls = self.find_valid_walls_and_create_doors(
                 building
             )

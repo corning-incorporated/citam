@@ -12,35 +12,31 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-from typing import Tuple
+from typing import Tuple, List
+
+from svgpathtools import Line, Path
 
 import citam.engine.map.geometry as g
 from citam.engine.map.point import Point
 from citam.engine.map.space import Space
 
-from svgpathtools import Line, Path
 
-
-def find_closest_parallel_wall(space_boundaries, ref_wall):
-    """For a given wall, find other walls in same space that are
+def find_closest_parallel_wall(
+    space_boundaries: List[Line], ref_wall: Line
+) -> Line:
+    """
+    For a given wall, find other walls in same space that are
     parallel to this (with some x or y overlap) and return the
     closest wall.
 
-    Test cases: aisles (svg paths) with shapes that resemble these letters
-                    X, Z, H, L, I, M
-
-    Parameters
-    -----------
-    space: Space
-        The hallway object under consideration
-    ref_wall: Line
-        The reference wall for which to find closest parallel wall
-
-    Returns
-    --------
-    Line
-        The closest parallel wall
+    :param space_boundaries: The hallway object under consideration.
+    :type space_boundaries: List[Line]
+    :param ref_wall: Reference wall for which to find closest parallel wall.
+    :type ref_wall: Line
+    :return: The closest parallel wall
+    :rtype: Line
     """
+
     best_wall = None  # The closest parallel wall to return
     min_dist = 1e10  # Initialize to very large number
     for wall in space_boundaries:
@@ -63,21 +59,25 @@ def find_closest_parallel_wall(space_boundaries, ref_wall):
     return best_wall
 
 
-def find_aisles(space, valid_boundaries, no_repeat=True):
-    """Given the svg path of the boundaries of a space,
-    find all pairs of 2 walls that define an aisle
-
-    For each wall, find the closest other wall, verify that they
-    form an aisle .
-
-    :param Space space:
-        The space (hallway) of interest
-    :param bool no_repeat:
-        Whether to allow a wall to appear in multiple aisles or not
-    :return: List of aisles where each aisle is a tuple of 2 walls
-    :rtype: list[(Line, Line)]
+def find_aisles(
+    space: Space, valid_boundaries: List[Line], no_repeat=True
+) -> List[Tuple[Line, Line]]:
     """
-    aisles = []
+    Given the svg path of the boundaries of a space, find all pairs of 2 walls
+     that define an aisle (parallel walls with navigable space between them).
+
+    :param space: The space of interest.
+    :type space: Space
+    :param valid_boundaries: List of valid boundaries to consider.
+    :type valid_boundaries: List[Line]
+    :param no_repeat: A wall cannot belong to two different aisles,
+         defaults to True
+    :type no_repeat: bool, optional
+    :return: [description]
+    :rtype: List[Tuple[Line, Line]]
+    """
+
+    aisles: List[Tuple[Line, Line]] = []
 
     for wall1 in valid_boundaries:
         if wall1.length() <= 1.0:
@@ -105,39 +105,33 @@ def find_aisles(space, valid_boundaries, no_repeat=True):
     return aisles
 
 
-def is_this_wall_part_of_an_aisle(wall, aisles):
-    """Verify if wall already belongs to an aisle
+def is_this_wall_part_of_an_aisle(
+    wall: Line, aisles: List[Tuple[Line, Line]]
+) -> bool:
+    """
+    Verify if a wall already belongs to an aisle.
 
-    Parameters
-    -----------
-    wall: Line
-        The wall of interest
-    aisles: list of tuples
-        List of aisles
-
-    Returns
-    --------
-    bool
-        Whether this wall is already part of an aisle or not
+    :param wall: The wall of interest.
+    :type wall: Line
+    :param aisles: List of aisles to check.
+    :type aisles: List[Tuple[Line, Line]]
+    :return: Whether this wall is part of an aisle or not.
+    :rtype: bool
     """
 
     return any(wall in [aisle[0], aisle[1]] for aisle in aisles)
 
 
-def get_aisle_center_point_and_width(aisle):
-    """Find the center point and the width of an aisle
+def get_aisle_center_point_and_width(
+    aisle: Tuple[Line, Line]
+) -> Tuple[Point, float]:
+    """
+    Find the center point and the width of an aisle.
 
-    Parameters
-    -----------
-    aisle: tuple
-        Tuple of wall1 and wall2
-
-    Returns
-    --------
-    Point
-        The center point calculated from wall 1
-    float
-        The width of the aisle
+    :param aisle: The aisle of interest.
+    :type aisle: Tuple[Line, Line]
+    :return: The center point and width of the aisle.
+    :rtype: Tuple[Point, float]
     """
 
     # Perpendicular vector between the two walls
@@ -155,23 +149,21 @@ def get_aisle_center_point_and_width(aisle):
 
 
 def is_this_an_aisle(wall1: Line, wall2: Line, space: Space) -> bool:
-    """Verify that 2 walls form an aisle
-
-    Works by verifying that the center point of this aisle is part
-    of the same space
-
-    Parameters
-    -----------
-    aisle: tuple
-        Tuple of wall 1 and wall 2
-    space: Space
-        The space object where the aisle would be located
-
-    Returns
-    --------
-    bool
-        Whether the 2 walls form an aisle or not
     """
+    Verify that 2 walls form an aisle. Works by verifying that the center point
+     of this aisle is part of the same space. Note that this is a rather weak
+     definition. Use accordingly.
+
+    :param wall1: The first wall.
+    :type wall1: Line
+    :param wall2: The second wall.
+    :type wall2: Line
+    :param space: The space where this aisle would presumably fall.
+    :type space: Space
+    :return: Whether the two walls form an aisle or not.
+    :rtype: bool
+    """
+
     if wall1 is None or wall2 is None:
         return False
 
@@ -180,23 +172,17 @@ def is_this_an_aisle(wall1: Line, wall2: Line, space: Space) -> bool:
     return bool(space.is_point_inside_space(center_point))
 
 
-def compute_bounding_box(walls):
-    """Computes the bounding box of the floorplan given by all its walls.
+def compute_bounding_box(
+    walls: List[Line],
+) -> Tuple[float, float, float, float]:
+    """
+    Computes the bounding box of the floorplan given by all its walls and
+    return the min and max x and y values.
 
-    Parameters
-    -----------
-    No parameter
-
-    Returns
-    --------
-    xmin: float
-        The minimum x value
-    ymin: float
-        The minimum y value
-    xmax: float
-        The maximum x value
-    ymax: float
-        The maximum y value
+    :param walls: List of all the walls to consider.
+    :type walls: List[Line]
+    :return: The minimum and the maximum x and y values
+    :rtype: Tuple[float, float, float, float]
     """
 
     xmin, ymin = 1e10, 1e10  # very large number
