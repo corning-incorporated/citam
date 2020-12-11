@@ -53,16 +53,20 @@ import Overview from './Overview.vue';
 export default {
   name: "Home",
   components: {SimulationMaps, Policies, FloorPlans, Overview},
+  data() {
+    return {
+      selectedComponent: 'overview',
+      faciliies: [],
+    }
+  },
+  created() {
+    this.facilities = ["Test1", "Test2" ]
+  },
   methods:{
     setSelectedComponent(cmp){
       this.selectedComponent = cmp;
     }
   },
-  data() {
-    return {
-      selectedComponent: 'overview',
-    }
-  }
 }
 </script>
 
