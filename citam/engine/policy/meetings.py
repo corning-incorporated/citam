@@ -25,9 +25,32 @@ LOG = logging.getLogger(__name__)
 
 
 class Meeting:
+    """
+    Class to manage meeting instances.
+    """
+
     def __init__(
-        self, location, floor_number, start_time, end_time, attendees=None
-    ):
+        self,
+        location: int,
+        floor_number: int,
+        start_time: int,
+        end_time: int,
+        attendees: List[int] = None,
+    ) -> None:
+        """
+        Initialize a new meeting object.
+
+        :param location: The location of the meeting
+        :type location: int
+        :param floor_number: [description]
+        :type floor_number: int
+        :param start_time: [description]
+        :type start_time: int
+        :param end_time: [description]
+        :type end_time: int
+        :param attendees: [description], defaults to None
+        :type attendees: List[int], optional
+        """
         self.location = location
         self.floor_number = floor_number
         if attendees is None:
