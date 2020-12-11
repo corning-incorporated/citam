@@ -65,6 +65,9 @@ export default {
   methods:{
     setSelectedComponent(cmp){
       this.selectedComponent = cmp;
+    },
+    toVizToggle(){
+      alert('toggle')
     }
   },
 }
