@@ -28,56 +28,44 @@
                   <div class="table-responsive">
                     <table class="table table-bordered" v-if="statsList">
                         <thead>
-                            <tr>
-                                <div class="col-sm-2">                                
-                                    <th>View runs</th>
-                                    <th v-for="att in policyHeaders" :key="att">
-                                        <div class="th-container">{{ att }}
-                                            <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
-                                            <font-awesome-icon icon="sort"/></button></span>
-                                        </div>
-                                    </th>  
-                                </div>  
-                                <div class="col-sm-5">                                                            
-                                    <th v-for="att in metricsHeaders" :key="att">
-                                        <div class="th-container">{{ att }}
-                                            <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
-                                            <font-awesome-icon icon="sort"/></button></span>
-                                        </div>
-                                    </th> 
-                                </div>
-                                <div class="col-sm-5">                               
-                                    <th v-for="att in inputsHeaders" :key="att">
-                                        <div class="th-container">{{ att }}
-                                            <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
-                                            <font-awesome-icon icon="sort"/></button></span>
-                                        </div>
-                                    </th>
-                                </div>
+                            <tr>                                                               
+                                <th>View runs</th>
+                                <th v-for="att in policyHeaders" :key="att">
+                                    <div class="th-container">{{ att }}
+                                        <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
+                                        <font-awesome-icon icon="sort"/></button></span>
+                                    </div>
+                                </th>                                                                                                                           
+                                <th v-for="att in metricsHeaders" :key="att">
+                                    <div class="th-container">{{ att }}
+                                        <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
+                                        <font-awesome-icon icon="sort"/></button></span>
+                                    </div>
+                                </th>                                                                                          
+                                <th v-for="att in inputsHeaders" :key="att">
+                                    <div class="th-container">{{ att }}
+                                        <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
+                                        <font-awesome-icon icon="sort"/></button></span>
+                                    </div>
+                                </th>                                
                             </tr>
                         </thead>
                       <tbody>
-                        <!-- <tr v-for="policy in policyList" :key="policy.sim_id" :id="policy.sim_id">
+                        <tr v-for="(item, idx) in policyData.policies" :key="idx.policyName">
                             <td>
                                 <button type="button" class="btn" @click="viewRuns(policy.policy_id)">
                                 <span><font-awesome-icon icon="chevron-down"/></span></button>
                             </td>
-                            <td v-for="att in policyHeaders" :key="policy.sim_id+att" :id="policy.sim_id+att">
-                            {{ policy[att] }}
-                            </td>
-                            <td v-for="att in metricsHeaders" :key="policy.policy_id+att" :id="policy.policy_id+att">
-                            {{ policy[att] }}
-                            </td>
-                            <td v-for="att in inputsHeaders" :key="policy.policy_id+att" :id="policy.policy_id+att">
-                            {{ policy[att] }}
-                            </td>
-                        </tr> -->
-                        <tr v-for="(item, idx) in policyList" :key="idx.sim_id">
-                            <td>
-                                <button type="button" class="btn" @click="viewRuns(policy.policy_id)">
-                                <span><font-awesome-icon icon="chevron-down"/></span></button>
-                            </td>
-                            <td>{{ item.policy_id }}</td>                                   
+                          <td>{{ item.policyName }}</td>  
+                            <td>{{ item.simulationRuns.length }}</td>                                                                                    
+                            <td>{{ item.simulationRuns[0].overall_total_contact_duration}}</td>
+                            <td>{{ item.simulationRuns[0].avg_n_contacts_per_agent}}</td>
+                            <td>{{ item.simulationRuns[0].avg_contact_duration_per_agent}}</td>
+                            <td>{{ item.simulationRuns[0].avg_number_of_people_per_agent}}</td>
+                            <td>ind</td>
+                            <td>{{ item.simulationRuns[0].totalFloors }}</td>
+                            <td>{{ item.simulationRuns[0].timeStep}}</td>
+                            <td>{{ item.simulationRuns[0].scaleMultiplier}}</td>                            
                         </tr>
                       </tbody>                      
                     </table>
@@ -99,15 +87,15 @@ export default {
         return{
             policyHeaders: ["Policies", "Number of Policy Simulation Runs"],
             metricsHeaders: ["Total Contact (minutes)", "Average Contacts/Agent", "Average Contact Duration (min/Agent)", "Average Number of People/Agent"],
-            inputsHeaders: ["Individuals", "Shifts", "Entrances", "One-way Aisles"],
+            inputsHeaders: ["Individuals", "Total Floors", "Time Step", "Scale Multiplier"],
             policyList : [],
             statsList: [],
             runList: [],
-            policyData : [],
-            overviewData: [],
+            policyData : {},
+            overviewData : {facilities:[]}            
         }
     },
-      created() {
+    created() {
     axios.get('/list') //get list of policies, simulations, facilities
         .then((response) => {
           this.policyList = response.data.map(list => list);
@@ -123,7 +111,7 @@ export default {
               statCard.data.sim_id = response[i].config.url.match(/(?<=\/)(.*)(?=\/)/)[0].toString()
               this.statsList.push(statCard.data)            
             });
-            this.getOverviewData();
+            this.getOverviewData();           
           } )
           .catch(function (error) {
             console.log(error);
@@ -134,36 +122,32 @@ export default {
         this.policyList = _.sortBy(this.policyList, [att]);
         this.runList = _.sortBy(this.runList, [att]);
         this.statsList = _.sortBy(this.statsList, [att]); 
-        this.policyData = _.sortBy(this.policyData, [att]);
-        this.overviewData = _.sortBy(this.overviewData, [att]);              
+        this.policyData;        
+        this.overviewData.facilities = _.sortBy(this.overviewData.facilities, [att]); 
         },
 
         viewRuns(){
             alert("Viewing Runs")
         },
 
-        getOverviewData(){
-            this.overviewData = [],            
+        getOverviewData(){            
+            this.overviewData = {facilities:[]}            
             this.policyList.forEach((policy) => {                                               
                 if(this.pushUniqueItems(policy.facility_name, "facility")){ 
-                    this.policyData.push({facilityName:policy.facility_name, policies:[{policyName:policy.policy_id, simulationRuns:[{simName:policy.sim_id}]}]})
-                    ////simulationRuns:[[{simName:policy.sim_id}]]}]})
+                    this.overviewData.facilities.push({facilityName:policy.facility_name, policies:[{policyName:policy.policy_id, simulationRuns:[{simName:policy.sim_id}]}]})                    
                 }
                 else{
-                    this.policyData.forEach((data, x) =>{                                                
-                        data.policies[x].simulationRuns.push({simName: policy.sim_id}) 
-                        
+                    this.overviewData.facilities.forEach((data, x) =>{                                                
+                        data.policies[x].simulationRuns.push({simName: policy.sim_id})                         
                         this.runList.forEach((run, y) => {
-                            if(run.sim_id === data.policies[x].simulationRuns[y].simName){
-                                //data.policies[x].simulationRuns[y].push({totalFloors:run.NumberOfFloors,timeStep:run.TimestepInSec,scaleMultiplier:run.scaleMultiplier})
+                            if(run.sim_id === data.policies[x].simulationRuns[y].simName){                                
                                 Vue.set(data.policies[x].simulationRuns[y], "totalFloors", run.NumberOfFloors)
                                 Vue.set(data.policies[x].simulationRuns[y], "timeStep", run.TimestepInSec)
                                 Vue.set(data.policies[x].simulationRuns[y], "scaleMultiplier", run.scaleMultiplier)
                                 
                                 this.statsList.forEach((stats, z) => {
                                     if(stats.sim_id === data.policies[x].simulationRuns[z].simName){
-                                        stats.forEach((item) => {
-                                        item.name = item.name.replace(/[^a-zA-Z0-9]/g, " ")
+                                        stats.forEach((item) => {                                        
                                         Vue.set(data.policies[x].simulationRuns[y], item.name, item.value)                                        
                                         })                                        
                                     }
@@ -172,21 +156,14 @@ export default {
                         })
                     })
 
-
-
-
-
-
-
-
-                    this.overviewData.push(this.policyData)
-                    this.policyData = []                   
+                    this.overviewData.facilities.push(this.overviewData.facilities)                                   
+                   this.policyData = {policies:this.overviewData.facilities[0].policies} // ToDo - push data by facility selected in the dropdown
                 }                                                                               
             });
         },
 
         pushUniqueItems(item, type){
-             var index = this.policyData.map(function(e){
+             var index = this.overviewData.facilities.map(function(e){
                 return type =="policy"? e.policyName : e.facilityName;
             }).indexOf(item)
             return (index === -1) ? true: false;
@@ -222,7 +199,7 @@ padding: 10px 0 10px 0;
    font-family: Inter;
    text-align: left;
    padding: 10px 0 10px 15px;
-   border-right: 1px solid #DAE0E6 !important;
+   /* border-right: 1px solid #DAE0E6 !important; */
 }
 .subTitle div button {
 padding: 0px !important;

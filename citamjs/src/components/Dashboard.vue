@@ -190,7 +190,7 @@ export default {
           this.runList = runResponse.map(run => run.data).map(({floors, timestep, floor_dict, scaleMultiplier, trajectory_file,
                                                                  ...item
                                                                }) => item)
-          //this.runAttributes = Object.keys(this.runList[0]);
+          this.runAttributes = Object.keys(this.runList[0]);
         })
   },
   methods: {
