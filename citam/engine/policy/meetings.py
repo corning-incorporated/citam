@@ -16,7 +16,7 @@
 import numpy as np
 import logging
 import progressbar as pb
-from typing import List
+from typing import List, Dict, Any
 
 from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 from citam.engine.map.space import Space
@@ -31,7 +31,7 @@ class Meeting:
 
     def __init__(
         self,
-        location: int,
+        location: Space,
         floor_number: int,
         start_time: int,
         end_time: int,
@@ -41,14 +41,15 @@ class Meeting:
         Initialize a new meeting object.
 
         :param location: The location of the meeting
-        :type location: int
-        :param floor_number: [description]
+        :type location: Space
+        :param floor_number: index of the floor where this meeting takes place.
         :type floor_number: int
-        :param start_time: [description]
+        :param start_time: Start time of the meeting.
         :type start_time: int
-        :param end_time: [description]
+        :param end_time: End time of the meeting.
         :type end_time: int
-        :param attendees: [description], defaults to None
+        :param attendees: List of agents attending this meeting,
+            defaults to None
         :type attendees: List[int], optional
         """
         self.location = location
@@ -60,7 +61,13 @@ class Meeting:
         self.start_time = start_time
         self.end_time = end_time
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Generate a string representation of this meeting.
+
+        :return: The string representing this meeting
+        :rtype: str
+        """
         str_repr = "Meeting Details: \n"
         str_repr += ">>>>>> attendees :" + str(self.attendees) + "\n"
         str_repr += ">>>>>> start time :" + str(self.start_time) + "\n"
@@ -70,24 +77,44 @@ class Meeting:
 
         return str_repr
 
-    def __eq__(self, other):
-        self.location == other.location
-        self.floor_number == other.floor_number
-        self.attendees == other.attendees
-        self.start_time == other.start_time
-        self.end_time == other.end_time
+    def __eq__(self, other) -> bool:
+        return (
+            self.location == other.location
+            and self.floor_number == other.floor_number
+            and self.attendees == other.attendees
+            and self.start_time == other.start_time
+            and self.end_time == other.end_time
+        )
 
 
 class MeetingPolicy:
+    """
+    Class to implement a meeting policy defining all the meetings that take
+    place in a facility based on predefined parameters.
+    """
+
     def __init__(
         self,
         meeting_rooms: List[List[Space]],
         agent_ids: List[int],
         daylength: int,
-        policy_params=None,
-    ):
+        policy_params: Dict[str, Any] = None,
+    ) -> None:
+        """
+        Initialize a new meeting policy object.
 
-        self.meetings = []
+        :param meeting_rooms: The list of meeting rooms available.
+        :type meeting_rooms: List[List[Space]]
+        :param agent_ids: List of agent ids to create meetings for.
+        :type agent_ids: List[int]
+        :param daylength: The total time window within which meetings are to be
+            created.
+        :type daylength: int
+        :param policy_params: Parameters used to decide how to create the
+            meetings, defaults to None
+        :type policy_params: Dict[str, Any], optional
+        """
+        self.meetings: List[Meeting] = []
         self.daylength = daylength
 
         # Attendee pool
@@ -127,7 +154,7 @@ class MeetingPolicy:
             self.max_meeting_length / self.meeting_duration_increment
         )
 
-        self.meeting_rooms = []
+        self.meeting_rooms: List[List[Space]] = []
         for floor in meeting_rooms:
             self.meeting_rooms.append([])
             for room in floor:
@@ -147,6 +174,11 @@ class MeetingPolicy:
     ) -> None:
         """
         Create all meetings to take place in this specific room.
+
+        :param meeting_room: The meeting room of interest.
+        :type meeting_room: Space
+        :param floor_number: Index of the floor of this meeting room.
+        :type floor_number: int
         """
 
         n_meetings = round(np.random.normal(self.avg_meetings_per_room))
@@ -203,7 +235,19 @@ class MeetingPolicy:
     def _generate_meeting_attendee_list(
         self, meeting_room: Space, start_time: int, end_time: int
     ) -> List[int]:
+        """
+        Randomly add attendees to a meeting time slot based on agents'
+        availability.
 
+        :param meeting_room: The meeting room
+        :type meeting_room: Space
+        :param start_time: When the meeting starts
+        :type start_time: int
+        :param end_time: When the meeting ends.
+        :type end_time: int
+        :return: The list of selected agents (given by their ids).
+        :rtype: List[int]
+        """
         pot_attendees = self._find_potential_attendees(start_time, end_time)
         if not pot_attendees:
             return []
@@ -226,7 +270,9 @@ class MeetingPolicy:
         return attendees
 
     def create_all_meetings(self) -> None:
-        """Create meetings with no conflicts (room nor agent)"""
+        """
+        Create meetings for this facility with no conflicts (room nor agent)
+        """
 
         n_meeting_rooms = sum(len(rooms) for rooms in self.meeting_rooms)
         if n_meeting_rooms == 0:
@@ -254,7 +300,14 @@ class MeetingPolicy:
     ) -> List[int]:
         """
         Find all individuals in attendee pool who are free between start and
-        end time.
+        end time to be later added to a meeting within that time period.
+
+        :param start_time: Start time of the meeting.
+        :type start_time: int
+        :param end_time: End time of the meeting.
+        :type end_time: int
+        :return: List of potential attendees
+        :rtype: List[int]
         """
         # Find if there is another meeting at that same time
         pot_attendees = [k for k in self.attendee_pool]  # copy of the list
@@ -268,7 +321,8 @@ class MeetingPolicy:
         return pot_attendees
 
     def _update_attendee_pool(self) -> None:
-        """Update the attendee pool to ensure the average
+        """
+        Update the attendee pool to ensure the average
         number of meetings per agent is not exceeded
         """
         # if the avg is greater than desired, remove the attendee with the most
@@ -291,8 +345,14 @@ class MeetingPolicy:
             current_avg = np.average(values)
 
     def get_daily_meetings(self, agent_id: int) -> List[Meeting]:
-        """Returns list of meetings for this agent"""
+        """
+        Returns the list of meetings for a given agent.
 
+        :param agent_id: Id of the agent of interest.
+        :type agent_id: int
+        :return: The list of meetings for this agent.
+        :rtype: List[Meeting]
+        """
         return [
             meeting
             for meeting in self.meetings
