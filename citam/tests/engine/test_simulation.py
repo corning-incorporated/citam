@@ -40,19 +40,16 @@ def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
     return simulation
 
 
-def test_create_simid(simple_facility_model):
+def test_create_sim_hash(simple_facility_model):
     model = simple_facility_model
-    model.create_simid()
+    model.create_sim_hash()
 
     name1 = model.simulation_name
-    id1 = model.simid
 
-    model.create_simid()
+    model.create_sim_hash()
     name2 = model.simulation_name
-    id2 = model.simid
 
-    assert isinstance(id1, str)
-    assert id1 != id2
+    assert isinstance(name1, str)
     assert name1 == name2
 
 

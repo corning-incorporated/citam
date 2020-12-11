@@ -234,7 +234,7 @@ class Navigation:
         dest_space = None
         dest_space_id = None
 
-        if "naming" in self.multifloor_type:  # second char
+        if "naming" in self.multifloor_type:
             name1 = ref_space.unique_name
 
             floor_identifier = self.multifloor_type.split("-")[-1]
@@ -272,7 +272,8 @@ class Navigation:
                 dest_space = self.floorplans[dest_floor].spaces[dest_space_id]
         else:
             raise ValueError(
-                "Unknown method : ' + str(method) +'Expected: naming or 'xy'"
+                f"Unknown multifloor type: {self.multifloor_type}. "
+                + "Expected: naming-D or 'xy'"
             )
 
         return dest_space_id, dest_space
