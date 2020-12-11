@@ -86,9 +86,7 @@ class Floorplan:
         self.scale = scale
         self.floor_name = floor_name
         self.buildings: List[str] = []
-        self.special_walls = special_walls
-        if self.special_walls is None:
-            self.special_walls = []
+        self.special_walls: List[Line] = special_walls if special_walls else []
 
         self.spaces = spaces
         self.doors = doors
