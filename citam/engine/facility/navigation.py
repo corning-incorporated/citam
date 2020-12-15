@@ -150,15 +150,15 @@ class Navigation:
         :return: [description]
         :rtype: nx.Graph
         """
-        if not os.path.isfile(floor_hallway_graph_file):
-            raise FileNotFoundError(
-                errno.ENOENT,
-                os.strerror(errno.ENOENT),
-                floor_hallway_graph_file,
-            )
 
-        with open(floor_hallway_graph_file, "r") as f:
-            hg_data = json.load(f)
+        try:
+            with open(floor_hallway_graph_file, "r") as f:
+                hg_data = json.load(f)
+        except Exception as exc:
+            raise FileNotFoundError(
+                f"Failed to load hallway graph {floor_hallway_graph_file}. "
+                + f"This is the error: {exc}."
+            )
         hg = nx.readwrite.json_graph.node_link_graph(hg_data)
         LOG.info("Success loading the hallway graph!")
         return hg
@@ -234,7 +234,7 @@ class Navigation:
         dest_space = None
         dest_space_id = None
 
-        if "naming" in self.multifloor_type:  # second char
+        if "naming" in self.multifloor_type:
             name1 = ref_space.unique_name
 
             floor_identifier = self.multifloor_type.split("-")[-1]
@@ -272,7 +272,8 @@ class Navigation:
                 dest_space = self.floorplans[dest_floor].spaces[dest_space_id]
         else:
             raise ValueError(
-                "Unknown method : ' + str(method) +'Expected: naming or 'xy'"
+                f"Unknown multifloor type: {self.multifloor_type}. "
+                + "Expected: naming-D or 'xy'"
             )
 
         return dest_space_id, dest_space
@@ -641,7 +642,9 @@ class Navigation:
                 return []
             exit_nodes = [(coor[0], coor[1]) for coor in exit_coords]
 
-        valid_exit_nodes = [
+        valid_exit_nodes: List[
+            Union[Tuple[int, int], Tuple[int, int, int]]
+        ] = [
             node
             for node in exit_nodes
             if self.navnet_per_floor[floor_number].has_node(node)

@@ -20,8 +20,12 @@ import json
 import os
 import logging
 import hashlib
+import uuid
+import xml.etree.ElementTree as ET
+
 import networkx as nx
 from matplotlib import cm
+import progressbar as pb
 
 from citam.engine.core.agent import Agent
 from citam.engine.policy.daily_schedule import Schedule
@@ -30,11 +34,6 @@ import citam.engine.core.contacts as cev
 from citam.engine.policy.meetings import MeetingPolicy
 from citam.engine.constants import DEFAULT_SCHEDULING_RULES, CAFETERIA_VISIT
 from citam.engine.facility.indoor_facility import Facility
-
-import progressbar as pb
-
-import xml.etree.ElementTree as ET
-import random
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
 ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
@@ -125,7 +124,7 @@ class Simulation:
         self.shifts = shifts
         self.dry_run = dry_run
         self.simulation_name = None
-        self.simid = None
+        self.simid = str(uuid.uuid4())
 
         # list used to keep track of total contact events per xy location per
         #  floor
@@ -145,7 +144,7 @@ class Simulation:
 
         self.meetings_policy_params = meetings_policy_params
 
-    def create_simid(self):
+    def create_sim_hash(self):
         """
         Hash simulation inputs, scheduling policy, meetings policy,
         navigation policy, floorplan and navigation data to generate a unique
@@ -197,9 +196,6 @@ class Simulation:
             m.update(repr(data).encode("utf-8"))
 
         self.simulation_name = m.hexdigest()
-        # Add a litte bit of randomness to avoid clash between IDs
-        m.update(str(random.random()).encode("utf-8"))
-        self.simid = m.hexdigest()
 
     def run_serial(self, workdir: str) -> None:
         """
@@ -240,7 +236,7 @@ class Simulation:
         LOG.info("Running simulation serially")
         LOG.info("Total agents: " + str(self.n_agents))
 
-        self.create_simid()
+        self.create_sim_hash()
         self.save_manifest(workdir)
         self.save_maps(workdir)
 
