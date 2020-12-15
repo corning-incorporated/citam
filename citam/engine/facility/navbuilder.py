@@ -929,7 +929,7 @@ class NavigationBuilder:
             LOG.info("New number of edges: %d", n_edges)
             self.floor_navnet.graph["is_simplified"] = True
 
-    def find_and_remove_overlaps(self, space: Space) -> None:
+    def find_and_collapse_parallel_segments(self, space: Space) -> None:
         """
         Iterate over segments in this space, test for overlap (parallel
         segments) and remove any.
