@@ -1,4 +1,4 @@
-from citam.engine.core.model import FacilityTransmissionModel
+from citam.engine.core.simulation import Simulation
 from citam.engine.core.agent import Agent
 from citam.engine.facility.indoor_facility import Facility
 from citam.engine.constants import CAFETERIA_VISIT
@@ -23,7 +23,7 @@ def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
         traffic_policy=None,
     )
 
-    model = FacilityTransmissionModel(
+    simulation = Simulation(
         facility=facility,
         daylength=3600,
         n_agents=2,
@@ -37,19 +37,20 @@ def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
         dry_run=False,
     )
 
-    return model
+    return simulation
 
 
-def test_create_simid(simple_facility_model):
+def test_create_sim_hash(simple_facility_model):
     model = simple_facility_model
-    model.create_simid()
-    id1 = model.simid
+    model.create_sim_hash()
 
-    model.create_simid()
-    id2 = model.simid
+    name1 = model.simulation_name
 
-    assert isinstance(id1, str)
-    assert id1 == id2
+    model.create_sim_hash()
+    name2 = model.simulation_name
+
+    assert isinstance(name1, str)
+    assert name1 == name2
 
 
 def test_add_agents_and_build_schedules(simple_facility_model):
@@ -348,7 +349,7 @@ def test_close_dining(simple_facility_floorplan, monkeypatch, request):
         traffic_policy=None,
     )
 
-    model = FacilityTransmissionModel(
+    model = Simulation(
         facility=facility,
         daylength=3600,
         n_agents=2,

@@ -12,11 +12,12 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Any, Optional
 import numpy as np
 import logging
 
 from citam.engine.map.door import Door
+from citam.engine.map.space import Space
 from citam.engine.map.floorplan import Floorplan
 from citam.engine.facility.navigation import Navigation
 
@@ -24,14 +25,39 @@ LOG = logging.getLogger(__name__)
 
 
 class Facility:
+    """
+    Facility class to manage an indoor facility with one or more floors.
+
+    Supports the designation of entrances/exits, navigation and traffic policy.
+    """
+
     def __init__(
         self,
         floorplans: List[Floorplan],
         entrances: List[Dict],
         facility_name: str,
-        traffic_policy=None,
+        traffic_policy: List[Dict[str, Any]] = None,
+        navigation: Navigation = None,
     ):
+        """
+        Initialize a new facility object.
 
+
+        :param floorplans: List of floorplans in this facility.
+        :type floorplans: List[Floorplan]
+        :param entrances: List of entrances. An entrance is identified by
+            a space name and a floor name.
+        :type entrances: List[Dict]
+        :param facility_name: The name of this facility. Used to retrieve data
+            from cache.
+        :type facility_name: str
+        :param traffic_policy: Traffic policy describing if there is any oneway
+                aisles, defaults to None
+        :type traffic_policy: List[Dict[str, Any]], optional
+        :param navigation: Navigation object for this facility (will retrieve
+                 from cache if None), defaults to None
+        :type navigation: Navigation, optional
+        """
         self.floorplans = floorplans
         self.number_of_floors = len(floorplans)
         self.entrances = entrances
@@ -39,9 +65,12 @@ class Facility:
         self.traffic_policy = traffic_policy
 
         # Initialize navigation network
-        self.navigation = Navigation(
-            self.floorplans, self.facility_name, self.traffic_policy
-        )
+        if navigation is None:
+            self.navigation = Navigation(
+                self.floorplans, self.facility_name, self.traffic_policy
+            )
+        else:
+            self.navigation = navigation
 
         # Validate entrances
         self.validate_entrances()
@@ -51,20 +80,21 @@ class Facility:
         self.find_and_remove_unreachable_rooms()
 
         # Find and group all remaining spaces in this facility
-        self.group_remaining_spaces()
+        self.group_spaces()
 
     def choose_best_entrance(
         self, office_floor: int, office_id: int
-    ) -> Tuple[Door, int]:
+    ) -> Tuple[Optional[Door], Optional[int]]:
         """
         Find the facility entrance that offers the fastest route to an agent's
         assigned office space.
 
-        :param int offcie_floor: index of the floor where this office is
-            located
-        :param int office_id: index of the office space
-        :return: best_entrance_door, best_entrance_floor
-        :rtype: (dict, int)
+        :param office_floor: index of the floor where this office is located.
+        :type office_floor: int
+        :param office_id: index of the office space
+        :type office_id: int
+        :return: best entrance door and floor number of best entrance
+        :rtype: Tuple[Door, int]
         """
         best_entrance_door = None
         best_entrance_floor = None
@@ -157,13 +187,16 @@ class Facility:
             LOG.info("Door coords not in navnet: %s", entrance_coords)
             return False
 
-    def find_floor_by_name(self, floor_name: str) -> int:
+    def find_floor_by_name(self, floor_name: str) -> Optional[int]:
         """
         Find the floor that corresponds to this name.
 
-        :param str floor_name: Name of the floor.
+        :param floor_name: Name of the floor.
+        :type floor_name: str
         :return: index of the floorplan. None if not found.
+        :rtype: Optional[int]
         """
+
         fp_index = None
         for i, fp in enumerate(self.floorplans):
             if fp.floor_name == floor_name:
@@ -172,15 +205,19 @@ class Facility:
 
         return fp_index
 
-    def find_space_by_name(self, fp_index: int, ename: str) -> int:
+    def find_space_by_name(self, fp_index: int, ename: str) -> Optional[int]:
         """
         Find the space that corresponds to a given name. Mostly used to find
         the space that corresponds to a user-given entrance.
 
-        :param int fp_index: index of the floorplan that contains the space
-        :param str ename: name of the space.
+        :param fp_index: index of the floorplan that contains the space.
+        :type fp_index: int
+        :param ename: name of the space.
+        :type ename: str
         :return: index of the space. None if not found.
+        :rtype: Optional[int]
         """
+
         space_index = None
         for i, space in enumerate(self.floorplans[fp_index].spaces):
             if space.unique_name == ename:
@@ -189,11 +226,21 @@ class Facility:
 
         return space_index
 
-    def find_possible_entrance_doors(self, entrance_floor, entrance_space):
+    def find_possible_entrance_doors(
+        self, entrance_floor: int, entrance_space: Space
+    ) -> List[Door]:
         """
         Iterate over all doors in the facility to identify any that belong to
         the entrance floor and entrance space and are outside facing.
+
+        :param entrance_floor: index of the floor of interest.
+        :type entrance_floor: int
+        :param entrance_space: The space where to look for doors.
+        :type entrance_space: Space
+        :return: List of possible entrance doors.
+        :rtype: List[Door]
         """
+
         possible_entrance_doors = []
         for door in self.navigation.floorplans[entrance_floor].doors:
             if door.space1 is not None and door.space2 is not None:
@@ -208,10 +255,9 @@ class Facility:
                 possible_entrance_doors.append(door)
         return possible_entrance_doors
 
-    def group_remaining_spaces(self) -> None:
+    def group_spaces(self) -> None:
         """
-        Iterate over all other spaces and group them according to their
-        function
+        Iterate over all spaces and group them according to their function.
         """
         (
             self.meeting_rooms,
@@ -298,8 +344,21 @@ class Facility:
             LOG.info("Unreachable rooms on floor %d: %d", fn, n_unreachable)
             self.floorplans[fn].spaces = tmp_spaces
 
-    def get_entrance_floor_and_space_id(self, entrance):
+    def get_entrance_floor_and_space_id(
+        self, entrance: Dict[str, Any]
+    ) -> Tuple[int, int]:
+        """
+        Given an entrance dictionary, find the corresponding floor name and
+         space ID.
 
+        :param entrance: Dictionary describing an entrance as from user inputs.
+        :type entrance: Dict[str, Any]
+        :raises ValueError: If floor is not found.
+        :raises ValueError: If space is not found
+        :return: Inex of the entrance floor and the entrance space from the
+                floorplan.
+        :rtype: Tuple[int, int]
+        """
         ename = entrance["name"].lower()
         efloor = entrance["floor"]
 

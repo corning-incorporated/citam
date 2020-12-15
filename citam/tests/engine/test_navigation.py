@@ -16,20 +16,16 @@ def test_get_corresponding_vertical_space_bad_method_naming(
         simple_facility_floorplan_2_floors,
         "test_simple_facility",
         None,
-        multifloor_type="naming",
+        multifloor_type="naming-2",
     )
-    my_space = None
+
     for space in nav.floorplans[0].spaces:
         if space.unique_name == "5":
             my_space = space
             break
 
-    if my_space is not None:
-        dest_space_id, dest_space = nav.get_corresponding_vertical_space(
-            my_space, 1
-        )
-    assert dest_space_id is None
-    assert dest_space is None
+    with pytest.raises(ValueError):
+        nav.get_corresponding_vertical_space(my_space, 1)
 
 
 def test_get_corresponding_vertical_space(
