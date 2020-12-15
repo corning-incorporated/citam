@@ -55,7 +55,7 @@
               <tbody>
                 <tr v-for="(item, idx) in policyData.policies" :key="idx.policyName">
                   <td>
-                    <button type="button" class="btn" @click="viewRuns(policy.policy_id)">
+                    <button type="button" class="btn" @click="viewRuns(idx, item.policyName)">
                       <span><font-awesome-icon icon="chevron-down" /></span>
                     </button>
                   </td>
@@ -70,6 +70,19 @@
                   <td>{{ item.simulationRuns.totalTimeStep }}</td>
                   <td>{{ item.simulationRuns.totalScaleMultiplier }}</td>
                 </tr>
+                  <template v-if="hasSims">
+                    <tr v-for="(sim, index) in simRuns[0].simulationRuns" :key="index.simName">
+                      <td> </td>
+                      <td>Run Simulation</td>
+                      <td>{{sim.simName}}</td>
+                      <td>{{sim.overall_total_contact_duration}}</td>
+                      <td>{{sim.avg_n_contacts_per_agent}}</td>
+                      <td>{{sim.avg_contact_duration_per_agent}}</td>
+                      <td>{{sim.avg_number_of_people_per_agent}}</td>
+                      <td>Simulation Map</td>
+                      <td>Data Visualizations</td>
+                    </tr>
+                  </template>
               </tbody>
             </table>
           </div>
@@ -101,11 +114,13 @@ export default {
         "Time Step",
         "Scale Multiplier",
       ],
+      simRuns: [],
       policyList: [],
       statsList: [],
       runList: [],
       policyData: {},
       overviewData: { facilities: [] },
+      hasSims: false
     };
   },
   created() {
@@ -137,13 +152,13 @@ export default {
         this.policyList.push({"sim_id": "sim_2", "policy_id": "pol_id_0002", "facility_name": "TEST"})
 
         this.runList.push({"TimestepInSec": 1, "NumberOfFloors": 1, "SimulationName": "sim_1", "SimulationID": "sim_1", "PolicyID": "pol_id_0002", "FacilityName": "TEST", "trajectory_file": "trajectory.txt", "floors": [{"name": "0", "directory": "floor_0/"}], "scaleMultiplier": 2, "sim_id": "sim_1", "floor_dict": {"0": "floor_0/"}})
-        this.runList.push({"TimestepInSec": 2, "NumberOfFloors": 4, "SimulationName": "sim_2", "SimulationID": "sim_2", "PolicyID": "pol_id_0002", "FacilityName": "TEST", "trajectory_file": "trajectory.txt", "floors": [{"name": "0", "directory": "floor_0/"}], "scaleMultiplier": 3, "sim_id": "sim_2", "floor_dict": {"0": "floor_0/"}})
+        this.runList.push({"TimestepInSec": 2, "NumberOfFloors": 4, "SimulationName": "sim_2", "SimulationID": "sim_2", "PolicyID": "pol_id_0002", "FacilityName": "TEST", "trajectory_file": "trajectory.txt", "floors": [{"name": "0", "directory": "floor_0/"}], "scaleMultiplier": 6, "sim_id": "sim_2", "floor_dict": {"0": "floor_0/"}})
         
-        var sim1stats = [{"name": "overall_total_contact_duration", "value": 305.93, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 56.3, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 30.59, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 9.5, "unit": ""}]
+        var sim1stats = [{"name": "overall_total_contact_duration", "value": 305.930, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 56.3, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 30.59, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 9.5, "unit": ""}]
         sim1stats.sim_id = "sim_1"
         this.statsList.push(sim1stats)
 
-        var sim2stats = [{"name": "overall_total_contact_duration", "value": 400, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 40, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 40, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 11, "unit": ""}]
+        var sim2stats = [{"name": "overall_total_contact_duration", "value": 400.00, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 40, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 40, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 11, "unit": ""}]
         sim2stats.sim_id = "sim_2"
         this.statsList.push(sim2stats)
         // ************** test data above need to be removed later *************//
@@ -165,8 +180,25 @@ export default {
       ]);
     },
 
-    viewRuns() {
-      alert("Viewing Runs");
+    viewRuns(idx, policy) {      
+      const index = this.simRuns
+        .map(function (e) {
+          return e.policyName;
+        })
+        .indexOf(policy);
+
+      if(index > -1) {
+      //this.simRuns.splice(index, 1)
+      //this.hasSims = Object.values(this.simRuns[0]).includes(policy)
+      this.simRuns = []
+      this.hasSims = false  
+      }
+      else{
+        this.simRuns = []
+        this.simRuns.push(this.policyData.policies[idx])
+        //var hasSim = this.simRuns[0].includes(policy)
+         this.hasSims = true      
+      }      
     },
 
     getOverviewData() {
@@ -203,6 +235,11 @@ export default {
                 });
                 policy.simulationRuns.totalFloors += sim.floors
                 policy.simulationRuns.totalTimeStep += sim.timeStep
+                policy.simulationRuns.totalScaleMultiplier += sim.scaleMultiplier
+                policy.simulationRuns.totalContact += sim.overall_total_contact_duration
+                policy.simulationRuns.avgContactsPerAgent += sim.avg_n_contacts_per_agent/policy.simulationRuns.length
+                policy.simulationRuns.avgContactDuration += sim.avg_contact_duration_per_agent/policy.simulationRuns.length                
+                policy.simulationRuns.avgPeoplePerAgent += sim.avg_number_of_people_per_agent/policy.simulationRuns.length
               }
             });            
           })
