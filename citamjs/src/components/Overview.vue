@@ -61,14 +61,14 @@
                   </td>
                   <td>{{ item.policyName }}</td>
                   <td>{{ item.simulationRuns.length }}</td>
-                  <td>{{ item.simulationRuns[0].overall_total_contact_duration }}</td>
-                  <td>{{ item.simulationRuns[0].avg_n_contacts_per_agent }}</td>
-                  <td>{{ item.simulationRuns[0].avg_contact_duration_per_agent }}</td>
-                  <td>{{ item.simulationRuns[0].avg_number_of_people_per_agent }}</td>
-                  <td>ind</td>
-                  <td>{{ item.simulationRuns[0].totalFloors }}</td>
-                  <td>{{ item.simulationRuns[0].timeStep }}</td>
-                  <td>{{ item.simulationRuns[0].scaleMultiplier }}</td>
+                  <td>{{ item.simulationRuns.totalContact }}</td>
+                  <td>{{ item.simulationRuns.avgContactsPerAgent }}</td>
+                  <td>{{ item.simulationRuns.avgContactDuration }}</td>
+                  <td>{{ item.simulationRuns.avgPeoplePerAgent }}</td>
+                  <td>{{ item.simulationRuns.totalIndividuals }}</td>
+                  <td>{{ item.simulationRuns.totalFloors }}</td>
+                  <td>{{ item.simulationRuns.totalTimeStep }}</td>
+                  <td>{{ item.simulationRuns.totalScaleMultiplier }}</td>
                 </tr>
               </tbody>
             </table>
@@ -130,8 +130,25 @@ export default {
             .match(/(?<=\/)(.*)(?=\/)/)[0]
             .toString();
           this.statsList.push(statCard.data);
-        });
-        this.getOverviewData();
+        });  
+
+        // ************** test data below need to be removed later *************//
+        this.policyList.push({"sim_id": "sim_1", "policy_id": "pol_id_0002", "facility_name": "TEST"})
+        this.policyList.push({"sim_id": "sim_2", "policy_id": "pol_id_0002", "facility_name": "TEST"})
+
+        this.runList.push({"TimestepInSec": 1, "NumberOfFloors": 1, "SimulationName": "sim_1", "SimulationID": "sim_1", "PolicyID": "pol_id_0002", "FacilityName": "TEST", "trajectory_file": "trajectory.txt", "floors": [{"name": "0", "directory": "floor_0/"}], "scaleMultiplier": 2, "sim_id": "sim_1", "floor_dict": {"0": "floor_0/"}})
+        this.runList.push({"TimestepInSec": 2, "NumberOfFloors": 4, "SimulationName": "sim_2", "SimulationID": "sim_2", "PolicyID": "pol_id_0002", "FacilityName": "TEST", "trajectory_file": "trajectory.txt", "floors": [{"name": "0", "directory": "floor_0/"}], "scaleMultiplier": 3, "sim_id": "sim_2", "floor_dict": {"0": "floor_0/"}})
+        
+        var sim1stats = [{"name": "overall_total_contact_duration", "value": 305.93, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 56.3, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 30.59, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 9.5, "unit": ""}]
+        sim1stats.sim_id = "sim_1"
+        this.statsList.push(sim1stats)
+
+        var sim2stats = [{"name": "overall_total_contact_duration", "value": 400, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 40, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 40, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 11, "unit": ""}]
+        sim2stats.sim_id = "sim_2"
+        this.statsList.push(sim2stats)
+        // ************** test data above need to be removed later *************//
+
+        this.getOverviewData();      
       })
       .catch(function (error) {
         console.log(error);
@@ -155,63 +172,79 @@ export default {
     getOverviewData() {
       this.overviewData = { facilities: [] };
       this.policyList.forEach((policy) => {
-        if (this.pushUniqueItems(policy.facility_name, "facility")) {
+        if (this.pushUniqueFacilities(policy.facility_name)) {
           this.overviewData.facilities.push({
-            facilityName: policy.facility_name,
-            policies: [{ policyName: policy.policy_id, simulationRuns: [] }],
+            facilityName: policy.facility_name, policies: [{policyName: policy.policy_id, simulationRuns: [] } ],
+            //facilityName: policy.facility_name, policies: [{ policyName: policy.policy_id, simulationRuns: [policy.sim_id] }],
           });
           this.getOverviewPolicies(policy);
         } else {
           this.getOverviewPolicies(policy);
         }
-        this.overviewData.facilities.push(this.overviewData.facilities);
-        this.policyData = {
-          policies: this.overviewData.facilities[0].policies,
-        }; // ToDo - push data by facility selected in the dropdown
+        //this.overviewData.facilities.push(this.overviewData.facilities);
       });
+
+      // build stats object for each simulation run within each policies for each facility
+      this.overviewData.facilities.forEach((facility) => {
+        facility.policies.forEach((policy) => {
+          policy.simulationRuns.forEach((sim) => {
+            this.runList.forEach((run) => {            
+              if (run.sim_id === sim.simName) {
+                Vue.set(sim,"floors",run.NumberOfFloors);
+                Vue.set(sim,"timeStep",run.TimestepInSec);
+                Vue.set(sim,"scaleMultiplier",run.scaleMultiplier);
+
+                this.statsList.forEach((stats) => {
+                  if (stats.sim_id === sim.simName) {
+                    stats.forEach((item) => {
+                      Vue.set(sim,item.name,item.value);
+                    });
+                  }
+                });
+                policy.simulationRuns.totalFloors += sim.floors
+                policy.simulationRuns.totalTimeStep += sim.timeStep
+              }
+            });            
+          })
+        })
+      })
+      this.policyData = { policies: this.overviewData.facilities[0].policies}; // ToDo - push data by facility selected in the dropdown
     },
 
     getOverviewPolicies(policy) {
-      this.overviewData.facilities.forEach((data, x) => {
-        data.policies[x].simulationRuns.push({ simName: policy.sim_id });
-        this.runList.forEach((run, y) => {
-          if (run.sim_id === data.policies[x].simulationRuns[y].simName) {
-            Vue.set(
-              data.policies[x].simulationRuns[y],
-              "totalFloors",
-              run.NumberOfFloors
-            );
-            Vue.set(
-              data.policies[x].simulationRuns[y],
-              "timeStep",
-              run.TimestepInSec
-            );
-            Vue.set(
-              data.policies[x].simulationRuns[y],
-              "scaleMultiplier",
-              run.scaleMultiplier
-            );
-
-            this.statsList.forEach((stats, z) => {
-              if (stats.sim_id === data.policies[x].simulationRuns[z].simName) {
-                stats.forEach((item) => {
-                  Vue.set(
-                    data.policies[x].simulationRuns[y],
-                    item.name,
-                    item.value
-                  );
-                });
-              }
-            });
-          }
-        });
+      this.overviewData.facilities.forEach((facility) => {     
+         if (this.pushUniquePolicies(facility, policy.policy_id)) {
+           facility.policies.push({policyName: policy.policy_id, simulationRuns: [] })
+         } 
+        facility.policies.forEach((pol) => {
+          if(policy.policy_id === pol.policyName){
+            pol.simulationRuns.push({ simName: policy.sim_id })
+            pol.simulationRuns.totalContact = 0
+            pol.simulationRuns.avgContactsPerAgent = 0
+            pol.simulationRuns.avgContactDuration = 0
+            pol.simulationRuns.avgPeoplePerAgent = 0
+            pol.simulationRuns.totalIndividuals = 0
+            pol.simulationRuns.totalFloors = 0
+            pol.simulationRuns.totalTimeStep = 0
+            pol.simulationRuns.totalScaleMultiplier = 0
+          } 
+        })       
       });
     },
 
-    pushUniqueItems(item, type) {
+    pushUniqueFacilities(item) {
       var index = this.overviewData.facilities
         .map(function (e) {
-          return type == "policy" ? e.policyName : e.facilityName;
+          return e.facilityName;
+        })
+        .indexOf(item);
+      return index === -1 ? true : false;
+    },
+    
+    pushUniquePolicies(facility, item) {
+      var index = facility.policies
+        .map(function (e) {
+          return e.policyName;
         })
         .indexOf(item);
       return index === -1 ? true : false;

@@ -22,5 +22,6 @@
     }
   ],
   "scaleMultiplier": 1,
-  "timestep": 1
+  "timestep": 1,
+  "Policy": "policy_1"
 }
