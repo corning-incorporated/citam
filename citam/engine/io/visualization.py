@@ -15,8 +15,11 @@
 import logging
 import xml.etree.ElementTree as ET
 
+import networkx as nx
+import pathlib
+from typing import Union, List, Tuple, Dict, Any
 from matplotlib import cm, colors
-from svgpathtools import wsvg, Arc, Line, parse_path
+from svgpathtools import wsvg, Arc, Line, parse_path, Path
 
 from citam.engine.map.point import Point
 
@@ -30,7 +33,21 @@ PLUS_MARKER = 3
 LOG = logging.getLogger(__name__)
 
 
-def export_possible_oneway_aisles_to_svg(walls, oneway_network, svgfile):
+def export_possible_oneway_aisles_to_svg(
+    walls: List[Path],
+    oneway_network: nx.Graph,
+    svgfile: Union[str, pathlib.Path],
+) -> None:
+    """
+    Export the one_way network superimposed on the floorplan to an SVG file.
+
+    :param walls: All the walls found in the floorplan.
+    :type walls: List[Path]
+    :param oneway_network: The one-way network.
+    :type oneway_network: nx.Graph
+    :param svgfile: location to save the SVG file.
+    :type svgfile: Union[str, pathlib.Path]
+    """
     texts = []
     text_paths = []
     radius = complex(3, 3)
@@ -118,10 +135,19 @@ def export_possible_oneway_aisles_to_svg(walls, oneway_network, svgfile):
         filename=svgfile,
     )
 
-    return
 
+def create_arrow_svg_paths(
+    arrow: Tuple[Tuple[int, int], Tuple[int, int]]
+) -> Tuple[List[Path], List[Dict[str, Any]]]:
+    """
+    Given two points, create an arrow-like SVG element with the first point as
+    the head.
 
-def create_arrow_svg_paths(arrow):
+    :param arrow: The haid and tail xy coordinates of the arrow.
+    :type arrow: Tuple[Tuple[int,int], Tuple[int,int]]
+    :return: List of paths and attributes (color, stroke size, etc.)
+    :rtype: Tuple[List[Path], List[Dict[str, str]]
+    """
     paths = []
     attributes = []
 
@@ -159,7 +185,21 @@ def create_arrow_svg_paths(arrow):
     return paths, attributes
 
 
-def create_markers_svg_paths(x, y, marker_type):
+def create_markers_svg_paths(
+    x: int, y: int, marker_type: int = None
+) -> Tuple[List[Path], List[Dict[str, Any]]]:
+    """
+    Create SVG paths for arbitrary markers to be used on a floorplan.
+
+    :param x: the x position of the marker
+    :type x: int
+    :param y: the y position of the marker
+    :type y: int
+    :param marker_type: the type of the marker (e.g. a plus sign, a line, etc.)
+    :type marker_type: int, optional
+    :return: The SVG paths and attributes
+    :rtype: Tuple[List[Path], List[Dict[str, Any]]]
+    """
     paths = []
     attributes = []
 
@@ -194,8 +234,29 @@ def create_markers_svg_paths(x, y, marker_type):
 
 
 def export_nav_network_to_svg(
-    walls, nav_paths, nav_nodes, filename, marker_type=X_MARKER, color="blue"
-):
+    walls: List[Path],
+    nav_paths: List[Path],
+    nav_nodes: List[Tuple[int, int]],
+    filename: Union[str, pathlib.Path],
+    marker_type: int = X_MARKER,
+    color="blue",
+) -> None:
+    """
+    Export a navigation network superimposed on a floorplan to an SVG file.
+
+    :param walls: All the walls in the floorplan.
+    :type walls: List[Path]
+    :param nav_paths: The navigation paths of the navnet.
+    :type nav_paths: List[Path]
+    :param nav_nodes: The key nodes of the navnet to show on the map.
+    :type nav_nodes: List[Tuple[int, int]]
+    :param filename: The output file location.
+    :type filename: Union[str, pathlib.Path]
+    :param marker_type: The type of markers , defaults to X_MARKER
+    :type marker_type: str, optional
+    :param color: The color to used to represent the navnet, defaults to "blue"
+    :type color: str, optional
+    """
     radius = complex(2, 2)
     paths = [wall for wall in walls]
     attributes = [
@@ -232,22 +293,49 @@ def export_nav_network_to_svg(
         )
     wsvg(paths, attributes=attributes, filename=filename)
 
-    return
-
 
 def export_world_to_svg(
-    walls,
-    agent_positions_and_contacts,
-    svg_file,
-    marker_locations=[],
-    marker_type=None,
-    arrows=[],
-    doors=[],
-    max_contacts=100,
-    current_time=None,
+    walls: List[Path],
+    agent_positions_and_contacts: List[Tuple[int, int, int]],
+    svg_file: Union[str, pathlib.Path],
+    marker_locations: List[Tuple[int, int, int]] = [],
+    marker_type: int = None,
+    arrows: List[Tuple[Tuple[int, int], Tuple[int, int]]] = [],
+    doors: List[Path] = [],
+    max_contacts: int = 100,
+    current_time: int = None,
     show_colobar=False,
-    viewbox=None,
-):
+    viewbox: Tuple[float, ...] = None,
+) -> None:
+    """
+    Save a snapshot of a simulation with the floorplan, agent positions and
+    number of contacts, doors and any markers to an SVG file.
+
+    :param walls: All the walls in the floorplan.
+    :type walls: List[Path]
+    :param agent_positions_and_contacts: positions and number of contacts for
+            each agent.
+    :type agent_positions_and_contacts: List[Tuple[int, int, int]]
+    :param svg_file: Location of the output SVG file.
+    :type svg_file: Union[str, pathlib.Path]
+    :param marker_locations: xy positions of any markers, defaults to []
+    :type marker_locations: List[Tuple[int, int, int]], optional
+    :param marker_type: the type of marker to use, defaults to None
+    :type marker_type: int, optional
+    :param arrows: list of heads and tails for any arrow, defaults to []
+    :type arrows: List[Tuple[int, int], Tuple[int, int]], optional
+    :param doors: list of door elements, defaults to []
+    :type doors: List[Path], optional
+    :param max_contacts: The maximum number of contacts to use for the
+            colorbar, defaults to 100
+    :type max_contacts: int, optional
+    :param current_time: the time to show on the clock, defaults to None
+    :type current_time: int, optional
+    :param show_colobar: whether to show a colorbar or not, defaults to False
+    :type show_colobar: bool, optional
+    :param viewbox: the viewbox of the SVG, defaults to None
+    :type viewbox: Tuple[float, ...], optional
+    """
     if viewbox is not None:
         xmax = viewbox[2]
         multiplier = round(xmax / 1500, 1)
@@ -320,7 +408,7 @@ def export_world_to_svg(
             "viewBox": viewbox_str,
         }
     else:
-        svg_attributes = None
+        svg_attributes = None  # type: ignore
 
     wsvg(
         paths,
@@ -332,10 +420,19 @@ def export_world_to_svg(
     )
     add_root_layer_to_svg(svg_file, svg_file)
 
-    return
 
+def add_root_layer_to_svg(
+    original_svg_filename: Union[str, pathlib.Path],
+    updated_filename: Union[str, pathlib.Path],
+) -> None:
+    """
+    Helper function to update an existing SVG file to add a root element.
 
-def add_root_layer_to_svg(original_svg_filename, updated_filename):
+    :param original_svg_filename: Initial SVG file.
+    :type original_svg_filename: Union[str, pathlib.Path]
+    :param updated_filename: new SVG file to write.
+    :type updated_filename: Union[str, pathlib.Path]
+    """
     tree = ET.parse(original_svg_filename)
 
     root = tree.getroot()
@@ -352,5 +449,3 @@ def add_root_layer_to_svg(original_svg_filename, updated_filename):
     root.append(new_root)
 
     tree.write(updated_filename)
-
-    return
