@@ -56,8 +56,6 @@ class ContactEvent:
         """
         Initialize a new contact event object.
 
-        ..note:
-
         :param floor_number: floor number of the contact
         :type floor_number: int
         :param location: id of the space where the contact occurred
@@ -83,7 +81,7 @@ class ContactEvents:
         is identified by a custom key made of the ids of the two agents
         involved.
 
-        ..note: contact events always take place between two agents.
+        ..note:: contact events always take place between two agents.
         """
 
         # Will keep track of the data in a dictionary instead of a matrix so
