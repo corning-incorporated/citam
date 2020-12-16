@@ -303,7 +303,7 @@ class Simulation:
         agent_pool = list(range(self.n_agents))
         for shift in self.shifts:
             shift_start_time = shift["start_time"] + self.buffer
-            n_shift_agents = round(shift["percent_workforce"] * self.n_agents)
+            n_shift_agents = round(shift["percent_agents"] * self.n_agents)
             shift_agents = np.random.choice(agent_pool, n_shift_agents)
             agent_pool = [a for a in agent_pool if a not in shift_agents]
             total_agents += n_shift_agents
