@@ -40,9 +40,7 @@ def find_closest_parallel_wall(
     best_wall = None  # The closest parallel wall to return
     min_dist = 1e10  # Initialize to very large number
     for wall in space_boundaries:
-        if wall == ref_wall:
-            continue
-        if wall.length() <= 1.0:
+        if wall == ref_wall or wall.length() <= 1.0:
             continue
         x_overlap, y_overlap = g.calculate_x_and_y_overlap(ref_wall, wall)
         if x_overlap == 0 and y_overlap == 0:
