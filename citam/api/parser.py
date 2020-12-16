@@ -1,8 +1,6 @@
 #  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-#  This software may only be used in accordance with the licenses granted by
-#  Corning Incorporated. All other uses as well as any copying, modification
-#  or reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 #  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -15,7 +13,7 @@
 __all__ = ["get_contacts", "get_trajectories", "get_coordinate_distribution"]
 
 import logging
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from citam.conf import settings
 import json
@@ -23,7 +21,7 @@ import json
 LOG = logging.getLogger(__name__)
 
 
-def get_trajectories(sim_id: str, floor: str or int = None) -> Dict:
+def get_trajectories(sim_id: str, floor: Union[str, int] = None) -> Dict:
     """
     Get trajectory information for a simulation
 
