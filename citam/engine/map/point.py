@@ -12,9 +12,16 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
+from typing import Optional
+
 
 class Point:
-    def __init__(self, x: int, y: int, complex_coords=None):
+    def __init__(
+        self,
+        x: Optional[int] = None,
+        y: Optional[int] = None,
+        complex_coords=None,
+    ):
         super().__init__()
         self.x = x
         self.y = y
