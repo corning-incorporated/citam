@@ -205,7 +205,7 @@ Below is an example input file.
         "occupancy_rate" : null,
         "floorplan_scale": 0.08333333333,
         "contact_distance": 6,
-        "shifts": [{"name":"1", "start_time": 0, "percent_workforce": 1.0}]
+        "shifts": [{"name":"1", "start_time": 0, "percent_agents": 1.0}]
     }
 
 
