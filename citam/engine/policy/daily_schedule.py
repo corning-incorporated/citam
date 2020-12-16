@@ -11,6 +11,7 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
+from __future__ import annotations
 
 import logging
 from typing import Tuple, List, Dict, Any, Optional
@@ -26,9 +27,12 @@ from citam.engine.constants import (
 )
 from citam.engine.map.door import Door
 
-# Navigation creates a circular dependency,
-# TODO: Refactor to remove this dependency
-# from citam.engine.facility.navigation import Navigation
+# Navigation creates a circular import : Solved by using conditional import
+# (only for type checking)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from citam.engine.facility.navigation import Navigation
 from citam.engine.policy.meetings import Meeting
 
 LOG = logging.getLogger(__name__)
@@ -60,7 +64,7 @@ class Schedule:
         exit_floor: int,
         office_location: int,
         office_floor: int,
-        navigation: Any,
+        navigation: Navigation,
         scheduling_rules: Dict[str, Any],
         meetings: List[Meeting] = None,
     ):
