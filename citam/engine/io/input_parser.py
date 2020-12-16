@@ -488,43 +488,26 @@ def parse_input_file(
         raise ValueError("At least one agent is required.")
 
     # Optional arguments
-    create_meetings = True
-    if "create_meetings" in input_dict:
-        create_meetings = input_dict["create_meetings"]
-
-    close_dining = False
-    if "close_dining" in input_dict:
-        close_dining = input_dict["close_dining"]
-
-    upload_results = False
-    if "upload_results" in input_dict:
-        upload_results = input_dict["upload_results"]
-
-    upload_location = None
-    if "upload_location" in input_dict:
-        upload_location = input_dict["upload_location"]
+    create_meetings = input_dict.get("create_meetings", True)
+    close_dining = input_dict.get("close_dining", False)
+    upload_results = input_dict.get("upload_results", False)
+    upload_location = input_dict.get("upload_location", None)
 
     if upload_results and upload_location is None:
         raise ValueError("upload_location must be specified.")
 
-    occupancy_rate = None
-    if "occupancy_rate" in input_dict:
-        occupancy_rate = input_dict["occupancy_rate"]
+    occupancy_rate = input_dict.get("occupancy_rate", None)
 
-    floorplan_scale = 1.0 / 12.0
-    if "floorplan_scale" in input_dict:
-        floorplan_scale = input_dict["floorplan_scale"]
+    floorplan_scale = input_dict.get("floorplan_scale", 1.0 / 12.0)
+    if not isinstance(floorplan_scale, (int, float)):
+        raise TypeError("Floorplan scale must be a float or an int")
 
-    if not isinstance(floorplan_scale, float):
-        raise TypeError("Floorplan scale must be a float")
+    contact_distance = input_dict.get("contact_distance", 6.0)
 
-    contact_distance = 6.0
-    if "contact_distance" in input_dict:
-        contact_distance = input_dict["contact_distance"]
-
-    shifts = [{"name": "primary", "start_time": buffer, "percent_agents": 1.0}]
-    if "shifts" in input_dict:
-        shifts = input_dict["shifts"]
+    shifts = input_dict.get(
+        "shifts",
+        [{"name": "primary", "start_time": buffer, "percent_agents": 1.0}],
+    )
     if not isinstance(shifts, list):
         raise TypeError("shifts must be a list")
     for s in shifts:
@@ -537,7 +520,7 @@ def parse_input_file(
                 "A shift must define a name, start time and percent agents"
             )
         if (
-            not isinstance(s["percent_agents"], float)
+            not isinstance(s["percent_agents"], (int, float))
             or s["percent_agents"] > 1.0
             or s["percent_agents"] <= 0.0
         ):
@@ -573,6 +556,15 @@ def parse_input_file(
             if not isinstance(pol, dict):
                 raise TypeError(
                     "A dictionary with these keys expected:"
+                    + "floor, segment_id, direction"
+                )
+            if (
+                "floor" not in pol
+                or "segment_id" not in pol
+                or "direction" not in pol
+            ):
+                raise TypeError(
+                    "The following keys are expected in each policy:"
                     + "floor, segment_id, direction"
                 )
         traffic_policy = input_dict["traffic_policy"]
