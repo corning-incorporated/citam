@@ -32,30 +32,19 @@
               <thead>
                 <tr>
                   <th>View runs</th>
-                  <th v-for="att in policyHeaders" :key="att">
+                  <th v-for="(att, indx) in policyHeaders" :key="indx">
                     <div class="th-container"> {{ att }}
-                      <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
-                        <font-awesome-icon icon="sort" /></button></span>
-                    </div>
-                  </th>
-                  <th v-for="att in metricsHeaders" :key="att">
-                    <div class="th-container"> {{ att }}
-                      <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
-                        <font-awesome-icon icon="sort" /></button></span>
-                    </div>
-                  </th>
-                  <th v-for="att in inputsHeaders" :key="att">
-                    <div class="th-container">{{ att }}
                       <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
                         <font-awesome-icon icon="sort" /></button></span>
                     </div>
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="(item, idx) in policyData.policies" :key="idx.policyName">
+              <tbody  v-for="(item, idx) in policyData.policies" :key="idx">
+             
+                <tr>
                   <td>
-                    <button type="button" class="btn" @click="viewRuns(idx, item.policyName)">
+                    <button type="button" class="btn" @click="viewRuns(idx)">
                       <span><font-awesome-icon icon="chevron-down" /></span>
                     </button>
                   </td>
@@ -70,10 +59,10 @@
                   <td>{{ item.simulationRuns.totalTimeStep }}</td>
                   <td>{{ item.simulationRuns.totalScaleMultiplier }}</td>
                 </tr>
-                  <template v-if="hasSims">
-                    <tr v-for="(sim, index) in simRuns[0].simulationRuns" :key="index.simName">
+                  <template v-if="subRows.includes(idx)">
+                    <tr v-for="(sim, index) in simRuns[0].simulationRuns" :key="index">
                       <td> </td>
-                      <td>Run Simulation</td>
+                      <td>Simulation Name:</td>
                       <td>{{sim.simName}}</td>
                       <td>{{sim.overall_total_contact_duration}}</td>
                       <td>{{sim.avg_n_contacts_per_agent}}</td>
@@ -83,6 +72,7 @@
                       <td>Data Visualizations</td>
                     </tr>
                   </template>
+               
               </tbody>
             </table>
           </div>
@@ -101,20 +91,11 @@ export default {
   name: "Overview",
   data() {
     return {
-      policyHeaders: ["Policies", "Number of Policy Simulation Runs"],
-      metricsHeaders: [
-        "Total Contact (minutes)",
-        "Average Contacts/Agent",
-        "Average Contact Duration (min/Agent)",
-        "Average Number of People/Agent",
-      ],
-      inputsHeaders: [
-        "Individuals",
-        "Total Floors",
-        "Time Step",
-        "Scale Multiplier",
-      ],
+      policyHeaders: ["Policies", "Number of Policy Simulation Runs","Total Contact (minutes)", "Average Contacts/Agent",
+        "Average Contact Duration (min/Agent)", "Average Number of People/Agent",    "Individuals", "Total Floors",
+        "Time Step", "Scale Multiplier",],
       simRuns: [],
+      subRows: [],
       policyList: [],
       statsList: [],
       runList: [],
@@ -180,24 +161,17 @@ export default {
       ]);
     },
 
-    viewRuns(idx, policy) {      
-      const index = this.simRuns
-        .map(function (e) {
-          return e.policyName;
-        })
-        .indexOf(policy);
-
+    viewRuns(idx) {      
+      const index = this.subRows.indexOf(idx)
       if(index > -1) {
-      //this.simRuns.splice(index, 1)
-      //this.hasSims = Object.values(this.simRuns[0]).includes(policy)
-      this.simRuns = []
-      this.hasSims = false  
+        this.subRows.splice(index, 1)
+        this.simRuns =  [] 
       }
       else{
-        this.simRuns = []
-        this.simRuns.push(this.policyData.policies[idx])
-        //var hasSim = this.simRuns[0].includes(policy)
-         this.hasSims = true      
+        this.subRows = []
+        this.subRows.push(idx)
+        this.simRuns = []        
+        this.simRuns.push(this.policyData.policies[idx])   
       }      
     },
 
@@ -206,14 +180,27 @@ export default {
       this.policyList.forEach((policy) => {
         if (this.pushUniqueFacilities(policy.facility_name)) {
           this.overviewData.facilities.push({
-            facilityName: policy.facility_name, policies: [{policyName: policy.policy_id, simulationRuns: [] } ],
-            //facilityName: policy.facility_name, policies: [{ policyName: policy.policy_id, simulationRuns: [policy.sim_id] }],
-          });
-          this.getOverviewPolicies(policy);
-        } else {
-          this.getOverviewPolicies(policy);
-        }
-        //this.overviewData.facilities.push(this.overviewData.facilities);
+            facilityName: policy.facility_name, policies: [{policyName: policy.policy_id, simulationRuns: [] } ],            
+          });          
+        } 
+        this.overviewData.facilities.forEach((facility) => {     
+          if (this.pushUniquePolicies(facility, policy.policy_id)) {
+            facility.policies.push({policyName: policy.policy_id, simulationRuns: [] })
+          } 
+          facility.policies.forEach((pol) => {
+            if(policy.policy_id === pol.policyName){
+              pol.simulationRuns.push({ simName: policy.sim_id })
+              pol.simulationRuns.totalContact = 0
+              pol.simulationRuns.avgContactsPerAgent = 0
+              pol.simulationRuns.avgContactDuration = 0
+              pol.simulationRuns.avgPeoplePerAgent = 0
+              pol.simulationRuns.totalIndividuals = 0
+              pol.simulationRuns.totalFloors = 0
+              pol.simulationRuns.totalTimeStep = 0
+              pol.simulationRuns.totalScaleMultiplier = 0
+            } 
+          })       
+        });
       });
 
       // build stats object for each simulation run within each policies for each facility
@@ -246,27 +233,6 @@ export default {
         })
       })
       this.policyData = { policies: this.overviewData.facilities[0].policies}; // ToDo - push data by facility selected in the dropdown
-    },
-
-    getOverviewPolicies(policy) {
-      this.overviewData.facilities.forEach((facility) => {     
-         if (this.pushUniquePolicies(facility, policy.policy_id)) {
-           facility.policies.push({policyName: policy.policy_id, simulationRuns: [] })
-         } 
-        facility.policies.forEach((pol) => {
-          if(policy.policy_id === pol.policyName){
-            pol.simulationRuns.push({ simName: policy.sim_id })
-            pol.simulationRuns.totalContact = 0
-            pol.simulationRuns.avgContactsPerAgent = 0
-            pol.simulationRuns.avgContactDuration = 0
-            pol.simulationRuns.avgPeoplePerAgent = 0
-            pol.simulationRuns.totalIndividuals = 0
-            pol.simulationRuns.totalFloors = 0
-            pol.simulationRuns.totalTimeStep = 0
-            pol.simulationRuns.totalScaleMultiplier = 0
-          } 
-        })       
-      });
     },
 
     pushUniqueFacilities(item) {
