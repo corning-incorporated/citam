@@ -25,7 +25,10 @@ from citam.engine.constants import (
     MEETING_BUFFER,
 )
 from citam.engine.map.door import Door
-from citam.engine.facility.navigation import Navigation
+
+# Navigation creates a circular dependency,
+# TODO: Refactor to remove this dependency
+# from citam.engine.facility.navigation import Navigation
 from citam.engine.policy.meetings import Meeting
 
 LOG = logging.getLogger(__name__)
@@ -57,7 +60,7 @@ class Schedule:
         exit_floor: int,
         office_location: int,
         office_floor: int,
-        navigation: Navigation,
+        navigation: Any,
         scheduling_rules: Dict[str, Any],
         meetings: List[Meeting] = None,
     ):
@@ -575,7 +578,7 @@ class Schedule:
 
         self.itinerary += route
         self.itinerary.append((coords, self.exit_floor))
-        self.itinerary.append(((None, None), None))
+        self.itinerary.append((None, None))
 
         self.schedule_items.append(
             ScheduleItem(
