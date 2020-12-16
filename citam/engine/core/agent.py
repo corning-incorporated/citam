@@ -12,6 +12,7 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
+from typing import Optional
 
 from citam.engine.policy.daily_schedule import Schedule
 
@@ -27,9 +28,9 @@ class Agent:
         self,
         unique_id: int,
         schedule: Schedule,
-        name: str = None,
-        office_id: int = None,
-        job_function: str = None,
+        name: Optional[str] = None,
+        office_id: Optional[int] = None,
+        job_function: Optional[str] = None,
     ):
         """
         Initialize an agent object.
