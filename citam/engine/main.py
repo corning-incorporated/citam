@@ -26,11 +26,11 @@ from svgpathtools import Line
 import citam.engine.io.visualization as bv
 import citam.engine.map.geometry as gsu
 import citam.engine.io.storage_utils as su
+from citam.engine.facility.navbuilder import NavigationBuilder
 from citam.engine.map.floorplan import floorplan_from_directory
 from citam.engine.map.ingester import FloorplanIngester
 from citam.engine.map.updater import FloorplanUpdater
 from citam.engine.core.simulation import Simulation
-from citam.engine.facility.navbuilder import NavigationBuilder
 from citam.engine.map.point import Point
 from citam.engine.facility.indoor_facility import Facility
 import json
