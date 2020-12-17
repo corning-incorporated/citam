@@ -1,0 +1,25 @@
+{
+    "general":{
+        "daylength" : 1800,
+        "contact_distance": 6,
+        "NumberOfEmployees": 20,
+        "shifts": [{"name":"1", "start_time": 0, "percent_workforce": 1.0}],
+        "entrances" : [ {"name":"AISLE213", "floor": "0"}],
+        "entrance_screening": false,
+        "floors": ["0"]
+    },
+    "traffic":  [{"aisle":1, "value": -1}, {"aisle":2, "value": -1}],
+    "meetings": {
+        "min_meeting_duration": 900,
+        "max_meeting_length": 7200,
+        "meeting_duration_increment": 900,
+        "avg_meetings_per_room": 3,
+        "percent_meeting_rooms_used": 0.6,
+        "avg_meetings_per_person": 3,
+        "min_attendees_per_meeting": 3,
+        "min_buffer_between_meetings": 0,
+        "max_buffer_between_meetings": 10800
+    }
+}
+
+

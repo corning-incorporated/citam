@@ -128,6 +128,13 @@ class ResultsResource:
         resp.media = parser.get_statistics_json(sim_id)
         resp.status = falcon.HTTP_200
 
+    def on_get_policy(
+        self, req: falcon.Request, resp: falcon.response, sim_id: str
+    ):
+        """Get statistics.json data"""
+        resp.media = parser.get_policy_json(sim_id)
+        resp.status = falcon.HTTP_200
+
 
 # noinspection PyUnusedLocal
 class RedocResource:
@@ -281,5 +288,6 @@ def get_wsgi_app():
     app.add_route("/v1/{sim_id}/pair", results, suffix="pair_contact")
     app.add_route("/v1/{sim_id}/statistics", results, suffix="statistics")
     app.add_route("/v1/{sim_id}/heatmap", results, suffix="heatmap")
+    app.add_route("/v1/{sim_id}/policy", results, suffix="policy")
     app.add_sink(_get_sink())
     return app

@@ -275,7 +275,7 @@ def test_save_manifest(tmpdir, simple_facility_model):
     assert "NumberOfEmployees" in data
     assert data["NumberOfEmployees"] == 0
     assert "SimulationName" in data
-    assert "Campus" in data
+    assert "FacilityName" in data
     assert "FacilityOccupancy" in data
     assert data["FacilityOccupancy"] is None
     assert "MaxRoomOccupancy" in data
