@@ -1,8 +1,6 @@
 #  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-#  This software may only be used in accordance with the licenses granted by
-#  Corning Incorporated. All other uses as well as any copying, modification
-#  or reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 #  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,32 +20,29 @@ setuptools.setup(
     author="Corning Inc",
     description="The COVID Indoor Transmission Agent-based Modeling Platform",
     packages=setuptools.find_packages(
-        exclude=['*.tests.*'],
+        exclude=["*.tests.*"],
     ),
-    entry_points={
-        'console_scripts': ['citam=citam.cli:main']
-    },
-    cmdclass={'build_js': NodeJSBuild},
+    entry_points={"console_scripts": ["citam=citam.cli:main"]},
+    cmdclass={"build_js": NodeJSBuild},
     include_package_data=True,
     zip_safe=True,
     install_requires=[
-        'svgpathtools',
-        'numpy',
-        'scipy',
-        'networkx',
-        'docutils==0.15',  # Required for boto3
-        'progressbar2',
-        'matplotlib',
-        'boto3',
-        'falcon',
-        'appdirs'
+        "svgpathtools",
+        "numpy",
+        "scipy",
+        "networkx",
+        "docutils==0.15",  # Required for boto3
+        "progressbar2",
+        "matplotlib",
+        "boto3",
+        "falcon",
+        "appdirs",
     ],
-    setup_requires=['setuptools_scm'],
-
+    setup_requires=["setuptools_scm"],
     # For a list of classifiers, see https://pypi.org/classifiers/
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     ],
 )

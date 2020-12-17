@@ -40,7 +40,7 @@ Main Simulation Inputs
 :meetings_file: (*string*) Path to the JSON meetings policy file. Default: "meetings.json",
 :scheduling_policy_file: (*string*) Path to the JSON scheduling policy file. Default: "scheduling_policy.json",
 :shifts: (*Array<object>*) Each shift information has a user-defined name, a start_time and
-        percent_workforce for that shift. Example: [{"name":"1", "start_time": 0, "percent_workforce": 1.0}],
+        percent_agents for that shift. Example: [{"name":"1", "start_time": 0, "percent_agents": 1.0}],
 :traffic_policy: (*Array<object>*) Each element of this array must have a floor name,
         the segment_id and direction of the traffic. To find the segment id use the CLI as
         shown below. Example: [{"floor": "0", "segment_id":"0", "direction": -1}]
