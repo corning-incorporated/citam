@@ -359,7 +359,7 @@ def floorplan_from_directory(
         LOG.info("Floorplan successfully loaded.")
 
     else:
-        raise FileNotFoundError("Could not find floorplan file")
+        raise FileNotFoundError(f"Could not find floorplan file: {fp_file}")
 
     fp_inputs: Dict[str, Any] = {}
     if kwargs.items():
