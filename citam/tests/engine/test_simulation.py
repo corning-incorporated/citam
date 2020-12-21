@@ -326,7 +326,6 @@ def test_save_outputs(tmpdir, simple_facility_model):
     model.save_outputs(tmpdir)
 
     assert os.path.isfile(os.path.join(tmpdir, "contact_dist_per_agent.csv"))
-    assert os.path.isfile(os.path.join(tmpdir, "agent_ids.txt"))
     assert os.path.isfile(os.path.join(tmpdir, "pair_contact.csv"))
     assert os.path.isfile(os.path.join(tmpdir, "raw_contact_data.ccd"))
 
@@ -373,3 +372,6 @@ def test_no_meetings(simple_facility_model, request, tmpdir):
     simple_facility_model.run_serial(tmpdir)
 
     assert len(simple_facility_model.meeting_policy.meetings) == 0
+    assert os.path.isfile(os.path.join(tmpdir, "agent_ids.csv"))
+    assert os.path.isfile(os.path.join(tmpdir, "meetings.txt"))
+    assert os.path.isfile(os.path.join(tmpdir, "schedules.txt"))
