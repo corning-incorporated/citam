@@ -781,6 +781,11 @@ class Simulation:
         # Meetings
         filename = os.path.join(work_directory, "meetings.txt")
         with open(filename, "w") as outfile:
+            outfile.write(
+                "Total number of meetings: "
+                + str(len(self.meeting_policy.meetings))
+                + "\n\n"
+            )
             for meeting in self.meeting_policy.meetings:
                 outfile.write(str(meeting) + "\n")
 
@@ -791,7 +796,6 @@ class Simulation:
                 outfile.write(
                     "Agent ID: "
                     + str(unique_id)
-                    + ":\n"
                     + str(agent.schedule)
                     + "\n\n"
                 )
