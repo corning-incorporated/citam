@@ -263,6 +263,9 @@ class Simulation:
         # Create schedule and itinerary for each agent
         self.add_agents_and_build_schedules()
 
+        # Save meetings and schedules to file
+        self.save_schedules(workdir)
+
         # open files
         traj_file = workdir + "/trajectory.txt"
         t_outfile = open(traj_file, "w")  # Keep the trajectory file open
@@ -746,24 +749,17 @@ class Simulation:
 
         tree.write(heatmap_file)
 
-    def save_outputs(self, work_directory: str) -> None:
+    def save_schedules(self, work_directory: str) -> None:
         """
-        Write output files to the output directory
+        Write schedules and meetings to file.
 
-        :param work_directory: directory where all output files are to be
-            saved.
+        Three files are created: one for all the
+        meetings, one for the full schedule of all the agents and the last one
+        with each agent's assigned office.
+
+        :param work_directory: directory where output files are to be saved.
         :type work_directory: str
         """
-
-        # TODO: generate time-dependent cumulative contacts per coordinate
-
-        # Total contacts per agent
-        agent_ids, n_contacts = self.extract_contact_distribution_per_agent()
-        filename = os.path.join(work_directory, "contact_dist_per_agent.csv")
-        with open(filename, "w") as outfile:
-            outfile.write("agent_ID,Number_of_Contacts\n")
-            for eid, nc in zip(agent_ids, n_contacts):
-                outfile.write(str(eid) + "," + str(nc) + "\n")
 
         # agent ids
         filename = os.path.join(work_directory, "agent_ids.csv")
@@ -799,6 +795,25 @@ class Simulation:
                     + str(agent.schedule)
                     + "\n\n"
                 )
+
+    def save_outputs(self, work_directory: str) -> None:
+        """
+        Write output files to the output directory
+
+        :param work_directory: directory where all output files are to be
+            saved.
+        :type work_directory: str
+        """
+
+        # TODO: generate time-dependent cumulative contacts per coordinate
+
+        # Total contacts per agent
+        agent_ids, n_contacts = self.extract_contact_distribution_per_agent()
+        filename = os.path.join(work_directory, "contact_dist_per_agent.csv")
+        with open(filename, "w") as outfile:
+            outfile.write("agent_ID,Number_of_Contacts\n")
+            for eid, nc in zip(agent_ids, n_contacts):
+                outfile.write(str(eid) + "," + str(nc) + "\n")
 
         # Pair contacts
         filename = os.path.join(work_directory, "pair_contact.csv")
