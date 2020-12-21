@@ -766,10 +766,35 @@ class Simulation:
                 outfile.write(str(eid) + "," + str(nc) + "\n")
 
         # agent ids
-        filename = os.path.join(work_directory, "agent_ids.txt")
+        filename = os.path.join(work_directory, "agent_ids.csv")
         with open(filename, "w") as outfile:
             for unique_id, agent in self.agents.items():
-                outfile.write(str(unique_id + 1) + "\n")
+                outfile.write(
+                    str(unique_id + 1)
+                    + ","
+                    + str(agent.schedule.office_location)
+                    + ","
+                    + str(agent.schedule.office_floor)
+                    + "\n"
+                )
+
+        # Meetings
+        filename = os.path.join(work_directory, "meetings.txt")
+        with open(filename, "w") as outfile:
+            for meeting in self.meeting_policy.meetings:
+                outfile.write(str(meeting) + "\n")
+
+        # Full schedules of all agents
+        filename = os.path.join(work_directory, "schedules.txt")
+        with open(filename, "w") as outfile:
+            for unique_id, agent in self.agents.items():
+                outfile.write(
+                    "Agent ID: "
+                    + str(unique_id)
+                    + ":\n"
+                    + str(agent.schedule)
+                    + "\n\n"
+                )
 
         # Pair contacts
         filename = os.path.join(work_directory, "pair_contact.csv")
