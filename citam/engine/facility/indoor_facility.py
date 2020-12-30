@@ -128,7 +128,7 @@ class Facility:
 
         if best_entrance_door is None:
             office = self.floorplans[office_floor].spaces[office_id]
-            LOG.info("No entrance found for office: %s", office.unique_name)
+            LOG.warning("No entrance found for office: %s", office.unique_name)
         return best_entrance_door, best_entrance_floor
 
     def validate_entrances(self):

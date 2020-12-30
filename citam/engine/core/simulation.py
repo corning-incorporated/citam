@@ -10,7 +10,7 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-from typing import Dict, Tuple, List, TextIO
+from typing import Dict, Tuple, List, TextIO, Optional
 import numpy as np
 import scipy.spatial.distance
 from collections import OrderedDict
@@ -63,6 +63,7 @@ class Simulation:
         close_dining=False,
         scheduling_policy=None,
         dry_run=False,
+        preassigned_offices: Optional[List[Tuple[int, int]]] = None,
     ) -> None:
         """
         Initialize a new simulation object.
@@ -115,6 +116,7 @@ class Simulation:
         self.contact_distance = contact_distance
         self.n_agents = n_agents
         self.occupancy_rate = occupancy_rate
+        self.preassigned_offices = preassigned_offices
 
         self.contact_events = cev.ContactEvents()
         self.current_step = 0
@@ -231,6 +233,15 @@ class Simulation:
                 raise ValueError("Invalid occupancy rate (must be > 0 & <=1")
             self.n_agents = round(self.occupancy_rate * self.total_offices)
 
+        if (
+            self.preassigned_offices is not None
+            and len(self.preassigned_offices) != self.n_agents
+        ):
+            raise ValueError(
+                "Preassigned offices must equal number of agents %d vs %d.",
+                len(self.preassigned_offices),
+                self.n_agents,
+            )
         LOG.info("Running simulation serially")
         LOG.info("Total agents: " + str(self.n_agents))
 
@@ -293,10 +304,33 @@ class Simulation:
             cof.close()
         LOG.info("Done with simulation.\n")
 
+    def assign_office(self) -> Tuple[int, int]:
+        """
+        Assign an office to the current agent. If office spaces are not
+        pre-assigned, select one randomly and remove it from list of available
+        offices. Otherwise, return the next office from the queue.
+
+        :return: office id and floor
+        :rtype: Tuple[int, int]
+        """
+
+        if self.preassigned_offices is not None:
+            office_id, office_floor = self.preassigned_offices.pop(0)
+        else:
+            office_floor = np.random.randint(self.facility.number_of_floors)
+            n_offices = len(self.facility.all_office_spaces[office_floor])
+            rint = np.random.randint(n_offices)
+            office_id = self.facility.all_office_spaces[office_floor].pop(rint)
+
+        return office_id, office_floor
+
     def add_agents_and_build_schedules(self) -> None:
         """
         Add the specified number of agents to the facility and create a
         schedule and an itinerary for each of them.
+
+        :raises ValueError: If an entrance could not be found
+
         """
         LOG.info("Initializing with " + str(self.n_agents) + " agents...")
         total_agents = 0
@@ -315,27 +349,21 @@ class Simulation:
 
             for _ in pb.progressbar(shift_agents):
 
-                entrance_door = None
+                # Find office space
+                office_id, office_floor = self.assign_office()
 
-                while entrance_door is None:
+                # Choose the closest entrance to office
+                (
+                    entrance_door,
+                    entrance_floor,
+                ) = self.facility.choose_best_entrance(office_floor, office_id)
 
-                    office_floor = np.random.randint(
-                        self.facility.number_of_floors
-                    )
-                    n_offices = len(
-                        self.facility.all_office_spaces[office_floor]
-                    )
-                    rint = np.random.randint(n_offices)
-                    office_id = self.facility.all_office_spaces[
-                        office_floor
-                    ].pop(rint)
-
-                    # Choose the closest entrance to office
-                    (
-                        entrance_door,
-                        entrance_floor,
-                    ) = self.facility.choose_best_entrance(
-                        office_floor, office_id
+                if entrance_door is None:
+                    office = self.facility.floorplans[office_floor].spaces[
+                        office_id
+                    ]
+                    raise ValueError(
+                        f"Unable to assign this office: {office.unique_name}"
                     )
 
                 # Sample start time and exit time from a poisson distribution
@@ -764,7 +792,7 @@ class Simulation:
         with open(filename, "w") as outfile:
             for unique_id, agent in self.agents.items():
                 outfile.write(
-                    str(unique_id + 1)
+                    str(unique_id)
                     + ","
                     + str(agent.schedule.office_location)
                     + ","
