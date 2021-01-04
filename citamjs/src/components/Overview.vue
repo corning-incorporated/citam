@@ -19,13 +19,6 @@
         <span>Policy Results</span>Select metric (header) to determine the best policy
       </div>
       <div class="container-fluid">
-        <!-- <div class="row subTitle">
-          <div class="col-sm-2 policy">
-            <button type="button" class="btn btn-link">Add Policy</button>
-          </div>
-          <div class="col-sm-5">KEY METRICS</div>
-          <div class="col-sm-5">KEY POLICY INPUTS</div>
-        </div> -->
         <div class="row">
           <div class="table-responsive">
             <table class="table table-bordered" v-if="statsList">
@@ -37,8 +30,7 @@
                 </tr>
                 <tr>
                   <th>View runs</th>
-                  <th>Policies</th>
-                  
+                  <th>Policies</th>                  
                   <th v-for="(att, id) in metricAttributes" :key="id">
                     <div class="th-container"> {{ att }}
                       <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
@@ -99,6 +91,9 @@ import _ from "lodash";
 
 export default {
   name: "Overview",
+  props: {
+    selectedFacility: String
+  },
   data() {
     return {
       metricHeaders: ["Total Contact (minutes)", "Average Contacts/Agent",
@@ -114,6 +109,11 @@ export default {
       overviewData: { facilities: [] },
       hasSims: false
     };
+  },
+  watch: {
+    selectedFacility(newVal) {
+      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == newVal).policies}
+    }
   },
   created() {
     axios
@@ -132,14 +132,22 @@ export default {
         );
       })
       .then((response) => {
-        response.map((statCard, i) => {
-          //statCard.data.push({"name":"sim_id", "value":response[i].config.url .match(/(?<=\/)(.*)(?=\/)/)[0].toString()} )
-           statCard.data.sim_id = response[i].config.url .match(/(?<=\/)(.*)(?=\/)/)[0].toString();
+        response.map((statCard, i) => {         
+          statCard.data.sim_id = response[i].config.url .match(/(?<=\/)(.*)(?=\/)/)[0].toString();
           this.statsList.push(statCard.data);
         });    
        
-        this.getOverviewData();      
-      })
+        this.getOverviewData();
+        this.$store.commit("setFacilities", this.overviewData.facilities) // Store it in a centralized variable to use in other components
+        this.$emit('setFacilities', this.overviewData.facilities) // To display facility list in the dropdown
+        
+        if(this.selectedFacility){
+          this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
+        } else {
+          this.policyData = { policies: this.overviewData.facilities[0].policies}; // Display first facility by default
+          } 
+        })
+
       .catch(function (error) {
         console.log(error);
       });
@@ -151,9 +159,8 @@ export default {
       this.statsList = _.sortBy(this.statsList, [att]);
       this.policyData;
       this.metricAttributes;
-      this.overviewData.facilities = _.sortBy(this.overviewData.facilities, [
-        att,
-      ]);
+      this.overviewData.facilities = _.sortBy(this.overviewData.facilities, [att,]);
+      this.$store.state.facilities
     },
 
     viewRuns(idx) {      
@@ -240,26 +247,20 @@ export default {
       })
       document.getElementById("metricCols").colSpan= this.metricAttributes.length;
 
-    var stat_list = []
-    for(var p of this.overviewData.facilities[0].policies){
-      for (var sruns of p.simulationRuns){
-        stat_list.push(_.mapValues(_.keyBy(sruns.statisctics, 'name'), 'value'))
-      }
-      var dynamicKeys = _.keys(stat_list[0])
-      var sums = {}
-      _.each(stat_list, function (item) {
-      _.each(dynamicKeys, function (statKeys) {
-        sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
-      });
-    });
-    console.log("Sums", sums)
-  }
-
-    this.policyData = { policies: this.overviewData.facilities[0].policies}; // ToDo - push data by facility selected in the dropdown    
-    },
-
-    changeFacility(facility) {
-      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == facility).policies}
+      var stat_list = []
+      for(var p of this.overviewData.facilities[0].policies){
+        for (var sruns of p.simulationRuns){
+          stat_list.push(_.mapValues(_.keyBy(sruns.statisctics, 'name'), 'value'))
+        }
+        var dynamicKeys = _.keys(stat_list[0])
+        var sums = {}
+        _.each(stat_list, function (item) {
+          _.each(dynamicKeys, function (statKeys) {
+            sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
+          });
+        });
+        console.log("Sums", sums)
+      }   
     },
 
     pushUniqueFacilities(item) {

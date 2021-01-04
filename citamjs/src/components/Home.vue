@@ -15,9 +15,15 @@
   <div>
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
       <li class="nav-item facility">
-        <a class="nav-link" id="summary-tab" data-toggle="tab" href="" role="tab"
+        <!-- <a class="nav-link" id="summary-tab" data-toggle="tab" href="" role="tab"
            aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Facility Name A 
-           <span><font-awesome-icon icon="chevron-down"/></span></a>           
+        </a> -->        
+          <select v-model="selectedFacility" class="nav-link" data-toggle="tab">
+          <option v-for="(item, id) in facilities" 
+            :key="id">
+            {{item}}
+          </option>
+        </select>                         
       </li>
       <li class="nav-item">
         <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab" href=""
@@ -37,7 +43,7 @@
       </li>
     </ul>
     <div>     
-      <component :is="selectedComponent"></component>
+      <component :is="selectedComponent" @setFacilities="setFacilities($event)" :selectedFacility="selectedFacility"></component>
     </div>
   </div>  
 </template>
@@ -56,15 +62,23 @@ export default {
   data() {
     return {
       selectedComponent: 'overview',
-      faciliies: [],
+      facilities: [],
+      selectedFacility: ""
     }
   },
   created() {
-    this.facilities = ["Test1", "Test2" ]
   },
   methods:{
     setSelectedComponent(cmp){
       this.selectedComponent = cmp;
+    },
+    setFacilities(facilities) {
+      if(!this.facilities.length > 0) {
+        facilities.forEach(element => {
+          this.facilities.push(element.facilityName)
+        });
+        this.selectedFacility = this.facilities[0]
+      }    
     },
     toVizToggle(){
       alert('toggle')
@@ -91,13 +105,14 @@ border-right: 1px solid black !important;
 background-color: #EBEFF2;
 }
 .nav-tabs .nav-item.facility {
-width:250px;
+width: 130px;
 text-align: left;
 height: 50px;
 background-color: #32404D;
 }
 
-.nav-tabs .nav-item.facility a{
+.nav-tabs .nav-item.facility select{
+width: 130px;
 font-family: Inter;
 font-weight: 600;
 font-size: 16px;
