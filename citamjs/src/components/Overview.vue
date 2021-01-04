@@ -19,42 +19,55 @@
         <span>Policy Results</span>Select metric (header) to determine the best policy
       </div>
       <div class="container-fluid">
-        <div class="row subTitle">
+        <!-- <div class="row subTitle">
           <div class="col-sm-2 policy">
             <button type="button" class="btn btn-link">Add Policy</button>
           </div>
           <div class="col-sm-5">KEY METRICS</div>
           <div class="col-sm-5">KEY POLICY INPUTS</div>
-        </div>
+        </div> -->
         <div class="row">
           <div class="table-responsive">
             <table class="table table-bordered" v-if="statsList">
               <thead>
                 <tr>
+                  <th colspan="2">ADD POLICY</th>
+                  <th id="metricCols">KEY METRICS</th>
+                  <th colspan="4">KEY POLICY INPUTS</th>
+                </tr>
+                <tr>
                   <th>View runs</th>
-                  <th v-for="(att, indx) in policyHeaders" :key="indx">
+                  <th>Policies</th>
+                  
+                  <th v-for="(att, id) in metricAttributes" :key="id">
                     <div class="th-container"> {{ att }}
                       <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
                         <font-awesome-icon icon="sort" /></button></span>
                     </div>
                   </th>
+                  <th v-for="(header, id) in policyInputHeaders" :key="'p'+id">
+                    <div class="th-container"> {{ header }}
+                      <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(header)">
+                        <font-awesome-icon icon="sort" /></button></span>
+                    </div>
+                  </th>
                 </tr>
               </thead>
-              <tbody  v-for="(item, idx) in policyData.policies" :key="idx">
-             
+              <tbody  v-for="(item, idx) in policyData.policies" :key="idx">             
                 <tr>
                   <td>
                     <button type="button" class="btn" @click="viewRuns(idx)">
                       <span><font-awesome-icon icon="chevron-down" /></span>
                     </button>
                   </td>
-                  <td>{{ item.policyName }}</td>
-                  <td>{{ item.simulationRuns.length }}</td>
+                  <td><button type="button" class="btn btn-link">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>                  
+                  
                   <td>{{ item.simulationRuns.totalContact }}</td>
                   <td>{{ item.simulationRuns.avgContactsPerAgent }}</td>
                   <td>{{ item.simulationRuns.avgContactDuration }}</td>
                   <td>{{ item.simulationRuns.avgPeoplePerAgent }}</td>
-                  <td>{{ item.simulationRuns.totalIndividuals }}</td>
+
+                  <td>{{ item.simulationRuns.individuals }}</td>
                   <td>{{ item.simulationRuns.totalFloors }}</td>
                   <td>{{ item.simulationRuns.totalTimeStep }}</td>
                   <td>{{ item.simulationRuns.totalScaleMultiplier }}</td>
@@ -62,17 +75,14 @@
                   <template v-if="subRows.includes(idx)">
                     <tr v-for="(sim, index) in simRuns[0].simulationRuns" :key="index">
                       <td> </td>
-                      <td>Simulation Name:</td>
-                      <td>{{sim.simName}}</td>
-                      <td>{{sim.overall_total_contact_duration}}</td>
-                      <td>{{sim.avg_n_contacts_per_agent}}</td>
-                      <td>{{sim.avg_contact_duration_per_agent}}</td>
-                      <td>{{sim.avg_number_of_people_per_agent}}</td>
-                      <td>Simulation Map</td>
-                      <td>Data Visualizations</td>
+                      <td> {{sim.simName}}</td> 
+                      <td v-for="(stats, ind) in sim.statisctics" :key="sim.simName + ind">
+                        {{stats.value}}
+                      </td>
+                      <td colspan="4"><button type="button" class="btn btn-link simBtn">Simulation Map</button>
+                      <button type="button" class="btn btn-link">Data Visualizations</button></td>                      
                     </tr>
-                  </template>
-               
+                  </template>               
               </tbody>
             </table>
           </div>
@@ -91,9 +101,10 @@ export default {
   name: "Overview",
   data() {
     return {
-      policyHeaders: ["Policies", "Number of Policy Simulation Runs","Total Contact (minutes)", "Average Contacts/Agent",
-        "Average Contact Duration (min/Agent)", "Average Number of People/Agent",    "Individuals", "Total Floors",
-        "Time Step", "Scale Multiplier",],
+      metricHeaders: ["Total Contact (minutes)", "Average Contacts/Agent",
+        "Average Contact Duration (min/Agent)", "Average Number of People/Agent"],
+      metricAttributes: [],
+      policyInputHeaders: ["Individuals", "Total Floors","Time Step", "Scale Multiplier"],
       simRuns: [],
       subRows: [],
       policyList: [],
@@ -122,28 +133,11 @@ export default {
       })
       .then((response) => {
         response.map((statCard, i) => {
-          statCard.data.sim_id = response[i].config.url
-            .match(/(?<=\/)(.*)(?=\/)/)[0]
-            .toString();
+          //statCard.data.push({"name":"sim_id", "value":response[i].config.url .match(/(?<=\/)(.*)(?=\/)/)[0].toString()} )
+           statCard.data.sim_id = response[i].config.url .match(/(?<=\/)(.*)(?=\/)/)[0].toString();
           this.statsList.push(statCard.data);
-        });  
-
-        // ************** test data below need to be removed later *************//
-        this.policyList.push({"sim_id": "sim_1", "policy_id": "pol_id_0002", "facility_name": "TEST"})
-        this.policyList.push({"sim_id": "sim_2", "policy_id": "pol_id_0002", "facility_name": "TEST"})
-
-        this.runList.push({"TimestepInSec": 1, "NumberOfFloors": 1, "SimulationName": "sim_1", "SimulationID": "sim_1", "PolicyID": "pol_id_0002", "FacilityName": "TEST", "trajectory_file": "trajectory.txt", "floors": [{"name": "0", "directory": "floor_0/"}], "scaleMultiplier": 2, "sim_id": "sim_1", "floor_dict": {"0": "floor_0/"}})
-        this.runList.push({"TimestepInSec": 2, "NumberOfFloors": 4, "SimulationName": "sim_2", "SimulationID": "sim_2", "PolicyID": "pol_id_0002", "FacilityName": "TEST", "trajectory_file": "trajectory.txt", "floors": [{"name": "0", "directory": "floor_0/"}], "scaleMultiplier": 6, "sim_id": "sim_2", "floor_dict": {"0": "floor_0/"}})
-        
-        var sim1stats = [{"name": "overall_total_contact_duration", "value": 305.930, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 56.3, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 30.59, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 9.5, "unit": ""}]
-        sim1stats.sim_id = "sim_1"
-        this.statsList.push(sim1stats)
-
-        var sim2stats = [{"name": "overall_total_contact_duration", "value": 400.00, "unit": "min"}, {"name": "avg_n_contacts_per_agent", "value": 40, "unit": ""}, {"name": "avg_contact_duration_per_agent", "value": 40, "unit": "min"}, {"name": "avg_number_of_people_per_agent", "value": 11, "unit": ""}]
-        sim2stats.sim_id = "sim_2"
-        this.statsList.push(sim2stats)
-        // ************** test data above need to be removed later *************//
-
+        });    
+       
         this.getOverviewData();      
       })
       .catch(function (error) {
@@ -156,6 +150,7 @@ export default {
       this.runList = _.sortBy(this.runList, [att]);
       this.statsList = _.sortBy(this.statsList, [att]);
       this.policyData;
+      this.metricAttributes;
       this.overviewData.facilities = _.sortBy(this.overviewData.facilities, [
         att,
       ]);
@@ -184,20 +179,23 @@ export default {
           });          
         } 
         this.overviewData.facilities.forEach((facility) => {     
-          if (this.pushUniquePolicies(facility, policy.policy_id)) {
+          if (facility.facilityName === policy.facility_name && this.pushUniquePolicies(facility, policy.policy_id)) {
             facility.policies.push({policyName: policy.policy_id, simulationRuns: [] })
           } 
           facility.policies.forEach((pol) => {
             if(policy.policy_id === pol.policyName){
               pol.simulationRuns.push({ simName: policy.sim_id })
+              
               pol.simulationRuns.totalContact = 0
               pol.simulationRuns.avgContactsPerAgent = 0
               pol.simulationRuns.avgContactDuration = 0
               pol.simulationRuns.avgPeoplePerAgent = 0
+
               pol.simulationRuns.totalIndividuals = 0
               pol.simulationRuns.totalFloors = 0
               pol.simulationRuns.totalTimeStep = 0
               pol.simulationRuns.totalScaleMultiplier = 0
+              pol.simulationRuns.individuals = 0
             } 
           })       
         });
@@ -209,20 +207,28 @@ export default {
           policy.simulationRuns.forEach((sim) => {
             this.runList.forEach((run) => {            
               if (run.sim_id === sim.simName) {
-                Vue.set(sim,"floors",run.NumberOfFloors);
-                Vue.set(sim,"timeStep",run.TimestepInSec);
-                Vue.set(sim,"scaleMultiplier",run.scaleMultiplier);
+                Vue.set(sim,"floors", run.NumberOfFloors);
+                Vue.set(sim,"timeStep", run.TimestepInSec);
+                Vue.set(sim,"scaleMultiplier", run.scaleMultiplier);
+                Vue.set(sim, "individuals", run.NumberOfEmployees)
 
                 this.statsList.forEach((stats) => {
+                  if(this.metricAttributes.length == 0)  {
+                    stats.forEach((stat) => 
+                    this.metricAttributes.push(stat.name))
+                  }                
                   if (stats.sim_id === sim.simName) {
                     stats.forEach((item) => {
                       Vue.set(sim,item.name,item.value);
                     });
+                    Vue.set(sim,"statisctics",stats);                
                   }
-                });
-                policy.simulationRuns.totalFloors += sim.floors
-                policy.simulationRuns.totalTimeStep += sim.timeStep
-                policy.simulationRuns.totalScaleMultiplier += sim.scaleMultiplier
+                });                
+                policy.simulationRuns.totalFloors = sim.floors
+                policy.simulationRuns.totalTimeStep = sim.timeStep
+                policy.simulationRuns.totalScaleMultiplier = sim.scaleMultiplier
+                policy.simulationRuns.individuals = sim.individuals
+
                 policy.simulationRuns.totalContact += sim.overall_total_contact_duration
                 policy.simulationRuns.avgContactsPerAgent += sim.avg_n_contacts_per_agent/policy.simulationRuns.length
                 policy.simulationRuns.avgContactDuration += sim.avg_contact_duration_per_agent/policy.simulationRuns.length                
@@ -232,7 +238,28 @@ export default {
           })
         })
       })
-      this.policyData = { policies: this.overviewData.facilities[0].policies}; // ToDo - push data by facility selected in the dropdown
+      document.getElementById("metricCols").colSpan= this.metricAttributes.length;
+
+    var stat_list = []
+    for(var p of this.overviewData.facilities[0].policies){
+      for (var sruns of p.simulationRuns){
+        stat_list.push(_.mapValues(_.keyBy(sruns.statisctics, 'name'), 'value'))
+      }
+      var dynamicKeys = _.keys(stat_list[0])
+      var sums = {}
+      _.each(stat_list, function (item) {
+      _.each(dynamicKeys, function (statKeys) {
+        sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
+      });
+    });
+    console.log("Sums", sums)
+  }
+
+    this.policyData = { policies: this.overviewData.facilities[0].policies}; // ToDo - push data by facility selected in the dropdown    
+    },
+
+    changeFacility(facility) {
+      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == facility).policies}
     },
 
     pushUniqueFacilities(item) {
@@ -317,6 +344,10 @@ export default {
   align-items: flex-end;
   text-align: center;
   color: #607080;
+}
+
+.simBtn {
+  margin-right: 50px;
 }
 </style>
 
