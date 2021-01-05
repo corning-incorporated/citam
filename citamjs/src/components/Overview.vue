@@ -24,7 +24,7 @@
             <table class="table table-bordered" v-if="statsList">
               <thead>
                 <tr>
-                  <th colspan="2">ADD POLICY</th>
+                  <th colspan="2"><button type="button" class="policyBtn btn btn-link">Add Policy</button></th>
                   <th id="metricCols">KEY METRICS</th>
                   <th colspan="4">KEY POLICY INPUTS</th>
                 </tr>
@@ -52,13 +52,10 @@
                       <span><font-awesome-icon icon="chevron-down" /></span>
                     </button>
                   </td>
-                  <td><button type="button" class="btn btn-link">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>                  
-                  
-                  <td>{{ item.simulationRuns.totalContact }}</td>
-                  <td>{{ item.simulationRuns.avgContactsPerAgent }}</td>
-                  <td>{{ item.simulationRuns.avgContactDuration }}</td>
-                  <td>{{ item.simulationRuns.avgPeoplePerAgent }}</td>
-
+                  <td><button type="button" class="btn btn-link">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>
+                  <td v-for="(avg, id) in item.simulationRuns.average" :key="id">
+                        {{avg}}
+                  </td>
                   <td>{{ item.simulationRuns.individuals }}</td>
                   <td>{{ item.simulationRuns.totalFloors }}</td>
                   <td>{{ item.simulationRuns.totalTimeStep }}</td>
@@ -113,6 +110,8 @@ export default {
   watch: {
     selectedFacility(newVal) {
       this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == newVal).policies}
+      this.subRows = []
+      this.calculatePolicyAvg() 
     }
   },
   created() {
@@ -145,7 +144,8 @@ export default {
           this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
         } else {
           this.policyData = { policies: this.overviewData.facilities[0].policies}; // Display first facility by default
-          } 
+          }
+        this.calculatePolicyAvg() 
         })
 
       .catch(function (error) {
@@ -191,13 +191,7 @@ export default {
           } 
           facility.policies.forEach((pol) => {
             if(policy.policy_id === pol.policyName){
-              pol.simulationRuns.push({ simName: policy.sim_id })
-              
-              pol.simulationRuns.totalContact = 0
-              pol.simulationRuns.avgContactsPerAgent = 0
-              pol.simulationRuns.avgContactDuration = 0
-              pol.simulationRuns.avgPeoplePerAgent = 0
-
+              pol.simulationRuns.push({ simName: policy.sim_id })            
               pol.simulationRuns.totalIndividuals = 0
               pol.simulationRuns.totalFloors = 0
               pol.simulationRuns.totalTimeStep = 0
@@ -214,10 +208,11 @@ export default {
           policy.simulationRuns.forEach((sim) => {
             this.runList.forEach((run) => {            
               if (run.sim_id === sim.simName) {
-                Vue.set(sim,"floors", run.NumberOfFloors);
+                Vue.set(sim,"floors", run.floors);
                 Vue.set(sim,"timeStep", run.TimestepInSec);
                 Vue.set(sim,"scaleMultiplier", run.scaleMultiplier);
-                Vue.set(sim, "individuals", run.NumberOfEmployees)
+                Vue.set(sim, "individuals", run.NumberOfEmployees);
+                Vue.set(sim, "individuals", run.NumberOfEmployees);
 
                 this.statsList.forEach((stats) => {
                   if(this.metricAttributes.length == 0)  {
@@ -231,36 +226,21 @@ export default {
                     Vue.set(sim,"statisctics",stats);                
                   }
                 });                
-                policy.simulationRuns.totalFloors = sim.floors
+                policy.simulationRuns.totalFloors = sim.floors.length
                 policy.simulationRuns.totalTimeStep = sim.timeStep
                 policy.simulationRuns.totalScaleMultiplier = sim.scaleMultiplier
                 policy.simulationRuns.individuals = sim.individuals
 
-                policy.simulationRuns.totalContact += sim.overall_total_contact_duration
-                policy.simulationRuns.avgContactsPerAgent += sim.avg_n_contacts_per_agent/policy.simulationRuns.length
-                policy.simulationRuns.avgContactDuration += sim.avg_contact_duration_per_agent/policy.simulationRuns.length                
-                policy.simulationRuns.avgPeoplePerAgent += sim.avg_number_of_people_per_agent/policy.simulationRuns.length
+                // policy.simulationRuns.totalContact += sim.overall_total_contact_duration
+                // policy.simulationRuns.avgContactsPerAgent += sim.avg_n_contacts_per_agent/policy.simulationRuns.length
+                // policy.simulationRuns.avgContactDuration += sim.avg_contact_duration_per_agent/policy.simulationRuns.length                
+                // policy.simulationRuns.avgPeoplePerAgent += sim.avg_number_of_people_per_agent/policy.simulationRuns.length
               }
             });            
           })
         })
       })
-      document.getElementById("metricCols").colSpan= this.metricAttributes.length;
-
-      var stat_list = []
-      for(var p of this.overviewData.facilities[0].policies){
-        for (var sruns of p.simulationRuns){
-          stat_list.push(_.mapValues(_.keyBy(sruns.statisctics, 'name'), 'value'))
-        }
-        var dynamicKeys = _.keys(stat_list[0])
-        var sums = {}
-        _.each(stat_list, function (item) {
-          _.each(dynamicKeys, function (statKeys) {
-            sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
-          });
-        });
-        console.log("Sums", sums)
-      }   
+      document.getElementById("metricCols").colSpan= this.metricAttributes.length;  
     },
 
     pushUniqueFacilities(item) {
@@ -280,6 +260,25 @@ export default {
         .indexOf(item);
       return index === -1 ? true : false;
     },
+
+    calculatePolicyAvg() {
+      var stat_list = []
+      for(var p of this.policyData.policies){
+        for (var sruns of p.simulationRuns){
+          stat_list.push(_.mapValues(_.keyBy(sruns.statisctics, 'name'), 'value'))
+        }
+        var dynamicKeys = _.keys(stat_list[0])
+        var sums = {}
+        _.each(stat_list, function (item) {
+          _.each(dynamicKeys, function (statKeys) {
+            sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
+          });
+        });
+        console.log("Sums", sums)
+        p.simulationRuns.average = sums
+        stat_list = []
+      }
+    }
   },
 };
 </script>
@@ -325,6 +324,9 @@ export default {
   align-items: center;
 }
 
+.policyBtn {
+line-height: 0.7;
+}
 .sort-right {
   display: flex;
   flex-direction: column;
@@ -340,7 +342,7 @@ export default {
 .table thead th {
   font-family: Inter;
   font-weight: 500;
-  font-size: 10px;
+  font-size: 13px;
   line-height: 12px;
   align-items: flex-end;
   text-align: center;

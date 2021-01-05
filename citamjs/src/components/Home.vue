@@ -14,10 +14,7 @@
 <template>
   <div>
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
-      <li class="nav-item facility">
-        <!-- <a class="nav-link" id="summary-tab" data-toggle="tab" href="" role="tab"
-           aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Facility Name A 
-        </a> -->        
+      <li class="nav-item facility">       
           <select v-model="selectedFacility" class="nav-link" data-toggle="tab">
           <option v-for="(item, id) in facilities" 
             :key="id">
@@ -31,7 +28,7 @@
       </li>
         <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulation-maps')">Simulations</a>
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulations')">Simulations</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
@@ -51,14 +48,14 @@
 <script>
 //import axios from 'axios'
 //import AddPolicy from '@/components/AddPolicy';
-import SimulationMaps from './simulations/SimulationMaps.vue';
+import Simulations from './simulations/Simulations.vue';
 import Policies from './Policies.vue';
 import FloorPlans from './FloorPlans.vue';
 import Overview from './Overview.vue';
 
 export default {
   name: "Home",
-  components: {SimulationMaps, Policies, FloorPlans, Overview},
+  components: {Simulations, Policies, FloorPlans, Overview},
   data() {
     return {
       selectedComponent: 'overview',
