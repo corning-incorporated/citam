@@ -15,7 +15,7 @@ const router = new Router({
             },
           },
         // add more routes as we go
-        // otherwise redirect to home
+        // otherwise redirect to default home page
         { path: '*', redirect: '/' }
     ]
 });
