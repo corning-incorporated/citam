@@ -12,57 +12,80 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-  <div id="mainLayout">
+  <div>
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
+      <li class="nav-item facility">       
+          <select v-model="selectedFacility" class="nav-link" data-toggle="tab">
+          <option v-for="(item, id) in facilities" 
+            :key="id">
+            {{item}}
+          </option>
+        </select>                         
+      </li>
       <li class="nav-item">
-        <a class="nav-link active" id="summary-tab" data-toggle="tab" href="" role="tab"
-           aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Facility A</a>
+        <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab" href=""
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('overview')">Overview</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulations')">Simulations</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Overview</a>
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('policies')">Policies</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Simulations</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Policies</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="toVizToggle($event)">Floor Plans</a>
+           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('floor-plans')">Floor Plans</a>
       </li>
     </ul>
-    <footer class="footer">
-      <div class="container">
-        <h5>Floor Plans</h5>
-        <div class="flex-container">
-          <div @click="floorPlan()">Floor plan 1</div>
-          <div>Floor plan 2</div>
-          <div>Floor plan 3</div>
-          <div>Floor plan 4</div>
-          <div>Floor plan 5</div>
-          <div>Add floor plan</div>
-        </div>
-      </div>
-    </footer>
-  </div>
+    <div>     
+      <component :is="selectedComponent" @setFacilities="setFacilities($event)" :selectedFacility="selectedFacility"></component>
+    </div>
+  </div>  
 </template>
 
 <script>
+//import axios from 'axios'
+//import AddPolicy from '@/components/AddPolicy';
+import Simulations from './simulations/Simulations.vue';
+import Policies from './Policies.vue';
+import FloorPlans from './FloorPlans.vue';
+import Overview from './Overview.vue';
+
 export default {
   name: "Home",
-  methods:{
-    floorPlan(){
-      alert("You are viewing a floor")
+  components: {Simulations, Policies, FloorPlans, Overview},
+  data() {
+    return {
+      selectedComponent: 'overview',
+      facilities: [],
+      selectedFacility: ""
     }
-  }
+  },
+  created() {
+  },
+  methods:{
+    setSelectedComponent(cmp){
+      this.selectedComponent = cmp;
+    },
+    setFacilities(facilities) {
+      if(!this.facilities.length > 0) {
+        facilities.forEach(element => {
+          this.facilities.push(element.facilityName)
+        });
+        this.selectedFacility = this.facilities[0]
+      }    
+    },
+    toVizToggle(){
+      alert('toggle')
+    }
+  },
 }
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 .navbar {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
@@ -70,6 +93,48 @@ export default {
 
 .navbar-light {
   background-color: #f0f0f0;
+}
+
+.nav-tabs .nav-item {
+width: 140px;
+height: 50px;
+border-right: 1px solid black !important;
+background-color: #EBEFF2;
+}
+.nav-tabs .nav-item.facility {
+width: 130px;
+text-align: left;
+height: 50px;
+background-color: #32404D;
+}
+
+.nav-tabs .nav-item.facility select{
+width: 130px;
+font-family: Inter;
+font-weight: 600;
+font-size: 16px;
+color: #FFFFFF;
+background-color: #32404D;
+}
+
+.nav-tabs .nav-link { 
+  color: #607080;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+}
+.nav-tabs .nav-link.active {
+  color: #0080FF;
+  background-color: #fff;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 16px;
+  height: 50px;
+}
+
+.nav-tabs .nav-link:hover {
+  border: none;
 }
 
 .footer {
