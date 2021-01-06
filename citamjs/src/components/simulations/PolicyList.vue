@@ -22,8 +22,8 @@
                 </button>  
                 <template v-if="subRows.includes(id)">
                     <ul class="subUlStyle">
-                        <li v-for="(sim, index) in simRuns[0].simulationRuns" :key="index">
-                            <a class="simName" href="#"> Run {{sim.simName}} </a>
+                        <li v-for="(sim, index) in simRuns[0].simulationRuns" :key="index" :value="sim.simName">
+                            <a class="simName"  @click="setSimMap(sim.simName)" href="#"> Run {{sim.simName}} </a>
                         </li>
                     </ul>
                 </template>    
@@ -65,7 +65,10 @@ export default {
         this.simRuns = []        
         this.simRuns.push(this.policyData.policies[idx])   
       }      
-    }, 
+    },
+    setSimMap(currSimId) {
+        this.$emit('getSimMap', currSimId)
+    }
   }
 }
 </script>
