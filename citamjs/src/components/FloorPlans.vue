@@ -13,7 +13,11 @@
 <!--  ==============================================================================-->
 
 <template>
-    <div id="floorPlansLayout">I'm in floor plans</div>   
+    <div id="floorPlansLayout">
+        <div id="title">
+        <span>Floot Plans</span>Reference of floor plans
+      </div>    
+    </div>   
 </template>
 
 <script>
@@ -26,5 +30,19 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 #floorPlansLayout {
 background-color: #ffff;
+}
+#title {
+  font-family: Inter;
+  text-align: left;
+  padding: 10px;
+  color: #607080;
+}
+#title span {
+  color: black !important;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0px 10px 0px 5px;
+  padding: 10px 0 10px 0;
 }
 </style>
