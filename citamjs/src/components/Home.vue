@@ -23,19 +23,19 @@
         </select>                         
       </li>
       <li class="nav-item">
-        <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('overview')">Overview</a>
       </li>
         <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulations')">Simulations</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('policies')">Policies</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('floor-plans')">Floor Plans</a>
       </li>
     </ul>
@@ -123,6 +123,7 @@ background-color: #32404D;
   font-weight: 600;
   font-size: 16px;
   border: none;
+  cursor: pointer;
 }
 .nav-tabs .nav-link.active {
   color: #0080FF;

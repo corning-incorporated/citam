@@ -108,8 +108,8 @@ export default {
     };
   },
   watch: {
-    selectedFacility(newVal) {
-      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == newVal).policies}
+    selectedFacility(newFacility) {
+      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == newFacility).policies}
       this.subRows = []
       this.calculatePolicyAvg() 
     }
@@ -351,6 +351,10 @@ line-height: 0.7;
 
 .simBtn {
   margin-right: 50px;
+}
+
+.btn:focus {
+    box-shadow: none !important;
 }
 </style>
 
