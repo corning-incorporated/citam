@@ -26,11 +26,21 @@ import {getSummary} from '@/script/data_service';
 
 export default {
   name: "PlotVisualization",
-  props: ['simid'],
+  props: ['simId'],
   data() {
     return {
       mapInstance: null,
       gui: null,
+      newSimId: false    
+    }
+  },
+  watch: {
+    simId(selectedSimId) {
+      this.simId = selectedSimId      
+      this.gui = null
+      this.mapInstance = null
+      this.newSimId = true
+      this.showSimulationMap()
     }
   },
   beforeDestroy() {
@@ -38,10 +48,15 @@ export default {
     this.gui.destroy()
   },
   mounted() {
-    let animationParams = {};
-    let GUI, timestepSlider;
-    let mapRoot = this.$refs.mapRoot;
-    let mapInstance = this.mapInstance = new Map2D(mapRoot);
+    this.showSimulationMap()
+  },
+
+  methods: {
+    showSimulationMap() {   
+        let animationParams = {};
+        let GUI, timestepSlider;
+        let mapRoot = this.$refs.mapRoot;
+        let mapInstance = this.mapInstance = new Map2D(mapRoot);
 
     /** Control Panel Parameters */
     animationParams = {
@@ -53,7 +68,15 @@ export default {
     };
     /** Create Control Panel */
     this.gui = GUI = new dat.GUI({autoPlace: false});
-    this.$refs.controls.appendChild(this.gui.domElement);
+    if(this.newSimId){
+      while(this.$refs.controls.hasChildNodes()){
+        this.$refs.controls.removeChild(this.$refs.controls.firstChild)
+      }
+      this.$refs.controls.appendChild(this.gui.domElement);
+    }
+    else {
+      this.$refs.controls.appendChild(this.gui.domElement);
+    }    
 
     let guiFloorWidget = GUI.add(animationParams, 'floor', animationParams.floorOptions)
         .name('Floor')
@@ -77,24 +100,26 @@ export default {
         .step(1)
         .onChange(() => mapInstance.update())
         .listen();
+      
 
-    getSummary(this.simid).then((response) => {
-      animationParams.floorOptions = response.data.floors.map(x => x.name);
-      animationParams.floor = animationParams.floorOptions[0];
-      mapInstance.floor = animationParams.floor;
+      getSummary(this.simId).then((response) => {
+        animationParams.floorOptions = response.data.floors.map(x => x.name);
+        animationParams.floor = animationParams.floorOptions[0];
+        mapInstance.floor = animationParams.floor;
 
-      guiFloorWidget = guiFloorWidget.options(animationParams.floorOptions)
-          .name('Floor')
-          .onChange(value => mapInstance.setFloor(value));
+        guiFloorWidget = guiFloorWidget.options(animationParams.floorOptions)
+            .name('Floor')
+            .onChange(value => mapInstance.setFloor(value));
 
-      mapInstance.scaleFactor = response.data.scaleMultiplier || 1;
+        mapInstance.scaleFactor = response.data.scaleMultiplier || 1;
 
-      mapInstance.setSimulation(this.simid).then(() => {
-        timestepSlider.min(0);
-        timestepSlider.max(mapInstance.totalSteps);
+        mapInstance.setSimulation(this.simId).then(() => {
+          timestepSlider.min(0);
+          timestepSlider.max(mapInstance.totalSteps);
+        });
       });
-    });
-  },
+    }
+  }
 }
 </script>
 

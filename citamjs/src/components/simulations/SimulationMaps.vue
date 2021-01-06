@@ -25,11 +25,11 @@
         </div>
         <div class="row">
           <div class="col-sm-2 policy">
-              <policy-list :policyData="policyData" v-model="policyData"></policy-list>        
+              <policy-list :policyData="policyData" v-model="policyData" @getSimMap="getSimMap($event)"></policy-list>        
           </div>
           <div class="col-sm-10 simMaps">
               <div class="title"> SIMULATION</div>            
-              <div class="title"> show map here</div> 
+              <plot-visualization :simId="currSimId"></plot-visualization>
           </div>          
         </div>
       </div>
@@ -38,35 +38,35 @@
 
 <script>
 import PolicyList from './PolicyList.vue'
+import PlotVisualization from '@/components/run/PlotVisualization.vue'
 
 export default {
   name: 'SimulationMaps',
-  components: {PolicyList},
+  components: { PolicyList, PlotVisualization },
   props: {
     selectedFacility: String
   },
-watch: {
+  watch: {
    selectedFacility(newFacility) {  
-    this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == newFacility).policies}
-    this.subRows = []
-    console.log(this.policyData)
+    this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == newFacility).policies}    
+    this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;            
     }
   },
   data() {
       return {
-          policyData: {},
-          subRows: [],
-          simRuns: []
+          policyData: {},          
+          simRuns: [],
+          currSimId: '',
       }
   },
   created (){
       this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
-      console.log(this.policyData)
+      this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;      
   },
   methods:{
-    floorPlan(){
-      alert("You are viewing a simulation map")
-    }    
+    getSimMap(simId) {
+      this.currSimId = simId
+    }   
   }
 }
 </script>
