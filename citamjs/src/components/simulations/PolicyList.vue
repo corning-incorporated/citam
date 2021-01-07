@@ -19,11 +19,12 @@
                 <button type="button" class="btn" @click="viewRuns(id)">
                     <span><font-awesome-icon icon="chevron-down" /></span>                    
                     <span class="polName"> {{policy.policyName}} </span> <span class="polRuns"> {{ policy.simulationRuns.length }} Runs </span>
-                </button>  
+                </button>
+                <div id="empty"> </div> 
                 <template v-if="subRows.includes(id)">
                     <ul class="subUlStyle">
                         <li v-for="(sim, index) in simRuns[0].simulationRuns" :key="index" :value="sim.simName">
-                            <a class="simName"  @click="setSimMap(sim.simName)" href="#"> Run {{sim.simName}} </a>
+                            <a class="simName" @click="setSimMap(sim.simName)" href="#"> Run {{sim.simName}} </a>
                         </li>
                     </ul>
                 </template>    
@@ -43,7 +44,7 @@ export default {
    policyData(policy) {      
     this.policyData = policy
     this.subRows = []
-    console.log(this.policyData)
+    this.viewRuns(0)   
     }
   },
   data() {
@@ -51,6 +52,9 @@ export default {
         subRows: [],
         simRuns: []
       }
+  },
+  created() {
+      this.viewRuns(0)
   },
   methods: {
     viewRuns(idx) {      
@@ -75,9 +79,8 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
-.policy {
-    text-align: left;
-    background-color: #F7F9FA;;
+#policyListLayout {
+    background-color: #F7F9FA;
 }
 
 .ulStyle {

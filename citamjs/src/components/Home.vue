@@ -15,7 +15,7 @@
   <div>
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
       <li class="nav-item facility">       
-          <select v-model="selectedFacility" class="nav-link" data-toggle="tab">
+          <select v-model="selectedFacility" class="nav-link">
           <option v-for="(item, id) in facilities" 
             :key="id">
             {{item}}
@@ -23,19 +23,19 @@
         </select>                         
       </li>
       <li class="nav-item">
-        <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab"
+        <a class="nav-link active" id="overview-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('overview')">Overview</a>
       </li>
         <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab"
+        <a class="nav-link" id="sim-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulations')">Simulations</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab"
+        <a class="nav-link" id="pol-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('policies')">Policies</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab"
+        <a class="nav-link" id="flr-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('floor-plans')">Floor Plans</a>
       </li>
     </ul>
@@ -77,9 +77,6 @@ export default {
         this.selectedFacility = this.facilities[0]
       }    
     },
-    toVizToggle(){
-      alert('toggle')
-    }
   },
 }
 </script>
@@ -136,6 +133,10 @@ background-color: #32404D;
 
 .nav-tabs .nav-link:hover {
   border: none;
+}
+
+*:focus {
+  outline: none;
 }
 
 .footer {

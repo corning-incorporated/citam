@@ -12,44 +12,29 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-   <div id="simMapLayout">
-      <div class="container-fluid">
-        <div class="row header">
-          <div class="col-sm-2">           
-          </div>
-          <div class="col-sm-10">
-            <button type="button" class=" btn btn-link">Floor 2</button>
-            <button type="button" class=" btn btn-link">Floor 3</button>
-            <button type="button" class=" btn btn-link">Floor 4</button>
-          </div>          
-        </div>
-        <div class="row">
-          <div class="col-sm-2 policy">
-              <policy-list :policyData="policyData" v-model="policyData" @getSimMap="getSimMap($event)"></policy-list>        
-          </div>
-          <div class="col-sm-10 simMaps">
-              <div class="title"> SIMULATION</div>            
-              <plot-visualization :simId="currSimId"></plot-visualization>
-          </div>          
-        </div>
-      </div>
-  </div>
+   <div id="simMapLayout">                                                 
+      <!-- <button type="button" class=" btn btn-link">Floor 2</button>
+      <button type="button" class=" btn btn-link">Floor 3</button>
+      <button type="button" class=" btn btn-link">Floor 4</button>       -->
+      <div class="title"> SIMULATION</div>            
+        <plot-visualization :simId="currSimId"></plot-visualization>        
+    </div>                                                  
 </template>
 
 <script>
-import PolicyList from './PolicyList.vue'
+//import PolicyList from './PolicyList.vue'
 import PlotVisualization from '@/components/run/PlotVisualization.vue'
 
 export default {
   name: 'SimulationMaps',
-  components: { PolicyList, PlotVisualization },
+  components: { PlotVisualization },
   props: {
-    selectedFacility: String
+    selectedFacility: String,
+    simId: String
   },
   watch: {
-   selectedFacility(newFacility) {  
-    this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == newFacility).policies}    
-    this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;            
+    simId(newSimId) {
+      this.currSimId = newSimId
     }
   },
   data() {
@@ -60,8 +45,9 @@ export default {
       }
   },
   created (){
-      this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
-      this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;      
+      //this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
+      //this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
+      this.currSimId = this.simId
   },
   methods:{
     getSimMap(simId) {
@@ -74,17 +60,16 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 #simMapLayout {
-    text-align: left !important;    
+    text-align: left !important;
+    background-color: white;
+    padding-top: 0px;
 }
 
-.simMaps {
-    background-color: #F7F9FA;
-}
 .title {
     color: #607080;
     font-family: Inter;
     align-items: center; 
-    background-color: #EBEFF2;
+    background-color:#EBEFF2;
     height: 45px;
     padding: 10px;
 }
