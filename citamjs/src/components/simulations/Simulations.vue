@@ -19,7 +19,10 @@
       <div class="container-fluid">
         <div class="row header">
           <div class="col-sm-2 policy">
-            <button type="button" class="policyBtn btn btn-link">Add Policy</button>
+            <div class="policyBtn">
+              <button type="button" class="btn btn-link">Add Policy</button>
+            </div>            
+            <policy-list :policyData="policyData" v-model="policyData" @getSimMap="getSimMap($event)"></policy-list>        
           </div>
           <div class="col-sm-10">
             <ul class="nav nav-tabs">
@@ -30,35 +33,50 @@
                 <a class="nav-link" data-toggle="tab" @click="setSelectedComponent('data-visualization')">Data Visualizations</a>
               </li>
             </ul>
+            <div>     
+              <component :is="selectedComponent" :simId="currSimId"></component>
+            </div>
           </div>          
         </div>
       </div>
-      <div>     
-      <component :is="selectedComponent" :selectedFacility="selectedFacility"></component>
-    </div>
   </div>
 </template>
 
 <script>
+import PolicyList from './PolicyList.vue'
 import SimulationMaps from './SimulationMaps'
 import DataVisualization from './DataVisualizations.vue'
 
 export default {
   name: "Simulations",
-  components: { SimulationMaps, DataVisualization },
+  components: { PolicyList, SimulationMaps, DataVisualization },
   props: {
     selectedFacility: String
   },
   data() {
     return {
       selectedComponent: 'simulation-maps',
+      policyData: {},
+      currSimId: ""
     } 
   },
-
+  watch: {
+   selectedFacility(newFacility) {  
+    this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == newFacility).policies}    
+    this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
+    }
+  },
+  created() {
+    this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
+    this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
+  },
   methods:{     
     setSelectedComponent(cmp){
       this.selectedComponent = cmp;
     },
+    getSimMap(simId) {
+      this.currSimId = simId
+    }
   }
 }
 </script>
@@ -90,6 +108,11 @@ export default {
 
 .navbar-light {
   background-color: #f0f0f0;
+}
+
+.nav-tabs {
+  border-bottom: none !important;
+  background-color: #EBEFF2;
 }
 
 .nav-tabs .nav-item {
@@ -139,17 +162,24 @@ background-color: #32404D;
  .header {
    background:#EBEFF2;
  }
- .policy {
+
+ #simLayout .col-sm-2, .col-sm-10 {
    text-align: left;
+   background-color: white;
+   padding-right: 0px !important;
+   padding-left: 0px !important;
  }
 
 .policyBtn {
   font-family: Inter;
   font-weight: bold;
   color: #0080FF;
+  background-color: #EBEFF2 !important;
+  height: 50px;
 }
 
-.policyBtn:hover {
-  text-decoration: none;    
+.btn-link:hover {
+  text-decoration: none !important;
+  color: #007bff; 
 }
 </style>
