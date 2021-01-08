@@ -46,18 +46,21 @@
 import PolicyList from './PolicyList.vue'
 import SimulationMaps from './SimulationMaps'
 import DataVisualization from './DataVisualizations.vue'
+import _ from "lodash";
 
 export default {
   name: "Simulations",
   components: { PolicyList, SimulationMaps, DataVisualization },
   props: {
-    selectedFacility: String
+    selectedFacility: String,
+    overviewSimObj: Object
   },
   data() {
     return {
       selectedComponent: 'simulation-maps',
       policyData: {},
-      currSimId: ""
+      currSimId: '',
+      selectedPolicy:''
     } 
   },
   watch: {
@@ -68,7 +71,14 @@ export default {
   },
   created() {
     this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
-    this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
+    if(_.isEmpty(this.overviewSimObj)){
+      this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;     
+    }
+    else{
+      this.currSimId = this.overviewSimObj.simId
+      this.policyData.selectedPolicy = this.overviewSimObj.policyName
+      this.selectedComponent = this.overviewSimObj.type == 'simMap' ? 'simulation-maps' : 'data-visualization'  
+    }    
   },
   methods:{     
     setSelectedComponent(cmp){

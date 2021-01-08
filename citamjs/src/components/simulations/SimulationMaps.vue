@@ -13,16 +13,13 @@
 <!--  ==============================================================================-->
 <template>
    <div id="simMapLayout">                                                 
-      <!-- <button type="button" class=" btn btn-link">Floor 2</button>
-      <button type="button" class=" btn btn-link">Floor 3</button>
-      <button type="button" class=" btn btn-link">Floor 4</button>       -->
       <div class="title"> SIMULATION</div>            
         <plot-visualization :simId="currSimId"></plot-visualization>        
     </div>                                                  
 </template>
 
 <script>
-//import PolicyList from './PolicyList.vue'
+
 import PlotVisualization from '@/components/run/PlotVisualization.vue'
 
 export default {
@@ -45,9 +42,7 @@ export default {
       }
   },
   created (){
-      //this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
-      //this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
-      this.currSimId = this.simId
+    this.currSimId = this.simId
   },
   methods:{
     getSimMap(simId) {

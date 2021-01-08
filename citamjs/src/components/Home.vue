@@ -40,7 +40,13 @@
       </li>
     </ul>
     <div>     
-      <component :is="selectedComponent" @setFacilities="setFacilities($event)" :selectedFacility="selectedFacility"></component>
+      <component 
+        :is="selectedComponent" 
+        @setFacilities="setFacilities($event)" 
+        :selectedFacility="selectedFacility"
+        @showSims="showSimulations($event)"
+        :overviewSimObj="overviewSimObj">
+      </component>
     </div>
   </div>  
 </template>
@@ -60,13 +66,15 @@ export default {
     return {
       selectedComponent: 'overview',
       facilities: [],
-      selectedFacility: ""
+      selectedFacility:'',
+      overviewSimObj:{}
     }
   },
   created() {
   },
   methods:{
     setSelectedComponent(cmp){
+      this.overviewSimObj = {}
       this.selectedComponent = cmp;
     },
     setFacilities(facilities) {
@@ -77,6 +85,10 @@ export default {
         this.selectedFacility = this.facilities[0]
       }    
     },
+    showSimulations(simObj){      
+      this.selectedComponent = 'simulations'
+      this.overviewSimObj = simObj      
+    }
   },
 }
 </script>
