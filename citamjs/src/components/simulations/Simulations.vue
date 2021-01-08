@@ -27,10 +27,10 @@
           <div class="col-sm-10">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" @click="setSelectedComponent('simulation-maps')">Simulation Maps</a>
+                <a class="nav-link simMaps active" data-toggle="tab" @click="setSelectedComponent('simulation-maps')">Simulation Maps</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" @click="setSelectedComponent('data-visualization')">Data Visualizations</a>
+                <a class="nav-link dataViz" data-toggle="tab" @click="setSelectedComponent('data-visualization')">Data Visualizations</a>
               </li>
             </ul>
             <div>     
@@ -43,10 +43,10 @@
 </template>
 
 <script>
-import PolicyList from './PolicyList.vue'
-import SimulationMaps from './SimulationMaps'
+import PolicyList from '../PolicyList.vue'
+import SimulationMaps from './SimulationMaps.vue'
 import DataVisualization from './DataVisualizations.vue'
-import _ from "lodash";
+import _ from "lodash"
 
 export default {
   name: "Simulations",
@@ -72,13 +72,24 @@ export default {
   created() {
     this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
     if(_.isEmpty(this.overviewSimObj)){
-      this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;     
+      this.currSimId = this.policyData.policies[0].simulationRuns[0].simName; 
     }
     else{
       this.currSimId = this.overviewSimObj.simId
       this.policyData.selectedPolicy = this.overviewSimObj.policyName
-      this.selectedComponent = this.overviewSimObj.type == 'simMap' ? 'simulation-maps' : 'data-visualization'  
+      this.selectedComponent = this.overviewSimObj.type == 'simMaps' ? 'simulation-maps' : 'data-visualization'  
     }    
+  },
+  mounted() {
+    // wait till Simulations component is loaded and update the DOM element
+    this.$nextTick (function(){
+      if(this.overviewSimObj.type == 'dataViz'){
+        var simTab =  document.getElementsByClassName('simMaps')
+        simTab[0].className = simTab[0].className.replace("active", "");
+        var dataTab = document.getElementsByClassName('dataViz')
+        dataTab[0].className += " active"
+      }
+    })
   },
   methods:{     
     setSelectedComponent(cmp){

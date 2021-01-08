@@ -44,7 +44,11 @@ export default {
    policyData(policy) {      
     this.policyData = policy
     this.subRows = []
-    this.viewRuns(0)   
+    this.viewRuns(0)  
+
+    var simId = document.getElementsByClassName('simName')
+    simId[0].className += " active"
+    
     }
   },
   data() {
@@ -140,6 +144,10 @@ export default {
 }
 
 .simName:focus {
+    color: #0080FF;
+}
+
+a.simName {
     color: #0080FF;
 }
 </style>

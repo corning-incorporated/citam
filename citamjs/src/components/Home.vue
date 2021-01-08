@@ -23,19 +23,19 @@
         </select>                         
       </li>
       <li class="nav-item">
-        <a class="nav-link active" id="overview-tab" data-toggle="tab" role="tab"
+        <a class="nav-link overviewTab active" id="overview-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('overview')">Overview</a>
       </li>
         <li class="nav-item">
-        <a class="nav-link" id="sim-tab" data-toggle="tab" role="tab"
+        <a class="nav-link simTab" id="sim-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulations')">Simulations</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="pol-tab" data-toggle="tab" role="tab"
+        <a class="nav-link policyTab"  data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('policies')">Policies</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="flr-tab" data-toggle="tab" role="tab"
+        <a class="nav-link flrTab" id="flr-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('floor-plans')">Floor Plans</a>
       </li>
     </ul>
@@ -45,7 +45,9 @@
         @setFacilities="setFacilities($event)" 
         :selectedFacility="selectedFacility"
         @showSims="showSimulations($event)"
-        :overviewSimObj="overviewSimObj">
+        @showPolicy="showPolicyInfo($event)"
+        :overviewSimObj="overviewSimObj"
+        :polName="polName">
       </component>
     </div>
   </div>  
@@ -67,7 +69,8 @@ export default {
       selectedComponent: 'overview',
       facilities: [],
       selectedFacility:'',
-      overviewSimObj:{}
+      overviewSimObj:{},
+      polName: ''
     }
   },
   created() {
@@ -75,7 +78,8 @@ export default {
   methods:{
     setSelectedComponent(cmp){
       this.overviewSimObj = {}
-      this.selectedComponent = cmp;
+      this.polName = ''
+      this.selectedComponent = cmp
     },
     setFacilities(facilities) {
       if(!this.facilities.length > 0) {
@@ -88,6 +92,18 @@ export default {
     showSimulations(simObj){      
       this.selectedComponent = 'simulations'
       this.overviewSimObj = simObj      
+      var current =  document.getElementsByClassName('active')
+      current[0].className = current[0].className.replace("active", "");
+      var newTab = document.getElementsByClassName('simTab')
+      newTab[0].className += " active"
+    },
+    showPolicyInfo(selectedPolicy) {
+      this.selectedComponent = 'policies'
+      this.polName = selectedPolicy
+      var current =  document.getElementsByClassName('active')
+      current[0].className = current[0].className.replace("active", "");
+      var newTab = document.getElementsByClassName('policyTab')
+      newTab[0].className += " active"
     }
   },
 }

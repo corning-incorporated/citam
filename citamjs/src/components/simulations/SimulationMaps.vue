@@ -14,7 +14,7 @@
 <template>
    <div id="simMapLayout">                                                 
       <div class="title"> SIMULATION</div>            
-        <plot-visualization :simId="currSimId"></plot-visualization>        
+      <plot-visualization :simId="currSimId"></plot-visualization>        
     </div>                                                  
 </template>
 

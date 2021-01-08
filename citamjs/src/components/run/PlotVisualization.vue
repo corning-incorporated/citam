@@ -129,5 +129,7 @@ export default {
   right: 0px;
   top: 0px;
 }
-
+#map {
+  background-color: white;
+}
 </style>
