@@ -48,7 +48,7 @@
                       <span><font-awesome-icon icon="chevron-down" /></span>
                     </button>
                   </td>
-                  <td class="noBorder"><button type="button" class="btn btn-link">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>
+                  <td class="noBorder"><button type="button" class="btn btn-link" @click="showPolicyInfo(item.policyName)">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>
                   <td v-for="(avg, id) in item.simulationRuns.average" :key="id">
                         {{avg}}
                   </td>
@@ -59,14 +59,14 @@
                 </tr>
                   <template v-if="subRows.includes(idx)">
                     <tr v-for="(sim, index) in simRuns[0].simulationRuns" :key="index">
-                      <td> </td>
-                      <td> {{sim.simName}}</td> 
+                      <td class="noBorder"> </td>
+                      <td class="noBorder"> {{sim.simName}}</td> 
                       <td v-for="(stats, ind) in sim.statisctics" :key="sim.simName + ind">
                         {{stats.value}}
                       </td>
                       <td colspan="4">
-                        <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMap')">Simulation Map</button>
-                        <button type="button" class="btn btn-link" @click="showSimulations(item.policyName, sim.simName, 'dataPlot')">Data Visualizations</button>
+                        <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMaps')">Simulation Map</button>
+                        <button type="button" class="btn btn-link" @click="showSimulations(item.policyName, sim.simName, 'dataViz')">Data Visualizations</button>
                       </td>                      
                     </tr>
                   </template>               
@@ -281,6 +281,10 @@ export default {
     showSimulations(policyName, simId, type) {
       this.$emit('showSims', {'policyName':policyName, 'simId':simId, 'type':type})
     },
+
+    showPolicyInfo(policyName){
+      this.$emit('showPolicy', policyName)
+    }
   },
 };
 </script>
