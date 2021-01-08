@@ -23,7 +23,7 @@
             </div>            
             <ul class="ulStyle">
               <li v-for="(policy, id) in policyData.policies" :key="id">                                     
-                <span class="polName"> {{policy.policyName}} </span>               
+                <a class="polName" href="#" @click="selectPolicy(policy.policyName)"> {{policy.policyName}} </a>               
             </li>
         </ul>         
           </div>
@@ -234,6 +234,11 @@ export default {
     else{
       this.selectedPolicyData = this.policyData.policies.find(item=>item.policyName == this.polName)
     }
+  },
+  methods: {
+    selectPolicy(policy) {
+      this.selectedPolicyData = this.policyData.policies.find(item=>item.policyName == policy)
+    }
   }
 }
 </script>
@@ -285,11 +290,18 @@ margin-bottom: 80px;
 
  .polName {
     font-family: Inter;    
-    color: #0080FF;
+    color: #607080;
     font-weight: 600;
     margin: 0 5px 0 5px;
 }
 
+.polName:hover{
+  color: #0080FF;
+  text-decoration: none;
+}
+.policy:focus {
+  color: #0080FF;
+}
 .ulStyle {
     list-style-type: none;
     padding-inline-start: 5px;
@@ -338,5 +350,9 @@ margin-bottom: 80px;
   color: #607080;
   font-size: 14px;
   font-family: Inter;
+}
+
+*:focus {
+  outline: none;
 }
 </style>
