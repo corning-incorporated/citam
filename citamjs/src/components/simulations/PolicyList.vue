@@ -54,7 +54,13 @@ export default {
       }
   },
   created() {
-      this.viewRuns(0)
+      if(this.policyData.selectedPolicy) {
+        this.subRows.push(this.policyData.policies.findIndex(item=>item.policyName == this.policyData.selectedPolicy))
+        this.simRuns.push(this.policyData.policies.find(item=>item.policyName == this.policyData.selectedPolicy))
+      }
+      else {
+        this.viewRuns(0)
+      }          
   },
   methods: {
     viewRuns(idx) {      

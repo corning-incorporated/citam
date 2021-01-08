@@ -81,6 +81,7 @@ export default {
       policyData: {},
       simRuns: [],
       chartData: [],
+      currSimId: '',
       totalContactsPerAgentHistogram: [],
       avgContactDurationPerAgentHistogram: [],
       totalContactsHistogramOption: {},
@@ -89,8 +90,6 @@ export default {
   },
 
   created() {
-    //this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
-    //this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
     this.currSimId = this.simId;
     this.getPairContacts(this.currSimId);
   },
