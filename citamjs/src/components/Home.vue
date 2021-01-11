@@ -15,7 +15,7 @@
   <div>
     <ul class="nav nav-tabs" id="my-tab" role="tablist">
       <li class="nav-item facility">       
-          <select v-model="selectedFacility" class="nav-link" data-toggle="tab">
+          <select v-model="selectedFacility" class="nav-link">
           <option v-for="(item, id) in facilities" 
             :key="id">
             {{item}}
@@ -23,24 +23,30 @@
         </select>                         
       </li>
       <li class="nav-item">
-        <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link active" id="overview-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('overview')">Overview</a>
       </li>
         <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link" id="sim-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('simulations')">Simulations</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link" id="pol-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('policies')">Policies</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
+        <a class="nav-link" id="flr-tab" data-toggle="tab" role="tab"
            aria-controls="profile" aria-selected="false" @click="setSelectedComponent('floor-plans')">Floor Plans</a>
       </li>
     </ul>
     <div>     
-      <component :is="selectedComponent" @setFacilities="setFacilities($event)" :selectedFacility="selectedFacility"></component>
+      <component 
+        :is="selectedComponent" 
+        @setFacilities="setFacilities($event)" 
+        :selectedFacility="selectedFacility"
+        @showSims="showSimulations($event)"
+        :overviewSimObj="overviewSimObj">
+      </component>
     </div>
   </div>  
 </template>
@@ -60,13 +66,15 @@ export default {
     return {
       selectedComponent: 'overview',
       facilities: [],
-      selectedFacility: ""
+      selectedFacility:'',
+      overviewSimObj:{}
     }
   },
   created() {
   },
   methods:{
     setSelectedComponent(cmp){
+      this.overviewSimObj = {}
       this.selectedComponent = cmp;
     },
     setFacilities(facilities) {
@@ -77,8 +85,9 @@ export default {
         this.selectedFacility = this.facilities[0]
       }    
     },
-    toVizToggle(){
-      alert('toggle')
+    showSimulations(simObj){      
+      this.selectedComponent = 'simulations'
+      this.overviewSimObj = simObj      
     }
   },
 }
@@ -123,6 +132,7 @@ background-color: #32404D;
   font-weight: 600;
   font-size: 16px;
   border: none;
+  cursor: pointer;
 }
 .nav-tabs .nav-link.active {
   color: #0080FF;
@@ -135,6 +145,10 @@ background-color: #32404D;
 
 .nav-tabs .nav-link:hover {
   border: none;
+}
+
+*:focus {
+  outline: none;
 }
 
 .footer {

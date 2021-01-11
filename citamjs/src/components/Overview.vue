@@ -23,36 +23,32 @@
           <div class="table-responsive">
             <table class="table table-bordered" v-if="statsList">
               <thead>
-                <tr>
+                <tr class="tableHeader">
                   <th colspan="2"><button type="button" class="policyBtn btn btn-link">Add Policy</button></th>
                   <th id="metricCols">KEY METRICS</th>
                   <th colspan="4">KEY POLICY INPUTS</th>
                 </tr>
                 <tr>
-                  <th>View runs</th>
-                  <th>Policies</th>                  
+                  <th class="noBorder">View runs</th>
+                  <th class="noBorder">Policies</th>                  
                   <th v-for="(att, id) in metricAttributes" :key="id">
                     <div class="th-container"> {{ att }}
-                      <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(att)">
-                        <font-awesome-icon icon="sort" /></button></span>
                     </div>
                   </th>
                   <th v-for="(header, id) in policyInputHeaders" :key="'p'+id">
                     <div class="th-container"> {{ header }}
-                      <span class="sort-right"><button class="btn btn-sm btn-link" @click="sortTable(header)">
-                        <font-awesome-icon icon="sort" /></button></span>
                     </div>
                   </th>
                 </tr>
               </thead>
               <tbody  v-for="(item, idx) in policyData.policies" :key="idx">             
                 <tr>
-                  <td>
+                  <td class="noBorder">
                     <button type="button" class="btn" @click="viewRuns(idx)">
                       <span><font-awesome-icon icon="chevron-down" /></span>
                     </button>
                   </td>
-                  <td><button type="button" class="btn btn-link">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>
+                  <td class="noBorder"><button type="button" class="btn btn-link">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>
                   <td v-for="(avg, id) in item.simulationRuns.average" :key="id">
                         {{avg}}
                   </td>
@@ -68,8 +64,10 @@
                       <td v-for="(stats, ind) in sim.statisctics" :key="sim.simName + ind">
                         {{stats.value}}
                       </td>
-                      <td colspan="4"><button type="button" class="btn btn-link simBtn">Simulation Map</button>
-                      <button type="button" class="btn btn-link">Data Visualizations</button></td>                      
+                      <td colspan="4">
+                        <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMap')">Simulation Map</button>
+                        <button type="button" class="btn btn-link" @click="showSimulations(item.policyName, sim.simName, 'dataPlot')">Data Visualizations</button>
+                      </td>                      
                     </tr>
                   </template>               
               </tbody>
@@ -108,8 +106,8 @@ export default {
     };
   },
   watch: {
-    selectedFacility(newVal) {
-      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == newVal).policies}
+    selectedFacility(newFacility) {
+      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == newFacility).policies}
       this.subRows = []
       this.calculatePolicyAvg() 
     }
@@ -278,7 +276,11 @@ export default {
         p.simulationRuns.average = sums
         stat_list = []
       }
-    }
+    },
+    
+    showSimulations(policyName, simId, type) {
+      this.$emit('showSims', {'policyName':policyName, 'simId':simId, 'type':type})
+    },
   },
 };
 </script>
@@ -333,6 +335,9 @@ line-height: 0.7;
   justify-content: center;
 }
 
+.table {
+  margin-bottom: 0px !important;
+}
 .table .col-sm-2,
 .table .col-sm-5 {
   float: left;
@@ -349,8 +354,20 @@ line-height: 0.7;
   color: #607080;
 }
 
+.tableHeader {
+  background-color: #EBEFF2;
+}
 .simBtn {
   margin-right: 50px;
+}
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+.noBorder {
+  border-left: none !important;
+  border-right: none !important;
 }
 </style>
 
