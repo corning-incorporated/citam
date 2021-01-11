@@ -60,7 +60,8 @@ export default {
       selectedComponent: 'simulation-maps',
       policyData: {},
       currSimId: '',
-      selectedPolicy:''
+      selectedPolicy:'',
+      selectedSim: ''
     } 
   },
   watch: {
@@ -77,6 +78,7 @@ export default {
     else{
       this.currSimId = this.overviewSimObj.simId
       this.policyData.selectedPolicy = this.overviewSimObj.policyName
+      this.policyData.selectedSim = this.overviewSimObj.simId
       this.selectedComponent = this.overviewSimObj.type == 'simMaps' ? 'simulation-maps' : 'data-visualization'  
     }    
   },

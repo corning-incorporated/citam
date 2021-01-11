@@ -23,7 +23,7 @@
             </div>            
             <ul class="ulStyle">
               <li v-for="(policy, id) in policyData.policies" :key="id">                                     
-                <a class="polName" href="#" @click="selectPolicy(policy.policyName)"> {{policy.policyName}} </a>               
+                <a class="polName" :id="id" href="#" @click="getPolicyDetails(policy.policyName, id)"> {{policy.policyName}} </a>               
             </li>
         </ul>         
           </div>
@@ -216,28 +216,54 @@ export default {
   data() {
     return {      
       policyData: {},
-      selectedPolicyData: {}            
+      selectedPolicyData: {
+        generalPolicy: {"spaceName":'', "floor":'', "entranceTime":'', "leaveTime":'', "quantity":'', "distance":'',
+        "shiftName": '', "shiftStartTime":'', "shiftAgentPercent":''},
+        meetingsPolicy: {"minDuration":'',"maxDuration":'', "avgMtngsPerRoomPerDay":'', "avgMtngRooms":'',
+        "avgMtngsPerAgent":'', "minMtngAttendees":''},
+        schedulingPolicy: {"purpose":'',"minDuration":'',"maxDuration":'',"minInstance":'',"maxInstance":'' },
+        trafficPolicy: {"floor":'',"aisleId":'', "direction":''}
+      },
+      polIndex: ''          
     } 
   },
   watch: {
    selectedFacility(newFacility) {  
     this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == newFacility).policies}
-    this.selectedPolicyData = this.policyData.policies[0]
+    this.selectedPolicyData.policyInfo = this.policyData.policies[0]
+    this.setActiveSelectedPolicy(0)
 
     }
   },
   created() {
     this.policyData = {policies: this.$store.state.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
     if(_.isEmpty(this.polName)) {
-      this.selectedPolicyData = this.policyData.policies[0]  
+      this.selectedPolicyData.policyInfo = this.policyData.policies[0]      
     }
     else{
-      this.selectedPolicyData = this.policyData.policies.find(item=>item.policyName == this.polName)
+      this.selectedPolicyData.policyInfo = this.policyData.policies.find(item=>item.policyName == this.polName)
+      this.polIndex =  this.policyData.policies.findIndex(item=>item.policyName == this.polName)
     }
   },
+    mounted() {
+    // wait till Simulations component is loaded and update the DOM element
+    this.$nextTick (function(){
+      this.polIndex == '' ? this.setActiveSelectedPolicy(0) : this.setActiveSelectedPolicy(this.polIndex)      
+    })
+  },
   methods: {
-    selectPolicy(policy) {
-      this.selectedPolicyData = this.policyData.policies.find(item=>item.policyName == policy)
+    getPolicyDetails(policyName, Id) {
+      this.selectedPolicyData.policyInfo = this.policyData.policies.find(item=>item.policyName == policyName)
+      this.setActiveSelectedPolicy(Id)     
+    },
+
+    setActiveSelectedPolicy(Id) {
+      var current =  document.getElementsByClassName('setActive')
+      if(current.length > 0) {
+        current[0].className = current[0].className.replace("setActive", "");
+      }      
+      var polId = document.getElementById(Id)
+      polId.className += " setActive"
     }
   }
 }
@@ -295,6 +321,9 @@ margin-bottom: 80px;
     margin: 0 5px 0 5px;
 }
 
+.polName.setActive {
+  color: #0080FF;
+}
 .polName:hover{
   color: #0080FF;
   text-decoration: none;
