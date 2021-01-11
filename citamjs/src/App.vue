@@ -12,16 +12,15 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 
-<template>
+<template style="background-color: black">
   <div id="app">
     <the-navigation></the-navigation>
     <main id="mainLayout">            
       <router-view>
       <home v-show="showDash"></home>      
       </router-view>
-      <dashboard v-if="showDash"></dashboard>
-    </main>
-    <footer class="py-4 bg-light mt-auto">
+      <!-- <dashboard v-if="false"></dashboard> -->
+      <footer class="py-4 bg-light mt-auto">
       <div class="container-fluid">
       <div class="d-flex align-items-center justify-content-between small">
         <div class="text-muted"> &copy; CITAM</div>
@@ -31,11 +30,12 @@
         </div>
       </div>
     </footer>
+    </main>
   </div>
 </template>
 
 <script>
-import Dashboard from "@/components/Dashboard";
+//import Dashboard from "@/components/Dashboard";
 import TheNavigation from '@/components/nav/Navigation'
 import Home from '@/components/Home';
 import {library} from '@fortawesome/fontawesome-svg-core'
@@ -55,7 +55,7 @@ export default {
   components: {
     Home,
     TheNavigation,
-    Dashboard
+    //Dashboard
   },
   data(){return {
     showDash: true,
@@ -66,6 +66,9 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap");
+body {
+  background-color: black !important;
+}
 #app {
   font-family: Inter;
   -webkit-font-smoothing: antialiased;
@@ -75,5 +78,12 @@ export default {
 }
 #mainLayout {
 margin: 0 30px 0 30px;
+}
+
+#mainLayout footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 </style>

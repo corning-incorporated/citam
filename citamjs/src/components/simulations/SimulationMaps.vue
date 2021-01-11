@@ -12,35 +12,42 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-  <div id="simMapLayout">
-      <div>
-        <span>Simulations</span>Individual simulation maps per policy, run, and floor. Data visualization per simulation run.
-      </div>
-    <ul class="nav nav-tabs" id="my-tab" role="tablist">
-      <li class="nav-item policy">
-        <a class="nav-link" id="summary-tab" data-toggle="tab" href="" role="tab"
-           aria-controls="home" aria-selected="true" @click="toVizToggle($event)">Add Policy 
-           <span><font-awesome-icon icon="chevron-down"/></span></a>           
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="setSelectedComponent($event)">Simulation Maps</a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" id="viz-tab" data-toggle="tab" role="tab" href=""
-           aria-controls="profile" aria-selected="false" @click="setSelectedComponent($event)">Data Visualizations</a>
-      </li>
-    </ul>
-  </div>
+   <div id="simMapLayout">                                                 
+      <div class="title"> SIMULATION</div>            
+        <plot-visualization :simId="currSimId"></plot-visualization>        
+    </div>                                                  
 </template>
 
 <script>
+
+import PlotVisualization from '@/components/run/PlotVisualization.vue'
+
 export default {
-  name: "SimulationMaps",
-  methods:{
-    floorPlan(){
-      alert("You are viewing a floor")
+  name: 'SimulationMaps',
+  components: { PlotVisualization },
+  props: {
+    selectedFacility: String,
+    simId: String
+  },
+  watch: {
+    simId(newSimId) {
+      this.currSimId = newSimId
     }
+  },
+  data() {
+      return {
+          policyData: {},          
+          simRuns: [],
+          currSimId: '',
+      }
+  },
+  created (){
+    this.currSimId = this.simId
+  },
+  methods:{
+    getSimMap(simId) {
+      this.currSimId = simId
+    }   
   }
 }
 </script>
@@ -48,58 +55,17 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 #simMapLayout {
-background-color: #ffff;
-}
-.navbar {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+    text-align: left !important;
+    background-color: white;
+    padding-top: 0px;
 }
 
-.navbar-light {
-  background-color: #f0f0f0;
-}
-
-.nav-tabs .nav-item {
-width: 140px;
-height: 50px;
-border-right: 1px solid black !important;
-background-color: #EBEFF2;
-}
-.nav-tabs .nav-item.policy {
-width:250px;
-text-align: left;
-height: 50px;
-background-color: #32404D;
-}
-
-.nav-tabs .nav-item.policy a{
-font-family: Inter;
-font-style: normal;
-font-weight: 600;
-font-size: 16px;
-color: #FFFFFF;
-background-color: #32404D;
-}
-
-.nav-tabs .nav-link { 
-  color: #607080;
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  border: none;
-}
-.nav-tabs .nav-link.active {
-  color: #0080FF;
-  background-color: #fff;
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  height: 50px;
-}
-
-.nav-tabs .nav-link:hover {
-  border: none;
+.title {
+    color: #607080;
+    font-family: Inter;
+    align-items: center; 
+    background-color:#EBEFF2;
+    height: 45px;
+    padding: 10px;
 }
 </style>

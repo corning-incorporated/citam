@@ -13,7 +13,10 @@
 <!--  ==============================================================================-->
 
 <template>
-    <div id="policiesLayout">I'm in policies</div>   
+    <div id="policiesLayout">
+        <div id="title">View and Create Policy</div>
+    </div>
+    
 </template>
 
 <script>
@@ -26,5 +29,14 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 #policiesLayout {
 background-color: #ffff;
+}
+#title {
+  color: black !important;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0px 10px 0px 5px;
+  padding: 10px;
+  text-align: left;  
 }
 </style>
