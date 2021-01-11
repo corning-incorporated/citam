@@ -24,7 +24,7 @@
                 <template v-if="subRows.includes(id)">
                     <ul class="subUlStyle">
                         <li v-for="(sim, index) in simRuns[0].simulationRuns" :key="index" :value="sim.simName">
-                            <a class="simName" @click="setSimMap(sim.simName)" href="#"> Run {{sim.simName}} </a>
+                            <a class="simName" :id="index" @click="setSimMap(sim.simName, index)" href="#"> Run {{sim.simName}} </a>
                         </li>
                     </ul>
                 </template>    
@@ -34,33 +34,61 @@
 </template>
 
 <script>
-
+import _ from "lodash"
 export default {
     name: "PolicyList",
     props: {
-    policyData: Object,    
+    policyData: Object,  
   },
   watch: {
    policyData(policy) {      
     this.policyData = policy
     this.subRows = []
-    this.viewRuns(0)   
+    this.viewRuns(0)
+    this.currSimId = '' 
     }
   },
   data() {
       return {        
         subRows: [],
-        simRuns: []
+        simRuns: [],
+        polIndex: '',
+        simIndex: '' ,
+        currSimId: ''
       }
   },
   created() {
       if(this.policyData.selectedPolicy) {
-        this.subRows.push(this.policyData.policies.findIndex(item=>item.policyName == this.policyData.selectedPolicy))
+        this.currSimId = this.policyData.selectedSim
+        this.subRows.push(this.policyData.policies.findIndex(item=>item.policyName == this.policyData.selectedPolicy))        
         this.simRuns.push(this.policyData.policies.find(item=>item.policyName == this.policyData.selectedPolicy))
+        this.simIndex = this.simRuns[0].simulationRuns.findIndex(item=>item.simName == this.currSimId)     
       }
       else {
+          // show simulation runs for the first policy by default
         this.viewRuns(0)
+        this.currSimId = this.simRuns[0].simulationRuns[0].simName
       }          
+  },
+ mounted() {
+    // wait till Simulations component is loaded and update the DOM element
+    this.$nextTick (function(){
+      if(this.simIndex == '' ) {
+          this.simIndex = 0
+      } 
+      this.setActiveSelectedSimulation(this.simIndex)      
+    })
+  },
+
+  updated: function() {
+      if(_.isEmpty(this.currSimId)) {
+          this.setActiveSelectedSimulation(0)
+          this.currSimId = this.simRuns[0].simulationRuns[0].simName
+      }
+      else {
+          this.simIndex = this.simRuns[0].simulationRuns.findIndex(item=>item.simName == this.currSimId)
+         this.simIndex >=0 ? this.setActiveSelectedSimulation(this.simIndex) : ''
+      }  
   },
   methods: {
     viewRuns(idx) {      
@@ -76,8 +104,19 @@ export default {
         this.simRuns.push(this.policyData.policies[idx])   
       }      
     },
-    setSimMap(currSimId) {
-        this.$emit('getSimMap', currSimId)
+    setSimMap(newSimId, simIndex) {
+        this.currSimId = newSimId
+        this.$emit('getSimMap', newSimId)
+        this.setActiveSelectedSimulation(simIndex)
+    },
+    
+    setActiveSelectedSimulation(Id) {
+      var current =  document.getElementsByClassName('setActive')
+      if(current.length > 0) {
+        current[0].className = current[0].className.replace("setActive", "");
+      }      
+      var simId = document.getElementById(Id)
+      simId.className += " setActive"
     }
   }
 }
@@ -142,4 +181,11 @@ export default {
 .simName:focus {
     color: #0080FF;
 }
+
+.simName.setActive {
+  color: #0080FF;
+}
+/* a.simName {
+    color: #0080FF;
+} */
 </style>
