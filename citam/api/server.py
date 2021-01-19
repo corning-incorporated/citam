@@ -59,7 +59,9 @@ class ResultsResource:
     ):
         """Get trajectory data"""
         floor = req.params.get("floor")  # Floor is allowed to be None here.
-        offset = req.params.get("offset")
+        offset = (
+            int(req.params.get("offset")) if req.params.get("offset") else 0
+        )
         resp.media = parser.get_trajectories(sim_id, floor, offset)
         resp.status = falcon.HTTP_200
 
@@ -280,8 +282,9 @@ def get_wsgi_app():
     app.add_route("/v1/list", results, suffix="list")
     app.add_route("/v1/{sim_id}", results, suffix="summary")
     app.add_route("/v1/{sim_id}/trajectory", results, suffix="trajectory")
-    app.add_route("/v1/{sim_id}/trajectory_lines", results,
-                  suffix="trajectory_lines")
+    app.add_route(
+        "/v1/{sim_id}/trajectory_lines", results, suffix="trajectory_lines"
+    )
     app.add_route("/v1/{sim_id}/contact", results, suffix="contact")
     app.add_route("/v1/{sim_id}/map", results, suffix="map")
     app.add_route(
