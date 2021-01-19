@@ -56,7 +56,7 @@ def test_trajectory_response(client):
     assert result.status_code == 200
     assert result.json.get("data")
     assert result.json.get("statistics")
-    assert result.json["statistics"].get("max_contacts")
+    assert result.json["statistics"].get("cfl")
 
 
 def test_contact_response(client):
