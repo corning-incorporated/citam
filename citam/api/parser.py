@@ -10,7 +10,7 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-__all__ = ["get_contacts", "get_trajectories", "get_coordinate_distribution"]
+__all__ = ["get_contacts", "get_trajectories", "get_coordinate_distribution", "get_trajectories_lines"]
 
 import logging
 from typing import Dict, List, Union
@@ -21,15 +21,29 @@ import json
 LOG = logging.getLogger(__name__)
 
 
-def get_trajectories(sim_id: str, floor: Union[str, int] = None) -> Dict:
+def get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict:
+    result_file = settings.storage_driver.get_trajectory_file(sim_id)
+    idx = 0
+    count_line = result_file.readline().strip()
+    while count_line is not None and count_line != "":
+        idx += 1
+        count_line = result_file.readline().strip()
+    return {"data": idx}
+
+
+def get_trajectories(sim_id: str, floor: Union[str, int] = None, offset=0) -> Dict:
     """
     Get trajectory information for a simulation
 
     :param sim_id: simulation identifier
     :param floor: Floor number.  Use None to return all floors
+    :param offset: Offset number.  Start with 0
     :return: List of trajectories broken down by step
     """
+
+    max_rows_allowed = 7000  # max steps to be read in each call
     result_file = settings.storage_driver.get_trajectory_file(sim_id)
+    offset = int(offset)
     LOG.info(
         "trajectory file parsing process started",
     )
@@ -38,18 +52,28 @@ def get_trajectories(sim_id: str, floor: Union[str, int] = None) -> Dict:
         LOG.info("Filtering trajectories for floor %d", floor)
 
     steps = []
+
+    for i in range(offset):
+        next(result_file)
+
     count_line = result_file.readline().strip()
-    while count_line is not None and count_line != "":
+    total_rows_allowed = 0
+    curr_file_line = offset
+    while count_line is not None and count_line != "" and total_rows_allowed < max_rows_allowed:
         num_contacts = int(count_line)
+        curr_file_line += 1
+
         step_num = result_file.readline().strip()
-        step_num = step_num.replace("step :", "")  # noqa
+        total_rows_allowed += 1
+
+        step_num = step_num.replace("step: ", "")  # noqa
         step = []
         for _ in range(num_contacts):
+            curr_file_line += 1
             data = result_file.readline().strip().split("\t")
 
             if floor is not None and int(data[3]) != floor:
                 continue
-
             step.append(
                 {
                     "x": float(data[1]),
@@ -61,13 +85,11 @@ def get_trajectories(sim_id: str, floor: Union[str, int] = None) -> Dict:
             )
         steps.append(step)
         count_line = result_file.readline().strip()
+        curr_file_line += 1
 
     LOG.info("trajectory file parsing process is complete")
-    try:
-        max_contacts = max(max(y["count"] for x in steps for y in x), 100)
-    except ValueError:  # pragma: nocover
-        max_contacts = 100
-    return {"data": steps, "statistics": {"max_contacts": max_contacts}}
+
+    return {"data": steps, "statistics": {"cfl": curr_file_line}}
 
 
 def get_contacts(sim_id: str, floor: str) -> List[List[Dict]]:
