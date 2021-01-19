@@ -10,7 +10,8 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-__all__ = ["get_contacts", "get_trajectories", "get_coordinate_distribution", "get_trajectories_lines"]
+__all__ = ["get_contacts", "get_trajectories",
+           "get_coordinate_distribution", "get_trajectories_lines"]
 
 import logging
 from typing import Dict, List, Union
@@ -31,7 +32,8 @@ def get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict:
     return {"data": idx}
 
 
-def get_trajectories(sim_id: str, floor: Union[str, int] = None, offset=0) -> Dict:
+def get_trajectories(sim_id: str, floor: Union[str, int] = None,
+                     offset=0) -> Dict:
     """
     Get trajectory information for a simulation
 
@@ -59,7 +61,8 @@ def get_trajectories(sim_id: str, floor: Union[str, int] = None, offset=0) -> Di
     count_line = result_file.readline().strip()
     total_rows_allowed = 0
     curr_file_line = offset
-    while count_line is not None and count_line != "" and total_rows_allowed < max_rows_allowed:
+    while count_line is not None and count_line != "" \
+            and total_rows_allowed < max_rows_allowed:
         num_contacts = int(count_line)
         curr_file_line += 1
 
