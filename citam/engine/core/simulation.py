@@ -790,6 +790,7 @@ class Simulation:
         # agent ids
         filename = os.path.join(work_directory, "agent_ids.csv")
         with open(filename, "w") as outfile:
+            outfile.write("AgentID,OfficeID,FloorID\n")
             for unique_id, agent in self.agents.items():
                 outfile.write(
                     str(unique_id)
