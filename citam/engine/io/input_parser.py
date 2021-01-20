@@ -257,7 +257,8 @@ def _extract_spaces(
                     space_metadata["capacity"] = space_elem.attrib["capacity"]
             else:
                 raise ValueError(
-                    "'id' and 'class' attributes required for space paths"
+                    "'id' and 'function' attributes required for space paths %s",
+                    space_elem.attrib,
                 )
             space_paths.append(space_path)
             space_attributes.append(space_metadata)
