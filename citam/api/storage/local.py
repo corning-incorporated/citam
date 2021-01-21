@@ -63,21 +63,27 @@ class LocalStorageDriver(BaseStorageDriver):
                 f"search_path '{search_path}' is invalid. search_path "
                 f"must reference a directory"
             )
-
+                
+        required_values = ["SimulationID", "FacilityName", "PolicyID"]
         for manifest in manifests:
             with open(manifest, "r") as manifest_file:
-                try:
-                    manifest_data = json.load(manifest_file)
-                    sim_id = manifest_data["SimulationID"]
-                    policy_id = manifest_data["PolicyID"]
-                    facility_name = manifest_data["FacilityName"]
-                except KeyError:
-                    LOG.warning(
-                        '"%s" does not define "SimulationName". '
-                        "The results for this manifest will be ignored ",
-                        manifest,
-                    )
+                manifest_data = json.load(manifest_file)
+                missing_values = [
+                    key for key in required_values
+                    if key not in manifest_data
+                ]
+                if len(missing_values) > 0:
+                    LOG.error(
+                            '"%s" does not define the following values: "%s". '
+                            "The results for this manifest will be ignored ",
+                            manifest,
+                            missing_values
+                        )
                     continue
+
+                sim_id = manifest_data["SimulationID"]
+                policy_id = manifest_data["PolicyID"]
+                facility_name = manifest_data["FacilityName"]
 
                 self.result_dirs[sim_id] = os.path.dirname(manifest)
                 self.runs.append(
