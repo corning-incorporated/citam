@@ -1,4 +1,11 @@
+// Add this to the top of your file
+/* global __static */
+
+
 'use strict'
+
+// import path
+import path from 'path'
 
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
@@ -15,6 +22,8 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    title: "CITAM Viewer",
+    icon: path.join(__static, 'icon.png'),
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -31,7 +40,10 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+  win.on("page-title-updated", (event) => event.preventDefault());
 }
+
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
