@@ -73,7 +73,7 @@ export default {
     timestepSlider = GUI.add(mapInstance, 'currentStep')
         .name('Timestep')
         .min(0)
-        .max(3600)
+        .max(1600)
         .step(1)
         .onChange(() => mapInstance.update())
         .listen();
@@ -90,8 +90,10 @@ export default {
       mapInstance.scaleFactor = response.data.scaleMultiplier || 1;
 
       mapInstance.setSimulation(this.simid).then(() => {
-        timestepSlider.min(0);
-        timestepSlider.max(mapInstance.totalSteps);
+        mapInstance.getTrajectoryData(0).then(()=>{
+          timestepSlider.min(0);
+          timestepSlider.max(mapInstance.totalSteps);
+        })
       });
     });
   },

@@ -118,8 +118,9 @@ export default class Map2D {
     }
 
     async getTrajectoryData(offset) {
+        // let _this = this;
         await getTrajectory(this.simulation, this.floor, offset)
-            .then(response => {
+            .then(response=>{
                 trajectoryCollection = trajectoryCollection.concat(response.data.data);
                 offset = response.data['statistics']['cfl'] // cfl is where file was stopped
                 if (offset < this.trajectoriesLines) {
@@ -137,8 +138,10 @@ export default class Map2D {
                     this.timer.show();
                     this.colorBar.show();
                     this.startAnimation();
+
                 }
             });
+
     }
 
 
@@ -176,7 +179,7 @@ export default class Map2D {
         let trajectoriesLinesRequest = getTrajectoryLines(this.simulation, this.floor)
             .then(response => {
                 this.trajectoriesLines = response.data.data;
-                this.getTrajectoryData(0)
+                // this.getTrajectoryData(0)
             });
 
 
@@ -192,13 +195,17 @@ export default class Map2D {
                 this.loader.distributionsLoaded();
             });
 
+        // let trajectoriesLinesRequest = await getTrajectoryLines(this.simulation, this.floor)
+        // console.log(trajectoriesLinesRequest)
+        // this.trajectoriesLines = trajectoriesLinesRequest.data.data;
         await Promise.all([
             summaryRequest,
             contactDist,
             contactsRequest,
             trajectoriesLinesRequest,
+
             mapRequest,
-        ]);
+        ])
         return this;
     }
 
