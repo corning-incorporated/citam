@@ -17,6 +17,7 @@ const API_PORT = process.env.DJANGO_PORT || 8000;
 
 
 module.exports = {
+    publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
     configureWebpack: {
         output: {
             libraryExport: 'default'

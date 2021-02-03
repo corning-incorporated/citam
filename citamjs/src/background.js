@@ -1,7 +1,3 @@
-// Add this to the top of your file
-/* global __static */
-
-
 'use strict'
 
 // import path
@@ -38,7 +34,8 @@ async function createWindow() {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    win.loadURL(path.join(__dirname, 'index.html')
+    );
   }
   win.on("page-title-updated", (event) => event.preventDefault());
 }
