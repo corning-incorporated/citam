@@ -332,12 +332,11 @@ class Facility:
                     tmp_spaces.append(space)
                 elif len(space.doors) > 0:
                     exit_coords = floorplan.get_room_exit_coords(space_index)
-                    if exit_coords:
-                        best_entrance, _ = self.choose_best_entrance(
-                            fn, space_index
-                        )
-                        if best_entrance is not None:
-                            tmp_spaces.append(space)
+                    best_entrance, _ = self.choose_best_entrance(
+                        fn, space_index
+                    )
+                    if exit_coords and best_entrance is not None:
+                        tmp_spaces.append(space)
             n_unreachable = len(floorplan.spaces) - len(tmp_spaces)
             LOG.info("Unreachable rooms on floor %d: %d", fn, n_unreachable)
             self.floorplans[fn].spaces = tmp_spaces
