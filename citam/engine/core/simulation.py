@@ -482,7 +482,7 @@ class Simulation:
         self, floor_number: int, agent1: Agent, agent2: Agent
     ):
         """
-        Verify is thew 2 agents are in 2 nearby hallways before creating contact event.
+        Verify if agents are in nearby hallways before creating contact event.
 
         :param floor_number: [description]
         :type floor_number: int
