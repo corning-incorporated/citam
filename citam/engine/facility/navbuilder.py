@@ -668,7 +668,8 @@ class NavigationBuilder:
         :type new_space: Space
         :param segments: List of all current nav segments to be updated.
         :type segments: List[List[Point]]
-        :param segment_spaces: List of all current spaces where each segment is located.
+        :param segment_spaces: List of all current spaces where each segment is
+            located.
         :type segment_spaces: List[Space]
         :param direction: The direction of the segment (-1 or 1).
         :type direction: int
@@ -700,8 +701,8 @@ class NavigationBuilder:
         stop_at_existing_segments: bool,
     ):
         """
-        Compute navigation segments in a given direction. More than 1 segment will be
-        created if crossing into different spaces.
+        Compute navigation segments in a given direction. More than 1 segment
+        will be created if crossing into different spaces.
 
         :param current_space: The current space.
         :type current_space: Space
@@ -715,10 +716,11 @@ class NavigationBuilder:
         :type dy: float
         :param segments: List of all current nav segments to be updated.
         :type segments: List[List[Point]]
-        :param segment_spaces: List of all spaces where the nav segments are located.
+        :param segment_spaces: List of all spaces where the nav segments are
+            located
         :type segment_spaces: List[Space]
-        :param stop_at_existing_segments: Whether to stop when crossing an existing
-            nav segment or not.
+        :param stop_at_existing_segments: Whether to stop when crossing an
+            existing nav segment or not.
         :type stop_at_existing_segments: bool
         """
         new_point = first_point
@@ -850,11 +852,11 @@ class NavigationBuilder:
         """
         Break nav segments when they intersect with walls.
 
-        :param intersects: The points where the nav segment intersects with walls.
+        :param intersects: Points where nav segment intersects walls.
         :type intersects: List[Tuple]
         :param path_line: The path object representing the nav segment.
         :type path_line: Path
-        :param edge: Edge in the navnet corresponding to the current nav segment.
+        :param edge: Edge in the navnet corresponding to current nav segment.
         :type edge: List[List]
         :param half_width: Half width of the current nav segment.
         :type half_width: float
@@ -937,8 +939,8 @@ class NavigationBuilder:
         self, node: tuple, neighbors: List[tuple], door_paths: List[Path]
     ) -> bool:
         """
-        Check if a node should be removed based on whether it has two neighbors with
-        which it forms a straight line.
+        Check if a node should be removed based on whether it has two neighbors
+        with which it forms a straight line.
 
         :param node: The node of interest
         :type node: tuple
@@ -1035,7 +1037,7 @@ class NavigationBuilder:
         self, key: str, seg1: Tuple[Point], seg2: Tuple[Point]
     ) -> False:
         """
-        Check if 2 given nav segments intersect and update list of navigation segments
+        Check if nav segments intersect and update list of nav segments
         accordingly to capture the intersection point as a node in the graph.
 
         :param key: key to find the space of interset.
@@ -1119,7 +1121,8 @@ class NavigationBuilder:
         coords4: Tuple[int, int],
     ) -> Tuple[float, float]:
         """
-        Given four xy coordiantes where the first 2 form one segemtn and the sec
+        Given 4 xy coordiantes where the first 2 form one segment and the next
+        2 form another segment, remove corresponding edges from navnet.
 
         :param coords1: Coordinates of first point of first edge.
         :type coords1: Tuple[int, int]
