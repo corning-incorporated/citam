@@ -110,7 +110,7 @@ DEFAULT_MEETINGS_POLICY = {
     "max_meeting_length": 7200,  # 2 hours
     "meeting_duration_increment": 15 * 60,  # 15 min
     # Meetings frequency
-    "avg_meetings_per_room": 3,
+    "avg_meetings_per_room": 6,
     "percent_meeting_rooms_used": 0.6,  # Less than 1.0
     # Meetings participants
     "avg_meetings_per_person": 3,
