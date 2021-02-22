@@ -23,21 +23,25 @@ from typing import Dict, List, Union
 from citam.conf import settings
 import json
 
+import time
+
 LOG = logging.getLogger(__name__)
 
 
 def get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict:
     result_file = settings.storage_driver.get_trajectory_file(sim_id)
-    idx = 0
-    count_line = result_file.readline().strip()
-    while count_line is not None and count_line != "":
-        idx += 1
-        count_line = result_file.readline().strip()
-    return {"data": idx}
+    count = 0
+    for _ in result_file:
+        count += 1
+    return {"data": count}
 
 
 def get_trajectories(
-    sim_id: str, floor: Union[str, int] = None, offset: int = 0
+    sim_id: str,
+    floor: Union[str, int] = None,
+    offset: int = 0,
+    first_timestep: int = 0,
+    max_steps: int = 5000,
 ) -> Dict:
     """
     Get trajectory information for a simulation
@@ -48,8 +52,7 @@ def get_trajectories(
     :return: List of trajectories broken down by step
     """
 
-    max_rows_allowed = 7000  # max steps to be read in each call
-    result_file = settings.storage_driver.get_trajectory_file(sim_id)
+    result_file = settings.storage_driver.get_trajectory_file_location(sim_id)
 
     LOG.info(
         "trajectory file parsing process started",
@@ -58,47 +61,63 @@ def get_trajectories(
         floor = int(floor)
         LOG.info("Filtering trajectories for floor %d", floor)
 
+    start_time = time.time()
     steps = []
-
-    for i in range(offset):
-        next(result_file)
-
-    count_line = result_file.readline().strip()
-    total_rows_allowed = 0
-    curr_file_line = offset
-    while (
-        count_line is not None
-        and count_line != ""
-        and total_rows_allowed < max_rows_allowed
-    ):
-        num_contacts = int(count_line)
-        curr_file_line += 1
-
-        step_num = result_file.readline().strip()
-        total_rows_allowed += 1
-
-        step_num = step_num.replace("step: ", "")  # noqa
-        step = []
-        for _ in range(num_contacts):
+    curr_file_line = 0
+    current_pos_line, n_position_lines, step_num = 0, 0, 0
+    new_step = True
+    step = []
+    position_lines = False
+    with open(result_file, "r") as infile:
+        for line in infile:
             curr_file_line += 1
-            data = result_file.readline().strip().split("\t")
-
-            if floor is not None and int(data[3]) != floor:
+            if curr_file_line < offset or step_num < first_timestep:
                 continue
-            step.append(
-                {
-                    "x": float(data[1]),
-                    "y": float(data[2]),
-                    "z": float(data[3]),
-                    "agent": int(data[0]),
-                    "count": int(data[4]),
-                }
-            )
-        steps.append(step)
-        count_line = result_file.readline().strip()
-        curr_file_line += 1
+            if new_step:
+                n_position_lines = int(line.strip())
+                current_pos_line = 0
+                timestep_line = True
+                new_step = False
+                if len(step) > 0:
+                    steps.append(step)
+                    if len(steps) == max_steps:
+                        break
+                continue
+            if timestep_line:
+                step_num = int(line.strip().replace("step: ", ""))
+                timestep_line = False
+                if n_position_lines > 0:
+                    position_lines = True
+                else:
+                    new_step = True
+                step = []
+                continue
+            if position_lines:
+                data = line.strip().split()
+                current_pos_line += 1
+                if floor is not None and int(data[3]) != floor:
+                    continue
 
-    LOG.info("trajectory file parsing process is complete")
+                step.append(
+                    {
+                        "x": int(data[1]),
+                        "y": int(data[2]),
+                        "z": int(data[3]),
+                        "agent": int(data[0]),
+                        "count": int(data[4]),
+                    }
+                )
+                if current_pos_line == n_position_lines:
+                    new_step = True
+                    position_lines = False
+        if (
+            len(steps) < max_steps
+        ):  # We finished reading the file before max steps reached
+            steps.append(step)  # Add last step data
+
+    duration = time.time() - start_time
+    print("Total time: ", duration)
+    LOG.info(f"trajectory file parsing process is complete in {duration} sec")
 
     return {"data": steps, "statistics": {"cfl": curr_file_line}}
 
