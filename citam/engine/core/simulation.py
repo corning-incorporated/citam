@@ -261,6 +261,9 @@ class Simulation:
         # Create schedule and itinerary for each agent
         self.add_agents_and_build_schedules()
 
+        # Save meetings and schedules to file
+        self.save_schedules(workdir)
+
         # open files
         traj_file = workdir + "/trajectory.txt"
         t_outfile = open(traj_file, "w")  # Keep the trajectory file open
@@ -744,6 +747,53 @@ class Simulation:
 
         tree.write(heatmap_file)
 
+    def save_schedules(self, work_directory: str) -> None:
+        """
+        Write schedules and meetings to file.
+
+        Three files are created: one for all the
+        meetings, one for the full schedule of all the agents and the last one
+        with each agent's assigned office.
+
+        :param work_directory: directory where output files are to be saved.
+        :type work_directory: str
+        """
+
+        # agent ids
+        filename = os.path.join(work_directory, "agent_ids.csv")
+        with open(filename, "w") as outfile:
+            for unique_id, agent in self.agents.items():
+                outfile.write(
+                    str(unique_id + 1)
+                    + ","
+                    + str(agent.schedule.office_location)
+                    + ","
+                    + str(agent.schedule.office_floor)
+                    + "\n"
+                )
+
+        # Meetings
+        filename = os.path.join(work_directory, "meetings.txt")
+        with open(filename, "w") as outfile:
+            outfile.write(
+                "Total number of meetings: "
+                + str(len(self.meeting_policy.meetings))
+                + "\n\n"
+            )
+            for meeting in self.meeting_policy.meetings:
+                outfile.write(str(meeting) + "\n")
+
+        # Full schedules of all agents
+        filename = os.path.join(work_directory, "schedules.txt")
+        with open(filename, "w") as outfile:
+            for unique_id, agent in self.agents.items():
+                outfile.write(
+                    "Agent ID: "
+                    + str(unique_id)
+                    + str(agent.schedule)
+                    + "\n\n"
+                )
+
     def save_outputs(self, work_directory: str) -> None:
         """
         Write output files to the output directory
@@ -762,12 +812,6 @@ class Simulation:
             outfile.write("agent_ID,Number_of_Contacts\n")
             for eid, nc in zip(agent_ids, n_contacts):
                 outfile.write(str(eid) + "," + str(nc) + "\n")
-
-        # agent ids
-        filename = os.path.join(work_directory, "agent_ids.txt")
-        with open(filename, "w") as outfile:
-            for unique_id, agent in self.agents.items():
-                outfile.write(str(unique_id + 1) + "\n")
 
         # Pair contacts
         filename = os.path.join(work_directory, "pair_contact.csv")

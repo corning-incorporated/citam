@@ -67,11 +67,17 @@ class Meeting:
         :rtype: str
         """
         str_repr = "Meeting Details: \n"
-        str_repr += ">>>>>> attendees :" + str(self.attendees) + "\n"
-        str_repr += ">>>>>> start time :" + str(self.start_time) + "\n"
-        str_repr += ">>>>>> end time :" + str(self.end_time) + "\n"
-        str_repr += ">>>>>> location :" + str(self.location.unique_name) + "\n"
-        str_repr += ">>>>>> floor_number :" + str(self.floor_number) + "\n"
+        str_repr += (
+            ">>>>>> attendees: "
+            + str(len(self.attendees))
+            + " "
+            + str(self.attendees)
+            + "\n"
+        )
+        str_repr += ">>>>>> start time: " + str(self.start_time) + "\n"
+        str_repr += ">>>>>> end time: " + str(self.end_time) + "\n"
+        str_repr += ">>>>>> location: " + str(self.location.unique_name) + "\n"
+        str_repr += ">>>>>> floor_number: " + str(self.floor_number) + "\n"
 
         return str_repr
 
@@ -195,6 +201,9 @@ class MeetingPolicy:
                 self.min_buffer_between_meetings,
                 self.max_buffer_between_meetings,
             )
+            if start_time > self.daylength:
+                break
+
             # Randomly set the duration
             n_blocks = np.random.randint(self.total_time_blocks)
             duration = self.min_meeting_duration
@@ -204,6 +213,9 @@ class MeetingPolicy:
             end_time = start_time + duration
             if end_time > self.daylength:
                 end_time = self.daylength
+
+            if end_time < start_time:
+                break
 
             attendees = self._generate_meeting_attendee_list(
                 meeting_room, start_time, end_time
