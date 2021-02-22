@@ -78,7 +78,7 @@ def get_trajectories(
                 current_pos_line = 0
                 timestep_line = True
                 new_step = False
-                if len(step) > 0:
+                if curr_file_line > 1:
                     steps.append(step)
                     if len(steps) == max_steps:
                         break
@@ -94,15 +94,17 @@ def get_trajectories(
                 continue
             if position_lines:
                 data = line.strip().split()
+                if len(data) < 5:
+                    continue
                 current_pos_line += 1
                 if floor is not None and int(data[3]) != floor:
                     continue
 
                 step.append(
                     {
-                        "x": int(data[1]),
-                        "y": int(data[2]),
-                        "z": int(data[3]),
+                        "x": round(float(data[1])),
+                        "y": round(float(data[2])),
+                        "z": round(float(data[3])),
                         "agent": int(data[0]),
                         "count": int(data[4]),
                     }
