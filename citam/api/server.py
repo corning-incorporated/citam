@@ -34,6 +34,7 @@ from falcon.routing import StaticRoute
 
 from citam.api import parser
 from citam.conf import settings
+import time
 
 LOG = logging.getLogger(__name__)
 
@@ -62,8 +63,10 @@ class ResultsResource:
         offset = (
             int(req.params.get("offset")) if req.params.get("offset") else 0
         )
+        start_time = time.time()
         resp.media = parser.get_trajectories(sim_id, floor, offset)
         resp.status = falcon.HTTP_200
+        print("Total time: ", time.time() - start_time)
 
     def on_get_trajectory_lines(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
