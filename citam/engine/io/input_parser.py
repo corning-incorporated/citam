@@ -257,7 +257,8 @@ def _extract_spaces(
                     space_metadata["capacity"] = space_elem.attrib["capacity"]
             else:
                 raise ValueError(
-                    "'id' and 'class' attributes required for space paths"
+                    "'id' and 'function' required for space paths %s",
+                    space_elem.attrib,
                 )
             space_paths.append(space_path)
             space_attributes.append(space_metadata)
@@ -392,6 +393,30 @@ def parse_scheduling_policy_file(
         raise FileNotFoundError(json_filepath)
 
 
+def parse_office_assignemnt_file(
+    filepath: Union[str, pathlib.Path]
+) -> List[Tuple[int, int]]:
+
+    office_assignment = []
+    with open(filepath, "r") as infile:
+        infile.readline()
+        for line in infile:
+            values = line.strip().split(",")
+            if len(values) == 3:
+                office_assignment.append((int(values[1]), int(values[2])))
+            elif len(values) != 0:
+                raise ValueError(
+                    "Invalid file: three comma-seperated values expected \
+                        (index, office_id, floor_id)"
+                )
+    if len(office_assignment) == 0:
+        raise ValueError(
+            "Could not load any office assignment from file %s", filepath
+        )
+
+    return office_assignment
+
+
 def parse_input_file(
     input_file: Union[str, pathlib.Path],
 ) -> Dict[str, Any]:
@@ -490,6 +515,14 @@ def parse_input_file(
     close_dining = input_dict.get("close_dining", False)
     upload_results = input_dict.get("upload_results", False)
     upload_location = input_dict.get("upload_location", None)
+    preassigned_offices = None
+    if "office_assignment_file" in input_dict:
+        if os.path.isfile(input_dict["office_assignment_file"]):
+            preassigned_offices = parse_office_assignemnt_file(
+                input_dict["office_assignment_file"]
+            )
+        else:
+            raise FileNotFoundError(input_dict["office_assignment_file"])
 
     if upload_results and upload_location is None:
         raise ValueError("upload_location must be specified.")
@@ -594,4 +627,5 @@ def parse_input_file(
         "output_directory": os.getcwd() + "/",
         "create_meetings": create_meetings,
         "close_dining": close_dining,
+        "preassigned_offices": preassigned_offices,
     }

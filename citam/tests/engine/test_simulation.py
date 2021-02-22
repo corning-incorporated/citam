@@ -375,3 +375,11 @@ def test_no_meetings(simple_facility_model, request, tmpdir):
     assert os.path.isfile(os.path.join(tmpdir, "agent_ids.csv"))
     assert os.path.isfile(os.path.join(tmpdir, "meetings.txt"))
     assert os.path.isfile(os.path.join(tmpdir, "schedules.txt"))
+
+
+def test_assign_office_preassigned(simple_facility_model):
+    simple_facility_model.preassigned_offices = [(23, 0), (32, 0), (45, 0)]
+    res = simple_facility_model.assign_office()
+    assert res == (23, 0)
+    res = simple_facility_model.assign_office()
+    assert res == (32, 0)
