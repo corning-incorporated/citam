@@ -82,6 +82,5 @@ def test_get_trajectories_2agents_filtered(use_local_storage):
     expected_trajectories = [
         {"agent": 5, "x": 0, "y": 602, "z": 1, "count": 0},
     ]
-    print(trajectories)
     for ix, expected in enumerate(expected_trajectories):
         assert trajectories["data"][79][ix] == expected
