@@ -118,7 +118,6 @@ def get_trajectories(
             steps.append(step)  # Add last step data
 
     duration = time.time() - start_time
-    print("Total time: ", duration)
     LOG.info(f"trajectory file parsing process is complete in {duration} sec")
 
     return {"data": steps, "statistics": {"cfl": curr_file_line}}
