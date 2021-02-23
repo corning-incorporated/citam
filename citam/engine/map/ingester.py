@@ -13,7 +13,7 @@
 import copy
 import logging
 import queue
-from typing import Dict, List, Tuple, Union, Set, Optional, overload
+from typing import Dict, List, Tuple, Union, Set, Optional
 import pathlib
 
 import progressbar as pb
