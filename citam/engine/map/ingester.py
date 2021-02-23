@@ -13,7 +13,7 @@
 import copy
 import logging
 import queue
-from typing import Dict, List, Tuple, Union, Set, Optional
+from typing import Dict, List, Tuple, Union, Set, Optional, overload
 import pathlib
 
 import progressbar as pb
@@ -274,8 +274,6 @@ class FloorplanIngester:
 
         self.find_min_and_max_coordinates()
 
-        return
-
     def find_space_index_for_door(
         self, door: Path
     ) -> Tuple[Optional[int], List[Line]]:
@@ -491,9 +489,7 @@ class FloorplanIngester:
         n_success = 0
         n_no_match = 0
 
-        i = -1
         for door in pb.progressbar(self.door_paths):
-            i += 1
 
             door_line = self.build_door_line(door)
             if not door_line:
@@ -549,6 +545,70 @@ class FloorplanIngester:
                 door_line, overlapping_walls
             )
 
+    def check_for_overlap_with_other_walls_and_add_door_to_wall(
+        self,
+        h_wall: Line,  # Hallway wall
+        other_walls: List[Line],
+        other_space_ids: List[int],
+        add_door: bool,
+    ) -> Optional[List[Line]]:
+        """
+        Check for overlap between a given wall and all other walls in facility
+        and add door if overlap exists with room wall that has no door.
+
+        Before:
+                    ----------
+                    |  Room  |
+                    |        |
+        ----------------------------   <-- Split this wall to add door to room
+            Hallway
+        ----------------------------
+
+        After:
+                    ----------
+                    |  Room  |
+                    |        |
+        ------------------   -------
+            Hallway
+        ----------------------------
+
+        :param h_wall: The hallway wall of interest.
+        :type h_wall: LIne
+        :param other_walls: List of other walls to check for overlap with.
+        :param other_space_ids: List of IDs corresponding to each wall.
+        :type other_space_ids: List[int]
+        :param add_door: Whether to add doors to room or not.
+        :type add_door: bool
+        :return: List of segments after wall was split. None of no overlap.
+        :rtype: Optional[List[Line]]
+        """
+        segments = None
+        j = 0  # iterator over room walls
+        while j < len(other_walls):
+
+            room_wall = other_walls[j]
+            room_id = other_space_ids[j]
+
+            # Edge case of room wall being a single point
+            p_segment = Point(complex_coords=room_wall.start)
+            q_segment = Point(complex_coords=room_wall.end)
+            if p_segment == q_segment:  # This is just one point.
+                j += 1
+                continue
+
+            # if hallway and room walls overlap, add room to door and
+            # remove overlap from hallway wall
+            if fu.do_walls_overlap(h_wall, room_wall):
+                room = self.spaces[room_id]
+                if add_door and len(room.doors) == 0:
+                    self.create_new_door_to_room(room_wall, room_id)
+
+                # Update processing queue
+                segments = gsu.remove_segment_from_wall(h_wall, room_wall)
+                break
+            j += 1
+        return segments
+
     def find_and_remove_overlaps_between_walls(
         self,
         hallway_wall: Line,
@@ -580,84 +640,25 @@ class FloorplanIngester:
         processing_queue = queue.Queue()  # type: ignore
         processing_queue.put(hallway_wall)
 
-        n_overlaps = 0
         while not processing_queue.empty():
-            j = 0  # iterator over room walls
             h_wall = processing_queue.get()
             processed_segments.append(h_wall)
-            overlap_found = False
-            while j < len(other_walls):
-
-                room_wall = other_walls[j]
-                room_id = other_space_ids[j]
-
-                # Edge case of room wall being a single point
-                p_segment = Point(complex_coords=room_wall.start)
-                q_segment = Point(complex_coords=room_wall.end)
-                if p_segment == q_segment:  # This is just one point.
-                    j += 1
-                    continue
-
-                # if hallway and room walls overlap, add room to door and
-                # remove overlap from hallway wall
-                if fu.do_walls_overlap(h_wall, room_wall):
-                    room = self.spaces[room_id]
-                    n_overlaps += 1
-                    if add_door and len(room.doors) == 0:
-                        self.create_new_door_to_room(room_wall, room_id)
-
-                    # Update processing queue
-                    segments = gsu.remove_segment_from_wall(h_wall, room_wall)
-                    for seg in segments:
-                        if seg not in processed_segments:
-                            processing_queue.put(seg)
-                    overlap_found = True
-                    break
-                j += 1
-            if not overlap_found:
+            segments = (
+                self.check_for_overlap_with_other_walls_and_add_door_to_wall(
+                    h_wall,
+                    other_walls,
+                    other_space_ids,
+                    add_door,
+                )
+            )
+            if segments is not None:
+                for seg in segments:
+                    if seg not in processed_segments:
+                        processing_queue.put(seg)
+            else:
                 wall_fragments.append(h_wall)
 
         return wall_fragments
-
-    def find_invalid_walls(
-        self, hallway_walls: List[Line]
-    ) -> Tuple[List[Line], List[Line]]:
-        """
-        Find and remove any wall that seperates 2 hallways (or aisles)
-
-        :param hallway_walls: list of lines representing the walls to check.
-        :type hallway_walls: List[Line]
-        :return: list of valid walls and list of invalid_hallway_walls
-        :rtype: Tuple[List[Line], List[Line]]
-        """
-        valid_hallway_walls = []
-        invalid_hallway_walls = []
-
-        for i in range(len(hallway_walls)):
-            # space1 = self.spaces[hallway_indices[i]]
-            wall1 = hallway_walls[i]
-            wall1 = gsu.round_coords(wall1)
-            if wall1.start == wall1.end:  # This is just one point.
-                continue
-
-            for j in range(i + 1, len(hallway_walls)):
-                # find other hallways that share this wall
-                # space2 = self.spaces[hallway_indices[j]]
-                wall2 = hallway_walls[j]
-                wall2 = gsu.round_coords(wall2)
-                if wall2.start == wall2.end:  # This is just one point.
-                    continue
-
-                if fu.do_walls_overlap(wall1, wall2, max_distance=2.0):
-                    if wall1 not in invalid_hallway_walls:
-                        invalid_hallway_walls.append(wall1)
-                    if wall2 not in invalid_hallway_walls:
-                        invalid_hallway_walls.append(wall2)
-
-            if wall1 not in invalid_hallway_walls:
-                valid_hallway_walls.append(wall1)
-
-        return valid_hallway_walls, invalid_hallway_walls
 
     def get_building_walls(
         self, building: str
@@ -713,7 +714,7 @@ class FloorplanIngester:
         LOG.info("Hallway walls identified: %d", len(hallway_walls))
 
         # Find walls that are shared between two hallways
-        valid_hallway_walls, invalid_hallway_walls = self.find_invalid_walls(
+        valid_hallway_walls, invalid_hallway_walls = find_invalid_walls(
             hallway_walls
         )
 
@@ -721,11 +722,13 @@ class FloorplanIngester:
         LOG.info("Now working with rooms and hallways...")
 
         valid_walls = []
+
+        # Remove overlap between hallway and room walls
         for hallway_wall in pb.progressbar(valid_hallway_walls):
             valid_walls += self.find_and_remove_overlaps_between_walls(
                 hallway_wall, room_walls, room_ids, add_door=True
             )
-
+        # Remove overlaps between any invalid hallway halls and room walls
         for hallway_wall in pb.progressbar(invalid_hallway_walls):
             self.find_and_remove_overlaps_between_walls(
                 hallway_wall, room_walls, room_ids, add_door=True
@@ -770,3 +773,74 @@ class FloorplanIngester:
                     self.miny = y
                 elif y > self.maxx:
                     self.maxy = y
+
+
+def find_invalid_walls(
+    hallway_walls: List[Line],
+) -> Tuple[List[Line], List[Line]]:
+    """
+    Find and remove any wall that seperates 2 hallways (or aisles).
+
+                Remove this wall
+                        |
+                        V
+
+    --------------------|------------------
+        hallway 1       |   hallway 2
+    --------------------|------------------
+
+    :param hallway_walls: list of lines representing the walls to check.
+    :type hallway_walls: List[Line]
+    :return: list of valid walls and list of invalid_hallway_walls
+    :rtype: Tuple[List[Line], List[Line]]
+    """
+    valid_hallway_walls = []
+    invalid_hallway_walls = []
+
+    for i in range(len(hallway_walls)):
+
+        wall1 = hallway_walls[i]
+        wall1 = gsu.round_coords(wall1)
+        if wall1.start == wall1.end:  # This is just one point.
+            continue
+
+        check_for_overlap_with_other_walls(
+            i, hallway_walls, invalid_hallway_walls
+        )
+
+        if wall1 not in invalid_hallway_walls:
+            valid_hallway_walls.append(wall1)
+
+    return valid_hallway_walls, invalid_hallway_walls
+
+
+def check_for_overlap_with_other_walls(
+    wall_index: int,
+    hallway_walls: List[Line],
+    invalid_hallway_walls: List[Line],
+) -> None:
+    """
+    Given hallway wall at index wall_index, iterate over all hallway walls and
+    check for overlap. If there is overlap, update list of invalid hallways.
+
+    :param wall_index: Index of the wall of interest.
+    :type wall_index: int
+    :param hallway_walls: The list of all hallway walls.
+    :type hallway_walls: List[Path
+    :param invalid_hallway_walls: The list of invalid hallway walls.
+    :type invalid_hallway_walls: List[Path]
+    """
+    wall1 = hallway_walls[wall_index]
+    for j in range(wall_index + 1, len(hallway_walls)):
+        # find other hallways that share this wall
+        # space2 = self.spaces[hallway_indices[j]]
+        wall2 = hallway_walls[j]
+        wall2 = gsu.round_coords(wall2)
+        if wall2.start == wall2.end:  # This is just one point.
+            continue
+
+        if fu.do_walls_overlap(wall1, wall2, max_distance=2.0):
+            if wall1 not in invalid_hallway_walls:
+                invalid_hallway_walls.append(wall1)
+            if wall2 not in invalid_hallway_walls:
+                invalid_hallway_walls.append(wall2)
