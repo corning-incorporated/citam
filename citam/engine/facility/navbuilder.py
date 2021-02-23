@@ -73,13 +73,9 @@ class NavigationBuilder:
         # segments where each segment is a tuple of the 2 endpoints
         self.space_nav_segments: Dict[str, List[Tuple[Point, Point]]] = {}
 
-        # self.current_space = None  # for testing and debugging purposes
-
         # To avoid parallel nav segments (if a door is already part of the
         # navnet, no need to use it to start new nav segments)
         self.excluded_doors: List[Door] = []
-
-        return
 
     def build(self):
         """
@@ -160,13 +156,11 @@ class NavigationBuilder:
             pbar.update(i)
             if space.is_space_a_hallway():
                 valid_boundaries = space.boundaries
-                # self._find_valid_boundaries(space)
                 aisles = fu.find_aisles(
                     space, valid_boundaries, no_repeat=False
                 )
                 for aisle in aisles:
                     if not self._aisle_has_nav_segment(aisle, space):
-                        # self.current_space = space
                         self.create_nav_segment_for_aisle(aisle)
 
     def _update_navnet(
@@ -230,7 +224,7 @@ class NavigationBuilder:
             return False
 
         # Perpendicular vector between the two walls
-        V_perp = gsu.calculate_perpendicular_vector(aisle[0], aisle[1])
+        v_perp = gsu.calculate_perpendicular_vector(aisle[0], aisle[1])
 
         # If all of these lead to intersection with a nav seg, we are good
         test_points = [0.2, 0.8]
@@ -248,8 +242,8 @@ class NavigationBuilder:
                     x=round(complex_point1.real), y=round(complex_point1.imag)
                 )
                 point2 = Point(
-                    x=round(point1.x + V_perp[0]),
-                    y=round(point1.y + V_perp[1]),
+                    x=round(point1.x + v_perp[0]),
+                    y=round(point1.y + v_perp[1]),
                 )
                 line1 = Line(
                     start=point1.complex_coords, end=point2.complex_coords
@@ -995,13 +989,11 @@ class NavigationBuilder:
         else:
             n_nodes = self.floor_navnet.number_of_nodes()
             LOG.info("Starting number of nodes: %d", n_nodes)
+
             n_edges = self.floor_navnet.number_of_edges()
             LOG.info("Starting number of edges: %d", n_edges)
 
             door_paths = [d.path for d in self.floorplan.doors]
-            # for space in floorplan.spaces:
-            #     door_paths += space.doors
-
             LOG.info("Number of doors: %d", len(door_paths))
 
             nodes_removed = 0
@@ -1033,7 +1025,7 @@ class NavigationBuilder:
         """
         raise NotImplementedError("Not implemented yet")
 
-    def _check_for_intersections_and_remove_segments(
+    def _compute_intersection_and_remove_segments(
         self, key: str, seg1: Tuple[Point], seg2: Tuple[Point]
     ) -> False:
         """
@@ -1075,6 +1067,21 @@ class NavigationBuilder:
 
         return False
 
+    def _check_for_intersection_with_other_segments(self, key, i, n_segments):
+        for j in range(i + 1, n_segments):
+            seg1 = self.space_nav_segments[key][i]
+            seg2 = self.space_nav_segments[key][j]
+
+            if seg1 == seg2:
+                continue
+
+            if self._compute_intersection_and_remove_segments(key, seg1, seg2):
+                # An intersection was found, n_segments has changed,
+                # return True
+                return True
+
+        return False
+
     def find_intersections_in_space(self, space: Space) -> None:
         """
         Iterate through all nav segment pairs in this space, find any
@@ -1094,22 +1101,12 @@ class NavigationBuilder:
         while not done:
             done = True
             n_segments = len(self.space_nav_segments[key])
-            exit_loop = False
-            # if '198' in key:
             for i in range(n_segments - 1):
-                for j in range(i + 1, n_segments):
-                    seg1 = self.space_nav_segments[key][i]
-                    seg2 = self.space_nav_segments[key][j]
-
-                    if seg1 == seg2:
-                        continue
-
-                    if self._check_for_intersections_and_remove_segments(
-                        key, seg1, seg2
-                    ):
-                        exit_loop = True
-                        break
-                if exit_loop:
+                if self._check_for_intersection_with_other_segments(
+                    key, i, n_segments
+                ):
+                    # An intersection was found, n_segments has changed, time
+                    # to exit this loop and start over
                     done = False
                     break
 
@@ -1164,7 +1161,7 @@ class NavigationBuilder:
         coords2: Tuple[int, int],
         coords3: Tuple[int, int],
         coords4: Tuple[int, int],
-    ) -> Point:
+    ) -> Optional[Tuple[int, int]]:
         """
         Given four points forming 2 lines, check if they intersect
         and if so add new node to graph and create new edges.
