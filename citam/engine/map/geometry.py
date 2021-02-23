@@ -199,16 +199,15 @@ def calculate_normal_vector_between_walls(
     :return: the perpendicular vector
     :rtype: np.ndarray
     """
-    V1, _, W = _compute_key_vectors(wall1, wall2)
-    V1_norm = np.linalg.norm(V1)
+    vector_for_wall1, _, bridge_vector = _compute_key_vectors(wall1, wall2)
 
-    # Projection of W onto V1
-    coeff = np.dot(V1, W) / ((V1_norm) ** 2)
-    W_proj = V1 * coeff
-    # Perpendicular vector between the two walls
-    V_perp = W - W_proj
+    # Projection of bredge vector onto wall1 vector
+    coeff = np.dot(vector_for_wall1, bridge_vector) / (
+        (np.linalg.norm(vector_for_wall1)) ** 2
+    )
+    wproj = vector_for_wall1 * coeff
 
-    return V_perp
+    return bridge_vector - wproj
 
 
 # Just a different name for the same function
@@ -283,11 +282,11 @@ def calculate_dot_product_between_walls(
     dot_product = None
 
     V1, V2, W = _compute_key_vectors(wall1, wall2)
-    V1_norm = np.linalg.norm(V1)
-    V2_norm = np.linalg.norm(V2)
+    norm_v1 = np.linalg.norm(V1)
+    norm_v2 = np.linalg.norm(V2)
 
-    if V1_norm * V2_norm != 0:
-        dot_product = abs(np.dot(V1, V2) / (V1_norm * V2_norm))
+    if norm_v1 * norm_v2 != 0:
+        dot_product = abs(np.dot(V1, V2) / (norm_v1 * norm_v2))
 
     return dot_product
 
@@ -308,8 +307,8 @@ def calculate_distance_between_walls(wall1: Line, wall2: Line) -> float:
     :return: distance between the walls
     :rtype: float
     """
-    V_perp = calculate_perpendicular_vector(wall1, wall2)
-    return np.linalg.norm(V_perp)
+    v_perp = calculate_perpendicular_vector(wall1, wall2)
+    return np.linalg.norm(v_perp)
 
 
 def calculate_x_and_y_overlap(wall1: Line, wall2: Line) -> Tuple[float, float]:
@@ -439,19 +438,19 @@ def compute_new_door_line(room_wall: Line, door_size=2.0) -> Line:
     start_y = room_wall.start.imag
 
     # vector between start and end points
-    Vx = room_wall.end.real - room_wall.start.real
-    Vy = room_wall.end.imag - room_wall.start.imag
-    V_norm = math.sqrt(Vx ** 2 + Vy ** 2)
-    if V_norm == 0:
+    vx = room_wall.end.real - room_wall.start.real
+    vy = room_wall.end.imag - room_wall.start.imag
+    v_norm = math.sqrt(vx ** 2 + vy ** 2)
+    if v_norm == 0:
         return None
 
     # Unit vector
-    Vx = Vx / V_norm
-    Vy = Vy / V_norm
+    vx = vx / v_norm
+    vy = vy / v_norm
 
     # End point of door
-    end_x = start_x + door_size * Vx
-    end_y = start_y + door_size * Vy
+    end_x = start_x + door_size * vx
+    end_y = start_y + door_size * vy
 
     # Start and end points of door line
     p = Point(start_x, start_y)
@@ -472,47 +471,47 @@ def find_door_line(cubic_bezier: CubicBezier) -> Line:
     """
     # start and end point
 
-    Ax = cubic_bezier.start.real
-    Ay = cubic_bezier.start.imag
+    ax = cubic_bezier.start.real
+    ay = cubic_bezier.start.imag
 
-    Cx = cubic_bezier.end.real
-    Cy = cubic_bezier.end.imag
+    cx = cubic_bezier.end.real
+    cy = cubic_bezier.end.imag
 
     # Midpoint of the arc
 
-    Bx = cubic_bezier.point(0.5).real
-    By = cubic_bezier.point(0.5).imag
+    bx = cubic_bezier.point(0.5).real
+    by = cubic_bezier.point(0.5).imag
 
     # Let the center of the circle be x, y
     # The lines A to center, B to center and C to center all have the same
     # length (radius of the circle).
     # We use that relationship to calculate x and y
 
-    a1 = Ax - Bx
-    b1 = Ay - By
+    a1 = ax - bx
+    b1 = ay - by
 
-    a2 = Bx - Cx
-    b2 = By - Cy
+    a2 = bx - cx
+    b2 = by - cy
 
-    d1 = 0.5 * (Ax ** 2 - Bx ** 2 + Ay ** 2 - By ** 2)
-    d2 = 0.5 * (Bx ** 2 - Cx ** 2 + By ** 2 - Cy ** 2)
+    d1 = 0.5 * (ax ** 2 - bx ** 2 + ay ** 2 - by ** 2)
+    d2 = 0.5 * (bx ** 2 - cx ** 2 + by ** 2 - cy ** 2)
 
     y = (d2 - a2 * d1 / a1) / (b2 - a2 * b1 / a1)
     x = (d1 - b1 * y) / a1
 
-    if abs(x - Ax) < 3.0:
-        x = Ax
-    elif abs(x - Cx) < 3.0:
-        x = Cx
+    if abs(x - ax) < 3.0:
+        x = ax
+    elif abs(x - cx) < 3.0:
+        x = cx
 
-    if abs(y - Ay) < 3.0:
-        y = Ay
-    elif abs(y - Cy) < 3.0:
-        y = Cy
+    if abs(y - ay) < 3.0:
+        y = ay
+    elif abs(y - cy) < 3.0:
+        y = cy
 
     center = Point(round(x), round(y))
-    arc_start = Point(x=round(Ax), y=round(Ay))
-    arc_end = Point(x=round(Cx), y=round(Cy))
+    arc_start = Point(x=round(ax), y=round(ay))
+    arc_end = Point(x=round(cx), y=round(cy))
 
     # Finally, the line of interest is line 3 below based on
     # assuming that the start point of the bezier is where
