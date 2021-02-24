@@ -105,7 +105,7 @@ class Simulation:
                 created, defaults to None
         :type scheduling_policy: dict, optional
         :param dry_run: If true, generate itineraries but do not compute
-                contact statistics or not, defaults to False
+                contact statistics, defaults to False
         :type dry_run: bool, optional
         """
 
@@ -129,7 +129,7 @@ class Simulation:
         # list used to keep track of total contact events per xy location per
         #  floor
         self.step_contact_locations: List[Dict[Tuple[int, int], int]] = [
-            {} for f in facility.floorplans
+            {} for _ in facility.floorplans
         ]
         self.create_meetings = create_meetings
 
@@ -344,7 +344,6 @@ class Simulation:
 
         """
         LOG.info("Initializing with " + str(self.n_agents) + " agents...")
-        total_agents = 0
         current_agent = 0
         agent_pool = list(range(self.n_agents))
         for shift in self.shifts:
@@ -352,7 +351,6 @@ class Simulation:
             n_shift_agents = round(shift["percent_agents"] * self.n_agents)
             shift_agents = np.random.choice(agent_pool, n_shift_agents)
             agent_pool = [a for a in agent_pool if a not in shift_agents]
-            total_agents += n_shift_agents
 
             LOG.info("Working with shift: " + shift["name"])
             LOG.info("\tNumber of agents: " + str(n_shift_agents))
@@ -460,23 +458,24 @@ class Simulation:
         proximity_indices = self.identify_xy_proximity(positions_vector)
 
         for i, j in proximity_indices:
-            if i < j:  # only consider upper right side of symmetric matrix
-                agent1 = agents[i]
-                agent2 = agents[j]
+            if i >= j:  # only consider upper right side of symmetric matrix
+                continue
+            agent1 = agents[i]
+            agent2 = agents[j]
 
-                if (
-                    agent1.current_location is None
-                    or agent2.current_location is None
-                ):
-                    continue
+            if (
+                agent1.current_location is None
+                or agent2.current_location is None
+            ):
+                continue
 
-                if agent1.current_floor == agent2.current_floor:
-                    fn = agent1.current_floor
-                    if agent1.current_location == agent2.current_location:
-                        self.add_contact_event(agent1, agent2)
+            if agent1.current_floor == agent2.current_floor:
+                fn = agent1.current_floor
+                if agent1.current_location == agent2.current_location:
+                    self.add_contact_event(agent1, agent2)
 
-                    else:
-                        self.verify_and_add_contact(fn, agent1, agent2)
+                else:
+                    self.verify_and_add_contact(fn, agent1, agent2)
 
     def verify_and_add_contact(
         self, floor_number: int, agent1: Agent, agent2: Agent
@@ -531,8 +530,6 @@ class Simulation:
             self.step_contact_locations[agent1.current_floor][contact_pos] = 1
         else:
             self.step_contact_locations[agent1.current_floor][contact_pos] += 1
-
-        return
 
     def step(
         self,

@@ -21,6 +21,7 @@ from typing import List, Dict, Tuple, Union, Optional, Any
 import pathlib
 
 import networkx as nx
+from networkx.classes.graph import Graph
 from svgpathtools import Line
 
 import citam.engine.map.geometry as gsu
@@ -210,6 +211,51 @@ class Navigation:
         LOG.info("Success loading navnet from file!")
         return navnet
 
+    def get_corresponding_space_by_name(
+        self, ref_space: Space, dest_floor: int
+    ) -> Tuple[Space, int]:
+        """
+        Given a reference space, typically a vertical space (e.g. stairway),
+        find which space would be exactly at that same location on another
+        floor.
+
+        :param ref_space: The reference space.
+        :type ref_space: Space
+        :param dest_floor: The destination floor
+        :type dest_floor: int
+        :raises ValueError: If problems are found with the space names.
+        :return: The destination space and id.
+        :rtype: Tuple[Space, int]
+        """
+        name1 = ref_space.unique_name
+
+        floor_identifier = self.multifloor_type.split("-")[-1]
+        if not floor_identifier.isnumeric():
+            raise ValueError(
+                "Number expected at the end of the multifloor type"
+            )
+        fid = int(floor_identifier)
+        if fid > 0:
+            if len(name1) < fid:
+                raise ValueError(
+                    f"This multifloor type {self.multifloor_type} cannot \
+                    be used for the current naming (e.g. {name1}). please \
+                    update (must be less than name length)"
+                )
+            name2 = (
+                name1[fid - 1] + str(dest_floor + 1) + name1[fid + 1 :]  # noqa
+            )
+        else:
+            name2 = str(dest_floor + 1) + name1[1:]
+
+        for j, space in enumerate(self.floorplans[dest_floor].spaces):
+            if space.unique_name == name2 and space.is_space_vertical():
+                dest_space = space
+                dest_space_id = j
+                break
+
+        return dest_space, dest_space_id
+
     def get_corresponding_vertical_space(
         self, ref_space: Space, dest_floor: int
     ) -> Tuple[Optional[int], Optional[Space]]:
@@ -233,34 +279,9 @@ class Navigation:
         dest_space_id = None
 
         if "naming" in self.multifloor_type:
-            name1 = ref_space.unique_name
-
-            floor_identifier = self.multifloor_type.split("-")[-1]
-            if not floor_identifier.isnumeric():
-                raise ValueError(
-                    "Number expected at the end of the multifloor type"
-                )
-            fid = int(floor_identifier)
-            if fid > 0:
-                if len(name1) < fid:
-                    raise ValueError(
-                        f"This multifloor type {self.multifloor_type} cannot \
-                        be used for the current naming (e.g. {name1}). please \
-                        update (must be less than name lenght)"
-                    )
-                name2 = (
-                    name1[fid - 1]
-                    + str(dest_floor + 1)
-                    + name1[fid + 1 :]  # noqa
-                )
-            else:
-                name2 = str(dest_floor + 1) + name1[1:]
-
-            for j, space in enumerate(self.floorplans[dest_floor].spaces):
-                if space.unique_name == name2 and space.is_space_vertical():
-                    dest_space = space
-                    dest_space_id = j
-                    break
+            dest_space, dest_space_id = self.get_corresponding_space_by_name(
+                ref_space, dest_floor
+            )
         elif self.multifloor_type == "xy":
             p = ref_space.get_random_internal_point()
             dest_space_id = self.floorplans[dest_floor].identify_this_location(
@@ -277,6 +298,43 @@ class Navigation:
         return dest_space_id, dest_space
 
     def add_vertical_edges(
+        self,
+        coords1: List[Tuple[int, int]],
+        floor_number1: int,
+        coords2: List[Tuple[int, int]],
+        floor_number2: int,
+    ) -> int:
+        """
+        Add vertical edges between two lists of coordinates from different
+        floors.
+
+        :param coords1: list of coordinates on the first floor.
+        :type coords1: Tuple[int, int]
+        :param floor_number1: id of the first floor.
+        :type floor_number1: int
+        :param coords2: list of coordinates on the other floor.
+        :type coords2: Tuple[int, int]
+        :param floor_number2: id of the other floor.
+        :type floor_number2: int
+        :return: the number of edges successfully created.
+        :rtype: int
+        """
+        n_vert_edges = 0
+        for c1, c2 in product(coords1, coords2):
+            node1 = (c1[0], c1[1], floor_number1)
+            node2 = (c2[0], c2[1], floor_number2)
+
+            if self.multifloor_navnet.has_node(
+                node1
+            ) and self.multifloor_navnet.has_node(node2):
+                self.multifloor_navnet.add_edge(node1, node2)
+                self.multifloor_navnet.add_edge(node2, node1)
+                n_vert_edges += 1
+            else:
+                LOG.warning("%s or %s not found in graph", node1, node2)
+        return n_vert_edges
+
+    def add_all_vertical_edges_between_floors(
         self, floor_number1: int, floor_number2: int
     ) -> int:
         """
@@ -325,18 +383,11 @@ class Navigation:
             # add edges between room the exit coords of the vertical spaces
             # TODO: create edge between a random xy coords inside rooms
 
-            for c1, c2 in product(coords1, coords2):
-                node1 = (c1[0], c1[1], floor_number1)
-                node2 = (c2[0], c2[1], floor_number2)
+            n_new_edges = self.add_vertical_edges(
+                coords1, floor_number1, coords2, floor_number2
+            )
+            n_vert_edges += n_new_edges
 
-                if self.multifloor_navnet.has_node(
-                    node1
-                ) and self.multifloor_navnet.has_node(node2):
-                    self.multifloor_navnet.add_edge(node1, node2)
-                    self.multifloor_navnet.add_edge(node2, node1)
-                    n_vert_edges += 1
-                else:
-                    LOG.warning("%s or %s not found in graph", node1, node2)
         return n_vert_edges
 
     def create_multifloor_navnet(self):
@@ -357,9 +408,10 @@ class Navigation:
             self.multifloor_navnet = nx.compose(self.multifloor_navnet, navnet)
 
         floor_number1 = 0
-        nverts = 0
         for floor_number2 in range(1, len(self.floorplans)):
-            nverts += self.add_vertical_edges(floor_number1, floor_number2)
+            self.add_all_vertical_edges_between_floors(
+                floor_number1, floor_number2
+            )
             floor_number1 = floor_number2
 
     def apply_traffic_policy(self):
@@ -389,6 +441,66 @@ class Navigation:
                             navnet_type="multifloor",
                             floor_number=i,
                         )
+
+    def apply_traffic_policy_to_edge(
+        self,
+        policy: int,
+        all_coords: List[Tuple[int, int]],
+        i: int,
+        j: int,
+        navnet: Graph,
+        navnet_type: str,
+        floor_number: int,
+    ) -> None:
+        """
+        Given 2 coordinates corresponding to navnet nodes, remove any edge that
+        doesn't match the desired traffic direction.
+
+        :param policy: The policy to apply prescribing a desired traffic
+            direction.
+        :type policy: int
+        :param all_coords: list of all coordinates under consideration.
+        :type all_coords: List[Tuple[int, int]]
+        :param i: index of the first node.
+        :type i: int
+        :param j: index of the second node.
+        :type j: int
+        :param navnet: the overall navigation network.
+        :type navnet: Graph
+        :param navnet_type: the type of navnet (singlefloor or multifloor)
+        :type navnet_type: str
+        :param floor_number: id of the floor of interest.
+        :type floor_number: int
+        """
+        if navnet_type == "singlefloor":
+            test_edge1 = (
+                tuple(all_coords[i]),
+                tuple(all_coords[j]),
+            )
+            test_edge2 = (
+                tuple(all_coords[j]),
+                tuple(all_coords[i]),
+            )
+        else:
+            test_edge1 = (
+                tuple(all_coords[i]),  # type: ignore
+                tuple(all_coords[j]),
+                floor_number,
+            )
+
+            test_edge2 = (
+                tuple(all_coords[j]),  # type: ignore
+                tuple(all_coords[i]),
+                floor_number,
+            )
+        for test_edge in [test_edge1, test_edge2]:
+            if navnet.has_edge(
+                test_edge[0], test_edge[1]
+            ) and not self.is_edge_matching_direction(
+                test_edge, policy["direction"]
+            ):
+                navnet.remove_edge(test_edge[0], test_edge[1])
+                LOG.debug("Edge removed {%s}", test_edge)
 
     def set_policy_for_aisle(
         self,
@@ -449,35 +561,9 @@ class Navigation:
 
         for i in range(n_coords - 1):
             for j in range(i, n_coords):
-                if navnet_type == "singlefloor":
-                    test_edge1 = (
-                        tuple(all_coords[i]),
-                        tuple(all_coords[j]),
-                    )
-                    test_edge2 = (
-                        tuple(all_coords[j]),
-                        tuple(all_coords[i]),
-                    )
-                else:
-                    test_edge1 = (
-                        tuple(all_coords[i]),  # type: ignore
-                        tuple(all_coords[j]),
-                        floor_number,
-                    )
-
-                    test_edge2 = (
-                        tuple(all_coords[j]),  # type: ignore
-                        tuple(all_coords[i]),
-                        floor_number,
-                    )
-                for test_edge in [test_edge1, test_edge2]:
-                    if navnet.has_edge(
-                        test_edge[0], test_edge[1]
-                    ) and not self.is_edge_matching_direction(
-                        test_edge, policy["direction"]
-                    ):
-                        navnet.remove_edge(test_edge[0], test_edge[1])
-                        LOG.debug("Edge removed {%s}", test_edge)
+                self.apply_traffic_policy_to_edge(
+                    policy, all_coords, i, j, navnet, navnet_type, floor_number
+                )
 
     def is_edge_matching_direction(
         self,
@@ -829,16 +915,16 @@ def unroll_route(
             full_route.append(pos)
             continue
 
-        Dx = current_x - last_x
-        Dy = current_y - last_y
+        dx = current_x - last_x
+        dy = current_y - last_y
 
         n_intermediate_steps = (
-            max(int(abs(Dx) * 1.0 / pace), int(abs(Dy) * 1.0 / pace)) + 1
+            max(int(abs(dx) * 1.0 / pace), int(abs(dy) * 1.0 / pace)) + 1
         )
         if n_intermediate_steps > 1:
 
-            dx = int(round(Dx * 1.0 / n_intermediate_steps))
-            dy = int(round(Dy * 1.0 / n_intermediate_steps))
+            dx = int(round(dx * 1.0 / n_intermediate_steps))
+            dy = int(round(dy * 1.0 / n_intermediate_steps))
 
             for step in range(1, n_intermediate_steps - 1):
                 if len(pos) == 2:
