@@ -52,7 +52,7 @@ def test_get_corresponding_vertical_space(
     assert dest_space == expected_space
 
 
-def test_add_vertical_edges_no_edges(
+def test_add_all_vertical_edges_no_edges(
     simple_facility_floorplan_2_floors, datadir, monkeypatch
 ):
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
@@ -62,12 +62,12 @@ def test_add_vertical_edges_no_edges(
         None,
         multifloor_type="xy",
     )
-    n_vert_edges = nav.add_vertical_edges(0, 1)
+    n_vert_edges = nav.add_all_vertical_edges_between_floors(0, 1)
 
     assert n_vert_edges == 0
 
 
-def test_add_vertical_edges_no_matching_stairs(
+def test_add_all_vertical_edges_no_matching_stairs(
     simple_facility_floorplan_2_floors, datadir, monkeypatch
 ):
     # This is expected lead to a vertical edge as only the space in the
@@ -80,12 +80,12 @@ def test_add_vertical_edges_no_matching_stairs(
         None,
         multifloor_type="xy",
     )
-    n_vert_edges = nav.add_vertical_edges(0, 1)
+    n_vert_edges = nav.add_all_vertical_edges_between_floors(0, 1)
 
     assert n_vert_edges == 0
 
 
-def test_add_vertical_edges_2_edges(
+def test_add_all_vertical_edges_2_edges(
     simple_facility_floorplan_2_floors, datadir, monkeypatch
 ):
 
@@ -102,7 +102,7 @@ def test_add_vertical_edges_2_edges(
         None,
         multifloor_type="xy",
     )
-    n_vert_edges = nav.add_vertical_edges(0, 1)
+    n_vert_edges = nav.add_all_vertical_edges_between_floors(0, 1)
 
     assert n_vert_edges == 2
 
