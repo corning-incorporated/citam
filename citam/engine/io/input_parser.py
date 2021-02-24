@@ -433,7 +433,7 @@ def parse_scheduling_policy_file(
     purpose" which ties them to a category of space in the floorplan.
     See the documentation for more information.
 
-    :param input_dict: dictionary of inputs with path to scheduling policy file.
+    :param input_dict: dictionary with path to scheduling policy file.
     :type input_dict: dict
     :raises FileNotFoundError: [description]
     :return: data extracted from the file as a dictionary.
