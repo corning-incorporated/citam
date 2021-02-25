@@ -444,7 +444,7 @@ class Navigation:
 
     def apply_traffic_policy_to_edge(
         self,
-        policy: int,
+        policy: Dict[str, Union[str, int]],
         all_coords: List[Tuple[int, int]],
         i: int,
         j: int,
@@ -458,7 +458,7 @@ class Navigation:
 
         :param policy: The policy to apply prescribing a desired traffic
             direction.
-        :type policy: int
+        :type policy: Dict[str, Union[str, int]]
         :param all_coords: list of all coordinates under consideration.
         :type all_coords: List[Tuple[int, int]]
         :param i: index of the first node.
