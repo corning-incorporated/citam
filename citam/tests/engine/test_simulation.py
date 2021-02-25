@@ -8,6 +8,8 @@ import pytest
 import numpy as np
 import json
 
+MAP_SVG_FILE = "map.svg"
+
 
 @pytest.fixture
 def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
@@ -244,7 +246,7 @@ def test_run_serial(simple_facility_model, tmpdir):
     assert model.current_step == model.daylength + model.buffer
     assert os.path.isfile(os.path.join(tmpdir, "manifest.json"))
     assert os.path.isfile(os.path.join(tmpdir, "trajectory.txt"))
-    assert os.path.isfile(os.path.join(tmpdir, "floor_0", "map.svg"))
+    assert os.path.isfile(os.path.join(tmpdir, "floor_0", MAP_SVG_FILE))
     assert os.path.isfile(os.path.join(tmpdir, "floor_0", "contacts.txt"))
 
 
@@ -293,7 +295,7 @@ def test_save_manifest(tmpdir, simple_facility_model):
 def test_save_maps(tmpdir, simple_facility_model):
     model = simple_facility_model
     model.save_maps(tmpdir)
-    assert os.path.isfile(os.path.join(tmpdir, "floor_0", "map.svg"))
+    assert os.path.isfile(os.path.join(tmpdir, "floor_0", MAP_SVG_FILE))
 
 
 def test_create_svg_heatmap(tmpdir, simple_facility_model):
@@ -320,7 +322,7 @@ def test_save_outputs(tmpdir, simple_facility_model):
     if not os.path.isdir(floor_dir):
         os.mkdir(floor_dir)
 
-    with open(os.path.join(floor_dir, "map.svg"), "w") as outfile:
+    with open(os.path.join(floor_dir, MAP_SVG_FILE), "w") as outfile:
         outfile.write("<svg> <g> </g> </svg>")
 
     model.save_outputs(tmpdir)
