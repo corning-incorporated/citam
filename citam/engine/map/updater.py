@@ -166,7 +166,7 @@ class FloorplanUpdater:
             self.update_from_svg_data(svg_wall_paths, svg_door_paths)
 
         if self.csv_file is not None:
-            self.update_from_CSV_data()
+            self.update_from_csv_data()
 
     def update_from_svg_data(
         self, svg_wall_paths: List[Path], svg_door_paths: List[Path]
