@@ -19,7 +19,7 @@ def test_update_from_svg_data(rect_floorplan, datadir):
     orginal_fp = deepcopy(rect_floorplan)
     svg_file = datadir.join("rect_floorplan_edited.svg")
     fp_updater = FloorplanUpdater(rect_floorplan, svg_file=svg_file)
-    fp_updater.update_from_SVG_data(wall_paths, door_paths)
+    fp_updater.update_from_svg_data(wall_paths, door_paths)
 
     walls_removed = [
         w for w in orginal_fp.walls if w not in fp_updater.floorplan.walls

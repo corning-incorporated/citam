@@ -57,9 +57,7 @@ class FloorplanUpdater:
             LOG.error("At least one of svg or csv file required")
             quit()
 
-        return
-
-    def update_from_CSV_data(self) -> None:
+    def update_from_csv_data(self) -> None:
         """
         Update space properties in floorplan using data from CSV file
 
@@ -165,12 +163,12 @@ class FloorplanUpdater:
         """
         if self.svg_file is not None:
             svg_wall_paths, svg_door_paths = self.read_updated_svg_file()
-            self.update_from_SVG_data(svg_wall_paths, svg_door_paths)
+            self.update_from_svg_data(svg_wall_paths, svg_door_paths)
 
         if self.csv_file is not None:
             self.update_from_CSV_data()
 
-    def update_from_SVG_data(
+    def update_from_svg_data(
         self, svg_wall_paths: List[Path], svg_door_paths: List[Path]
     ) -> None:
         """
@@ -299,11 +297,11 @@ class FloorplanUpdater:
                 and distance < max_distance_to_walls
             ):
                 new_door = gsu.align_to_reference(wall, new_door)
-                V_perp = gsu.calculate_normal_vector_between_walls(
+                v_perp = gsu.calculate_normal_vector_between_walls(
                     new_door, wall
                 )
-                V_perp = Point(V_perp[0], V_perp[1])
-                new_door = new_door.translated(V_perp.complex_coords)
+                v_perp = Point(v_perp[0], v_perp[1])
+                new_door = new_door.translated(v_perp.complex_coords)
                 new_wall_segments = gsu.remove_segment_from_wall(
                     wall, new_door
                 )
