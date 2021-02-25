@@ -281,19 +281,10 @@ def do_walls_overlap(
     p1, q1 = extract_end_points(wall1)
     p2, q2 = extract_end_points(wall2)
 
-    on_segment_test = False
-
-    if g.is_one_segment_within_the_other(p1, q1, p2, q2):
-        on_segment_test = True
-
-    # only one point from line being on the other is necessary
-    elif (x_overlap > 0 or y_overlap > 0) and g.do_lines_intersect_at_endpoint(
-        p1, q1, p2, q2
+    if g.is_one_segment_within_the_other(p1, q1, p2, q2) or (
+        (x_overlap > 0 or y_overlap > 0)
+        and g.do_lines_intersect_at_endpoint(p1, q1, p2, q2)
     ):
-        on_segment_test = True
-
-    if on_segment_test:
-
         return check_for_collinearity(wall1, wall2, max_distance)
 
     return False
