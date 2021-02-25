@@ -2,11 +2,14 @@
 
 // import path
 import path from 'path'
+import fs from 'fs'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+// const fs = require('fs');
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -38,6 +41,7 @@ async function createWindow() {
     );
   }
   win.on("page-title-updated", (event) => event.preventDefault());
+
 }
 
 
@@ -50,6 +54,7 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the

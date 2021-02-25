@@ -13,23 +13,31 @@
 <!--  ==============================================================================-->
 
 <template>
-    <div :id="divId"></div>
+  <div :id="divId"></div>
 </template>
 
 <script>
-import Plotly from 'plotly.js-dist'
+import Plotly from "plotly.js-dist";
 
 export default {
   name: "Scatterplot",
 
   props: {
-    pairData: {type: Array, required: true},
-    options:{type: Object, default(){return {chartTitle: 'Histogram', chartCol: 'blue'}}}
+    pairData: { type: Array, required: true },
+    options: {
+      type: Object,
+      default() {
+        return { chartTitle: "Histogram", chartCol: "blue" };
+      },
+    },
   },
   data() {
     return {
       histogramChartData: this.pairData,
-      divId: `contactHistogramPlot${this.options.chartTitle.replace(/ /g, "_")}`,
+      divId: `contactHistogramPlot${this.options.chartTitle.replace(
+        / /g,
+        "_"
+      )}`,
     };
   },
 
@@ -37,49 +45,48 @@ export default {
     pairData: {
       handler: function (histogramData) {
         this.histogramChartData = histogramData;
-        this.setHistogram()
+        this.setHistogram();
       },
     },
   },
 
   mounted() {
-    this.setHistogram()
+    this.setHistogram();
   },
 
   methods: {
-
     /**
      * Load histogram with data
      */
 
     setHistogram() {
-      let data = [{
+      let data = [
+          {
             x: this.histogramChartData,
             type: "histogram",
             name: this.options.chartTitle,
             marker: {
               color: this.options.chartCol,
             },
-          }],
-          layout = {
-            barmode: 'stack',
-            title: this.options.chartTitle,
-            xaxis: {
-              title: 'Value Range'
-            },
-            yaxis: {
-              title: '# of Value'
-            },
-          };
-      if(document.getElementById(this.divId)){
+          },
+        ],
+        layout = {
+          barmode: "stack",
+          title: this.options.chartTitle,
+          xaxis: {
+            title: "Value Range",
+          },
+          yaxis: {
+            title: "# of Value",
+          },
+        };
+      if (document.getElementById(this.divId)) {
         Plotly.react(this.divId, data, layout);
       }
-
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-
 </style>

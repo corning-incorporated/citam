@@ -15,11 +15,16 @@
   <div id="vizLayout">
     <div class="card-body">
       <span v-if="chartData && chartData.length > 0">
-        <scatterplot :pair-data="chartData"></scatterplot>
+        <!-- <scatterplot :pair-data="chartData"></scatterplot> -->
       </span>
     </div>
     <div class="card-body">
-      <span v-if="totalContactsPerAgentHistogram && totalContactsPerAgentHistogram.length > 0 ">
+      <span
+        v-if="
+          totalContactsPerAgentHistogram &&
+          totalContactsPerAgentHistogram.length > 0
+        "
+      >
         <histogram
           :pair-data="totalContactsPerAgentHistogram"
           :options="totalContactsHistogramOption"
@@ -28,11 +33,15 @@
     </div>
     <div class="card-body">
       <span
-        v-if="avgContactDurationPerAgentHistogram && avgContactDurationPerAgentHistogram.length > 0">
-        <histogram
+        v-if="
+          avgContactDurationPerAgentHistogram &&
+          avgContactDurationPerAgentHistogram.length > 0
+        "
+      >
+        <!-- <histogram
           :pair-data="avgContactDurationPerAgentHistogram"
           :options="avgContactDurationHistogramOption"
-        />
+        /> -->
       </span>
     </div>
   </div>
@@ -40,7 +49,7 @@
 
 <script>
 import axios from "axios";
-import Scatterplot from "@/components/run/dataplots/Scatterplot";
+// import Scatterplot from "@/components/run/dataplots/Scatterplot";
 import Histogram from "@/components/run/dataplots/Histogram";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -64,7 +73,8 @@ library.add(
 
 export default {
   name: "DataVisualization",
-  components: { Scatterplot, Histogram },
+  // components: { Scatterplot, Histogram },
+  components: { Histogram },
   props: {
     simId: String,
     selectedFacility: String,
@@ -81,7 +91,7 @@ export default {
       policyData: {},
       simRuns: [],
       chartData: [],
-      currSimId: '',
+      currSimId: "",
       totalContactsPerAgentHistogram: [],
       avgContactDurationPerAgentHistogram: [],
       totalContactsHistogramOption: {},
@@ -144,7 +154,7 @@ export default {
           };
           cb();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
