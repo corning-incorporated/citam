@@ -2,7 +2,7 @@
 
 Covid-19 Indoor Transmission Agent-based Modeling platform.
 
- CITAM is a Python agent-based modeling framework for indoor environments. It can be used to create "virtual" analogs of real facilities to run different types of simulations that can benefit from the use of real floor plans. 
+ CITAM is a Python agent-based modeling framework for indoor environments. It can be used to create virtual analogs of real facilities to run different types of simulations that can benefit from the use of real floor plans. 
  
  The primary use case is to simulate the movement of individuals while keeping track of time and location of contact events to predict outbreaks in indoor environments. The influence of various parameters such as number of people, number of shifts, scheduling rules, etc. can be explored to find the best mitigation strategy to limit the spread of contact-based transmissible diseases within facilities. CITAM can be used as an alternative or a complement to real-time tracking of facility users to assess and understand the implications of various mitigation policies, before their implementation. 
 
