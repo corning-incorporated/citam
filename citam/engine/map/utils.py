@@ -71,12 +71,11 @@ def is_wall_valid_for_aisle(
     :return: whether this is a valid wall or not.
     :rtype: bool
     """
-    if wall is None:
-        return False
-
-    if wall.length() <= 1.0:
-        return False
-    if no_repeat and is_this_wall_part_of_an_aisle(wall, aisles):
+    if (
+        wall is None
+        or wall.length() <= 1.0
+        or (no_repeat and is_this_wall_part_of_an_aisle(wall, aisles))
+    ):
         return False
 
     return True
