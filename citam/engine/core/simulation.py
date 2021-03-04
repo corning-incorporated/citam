@@ -120,7 +120,7 @@ class Simulation:
 
         self.contact_events = cev.ContactEvents()
         self.current_step = 0
-        self.agents: OrderedDict[int, Agent] = OrderedDict()
+        self.agents = OrderedDict()
         self.shifts = shifts
         self.dry_run = dry_run
         self.simulation_name = None
@@ -197,6 +197,30 @@ class Simulation:
 
         self.simulation_name = m.hexdigest()
 
+    def generate_meetings(self) -> None:
+        """
+        Create meetings based on meeting policy.
+        """
+        # Create meetings
+        agent_ids = list(range(self.n_agents))
+        meeting_room_objects = []
+        for fn, floor_rooms in enumerate(self.facility.meeting_rooms):
+            floor_room_objs = []
+            for room_id in floor_rooms:
+                room_obj = self.facility.floorplans[fn].spaces[room_id]
+                floor_room_objs.append(room_obj)
+            meeting_room_objects.append(floor_room_objs)
+        self.meeting_policy = MeetingPolicy(
+            meeting_room_objects,
+            agent_ids,
+            daylength=self.daylength,
+            policy_params=self.meetings_policy_params,
+        )
+
+        n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
+        if n_meeting_rooms > 0 and self.create_meetings:
+            self.meeting_policy.create_all_meetings()
+
     def run_serial(self, workdir: str) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
@@ -211,6 +235,7 @@ class Simulation:
         :raises ValueError: If occupancy rate is not between 0.0 and 1.0
         """
 
+        # Compute occupancy rate and/or number of agents
         if self.n_agents is not None:
 
             occupancy_rate = round(
@@ -233,6 +258,7 @@ class Simulation:
                 raise ValueError("Invalid occupancy rate (must be > 0 & <=1")
             self.n_agents = round(self.occupancy_rate * self.total_offices)
 
+        # Load pre-assigned offices as needed
         if (
             self.preassigned_offices is not None
             and len(self.preassigned_offices) != self.n_agents
@@ -248,33 +274,18 @@ class Simulation:
         self.create_sim_hash()
         self.save_manifest(workdir)
         self.save_maps(workdir)
-
-        # Create meetings
-        agent_ids = list(range(self.n_agents))
-        meeting_room_objects = []
-        for fn, floor_rooms in enumerate(self.facility.meeting_rooms):
-            floor_room_objs = []
-            for room_id in floor_rooms:
-                room_obj = self.facility.floorplans[fn].spaces[room_id]
-                floor_room_objs.append(room_obj)
-            meeting_room_objects.append(floor_room_objs)
-        self.meeting_policy = MeetingPolicy(
-            meeting_room_objects,
-            agent_ids,
-            daylength=self.daylength,
-            policy_params=self.meetings_policy_params,
-        )
-
-        n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
-        if n_meeting_rooms > 0 and self.create_meetings:
-            self.meeting_policy.create_all_meetings()
-
-        # Create schedule and itinerary for each agent
+        self.generate_meetings()
         self.add_agents_and_build_schedules()
-
-        # Save meetings and schedules to file
         self.save_schedules(workdir)
+        self.run_simulation_and_save_results(workdir)
 
+    def run_simulation_and_save_results(self, workdir: str) -> None:
+        """
+        Perform simulation and save results to files.
+
+        :param workdir: path where results are saved.
+        :type workdir: str
+        """
         # open files
         traj_file = workdir + "/trajectory.txt"
         t_outfile = open(traj_file, "w")  # Keep the trajectory file open
@@ -465,24 +476,35 @@ class Simulation:
                         self.add_contact_event(agent1, agent2)
 
                     else:
-                        hallways_graph = (
-                            self.facility.navigation.hallways_graph_per_floor[
-                                fn
-                            ]
-                        )
-                        if hallways_graph is None:
-                            continue
-                        floorplan = self.facility.floorplans[fn]
-                        space1 = floorplan.spaces[agent1.current_location]
-                        space2 = floorplan.spaces[agent2.current_location]
-                        if not space1.is_space_a_hallway():
-                            continue
-                        if not space2.is_space_a_hallway():
-                            continue
-                        if hallways_graph.has_edge(
-                            space1.unique_name, space2.unique_name
-                        ):
-                            self.add_contact_event(agent1, agent2)
+                        self.verify_and_add_contact(fn, agent1, agent2)
+
+    def verify_and_add_contact(
+        self, floor_number: int, agent1: Agent, agent2: Agent
+    ):
+        """
+        Verify if agents are in nearby hallways before creating contact event.
+
+        :param floor_number: [description]
+        :type floor_number: int
+        :param agent1: First agent
+        :type agent1: Agent
+        :param agent2: Second agent
+        :type agent2: Agent
+        """
+        hallways_graph = self.facility.navigation.hallways_graph_per_floor[
+            floor_number
+        ]
+        floorplan = self.facility.floorplans[floor_number]
+        space1 = floorplan.spaces[agent1.current_location]
+        space2 = floorplan.spaces[agent2.current_location]
+        if (
+            hallways_graph is None
+            or not space1.is_space_a_hallway()
+            or not space2.is_space_a_hallway()
+        ):
+            return
+        if hallways_graph.has_edge(space1.unique_name, space2.unique_name):
+            self.add_contact_event(agent1, agent2)
 
     def add_contact_event(self, agent1: Agent, agent2: Agent) -> None:
         """
