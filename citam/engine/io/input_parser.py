@@ -16,7 +16,7 @@ import os
 import logging
 import errno
 import json
-from typing import List, Tuple, Dict, Union, Any
+from typing import List, Optional, Tuple, Dict, Union, Any
 import xml.etree.ElementTree as ET
 import pathlib
 
@@ -29,6 +29,7 @@ from citam.engine.constants import (
 )
 
 LOG = logging.getLogger(__name__)
+UNABLE_TO_READ_FILE_STR = "Could not read input file"
 
 
 class MissingInputError(TypeError):
@@ -39,19 +40,58 @@ class InvalidSVGError(ValueError):
     pass
 
 
+def _process_row(header: List[str], row_id: int, row: List[str]):
+    """
+    Process row data from floorplan CSV file.
+
+    :param header: List of header values.
+    :type header: List[str]
+    :param row_id: index of this row
+    :type row_id: int
+    :param row: row data as list of values
+    :type row: List[str]
+    :raises ValueError: if row has the wrong number of values.
+    :raises ValueError: if required value(s) missing.
+    :raises ValueError: if unrecoginzed space function is found.
+    :return: row data as a dictionary with key taken from header
+    :rtype: [type]
+    """
+    SUPPORTED_METADATA = REQUIRED_SPACE_METADATA + OPTIONAL_SPACE_METADATA
+
+    row_data = {}
+    if len(row) != len(header):
+        raise ValueError(f"Wrong number of columsn in row {row_id+1}")
+    for c, name in enumerate(header):
+        value = row[c]
+        if str(value) == "" and name in REQUIRED_SPACE_METADATA:
+            msg = f"No '{name}' found in this row {row_id+1}"
+            raise ValueError(msg)
+
+        if header[c] in SUPPORTED_METADATA:
+            row_data[header[c]] = value.lower()
+            if (
+                header[c] == "space_function"
+                and value.lower() not in SUPPORTED_SPACE_FUNCTIONS
+            ):
+
+                msg = f"Invalid space function: '{value}' in row \
+                        {row_id+1}. Valid entries are: \
+                        {SUPPORTED_SPACE_FUNCTIONS}"
+                raise ValueError(msg)
+    return row_data
+
+
 def parse_csv_metadata_file(
     csv_file: Union[str, pathlib.Path]
 ) -> List[Dict[str, str]]:
     """
-    Read and parse CSV floorplan metadata file.
+    Read and parse CSV floorplan metadata file with list of spaces and their
+    attributes (id, function, etc.).
 
     :param csv_file: path to csv file.
     :type csv_file: Union[str, pathlib.Path]
     :raises FileNotFoundError: If CSV file is not found.
     :raises ValueError: If a required column is missing from file.
-    :raises ValueError: The wrong number of values is found in a row.
-    :raises ValueError: An invalid value is used as space function.
-    :raises ValueError: A required value is left blank in a row.
     :return: List of dictionaries (one dict per entry in the CSV file) with
             column headers as keys
     :rtype: List[Dict[str, str]]
@@ -63,7 +103,6 @@ def parse_csv_metadata_file(
             errno.ENOENT, os.strerror(errno.ENOENT), csv_file
         )
 
-    supported_columns = REQUIRED_SPACE_METADATA + OPTIONAL_SPACE_METADATA
     space_info = []
     with open(csv_file, mode="r") as infile:
         reader = csv.reader(infile)
@@ -76,30 +115,40 @@ def parse_csv_metadata_file(
                         msg = f"{required_data} column is missing in csv file"
                         raise ValueError(msg)
             else:
-                row_data = {}
-                if len(row) != len(header):
-                    raise ValueError(f"Wrong number of columsn in row {i+1}")
-                for c, name in enumerate(header):
-                    value = row[c]
-                    if str(value) == "" and name in required_data:
-                        msg = f"No '{name}' found in this row {i+1}"
-                        raise ValueError(msg)
-
-                    if header[c] in supported_columns:
-                        row_data[header[c]] = value.lower()
-                        if (
-                            header[c] == "space_function"
-                            and value.lower() not in SUPPORTED_SPACE_FUNCTIONS
-                        ):
-
-                            msg = f"Invalid space function: '{value}' in row \
-                                    {i+1}. Valid entries are: \
-                                    {SUPPORTED_SPACE_FUNCTIONS}"
-                            raise ValueError(msg)
-
+                row_data = _process_row(header, i, row)
                 space_info.append(row_data)
 
     return space_info
+
+
+def extract_buildings_elem(
+    contents_elem: List[ET.Element],
+) -> List[ET.Element]:
+    """
+    Extract building elements from SVG contents
+
+    :param contents_elem: The list of SVG elements with building info
+    :type contents_elem: List[ET.Element]
+    :raises InvalidSVGError: if no building elem found
+    :return: List of building elements
+    :rtype: List[ET.Element]
+    """
+    buildings = []
+    for building_elem in contents_elem:
+        if (
+            "id" not in building_elem.attrib
+            or "class" not in building_elem.attrib
+        ):
+            continue
+        if building_elem.attrib["class"].lower() != "floorplan":
+            continue
+        buildings.append(building_elem)
+
+    if len(buildings) == 0:
+        errmsg = "At least 1 building element with class=='floorplan' required"
+        raise InvalidSVGError(errmsg)
+
+    return buildings
 
 
 def parse_standalone_svg_floorplan_file(
@@ -140,23 +189,11 @@ def parse_standalone_svg_floorplan_file(
         error = "An element with tag 'g' & id==contents is required"
         raise InvalidSVGError(error)
 
-    # Verify that there is data at least for one building
-    buildings = []
-    for building_elem in contents_elem:
-        if (
-            "id" not in building_elem.attrib
-            or "class" not in building_elem.attrib
-        ):
-            continue
-        if building_elem.attrib["class"].lower() != "floorplan":
-            continue
-        buildings.append(building_elem)
-
-    if len(buildings) == 0:
-        errmsg = "At least 1 building element with class=='floorplan' required"
-        raise InvalidSVGError(errmsg)
-
-    space_paths, space_attrib, door_paths = _load_buildings_data(buildings)
+    # Verify that there is data at least for one building and extract spaces
+    buildings_elem = extract_buildings_elem(contents_elem)
+    space_paths, space_attrib, door_paths = _load_buildings_data(
+        buildings_elem
+    )
 
     if len(space_paths) == 0:
         raise InvalidSVGError("No space data found in SVG file")
@@ -211,6 +248,44 @@ def _load_buildings_data(
     return space_paths, space_attributes, door_paths
 
 
+def _extract_space_metadata(
+    space_elem: ET.Element, building_name: str
+) -> Dict[str, str]:
+    """
+    Extract data from space SVG element and return dictionary of values.
+
+    :param space_elem: The space SVG element.
+    :type space_elem: ET.Element
+    :param building_name: Name of the building where this space is found.
+    :type building_name: str
+    :raises ValueError: if space ID or function is missing.
+    :raises ValueError: if space function is invalid.
+    :return: Dictionary with key-value pairs of space metadata.
+    :rtype: Dict[str, str]
+    """
+    if "id" not in space_elem.attrib or "function" not in space_elem.attrib:
+        raise ValueError(
+            "'id' and 'function' required for space paths %s",
+            space_elem.attrib,
+        )
+    space_metadata = {}
+    space_metadata["id"] = space_elem.attrib["id"]
+    if "unique_name" not in space_elem.attrib:
+        space_metadata["unique_name"] = space_elem.attrib["id"]
+
+    space_function = space_elem.attrib["function"]
+    if space_function.lower() not in SUPPORTED_SPACE_FUNCTIONS:
+        raise ValueError("Unsupported space function %s", space_function)
+    space_metadata["space_function"] = space_function
+
+    space_metadata["building"] = building_name
+
+    if "capacity" in space_elem.attrib:
+        space_metadata["capacity"] = space_elem.attrib["capacity"]
+
+    return space_metadata
+
+
 def _extract_spaces(
     spaces_elem: ET.Element, building_name: str
 ) -> Tuple[List[Path], List[Dict[str, str]]]:
@@ -235,32 +310,10 @@ def _extract_spaces(
         # Extract space data
         if space_elem.tag == "path" and "d" in space_elem.attrib:
             space_path = parse_path(space_elem.attrib["d"])
+            space_paths.append(space_path)
 
             # Add space metadata
-            space_metadata = {}
-            if "id" in space_elem.attrib and "function" in space_elem.attrib:
-
-                space_metadata["id"] = space_elem.attrib["id"]
-                if "unique_name" not in space_elem.attrib:
-                    space_metadata["unique_name"] = space_elem.attrib["id"]
-
-                space_function = space_elem.attrib["function"]
-                if space_function.lower() not in SUPPORTED_SPACE_FUNCTIONS:
-                    raise ValueError(
-                        "Unsupported space function %s", space_function
-                    )
-                space_metadata["space_function"] = space_function
-
-                space_metadata["building"] = building_name
-
-                if "capacity" in space_elem.attrib:
-                    space_metadata["capacity"] = space_elem.attrib["capacity"]
-            else:
-                raise ValueError(
-                    "'id' and 'function' required for space paths %s",
-                    space_elem.attrib,
-                )
-            space_paths.append(space_path)
+            space_metadata = _extract_space_metadata(space_elem, building_name)
             space_attributes.append(space_metadata)
 
     return space_paths, space_attributes
@@ -339,37 +392,40 @@ def parse_svg_floorplan_file(
 
 
 def parse_meetings_policy_file(
-    json_filepath: Union[str, pathlib.Path],
-) -> Dict[str, Union[int, str, float, dict]]:
+    input_dict: dict,
+) -> Optional[Dict[str, Union[int, str, float, dict]]]:
     """
-    Read and parse the json meeting policy file.
+    Read and parse the json meeting policy file if found in input dict.
 
     The meetings policy for a given facility exposes parameters
     for when, where, how often and how long meetings take place
     in the facility.
 
-    :param json_filepath: path to the scheduling policy file.
-    :type json_filepath: Union[str, pathlib.Path]
+    :param input_dict: dictionary of inputs with path to meetings policy file.
+    :type input_dict: dict
     :raises FileNotFoundError: IIf the file is not found.
     :return: data extracted from the file as a dictionary
-    :rtype: Dict[str, Union[int, str, float, dict]
+    :rtype: Optional[Dict[str, Union[int, str, float, dict]]
     """
-    meetings_policy_params = None
-    if os.path.isfile(json_filepath):
+    if "meetings_file" not in input_dict:
+        return None
+
+    json_filepath = input_dict["meetings_file"]
+    try:
         with open(json_filepath, "r") as f:
             meetings_policy_params = json.load(f)
-    else:
-        LOG.error("Could not find input file: %s", json_filepath)
-        raise FileNotFoundError(json_filepath)
+        return meetings_policy_params
 
-    return meetings_policy_params
+    except Exception as exception:
+        LOG.error(f"{UNABLE_TO_READ_FILE_STR}: {json_filepath}")
+        raise exception
 
 
 def parse_scheduling_policy_file(
-    json_filepath: Union[str, pathlib.Path],
-) -> Dict[str, Union[int, str, float, dict]]:
+    input_dict: dict,
+) -> Optional[Dict[str, Union[int, str, float, dict]]]:
     """
-    Read and parse the json scheduling policy file.
+    Read and parse the json scheduling policy file if found in input dict.
 
     Together with the meetings policy file, this file encodes
     how and when people will be moving within a given facility.
@@ -377,44 +433,209 @@ def parse_scheduling_policy_file(
     purpose" which ties them to a category of space in the floorplan.
     See the documentation for more information.
 
-    :param json_filepath: path to the scheduling policy file.
-    :type json_filepath: Union[str, pathlib.Path]
+    :param input_dict: dictionary with path to scheduling policy file.
+    :type input_dict: dict
     :raises FileNotFoundError: [description]
     :return: data extracted from the file as a dictionary.
-    :rtype: Dict[str, Union[int, str, float, dict]]
+    :rtype: Optional[Dict[str, Union[int, str, float, dict]]]
     """
+    if "scheduling_policy_file" not in input_dict:
+        return None
 
-    if os.path.isfile(json_filepath):
+    json_filepath = input_dict["scheduling_policy_file"]
+
+    try:
         with open(json_filepath, "r") as f:
             scheduling_policy = json.load(f)
         return scheduling_policy
-    else:
-        LOG.error("Could not find input file: %s", json_filepath)
-        raise FileNotFoundError(json_filepath)
+
+    except Exception as exception:
+        LOG.error(f"{UNABLE_TO_READ_FILE_STR}: {json_filepath}")
+        raise exception
 
 
-def parse_office_assignemnt_file(
-    filepath: Union[str, pathlib.Path]
-) -> List[Tuple[int, int]]:
+def parse_office_assignment_file(
+    input_dict: dict,
+) -> Optional[List[Tuple[int, int]]]:
+    """
+    Read and parse office assignment file if found in input dic.
 
+    :param input_dict: dictionary with path to office assignment file.
+    :type input_dict: dict
+    :raises exception: if unable to read file
+    :raises ValueError: if invalid values are found in assignment file.
+    :return: office space ID and floor number assigned to each agent.
+    :rtype: Optional[List[Tuple[int, int]]]
+    """
+    if "office_assignment_file" not in input_dict:
+        return None
     office_assignment = []
-    with open(filepath, "r") as infile:
-        infile.readline()
-        for line in infile:
-            values = line.strip().split(",")
-            if len(values) == 3:
-                office_assignment.append((int(values[1]), int(values[2])))
-            elif len(values) != 0:
-                raise ValueError(
-                    "Invalid file: three comma-seperated values expected \
-                        (index, office_id, floor_id)"
-                )
+    filepath = input_dict["office_assignment_file"]
+    try:
+        with open(filepath, "r") as infile:
+            infile.readline()
+            for line in infile:
+                values = line.strip().split(",")
+                if len(values) == 3:
+                    office_assignment.append((int(values[1]), int(values[2])))
+                elif len(values) != 0:
+                    raise ValueError(
+                        "Invalid file: three comma-seperated values expected \
+                            (index, office_id, floor_id)"
+                    )
+    except Exception as exception:
+        LOG.error(f"{UNABLE_TO_READ_FILE_STR}: {filepath}")
+        raise exception
+
     if len(office_assignment) == 0:
         raise ValueError(
             "Could not load any office assignment from file %s", filepath
         )
 
     return office_assignment
+
+
+def check_for_required_values(input_dict: dict) -> None:
+    """
+    Verify that all required values are found in the input dict.
+
+    :param input_dict: dictionary of inputs
+    :type input_dict: dict
+    :raises MissingInputError: if a required value is missing
+    """
+
+    required_values = [
+        "facility_name",
+        "floors",
+        "entrances",
+        "daylength",
+        "entrance_time",
+        "n_agents",
+    ]
+    for key in required_values:
+        if key not in input_dict:
+            raise MissingInputError(r'"{key}" is a required input')
+
+
+def validate_input_values(
+    facility_name: str,
+    floors: List[int],
+    n_agents: int,
+    daylength: int,
+    entrances: List[dict],
+    buffer: int,
+) -> None:
+    """
+    Verify that input values are of the correct type and have valid values.
+
+    :param facility_name: Name of the facility of interest.
+    :type facility_name: str
+    :param floors: List of floors for this simulation
+    :type floors: List[int]
+    :param n_agents: Number of agents in this simulation
+    :type n_agents: int
+    :param daylength: duration of the simulaiton
+    :type daylength: int
+    :param entrances: Entrances available for agents to enter the facility
+    :type entrances: List[dict]
+    :param buffer: when do agents start entering the facility.
+    :type buffer: int
+    :raises TypeError: if any input value is of the wrong type
+    :raises ValueError: if invalid input values are found.
+    """
+    if not isinstance(facility_name, str):
+        raise TypeError("facility_name must be a string")
+
+    if not isinstance(floors, list):
+        raise TypeError("floors must be a list")
+
+    if len(floors) == 0:
+        raise ValueError("At least one floor is required.")
+
+    if len(set(floors)) != len(floors):
+        raise ValueError("Duplicates found in list of floors")
+
+    if not isinstance(n_agents, int):
+        raise TypeError("n_agents must be an integer")
+
+    if not isinstance(daylength, int):
+        raise TypeError("daylength must be an integer.")
+
+    if not isinstance(entrances, list):
+        raise TypeError("entrances must be a list")
+
+    if not isinstance(buffer, int):
+        raise TypeError("entrance time must be an integer")
+
+    if daylength < buffer + 1800:
+        raise ValueError(
+            "Daylength is too short (min is 30 min after entrance time)"
+        )
+
+    if buffer < 0:
+        raise ValueError("Buffer must be a positive value.")
+
+    if n_agents <= 1:
+        raise ValueError("At least one agent is required.")
+
+
+def validate_shifts(shifts: List[dict]) -> None:
+    """
+    Validate input values for shifts. A shift is a group of agents who enter
+    the facility at the same time.
+
+    :param shifts: List of shifts
+    :type shifts: List[dict]
+    :raises TypeError: if shifts is not a list.
+    :raises ValueError: if shift does not define a name, start time and percent
+        agents.
+    :raises TypeError: if percent agents is not a number
+    :raises ValueError: if percent agents is not a number between 0.0 and 1.0.
+    """
+    if not isinstance(shifts, list):
+        raise TypeError("shifts must be a list")
+
+    for s in shifts:
+        if (
+            "name" not in s
+            or "start_time" not in s
+            or "percent_agents" not in s
+        ):
+            raise ValueError(
+                "A shift must define a name, start time and percent agents"
+            )
+        if not isinstance(s["percent_agents"], (int, float)):
+            raise TypeError("Percent agents must be a number")
+
+        if s["percent_agents"] > 1.0 or s["percent_agents"] <= 0.0:
+            raise ValueError("Percent agents must be between 0.0 than 1.0")
+
+
+def validate_traffic_policy(traffic_policy):
+    if traffic_policy is None:
+        return
+
+    if not isinstance(traffic_policy, list):
+        raise TypeError(
+            "traffic_policy must be a list. Found {%s}",
+            type(traffic_policy),
+        )
+
+    for pol in traffic_policy:
+        if not isinstance(pol, dict):
+            raise TypeError(
+                "A dictionary with these keys expected:"
+                + "floor, segment_id, direction"
+            )
+        if (
+            "floor" not in pol
+            or "segment_id" not in pol
+            or "direction" not in pol
+        ):
+            raise TypeError(
+                "The following keys are expected in each policy:"
+                + "floor, segment_id, direction"
+            )
 
 
 def parse_input_file(
@@ -439,166 +660,62 @@ def parse_input_file(
     :rtype: Dict[str, Any]
     """
 
-    if os.path.isfile(input_file):
+    try:
         with open(input_file, "r") as f:
-            try:
-                input_dict = json.load(f)
-            except json.JSONDecodeError as err:
-                raise ValueError(
-                    f"{input_file} is not a valid JSON file."
-                ) from err
-    else:
-        LOG.error("Could not find input file: %s", input_file)
-        raise FileNotFoundError(input_file)
+            input_dict = json.load(f)
+    except Exception as exception:
+        LOG.error(f"{UNABLE_TO_READ_FILE_STR}: {input_file}")
+        raise exception
 
     # Make sure all required values are provided
-    if "facility_name" not in input_dict:
-        raise MissingInputError('"facility_name" is a required input')
+    check_for_required_values(input_dict)
 
-    if "floors" not in input_dict:
-        raise MissingInputError('"floors" is a required input')
-
-    if "entrances" not in input_dict:
-        raise MissingInputError('"entrances" is a required input')
-
-    if "daylength" not in input_dict:
-        raise MissingInputError('"daylenth" is a required input')
-
-    if "entrance_time" not in input_dict:
-        raise MissingInputError('"entrance_time" is a required input.')
-
-    if "n_agents" not in input_dict:
-        raise MissingInputError('"n_agents" is a required input')
+    # extract required values
+    facility_name = input_dict["facility_name"]
+    floors = input_dict["floors"]
+    n_agents = input_dict["n_agents"]
+    daylength = input_dict["daylength"]
+    entrances = input_dict["entrances"]
+    buffer = input_dict["entrance_time"]
 
     # Make sure all required values are of the correct type
-    facility_name = input_dict["facility_name"]
-    if not isinstance(facility_name, str):
-        raise TypeError("facility_name must be a string")
-
-    floors = input_dict["floors"]
-    if not isinstance(floors, list):
-        raise TypeError("floors must be a list")
-    if len(floors) == 0:
-        raise ValueError("At least one floor is required.")
-    if len(set(floors)) != len(floors):
-        raise ValueError("Duplicates found in list of floors")
-
-    n_agents = input_dict["n_agents"]
-    if not isinstance(n_agents, int):
-        raise TypeError("n_agents must be an integer")
-
-    daylength = input_dict["daylength"]
-    if not isinstance(daylength, int):
-        raise TypeError("daylength must be an integer.")
-
-    entrances = input_dict["entrances"]
-    if not isinstance(entrances, list):
-        raise TypeError("entrances must be a list")
-
-    buffer = input_dict["entrance_time"]
-    if not isinstance(buffer, int):
-        raise TypeError("entrance time must be an integer")
-
-    if daylength < buffer + 1800:
-        raise ValueError(
-            "Daylength is too short (min is 30 min after entrance time)"
-        )
-
-    if buffer < 0:
-        raise ValueError("Buffer must be a positive value.")
-
-    if n_agents <= 1:
-        raise ValueError("At least one agent is required.")
+    validate_input_values(
+        facility_name, floors, n_agents, daylength, entrances, buffer
+    )
 
     # Optional arguments
     create_meetings = input_dict.get("create_meetings", True)
     close_dining = input_dict.get("close_dining", False)
     upload_results = input_dict.get("upload_results", False)
     upload_location = input_dict.get("upload_location", None)
-    preassigned_offices = None
-    if "office_assignment_file" in input_dict:
-        if os.path.isfile(input_dict["office_assignment_file"]):
-            preassigned_offices = parse_office_assignemnt_file(
-                input_dict["office_assignment_file"]
-            )
-        else:
-            raise FileNotFoundError(input_dict["office_assignment_file"])
+    occupancy_rate = input_dict.get("occupancy_rate", None)
+    contact_distance = input_dict.get("contact_distance", 6.0)
+
+    # Handle pre-assigned offices, if any
+    preassigned_offices = parse_office_assignment_file(input_dict)
 
     if upload_results and upload_location is None:
         raise ValueError("upload_location must be specified.")
 
-    occupancy_rate = input_dict.get("occupancy_rate", None)
-
+    # Floorplan scale, defautls to 1 drawing unit = 12 inches
     floorplan_scale = input_dict.get("floorplan_scale", 1.0 / 12.0)
     if not isinstance(floorplan_scale, (int, float)):
         raise TypeError("Floorplan scale must be a float or an int")
 
-    contact_distance = input_dict.get("contact_distance", 6.0)
+    # Shifts
+    default_shifts = [
+        {"name": "primary", "start_time": buffer, "percent_agents": 1.0}
+    ]
+    shifts = input_dict.get("shifts", default_shifts)
+    validate_shifts(shifts)
 
-    shifts = input_dict.get(
-        "shifts",
-        [{"name": "primary", "start_time": buffer, "percent_agents": 1.0}],
-    )
-    if not isinstance(shifts, list):
-        raise TypeError("shifts must be a list")
-    for s in shifts:
-        if (
-            "name" not in s
-            or "start_time" not in s
-            or "percent_agents" not in s
-        ):
-            raise ValueError(
-                "A shift must define a name, start time and percent agents"
-            )
-        if (
-            not isinstance(s["percent_agents"], (int, float))
-            or s["percent_agents"] > 1.0
-            or s["percent_agents"] <= 0.0
-        ):
-            raise TypeError("Percent agents must be between 0.0 than 1.0")
+    # Meetings and scheduling policies
+    scheduling_policy = parse_scheduling_policy_file(input_dict)
+    meetings_policy = parse_meetings_policy_file(input_dict)
 
-    scheduling_policy = None
-    if "scheduling_policy_file" in input_dict:
-        if os.path.isfile(input_dict["scheduling_policy_file"]):
-            scheduling_policy = parse_scheduling_policy_file(
-                input_dict["scheduling_policy_file"]
-            )
-        else:
-            raise FileNotFoundError(input_dict["scheduling_policy_file"])
-
-    meetings_policy = None
-    if "meetings_file" in input_dict:
-        if os.path.isfile(input_dict["meetings_file"]):
-            meetings_policy = parse_meetings_policy_file(
-                input_dict["meetings_file"]
-            )
-        else:
-            raise FileNotFoundError(input_dict["meetings_file"])
-
-    traffic_policy = None
-    if "traffic_policy" in input_dict:
-        if not isinstance(input_dict["traffic_policy"], list):
-            raise TypeError(
-                "traffic_policy must be a list. Found {%s}",
-                type(traffic_policy),
-            )
-
-        for pol in input_dict["traffic_policy"]:
-            if not isinstance(pol, dict):
-                raise TypeError(
-                    "A dictionary with these keys expected:"
-                    + "floor, segment_id, direction"
-                )
-            if (
-                "floor" not in pol
-                or "segment_id" not in pol
-                or "direction" not in pol
-            ):
-                raise TypeError(
-                    "The following keys are expected in each policy:"
-                    + "floor, segment_id, direction"
-                )
-        traffic_policy = input_dict["traffic_policy"]
+    # Traffic policy
+    traffic_policy = input_dict.get("traffic_policy", None)
+    validate_traffic_policy(traffic_policy)
 
     total_percent = sum(s["percent_agents"] for s in shifts)  # type: ignore
     if total_percent > 1.0:  # type: ignore
