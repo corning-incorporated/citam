@@ -19,7 +19,7 @@ Covid-19 Indoor Transmission Agent-based Modeling platform.
   - [License](#-license)
 
 
-## Install CITAM
+## Install
 
 > Pre-requisite: Python 3.x
 
@@ -187,7 +187,7 @@ Wait for your simulation to complete successfully before moving to the next sect
 
 CITAM comes with a rudimentary and very limited GUI that provides some details on contact statistics and a visual representation of simulation results (we stress that the GUI is very early stage!)
 
-To build the GUI from source, use one of the following methods:
+If you installed via python-wheel, the GUI should already be available for your use. Otherwise, to build the GUI from source, use one of the following methods:
 1. Running the command `python setup.py build_js`
 2. Building manually by doing the following
     2a. `cd citamjs`
@@ -196,13 +196,13 @@ To build the GUI from source, use one of the following methods:
     2d. `cp -r dist/ ../citam/api/static/dash`
     2e. `cd ..`
 
-
-Once built, the GUI can be accessed at [http://localhost:8000](http://localhost:8000) after firing
-the server using, assuming the current directory has the simulation results to visualize.
+Once the GUI is built, and assuming the current directory has the simulation results to visualize, the server can be started using:
 
 ```
 $citam dash --results .
 ```
+
+The GUI can then be accessed at [http://localhost:8000](http://localhost:8000) after 
 
 > *Note: CITAM will recursively scan the results directory for simulation results. For example, if you
 start the dashboard with the results directory pointing to the citam source code, it will show sample
@@ -211,34 +211,16 @@ results that are used for unit testing.*
 You can also set the `CITAM_RESULT_PATH` environment variable to the top level directory
 where you expect all your simulation results to be. If you have the `CITAM_RESULT_PATH` environment variable set, you can run `citam dash` (without the --results flag) to start the dashboard/GUI.
 
-You can check all simulation runs along with facility-level information in tabular format on the first
-page. By clicking on `View Details`; you will be taken to a screen with detailed information such as:
-
- - Overall Total Contact Duration
- - Average Number of Contacts Per Agent
- - Average Contact Duration Per Agent
- - Average Number of People Per Agent
-
- On this page you will also find charts for:
-
- - Per Agent Total Contact and Average Contact Duration scatterplot
- - Total Contact per Agent histogram
- - Average Contact Duration (minutes) histogram
- - Contact heatmap
-
- You can also access interactive visual map of floors and time-based individuals movement by clicking on the `Visualization` tab.
 
 ## Contributing
 -----
-The code is divided into multiple components:
-+ **Engine**: the core simulation engine to manage facilities and run simulations (written in Python).
-+ **CLI**: The Command-Line Interface, currently the primary way of interacting with CITAM (written in Python).
-+ **API**: used to read and expose simulation results that are served locally over http (written in Python)
-+ **Dashboard**: The dashboard is the frontend component to visualize and analyze results (written in JavaScript).
 
-We welcome your contributions to any or all of these components. We also welcome bug reports and feature requests. For detailed instructions, please refer to the "[How to Contribute](contributing.md)" document.
+We encourage and welcome your contributions to any or all of the components of this code. We also welcome bug reports and feature requests (but we make no guarantee that new feature requests will be implemented any time soon). For detailed instructions, please refer to the "[How to Contribute](contributing.md)" document.
 
 ## License
 ------------
-CITAM is made available to the public under GPLv3.
+CITAM is made available to the public under GPLv3 and may only be used in accordance with the identified license(s).
 
+Copyright 2020. Corning Incorporated. All rights reserved.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
