@@ -493,14 +493,14 @@ class Simulation:
         hallways_graph = self.facility.navigation.hallways_graph_per_floor[
             floor_number
         ]
-        if hallways_graph is None:
-            return
         floorplan = self.facility.floorplans[floor_number]
         space1 = floorplan.spaces[agent1.current_location]
         space2 = floorplan.spaces[agent2.current_location]
-        if not space1.is_space_a_hallway():
-            return
-        if not space2.is_space_a_hallway():
+        if (
+            hallways_graph is None
+            or not space1.is_space_a_hallway()
+            or not space2.is_space_a_hallway()
+        ):
             return
         if hallways_graph.has_edge(space1.unique_name, space2.unique_name):
             self.add_contact_event(agent1, agent2)
