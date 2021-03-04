@@ -4,7 +4,7 @@ from citam.engine.io.input_parser import (
     parse_svg_floorplan_file,
     parse_input_file,
     parse_standalone_svg_floorplan_file,
-    parse_office_assignemnt_file,
+    parse_office_assignment_file,
 )
 
 import os
@@ -151,24 +151,26 @@ def test_parse_svg_map_file_invalid_building(datadir):
         parse_standalone_svg_floorplan_file(inputfile)
 
 
-def test_parse_bad_office_assignemnt_file(datadir):
+def test_parse_bad_office_assignment_file(datadir):
     inputfile = os.path.join(datadir, "bad_office_assignment1.csv")
+    input_dir = {"office_assignment_file": inputfile}
 
     with pytest.raises(ValueError):
-        parse_office_assignemnt_file(inputfile)
+        parse_office_assignment_file(input_dir)
 
 
-def test_parse_empty_office_assignemnt_file(datadir):
+def test_parse_empty_office_assignment_file(datadir):
     inputfile = os.path.join(datadir, "bad_office_assignment2.csv")
+    input_dir = {"office_assignment_file": inputfile}
 
     with pytest.raises(ValueError):
-        parse_office_assignemnt_file(inputfile)
+        parse_office_assignment_file(input_dir)
 
 
 def test_parse_office_assignemnt_file(datadir):
     inputfile = os.path.join(datadir, "office_assignment.csv")
-
-    res = parse_office_assignemnt_file(inputfile)
+    input_dir = {"office_assignment_file": inputfile}
+    res = parse_office_assignment_file(input_dir)
 
     assert len(res) == 3
     assert res[0] == (12, 0)
