@@ -6,6 +6,9 @@ import networkx as nx
 import os
 import pytest
 
+NAVNET_JSON_FILE = "navnet.json"
+HALLWAY_GRAPH_JSON_FILE = "hallway_graph.json"
+
 
 def test__init(x_floorplan):
 
@@ -61,7 +64,6 @@ def test__aisle_has_nav_segment_1(x_floorplan, aisle_from_x_floorplan):
 
 
 def test__find_location_of_point(x_floorplan):
-    space = x_floorplan.spaces[0]
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     test_point = Point(x=0, y=0)
     space, space_id = nav_builder._find_location_of_point(test_point)
@@ -310,8 +312,8 @@ def test_export_navdata_to_json(x_floorplan, tmp_path):
 
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.json"
-    hallway_graph_file = d / "hallway_graph.json"
+    navnet_file = d / NAVNET_JSON_FILE
+    hallway_graph_file = d / HALLWAY_GRAPH_JSON_FILE
 
     nav_builder.export_navdata_to_json(navnet_file, hallway_graph_file)
 
@@ -342,8 +344,8 @@ def test_load_navdata_from_json_files_1(x_floorplan, tmp_path):
 
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.json"
-    hallway_graph_file = d / "hallway_graph.json"
+    navnet_file = d / NAVNET_JSON_FILE
+    hallway_graph_file = d / HALLWAY_GRAPH_JSON_FILE
     nav_builder.export_navdata_to_json(navnet_file, hallway_graph_file)
     nav_builder.floor_navnet.clear()
     nav_builder.load_navdata_from_json_files(navnet_file, hallway_graph_file)
@@ -373,8 +375,8 @@ def test_load_navdata_from_json_files_3(x_floorplan, tmp_path):
     nav_builder.build()
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.json"
-    hallway_graph_file = d / "hallway_graph.json"
+    navnet_file = d / NAVNET_JSON_FILE
+    hallway_graph_file = d / HALLWAY_GRAPH_JSON_FILE
 
     with pytest.raises(ValueError):
         nav_builder.load_navdata_from_json_files(

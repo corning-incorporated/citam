@@ -112,7 +112,7 @@ def test_create_all_meetings(sample_meeting_policy, sample_policy_params):
     # Verify that the number of meetings per room is acceptable
     # Verify that the number of meetings per person is acceptable
 
-    for i in range(5):
+    for _ in range(5):
         policy = deepcopy(sample_meeting_policy)
         policy.create_all_meetings()
 

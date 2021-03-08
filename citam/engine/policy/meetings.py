@@ -173,6 +173,50 @@ class MeetingPolicy:
             "Valid meeting rooms for this policy: " + str(n_meeting_rooms)
         )
 
+    def create_new_meeting(
+        self,
+        meeting_room: Space,
+        floor_number: int,
+        start_time: int,
+        end_time: int,
+    ) -> bool:
+        """[summary]
+
+        :param meeting_room: Space where the meeting room will take place.
+        :type meeting_room: Space
+        :param floor_number: index of the floor.
+        :type floor_number: int
+        :param start_time: The meeting start time.
+        :type start_time: int
+        :param end_time: The meeting end time.
+        :type end_time: int
+        :return: True if meeting successfully created. False, otherwise.
+        :rtype: bool
+        """
+        attendees = self._generate_meeting_attendee_list(
+            meeting_room, start_time, end_time
+        )
+
+        if len(attendees) > 1:
+            for attendee in attendees:
+                self.attendee_pool[attendee] += 1
+
+            # Create new meeting
+            self.meetings.append(
+                Meeting(
+                    location=meeting_room,
+                    floor_number=floor_number,
+                    start_time=start_time,
+                    end_time=end_time,
+                    attendees=attendees,
+                )
+            )
+
+            self._update_attendee_pool()
+            return True
+
+        return False
+
     def _create_meetings_for_room(
         self, meeting_room: Space, floor_number: int
     ) -> None:
@@ -191,7 +235,7 @@ class MeetingPolicy:
         # to avoid all meetings happening in the morning
 
         last_meeting_end_time = 0
-        for i in range(n_meetings):
+        for _ in range(n_meetings):
 
             if last_meeting_end_time >= self.daylength:
                 break
@@ -217,27 +261,10 @@ class MeetingPolicy:
             if end_time < start_time:
                 break
 
-            attendees = self._generate_meeting_attendee_list(
-                meeting_room, start_time, end_time
-            )
-
-            if len(attendees) > 1:
-                for attendee in attendees:
-                    self.attendee_pool[attendee] += 1
-
-                # Create new meeting
-                self.meetings.append(
-                    Meeting(
-                        location=meeting_room,
-                        floor_number=floor_number,
-                        start_time=start_time,
-                        end_time=end_time,
-                        attendees=attendees,
-                    )
-                )
-
+            if self.create_new_meeting(
+                meeting_room, floor_number, start_time, end_time
+            ):
                 last_meeting_end_time = end_time
-                self._update_attendee_pool()
 
             if len(self.attendee_pool) == 0:
                 break

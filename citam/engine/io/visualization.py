@@ -53,7 +53,7 @@ def export_possible_oneway_aisles_to_svg(
     paths = [wall for wall in walls]
     attributes = [
         {"fill": "white", "stroke": "black", "stroke-width": 0.5}
-        for p in paths
+        for _ in paths
     ]
 
     color = "red"
@@ -259,7 +259,7 @@ def export_nav_network_to_svg(
     paths = [wall for wall in walls]
     attributes = [
         {"fill": "white", "stroke": "black", "stroke-width": 0.5}
-        for p in paths
+        for _ in paths
     ]
 
     for nn in nav_nodes:
@@ -344,7 +344,7 @@ def export_world_to_svg(
     paths = [wall for wall in walls]
     attributes = [
         {"fill": "white", "stroke": "black", "stroke-width": 0.5 * multiplier}
-        for p in paths
+        for _ in paths
     ]
 
     color_scale = cm.get_cmap("RdYlGn")
