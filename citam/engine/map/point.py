@@ -31,8 +31,6 @@ class Point:
         if self.complex_coords is None and self.x is not None:
             self.convert_to_complex()
 
-        return
-
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
 
@@ -44,10 +42,6 @@ class Point:
         self.x = self.complex_coords.real
         self.y = self.complex_coords.imag
 
-        return
-
     def convert_to_complex(self):
 
         self.complex_coords = complex(self.x, self.y)
-
-        return

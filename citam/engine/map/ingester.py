@@ -104,13 +104,17 @@ class FloorplanIngester:
 
         for _path, _attr in zip(self.space_paths, self.space_attributes):
             for _data in self.space_data:
+
+                if (
+                    self.buildings_to_keep
+                    and _data["building"] not in self.buildings_to_keep
+                ):
+                    continue
+
                 if _data["id"] == _attr["id"]:
+
                     self.buildings.add(_data["building"])
-                    if (
-                        self.buildings_to_keep
-                        and _data["building"] not in self.buildings_to_keep
-                    ):
-                        continue
+
                     for i, line in enumerate(_path):
                         new_start = complex(
                             int(round(line.start.real)),

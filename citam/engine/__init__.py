@@ -10,25 +10,6 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-# __all__ = [
-#     'basic_visualization',
-#     'citam',
-#     'constants',
-#     'contact_events',
-#     'daily_schedule',
-#     'door',
-#     'employee',
-#     'floorplan',
-#     'floorplan_ingester',
-#     'floorplan_utils',
-#     'geometry_and_svg_utils',
-#     'meeting_policy',
-#     'model',
-#     'navigation',
-#     'navigation_builder',
-#     'point',
-#     'space',
-# ]
 
 import logging
 import os

@@ -59,8 +59,6 @@ class Agent:
         self.current_location = None
         self.current_floor = None
 
-        return
-
     def step(self):
         """
         Move this agent one step forward in its itinerary.
@@ -95,7 +93,7 @@ class Agent:
                     self.schedule.navigation.floorplans[
                         floor_number
                     ].place_agent(self, xy_position)
-            # self.pos = new_position
+
             self.current_location = self.schedule.navigation.floorplans[
                 floor_number
             ].identify_this_location(
