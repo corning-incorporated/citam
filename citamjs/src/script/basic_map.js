@@ -128,7 +128,8 @@ export default class Map2D {
         }
         await Promise.all(request_arr).then((response) => {
             response.forEach((val) => {
-                trajectoryCollection = trajectoryCollection.concat(val.data.data);
+                trajectoryCollection = trajectoryCollection.concat(
+                    val.data.data.filter(v=>v.length > 0));
                 this.totalSteps = trajectoryCollection.length;
                 this.trajectories = trajectoryCollection;
                 let contactList = [];
