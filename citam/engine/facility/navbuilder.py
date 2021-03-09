@@ -73,13 +73,9 @@ class NavigationBuilder:
         # segments where each segment is a tuple of the 2 endpoints
         self.space_nav_segments: Dict[str, List[Tuple[Point, Point]]] = {}
 
-        # self.current_space = None  # for testing and debugging purposes
-
         # To avoid parallel nav segments (if a door is already part of the
         # navnet, no need to use it to start new nav segments)
         self.excluded_doors: List[Door] = []
-
-        return
 
     def build(self):
         """
@@ -141,7 +137,6 @@ class NavigationBuilder:
             segments, seg_spaces = self.compute_nav_segments(
                 door.midpoint,
                 door_normal,
-                door_width,
                 stop_at_existing_segments=True,
             )
 
@@ -161,13 +156,11 @@ class NavigationBuilder:
             pbar.update(i)
             if space.is_space_a_hallway():
                 valid_boundaries = space.boundaries
-                # self._find_valid_boundaries(space)
                 aisles = fu.find_aisles(
                     space, valid_boundaries, no_repeat=False
                 )
                 for aisle in aisles:
                     if not self._aisle_has_nav_segment(aisle, space):
-                        # self.current_space = space
                         self.create_nav_segment_for_aisle(aisle)
 
     def _update_navnet(
@@ -231,7 +224,7 @@ class NavigationBuilder:
             return False
 
         # Perpendicular vector between the two walls
-        V_perp = gsu.calculate_perpendicular_vector(aisle[0], aisle[1])
+        v_perp = gsu.calculate_perpendicular_vector(aisle[0], aisle[1])
 
         # If all of these lead to intersection with a nav seg, we are good
         test_points = [0.2, 0.8]
@@ -249,8 +242,8 @@ class NavigationBuilder:
                     x=round(complex_point1.real), y=round(complex_point1.imag)
                 )
                 point2 = Point(
-                    x=round(point1.x + V_perp[0]),
-                    y=round(point1.y + V_perp[1]),
+                    x=round(point1.x + v_perp[0]),
+                    y=round(point1.y + v_perp[1]),
                 )
                 line1 = Line(
                     start=point1.complex_coords, end=point2.complex_coords
@@ -327,7 +320,7 @@ class NavigationBuilder:
 
         center_point, width = fu.get_aisle_center_point_and_width(aisle)
         segments, seg_spaces = self.compute_nav_segments(
-            center_point, direction_vector, width
+            center_point, direction_vector
         )
         self._add_spaces_to_hallway_graph(seg_spaces)
         self._update_navnet(segments, seg_spaces, width)
@@ -651,11 +644,122 @@ class NavigationBuilder:
 
         return None
 
+    def _create_segments_for_new_space(
+        self,
+        first_point: Point,
+        new_point: Point,
+        segments: List[List[Point]],
+        direction: int,
+    ):
+        """
+        Create navigation segments when crossing from one space to another.
+
+        :param first_point: The first point in the current nav segment.
+        :type first_point: Point
+        :param new_point: The current point in the navigation segment.
+        :type new_point: Point
+        :param new_space: The new space.
+        :type new_space: Space
+        :param segments: List of all current nav segments to be updated.
+        :type segments: List[List[Point]]
+        :param segment_spaces: List of all current spaces where each segment is
+            located.
+        :type segment_spaces: List[Space]
+        :param direction: The direction of the segment (-1 or 1).
+        :type direction: int
+        """
+
+        door_inters_coords = self._is_crossing_door(first_point, new_point)
+
+        if door_inters_coords:
+            # create new segment from intersect coords
+            inters_point = Point(door_inters_coords[0], door_inters_coords[1])
+            self._update_segments(inters_point, direction, segments)
+            segments.append([inters_point])
+
+        else:  # Create new segment from last point
+            if direction == 1:
+                segments.append([segments[-1][-1], new_point])
+            else:
+                segments.append([new_point, segments[-1][0]])
+
+    def compute_single_direction_nav_segment(
+        self,
+        current_space: Space,
+        first_point: Point,
+        direction: int,
+        dx: float,
+        dy: float,
+        segments: List[List[Tuple[Point]]],
+        segment_spaces: List[Space],
+        stop_at_existing_segments: bool,
+    ):
+        """
+        Compute navigation segments in a given direction. More than 1 segment
+        will be created if crossing into different spaces.
+
+        :param current_space: The current space.
+        :type current_space: Space
+        :param first_point: The first point in this navigation segment.
+        :type first_point: Point
+        :param direction: The direction of the navigation segment.
+        :type direction: int
+        :param dx: x-increment of the navigation segment.
+        :type dx: float
+        :param dy: y-increment of the navigation segment.
+        :type dy: float
+        :param segments: List of all current nav segments to be updated.
+        :type segments: List[List[Point]]
+        :param segment_spaces: List of all spaces where the nav segments are
+            located
+        :type segment_spaces: List[Space]
+        :param stop_at_existing_segments: Whether to stop when crossing an
+            existing nav segment or not.
+        :type stop_at_existing_segments: bool
+        """
+        new_point = first_point
+        while True:
+            # move one point in the given direction
+            new_point = Point(
+                x=round(new_point.x + direction * dx),
+                y=round(new_point.y + direction * dy),
+            )
+
+            if current_space.is_point_inside_space(new_point):
+                self._update_segments(new_point, direction, segments)
+            else:
+                # Check if this is a wall
+                if self._is_crossing_wall(first_point, new_point):
+                    break
+
+                new_space, _ = self._find_location_of_point(new_point)
+
+                # Check if heading outside facility
+                if new_space is None and self._is_heading_outside_facility(
+                    new_point, direction, dx, dy
+                ):
+                    break
+
+                if new_space:
+                    current_space = new_space
+                    segment_spaces.append(current_space)
+                    self._create_segments_for_new_space(
+                        first_point, new_point, segments, direction
+                    )
+                else:
+                    # Just update segment. This is to support edge case
+                    # where a small gap exists between valid spaces
+                    self._update_segments(new_point, direction, segments)
+
+            if stop_at_existing_segments and self.floor_navnet.has_node(
+                (new_point.x, new_point.y)
+            ):
+                break
+
     def compute_nav_segments(
         self,
         first_point: Point,
         direction_vector: complex,
-        width: float,
         stop_at_existing_segments: bool = False,
     ) -> Tuple[List, List]:
         """
@@ -693,76 +797,25 @@ class NavigationBuilder:
 
         for direction in [-1, 1]:
 
-            new_point = first_point
-            segments.append([new_point])
+            segments.append([first_point])
 
-            current_space, _ = self._find_location_of_point(new_point)
+            current_space, _ = self._find_location_of_point(first_point)
             if current_space is None:
                 current_space = self.find_if_valid_nearby_space_exits(
-                    new_point, direction, dx, dy
+                    first_point, direction, dx, dy
                 )
 
             segment_spaces.append(current_space)
-
-            while True:
-                # move one point in the given direction
-                new_point = Point(
-                    x=round(new_point.x + direction * dx),
-                    y=round(new_point.y + direction * dy),
-                )
-
-                if current_space.is_point_inside_space(new_point):
-                    self._update_segments(new_point, direction, segments)
-                else:
-                    # Check if this is a wall
-                    if self._is_crossing_wall(first_point, new_point):
-                        break
-
-                    new_space, _ = self._find_location_of_point(new_point)
-
-                    # Check if heading outside facility
-                    if (
-                        new_space is None
-                        and self._is_heading_outside_facility(
-                            new_point, direction, dx, dy
-                        )
-                    ):
-                        break
-
-                    if new_space:
-
-                        current_space = new_space
-                        segment_spaces.append(current_space)
-                        door_inters_coords = self._is_crossing_door(
-                            first_point, new_point
-                        )
-
-                        if door_inters_coords:
-                            # create new segment from intersect coords
-                            inters_point = Point(
-                                door_inters_coords[0], door_inters_coords[1]
-                            )
-                            self._update_segments(
-                                inters_point, direction, segments
-                            )
-                            segments.append([inters_point])
-                            current_space = new_space
-
-                        else:  # Create new segment from last point
-                            if direction == 1:
-                                segments.append([segments[-1][-1], new_point])
-                            else:
-                                segments.append([new_point, segments[-1][0]])
-
-                    else:
-                        # Just update segment. This is to support edge case
-                        # where a small gap exists between valid spaces
-                        self._update_segments(new_point, direction, segments)
-
-                if stop_at_existing_segments and self.floor_navnet.has_node(
-                    (new_point.x, new_point.y)
-                ):
-                    break
+            self.compute_single_direction_nav_segment(
+                current_space,
+                first_point,
+                direction,
+                dx,
+                dy,
+                segments,
+                segment_spaces,
+                stop_at_existing_segments,
+            )
 
         if len(segments) != len(segment_spaces):
             LOG.fatal("Number of segments should equal number of spaces")
@@ -770,6 +823,9 @@ class NavigationBuilder:
                 "We have: {%d} * {%d}", len(segments), len(segment_spaces)
             )
             raise ValueError("Failed to build nav segments in this floorplan")
+
+        # Remove all segments that only have 1 point.
+        # They are not actual segments now, are they?
 
         good_segments = []
         good_segment_spaces = []
@@ -779,6 +835,62 @@ class NavigationBuilder:
                 good_segment_spaces.append(seg_space)
 
         return good_segments, good_segment_spaces
+
+    def _handle_wall_intersects(
+        self,
+        intersects: List[Tuple],
+        path_line: Path,
+        edge: List[List],
+        half_width: float,
+    ):
+        """
+        Break nav segments when they intersect with walls.
+
+        :param intersects: Points where nav segment intersects walls.
+        :type intersects: List[Tuple]
+        :param path_line: The path object representing the nav segment.
+        :type path_line: Path
+        :param edge: Edge in the navnet corresponding to current nav segment.
+        :type edge: List[List]
+        :param half_width: Half width of the current nav segment.
+        :type half_width: float
+        """
+
+        intersection_point = path_line.point(intersects[0][0])
+        inter_coords = (
+            int(round(intersection_point.real)),
+            int(round(intersection_point.imag)),
+        )
+        self.floor_navnet.remove_edge(edge[0], edge[1])
+        if edge[0] != inter_coords:
+            dx = edge[0][0] - inter_coords[0]
+            dy = edge[0][1] - inter_coords[1]
+            L = (dx ** 2 + dy ** 2) ** 0.5
+            coords2 = (
+                inter_coords[0] + round(dx / L),
+                inter_coords[1] + round(dy / L),
+            )
+            self.floor_navnet.add_edge(edge[0], coords2, half_width=half_width)
+        # TODO: implement support for case when edge crosses
+        # multiple walls
+        #     new_edge = (edge[0], inter_coords,
+        #                 {'half_width': half_width})
+        #     # edges.append(new_edge)
+
+        if inter_coords != edge[1]:
+            dx = edge[1][0] - inter_coords[0]
+            dy = edge[1][1] - inter_coords[1]
+            L = (dx ** 2 + dy ** 2) ** 0.5
+            coords2 = (
+                inter_coords[0] + round(dx / L),
+                inter_coords[1] + round(dy / L),
+            )
+            self.floor_navnet.add_edge(coords2, edge[1], half_width=half_width)
+            # TODO: implement support for case case when edge crosses
+            # multiple walls
+            #     new_edge = (inter_coords, edge[1],
+            #                 {'half_width': half_width})
+            #     # edges.append(new_edge)
 
     def sanitize_navnet(self) -> None:
         """
@@ -807,52 +919,61 @@ class NavigationBuilder:
             for wall in self.floorplan.special_walls:
                 intersects = path_line.intersect(wall)
                 if len(intersects) > 0:
-                    intersection_point = path_line.point(intersects[0][0])
-                    inter_coords = (
-                        int(round(intersection_point.real)),
-                        int(round(intersection_point.imag)),
+                    self._handle_wall_intersects(
+                        intersects, path_line, edge, half_width
                     )
-                    self.floor_navnet.remove_edge(edge[0], edge[1])
-                    if edge[0] != inter_coords:
-                        dx = edge[0][0] - inter_coords[0]
-                        dy = edge[0][1] - inter_coords[1]
-                        L = (dx ** 2 + dy ** 2) ** 0.5
-                        coords2 = (
-                            inter_coords[0] + round(dx / L),
-                            inter_coords[1] + round(dy / L),
-                        )
-                        self.floor_navnet.add_edge(
-                            edge[0], coords2, half_width=half_width
-                        )
-                    # TODO: implement support for case when edge crosses
-                    # multiple walls
-                    #     new_edge = (edge[0], inter_coords,
-                    #                 {'half_width': half_width})
-                    #     # edges.append(new_edge)
-
-                    if inter_coords != edge[1]:
-                        dx = edge[1][0] - inter_coords[0]
-                        dy = edge[1][1] - inter_coords[1]
-                        L = (dx ** 2 + dy ** 2) ** 0.5
-                        coords2 = (
-                            inter_coords[0] + round(dx / L),
-                            inter_coords[1] + round(dy / L),
-                        )
-                        self.floor_navnet.add_edge(
-                            coords2, edge[1], half_width=half_width
-                        )
-                    # TODO: implement support for case case when edge crosses
-                    # multiple walls
-                    #     new_edge = (inter_coords, edge[1],
-                    #                 {'half_width': half_width})
-                    #     # edges.append(new_edge)
-
                     n_intersect += 1
             i += 1
 
         n_edges = self.floor_navnet.number_of_nodes()
         LOG.info("Number of intersections removed: %d", n_intersect)
         LOG.info("Number of edges: %d", n_edges)
+
+    def _remove_node_if_invalid(
+        self, node: tuple, neighbors: List[tuple], door_paths: List[Path]
+    ) -> bool:
+        """
+        Check if a node should be removed based on whether it has two neighbors
+        with which it forms a straight line.
+
+        :param node: The node of interest
+        :type node: tuple
+        :param neighbors: List of the neighboring nodes
+        :type neighbors: List[tuple]
+        :param door_paths: SVG path for all the doors in facility
+        :type door_paths: List[Path]
+        :return: Whether the node was removed or not.
+        :rtype: bool
+        """
+        if len(neighbors) != 2:
+            return False
+
+        remove_node = True
+        # The nodes have to be on a straight line
+        test_line = Line(
+            start=complex(neighbors[0][0], neighbors[0][1]),
+            end=complex(neighbors[1][0], neighbors[1][1]),
+        )
+        test_point = Point(x=node[0], y=node[1])
+        if not gsu.is_point_on_line(test_line, test_point, tol=1e-1):
+            remove_node = False
+        # Do not remove node if it belongs to a door path
+        p = Point(x=node[0], y=node[1])
+        for door_path in door_paths:
+            if gsu.is_point_on_line(door_path, p):
+                remove_node = False
+                break
+
+        if remove_node:
+            edges = self.floor_navnet.edges(node, data=True)
+            half_width = list(edges)[0][2]["half_width"]
+            self.floor_navnet.remove_node(node)
+            self.floor_navnet.add_edge(
+                neighbors[0],
+                neighbors[1],
+                half_width=half_width,
+            )
+        return remove_node
 
     def simplify_navigation_network(self) -> None:
         """
@@ -868,13 +989,11 @@ class NavigationBuilder:
         else:
             n_nodes = self.floor_navnet.number_of_nodes()
             LOG.info("Starting number of nodes: %d", n_nodes)
+
             n_edges = self.floor_navnet.number_of_edges()
             LOG.info("Starting number of edges: %d", n_edges)
 
             door_paths = [d.path for d in self.floorplan.doors]
-            # for space in floorplan.spaces:
-            #     door_paths += space.doors
-
             LOG.info("Number of doors: %d", len(door_paths))
 
             nodes_removed = 0
@@ -885,41 +1004,12 @@ class NavigationBuilder:
                 pbar = pb.ProgressBar(max_value=len(nodes))
                 for i, node in enumerate(nodes):
                     pbar.update(i)
-                    remove_node = True
                     neighbors = list(self.floor_navnet.neighbors(node))
-                    if len(neighbors) == 2:
-                        # The nodes have to be on a straight line
-                        test_line = Line(
-                            start=complex(neighbors[0][0], neighbors[0][1]),
-                            end=complex(neighbors[1][0], neighbors[1][1]),
-                        )
-                        test_point = Point(x=node[0], y=node[1])
-                        if not gsu.is_point_on_line(
-                            test_line, test_point, tol=1e-1
-                        ):
-                            remove_node = False
-                        # Do not remove node if it belongs to a door path
-                        p = Point(x=node[0], y=node[1])
-                        for door_path in door_paths:
-                            if gsu.is_point_on_line(door_path, p):
-                                remove_node = False
-                                break
-
-                        if remove_node:
-                            edges = self.floor_navnet.edges(node, data=True)
-                            half_width = list(edges)[0][2]["half_width"]
-                            self.floor_navnet.remove_node(node)
-                            self.floor_navnet.add_edge(
-                                neighbors[0],
-                                neighbors[1],
-                                half_width=half_width,
-                            )
-                            # self.floor_navnet.add_edge(neighbors[1],
-                            #                            neighbors[0],
-                            #                            half_width=half_width
-                            #                            )
-                            nodes_removed += 1
-                            completed = False
+                    if self._remove_node_if_invalid(
+                        node, neighbors, door_paths
+                    ):
+                        completed = False
+                        nodes_removed += 1
 
             LOG.info("Number of nodes removed: %d", nodes_removed)
             n_nodes = self.floor_navnet.number_of_nodes()
@@ -934,6 +1024,63 @@ class NavigationBuilder:
         segments) and remove any.
         """
         raise NotImplementedError("Not implemented yet")
+
+    def _compute_intersection_and_remove_segments(
+        self, key: str, seg1: Tuple[Point], seg2: Tuple[Point]
+    ) -> False:
+        """
+        Check if nav segments intersect and update list of nav segments
+        accordingly to capture the intersection point as a node in the graph.
+
+        :param key: key to find the space of interset.
+        :type key: str
+        :param seg1: The first segment
+        :type seg1: Tuple[Point]
+        :param seg2: The second segment
+        :type seg2: Tuple[Point]
+        :return: Whether an intersection point was found or not.
+        :rtype: False
+        """
+
+        point1 = seg1[0]
+        point2 = seg1[1]
+        point3 = seg2[0]
+        point4 = seg2[1]
+        coords1 = (point1.x, point1.y)
+        coords2 = (point2.x, point2.y)
+        coords3 = (point3.x, point3.y)
+        coords4 = (point4.x, point4.y)
+
+        intersect_coords = self.find_and_add_intersection_node_to_graph(
+            coords1, coords2, coords3, coords4
+        )
+        if intersect_coords is not None:
+            # update space seg
+            self.space_nav_segments[key].remove(seg1)
+            self.space_nav_segments[key].remove(seg2)
+            new_point = Point(x=intersect_coords[0], y=intersect_coords[1])
+            for point in [point1, point2, point3, point4]:
+                if point != new_point:
+                    new_segment = (point, new_point)
+                    self.space_nav_segments[key].append(new_segment)
+            return True
+
+        return False
+
+    def _check_for_intersection_with_other_segments(self, key, i, n_segments):
+        for j in range(i + 1, n_segments):
+            seg1 = self.space_nav_segments[key][i]
+            seg2 = self.space_nav_segments[key][j]
+
+            if seg1 == seg2:
+                continue
+
+            if self._compute_intersection_and_remove_segments(key, seg1, seg2):
+                # An intersection was found, n_segments has changed,
+                # return True
+                return True
+
+        return False
 
     def find_intersections_in_space(self, space: Space) -> None:
         """
@@ -954,49 +1101,59 @@ class NavigationBuilder:
         while not done:
             done = True
             n_segments = len(self.space_nav_segments[key])
-            exit_loop = False
-            # if '198' in key:
             for i in range(n_segments - 1):
-                for j in range(i + 1, n_segments):
-                    seg1 = self.space_nav_segments[key][i]
-                    seg2 = self.space_nav_segments[key][j]
-
-                    if seg1 == seg2:
-                        continue
-
-                    point1 = seg1[0]
-                    point2 = seg1[1]
-                    point3 = seg2[0]
-                    point4 = seg2[1]
-                    coords1 = (point1.x, point1.y)
-                    coords2 = (point2.x, point2.y)
-                    coords3 = (point3.x, point3.y)
-                    coords4 = (point4.x, point4.y)
-
-                    intersect_coords = (
-                        self.find_and_add_intersection_node_to_graph(
-                            coords1, coords2, coords3, coords4
-                        )
-                    )
-                    if intersect_coords is not None:
-                        # update space seg
-                        self.space_nav_segments[key].remove(seg1)
-                        self.space_nav_segments[key].remove(seg2)
-                        new_point = Point(
-                            x=intersect_coords[0], y=intersect_coords[1]
-                        )
-                        for point in [point1, point2, point3, point4]:
-                            if point != new_point:
-                                new_segment = (point, new_point)
-                                self.space_nav_segments[key].append(
-                                    new_segment
-                                )
-
-                        exit_loop = True
-                        break
-                if exit_loop:
+                if self._check_for_intersection_with_other_segments(
+                    key, i, n_segments
+                ):
+                    # An intersection was found, n_segments has changed, time
+                    # to exit this loop and start over
                     done = False
                     break
+
+    def _remove_intersecting_edges(
+        self,
+        coords1: Tuple[int, int],
+        coords2: Tuple[int, int],
+        coords3: Tuple[int, int],
+        coords4: Tuple[int, int],
+    ) -> Tuple[float, float]:
+        """
+        Given 4 xy coordiantes where the first 2 form one segment and the next
+        2 form another segment, remove corresponding edges from navnet.
+
+        :param coords1: Coordinates of first point of first edge.
+        :type coords1: Tuple[int, int]
+        :param coords2: Coordinates of second point of first edge.
+        :type coords2: Tuple[int, int]
+        :param coords3: Coordinates of first point of second edge.
+        :type coords3: Tuple[int, int]
+        :param coords4: Coordinates of second point of second edge.
+        :type coords4: Tuple[int, int]
+        :return: Half widths of both edges.
+        :rtype: Tuple[float, float]
+        """
+
+        if self.floor_navnet.has_edge(coords1, coords2):
+            edge1 = self.floor_navnet.get_edge_data(coords1, coords2)
+            half_width1 = edge1["half_width"]
+            self.floor_navnet.remove_edge(coords1, coords2)
+        else:
+            half_width1 = 1
+
+        if self.floor_navnet.has_edge(coords2, coords1):
+            self.floor_navnet.remove_edge(coords2, coords1)
+
+        if self.floor_navnet.has_edge(coords3, coords4):
+            edge2 = self.floor_navnet.get_edge_data(coords3, coords4)
+            half_width2 = edge2["half_width"]
+            self.floor_navnet.remove_edge(coords3, coords4)
+        else:
+            half_width2 = 1
+
+        if self.floor_navnet.has_edge(coords4, coords3):
+            self.floor_navnet.remove_edge(coords4, coords3)
+
+        return half_width1, half_width2
 
     def find_and_add_intersection_node_to_graph(
         self,
@@ -1004,7 +1161,7 @@ class NavigationBuilder:
         coords2: Tuple[int, int],
         coords3: Tuple[int, int],
         coords4: Tuple[int, int],
-    ) -> Point:
+    ) -> Optional[Tuple[int, int]]:
         """
         Given four points forming 2 lines, check if they intersect
         and if so add new node to graph and create new edges.
@@ -1047,25 +1204,9 @@ class NavigationBuilder:
 
             self.floor_navnet.add_node(intersect_coords)
 
-            if self.floor_navnet.has_edge(coords1, coords2):
-                edge1 = self.floor_navnet.get_edge_data(coords1, coords2)
-                half_width1 = edge1["half_width"]
-                self.floor_navnet.remove_edge(coords1, coords2)
-            else:
-                half_width1 = 1
-
-            if self.floor_navnet.has_edge(coords2, coords1):
-                self.floor_navnet.remove_edge(coords2, coords1)
-
-            if self.floor_navnet.has_edge(coords3, coords4):
-                edge2 = self.floor_navnet.get_edge_data(coords3, coords4)
-                half_width2 = edge2["half_width"]
-                self.floor_navnet.remove_edge(coords3, coords4)
-            else:
-                half_width2 = 1
-
-            if self.floor_navnet.has_edge(coords4, coords3):
-                self.floor_navnet.remove_edge(coords4, coords3)
+            half_width1, half_width2 = self._remove_intersecting_edges(
+                coords1, coords2, coords3, coords4
+            )
 
             if coords1 != intersect_coords:
                 self.floor_navnet.add_edge(
