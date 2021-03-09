@@ -10,7 +10,7 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-from typing import Dict, Tuple, List, TextIO
+from typing import Dict, Tuple, List, TextIO, Optional
 import numpy as np
 import scipy.spatial.distance
 from collections import OrderedDict
@@ -63,6 +63,7 @@ class Simulation:
         close_dining=False,
         scheduling_policy=None,
         dry_run=False,
+        preassigned_offices: Optional[List[Tuple[int, int]]] = None,
     ) -> None:
         """
         Initialize a new simulation object.
@@ -104,7 +105,7 @@ class Simulation:
                 created, defaults to None
         :type scheduling_policy: dict, optional
         :param dry_run: If true, generate itineraries but do not compute
-                contact statistics or not, defaults to False
+                contact statistics, defaults to False
         :type dry_run: bool, optional
         """
 
@@ -115,10 +116,11 @@ class Simulation:
         self.contact_distance = contact_distance
         self.n_agents = n_agents
         self.occupancy_rate = occupancy_rate
+        self.preassigned_offices = preassigned_offices
 
         self.contact_events = cev.ContactEvents()
         self.current_step = 0
-        self.agents: OrderedDict[int, Agent] = OrderedDict()
+        self.agents = OrderedDict()
         self.shifts = shifts
         self.dry_run = dry_run
         self.simulation_name = None
@@ -127,7 +129,7 @@ class Simulation:
         # list used to keep track of total contact events per xy location per
         #  floor
         self.step_contact_locations: List[Dict[Tuple[int, int], int]] = [
-            {} for f in facility.floorplans
+            {} for _ in facility.floorplans
         ]
         self.create_meetings = create_meetings
 
@@ -195,6 +197,30 @@ class Simulation:
 
         self.simulation_name = m.hexdigest()
 
+    def generate_meetings(self) -> None:
+        """
+        Create meetings based on meeting policy.
+        """
+        # Create meetings
+        agent_ids = list(range(self.n_agents))
+        meeting_room_objects = []
+        for fn, floor_rooms in enumerate(self.facility.meeting_rooms):
+            floor_room_objs = []
+            for room_id in floor_rooms:
+                room_obj = self.facility.floorplans[fn].spaces[room_id]
+                floor_room_objs.append(room_obj)
+            meeting_room_objects.append(floor_room_objs)
+        self.meeting_policy = MeetingPolicy(
+            meeting_room_objects,
+            agent_ids,
+            daylength=self.daylength,
+            policy_params=self.meetings_policy_params,
+        )
+
+        n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
+        if n_meeting_rooms > 0 and self.create_meetings:
+            self.meeting_policy.create_all_meetings()
+
     def run_serial(self, workdir: str) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
@@ -209,6 +235,7 @@ class Simulation:
         :raises ValueError: If occupancy rate is not between 0.0 and 1.0
         """
 
+        # Compute occupancy rate and/or number of agents
         if self.n_agents is not None:
 
             occupancy_rate = round(
@@ -231,36 +258,34 @@ class Simulation:
                 raise ValueError("Invalid occupancy rate (must be > 0 & <=1")
             self.n_agents = round(self.occupancy_rate * self.total_offices)
 
+        # Load pre-assigned offices as needed
+        if (
+            self.preassigned_offices is not None
+            and len(self.preassigned_offices) != self.n_agents
+        ):
+            raise ValueError(
+                "Preassigned offices must equal number of agents %d vs %d.",
+                len(self.preassigned_offices),
+                self.n_agents,
+            )
         LOG.info("Running simulation serially")
         LOG.info("Total agents: " + str(self.n_agents))
 
         self.create_sim_hash()
         self.save_manifest(workdir)
         self.save_maps(workdir)
-
-        # Create meetings
-        agent_ids = list(range(self.n_agents))
-        meeting_room_objects = []
-        for fn, floor_rooms in enumerate(self.facility.meeting_rooms):
-            floor_room_objs = []
-            for room_id in floor_rooms:
-                room_obj = self.facility.floorplans[fn].spaces[room_id]
-                floor_room_objs.append(room_obj)
-            meeting_room_objects.append(floor_room_objs)
-        self.meeting_policy = MeetingPolicy(
-            meeting_room_objects,
-            agent_ids,
-            daylength=self.daylength,
-            policy_params=self.meetings_policy_params,
-        )
-
-        n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
-        if n_meeting_rooms > 0 and self.create_meetings:
-            self.meeting_policy.create_all_meetings()
-
-        # Create schedule and itinerary for each agent
+        self.generate_meetings()
         self.add_agents_and_build_schedules()
+        self.save_schedules(workdir)
+        self.run_simulation_and_save_results(workdir)
 
+    def run_simulation_and_save_results(self, workdir: str) -> None:
+        """
+        Perform simulation and save results to files.
+
+        :param workdir: path where results are saved.
+        :type workdir: str
+        """
         # open files
         traj_file = workdir + "/trajectory.txt"
         t_outfile = open(traj_file, "w")  # Keep the trajectory file open
@@ -290,13 +315,35 @@ class Simulation:
             cof.close()
         LOG.info("Done with simulation.\n")
 
+    def assign_office(self) -> Tuple[int, int]:
+        """
+        Assign an office to the current agent. If office spaces are not
+        pre-assigned, select one randomly and remove it from list of available
+        offices. Otherwise, return the next office from the queue.
+
+        :return: office id and floor
+        :rtype: Tuple[int, int]
+        """
+
+        if self.preassigned_offices is not None:
+            office_id, office_floor = self.preassigned_offices.pop(0)
+        else:
+            office_floor = np.random.randint(self.facility.number_of_floors)
+            n_offices = len(self.facility.all_office_spaces[office_floor])
+            rint = np.random.randint(n_offices)
+            office_id = self.facility.all_office_spaces[office_floor].pop(rint)
+
+        return office_id, office_floor
+
     def add_agents_and_build_schedules(self) -> None:
         """
         Add the specified number of agents to the facility and create a
         schedule and an itinerary for each of them.
+
+        :raises ValueError: If an entrance could not be found
+
         """
         LOG.info("Initializing with " + str(self.n_agents) + " agents...")
-        total_agents = 0
         current_agent = 0
         agent_pool = list(range(self.n_agents))
         for shift in self.shifts:
@@ -304,7 +351,6 @@ class Simulation:
             n_shift_agents = round(shift["percent_agents"] * self.n_agents)
             shift_agents = np.random.choice(agent_pool, n_shift_agents)
             agent_pool = [a for a in agent_pool if a not in shift_agents]
-            total_agents += n_shift_agents
 
             LOG.info("Working with shift: " + shift["name"])
             LOG.info("\tNumber of agents: " + str(n_shift_agents))
@@ -312,27 +358,21 @@ class Simulation:
 
             for _ in pb.progressbar(shift_agents):
 
-                entrance_door = None
+                # Find office space
+                office_id, office_floor = self.assign_office()
 
-                while entrance_door is None:
+                # Choose the closest entrance to office
+                (
+                    entrance_door,
+                    entrance_floor,
+                ) = self.facility.choose_best_entrance(office_floor, office_id)
 
-                    office_floor = np.random.randint(
-                        self.facility.number_of_floors
-                    )
-                    n_offices = len(
-                        self.facility.all_office_spaces[office_floor]
-                    )
-                    rint = np.random.randint(n_offices)
-                    office_id = self.facility.all_office_spaces[
-                        office_floor
-                    ].pop(rint)
-
-                    # Choose the closest entrance to office
-                    (
-                        entrance_door,
-                        entrance_floor,
-                    ) = self.facility.choose_best_entrance(
-                        office_floor, office_id
+                if entrance_door is None:
+                    office = self.facility.floorplans[office_floor].spaces[
+                        office_id
+                    ]
+                    raise ValueError(
+                        f"Unable to assign this office: {office.unique_name}"
                     )
 
                 # Sample start time and exit time from a poisson distribution
@@ -418,40 +458,52 @@ class Simulation:
         proximity_indices = self.identify_xy_proximity(positions_vector)
 
         for i, j in proximity_indices:
-            if i < j:  # only consider upper right side of symmetric matrix
-                agent1 = agents[i]
-                agent2 = agents[j]
+            if i >= j:  # only consider upper right side of symmetric matrix
+                continue
+            agent1 = agents[i]
+            agent2 = agents[j]
 
-                if (
-                    agent1.current_location is None
-                    or agent2.current_location is None
-                ):
-                    continue
+            if (
+                agent1.current_location is None
+                or agent2.current_location is None
+            ):
+                continue
 
-                if agent1.current_floor == agent2.current_floor:
-                    fn = agent1.current_floor
-                    if agent1.current_location == agent2.current_location:
-                        self.add_contact_event(agent1, agent2)
+            if agent1.current_floor == agent2.current_floor:
+                fn = agent1.current_floor
+                if agent1.current_location == agent2.current_location:
+                    self.add_contact_event(agent1, agent2)
 
-                    else:
-                        hallways_graph = (
-                            self.facility.navigation.hallways_graph_per_floor[
-                                fn
-                            ]
-                        )
-                        if hallways_graph is None:
-                            continue
-                        floorplan = self.facility.floorplans[fn]
-                        space1 = floorplan.spaces[agent1.current_location]
-                        space2 = floorplan.spaces[agent2.current_location]
-                        if not space1.is_space_a_hallway():
-                            continue
-                        if not space2.is_space_a_hallway():
-                            continue
-                        if hallways_graph.has_edge(
-                            space1.unique_name, space2.unique_name
-                        ):
-                            self.add_contact_event(agent1, agent2)
+                else:
+                    self.verify_and_add_contact(fn, agent1, agent2)
+
+    def verify_and_add_contact(
+        self, floor_number: int, agent1: Agent, agent2: Agent
+    ):
+        """
+        Verify if agents are in nearby hallways before creating contact event.
+
+        :param floor_number: [description]
+        :type floor_number: int
+        :param agent1: First agent
+        :type agent1: Agent
+        :param agent2: Second agent
+        :type agent2: Agent
+        """
+        hallways_graph = self.facility.navigation.hallways_graph_per_floor[
+            floor_number
+        ]
+        floorplan = self.facility.floorplans[floor_number]
+        space1 = floorplan.spaces[agent1.current_location]
+        space2 = floorplan.spaces[agent2.current_location]
+        if (
+            hallways_graph is None
+            or not space1.is_space_a_hallway()
+            or not space2.is_space_a_hallway()
+        ):
+            return
+        if hallways_graph.has_edge(space1.unique_name, space2.unique_name):
+            self.add_contact_event(agent1, agent2)
 
     def add_contact_event(self, agent1: Agent, agent2: Agent) -> None:
         """
@@ -478,8 +530,6 @@ class Simulation:
             self.step_contact_locations[agent1.current_floor][contact_pos] = 1
         else:
             self.step_contact_locations[agent1.current_floor][contact_pos] += 1
-
-        return
 
     def step(
         self,
@@ -744,6 +794,54 @@ class Simulation:
 
         tree.write(heatmap_file)
 
+    def save_schedules(self, work_directory: str) -> None:
+        """
+        Write schedules and meetings to file.
+
+        Three files are created: one for all the
+        meetings, one for the full schedule of all the agents and the last one
+        with each agent's assigned office.
+
+        :param work_directory: directory where output files are to be saved.
+        :type work_directory: str
+        """
+
+        # agent ids
+        filename = os.path.join(work_directory, "agent_ids.csv")
+        with open(filename, "w") as outfile:
+            outfile.write("AgentID,OfficeID,FloorID\n")
+            for unique_id, agent in self.agents.items():
+                outfile.write(
+                    str(unique_id)
+                    + ","
+                    + str(agent.schedule.office_location)
+                    + ","
+                    + str(agent.schedule.office_floor)
+                    + "\n"
+                )
+
+        # Meetings
+        filename = os.path.join(work_directory, "meetings.txt")
+        with open(filename, "w") as outfile:
+            outfile.write(
+                "Total number of meetings: "
+                + str(len(self.meeting_policy.meetings))
+                + "\n\n"
+            )
+            for meeting in self.meeting_policy.meetings:
+                outfile.write(str(meeting) + "\n")
+
+        # Full schedules of all agents
+        filename = os.path.join(work_directory, "schedules.txt")
+        with open(filename, "w") as outfile:
+            for unique_id, agent in self.agents.items():
+                outfile.write(
+                    "Agent ID: "
+                    + str(unique_id)
+                    + str(agent.schedule)
+                    + "\n\n"
+                )
+
     def save_outputs(self, work_directory: str) -> None:
         """
         Write output files to the output directory
@@ -762,12 +860,6 @@ class Simulation:
             outfile.write("agent_ID,Number_of_Contacts\n")
             for eid, nc in zip(agent_ids, n_contacts):
                 outfile.write(str(eid) + "," + str(nc) + "\n")
-
-        # agent ids
-        filename = os.path.join(work_directory, "agent_ids.txt")
-        with open(filename, "w") as outfile:
-            for unique_id, agent in self.agents.items():
-                outfile.write(str(unique_id + 1) + "\n")
 
         # Pair contacts
         filename = os.path.join(work_directory, "pair_contact.csv")

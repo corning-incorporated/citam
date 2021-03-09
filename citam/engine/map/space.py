@@ -207,9 +207,12 @@ class Space:
         """
         # check if point is outside bounding box
         minx, maxx, miny, maxy = self.path.bbox()
-        if test_point.x < round(minx) or test_point.x > round(maxx):
-            return False
-        elif test_point.y < round(miny) or test_point.y > round(maxy):
+        if (
+            test_point.x < round(minx)
+            or test_point.x > round(maxx)
+            or test_point.y < round(miny)
+            or test_point.y > round(maxy)
+        ):
             return False
 
         # Check if point is on the door line, for a room
@@ -228,6 +231,20 @@ class Space:
             else:
                 return True
 
+        return self.infinite_line_intersection_test(test_point)
+
+    def infinite_line_intersection_test(self, test_point: Point) -> bool:
+        """
+        Create s set of infinite lines starting from the test point and count
+        the number of intersections with the space boundaries.
+        If the number of intesections is odd for any test line, return True.
+        Return False otherwise.
+
+        :param test_point: The test point of interest.
+        :type test_point: Point
+        :return: Whether the number of intersections is odd for any test line.
+        :rtype: bool
+        """
         # Create a point for line segment from p to infinite
         inf = 1e10
         extreme_points = [
@@ -242,7 +259,6 @@ class Space:
         ]
 
         # Count intersections of the above lines with sides of polygon
-
         for extreme in extreme_points:
             count = 0
             for line in self.boundaries:
