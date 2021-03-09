@@ -64,11 +64,16 @@ export function getContact(simulation, floor) {
  *
  * @param {string} simulation - Simulation id
  * @param {string} floor - floor
- * @param {number} offset - floor
+ * @param {number} offset - offset
+ * * @param {number} first_timestep - first_timestep
+ * * @param {number} max_steps - max_steps
  * @return {Promise<AxiosResponse>} trajectory data
  */
-export function getTrajectory(simulation, floor, offset) {
-  return axios.get(`${simulation}/trajectory`, {params: {floor: floor, offset: offset}});
+export function getTrajectory(simulation, floor, offset,
+                              first_timestep, max_steps) {
+  return axios.get(`${simulation}/trajectory`, {params:
+        {floor: floor, offset: offset, first_timestep: first_timestep, max_steps:max_steps}
+  });
 }
 
   /**

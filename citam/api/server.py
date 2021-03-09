@@ -63,8 +63,11 @@ class ResultsResource:
         offset = (
             int(req.params.get("offset")) if req.params.get("offset") else 0
         )
+        first_timestep = int(req.params.get("first_timestep"))
+        max_steps = int(req.params.get("max_steps"))
         start_time = time.time()
-        resp.media = parser.get_trajectories(sim_id, floor, offset)
+        resp.media = parser.get_trajectories(sim_id, floor, offset,
+                                             first_timestep, max_steps)
         resp.status = falcon.HTTP_200
         print("Total time: ", time.time() - start_time)
 
@@ -132,6 +135,7 @@ class ResultsResource:
         self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get pair contact data"""
+        print("----------------In get pair contact---------------------")
         resp.media = parser.get_pair_contacts(sim_id)
         resp.status = falcon.HTTP_200
 

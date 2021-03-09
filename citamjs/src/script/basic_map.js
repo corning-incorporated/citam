@@ -10,7 +10,7 @@
  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
  ==========================================================================
-**/
+ **/
 
 
 import * as d3 from 'd3';
@@ -21,7 +21,7 @@ import {Loader} from './utils/loader';
 import {
     getBaseMap,
     getContact,
-    getTrajectoryLines,
+    // getTrajectoryLines,
     getTrajectory,
     getContactPositionDist,
     getSummary,
@@ -117,31 +117,37 @@ export default class Map2D {
         return this.reloadSimulation();
     }
 
-    async getTrajectoryData(offset) {
+   async getTrajectoryData(offset = 0) {
         // let _this = this;
-        await getTrajectory(this.simulation, this.floor, offset)
-            .then(response=>{
-                trajectoryCollection = trajectoryCollection.concat(response.data.data);
-                offset = response.data['statistics']['cfl'] // cfl is where file was stopped
-                if (offset < this.trajectoriesLines) {
-                    this.getTrajectoryData(offset)
-                } else {
-                    this.totalSteps = trajectoryCollection.length;
-                    this.trajectories =  trajectoryCollection;
-                    let contactList = [];
-                    trajectoryCollection.map(function(a){a.map(function(a1){contactList.push(a1.x)})})
-                    let contactDomain = [0, getMax(contactList)];
-                    this.colorMap.domain(contactDomain);
-                    this.colorBar.update(...contactDomain);
-                    this.loader.trajectoryLoaded();
-                    this.loader.hide();
-                    this.timer.show();
-                    this.colorBar.show();
-                    this.startAnimation();
+        let totalSteps = 35400, max_steps = 5000,
+            request_arr = [], first_timestep = 0;
+        trajectoryCollection = [];
+        while (first_timestep < totalSteps) {
+            request_arr.push(getTrajectory(this.simulation, this.floor, offset, first_timestep, max_steps));
+            first_timestep += max_steps;
+        }
+        await Promise.all(request_arr).then((response) => {
+            response.forEach((val) => {
+                trajectoryCollection = trajectoryCollection.concat(val.data.data);
+                this.totalSteps = trajectoryCollection.length;
+                this.trajectories = trajectoryCollection;
+                let contactList = [];
+                trajectoryCollection.map(function (a) {
+                    a.map(function (a1) {
+                        contactList.push(a1.x)
+                    })
+                })
+                let contactDomain = [0, getMax(contactList)];
+                this.colorMap.domain(contactDomain);
+                this.colorBar.update(...contactDomain);
+                this.loader.trajectoryLoaded();
+                this.loader.hide();
+                this.timer.show();
+                this.colorBar.show();
+                this.startAnimation();
+            })
 
-                }
-            });
-
+        })
     }
 
 
@@ -176,11 +182,11 @@ export default class Map2D {
             });
 
 
-        let trajectoriesLinesRequest = getTrajectoryLines(this.simulation, this.floor)
-            .then(response => {
-                this.trajectoriesLines = response.data.data;
-                // this.getTrajectoryData(0)
-            });
+        // let trajectoriesLinesRequest = getTrajectoryLines(this.simulation, this.floor)
+        //     .then(response => {
+        //         this.trajectoriesLines = response.data.data;
+        //         // this.getTrajectoryData(0)
+        //     });
 
 
         let mapRequest = getBaseMap(this.simulation, this.floor)
@@ -202,8 +208,7 @@ export default class Map2D {
             summaryRequest,
             contactDist,
             contactsRequest,
-            trajectoriesLinesRequest,
-
+            // trajectoriesLinesRequest,
             mapRequest,
         ])
         return this;
