@@ -52,11 +52,13 @@ def test_get_summary(client):
 
 
 def test_trajectory_response(client):
-    result: testing.Result = client.simulate_get("/v1/sim_id_0001/trajectory")
+    result: testing.Result = client.simulate_get(
+        "/v1/sim_id_0001/trajectory?first_timestep=1&max_steps=5000"
+    )
     assert result.status_code == 200
     assert result.json.get("data")
     assert result.json.get("statistics")
-    assert result.json["statistics"].get("max_contacts")
+    assert result.json["statistics"].get("cfl")
 
 
 def test_contact_response(client):
