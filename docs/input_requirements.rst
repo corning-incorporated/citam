@@ -5,8 +5,8 @@
 Simulation Input Requirements
 ==============================
 
-Simulation inputs are provided in JSON files. There is one required input file
-which is the main simulation input file and two optional input files which are
+Simulation inputs are provided in JSON files. There is one required input file:
+the main simulation input file; and two optional input files:
 the meetings and scheduling policies respectively.
 
 -----------------------
@@ -55,7 +55,7 @@ Scheduling Policy
 -------------------
 
 The optional scheduling policy file contains parameters that describe where and when agents
-move within the facility. The default values can be found in citam/egine/constants.py.
+move within the facility. The default values can be found in citam/engine/constants.py.
 
 The sceduling policy is made of scheduling purposes where each purpose has a
 name, a minimum duration, a maximum duration, a minimum instances and a maximum
