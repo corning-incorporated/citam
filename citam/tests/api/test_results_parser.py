@@ -50,7 +50,7 @@ def test_get_contacts_multiple_contact_step(use_local_storage):
     assert len(step) == 2
     expected = [
         {"x": 120, "y": 602, "count": 2},
-        {"x": 168.0, "y": 600.0, "count": 1},
+        {"x": 168, "y": 600, "count": 1},
     ]
     for ix, contact in enumerate(step):
         assert contact == expected[ix]

@@ -14,6 +14,7 @@
 
 import axios from 'axios';
 
+axios.defaults.timeout = 20000*60;
 /**
  * Create a promise which resolves immediately contianing data
  *
@@ -63,10 +64,26 @@ export function getContact(simulation, floor) {
  *
  * @param {string} simulation - Simulation id
  * @param {string} floor - floor
+ * @param {number} offset - offset
+ * * @param {number} first_timestep - first_timestep
+ * * @param {number} max_steps - max_steps
  * @return {Promise<AxiosResponse>} trajectory data
  */
-export function getTrajectory(simulation, floor) {
-  return axios.get(`${simulation}/trajectory`, {params: {floor: floor}});
+export function getTrajectory(simulation, floor, offset,
+                              first_timestep, max_steps) {
+  return axios.get(`${simulation}/trajectory`, {params:
+        {floor: floor, offset: offset, first_timestep: first_timestep, max_steps:max_steps}
+  });
+}
+
+  /**
+   *
+   * @param simulation
+   * @param floor
+   * @returns {Promise<AxiosResponse<any>>}
+   */
+export function getTrajectoryLines(simulation, floor) {
+  return axios.get(`${simulation}/trajectory_lines`, {params: {floor: floor}});
 }
 
 /** Cache summary responses **/

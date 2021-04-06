@@ -106,6 +106,13 @@ class LocalStorageDriver(BaseStorageDriver):
             "r",
         )
 
+    def get_trajectory_file_location(self, sim_id):
+        manifest = self.get_manifest(sim_id)
+        return os.path.join(
+            self.result_dirs[sim_id],
+            manifest.get("trajectory_file", "trajectory.txt"),
+        )
+
     def get_contact_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
         return open(
