@@ -102,10 +102,8 @@ def find_aisles(
     aisles: List[Tuple[Line, Line]] = []
 
     for wall1 in valid_boundaries:
-
         if not is_wall_valid_for_aisle(no_repeat, wall1, aisles):
             continue
-
         wall2 = find_closest_parallel_wall(valid_boundaries, wall1)
         if not is_wall_valid_for_aisle(no_repeat, wall2, aisles):
             continue

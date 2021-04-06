@@ -337,6 +337,7 @@ def run_simulation(inputs: dict):
 def initialize_oneway_network(navnet: Graph) -> Graph:
     oneway_network = nx.Graph()
     for e in list(navnet.to_undirected().edges()):
+
         if (
             "node_type" not in navnet.nodes[e[0]]
             or "node_type" not in navnet.nodes[e[1]]
