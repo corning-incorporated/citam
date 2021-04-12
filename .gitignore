@@ -267,3 +267,5 @@ dist
 .pnp.*
 
 **/db_dist/
+
+**/dist_electron/

@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -12,7 +10,7 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-from typing import Tuple, List
+from typing import Optional, Tuple, List
 
 from svgpathtools import Line, Path
 
@@ -57,6 +55,32 @@ def find_closest_parallel_wall(
     return best_wall
 
 
+def is_wall_valid_for_aisle(
+    no_repeat: bool, wall: Optional[Line], aisles: List[Tuple[Line, Line]]
+) -> bool:
+    """
+    Check if a wall is valid to be apart of an aisle.
+
+    :param no_repeat: Whether to consider walls that are already part of an
+        aisle or not.
+    :type no_repeat: bool
+    :param wall: the wall of interst
+    :type wall: Optional[Line]
+    :param aisles: the list of all currently identified aisles.
+    :type aisles: List[Tuple[Line, Line]]
+    :return: whether this is a valid wall or not.
+    :rtype: bool
+    """
+    if (
+        wall is None
+        or wall.length() <= 1.0
+        or (no_repeat and is_this_wall_part_of_an_aisle(wall, aisles))
+    ):
+        return False
+
+    return True
+
+
 def find_aisles(
     space: Space, valid_boundaries: List[Line], no_repeat=True
 ) -> List[Tuple[Line, Line]]:
@@ -78,20 +102,10 @@ def find_aisles(
     aisles: List[Tuple[Line, Line]] = []
 
     for wall1 in valid_boundaries:
-        if wall1.length() <= 1.0:
+        if not is_wall_valid_for_aisle(no_repeat, wall1, aisles):
             continue
-        if no_repeat and is_this_wall_part_of_an_aisle(wall1, aisles):
-            continue
-
         wall2 = find_closest_parallel_wall(valid_boundaries, wall1)
-
-        if not wall2:
-            continue
-
-        if wall2.length() <= 1.0:
-            continue
-
-        if no_repeat and is_this_wall_part_of_an_aisle(wall2, aisles):
+        if not is_wall_valid_for_aisle(no_repeat, wall2, aisles):
             continue
 
         if (wall1, wall2) in aisles or (wall2, wall1) in aisles:
@@ -133,15 +147,15 @@ def get_aisle_center_point_and_width(
     """
 
     # Perpendicular vector between the two walls
-    V_perp = g.calculate_perpendicular_vector(aisle[0], aisle[1])
+    v_perp = g.calculate_perpendicular_vector(aisle[0], aisle[1])
     # Half way between the two walls from the middle of the first wall
     mid_point = aisle[0].point(0.5)
     center_point = Point(
-        x=int(round(mid_point.real + V_perp[0] / 2.0)),
-        y=int(round(mid_point.imag + V_perp[1] / 2.0)),
+        x=int(round(mid_point.real + v_perp[0] / 2.0)),
+        y=int(round(mid_point.imag + v_perp[1] / 2.0)),
     )
     # Width of aisle
-    width = (V_perp[0] ** 2 + V_perp[1] ** 2) ** 0.5
+    width = (v_perp[0] ** 2 + v_perp[1] ** 2) ** 0.5
 
     return center_point, width
 
@@ -261,50 +275,75 @@ def do_walls_overlap(
 
     x_overlap, y_overlap = g.calculate_x_and_y_overlap(wall1, wall2)
 
-    p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
-    q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
+    p1, q1 = extract_end_points(wall1)
+    p2, q2 = extract_end_points(wall2)
 
-    p2 = Point(x=round(wall2.start.real), y=round(wall2.start.imag))
-    q2 = Point(x=round(wall2.end.real), y=round(wall2.end.imag))
+    if g.is_one_segment_within_the_other(p1, q1, p2, q2) or (
+        (x_overlap > 0 or y_overlap > 0)
+        and g.do_lines_intersect_at_endpoint(p1, q1, p2, q2)
+    ):
+        return check_for_collinearity(wall1, wall2, max_distance)
 
-    on_segment_test = False
+    return False
 
-    if g.is_one_segment_within_the_other(p1, q1, p2, q2):
-        on_segment_test = True
 
-    # only one point from line being on the other is necessary
-    elif x_overlap > 0 or y_overlap > 0:
-        if g.do_lines_intersect_at_endpoint(p1, q1, p2, q2):
-            on_segment_test = True
+def extract_end_points(wall: Line) -> Tuple[Point, Point]:
+    """
+    Extract the end points of a wall returned as integer coordinates.
 
-    if on_segment_test:
+    :param wall: The wall of interest.
+    :type wall: Line
+    :return: The end points.
+    :rtype: Tuple[Point, Point]
+    """
+    p = Point(x=round(wall.start.real), y=round(wall.start.imag))
+    q = Point(x=round(wall.end.real), y=round(wall.end.imag))
+    return p, q
 
-        # Check if all 4 point are collinear
-        o1 = g.determine_orientation(p1, q1, p2)
-        o2 = g.determine_orientation(p1, q1, q2)
 
-        if o1 == o2 and o1 == 0:
-            return True
+def check_for_collinearity(
+    wall1: Line, wall2: Line, max_distance: float
+) -> bool:
+    """
+    Verify that two walls are collinear by making sure all end points are or
+    by measuring the distance and angle between the walls.
 
-        # only do this for walls that are diagonal
-        tol = 1e-2
+    :param wall1: The first wall
+    :type wall1: Line
+    :param wall2: The second wall
+    :type wall2: Line
+    :param max_distance: The max distance to consider them to be collinear
+    :type max_distance: float
+    :return: Whether they are collinear or not
+    :rtype: bool
+    """
+    p1, q1 = extract_end_points(wall1)
+    p2, q2 = extract_end_points(wall2)
+
+    # Check if all 4 point are collinear
+    o1 = g.determine_orientation(p1, q1, p2)
+    o2 = g.determine_orientation(p1, q1, q2)
+
+    if o1 == o2 and o1 == 0:
+        return True
+
+    # only do this for walls that are diagonal
+    tol = 1e-2
+    if not (
+        abs(p1.x - q1.x) < tol
+        or abs(p1.y - q1.y) < tol
+        or abs(p2.x - q2.x) < tol
+        or abs(p2.y - q2.y) < tol
+    ):
+        (
+            dot_product,
+            distance,
+        ) = g.calculate_dot_product_and_distance_between_walls(wall1, wall2)
         if (
-            abs(p1.x - q1.x) < tol
-            or abs(p1.y - q1.y) < tol
-            or abs(p2.x - q2.x) < tol
-            or abs(p2.y - q2.y) < tol
+            dot_product is not None
+            and abs(dot_product - 1.0) < 1e-3
+            and distance < max_distance
         ):
-            # At least one of the walls is horizontal or vertical
-            pass
-        else:
-            (
-                dot_product,
-                distance,
-            ) = g.calculate_dot_product_and_distance_between_walls(
-                wall1, wall2
-            )
-            if dot_product is not None:
-                if abs(dot_product - 1.0) < 1e-3 and distance < max_distance:
-                    return True
+            return True
 
     return False
