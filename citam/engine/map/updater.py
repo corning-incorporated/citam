@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -13,21 +11,44 @@
 # ==============================================================================
 
 import logging
+from typing import Union, List, Tuple, Optional
+import pathlib
 
-from svgpathtools import Line, svg2paths
+from svgpathtools import Line, svg2paths, Path
 
 import citam.engine.map.geometry as gsu
+import citam.engine.map.utils as fu
 from citam.engine.map.door import Door
 from citam.engine.io.input_parser import parse_csv_metadata_file
 from citam.engine.map.point import Point
 from citam.engine.map.space import Space
+from citam.engine.map.floorplan import Floorplan
 
 LOG = logging.getLogger(__name__)
 
 
 class FloorplanUpdater:
-    def __init__(self, floorplan, svg_file=None, csv_file=None):
-        super().__init__()
+    """
+    Class to update an existing floorplan from SVG and CSV files.
+    """
+
+    def __init__(
+        self,
+        floorplan: Floorplan,
+        svg_file: Union[str, pathlib.Path] = None,
+        csv_file: Union[str, pathlib.Path] = None,
+    ) -> None:
+        """
+        Initialize a new floorplan updater object.
+
+        :param floorplan: The floorplan to update.
+        :type floorplan: Floorplan
+        :param svg_file: location of the svg file, defaults to None
+        :type svg_file: Union[str, pathlib.Path], optional
+        :param csv_file: location of the csv file, defaults to None
+        :type csv_file: Union[str, pathlib.Path], optional
+        """
+
         self.floorplan = floorplan
         self.csv_file = csv_file
         self.svg_file = svg_file
@@ -36,13 +57,11 @@ class FloorplanUpdater:
             LOG.error("At least one of svg or csv file required")
             quit()
 
-        return
+    def update_from_csv_data(self) -> None:
+        """
+        Update space properties in floorplan using data from CSV file
 
-    def update_from_CSV_data(self):
-        """Update space properties in floorplan using data from CSV file
-
-        Cannot change space unique names
-
+        ..Note:: Cannot change space unique names
         """
 
         space_info = parse_csv_metadata_file(self.csv_file)
@@ -58,20 +77,14 @@ class FloorplanUpdater:
                     self.floorplan.spaces[i] = space
                     break
 
-        return
+    def read_updated_svg_file(self) -> Tuple[List[Path], List[Path]]:
+        """
+        Read edited SVG file and extract wall and door paths.
 
-    def read_updated_svg_file(self):
-        """Read edited SVG file and extract wall and door paths.
+        TODO: use appropriate function in io.input_parser instead.
 
-        Parameters
-        -----------
-        svg_file: str
-            The SVG file to read
-
-        Returns
-        --------
-        svg_wall_paths: list<Path>
-        svg_door_paths: list<Path>
+        :return: List of wall and door paths from SVG file.
+        :rtype: Tuple[List[Path], List[Path]]
         """
         paths, attributes = svg2paths(self.svg_file)
         svg_door_paths = []
@@ -86,29 +99,30 @@ class FloorplanUpdater:
 
         return svg_wall_paths, svg_door_paths
 
-    def find_special_walls(self, svg_wall_paths):
-        """Compared walls from svg file to exising walls and identify new or
+    def find_special_walls(self, svg_wall_paths: List[Line]) -> None:
+        """
+        Compared walls from svg file to exising walls and identify new or
         edited walls as special walls
 
-        Parameters
-        -----------
-        svg_wall_paths: list<Path>
-            List of path elements representing the walls from the SVG file
-
-        Returns
-        --------
-        None
+        :param svg_wall_paths: List of path elements representing the walls
+             from the SVG file.
+        :type svg_wall_paths: List[Line]
         """
+
         new_or_edited_walls = [
             wall for wall in svg_wall_paths if wall not in self.floorplan.walls
         ]
         LOG.info("We found %d updated walls", len(new_or_edited_walls))
         self.floorplan.special_walls = new_or_edited_walls
 
-    def remove_door_from_spaces(self, door):
+    def remove_door_from_spaces(self, door: Door) -> None:
         """
         Remove door from corresponding spaces.
+
+        :param door: The door to remove from the facility.
+        :type door: Door
         """
+
         if door.space1 is not None:
             index = self.floorplan.spaces.index(door.space1)
             if door.path in self.floorplan.spaces[index].doors:
@@ -123,57 +137,50 @@ class FloorplanUpdater:
         #         self.remove_segment_from_wall(door.path, wall)
         # break
 
-    def find_doors_to_remove(self):
-        """Go through existing doors and check if they overal with any special
+    def find_doors_to_remove(self) -> List[Door]:
+        """
+        Go through existing doors and check if they overal with any special
         walls. If so, tag them for removal
 
-        Parameters
-        -----------
-
-        Returns
-        --------
-        list<Door>
-            List of doors to remove
+        :return: List of doors to remove.
+        :rtype: List[Door]
         """
+
         doors_to_remove = []
         for door in self.floorplan.doors:
             for wall in self.floorplan.special_walls:
-                if gsu.do_walls_overlap(wall, door.path):
+                if fu.do_walls_overlap(wall, door.path):
                     # remove the wall from the door so as to shorten or
                     # completely remove the door
                     doors_to_remove.append(door)
 
         return doors_to_remove
 
-    def run(self):
-        """Run the floorplan update process using data from provided csv
+    def run(self) -> None:
+        """
+        Run the floorplan update process using data from provided csv
         and svg files.
         """
         if self.svg_file is not None:
             svg_wall_paths, svg_door_paths = self.read_updated_svg_file()
-            self.update_from_SVG_data(svg_wall_paths, svg_door_paths)
+            self.update_from_svg_data(svg_wall_paths, svg_door_paths)
 
         if self.csv_file is not None:
-            self.update_from_CSV_data()
+            self.update_from_csv_data()
 
-        return
-
-    def update_from_SVG_data(self, svg_wall_paths, svg_door_paths):
-        """Read SVG file to extract walls and door info and update floorplan
+    def update_from_svg_data(
+        self, svg_wall_paths: List[Path], svg_door_paths: List[Path]
+    ) -> None:
+        """
+        Read SVG file to extract walls and door info and update floorplan
         object accordingly.
 
-        This cannot be used to add or remove spaces from the floorplan.
-
-        Parameters
-        -----------
-        svg_file: str
-            The svg file to use for the update
-
-        Returns
-        --------
-        bool
-            Whether the process was successful or not
+        :param svg_wall_paths: List of paths representing walls.
+        :type svg_wall_paths: List[Path]
+        :param svg_door_paths: List of paths representing doors.
+        :type svg_door_paths: List[Path]
         """
+
         n_walls = len(self.floorplan.walls)
         LOG.info("Number of walls before: %d", n_walls)
         self.find_special_walls(svg_wall_paths)
@@ -207,25 +214,20 @@ class FloorplanUpdater:
         LOG.info("Final doors: %d", len(self.floorplan.doors))
         LOG.info("Done.")
 
-        return
-
-    def find_spaces_for_door(self, door_path):
-        """Given a door path, check which spaces lie of both sides of the door.
-
-        For now, only lines are supported. Bezier not supported yet.
-
-        Parameters
-        -----------
-        door_path: Line
-            The line object describing the door
-
-        Returns
-        --------
-        space1: int
-            Integer index of the first space
-        space2: int
-            Integer index of the second space
+    def find_spaces_for_door(
+        self, door_path: Path
+    ) -> Tuple[Optional[Space], Optional[Space]]:
         """
+        Given a door path, check which spaces are on both sides of the door.
+
+        ..Note:: Only line objects are supported (BezierCurves are not).
+
+        :param door_path: the door of interest.
+        :type door_path: Path
+        :return: Spaces of either side of the door, None if not found.
+        :rtype: Tuple[Optional[Space], Optional[Space]]
+        """
+
         # Rounding coordinates (fractional coordinates are not supported)
         door_path = Line(
             start=complex(
@@ -247,23 +249,36 @@ class FloorplanUpdater:
 
         indices = self.find_spaces_of_point(new_point1)
         if len(indices) > 0:
-            space1 = self.floorplan.spaces[indices[0]]
+            space1: Optional[Space] = self.floorplan.spaces[indices[0]]
         else:
             space1 = None
 
         indices = self.find_spaces_of_point(new_point2)
         if len(indices) > 0:
-            space2 = self.floorplan.spaces[indices[0]]
+            space2: Optional[Space] = self.floorplan.spaces[indices[0]]
         else:
             space2 = None
 
         return space1, space2
 
-    def overlap_door_with_wall(self, new_door, max_distance_to_walls=3.0):
+    def overlap_door_with_wall(
+        self, new_door: Line, max_distance_to_walls=3.0
+    ) -> Line:
         """
-        Verify if new door lines overlap with existing walls,
-        if so, update wall accordingly and update door as well
+        Verify if new door lines as provided by user overlap with existing
+        walls. If so, update walls accordingly (carve out door segment) and
+        update door path as necessary (e.g. translate and change orientation
+        to match be perfectly superimposed on wall).
+
+        :param new_door: New door objects.
+        :type new_door: Line
+        :param max_distance_to_walls: Distance beyond which door is considered
+            too far to belong to a given wall, defaults to 3.0
+        :type max_distance_to_walls: float, optional
+        :return: The door line after any changes.
+        :rtype: Line
         """
+
         n_initial_walls = len(self.floorplan.walls)
         for i, wall in enumerate(
             self.floorplan.walls + self.floorplan.special_walls
@@ -281,15 +296,12 @@ class FloorplanUpdater:
                 abs(dot_product - 1.0) < 1e-1
                 and distance < max_distance_to_walls
             ):
-                # door and wall overlap
-                # if gsu.do_walls_overlap(wall, new_door):
-
                 new_door = gsu.align_to_reference(wall, new_door)
-                V_perp = gsu.calculate_normal_vector_between_walls(
+                v_perp = gsu.calculate_normal_vector_between_walls(
                     new_door, wall
                 )
-                V_perp = Point(V_perp[0], V_perp[1])
-                new_door = new_door.translated(V_perp.complex_coords)
+                v_perp = Point(v_perp[0], v_perp[1])
+                new_door = new_door.translated(v_perp.complex_coords)
                 new_wall_segments = gsu.remove_segment_from_wall(
                     wall, new_door
                 )
@@ -303,23 +315,19 @@ class FloorplanUpdater:
 
         return new_door
 
-    def process_new_doors(self, svg_door_paths, updated_doors):
-        """Iterate over door paths extracted from svg file and process them
-        for addition to the floorplan
-
-        Parameters
-        -----------
-        svg_door_paths: list<Line>
-            List of door paths extracted from svg file
-        updated_doors: list<Door>
-            List of door objects to add new doors to
-        max_distance_to_wall: float
-            The maximum distance from an existing wall for a door to be
-            considered as overlapping with the wall
-        Returns
-        --------
-        None
+    def process_new_doors(
+        self, svg_door_paths: List[Line], updated_doors: List[Door]
+    ) -> None:
         """
+        Iterate over door paths extracted from svg file and process them
+        for addition to the floorplan.
+
+        :param svg_door_paths: List of door paths extracted from svg file.
+        :type svg_door_paths: List[Line]
+        :param updated_doors: List of door objects to add new doors to.
+        :type updated_doors: List[Door]
+        """
+
         n_door_paths = len(svg_door_paths)
         LOG.info("Processing %d new doors...", n_door_paths)
         for new_door in svg_door_paths:
@@ -341,29 +349,23 @@ class FloorplanUpdater:
                 updated_doors.append(door_obj)
 
                 if space1 and not space1.is_space_a_hallway():
-                    self.space1.doors.append(door_obj)
+                    space1.doors.append(door_obj)
 
                 if space2 and not space2.is_space_a_hallway():
-                    self.space2.doors.append(door_obj)
+                    space2.doors.append(door_obj)
             else:
                 LOG.warning("Could not add this door: %s", new_door)
         LOG.info("New doors processed: %d", len(svg_door_paths))
 
-        return
-
-    def find_spaces_of_point(self, point):
-        """Find all spaces that a point belongs to. This should always be
+    def find_spaces_of_point(self, point: Point) -> List[int]:
+        """
+        Find all spaces that a point belongs to. This should always be
         one unless the point is on a door line or a space boundary.
 
-        Parameters
-        -----------
-        point:Point
-            Point object of interst
-
-        Returns
-        -------
-        list<Space>
-            List of spaces where the point is found to be located
+        :param point: Point object of interest
+        :type point: Point
+        :return: List of spaces to which the point belongs.
+        :rtype: List[int]
         """
 
         indices = []

@@ -1,8 +1,6 @@
 #  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-#  This software may only be used in accordance with the licenses granted by
-#  Corning Incorporated. All other uses as well as any copying, modification
-#  or reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 #  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -54,11 +52,13 @@ def test_get_summary(client):
 
 
 def test_trajectory_response(client):
-    result: testing.Result = client.simulate_get("/v1/sim_id_0001/trajectory")
+    result: testing.Result = client.simulate_get(
+        "/v1/sim_id_0001/trajectory?first_timestep=1&max_steps=5000"
+    )
     assert result.status_code == 200
     assert result.json.get("data")
     assert result.json.get("statistics")
-    assert result.json["statistics"].get("max_contacts")
+    assert result.json["statistics"].get("cfl")
 
 
 def test_contact_response(client):

@@ -1,8 +1,6 @@
 #  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-#  This software may only be used in accordance with the licenses granted by
-#  Corning Incorporated. All other uses as well as any copying, modification
-#  or reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 #  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -36,6 +34,7 @@ from falcon.routing import StaticRoute
 
 from citam.api import parser
 from citam.conf import settings
+import time
 
 LOG = logging.getLogger(__name__)
 
@@ -61,7 +60,24 @@ class ResultsResource:
     ):
         """Get trajectory data"""
         floor = req.params.get("floor")  # Floor is allowed to be None here.
-        resp.media = parser.get_trajectories(sim_id, floor)
+        offset = (
+            int(req.params.get("offset")) if req.params.get("offset") else 0
+        )
+        first_timestep = int(req.params.get("first_timestep"))
+        max_steps = int(req.params.get("max_steps"))
+        start_time = time.time()
+        resp.media = parser.get_trajectories(
+            sim_id, floor, offset, first_timestep, max_steps
+        )
+        resp.status = falcon.HTTP_200
+        print("Total time: ", time.time() - start_time)
+
+    def on_get_trajectory_lines(
+        self, req: falcon.Request, resp: falcon.response, sim_id: str
+    ):
+        """Get trajectory data"""
+        floor = req.params.get("floor")  # Floor is allowed to be None here.
+        resp.media = parser.get_trajectories_lines(sim_id, floor)
         resp.status = falcon.HTTP_200
 
     def on_get_contact(
@@ -273,6 +289,9 @@ def get_wsgi_app():
     app.add_route("/v1/list", results, suffix="list")
     app.add_route("/v1/{sim_id}", results, suffix="summary")
     app.add_route("/v1/{sim_id}/trajectory", results, suffix="trajectory")
+    app.add_route(
+        "/v1/{sim_id}/trajectory_lines", results, suffix="trajectory_lines"
+    )
     app.add_route("/v1/{sim_id}/contact", results, suffix="contact")
     app.add_route("/v1/{sim_id}/map", results, suffix="map")
     app.add_route(

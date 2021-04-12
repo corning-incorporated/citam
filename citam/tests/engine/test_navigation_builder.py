@@ -6,13 +6,16 @@ import networkx as nx
 import os
 import pytest
 
+NAVNET_JSON_FILE = "navnet.json"
+HALLWAY_GRAPH_JSON_FILE = "hallway_graph.json"
+
 
 def test__init(x_floorplan):
 
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
 
     assert isinstance(nav_builder.floor_navnet, type(nx.Graph()))
-    assert nav_builder.current_floorplan == x_floorplan
+    assert nav_builder.floorplan == x_floorplan
     assert isinstance(nav_builder.hallways_graph, type(nx.Graph()))
 
 
@@ -61,7 +64,6 @@ def test__aisle_has_nav_segment_1(x_floorplan, aisle_from_x_floorplan):
 
 
 def test__find_location_of_point(x_floorplan):
-    space = x_floorplan.spaces[0]
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     test_point = Point(x=0, y=0)
     space, space_id = nav_builder._find_location_of_point(test_point)
@@ -239,7 +241,7 @@ def test_sanitize_graph(
     nav_builder.create_nav_segment_for_aisle(aisle_from_x_floorplan)
     nav_builder.create_nav_segment_for_aisle(aisle_from_x_floorplan2)
     nav_builder.simplify_navigation_network()
-    nav_builder.sanitize_graph()
+    nav_builder.sanitize_navnet()
 
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     assert n_nodes == 5
@@ -261,7 +263,7 @@ def test_sanitize_graph_2(rect_floorplan):
     assert n_nodes == 2
     assert n_edges == 1
 
-    nav_builder.sanitize_graph()
+    nav_builder.sanitize_navnet()
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     n_edges = nav_builder.floor_navnet.number_of_edges()
     assert n_nodes == 4
@@ -310,8 +312,8 @@ def test_export_navdata_to_json(x_floorplan, tmp_path):
 
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.json"
-    hallway_graph_file = d / "hallway_graph.json"
+    navnet_file = d / NAVNET_JSON_FILE
+    hallway_graph_file = d / HALLWAY_GRAPH_JSON_FILE
 
     nav_builder.export_navdata_to_json(navnet_file, hallway_graph_file)
 
@@ -342,8 +344,8 @@ def test_load_navdata_from_json_files_1(x_floorplan, tmp_path):
 
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.json"
-    hallway_graph_file = d / "hallway_graph.json"
+    navnet_file = d / NAVNET_JSON_FILE
+    hallway_graph_file = d / HALLWAY_GRAPH_JSON_FILE
     nav_builder.export_navdata_to_json(navnet_file, hallway_graph_file)
     nav_builder.floor_navnet.clear()
     nav_builder.load_navdata_from_json_files(navnet_file, hallway_graph_file)
@@ -373,8 +375,8 @@ def test_load_navdata_from_json_files_3(x_floorplan, tmp_path):
     nav_builder.build()
     d = tmp_path / "sub"
     d.mkdir()
-    navnet_file = d / "navnet.json"
-    hallway_graph_file = d / "hallway_graph.json"
+    navnet_file = d / NAVNET_JSON_FILE
+    hallway_graph_file = d / HALLWAY_GRAPH_JSON_FILE
 
     with pytest.raises(ValueError):
         nav_builder.load_navdata_from_json_files(
@@ -386,7 +388,7 @@ def test_load_nav_segments_from_svg_file(x_floorplan):
     nav_builder = NavigationBuilder(x_floorplan, add_all_nav_points=False)
     dir_name = os.path.dirname(os.path.realpath(__file__))
     test_svg_file = dir_name + "/sample_results/new_nav_seg.svg"
-    segs = nav_builder.load_nav_segments_from_svg_file(test_svg_file)
+    segs = nav_builder.load_nav_paths_from_svg_file(test_svg_file)
 
     assert len(segs) == 2
 
@@ -396,15 +398,11 @@ def test_update_network_from_svg_file(x_floorplan):
     nav_builder.build()
     dir_name = os.path.dirname(os.path.realpath(__file__))
     test_svg_file = dir_name + "/sample_results/new_nav_seg.svg"
-    res = nav_builder.update_network_from_svg_file(test_svg_file)
+    nav_builder.update_network_from_svg_file(test_svg_file)
 
     n_nodes = nav_builder.floor_navnet.number_of_nodes()
     n_edges = nav_builder.floor_navnet.number_of_edges()
 
-    # svg_file = 'test_nav_seg.svg'
-    # nav_builder.export_navnet_to_svg(svg_file)
-
-    assert res is True
     assert n_nodes == 12 + 10
     assert n_edges == 60
 

@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -11,9 +9,10 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
+from __future__ import annotations
 
 import logging
-
+from typing import Tuple, List, Dict, Any, Optional
 import numpy as np
 
 from citam.engine.constants import (
@@ -24,6 +23,17 @@ from citam.engine.constants import (
     MEETING,
     MEETING_BUFFER,
 )
+from citam.engine.map.door import Door
+
+
+# Navigation creates a circular import : Solved by using conditional import
+# (only for type checking)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from citam.engine.facility.navigation import Navigation
+
+from citam.engine.policy.meetings import Meeting
 
 LOG = logging.getLogger(__name__)
 
@@ -38,27 +48,56 @@ class ScheduleItem:
 
 class Schedule:
     """
-    Create and manage agents schedule and itinerary based on given
-    policies and navigation object.
+    Create and manage a schedule typically associated with one agent. Schedules
+    are created based on rules encoded in a scheduling policy and include a
+    full itinerary.
     """
 
     def __init__(
         self,
-        timestep,
-        start_time,
-        exit_time,
-        entrance_door,
-        entrance_floor,
-        exit_door,
-        exit_floor,
-        office_location,
-        office_floor,
-        navigation,
-        scheduling_rules,
-        meetings=None,
+        timestep: int,
+        start_time: int,
+        exit_time: int,
+        entrance_door: Door,
+        entrance_floor: int,
+        exit_door: Door,
+        exit_floor: int,
+        office_location: int,
+        office_floor: int,
+        navigation: Navigation,
+        scheduling_rules: Dict[str, Any],
+        meetings: List[Meeting] = None,
     ):
-        super().__init__()
+        """
+        Initialize a new schedule object.
 
+        :param timestep: The timestep determining the time resolution of the
+                schedule.
+        :type timestep: int
+        :param start_time: The start time of this schedule.
+        :type start_time: int
+        :param exit_time: When this agent exits the facility
+        :type exit_time: int
+        :param entrance_door: The door to use as entrance.
+        :type entrance_door: Door
+        :param entrance_floor: index of the entrance floor.
+        :type entrance_floor: int
+        :param exit_door: The door to use as exit.
+        :type exit_door: Door
+        :param exit_floor: Index of the exit floor.
+        :type exit_floor: int
+        :param office_location: Index of this agent's office space.
+        :type office_location: int
+        :param office_floor: Index of this agent's office floor.
+        :type office_floor: int
+        :param navigation: The navigation object for this facility.
+        :type navigation: Navigation
+        :param scheduling_rules: The rules to use to create schedule items.
+        :type scheduling_rules: Dict[str, Any]
+        :param meetings: List of in-person meetings this agent has to attend,
+             defaults to None
+        :type meetings: List[Meeting], optional
+        """
         self.start_time = start_time
         self.exit_time = exit_time
         self.entrance_door = entrance_door
@@ -67,10 +106,8 @@ class Schedule:
         self.exit_floor = exit_floor
         self.daylength = exit_time - start_time
         self.timestep = timestep
-        self.meetings = meetings
+        self.meetings = meetings if meetings else []
         self.next_meeting_index = 0
-        if meetings is None:
-            self.meetings = []
 
         self.meetings.sort(key=lambda meeting: meeting.start_time)
 
@@ -82,8 +119,10 @@ class Schedule:
 
         self.current_standing = 0
 
-        self.itinerary = [[None, None] for i in range(start_time - 2)]
-        self.schedule_items = []
+        self.itinerary: List[Tuple[Any, ...]] = [
+            (None, None) for _ in range(start_time - 2)
+        ]
+        self.schedule_items: List[ScheduleItem] = []
 
         (
             self.meeting_rooms,
@@ -140,12 +179,23 @@ class Schedule:
             ]
         )
 
-        return
-
-    def build_schedule_item(self, purpose, next_meeting_start_time):
-        """Given a purpose and additional properties such as meeting duration,
-        build a schedule item for this agent.
+    def build_schedule_item(
+        self, purpose: str, next_meeting_start_time: Optional[int]
+    ) -> ScheduleItem:
         """
+        Given a purpose and additional properties such as meeting duration,
+        build a schedule item for this agent.
+
+        :param purpose: The purpose for this schedule item.
+        :type purpose: str
+        :param next_meeting_start_time: Start of any upcoming meeting. None if
+            there is no upcoming meeting.
+        :type next_meeting_start_time: int
+        :raises ValueError: If no suitable location is found for this purpose.
+        :return: The newly created schedule item.
+        :rtype: ScheduleItem
+        """
+
         # Choose a duration
         max_duration = self.get_max_duration_for_purpose(
             purpose, next_meeting_start_time
@@ -184,11 +234,18 @@ class Schedule:
         )
         return schedule_item
 
-    def find_next_schedule_item(self):
-        """Create the next schedule item for this agent. This will correspond
-        to the next meeting on this agent's calendar or to a randomly selected
-        item from a list of valid purposes.
+    def find_next_schedule_item(self) -> ScheduleItem:
         """
+        Check if a meeting is happening within MEETING_BUFFER time. If so,
+        return the meeting as the next schedule item, otherwise, build a new
+        item that must ned before the next meeting time for this agent.
+
+        ..Note:: MEETING BUFFER is a constant specified in settings.
+
+        :return: The next schedule item.
+        :rtype: ScheduleItem
+        """
+
         next_meeting_start_time = None
         # Handle meetings first
         if len(self.meetings) > 0:
@@ -222,9 +279,20 @@ class Schedule:
 
         return schedule_item
 
-    def find_possible_purposes(self) -> list:
+    def find_possible_purposes(self) -> List[str]:
         """
-        Only keep purposes that have corresponding spaces available.
+        Feturn list of possible purposes for this agent in this facility.
+
+        Iterate over purposes defined in scheduling rules and compare with
+        purposes specified for the different locations in this facility. The
+        possible purposes are the ones for which at least one location is
+        available.
+
+        ..Note:: Possible purposes are not checked for validity based on
+        scheduling rules.
+
+        :return: list of possible purposes.
+        :rtype: List[str]
         """
 
         # TODO: add more complex rules based on employee details
@@ -249,8 +317,21 @@ class Schedule:
 
         return possible_purposes
 
-    def get_max_duration_for_purpose(self, purpose, next_meeting_start_time):
+    def get_max_duration_for_purpose(
+        self, purpose: str, next_meeting_start_time: Optional[int]
+    ) -> int:
+        """
+        Calculate the maximum duration possible for a given scheduling purpose
+        while taking into account any upcoming meeting after this schedule
+        item.
 
+        :param purpose: The purpose of the next meeting.
+        :type purpose: str
+        :param next_meeting_start_time: Start time of the next meeting.
+        :type next_meeting_start_time: int
+        :return: The maximum duration.
+        :rtype: int
+        """
         remaining_daylength = self.daylength - len(self.itinerary)
         details = self.scheduling_rules[purpose]
         max_duration = min([details["max_duration"], remaining_daylength])
@@ -261,25 +342,41 @@ class Schedule:
 
         return max_duration
 
-    def get_valid_purposes_from_possible_purposes(
-        self, next_meeting_start_time
-    ) -> list:
+    def count_purpose_occurence_in_schedule_items(self) -> List[int]:
         """
-        Iterate through list of purposes under consdieration, remove any that
-        doesn't satisfy exisiting scheduling rules.
-        """
-        valid_purposes = []
+        Iterate over schedule items and count how many items each scheduling
+        purpose exists.
 
-        # TODO: refactor this function to add to valid purpose only after all
-        # the tests have passed
-        # Count how many items of each type is already in the schedule
-        n_items = [0 for i in self.possible_purposes]
+        :return: List of counts, one per possible purpose.
+        :rtype: int
+        """
+        n_items = [0 for _ in self.possible_purposes]
         for employee_item in self.schedule_items:
             # Current items already in this employee's schedule
             for i, purpose in enumerate(self.possible_purposes):
                 if purpose == employee_item.purpose:
                     n_items[i] += 1
                     break
+        return n_items
+
+    def get_valid_purposes_from_possible_purposes(
+        self, next_meeting_start_time: Optional[int]
+    ) -> List[str]:
+        """
+        Iterate through list of purposes under consideration, remove any that
+        doesn't satisfy exisiting scheduling rules.
+
+        :param next_meeting_start_time: Start time of any upcoming meeting.
+        :type next_meeting_start_time: int
+        :return: List of valid purposes
+        :rtype: List[str]
+        """
+        valid_purposes = []
+
+        # TODO: refactor this function to add to valid purpose only after all
+        # the tests have passed
+        # Count how many items of each type is already in the schedule
+        n_items = self.count_purpose_occurence_in_schedule_items()
 
         # Don't consider schedule item that already reached their max instances
         for i, purpose in enumerate(self.possible_purposes):
@@ -310,11 +407,19 @@ class Schedule:
 
         return valid_purposes
 
-    def choose_valid_scheduling_purpose(self, next_meeting_start_time):
-        """Find a valid scheduling purpose using rules defined in the
+    def choose_valid_scheduling_purpose(
+        self, next_meeting_start_time: Optional[int]
+    ) -> str:
+        """
+        Find a valid scheduling purpose using rules defined in the
         scheduling policy for this facility. Common purposes include:
         restroom visits, lab work, office work and cafeteria visit.
 
+        :param next_meeting_start_time: Start time of the next meeting
+        :type next_meeting_start_time: Optional[int]
+        :raises ValueError: If not valid purpose is found.
+        :return: A randomly chosen purpose from list of valid purposes.
+        :rtype: str
         """
 
         valid_purposes = self.get_valid_purposes_from_possible_purposes(
@@ -327,16 +432,16 @@ class Schedule:
         else:
             raise ValueError("At least one valid purpose needed.")
 
-    def get_pace(self, scale):
-        """Randomly pick a walking pace for this agent by sampling from a
+    def get_pace(self, scale: float) -> float:
+        """
+        Randomly pick a walking pace for this agent by sampling from a
         gaussian distribution around a pace of 4 ft/sec. The acceptable
-        range is set between 2 and 6 ft/sec
+        range is set between 2 and 6 ft/sec.
 
-        Parameters
-        - Scale: the scale of the floorplan in [ft]/[drawing unit].
-
-        Returns
-        - Pace: the agent's pace in [drawing unit]/[timestep]
+        :param scale: the scale of the floorplan in [ft]/[drawing unit].
+        :type scale: float
+        :return: the agent's pace in [drawing unit]/[timestep]
+        :rtype: float
         """
         # typical walking pace: 4 ft/sec; Range : 2 to 6 ft/sec
         pace = 0.0
@@ -347,8 +452,14 @@ class Schedule:
 
         return pace
 
-    def update_schedule_items(self, new_item):
+    def update_schedule_items(self, new_item: ScheduleItem) -> None:
+        """
+        Update list of schedule items by adding this new item. If previous item
+        is the same location and purpose as this new one, merge them.
 
+        :param new_item: The new schedule item to add to the list.
+        :type new_item: ScheduleItem
+        """
         # update list of schedule items
         if len(self.schedule_items) > 0:
             last_item = self.schedule_items[-1]
@@ -365,9 +476,9 @@ class Schedule:
         else:
             self.schedule_items.append(new_item)
 
-        return
-
-    def update_itinerary(self, route, schedule_item):
+    def update_itinerary(
+        self, route: List[Tuple[Any, ...]], schedule_item: ScheduleItem
+    ) -> None:
         """
         Given a route and a next schedule item, update this agent's itinerary
         accordingly
@@ -388,17 +499,19 @@ class Schedule:
         )
 
         next_coords = (internal_point.x, internal_point.y)
-        self.itinerary.append([next_coords, next_floor_number])
+        self.itinerary.append((next_coords, next_floor_number))
 
         # Stay in this location for the given duration
         for _ in range(schedule_item.duration):
-            self.itinerary.append([next_coords, next_floor_number])
+            self.itinerary.append((next_coords, next_floor_number))
 
         # update schedule items
         self.update_schedule_items(schedule_item)
 
-    def build(self):
-        """Build this agent's schedule and corresponding itinerary."""
+    def build(self) -> None:
+        """
+        Build this agent's schedule and corresponding itinerary.
+        """
         prev_coords = (
             int(round(self.entrance_door.path.point(0.5).real)),
             int(round(self.entrance_door.path.point(0.5).imag)),
@@ -407,7 +520,7 @@ class Schedule:
         prev_location = prev_coords
         prev_floor_number = self.entrance_floor
 
-        self.itinerary.append([prev_coords, self.entrance_floor])
+        self.itinerary.append((prev_coords, self.entrance_floor))
 
         while len(self.itinerary) < self.exit_time:
 
@@ -479,8 +592,8 @@ class Schedule:
             raise ValueError("Route to leave facility must not be None")
 
         self.itinerary += route
-        self.itinerary.append([coords, self.exit_floor])
-        self.itinerary.append([None, None])
+        self.itinerary.append((coords, self.exit_floor))
+        self.itinerary.append((None, None))
 
         self.schedule_items.append(
             ScheduleItem(
@@ -491,10 +604,10 @@ class Schedule:
             )
         )
 
-        return self
-
-    def __str__(self):
-        """Convert current schedule to a str for output purposes"""
+    def __str__(self) -> str:
+        """
+        Convert current schedule to a str for output purposes
+        """
         day_length = sum(item.duration for item in self.schedule_items)
 
         string_repr = (
@@ -528,7 +641,7 @@ class Schedule:
 
         return string_repr
 
-    def get_next_position(self):
+    def get_next_position(self) -> Tuple[Optional[int], ...]:
         """Return the next position of this agent from its itinerary"""
         position = self.itinerary[self.current_standing]
         if self.current_standing < len(self.itinerary) - 1:

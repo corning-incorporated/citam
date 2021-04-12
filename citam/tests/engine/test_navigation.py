@@ -16,20 +16,16 @@ def test_get_corresponding_vertical_space_bad_method_naming(
         simple_facility_floorplan_2_floors,
         "test_simple_facility",
         None,
-        multifloor_type="naming",
+        multifloor_type="naming-2",
     )
-    my_space = None
+
     for space in nav.floorplans[0].spaces:
         if space.unique_name == "5":
             my_space = space
             break
 
-    if my_space is not None:
-        dest_space_id, dest_space = nav.get_corresponding_vertical_space(
-            my_space, 1
-        )
-    assert dest_space_id is None
-    assert dest_space is None
+    with pytest.raises(ValueError):
+        nav.get_corresponding_vertical_space(my_space, 1)
 
 
 def test_get_corresponding_vertical_space(
@@ -56,7 +52,7 @@ def test_get_corresponding_vertical_space(
     assert dest_space == expected_space
 
 
-def test_add_vertical_edges_no_edges(
+def test_add_all_vertical_edges_no_edges(
     simple_facility_floorplan_2_floors, datadir, monkeypatch
 ):
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
@@ -66,12 +62,12 @@ def test_add_vertical_edges_no_edges(
         None,
         multifloor_type="xy",
     )
-    n_vert_edges = nav.add_vertical_edges(0, 1)
+    n_vert_edges = nav.add_all_vertical_edges_between_floors(0, 1)
 
     assert n_vert_edges == 0
 
 
-def test_add_vertical_edges_no_matching_stairs(
+def test_add_all_vertical_edges_no_matching_stairs(
     simple_facility_floorplan_2_floors, datadir, monkeypatch
 ):
     # This is expected lead to a vertical edge as only the space in the
@@ -84,12 +80,12 @@ def test_add_vertical_edges_no_matching_stairs(
         None,
         multifloor_type="xy",
     )
-    n_vert_edges = nav.add_vertical_edges(0, 1)
+    n_vert_edges = nav.add_all_vertical_edges_between_floors(0, 1)
 
     assert n_vert_edges == 0
 
 
-def test_add_vertical_edges_2_edges(
+def test_add_all_vertical_edges_2_edges(
     simple_facility_floorplan_2_floors, datadir, monkeypatch
 ):
 
@@ -106,7 +102,7 @@ def test_add_vertical_edges_2_edges(
         None,
         multifloor_type="xy",
     )
-    n_vert_edges = nav.add_vertical_edges(0, 1)
+    n_vert_edges = nav.add_all_vertical_edges_between_floors(0, 1)
 
     assert n_vert_edges == 2
 

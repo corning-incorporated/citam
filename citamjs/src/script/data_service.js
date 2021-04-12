@@ -1,19 +1,20 @@
-  // Copyright 2020. Corning Incorporated. All rights reserved.
-  //
-  // This software may only be used in accordance with the licenses granted by
-  // Corning Incorporated. All other uses as well as any copying, modification or
-  // reverse engineering of the software is strictly prohibited.
-  //
-  // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-  // CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-  // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-  // WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
-  // ==============================================================================
+/**
+ Copyright 2020. Corning Incorporated. All rights reserved.
+
+ This software may only be used in accordance with the identified license(s).
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+ ==========================================================================
+**/
 
 import axios from 'axios';
 
+axios.defaults.timeout = 20000*60;
 /**
  * Create a promise which resolves immediately contianing data
  *
@@ -63,10 +64,26 @@ export function getContact(simulation, floor) {
  *
  * @param {string} simulation - Simulation id
  * @param {string} floor - floor
+ * @param {number} offset - offset
+ * * @param {number} first_timestep - first_timestep
+ * * @param {number} max_steps - max_steps
  * @return {Promise<AxiosResponse>} trajectory data
  */
-export function getTrajectory(simulation, floor) {
-  return axios.get(`${simulation}/trajectory`, {params: {floor: floor}});
+export function getTrajectory(simulation, floor, offset,
+                              first_timestep, max_steps) {
+  return axios.get(`${simulation}/trajectory`, {params:
+        {floor: floor, offset: offset, first_timestep: first_timestep, max_steps:max_steps}
+  });
+}
+
+  /**
+   *
+   * @param simulation
+   * @param floor
+   * @returns {Promise<AxiosResponse<any>>}
+   */
+export function getTrajectoryLines(simulation, floor) {
+  return axios.get(`${simulation}/trajectory_lines`, {params: {floor: floor}});
 }
 
 /** Cache summary responses **/

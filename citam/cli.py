@@ -1,8 +1,6 @@
 #  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-#  This software may only be used in accordance with the licenses granted by
-#  Corning Incorporated. All other uses as well as any copying, modification
-#  or reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 #  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -26,6 +24,11 @@ from citam.engine.main import build_navigation_network
 from citam.engine.main import update_floorplan_from_svg_file
 from citam.engine.main import export_navigation_graph_to_svg
 from citam.engine.main import find_and_save_potential_one_way_aisles
+
+
+FACILITY_NAME = "Facility name"
+FLOOR_NAME = "Floor name"
+SVG_PATH = "Path to SVG file"
 
 
 def main():
@@ -113,8 +116,8 @@ def _add_engine_commands(subparser, global_args):
         help="Ingest raw floor plans and metadata files",
     )
     ingest.set_defaults(func=ingest_floorplan)
-    ingest.add_argument("facility", type=str, help="Facility name")
-    ingest.add_argument("floor", type=str, help="Floor name")
+    ingest.add_argument("facility", type=str, help=FACILITY_NAME)
+    ingest.add_argument("floor", type=str, help=FLOOR_NAME)
     ingest.add_argument(
         "-c",
         "--csv",
@@ -151,8 +154,8 @@ def _add_engine_commands(subparser, global_args):
         help="Update the floorplan data for a given simulation",
     )
     update_floorplan.set_defaults(func=update_floorplan_from_svg_file)
-    update_floorplan.add_argument("facility", type=str, help="Facility name")
-    update_floorplan.add_argument("floor", type=str, help="Facility name")
+    update_floorplan.add_argument("facility", type=str, help=FACILITY_NAME)
+    update_floorplan.add_argument("floor", type=str, help=FACILITY_NAME)
     update_floorplan.add_argument(
         "-s", "--svg", type=str, required=True, help="Raw map SVG file"
     )
@@ -170,10 +173,10 @@ def _add_engine_commands(subparser, global_args):
         help="Export a floorplan to an SVG file",
     )
     export_floorplan.set_defaults(func=export_floorplan_to_svg)
-    export_floorplan.add_argument("facility", type=str, help="facility name")
-    export_floorplan.add_argument("floor", type=str, help="Floor name")
+    export_floorplan.add_argument("facility", type=str, help=FACILITY_NAME)
+    export_floorplan.add_argument("floor", type=str, help=FLOOR_NAME)
     export_floorplan.add_argument(
-        "-o", "--outputfile", type=str, required=True, help="Path to svg file"
+        "-o", "--outputfile", type=str, required=True, help=SVG_PATH
     )
 
     export_navnet = engine_commands.add_parser(
@@ -182,10 +185,10 @@ def _add_engine_commands(subparser, global_args):
         help="Export the navigation newtork to an SVG file",
     )
     export_navnet.set_defaults(func=export_navigation_graph_to_svg)
-    export_navnet.add_argument("facility", type=str, help="facility name")
-    export_navnet.add_argument("floor", type=str, help="facility name")
+    export_navnet.add_argument("facility", type=str, help=FACILITY_NAME)
+    export_navnet.add_argument("floor", type=str, help=FACILITY_NAME)
     export_navnet.add_argument(
-        "-o", "--outputfile", type=str, required=True, help="Path to svg file"
+        "-o", "--outputfile", type=str, required=True, help=SVG_PATH
     )
 
     export_potential_one_way_aisles = engine_commands.add_parser(
@@ -197,13 +200,13 @@ def _add_engine_commands(subparser, global_args):
         func=find_and_save_potential_one_way_aisles
     )
     export_potential_one_way_aisles.add_argument(
-        "facility", type=str, help="facility name"
+        "facility", type=str, help=FACILITY_NAME
     )
     export_potential_one_way_aisles.add_argument(
-        "floor", type=str, help="facility name"
+        "floor", type=str, help=FACILITY_NAME
     )
     export_potential_one_way_aisles.add_argument(
-        "-o", "--outputfile", type=str, required=True, help="Path to svg file"
+        "-o", "--outputfile", type=str, required=True, help=SVG_PATH
     )
 
     build_network = engine_commands.add_parser(
@@ -212,8 +215,8 @@ def _add_engine_commands(subparser, global_args):
         help="Build the navigation network",
     )
     build_network.set_defaults(func=build_navigation_network)
-    build_network.add_argument("facility", type=str, help="Facility name")
-    build_network.add_argument("floor", type=str, help="Floor name")
+    build_network.add_argument("facility", type=str, help=FACILITY_NAME)
+    build_network.add_argument("floor", type=str, help=FLOOR_NAME)
 
     run = engine_commands.add_parser(
         "run", parents=[global_args], help="Run a simulation for a facility"

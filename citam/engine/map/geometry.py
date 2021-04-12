@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -23,15 +21,28 @@ Date Created: May 12, 2020
 import itertools
 import numpy as np
 import math
-from svgpathtools import Line, Path
+from typing import Tuple, Optional, List
+
+from svgpathtools import Line, CubicBezier
 
 from citam.engine.map.point import Point
 
 
-def on_segment(p, q, r):
-    """Given three colinear points p, q, r, the function checks if
-    point q lies on line segment 'pr'
+def on_segment(p: Point, q: Point, r: Point) -> bool:
     """
+    Given three points p, q, r, the function checks if point q lies on line
+    segment 'pr'
+
+    :param p: First point
+    :type p: Point
+    :param q: Second point
+    :type q: Point
+    :param r: Third point
+    :type r: Point
+    :return: Whether q falls on [pr] or not.
+    :rtype: bool
+    """
+
     if (
         q.x <= max(p.x, r.x)
         and q.x >= min(p.x, r.x)
@@ -42,14 +53,24 @@ def on_segment(p, q, r):
     return False
 
 
-#  To find orientation of ordered triplet (p, q, r).
-#  The function returns following values
-#  0 --> p, q and r are colinear
-#  1 --> Clockwise
-#  2 --> Counterclockwise
+def determine_orientation(p: Point, q: Point, r: Point) -> int:
+    """
+    Find orientation of ordered triplet (p, q, r).
 
+    The function returns the following values:
+      0 --> p, q and r are colinear
+      1 --> Clockwise
+      2 --> Counterclockwise
 
-def determine_orientation(p, q, r):
+    :param p: The first point.
+    :type p: Point
+    :param q: The second point.
+    :type q: Point
+    :param r: The third point.
+    :type r: Point
+    :return: Orientation of the triplet
+    :rtype: int
+    """
 
     val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
 
@@ -61,14 +82,22 @@ def determine_orientation(p, q, r):
         return 2  # counterclockwise
 
 
-#  The function that returns true if line segment 'p1q1'
-#  and 'p2q2' intersect.
+def do_intersect(p1: Point, q1: Point, p2: Point, q2: Point) -> bool:
+    """
+    Check if two segments as given by their respective end points intersect.
 
-
-def do_intersect(p1, q1, p2, q2):
-    """Check if two lines as given by their respective end points intersect."""
-    # Find the four orientations needed for general and
-    # special cases
+    :param p1: First endpoint of first segment.
+    :type p1: Point
+    :param q1: Second endpoint of first segment.
+    :type q1: Point
+    :param p2: First endpoint of second segment.
+    :type p2: Point
+    :param q2: Second endpoint of second segment.
+    :type q2: Point
+    :return: True if segments intersect, False otherwise.
+    :rtype: bool
+    """
+    # Find the four orientations needed for general and special cases
     o1 = determine_orientation(p1, q1, p2)
     o2 = determine_orientation(p1, q1, q2)
     o3 = determine_orientation(p2, q2, p1)
@@ -98,39 +127,23 @@ def do_intersect(p1, q1, p2, q2):
     return False  # Doesn't fall in any of the above cases
 
 
-def generate_closed_path_for_aisle(aisle):
-    """Given an aisle (tuple of two walls), add new walls to create a closed
-    path for this aisle.
-    """
-    path = Path()
-    path += [aisle[0], aisle[1]]
-
-    wall1 = aisle[0]
-    wall2 = aisle[1]
-
-    segment1 = Line(start=wall1.start, end=wall2.start)
-    segment2 = Line(start=wall1.start, end=wall2.end)
-
-    if segment1.length() <= segment2.length():
-        path.append(segment1)
-    else:
-        path.append(segment2)
-
-    segment3 = Line(start=wall1.end, end=wall2.start)
-    segment4 = Line(start=wall1.end, end=wall2.end)
-
-    if segment3.length() <= segment4.length():
-        path.append(segment3)
-    else:
-        path.append(segment4)
-
-    return path
-
-
-def is_one_segment_within_the_other(p1, q1, p2, q2):
+def is_one_segment_within_the_other(
+    p1: Point, q1: Point, p2: Point, q2: Point
+) -> bool:
     """
     Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
     within the other.
+
+    :param p1: The first endpoint of the first segment.
+    :type p1: Point
+    :param q1: The second endpoint of the first segment.
+    :type q1: Point
+    :param p2: The first endpoint of the second segment.
+    :type p2: Point
+    :param q2: The second endpoint of the second segment.
+    :type q2: Point
+    :return: True, if [p1q1] is included in [p2q2] or vice-versa
+    :rtype: bool
     """
     return bool(
         (
@@ -142,9 +155,25 @@ def is_one_segment_within_the_other(p1, q1, p2, q2):
     )
 
 
-def do_lines_intersect_at_endpoint(p1, q1, p2, q2):
+def do_lines_intersect_at_endpoint(
+    p1: Point, q1: Point, p2: Point, q2: Point
+) -> bool:
     """
     Check if one of the lines start or ends on the other line.
+
+    :param p1: The first endpoint of the first segment.
+    :type p1: Point
+    :param q1: The second endpoint of the first segment.
+    :type q1: Point
+    :param p2: The first endpoint of the second segment.
+    :type p2: Point
+    :param q2: The second endpoint of the second segment.
+    :type q2: Point
+    :return: True, if p1 or q1 belongs to [p2q2] and vice-versa
+    :rtype: bool
+    """
+    """
+
     """
     return bool(
         (
@@ -156,96 +185,49 @@ def do_lines_intersect_at_endpoint(p1, q1, p2, q2):
     )
 
 
-def do_walls_overlap(wall1, wall2, max_distance=1.0, verbose=False):
+def calculate_normal_vector_between_walls(
+    wall1: Line, wall2: Line
+) -> np.ndarray:
     """
-    Verifies if two walls overlap in space.
+    Given two Line objects, compute the normal vector between them (computed
+    with respect to Wall 1).
 
-    Uses the start and end points of each line and verifies if either one
-    of them falls on the other segment. If so, it checks if all 4 points
-    are collinear and returns True if the dot product and the
-    distance between the 2 walls are respectively ~1.0 and ~0.0.
-
-    :param Line wall1:
-        line object corresponding to wall 1
-    :param Line wall2:
-        line object corresponding to wall 2
-    :return: do_overlap (True if walls overlap)
-    :rtype: boolean
+    :param wall1: The first wall
+    :type wall1: Line
+    :param wall2: The second wall
+    :type wall2: Line
+    :return: the perpendicular vector
+    :rtype: np.ndarray
     """
+    vector_for_wall1, _, bridge_vector = _compute_key_vectors(wall1, wall2)
 
-    x_overlap, y_overlap = calculate_x_and_y_overlap(wall1, wall2)
+    # Projection of bredge vector onto wall1 vector
+    coeff = np.dot(vector_for_wall1, bridge_vector) / (
+        (np.linalg.norm(vector_for_wall1)) ** 2
+    )
+    wproj = vector_for_wall1 * coeff
 
-    p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
-    q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
-
-    p2 = Point(x=round(wall2.start.real), y=round(wall2.start.imag))
-    q2 = Point(x=round(wall2.end.real), y=round(wall2.end.imag))
-
-    on_segment_test = False
-
-    if is_one_segment_within_the_other(p1, q1, p2, q2):
-        on_segment_test = True
-
-    # only one point from line being on the other is necessary
-    elif x_overlap > 0 or y_overlap > 0:
-        if do_lines_intersect_at_endpoint(p1, q1, p2, q2):
-            on_segment_test = True
-
-    if on_segment_test:
-
-        # Check if all 4 point are collinear
-        o1 = determine_orientation(p1, q1, p2)
-        o2 = determine_orientation(p1, q1, q2)
-
-        if o1 == o2 and o1 == 0:
-            return True
-
-        # only do this for walls that are diagonal
-        tol = 1e-2
-        if (
-            abs(p1.x - q1.x) < tol
-            or abs(p1.y - q1.y) < tol
-            or abs(p2.x - q2.x) < tol
-            or abs(p2.y - q2.y) < tol
-        ):
-            # At least one of the walls is horizontal or vertical
-            pass
-        else:
-            (
-                dot_product,
-                distance,
-            ) = calculate_dot_product_and_distance_between_walls(wall1, wall2)
-            if dot_product is not None:
-                if abs(dot_product - 1.0) < 1e-3 and distance < max_distance:
-                    return True
-
-    return False
+    return bridge_vector - wproj
 
 
-def calculate_normal_vector_between_walls(wall1, wall2):
-    """Given two Line objects, compute the normal vector between them."""
-    p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
-    q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
-
-    p2 = Point(x=round(wall2.start.real), y=round(wall2.start.imag))
-
-    V1 = np.array([q1.x - p1.x, q1.y - p1.y])  # Vector of wall 1
-    V1_norm = np.linalg.norm(V1)
-
-    # Arbitrary vector W joining wall 1 and wall 2 (let's use p1 and p2)
-    W = np.array([p2.x - p1.x, p2.y - p1.y])
-    # Projection of W onto V1
-    coeff = np.dot(V1, W) / ((V1_norm) ** 2)
-    W_proj = V1 * coeff
-    # Perpendicular vector between the two walls
-    V_perp = W - W_proj
-
-    return V_perp
+# Just a different name for the same function
+calculate_perpendicular_vector = calculate_normal_vector_between_walls
 
 
-def calculate_dot_product_and_distance_between_walls(wall1, wall2):
+def _compute_key_vectors(
+    wall1: Line, wall2: Line
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Helper function used to compute the vector for wall1 and wall2 as well as
+    an arbitrary vector W joining both lines.
 
-    dot_product = None
+    :param wall1: The first wall.
+    :type wall1: Line
+    :param wall2: The second wall
+    :type wall2: Line
+    :return: The key vectors.
+    :rtype: Tuple[np.ndarray, np.ndarray, np.ndarray]
+    """
 
     p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
     q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
@@ -255,125 +237,92 @@ def calculate_dot_product_and_distance_between_walls(wall1, wall2):
 
     # Calculate distance between the 2 walls as well as their dot products
     V1 = np.array([q1.x - p1.x, q1.y - p1.y])  # Vector of wall 1
-    V1_norm = np.linalg.norm(V1)
     V2 = np.array([q2.x - p2.x, q2.y - p2.y])  # Vector of wall 2
-    V2_norm = np.linalg.norm(V2)
     # Arbitrary vector W joining wall 1 and wall 2 (let's use p1 and p2)
     W = np.array([p2.x - p1.x, p2.y - p1.y])
-    # Projection of W onto V1
-    coeff = np.dot(V1, W) / ((V1_norm) ** 2)
-    W_proj = V1 * coeff
-    # Perpendicular vector between the two walls
-    V_perp = W - W_proj
-    # Distance and dot products of the 2 walls
-    distance = np.linalg.norm(V_perp)
 
-    if V1_norm * V2_norm != 0:
-        dot_product = abs(np.dot(V1, V2) / (V1_norm * V2_norm))
-
-    return dot_product, distance
+    return V1, V2, W
 
 
-def calculate_dot_product_between_walls(wall1, wall2):
-    """Calculate the dot product between 2 walls.
-
-    If the 2 walls are parallel, the dot product will equal 1.0
-
-    Parameters
-    -----------
-    wall1: Line
-        The first wall
-    wall2: Line
-        The second wall
-
-    Returns
-    --------
-    float
-        The dot product value between the two walls
-
+def calculate_dot_product_and_distance_between_walls(
+    wall1: Line, wall2: Line
+) -> Tuple[Optional[float], float]:
     """
+    Compute the dot product and distance between two walls.
+
+    :param wall1: The first wall
+    :type wall1: Line
+    :param wall2: The second wall
+    :type wall2: Line
+    :return: the dot product and the distance
+    :rtype: Tuple[Optional[float], float]
+    """
+
+    return (
+        calculate_dot_product_between_walls(wall1, wall2),
+        calculate_distance_between_walls(wall1, wall2),
+    )
+
+
+def calculate_dot_product_between_walls(
+    wall1: Line, wall2: Line
+) -> np.ndarray:
+    """
+    Calculate the dot product between 2 walls. NB: If the 2 walls are parallel,
+     the dot product will equal 1.0
+
+    :param wall1: The first wall
+    :type wall1: Line
+    :param wall2: The second wall
+    :type wall2: Line
+    :return: The dot product value between the two walls
+    :rtype: np.ndarray
+    """
+
     dot_product = None
 
-    p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
-    q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
+    V1, V2, W = _compute_key_vectors(wall1, wall2)
+    norm_v1 = np.linalg.norm(V1)
+    norm_v2 = np.linalg.norm(V2)
 
-    p2 = Point(x=round(wall2.start.real), y=round(wall2.start.imag))
-    q2 = Point(x=round(wall2.end.real), y=round(wall2.end.imag))
-
-    # Calculate distance between the 2 walls as well as their dot products
-    V1 = np.array([q1.x - p1.x, q1.y - p1.y])  # Vector of wall 1
-    V1_norm = np.linalg.norm(V1)
-    V2 = np.array([q2.x - p2.x, q2.y - p2.y])  # Vector of wall 2
-    V2_norm = np.linalg.norm(V2)
-
-    # if V1_norm*V2_norm != 0:
-    dot_product = abs(np.dot(V1, V2) / (V1_norm * V2_norm))
+    if norm_v1 * norm_v2 != 0:
+        dot_product = abs(np.dot(V1, V2) / (norm_v1 * norm_v2))
 
     return dot_product
 
 
-def calculate_perpendicular_vector(wall1, wall2):
-    """Calculate a perpendicular vector between 2 walls.
-
-    This function assumes the 2 walls are parallel but does not
-    check for that. Calculate the dot product first to verify yourself.
-
-    Parameters
-    -----------
-    wall1: Line
-        The first wall
-    wall2: Line
-        The second wall
-
-    Returns
-    --------
-    float: distance between the walls
-
+def calculate_distance_between_walls(wall1: Line, wall2: Line) -> float:
     """
-
-    p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
-    q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
-
-    p2 = Point(x=round(wall2.start.real), y=round(wall2.start.imag))
-
-    V1 = np.array([q1.x - p1.x, q1.y - p1.y])  # Vector of wall 1
-    V1_norm = np.linalg.norm(V1)
-    # Arbitrary vector W joining wall 1 and wall 2 (let's use p1 and p2)
-    W = np.array([p2.x - p1.x, p2.y - p1.y])
-    # Projection of W onto V1
-    coeff = np.dot(V1, W) / ((V1_norm) ** 2)
-    W_proj = V1 * coeff
-    # Perpendicular vector between the two walls
-    V_perp = W - W_proj
-
-    return V_perp
-
-
-def calculate_distance_between_walls(wall1, wall2):
-    """Calculate distance between 2 walls.
+    Calculate distance between 2 walls.
 
     This function assumes the 2 walls are parallel but does not
     check for that. Calculate the dot product first to verify yourself.
     Calculate a vector perpendicular to both walls and returns its
     euclidian norm.
 
-    Parameters
-    -----------
-    wall1: Line
-        The first wall
-    wall2: Line
-        The second wall
-
-    Returns
-    --------
-    float: distance between the walls
+    :param wall1: The first wall
+    :type wall1: Line
+    :param wall2: The second wall
+    :type wall2: Line
+    :return: distance between the walls
+    :rtype: float
     """
-    V_perp = calculate_perpendicular_vector(wall1, wall2)
-    return np.linalg.norm(V_perp)
+    v_perp = calculate_perpendicular_vector(wall1, wall2)
+    return np.linalg.norm(v_perp)
 
 
-def calculate_x_and_y_overlap(wall1, wall2):
-    """Give two lines, calculate their x and y overlaps."""
+def calculate_x_and_y_overlap(wall1: Line, wall2: Line) -> Tuple[float, float]:
+    """
+    Given two lines, calculate their x and y overlaps (e.g. if the x values
+    for line 1 and 2 are [0, 6] and [3, 10] resp, the overlap is [3, 6] = 3).
+
+    :param wall1: The first wall
+    :type wall1: Line
+    :param wall2: The second wall
+    :type wall2: Line
+    :return: The x and y overlaps in distance units
+    :rtype: Tuple[float, float]
+    """
     p1 = Point(x=round(wall1.start.real), y=round(wall1.start.imag))
     q1 = Point(x=round(wall1.end.real), y=round(wall1.end.imag))
 
@@ -395,8 +344,16 @@ def calculate_x_and_y_overlap(wall1, wall2):
     return x_overlap, y_overlap
 
 
-def round_coords(wall):
-    """Given a line, round the its start and end coordinates"""
+def round_coords(wall: Line) -> Line:
+    """
+    Given a line, round the its start and end coordinates to the nearest
+    integer.
+
+    :param wall: The initial wall.
+    :type wall: Line
+    :return: The wall will rounded up coordinates.
+    :rtype: Line
+    """
     p = Point(complex_coords=wall.start)
     q = Point(complex_coords=wall.end)
 
@@ -411,66 +368,19 @@ def round_coords(wall):
     return wall
 
 
-def subtract_walls(wall1, wall2):
+def sample_random_points_from_line(
+    line: Line, npoints=10
+) -> List[Tuple[int, int]]:
     """
-    Removes wall 2 from wall 1, assuming the 2 walls share the same start or
-    end points and therefore returns only one wall segment.
-    A more general version of this is remove overlap from wall
-    which can returns multiple new segments.
+    Sample n random points from line
+
+    :param line: the line to sample from.
+    :type line: Line
+    :param npoints: The number of points to sample, defaults to 10
+    :type npoints: int, optional
+    :return: The list of points
+    :rtype: List[Tuple[int, int]]
     """
-
-    line1 = Line(start=wall1.start, end=wall2.start)
-    line2 = Line(start=wall1.end, end=wall2.end)
-    line3 = Line(start=wall1.start, end=wall2.end)
-    line4 = Line(start=wall1.end, end=wall2.start)
-
-    p2 = Point(complex_coords=wall2.start)
-    q2 = Point(complex_coords=wall2.end)
-    valid_lines = []
-    for line in [line1, line2, line3, line4]:
-        p1 = Point(complex_coords=line.start)
-        q1 = Point(complex_coords=line.end)
-        if on_segment(p1, p2, q1) and on_segment(p1, q2, q1):
-            # if both start and end of wall 2 belongs to line, it's invalid
-            pass
-        else:
-            valid_lines.append(line)
-
-    lengths = [v.length() for v in valid_lines]
-    index = lengths.index(max(lengths))
-
-    new_wall = valid_lines[index]
-
-    return new_wall
-
-
-# def is_this_an_aisle(wall1, wall2):
-#     """Test if this tuple of walls correspond to an aisle.
-
-#     If the center point between the two walls
-#     """
-#     max_aisle_width = 8.0
-
-#     if wall1.length() < max_aisle_width or wall2.length() < max_aisle_width:
-#         return False
-
-#     x_overlap, y_overlap = calculate_x_and_y_overlap(wall1, wall2)
-#     dot_product, distance = \
-#         calculate_dot_product_and_distance_between_walls(wall1, wall2)
-
-#     if dot_product is not None:
-#         if x_overlap > 0 or y_overlap > 0:
-#             if abs(dot_product - 1.0) < 1e-3 and \
-#                 distance <= max_aisle_width and \
-#                     distance > 1.0:
-
-#                 return True
-
-#     return False
-
-
-def sample_random_points_from_line(line, npoints=10):
-    """Sample n random points from line"""
     x1 = line.start.real
     y1 = line.start.imag
 
@@ -483,15 +393,27 @@ def sample_random_points_from_line(line, npoints=10):
     return list(itertools.product(x, y))[:npoints]
 
 
-def create_parallel_line(line, side=1):
+def create_parallel_line(line: Line, d=1) -> Line:
+    """
+    Create a parallel line at a distance 'd' from a reference line. Both x
+    and y are changed by d.
+
+    :param line: The reference line.
+    :type line: Line
+    :param d: The distance at which to create the parallel line,
+         defaults to 1
+    :type d: int, optional
+    :return: [description]
+    :rtype: Line
+    """
 
     p1 = Point(x=round(line.start.real), y=round(line.start.imag))
     q1 = Point(x=round(line.end.real), y=round(line.end.imag))
 
     V = np.array([q1.x - p1.x, q1.y - p1.y])  # Vector of wall 1
 
-    new_x1 = line.start.real + side
-    new_y1 = line.start.imag + side
+    new_x1 = line.start.real + d
+    new_y1 = line.start.imag + d
 
     return Line(
         start=complex(new_x1, new_y1),
@@ -499,79 +421,97 @@ def create_parallel_line(line, side=1):
     )
 
 
-def compute_new_door_line(room_wall, door_size=2.0):
+def compute_new_door_line(room_wall: Line, door_size=2.0) -> Line:
+    """
+    Compute a door line to add to a wall. This door line is computed from
+    one of the end points of the wall.
 
+    :param room_wall: The reference wall.
+    :type room_wall: Line
+    :param door_size: the size of the door, defaults to 2.0
+    :type door_size: float, optional
+    :return: The door line.
+    :rtype: Line
+    """
     # Add a door to room wall
     start_x = room_wall.start.real
     start_y = room_wall.start.imag
 
     # vector between start and end points
-    Vx = room_wall.end.real - room_wall.start.real
-    Vy = room_wall.end.imag - room_wall.start.imag
-    V_norm = math.sqrt(Vx ** 2 + Vy ** 2)
-    if V_norm == 0:
+    vx = room_wall.end.real - room_wall.start.real
+    vy = room_wall.end.imag - room_wall.start.imag
+    v_norm = math.sqrt(vx ** 2 + vy ** 2)
+    if v_norm == 0:
         return None
 
     # Unit vector
-    Vx = Vx / V_norm
-    Vy = Vy / V_norm
+    vx = vx / v_norm
+    vy = vy / v_norm
 
     # End point of door
-    end_x = start_x + door_size * Vx
-    end_y = start_y + door_size * Vy
+    end_x = start_x + door_size * vx
+    end_y = start_y + door_size * vy
 
-    # Start and end poitns of door line
+    # Start and end points of door line
     p = Point(start_x, start_y)
     q = Point(end_x, end_y)
 
     return Line(start=p.complex_coords, end=q.complex_coords)
 
 
-def find_door_line(cubic_bezier):  # TODO: Create unit test for this function
+def find_door_line(cubic_bezier: CubicBezier) -> Line:
+    """
+    Given a cubic bezier, find the line that is most likely to corresponds to
+    the door line.
 
+    :param cubic_bezier: The cubic bezier to analyze.
+    :type cubic_bezier: CubicBezier
+    :return: The most likely door line.
+    :rtype: Line
+    """
     # start and end point
 
-    Ax = cubic_bezier.start.real
-    Ay = cubic_bezier.start.imag
+    ax = cubic_bezier.start.real
+    ay = cubic_bezier.start.imag
 
-    Cx = cubic_bezier.end.real
-    Cy = cubic_bezier.end.imag
+    cx = cubic_bezier.end.real
+    cy = cubic_bezier.end.imag
 
     # Midpoint of the arc
 
-    Bx = cubic_bezier.point(0.5).real
-    By = cubic_bezier.point(0.5).imag
+    bx = cubic_bezier.point(0.5).real
+    by = cubic_bezier.point(0.5).imag
 
     # Let the center of the circle be x, y
     # The lines A to center, B to center and C to center all have the same
     # length (radius of the circle).
     # We use that relationship to calculate x and y
 
-    a1 = Ax - Bx
-    b1 = Ay - By
+    a1 = ax - bx
+    b1 = ay - by
 
-    a2 = Bx - Cx
-    b2 = By - Cy
+    a2 = bx - cx
+    b2 = by - cy
 
-    d1 = 0.5 * (Ax ** 2 - Bx ** 2 + Ay ** 2 - By ** 2)
-    d2 = 0.5 * (Bx ** 2 - Cx ** 2 + By ** 2 - Cy ** 2)
+    d1 = 0.5 * (ax ** 2 - bx ** 2 + ay ** 2 - by ** 2)
+    d2 = 0.5 * (bx ** 2 - cx ** 2 + by ** 2 - cy ** 2)
 
     y = (d2 - a2 * d1 / a1) / (b2 - a2 * b1 / a1)
     x = (d1 - b1 * y) / a1
 
-    if abs(x - Ax) < 3.0:
-        x = Ax
-    elif abs(x - Cx) < 3.0:
-        x = Cx
+    if abs(x - ax) < 3.0:
+        x = ax
+    elif abs(x - cx) < 3.0:
+        x = cx
 
-    if abs(y - Ay) < 3.0:
-        y = Ay
-    elif abs(y - Cy) < 3.0:
-        y = Cy
+    if abs(y - ay) < 3.0:
+        y = ay
+    elif abs(y - cy) < 3.0:
+        y = cy
 
     center = Point(round(x), round(y))
-    arc_start = Point(x=round(Ax), y=round(Ay))
-    arc_end = Point(x=round(Cx), y=round(Cy))
+    arc_start = Point(x=round(ax), y=round(ay))
+    arc_end = Point(x=round(cx), y=round(cy))
 
     # Finally, the line of interest is line 3 below based on
     # assuming that the start point of the bezier is where
@@ -586,7 +526,18 @@ def find_door_line(cubic_bezier):  # TODO: Create unit test for this function
     return door_line1, door_line2
 
 
-def align_to_reference(reference_line, test_line):
+def align_to_reference(reference_line: Line, test_line: Line) -> Line:
+    """
+    Given a reference line, modify a test line to be parallel with the
+    reference.
+
+    :param reference_line: The reference line.
+    :type reference_line: Line
+    :param test_line: The test line.
+    :type test_line: Line
+    :return: The new line, translated to align with the reference.
+    :rtype: Line
+    """
 
     # This only works for horizontal or vertical lines
     dx = reference_line.end.real - reference_line.start.real
@@ -604,20 +555,19 @@ def align_to_reference(reference_line, test_line):
     return Line(start=test_line.start, end=complex(end_x, end_y))
 
 
-def is_point_on_line(line, p_test, tol=1e-3):
-    """Verify if a test point is on a given Line
+def is_point_on_line(line: Line, p_test: Point, tol: float = 1e-3) -> bool:
+    """
+    Verify if a test point is on a given Line.
 
-    Parameters
-    -----------
-    line: Line
-        The line of interest
-    p_test: Point
-        The point of interest
-
-    Returns
-    --------
-    bool
-        Whether the point falls on the line or not
+    :param line: The Line of interest.
+    :type line: Line
+    :param p_test: The test point.
+    :type p_test: Point
+    :param tol: The tolerance within which the point is labeled as belonging
+        to the line, defaults to 1e-3
+    :type tol: float, optional
+    :return: Whether the point falls on line or not.
+    :rtype: bool
     """
 
     if complex(p_test.x, p_test.y) in [line.start, line.end]:
@@ -638,8 +588,18 @@ def is_point_on_line(line, p_test, tol=1e-3):
     return False
 
 
-def remove_segment_from_wall(wall, segment, verbose=False):
+def remove_segment_from_wall(wall: Line, segment: Line) -> List[Line]:
+    """
+    Given a wall, subtract an arbitrary segment from the wall and return the
+    remaining wall segments.
 
+    :param wall: The wall to subtract from.
+    :type wall: Line
+    :param segment: The segment to subtract.
+    :type segment: Line
+    :return: The remaining segments.
+    :rtype: List[Line]
+    """
     p_wall = Point(complex_coords=wall.start)
     q_wall = Point(complex_coords=wall.end)
 

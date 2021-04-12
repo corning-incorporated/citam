@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -12,9 +10,16 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
+from typing import Optional
+
 
 class Point:
-    def __init__(self, x=None, y=None, complex_coords=None):
+    def __init__(
+        self,
+        x: Optional[int] = None,
+        y: Optional[int] = None,
+        complex_coords=None,
+    ):
         super().__init__()
         self.x = x
         self.y = y
@@ -25,8 +30,6 @@ class Point:
 
         if self.complex_coords is None and self.x is not None:
             self.convert_to_complex()
-
-        return
 
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
@@ -39,10 +42,6 @@ class Point:
         self.x = self.complex_coords.real
         self.y = self.complex_coords.imag
 
-        return
-
     def convert_to_complex(self):
 
         self.complex_coords = complex(self.x, self.y)
-
-        return

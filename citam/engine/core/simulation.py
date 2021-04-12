@@ -1,18 +1,16 @@
-# Copyright 2020. Corning Incorporated. All rights reserved.
+#  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-# ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
-# ==============================================================================
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+#  ==========================================================================
 
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, TextIO, Optional
 import numpy as np
 import scipy.spatial.distance
 from collections import OrderedDict
@@ -20,21 +18,20 @@ import json
 import os
 import logging
 import hashlib
+import uuid
+import xml.etree.ElementTree as ET
+
 import networkx as nx
 from matplotlib import cm
-from io import TextIOWrapper
+import progressbar as pb
 
 from citam.engine.core.agent import Agent
 from citam.engine.policy.daily_schedule import Schedule
 import citam.engine.io.visualization as bv
 import citam.engine.core.contacts as cev
 from citam.engine.policy.meetings import MeetingPolicy
-from citam.engine.constants import DEFAULT_SCHEDULING_RULES
+from citam.engine.constants import DEFAULT_SCHEDULING_RULES, CAFETERIA_VISIT
 from citam.engine.facility.indoor_facility import Facility
-
-import progressbar as pb
-
-import xml.etree.ElementTree as ET
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
 ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
@@ -42,22 +39,75 @@ ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
 LOG = logging.getLogger(__name__)
 
 
-class FacilityTransmissionModel:
+class Simulation:
+    """
+    Implements a CITAM indoor Agent-Based Modeling simulation.
+
+    Given a facility and simulation inputs, this implements routines to
+    initialize the agents and their scheduels, run a simulation and output
+    results to file.
+    """
+
     def __init__(
         self,
         facility: Facility,
         daylength: int,
         n_agents: int,
-        occupancy_rate: float,
-        buffer: int,
-        timestep: float,
-        contact_distance: float,
         shifts: List[Dict],
+        buffer: int = 300,
+        occupancy_rate: float = None,
+        timestep: float = 1.0,
+        contact_distance: float = 6.0,
         meetings_policy_params=None,
         create_meetings=True,
+        close_dining=False,
         scheduling_policy=None,
         dry_run=False,
+        preassigned_offices: Optional[List[Tuple[int, int]]] = None,
     ) -> None:
+        """
+        Initialize a new simulation object.
+
+        :param facility: Facility object for which to run this simulation.
+        :type facility: Facility
+        :param daylength: Total number of timesteps to run this simulation for.
+        :type daylength: int
+        :param n_agents: Total number of people in this facility.
+        :type n_agents: int
+        :param shifts: A shift is a group of agents who
+                enter the facility at relatively the same time (Note: exit time
+                is not included). A shift is defined by a name, an entrance
+                 time, a percentage of agents.
+        :type shifts: List[Dict]
+        :param buffer: Number of timesteps at the beginning and ending of the
+                day when agents enter and exit the facility.
+        :type buffer: int
+        :param occupancy_rate: how many office spaces are occupied. Note:
+                'n_agents' supersedes 'occupancy_rate' when specified, in which
+                case occupancy_rate can be None. defaults to None
+        :type occupancy_rate: float, optional
+        :param timestep: How long does one timestep corresponds to in seconds,
+                 defaults to 1.0
+        :type timestep: float, optional
+        :param contact_distance: Maximum between two agents for a contact to be
+                registered, defaults to 6.0
+        :type contact_distance: float, optional
+        :param meetings_policy_params: Parameters defining a meeting policy,
+                 defaults to None
+        :type meetings_policy_params: dict, optional
+        :param create_meetings: Whether meetings are allowed or not,
+                 defaults to True
+        :type create_meetings: bool, optional
+        :param close_dining: Wheter cafeterias are open or not,
+                defaults to False
+        :type close_dining: bool, optional
+        :param scheduling_policy: Policy defining how daily schedules are
+                created, defaults to None
+        :type scheduling_policy: dict, optional
+        :param dry_run: If true, generate itineraries but do not compute
+                contact statistics, defaults to False
+        :type dry_run: bool, optional
+        """
 
         self.facility = facility
         self.daylength = daylength
@@ -66,6 +116,7 @@ class FacilityTransmissionModel:
         self.contact_distance = contact_distance
         self.n_agents = n_agents
         self.occupancy_rate = occupancy_rate
+        self.preassigned_offices = preassigned_offices
 
         self.contact_events = cev.ContactEvents()
         self.current_step = 0
@@ -73,8 +124,13 @@ class FacilityTransmissionModel:
         self.shifts = shifts
         self.dry_run = dry_run
         self.simulation_name = None
-        self.simid = None
-        self.step_contact_locations = [{} for f in facility.floorplans]
+        self.simid = str(uuid.uuid4())
+
+        # list used to keep track of total contact events per xy location per
+        #  floor
+        self.step_contact_locations: List[Dict[Tuple[int, int], int]] = [
+            {} for _ in facility.floorplans
+        ]
         self.create_meetings = create_meetings
 
         # Handle scheduling rules
@@ -83,14 +139,18 @@ class FacilityTransmissionModel:
         else:
             self.scheduling_rules = scheduling_policy
 
+        if close_dining and CAFETERIA_VISIT in self.scheduling_rules:
+            del self.scheduling_rules[CAFETERIA_VISIT]
+
         self.meetings_policy_params = meetings_policy_params
 
-    def create_simid(self):
-        """Use simulation inputs, scheduling policy, meetings policy,
+    def create_sim_hash(self):
+        """
+        Hash simulation inputs, scheduling policy, meetings policy,
         navigation policy, floorplan and navigation data to generate a unique
         ID for each simulation.
         """
-        # TODO: Add random number seed to sim ID hash data
+
         m = hashlib.blake2b(digest_size=10)
         data = [
             self.daylength,
@@ -135,37 +195,12 @@ class FacilityTransmissionModel:
             data = nx.to_edgelist(hg)
             m.update(repr(data).encode("utf-8"))
 
-        self.simid = m.hexdigest()
-        self.simulation_name = self.simid
+        self.simulation_name = m.hexdigest()
 
-    def run_serial(self, workdir: str) -> None:
-        """Runs an citam simulation serially.
-
-        :param str workdir: directory to save the files for this simulation
+    def generate_meetings(self) -> None:
         """
-        if self.n_agents is not None:
-            self.occupancy_rate = round(
-                self.n_agents * 1.0 / self.facility.total_offices, 2
-            )
-            if self.occupancy_rate > 1.0:
-                LOG.warn(
-                    "Occupancy rate is "
-                    + str(self.occupancy_rate)
-                    + " > 1.0 (Office spaces: "
-                    + str(self.facility.total_offices)
-                )
-        else:
-            if self.occupancy_rate < 0.0 or self.occupancy_rate > 1.0:
-                raise ValueError("Invalid occupancy rate (must be > 0 & <=1")
-            self.n_agents = round(self.occupancy_rate * self.total_offices)
-
-        LOG.info("Running simulation serially")
-        LOG.info("Total agents: " + str(self.n_agents))
-
-        self.create_simid()
-        self.save_manifest(workdir)
-        self.save_maps(workdir)
-
+        Create meetings based on meeting policy.
+        """
         # Create meetings
         agent_ids = list(range(self.n_agents))
         meeting_room_objects = []
@@ -186,9 +221,71 @@ class FacilityTransmissionModel:
         if n_meeting_rooms > 0 and self.create_meetings:
             self.meeting_policy.create_all_meetings()
 
-        # Create schedule and itinerary for each agent
-        self.add_agents_and_build_schedules()
+    def run_serial(self, workdir: str) -> None:
+        """
+        Run a CITAM simulation serially (i.e. only one core will be used).
 
+        The serial runner is understandably slow because at each timestep,
+        contacts have to be computed while taking into account the specific
+        layout of the facility. A parallel version that computes contacts
+        for timestep blocks is desirable.
+
+        :param workdir: The directory where all results are to saved.
+        :type workdir: str
+        :raises ValueError: If occupancy rate is not between 0.0 and 1.0
+        """
+
+        # Compute occupancy rate and/or number of agents
+        if self.n_agents is not None:
+
+            occupancy_rate = round(
+                self.n_agents * 1.0 / self.facility.total_offices, 2
+            )
+            if occupancy_rate > 1.0:
+                LOG.warn(
+                    "Occupancy rate is "
+                    + str(occupancy_rate)
+                    + " > 1.0 (Office spaces: "
+                    + str(self.facility.total_offices)
+                )
+                self.occupancy_rate = occupancy_rate
+        else:
+            if self.occupancy_rate is None:
+                raise ValueError(
+                    "One of 'n_agents' or 'occupancy_rate' must be specified"
+                )
+            if self.occupancy_rate < 0.0 or self.occupancy_rate > 1.0:
+                raise ValueError("Invalid occupancy rate (must be > 0 & <=1")
+            self.n_agents = round(self.occupancy_rate * self.total_offices)
+
+        # Load pre-assigned offices as needed
+        if (
+            self.preassigned_offices is not None
+            and len(self.preassigned_offices) != self.n_agents
+        ):
+            raise ValueError(
+                "Preassigned offices must equal number of agents %d vs %d.",
+                len(self.preassigned_offices),
+                self.n_agents,
+            )
+        LOG.info("Running simulation serially")
+        LOG.info("Total agents: " + str(self.n_agents))
+
+        self.create_sim_hash()
+        self.save_manifest(workdir)
+        self.save_maps(workdir)
+        self.generate_meetings()
+        self.add_agents_and_build_schedules()
+        self.save_schedules(workdir)
+        self.run_simulation_and_save_results(workdir)
+
+    def run_simulation_and_save_results(self, workdir: str) -> None:
+        """
+        Perform simulation and save results to files.
+
+        :param workdir: path where results are saved.
+        :type workdir: str
+        """
         # open files
         traj_file = workdir + "/trajectory.txt"
         t_outfile = open(traj_file, "w")  # Keep the trajectory file open
@@ -218,23 +315,42 @@ class FacilityTransmissionModel:
             cof.close()
         LOG.info("Done with simulation.\n")
 
-        return True
+    def assign_office(self) -> Tuple[int, int]:
+        """
+        Assign an office to the current agent. If office spaces are not
+        pre-assigned, select one randomly and remove it from list of available
+        offices. Otherwise, return the next office from the queue.
+
+        :return: office id and floor
+        :rtype: Tuple[int, int]
+        """
+
+        if self.preassigned_offices is not None:
+            office_id, office_floor = self.preassigned_offices.pop(0)
+        else:
+            office_floor = np.random.randint(self.facility.number_of_floors)
+            n_offices = len(self.facility.all_office_spaces[office_floor])
+            rint = np.random.randint(n_offices)
+            office_id = self.facility.all_office_spaces[office_floor].pop(rint)
+
+        return office_id, office_floor
 
     def add_agents_and_build_schedules(self) -> None:
         """
         Add the specified number of agents to the facility and create a
         schedule and an itinerary for each of them.
+
+        :raises ValueError: If an entrance could not be found
+
         """
         LOG.info("Initializing with " + str(self.n_agents) + " agents...")
-        total_agents = 0
         current_agent = 0
         agent_pool = list(range(self.n_agents))
         for shift in self.shifts:
             shift_start_time = shift["start_time"] + self.buffer
-            n_shift_agents = round(shift["percent_workforce"] * self.n_agents)
+            n_shift_agents = round(shift["percent_agents"] * self.n_agents)
             shift_agents = np.random.choice(agent_pool, n_shift_agents)
             agent_pool = [a for a in agent_pool if a not in shift_agents]
-            total_agents += n_shift_agents
 
             LOG.info("Working with shift: " + shift["name"])
             LOG.info("\tNumber of agents: " + str(n_shift_agents))
@@ -242,27 +358,21 @@ class FacilityTransmissionModel:
 
             for _ in pb.progressbar(shift_agents):
 
-                entrance_door = None
+                # Find office space
+                office_id, office_floor = self.assign_office()
 
-                while entrance_door is None:
+                # Choose the closest entrance to office
+                (
+                    entrance_door,
+                    entrance_floor,
+                ) = self.facility.choose_best_entrance(office_floor, office_id)
 
-                    office_floor = np.random.randint(
-                        self.facility.number_of_floors
-                    )
-                    n_offices = len(
-                        self.facility.all_office_spaces[office_floor]
-                    )
-                    rint = np.random.randint(n_offices)
-                    office_id = self.facility.all_office_spaces[
-                        office_floor
-                    ].pop(rint)
-
-                    # Choose the closest entrance to office
-                    (
-                        entrance_door,
-                        entrance_floor,
-                    ) = self.facility.choose_best_entrance(
-                        office_floor, office_id
+                if entrance_door is None:
+                    office = self.facility.floorplans[office_floor].spaces[
+                        office_id
+                    ]
+                    raise ValueError(
+                        f"Unable to assign this office: {office.unique_name}"
                     )
 
                 # Sample start time and exit time from a poisson distribution
@@ -308,13 +418,15 @@ class FacilityTransmissionModel:
     def identify_xy_proximity(
         self, positions_vector: np.ndarray
     ) -> np.ndarray:
-        """Compute pairwise distances, given a vector of xy positions and
+        """
+        Compute pairwise distances, given a vector of xy positions, and
         return the indices of the ones that fall within the given contact
         distance.
 
-        :param list[(x,y)] position_vector: list of current xy positions
-            of all active agents
-        :return: list of indices of agents that are within the contact
+        :param positions_vector: Array of current xy positions of all active
+                agents
+        :type positions_vector: np.ndarray
+        :return: Array of indices of agents that are within the contact
             distance of each other
         :rtype: np.ndarray
         """
@@ -325,14 +437,16 @@ class FacilityTransmissionModel:
         return np.argwhere(dist_matrix < self.contact_distance)
 
     def identify_contacts(self, agents: List[Agent]) -> None:
-        """Iterate over agents, compute whether they fall within the contact
+        """
+        Iterate over agents, compute whether they fall within the contact
         distance or not and verify that they are indeed making contact (based
         on whether they are in the same space or not).
 
-        :param list agents: list of agents under consideration for contact
+        :param agents: list of agents under consideration for contact
             statistics
+        :type agents: List[Agent]
         """
-        # Discard contact event if either:
+        # Immediately discard contact event if either:
         # 1. agents are in different floors
         # 2. agents are in different spaces but only if the spaces
         #    are not neighbors in the hallway graphs
@@ -344,45 +458,63 @@ class FacilityTransmissionModel:
         proximity_indices = self.identify_xy_proximity(positions_vector)
 
         for i, j in proximity_indices:
-            if i < j:  # only consider upper right side of symmetric matrix
-                agent1 = agents[i]
-                agent2 = agents[j]
+            if i >= j:  # only consider upper right side of symmetric matrix
+                continue
+            agent1 = agents[i]
+            agent2 = agents[j]
 
-                if (
-                    agent1.current_location is None
-                    or agent2.current_location is None
-                ):
-                    continue
+            if (
+                agent1.current_location is None
+                or agent2.current_location is None
+            ):
+                continue
 
-                if agent1.current_floor == agent2.current_floor:
-                    fn = agent1.current_floor
-                    if agent1.current_location == agent2.current_location:
-                        self.add_contact_event(agent1, agent2)
+            if agent1.current_floor == agent2.current_floor:
+                fn = agent1.current_floor
+                if agent1.current_location == agent2.current_location:
+                    self.add_contact_event(agent1, agent2)
 
-                    else:
-                        hallways_graph = (
-                            self.facility.navigation.hallways_graph_per_floor[
-                                fn
-                            ]
-                        )
-                        if hallways_graph is None:
-                            continue
-                        floorplan = self.facility.floorplans[fn]
-                        space1 = floorplan.spaces[agent1.current_location]
-                        space2 = floorplan.spaces[agent2.current_location]
-                        if not space1.is_space_a_hallway():
-                            continue
-                        if not space2.is_space_a_hallway():
-                            continue
-                        if hallways_graph.has_edge(
-                            space1.unique_name, space2.unique_name
-                        ):
-                            self.add_contact_event(agent1, agent2)
+                else:
+                    self.verify_and_add_contact(fn, agent1, agent2)
+
+    def verify_and_add_contact(
+        self, floor_number: int, agent1: Agent, agent2: Agent
+    ):
+        """
+        Verify if agents are in nearby hallways before creating contact event.
+
+        :param floor_number: [description]
+        :type floor_number: int
+        :param agent1: First agent
+        :type agent1: Agent
+        :param agent2: Second agent
+        :type agent2: Agent
+        """
+        hallways_graph = self.facility.navigation.hallways_graph_per_floor[
+            floor_number
+        ]
+        floorplan = self.facility.floorplans[floor_number]
+        space1 = floorplan.spaces[agent1.current_location]
+        space2 = floorplan.spaces[agent2.current_location]
+        if (
+            hallways_graph is None
+            or not space1.is_space_a_hallway()
+            or not space2.is_space_a_hallway()
+        ):
+            return
+        if hallways_graph.has_edge(space1.unique_name, space2.unique_name):
+            self.add_contact_event(agent1, agent2)
 
     def add_contact_event(self, agent1: Agent, agent2: Agent) -> None:
         """
         Record contact event between agent1 and agent2.
+
+        :param agent1: The first agent.
+        :type agent1: Agent
+        :param agent2: The second agent.
+        :type agent2: Agent
         """
+
         dx = (agent2.pos[0] - agent1.pos[0]) / 2.0
         dy = (agent2.pos[1] - agent1.pos[1]) / 2.0
         contact_pos = (agent1.pos[0] + dx, agent1.pos[1] + dy)
@@ -399,14 +531,23 @@ class FacilityTransmissionModel:
         else:
             self.step_contact_locations[agent1.current_floor][contact_pos] += 1
 
-        return
-
     def step(
         self,
-        traj_outfile: TextIOWrapper = None,
-        contact_outfiles: List[TextIOWrapper] = None,
+        traj_outfile: TextIO = None,
+        contact_outfiles: List[TextIO] = None,
     ) -> None:
-        """Move the simulation by one step"""
+        """
+        Move the simulation one step ahead.
+
+        At each step, agents are advanced one step ahead in their itineraries
+        and contact statistics are computed.
+
+        :param traj_outfile: File to write trajectory data, defaults to None
+        :type traj_outfile: TextIO, optional
+        :param contact_outfiles: Files to write contact data, one per floor,
+                defaults to None
+        :type contact_outfiles: List[TextIO], optional
+        """
         self.step_contact_locations = [
             {}
         ] * self.facility.number_of_floors  # One per floor
@@ -466,9 +607,10 @@ class FacilityTransmissionModel:
         moving agents are agents currently moving from one location to the
         next.
 
-        :return list of active and moving agents
-        :rtype: (list, list)
+        :return: list of active and moving agents
+        :rtype: Tuple[List[Agent], List[Agent]]
         """
+
         active_agents = []  # All agents currently within the facility
 
         # TODO: consider contacts for agents that are stationary as well
@@ -486,13 +628,14 @@ class FacilityTransmissionModel:
 
     def extract_contact_distribution_per_agent(
         self,
-    ) -> Tuple[List[int], List[int]]:
+    ) -> Tuple[List[str], List[int]]:
         """
-        Compute total contacts per agent.
+        Compute and return total contacts per agent.
 
-        :return: List of agent ids and list of corresponding number of
-            contacts.
+        :return: List of agent ids and their total contacts
+        :rtype: Tuple[List[int], List[int]]
         """
+
         agent_ids, n_contacts = [], []
         for unique_id, agent in self.agents.items():
             agent_ids.append("ID_" + str(unique_id + 1))
@@ -504,9 +647,11 @@ class FacilityTransmissionModel:
         """
         Save manifest file, used by the dashboard to show results.
 
-        :param str work_directory: top level directory where all simulation
+        :param work_directory:  top level directory where all simulation
             outputs are saved.
+        :type work_directory: str
         """
+
         floors = [
             {"name": str(floor), "directory": "floor_" + str(floor) + "/"}
             for floor in range(self.facility.number_of_floors)
@@ -553,12 +698,15 @@ class FacilityTransmissionModel:
             json.dump(manifest_dict, json_file, indent=4)
 
     def save_maps(self, work_directory: str) -> None:
-        """Save svg maps for each floor for visualization. Each floor map is
-            saved in a separate subdirectory (created if not found).
-
-        :param str work_directory: top level directory where all simulation
-            outputs are saved.
         """
+        Save svg maps for each floor for visualization. Each floor map is
+        saved in a separate subdirectory (created if not found).
+
+        :param work_directory: top level directory where all simulation
+                outputs are saved.
+        :type work_directory: str
+        """
+
         for floor_number in range(self.facility.number_of_floors):
 
             floor_directory = os.path.join(
@@ -592,12 +740,17 @@ class FacilityTransmissionModel:
         contacts_per_coord: Dict[Tuple[int, int], int],
         floor_directory: str,
     ) -> None:
-        """Create and save a heatmap from coordinate contact data
-
-        :param dict contacts_per_coord: dictionary where each key is an (x,y )
-            tuple and values are the number of contacts in that location.
-        :param str floor_directory: directory to save the heatmap file.
         """
+        Create and save a heatmap from coordinate contact data.
+
+        :param contacts_per_coord: dictionary where each key is an (x,y )
+                tuple and values are the number of contacts in that location.
+        :type contacts_per_coord: Dict[Tuple[int, int], int]
+        :param floor_directory: directory to save the heatmap file.
+        :type floor_directory: str
+        :raises FileNotFoundError: if the floor svg map file is not found.
+        """
+
         heatmap_file = os.path.join(floor_directory, "heatmap.svg")
         map_file = os.path.join(floor_directory, "map.svg")
 
@@ -641,12 +794,63 @@ class FacilityTransmissionModel:
 
         tree.write(heatmap_file)
 
-    def save_outputs(self, work_directory: str) -> None:
-        """Write output files to the output directory
-
-        :param str work_directory: directory where all output files are to be
-            saved.
+    def save_schedules(self, work_directory: str) -> None:
         """
+        Write schedules and meetings to file.
+
+        Three files are created: one for all the
+        meetings, one for the full schedule of all the agents and the last one
+        with each agent's assigned office.
+
+        :param work_directory: directory where output files are to be saved.
+        :type work_directory: str
+        """
+
+        # agent ids
+        filename = os.path.join(work_directory, "agent_ids.csv")
+        with open(filename, "w") as outfile:
+            outfile.write("AgentID,OfficeID,FloorID\n")
+            for unique_id, agent in self.agents.items():
+                outfile.write(
+                    str(unique_id)
+                    + ","
+                    + str(agent.schedule.office_location)
+                    + ","
+                    + str(agent.schedule.office_floor)
+                    + "\n"
+                )
+
+        # Meetings
+        filename = os.path.join(work_directory, "meetings.txt")
+        with open(filename, "w") as outfile:
+            outfile.write(
+                "Total number of meetings: "
+                + str(len(self.meeting_policy.meetings))
+                + "\n\n"
+            )
+            for meeting in self.meeting_policy.meetings:
+                outfile.write(str(meeting) + "\n")
+
+        # Full schedules of all agents
+        filename = os.path.join(work_directory, "schedules.txt")
+        with open(filename, "w") as outfile:
+            for unique_id, agent in self.agents.items():
+                outfile.write(
+                    "Agent ID: "
+                    + str(unique_id)
+                    + str(agent.schedule)
+                    + "\n\n"
+                )
+
+    def save_outputs(self, work_directory: str) -> None:
+        """
+        Write output files to the output directory
+
+        :param work_directory: directory where all output files are to be
+            saved.
+        :type work_directory: str
+        """
+
         # TODO: generate time-dependent cumulative contacts per coordinate
 
         # Total contacts per agent
@@ -656,12 +860,6 @@ class FacilityTransmissionModel:
             outfile.write("agent_ID,Number_of_Contacts\n")
             for eid, nc in zip(agent_ids, n_contacts):
                 outfile.write(str(eid) + "," + str(nc) + "\n")
-
-        # agent ids
-        filename = os.path.join(work_directory, "agent_ids.txt")
-        with open(filename, "w") as outfile:
-            for unique_id, agent in self.agents.items():
-                outfile.write(str(unique_id + 1) + "\n")
 
         # Pair contacts
         filename = os.path.join(work_directory, "pair_contact.csv")

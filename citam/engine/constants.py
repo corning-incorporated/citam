@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -12,14 +10,6 @@
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
 
-
-VERTICAL_AISLE = 1
-HORIZONTAL_AISLE = 2
-DIAGONAL_AISLE = 3
-
-ONEWAY_TRAFFIC_POSITIVE_DIRECTION = 1
-ONEWAY_TRAFFIC_NEGATIVE_DIRECTION = -1
-TWO_WAY_TRAFFIC = 0
 
 # Constants related to floorplan data
 
@@ -67,6 +57,8 @@ SUPPORTED_SPACE_FUNCTIONS = [
     "parking",
 ]
 
+# Constants related to scheduling
+# TODO: Move everything below to settings
 RESTROOM_VISIT = "Restroom visit"
 MEETING = "Meeting"
 LAB_WORK = "Lab work"
@@ -118,7 +110,7 @@ DEFAULT_MEETINGS_POLICY = {
     "max_meeting_length": 7200,  # 2 hours
     "meeting_duration_increment": 15 * 60,  # 15 min
     # Meetings frequency
-    "avg_meetings_per_room": 3,
+    "avg_meetings_per_room": 6,
     "percent_meeting_rooms_used": 0.6,  # Less than 1.0
     # Meetings participants
     "avg_meetings_per_person": 3,

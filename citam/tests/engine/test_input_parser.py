@@ -4,6 +4,7 @@ from citam.engine.io.input_parser import (
     parse_svg_floorplan_file,
     parse_input_file,
     parse_standalone_svg_floorplan_file,
+    parse_office_assignment_file,
 )
 
 import os
@@ -76,7 +77,7 @@ def test_parse_input_file_no_issues(datadir):
     inputfile = os.path.join(datadir, "example_sim_inputs.json")
     res = parse_input_file(inputfile)
     assert res is not None
-    assert len(res) == 16
+    assert len(res) == 19
 
 
 def test_parse_input_file_missing_values(datadir):
@@ -148,3 +149,28 @@ def test_parse_svg_map_file_invalid_building(datadir):
 
     with pytest.raises(ValueError):
         parse_standalone_svg_floorplan_file(inputfile)
+
+
+def test_parse_bad_office_assignment_file(datadir):
+    inputfile = os.path.join(datadir, "bad_office_assignment1.csv")
+    input_dir = {"office_assignment_file": inputfile}
+
+    with pytest.raises(ValueError):
+        parse_office_assignment_file(input_dir)
+
+
+def test_parse_empty_office_assignment_file(datadir):
+    inputfile = os.path.join(datadir, "bad_office_assignment2.csv")
+    input_dir = {"office_assignment_file": inputfile}
+
+    with pytest.raises(ValueError):
+        parse_office_assignment_file(input_dir)
+
+
+def test_parse_office_assignemnt_file(datadir):
+    inputfile = os.path.join(datadir, "office_assignment.csv")
+    input_dir = {"office_assignment_file": inputfile}
+    res = parse_office_assignment_file(input_dir)
+
+    assert len(res) == 3
+    assert res[0] == (12, 0)

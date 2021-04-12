@@ -1,8 +1,6 @@
 #  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-#  This software may only be used in accordance with the licenses granted by
-#  Corning Incorporated. All other uses as well as any copying, modification
-#  or reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 #  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -52,7 +50,7 @@ def test_get_contacts_multiple_contact_step(use_local_storage):
     assert len(step) == 2
     expected = [
         {"x": 120, "y": 602, "count": 2},
-        {"x": 168.0, "y": 600.0, "count": 1},
+        {"x": 168, "y": 600, "count": 1},
     ]
     for ix, contact in enumerate(step):
         assert contact == expected[ix]
