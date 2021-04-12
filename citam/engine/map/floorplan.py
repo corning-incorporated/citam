@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -359,7 +357,7 @@ def floorplan_from_directory(
         LOG.info("Floorplan successfully loaded.")
 
     else:
-        raise FileNotFoundError("Could not find floorplan file")
+        raise FileNotFoundError(f"Could not find floorplan file: {fp_file}")
 
     fp_inputs: Dict[str, Any] = {}
     if kwargs.items():

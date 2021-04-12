@@ -1,16 +1,14 @@
-# Copyright 2020. Corning Incorporated. All rights reserved.
+#  Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-# ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
-# ==============================================================================
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+#  ==========================================================================
 
 from typing import Dict, Tuple, List, Any, Optional
 import numpy as np
@@ -130,7 +128,7 @@ class Facility:
 
         if best_entrance_door is None:
             office = self.floorplans[office_floor].spaces[office_id]
-            LOG.info("No entrance found for office: %s", office.unique_name)
+            LOG.warning("No entrance found for office: %s", office.unique_name)
         return best_entrance_door, best_entrance_floor
 
     def validate_entrances(self):
@@ -334,12 +332,11 @@ class Facility:
                     tmp_spaces.append(space)
                 elif len(space.doors) > 0:
                     exit_coords = floorplan.get_room_exit_coords(space_index)
-                    if exit_coords:
-                        best_entrance, _ = self.choose_best_entrance(
-                            fn, space_index
-                        )
-                        if best_entrance is not None:
-                            tmp_spaces.append(space)
+                    best_entrance, _ = self.choose_best_entrance(
+                        fn, space_index
+                    )
+                    if exit_coords and best_entrance is not None:
+                        tmp_spaces.append(space)
             n_unreachable = len(floorplan.spaces) - len(tmp_spaces)
             LOG.info("Unreachable rooms on floor %d: %d", fn, n_unreachable)
             self.floorplans[fn].spaces = tmp_spaces

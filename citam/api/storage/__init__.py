@@ -17,6 +17,7 @@ __all__ = ["s3", "local", "BaseStorageDriver", "NoResultsFoundError"]
 import abc
 import json
 import io
+from os import PathLike
 from typing import List, Dict, TextIO
 
 
@@ -50,6 +51,14 @@ class BaseStorageDriver(abc.ABC):
 
     @abc.abstractmethod
     def get_trajectory_file(self, sim_id: str) -> TextIO:
+        """Return the trajectory file for a simulation
+
+        :param sim_id: simulation identifier
+        :return: Trajectory file
+        """
+
+    @abc.abstractmethod
+    def get_trajectory_file_location(self, sim_id: str) -> PathLike:
         """Return the trajectory file for a simulation
 
         :param sim_id: simulation identifier

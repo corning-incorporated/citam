@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -55,7 +53,7 @@ def export_possible_oneway_aisles_to_svg(
     paths = [wall for wall in walls]
     attributes = [
         {"fill": "white", "stroke": "black", "stroke-width": 0.5}
-        for p in paths
+        for _ in paths
     ]
 
     color = "red"
@@ -261,7 +259,7 @@ def export_nav_network_to_svg(
     paths = [wall for wall in walls]
     attributes = [
         {"fill": "white", "stroke": "black", "stroke-width": 0.5}
-        for p in paths
+        for _ in paths
     ]
 
     for nn in nav_nodes:
@@ -346,7 +344,7 @@ def export_world_to_svg(
     paths = [wall for wall in walls]
     attributes = [
         {"fill": "white", "stroke": "black", "stroke-width": 0.5 * multiplier}
-        for p in paths
+        for _ in paths
     ]
 
     color_scale = cm.get_cmap("RdYlGn")

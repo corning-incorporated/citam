@@ -13,6 +13,7 @@
 __all__ = ["S3StorageDriver"]
 
 import logging
+from os import PathLike
 import boto3
 from datetime import datetime
 from io import BytesIO, StringIO
@@ -102,6 +103,9 @@ class S3StorageDriver(BaseStorageDriver):
         return self._get_text_file(
             sim_id, manifest.get("trajectory_file", "trajectory.txt")
         )
+
+    def get_trajectory_file_location(self, sim_id: str) -> PathLike:
+        raise NotImplementedError
 
     def get_contact_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)

@@ -17,7 +17,7 @@ Introduction
 This is a brief tutorial on how to use CITAM.
 
 CITAM is an agent-based modeling platform that can assist in the management of indoor facilities in the context of
-airborne pandemics like COVID-19 and help make policy decisions to mitigate
+contact-based pandemics like COVID-19 and help make policy decisions to mitigate
 indoor transmission risks.
 
 This tutorial assumes that you have already downloaded and installed CITAM. For details
@@ -69,7 +69,7 @@ as `notepad++ <https://www.notepad-plus-plus.org>`_ to open the file and inspect
     :encoding: UTF-8
     :linenos:
 
-If you are not familiar with SVG files, there is a brief tutorial in the `W3 Schools website <https://www.w3schools.com/graphics/svg_intro.asp>`_ to get you started.
+If you are not familiar with SVG files, there is a brief tutorial on the `W3 Schools website <https://www.w3schools.com/graphics/svg_intro.asp>`_ to get you started.
 The file contains a list of spaces with a geometric description of their boundaries in the "d" sub element.
 Each space also has a (unique) ID used to identify them.
 
@@ -92,14 +92,10 @@ main citam directory):
 
 .. code-block:: console
 
-    $ citam engine ingest TF2 0 --csv examples/basic_examples/TFI.csv --map examples/basic_example/TFI.svg -v
+    $ citam engine ingest TF2 0 -csv examples/basic_examples/TF2.csv -map examples/basic_example/TF2.svg -v
 
 `TF2` is the name of the facility under which this floorplan will be saved and `0` is the name of this floor. For all
 subsequent operations on this facility, the same facility name must be provided. Alternatively, you may use:
-
-.. code-block:: console
-
-    $ citam engine ingest TF2 0 -csv examples/basic_examples/TFI.csv -svg examples/basic_example/TFI.svg -v
 
 
 The ``-v`` argument is for verbose, to show more information as the ingestion process progresses.
@@ -115,7 +111,7 @@ you can use the ``citam engine export-floorplan`` command as follow:
 
     $ citam engine export-floorplan TF2 0 -o TF2_ingested.svg -v
 
-Use any SVG viewer (such as your web browser) to visualize the exported file. Fig. 2 shows
+Use any SVG viewer (such as your favorite web browser) to visualize the exported file. Fig. 2 shows
 what the ingested floor plan looks like. CITAM has removed walls that it thinks are unnecessary
 (based on whether they fall between two hallways). CITAM has also added doors to each
 space.
@@ -133,7 +129,7 @@ you will need an SVG editor such  `Inkscape <https://www.inkscape.com>`_ (free a
 1. Add a wall: To add a wall, you just need to draw a straight line where it should be.
 2. Delete a wall: To delete an existing wall, simply delete the corresponding line in the drawing.
 3. Modify a Wall: To modify a wall (make it shorter, or longer, or change its position), just manipulate the corresponding line in the drawing accordingly.
-4. Add a door: To add a new door, you also need to draw a line where it should be, but you must assign an ID that contains the keyword "door" to it. Note that you can draw a door line an an existing wall line. CITAM will know to carve out the door from the wall.
+4. Add a door: To add a new door, you need to draw a line where desired, but you must assign an ID that contains the keyword "door" to it. Note that you can draw a door line on top of an existing wall line. CITAM will know to carve out the door from the wall.
 5. Remove a door: To remove a door, you have to extend an existing wall or create a new wall to completely cover the door opening.
 
 An example of the floor plan after using Inkscape to include wall features is as shown in Fig. 3.
@@ -141,14 +137,14 @@ An example of the floor plan after using Inkscape to include wall features is as
 .. image:: assets/FirstOutputFileEdited.png
   :alt: Edited floorplan.
 
-Fig. 3: Floorplan as edited in Inkscape. The newly added lines are darker. Notice how a door is added to the left outside wall as a regular line except its ID is set to "dooor_1".
+Fig. 3: Floorplan as edited in Inkscape. The newly added lines are darker. Notice how a door is added to the left outside wall as a regular line except its ID is set to "door_1".
 
 Save your edited svg file as "TF2_edited.svg". Now update it within CITAM using the citam engine update-floorplan
 command as follow (assuming ):
 
 .. code-block:: console
 
-    $ citam engine update-floorplan TF2 0 -m ../../TF2_edited.svg -v
+    $ citam engine update-floorplan TF2 0 -s ../../TF2_edited.svg -v
 
 To verify that the floorplan looks good, you can export it again using the export-floorplan
 command:
@@ -174,8 +170,8 @@ different locations in the facility. Use the following command to build the navn
 
     $ citam engine build-navnet TF2 0
 
-Please note that you only have to go through this process (ingestion and navnet
-only once per facility per floor)
+Please note that you only have to go through this process (ingestion and building the navnet)
+only once per facility per floor.
 
 If you are curious, you can also export the navnet as an SVG file for visualization using the export-navnet command.
 

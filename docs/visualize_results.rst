@@ -4,7 +4,12 @@
 Visualize Results
 ==================
 
-Simulation results can be visualized using the dashboard. To start the dashboard:
+Simulation results can be visualized using a rudimentary dashboard. 
+
+There are some known issues with the dashboard including speed issues when 
+visualizing large trajectory files.
+
+To start the dashboard:
 
 .. code-block:: console
 
