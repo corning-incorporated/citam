@@ -2,46 +2,26 @@
 
 Covid-19 Indoor Transmission Agent-based Modeling platform.
 
-When you use CITAM to model your facility (e.g. a manufacturing facility, an office building, etc.), it creates a "virtual" version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts, scheduling rules, etc. and compare contact statistics to find the best mitigation strategy to limit transmission within your facility.
+ CITAM is a Python agent-based modeling framework for indoor environments. It can be used to create virtual analogs of real facilities to run different types of simulations that can benefit from the use of real floor plans. 
+ 
+ The primary use case is to simulate the movement of individuals while keeping track of time and location of contact events to predict outbreaks in indoor environments. The influence of various parameters such as number of people, number of shifts, scheduling rules, etc. can be explored to find the best mitigation strategy to limit the spread of contact-based transmissible diseases within facilities. CITAM can be used as an alternative or a complement to real-time tracking of facility users to assess and understand the implications of various mitigation policies, before their implementation. 
 
-As a simulation platform, CITAM does not implement nor does it support real-world tracking of visitors, employees or other people within the facilities of interest. CITAM actually provides an alternative to that approach by allowing a simulation to be used to assess and understand the implications of various mitigation policies. At its core, CITAM is an agent-based modeling platform. However, CITAM implements special features that make it possible to mimic daily activities in various indoor environments.
 
 ## Contents  
 
-[Basic Requirements](#basic-requirements)
-
-[Installaton](#install-citam)
-
-[Add New Facilities](#add-facilities)
-
-[Run Simulations](#run-simulations)
-
-[Visualize Results](#visualize-results)
-
-[Contributing](#contributing)
-
-[License](#license)
+  - [Install CITAM](#install-citam)
+    - [From Python-Wheel (Recommended)](#from-python-wheel-recommended)
+    - [From Source](#from-source)
+  - [Add Facilities](#add-facilities)
+  - [Run Simulations](#run-simulations)
+  - [Visualize Results](#visualize-results)
+  - [Contributing](#-contributing)
+  - [License](#-license)
 
 
-## Basic Requirements
+## Install
 
-The primary requirement to use CITAM is to have a map of each floor of each facility in SVG format for ingestion as well as some metadata about each space in each floorplan. For a list of required metadata, please visit the input requirements section of the documentation. Example input files are also available in the [examples](examples/) folder in this git repository.
-
-Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below (example usage is provided in the [How to add facilities](#how-to-add-facilities) section):
-1. **Ingestion** (required): in this step, CITAM reads your SVG and CSV files, automatically adds doors to spaces where missing, removes map artifacts that are deemed unnecessary for the simulation, and stores the resulting data in your local cache for future retrieval.
-2. **Validation** (optional): In this step, you get to inspect results from the ingestion step and make any necessary changes. This step is optional but highly recommended to ensure valid simulation results.
-3. **Navigation Network Creation** (required): When you are happy with the quality of the ingested data, you use a simple command to build the navigation network (or navnet) for your facility. The navnet is used for intelligent navigation of individuals in your facility within the simulation (to know how to go from their office to a cafeteria for example).
-4. **Navigation Network Validation** (optional): You can also verify and edit the navigation network to make sure everything looks good and ensure valid simulation results.
-
-These steps are done only once for each floor of each facility.
-
-Once a facility is successfully ingested into CITAM, any number of simulations can be performed with it. The parameters for each simulation are provided in an input file and include the number of individuals, the duration of the simulation, the contact distance, any one-way traffic, the number and characteristics of each shift if there are several, etc.
-
-CITAM is built as a cross-platform software compatible with all major operating systems. The primary way of using CITAM is currently through the command-line. CITAM is also shipped with a web-based dashboard to visualize simulation results.
-
-## Install CITAM
-
-### Pre-requisite: Python 3.x
+> Pre-requisite: Python 3.x
 
 Check your Python version as follows:
 
@@ -55,7 +35,7 @@ Below are the different ways to install CITAM.
 
 ### From Python-Wheel (Recommended)
 
-1. Download the python-wheel [here](https://github.com/corning-incorporated/citam/suites/1623194277/artifacts/29845594) (TODO: Update link to a release tag).
+1. Download the python-wheel zip file from the latest release tag [here](https://github.com/corning-incorporated/citam/releases).
 2. Extract the compressed file locally, 
 3. change directory to the extracted python-wheel folder.  Do not rename this file.
 4. run `pip install <citam wheel>` where citam_wheel is the extracted .whl file
@@ -83,17 +63,6 @@ $cd citam
 $git checkout alpha
 ```
 
-After successful cloning, install CITAM as follows:
-
-Build the dashboard one of the following ways:
-1. Running the command `python setup.py build_js`
-2. Building manually by doing the following
-    2a. `cd citamjs`
-    2b. `npm install`
-    2c. `npm run build`
-    2d. `cp -r dist/ ../citam/api/static/dash`
-    2e. `cd ..`
-
 Then install the pip package using the command
   ```
   $pip install .
@@ -116,7 +85,6 @@ $citam -h
 
    $pip install matplotlib   # reinstall it
 ```
-   For a walkthrough example of how to add your facilities and run simulations, go to the [getting started](#getting-started) section and consult the documentation.
 
 ## Add Facilities
 
@@ -217,48 +185,42 @@ Wait for your simulation to complete successfully before moving to the next sect
 
 ## Visualize Results
 
-The dashboard provides contact details and visual representation of simulation results and can be accessed at [http://localhost:8000](http://localhost:8000) after firing
-the server using.
+CITAM comes with a rudimentary and very limited GUI that provides some details on contact statistics and a visual representation of simulation results (we stress that the GUI is very early stage!)
+
+If you installed via python-wheel, the GUI should already be available for your use. Otherwise, to build the GUI from source, use one of the following methods:
+1. Running the command `python setup.py build_js`
+2. Building manually by doing the following
+    2a. `cd citamjs`
+    2b. `npm install`
+    2c. `npm run build`
+    2d. `cp -r dist/ ../citam/api/static/dash`
+    2e. `cd ..`
+
+Once the GUI is built, and assuming the current directory has the simulation results to visualize, the server can be started using:
 
 ```
 $citam dash --results .
 ```
+
+The GUI can then be accessed at [http://localhost:8000](http://localhost:8000). 
 
 > *Note: CITAM will recursively scan the results directory for simulation results. For example, if you
 start the dashboard with the results directory pointing to the citam source code, it will show sample
 results that are used for unit testing.*
 
 You can also set the `CITAM_RESULT_PATH` environment variable to the top level directory
-where you expect all your simulation results to be. If you have the `CITAM_RESULT_PATH` environment variable set, you can run `citam dash` (without the --results flag) to start the dashboard.
+where you expect all your simulation results to be. If you have the `CITAM_RESULT_PATH` environment variable set, you can run `citam dash` (without the --results flag) to start the dashboard/GUI.
 
-You can check all simulation runs along with facility-level information in tabular format on the first
-page. By clicking on `View Details`; you will be taken to a screen with detailed information such as:
-
- - Overall Total Contact Duration
- - Average Number of Contacts Per Agent
- - Average Contact Duration Per Agent
- - Average Number of People Per Agent
-
- On this page you will also find charts for:
-
- - Per Agent Total Contact and Average Contact Duration scatterplot
- - Total Contact per Agent histogram
- - Average Contact Duration (minutes) histogram
- - Contact heatmap
-
- You can also access interactive visual map of floors and time-based individuals movement by clicking on the `Visualization` tab.
 
 ## Contributing
 -----
-The code is divided into multiple components:
-+ **Engine**: the core simulation engine to manage facilities and run simulations (written in Python).
-+ **CLI**: The Command-Line Interface, currently the primary way of interacting with CITAM (written in Python).
-+ **API**: used to read and expose simulation results that are served locally over http (written in Python)
-+ **Dashboard**: The dashboard is the frontend component to visualize and analyze results (written in JavaScript).
 
-We welcome your contributions to any or all of these components. We also welcome bug reports and feature requests. For detailed instructions, please refer to the "[How to Contribute](contributing.md)" document.
+We encourage and welcome your contributions to any or all of the components of this code. We also welcome bug reports and feature requests (but we make no guarantee that new feature requests will be implemented any time soon). For detailed instructions, please refer to the "[How to Contribute](contributing.md)" document.
 
 ## License
 ------------
-CITAM is made available to the public under GPLv3.
+CITAM is made available to the public under GPLv3 and may only be used in accordance with the identified license(s).
 
+Copyright 2020. Corning Incorporated. All rights reserved.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.

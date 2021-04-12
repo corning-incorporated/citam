@@ -103,9 +103,6 @@ def test_serialize2(rect_floorplan):
             assert enc_door.path == dec_door.path
             assert enc_door.space1.id == dec_door.space1.id
             assert enc_door.space2 == dec_door.space2
-            # assert enc_door.path == dec_door.path
-            # assert enc_door.space1.id == dec_door.space1.id
-            # assert enc_door.space2 == dec_door.space2
 
 
 def test_to_json_file(x_floorplan, tmpdir):

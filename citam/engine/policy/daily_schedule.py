@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -122,7 +120,7 @@ class Schedule:
         self.current_standing = 0
 
         self.itinerary: List[Tuple[Any, ...]] = [
-            (None, None) for i in range(start_time - 2)
+            (None, None) for _ in range(start_time - 2)
         ]
         self.schedule_items: List[ScheduleItem] = []
 
@@ -344,6 +342,23 @@ class Schedule:
 
         return max_duration
 
+    def count_purpose_occurence_in_schedule_items(self) -> List[int]:
+        """
+        Iterate over schedule items and count how many items each scheduling
+        purpose exists.
+
+        :return: List of counts, one per possible purpose.
+        :rtype: int
+        """
+        n_items = [0 for _ in self.possible_purposes]
+        for employee_item in self.schedule_items:
+            # Current items already in this employee's schedule
+            for i, purpose in enumerate(self.possible_purposes):
+                if purpose == employee_item.purpose:
+                    n_items[i] += 1
+                    break
+        return n_items
+
     def get_valid_purposes_from_possible_purposes(
         self, next_meeting_start_time: Optional[int]
     ) -> List[str]:
@@ -361,13 +376,7 @@ class Schedule:
         # TODO: refactor this function to add to valid purpose only after all
         # the tests have passed
         # Count how many items of each type is already in the schedule
-        n_items = [0 for i in self.possible_purposes]
-        for employee_item in self.schedule_items:
-            # Current items already in this employee's schedule
-            for i, purpose in enumerate(self.possible_purposes):
-                if purpose == employee_item.purpose:
-                    n_items[i] += 1
-                    break
+        n_items = self.count_purpose_occurence_in_schedule_items()
 
         # Don't consider schedule item that already reached their max instances
         for i, purpose in enumerate(self.possible_purposes):

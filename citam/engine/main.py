@@ -1,8 +1,6 @@
 # Copyright 2020. Corning Incorporated. All rights reserved.
 #
-# This software may only be used in accordance with the licenses granted by
-# Corning Incorporated. All other uses as well as any copying, modification or
-# reverse engineering of the software is strictly prohibited.
+#  This software may only be used in accordance with the identified license(s).
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -21,6 +19,7 @@ from copy import deepcopy
 from typing import List
 
 import networkx as nx
+from networkx.classes.graph import Graph
 from svgpathtools import Line
 
 import citam.engine.io.visualization as bv
@@ -36,6 +35,8 @@ from citam.engine.facility.indoor_facility import Facility
 import json
 
 LOG = logging.getLogger(__name__)
+
+ROUTES_JSON_FILE = "routes.json"
 
 
 def list_facilities(**kwargs):  # noqa
@@ -166,7 +167,7 @@ def build_navigation_network(
     navbuilder.build()
 
     hw_graph_file = os.path.join(floorplan_directory, "hallways_graph.json")
-    floor_navnet_file = os.path.join(floorplan_directory, "routes.json")
+    floor_navnet_file = os.path.join(floorplan_directory, ROUTES_JSON_FILE)
 
     navbuilder.export_navdata_to_json(floor_navnet_file, hw_graph_file)
 
@@ -224,7 +225,7 @@ def export_navigation_graph_to_svg(
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
-    nav_network_file = os.path.join(floorplan_directory, "routes.json")
+    nav_network_file = os.path.join(floorplan_directory, ROUTES_JSON_FILE)
     if not os.path.isfile(nav_network_file):
         raise FileNotFoundError(nav_network_file)
 
@@ -333,6 +334,48 @@ def run_simulation(inputs: dict):
     LOG.info("Done with everything")
 
 
+def initialize_oneway_network(navnet: Graph) -> Graph:
+    oneway_network = nx.Graph()
+    for e in list(navnet.to_undirected().edges()):
+
+        if (
+            "node_type" not in navnet.nodes[e[0]]
+            or "node_type" not in navnet.nodes[e[1]]
+        ):
+            continue
+        if (
+            navnet.nodes[e[0]]["node_type"] == "intersection"
+            and navnet.nodes[e[1]]["node_type"] == "intersection"
+        ):
+            oneway_network.add_edge(e[0], e[1], inter_points=[], id=None)
+    return oneway_network
+
+
+def check_and_remove_node_from_oneway_network(node, oneway_network):
+    neighbors = list(oneway_network.neighbors(node))
+    if len(neighbors) == 2:
+        # Verify that both neighbors and this node are collinear
+        test_line = Line(
+            start=complex(neighbors[0][0], neighbors[0][1]),
+            end=complex(neighbors[1][0], neighbors[1][1]),
+        )
+        test_point = Point(x=node[0], y=node[1])
+        if gsu.is_point_on_line(test_line, test_point, tol=1e-3):
+            inter_points = []
+            node_added = False
+            for _, datadict in oneway_network.adj[node].items():
+                inter_points += datadict["inter_points"]
+                if not node_added:
+                    inter_points.append(node)
+                    node_added = True
+            oneway_network.remove_node(node)
+            oneway_network.add_edge(
+                neighbors[0], neighbors[1], inter_points=inter_points
+            )
+            return True
+    return False
+
+
 def find_and_save_potential_one_way_aisles(
     facility: str,
     floor: str,
@@ -360,7 +403,7 @@ def find_and_save_potential_one_way_aisles(
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
-    nav_network_file = os.path.join(floorplan_directory, "routes.json")
+    nav_network_file = os.path.join(floorplan_directory, ROUTES_JSON_FILE)
     if not os.path.isfile(nav_network_file):
         raise FileNotFoundError(nav_network_file)
 
@@ -369,45 +412,16 @@ def find_and_save_potential_one_way_aisles(
     nav_graph = nx.readwrite.json_graph.node_link_graph(navnet_data)
 
     LOG.info("Finding possible one way aisles from navigation network...")
-    oneway_network = nx.Graph()
-    for e in list(nav_graph.to_undirected().edges()):
-        if "node_type" not in nav_graph.nodes[e[0]]:
-            continue
-        if "node_type" not in nav_graph.nodes[e[1]]:
-            continue
-        if (
-            nav_graph.nodes[e[0]]["node_type"] == "intersection"
-            and nav_graph.nodes[e[1]]["node_type"] == "intersection"
-        ):
-            oneway_network.add_edge(e[0], e[1], inter_points=[], id=None)
+    oneway_network = initialize_oneway_network(nav_graph)
 
     completed = False
     while not completed:
         completed = True
         for node in list(oneway_network.nodes()):
-            neighbors = list(oneway_network.neighbors(node))
             # Remove node from graph if it has 2 neighbors
-            if len(neighbors) == 2:
-                # Verify that both neighbors and this node are collinear
-                test_line = Line(
-                    start=complex(neighbors[0][0], neighbors[0][1]),
-                    end=complex(neighbors[1][0], neighbors[1][1]),
-                )
-                test_point = Point(x=node[0], y=node[1])
-                if gsu.is_point_on_line(test_line, test_point, tol=1e-3):
-                    inter_points = []
-                    node_added = False
-                    for nbr, datadict in oneway_network.adj[node].items():
-                        inter_points += datadict["inter_points"]
-                        if not node_added:
-                            inter_points.append(node)
-                            node_added = True
-                    oneway_network.remove_node(node)
-                    oneway_network.add_edge(
-                        neighbors[0], neighbors[1], inter_points=inter_points
-                    )
-                    completed = False
-                    break
+            if check_and_remove_node_from_oneway_network(node, oneway_network):
+                completed = False  # graph has changed, start over
+                break
 
     # Assign a unique name to each edge in oneway network
     for i, edge in enumerate(list(oneway_network.edges())):
