@@ -31,7 +31,7 @@ successfully load and display information on the GUI.
 Floor-Based Results
 --------------------
 
-Each floor has its own subfolder which contains contact data that take place on that floor. Here is
+Each floor has its own subfolder which contains data about each contact event that occurred on that floor. Here is
 a description of each result file:
 
 * contact_dist_per_coord.csv

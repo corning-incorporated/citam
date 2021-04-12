@@ -3,12 +3,7 @@ from svgpathtools import Line
 from copy import deepcopy
 
 
-def test_read_updated_SVG_file(datadir):
-    # svg_file = datadir.join('rect_floorplan_edited.svg')
-    return
-
-
-def test_update_from_SVG_data(rect_floorplan, datadir):
+def test_update_from_svg_data(rect_floorplan, datadir):
 
     door_paths = [
         Line(start=complex(0, 20), end=complex(0, 60)),
@@ -24,7 +19,7 @@ def test_update_from_SVG_data(rect_floorplan, datadir):
     orginal_fp = deepcopy(rect_floorplan)
     svg_file = datadir.join("rect_floorplan_edited.svg")
     fp_updater = FloorplanUpdater(rect_floorplan, svg_file=svg_file)
-    fp_updater.update_from_SVG_data(wall_paths, door_paths)
+    fp_updater.update_from_svg_data(wall_paths, door_paths)
 
     walls_removed = [
         w for w in orginal_fp.walls if w not in fp_updater.floorplan.walls
@@ -34,8 +29,3 @@ def test_update_from_SVG_data(rect_floorplan, datadir):
     assert len(fp_updater.floorplan.walls) == 7  # 4 walls added leading to 7
     assert len(fp_updater.floorplan.doors) == 2  # Existing door is removed
     assert len(fp_updater.floorplan.special_walls) == 3  # 2 new walls found
-
-
-def test_update_from_CSV_data(datadir):
-
-    return
