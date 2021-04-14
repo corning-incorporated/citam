@@ -52,7 +52,6 @@ def get_trajectories(
     """
 
     result_file = settings.storage_driver.get_trajectory_file_location(sim_id)
-    print("We are here!")
     LOG.info(
         "trajectory file parsing process started",
     )
@@ -67,7 +66,6 @@ def get_trajectories(
     new_step = True
     step = []
     position_lines = False
-    print("Getting ready to read...")
     with open(result_file, "r") as infile:
         for line in infile:
             curr_file_line += 1
@@ -111,7 +109,7 @@ def get_trajectories(
                     new_step = True
                     position_lines = False
         if (
-            len(steps) < max_steps
+            len(steps) < max_steps and step_num >= first_timestep
         ):  # We finished reading the file before max steps reached
             steps.append(step)  # Add last step data
 
