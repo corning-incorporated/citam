@@ -39,7 +39,6 @@ def get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict:
 def get_trajectories(
     sim_id: str,
     floor: Union[str, int] = None,
-    offset: int = 0,
     first_timestep: int = 0,
     max_steps: int = 5000,
 ) -> Dict:
@@ -53,7 +52,7 @@ def get_trajectories(
     """
 
     result_file = settings.storage_driver.get_trajectory_file_location(sim_id)
-
+    print("We are here!")
     LOG.info(
         "trajectory file parsing process started",
     )
@@ -64,21 +63,20 @@ def get_trajectories(
     start_time = time.time()
     steps = []
     curr_file_line = 0
-    current_pos_line, n_position_lines, step_num = 0, 0, 0
+    current_pos_line, n_position_lines, step_num = 0, 0, None
     new_step = True
     step = []
     position_lines = False
+    print("Getting ready to read...")
     with open(result_file, "r") as infile:
         for line in infile:
             curr_file_line += 1
-            if curr_file_line < offset or step_num < first_timestep:
-                continue
             if new_step:
                 n_position_lines = int(line.strip())
                 current_pos_line = 0
                 timestep_line = True
                 new_step = False
-                if curr_file_line > 1:
+                if step_num is not None and step_num >= first_timestep:
                     steps.append(step)
                     if len(steps) == max_steps:
                         break
@@ -119,7 +117,7 @@ def get_trajectories(
 
     duration = time.time() - start_time
     LOG.info(f"trajectory file parsing process is complete in {duration} sec")
-
+    print("Number of steps: ", len(steps))
     return {"data": steps, "statistics": {"cfl": curr_file_line}}
 
 

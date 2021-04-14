@@ -66,14 +66,28 @@ class LocalStorageDriver(BaseStorageDriver):
 
         for manifest in manifests:
             with open(manifest, "r") as manifest_file:
+                manifest_data = json.load(manifest_file)
+
                 try:
-                    manifest_data = json.load(manifest_file)
                     sim_id = manifest_data["SimulationID"]
-                    policy_id = manifest_data["PolicyID"]
-                    facility_name = manifest_data["FacilityName"]
                 except KeyError:
                     LOG.warning(
-                        '"%s" does not define "SimulationName". '
+                        '"%s" does not define "SimulationID". '
+                        "The results for this manifest will be ignored ",
+                        manifest,
+                    )
+                    continue
+                policy_id = None
+                if "PolicyID" in manifest_data:
+                    policy_id = manifest_data["PolicyID"]
+
+                if "FacilityName" in manifest_data:
+                    facility_name = manifest_data["FacilityName"]
+                elif "Campus" in manifest_data:
+                    facility_name = manifest_data["Campus"]
+                else:
+                    LOG.warning(
+                        '"%s" does not define "FacilityName" or "Campus". '
                         "The results for this manifest will be ignored ",
                         manifest,
                     )
@@ -87,7 +101,6 @@ class LocalStorageDriver(BaseStorageDriver):
                         "facility_name": facility_name,
                     }
                 )
-
         if len(self.result_dirs.keys()) == 0:
             raise NoResultsFoundError(
                 "LocalStorageDriver did not find any valid manifest.json"
@@ -155,6 +168,8 @@ class LocalStorageDriver(BaseStorageDriver):
         )
 
     def get_manifest_file(self, sim_id):
+        print(self.result_dirs)
+
         return open(
             os.path.join(self.result_dirs[sim_id], "manifest.json"), "r"
         )

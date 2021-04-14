@@ -1,0 +1,24 @@
+#!/bin/zsh 
+#PBS -l select=1:ncpus=4:mpiprocs=4 
+#PBS -l walltime=96:00:00 
+#PBS -j oe 
+#PBS -N 207FalseFalse
+. /etc/profile.d/modules.sh 
+
+cd $PBS_O_WORKDIR 
+ echo  $PBS_JOBID 
+ mkdir $WORKDIR/$PBS_JOBID 
+ ln -s $WORKDIR/$PBS_JOBID 
+ cp * $WORKDIR/$PBS_JOBID  
+ cd $WORKDIR/$PBS_JOBID 
+ export NPROCS=`wc -l < $PBS_NODEFILE` 
+
+export OMP_NUM_THREADS=4 
+
+
+source ~/.python_mods
+conda activate citam-env
+python /home/reveilm2/CITAM/citam/citam/cli.py engine run sim_inputs.json
+
+cp -r * $PBS_O_WORKDIR 
+
