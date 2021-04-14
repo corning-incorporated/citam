@@ -110,12 +110,16 @@ def test_list_response(client):
     result: testing.Result = client.simulate_get("/v1/list")
     assert result.status_code == 200
     assert isinstance(result.json, list)
-    assert len(result.json) == 2
+    assert len(result.json) == 3
     assert "sim_id" in result.json[0]
     assert "policy_id" in result.json[0]
     assert "facility_name" in result.json[0]
 
-    sim_ids = ["sim_id_0001", "sim_id_0002"]
+    sim_ids = [
+        "sim_id_0001",
+        "sim_id_0002",
+        "140b517c-acf8-4b24-ae09-8cc219b5590e",
+    ]
     assert result.json[0]["sim_id"] in sim_ids
     assert result.json[1]["sim_id"] in sim_ids
 

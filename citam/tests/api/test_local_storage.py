@@ -44,7 +44,7 @@ def test_results_found(monkeypatch):
     correct arguments were used
     """
     driver = LocalStorageDriver(search_path=search_root)
-    assert len(driver.result_dirs) == 2
+    assert len(driver.result_dirs) == 3
 
 
 def test_no_results_found():
@@ -64,6 +64,11 @@ def test_list_runs():
             "sim_id": "sim_id_0002",
             "facility_name": "TEST",
             "policy_id": "pol_id_0001",
+        },
+        {
+            "sim_id": "140b517c-acf8-4b24-ae09-8cc219b5590e",
+            "facility_name": "F1",
+            "policy_id": None,
         },
         # the result in TFBAD has a malformed manifest and should be ignored
     ]

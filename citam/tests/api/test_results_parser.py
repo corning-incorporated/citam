@@ -100,9 +100,16 @@ def test_get_trajectories_long_trajectory_next_block(use_local_storage):
     assert len(trajectories["data"][0]) == 207
 
 
-def test_get_trajectories_long_trajectory_last_block(use_local_storage):
+def test_get_trajectories_long_trajectory_no_block(use_local_storage):
     trajectories = get_trajectories(
         "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=30000
+    )  # File has less than 30,000 steps
+    assert len(trajectories["data"]) == 0
+
+
+def test_get_trajectories_long_trajectory_last_block(use_local_storage):
+    trajectories = get_trajectories(
+        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=20000
     )
-    assert len(trajectories["data"]) == 2700
+    assert len(trajectories["data"]) == 4997
     assert len(trajectories["data"][0]) == 207
