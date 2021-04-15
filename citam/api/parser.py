@@ -71,14 +71,12 @@ def get_trajectories(
     with open(result_file, "r") as infile:
         for line in infile:
             curr_file_line += 1
-            if curr_file_line < offset or step_num < first_timestep:
-                continue
             if new_step:
                 n_position_lines = int(line.strip())
                 current_pos_line = 0
                 timestep_line = True
                 new_step = False
-                if curr_file_line > 1:
+                if step_num is not None and step_num >= first_timestep:
                     steps.append(step)
                     if len(steps) == max_steps:
                         break
@@ -113,7 +111,7 @@ def get_trajectories(
                     new_step = True
                     position_lines = False
         if (
-            len(steps) < max_steps
+            len(steps) < max_steps and step_num >= first_timestep
         ):  # We finished reading the file before max steps reached
             steps.append(step)  # Add last step data
 
