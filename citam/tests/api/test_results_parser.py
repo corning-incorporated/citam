@@ -103,7 +103,7 @@ def test_get_trajectories_long_trajectory_no_block(use_local_storage):
 
 def test_get_trajectories_long_trajectory_last_block(use_local_storage):
     trajectories = get_trajectories(
-        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=20000
+        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=10000
     )
-    assert len(trajectories["data"]) == 4997
+    assert len(trajectories["data"]) == 2200
     assert len(trajectories["data"][0]) == 207

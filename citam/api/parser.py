@@ -64,7 +64,8 @@ def get_trajectories(
     start_time = time.time()
     steps = []
     curr_file_line = 0
-    current_pos_line, n_position_lines, step_num = 0, 0, 0
+    current_pos_line, n_position_lines = 0, 0
+    step_num = None
     new_step = True
     step = []
     position_lines = False
