@@ -84,3 +84,26 @@ def test_get_trajectories_2agents_filtered(use_local_storage):
     ]
     for ix, expected in enumerate(expected_trajectories):
         assert trajectories["data"][79][ix] == expected
+
+
+def test_get_trajectories_long_trajectory_next_block(use_local_storage):
+    trajectories = get_trajectories(
+        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=5000
+    )
+    assert len(trajectories["data"]) == 5000
+    assert len(trajectories["data"][0]) == 207
+
+
+def test_get_trajectories_long_trajectory_no_block(use_local_storage):
+    trajectories = get_trajectories(
+        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=30000
+    )  # File has less than 30,000 steps
+    assert len(trajectories["data"]) == 0
+
+
+def test_get_trajectories_long_trajectory_last_block(use_local_storage):
+    trajectories = get_trajectories(
+        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=10000
+    )
+    assert len(trajectories["data"]) == 2200
+    assert len(trajectories["data"][0]) == 207

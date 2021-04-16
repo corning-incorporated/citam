@@ -1,0 +1,24 @@
+{
+    "TimestepInSec": 1,
+    "NumberOfFloors": 1,
+    "NumberOfOneWayAisles": 0,
+    "NumberOfEmployees": 0,
+    "SimulationName": "51a37fa7054a3f8e8d55",
+    "SimulationID": "140b517c-acf8-4b24-ae09-8cc219b5590e",
+    "Campus": "F1",
+    "FacilityOccupancy": null,
+    "MaxRoomOccupancy": 1.0,
+    "NumberOfShifts": 1,
+    "NumberOfEntrances": 1,
+    "NumberOfExits": 1,
+    "EntranceScreening": false,
+    "trajectory_file": "trajectory.txt",
+    "floors": [
+        {
+            "name": "0",
+            "directory": "floor_0/"
+        }
+    ],
+    "scaleMultiplier": 10,
+    "timestep": 1
+}
