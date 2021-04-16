@@ -64,7 +64,8 @@ def test_trajectory_response(client):
 
 def test_trajectory_response_large_traj(client):
     result: testing.Result = client.simulate_get(
-        "/v1/140b517c-acf8-4b24-ae09-8cc219b5590e/trajectory?first_timestep=0&max_steps=15000"
+        "/v1/140b517c-acf8-4b24-ae09-8cc219b5590e/trajectory?"
+        + "first_timestep=0&max_steps=15000"
     )
     assert result.status_code == 200
     assert result.json.get("data")

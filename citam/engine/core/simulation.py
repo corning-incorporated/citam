@@ -70,7 +70,7 @@ class Simulation:
 
         :param facility: Facility object for which to run this simulation.
         :type facility: Facility
-        :param total_timesteps: Total number of timesteps to run this simulation for.
+        :param total_timesteps: Total timesteps to run this simulation for.
         :type total_timesteps: int
         :param n_agents: Total number of people in this facility.
         :type n_agents: int
