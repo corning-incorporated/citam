@@ -124,7 +124,11 @@ def get_trajectories(
     duration = time.time() - start_time
     LOG.info(f"trajectory file parsing process is complete in {duration} sec")
 
-    return {"data": steps, "statistics": {"cfl": curr_file_line}}
+    return {
+        "data": steps,
+        "first_timestep": first_timestep,
+        "statistics": {"cfl": curr_file_line},
+    }
 
 
 def get_contacts(sim_id: str, floor: str) -> List[List[Dict]]:

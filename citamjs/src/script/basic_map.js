@@ -29,6 +29,7 @@ import {
 import { Colorbar } from './utils/colorbar';
 import { Timer } from './utils/timer';
 import '../css/_basic_map.scss';
+import { Frame } from './utils/agent_data';
 
 
 let trajectoryCollection = []
@@ -73,10 +74,13 @@ export default class Map2D {
         /** Loader element */
         this.loader = new Loader();
 
-        /** Total Timesteps for the curret Simulation */
-        this.totalSteps = 0;
+        /** Total Timesteps for the current Simulation */
+        this.totalSteps = null;
 
-        /** Simulation ID */
+        /** Number of agents in current simulation */
+        this.nAgents = null;
+
+        /** Simulation Details */
         this.simulation = null;
 
         /** Map Scale Factor - for size of annotations */
@@ -93,8 +97,12 @@ export default class Map2D {
      * @param {string} sim_id - Simulation Name
      */
     async setSimulation(sim_id) {
-        this.simulation = sim_id;
-        return this.reloadSimulation();
+        if (sim_id != this.simulation) {
+            this.simulation = sim_id;
+            // this.totalSteps = totalSteps;
+            // this.nAgents = nAgents;
+            return this.reloadSimulation();
+        }
     }
 
     /**
@@ -107,42 +115,50 @@ export default class Map2D {
         return this.reloadSimulation();
     }
 
-    async getTrajectoryData(totalSteps, nAgents = 300) {
+    async getTrajectoryData(totalSteps) {
         // let _this = this;
-        totalSteps = 10000;
-        let max_steps = totalSteps;
-        if (totalSteps * nAgents > 1e7) {
-            max_steps = Math.ceil(totalSteps * nAgents / 700);
+        this.totalSteps = 255;
+        this.nAgents = 621;
+        let max_steps = this.totalSteps;
+        if (totalSteps * this.nAgents > 1e7) {
+            max_steps = Math.ceil(this.totalSteps * this.nAgents / 700);
         }
         let request_arr = [], first_timestep = 0, max_contacts = 1000;
         trajectoryCollection = [];
-        while (first_timestep < totalSteps) {
+        while (first_timestep < this.totalSteps) {
             request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_steps));
             first_timestep += max_steps;
         }
         console.log("Total number of traj requests:", request_arr.length)
         await Promise.all(request_arr).then((response) => {
             console.log("Response is: ", response)
-            response.forEach((val) => {
-                console.log("Processing this: ", val)
-                trajectoryCollection = trajectoryCollection.concat(
-                    val.data.data.filter(v => v.length > 0));
+            response.forEach((chunk) => {
+                console.log("Processing this chunk: ", chunk)
+                let i = 0;
+                chunk.data.data.forEach((timestep) => {
+                    let new_frame = new Frame(chunk.data.first_timestep + i, this.nAgents);
+                    timestep.forEach((agent) => {
+                        new_frame.agentPositions[agent.agent].setPosition(agent.x, agent.y, agent.z);
+                        new_frame.agentPositions[agent.agent].setCount(agent.count);
+                    });
+                    trajectoryCollection.push(new_frame);
+                    i++;
+                });
 
             });
-            this.totalSteps = trajectoryCollection.length;
-            this.trajectories = trajectoryCollection;
-            let contactDomain = [0, max_contacts];
-            this.colorMap.domain(contactDomain);
-            this.colorBar.update(...contactDomain);
-            this.loader.trajectoryLoaded();
-            this.loader.hide();
-            this.timer.show();
-            this.colorBar.show();
-            this.startAnimation();
-
         });
+        console.log("Total frames: ", trajectoryCollection.length, "total steps: ", this.totalSteps)
+        this.totalSteps = trajectoryCollection.length;
+        this.trajectories = trajectoryCollection;
+        let contactDomain = [0, max_contacts];
+        this.colorMap.domain(contactDomain);
+        this.colorBar.update(...contactDomain);
+        this.loader.trajectoryLoaded();
+        this.loader.hide();
+        this.timer.show();
+        this.colorBar.show();
+        this.startAnimation();
     }
-
 
     /**
      * Reload the configured simulation.  this should be done after changing
@@ -236,7 +252,7 @@ export default class Map2D {
      * @param {number} newSpeed
      */
     setSpeed(newSpeed) {
-        this.animationInterval = (11 - newSpeed) * 5;
+        this.animationInterval = (11 - newSpeed) * 20;
         this._resetInterval();
     }
 
@@ -307,11 +323,11 @@ export default class Map2D {
         let circle = select('#svg-map').select('#root')
             .select('g#trajectories')
             .selectAll('circle')
-            .data(this.trajectories[this.currentStep]);
+            .data(this.trajectories[this.currentStep].agentPositions);
 
         // Remove missing trajectories
-        circle.exit()
-            .remove();
+        // circle.exit()
+        //     .remove();
 
         // Add new trajectories
         circle.enter()
@@ -335,6 +351,7 @@ export default class Map2D {
      * @private
      */
     _resetInterval() {
+        console.log("Restting the speed to: ", this.animationInterval)
         window.clearInterval(this.animationIntervalID);
         this.animationIntervalID = setInterval(() => {
             this.currentStep++;
