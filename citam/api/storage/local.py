@@ -76,6 +76,15 @@ class LocalStorageDriver(BaseStorageDriver):
                         manifest,
                     )
                     continue
+                # try:
+                #     manifest_data["TotalTimesteps"]
+                # except KeyError:
+                #     LOG.warning(
+                #         '"%s" does not define "TotalTimesteps". '
+                #         "The results for this manifest will be ignored ",
+                #         manifest,
+                #     )
+                #     continue
                 policy_id = None
                 if "PolicyID" in manifest_data:
                     policy_id = manifest_data["PolicyID"]

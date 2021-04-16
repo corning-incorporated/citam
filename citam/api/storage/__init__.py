@@ -130,9 +130,12 @@ class BaseStorageDriver(abc.ABC):
         :return: Simulation Manifest
         """
         manifest = json.loads(self.get_manifest_file(sim_id).read())
-
+        if "Floors" in manifest:
+            floors = manifest["Floors"]
+        elif "floors" in manifest:
+            floors = manifest["floors"]
         manifest["sim_id"] = sim_id
         manifest["floor_dict"] = {
-            floor["name"]: floor["directory"] for floor in manifest["floors"]
+            floor["name"]: floor["directory"] for floor in floors
         }
         return manifest

@@ -14,34 +14,24 @@
 
 
 import * as d3 from 'd3';
-import {select, event} from 'd3-selection';
-import {zoom} from 'd3-zoom';
-import {scaleSequential} from 'd3-scale';
-import {Loader} from './utils/loader';
+import { select, event } from 'd3-selection';
+import { zoom } from 'd3-zoom';
+import { scaleSequential } from 'd3-scale';
+import { Loader } from './utils/loader';
 import {
     getBaseMap,
     getContact,
-    // getTrajectoryLines,
+    getTotalTimesteps,
     getTrajectory,
     getContactPositionDist,
     getSummary,
 } from './data_service';
-import {Colorbar} from './utils/colorbar';
-import {Timer} from './utils/timer';
+import { Colorbar } from './utils/colorbar';
+import { Timer } from './utils/timer';
 import '../css/_basic_map.scss';
 
 
 let trajectoryCollection = []
-
-function getMax(arr) {
-    let len = arr.length;
-    let max = -Infinity;
-
-    while (len--) {
-        max = arr[len] > max ? arr[len] : max;
-    }
-    return max;
-}
 
 /**
  * 2D map visualization
@@ -58,7 +48,7 @@ export default class Map2D {
 
 
         /** Colorbar **/
-        this.colorBar = new Colorbar({palette: d3.interpolateOrRd, scale: scaleSequential});
+        this.colorBar = new Colorbar({ palette: d3.interpolateOrRd, scale: scaleSequential });
         this.mapRoot.append(this.colorBar.domElement);
         this.colorBar.hide();
 
@@ -117,38 +107,40 @@ export default class Map2D {
         return this.reloadSimulation();
     }
 
-   async getTrajectoryData(offset = 0) {
+    async getTrajectoryData(totalSteps, nAgents = 300) {
         // let _this = this;
-        let totalSteps = 35400, max_steps = 5000,
-            request_arr = [], first_timestep = 0;
+        totalSteps = 10000;
+        let max_steps = totalSteps;
+        if (totalSteps * nAgents > 1e7) {
+            max_steps = Math.ceil(totalSteps * nAgents / 700);
+        }
+        let request_arr = [], first_timestep = 0, max_contacts = 1000;
         trajectoryCollection = [];
         while (first_timestep < totalSteps) {
-            request_arr.push(getTrajectory(this.simulation, this.floor, offset, first_timestep, max_steps));
+            request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_steps));
             first_timestep += max_steps;
         }
+        console.log("Total number of traj requests:", request_arr.length)
         await Promise.all(request_arr).then((response) => {
+            console.log("Response is: ", response)
             response.forEach((val) => {
+                console.log("Processing this: ", val)
                 trajectoryCollection = trajectoryCollection.concat(
-                    val.data.data.filter(v=>v.length > 0));
-                this.totalSteps = trajectoryCollection.length;
-                this.trajectories = trajectoryCollection;
-                let contactList = [];
-                trajectoryCollection.map(function (a) {
-                    a.map(function (a1) {
-                        contactList.push(a1.x)
-                    })
-                })
-                let contactDomain = [0, getMax(contactList)];
-                this.colorMap.domain(contactDomain);
-                this.colorBar.update(...contactDomain);
-                this.loader.trajectoryLoaded();
-                this.loader.hide();
-                this.timer.show();
-                this.colorBar.show();
-                this.startAnimation();
-            })
+                    val.data.data.filter(v => v.length > 0));
 
-        })
+            });
+            this.totalSteps = trajectoryCollection.length;
+            this.trajectories = trajectoryCollection;
+            let contactDomain = [0, max_contacts];
+            this.colorMap.domain(contactDomain);
+            this.colorBar.update(...contactDomain);
+            this.loader.trajectoryLoaded();
+            this.loader.hide();
+            this.timer.show();
+            this.colorBar.show();
+            this.startAnimation();
+
+        });
     }
 
 
@@ -182,12 +174,9 @@ export default class Map2D {
                 this.loader.contactLoaded();
             });
 
-
-        // let trajectoriesLinesRequest = getTrajectoryLines(this.simulation, this.floor)
-        //     .then(response => {
-        //         this.trajectoriesLines = response.data.data;
-        //         // this.getTrajectoryData(0)
-        //     });
+        getTotalTimesteps(this.simulation).then((response) => {
+            this.getTrajectoryData(response.data.data);
+        });
 
 
         let mapRequest = getBaseMap(this.simulation, this.floor)
@@ -209,7 +198,6 @@ export default class Map2D {
             summaryRequest,
             contactDist,
             contactsRequest,
-            // trajectoriesLinesRequest,
             mapRequest,
         ])
         return this;
@@ -298,16 +286,16 @@ export default class Map2D {
      */
     _updateContacts() {
         // Bind new trajectory data
-        let contactLayer = select('#svg-map').select("#root")
-            .select('g#contacts');
+        // let contactLayer = select('#svg-map').select("#root")
+        //     .select('g#contacts');
 
-        this.contacts[this.currentStep].forEach((contact) => {
-            contactLayer.append('circle')
-                .attr('r', this.contactSize * this.scaleFactor)
-                .attr('cx', contact.x)
-                .attr('cy', contact.y)
-                .style('fill', '#FF0000');
-        });
+        // this.contacts[this.currentStep].forEach((contact) => {
+        //     contactLayer.append('circle')
+        //         .attr('r', this.contactSize * this.scaleFactor)
+        //         .attr('cx', contact.x)
+        //         .attr('cy', contact.y)
+        //         .style('fill', '#FF0000');
+        // });
     }
 
     /**

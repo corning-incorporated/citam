@@ -20,7 +20,7 @@ def test_run_simulation_no_issues(datadir, tmpdir, monkeypatch):
         "floors": ["0"],
         "n_agents": 5,
         "occupancy_rate": None,
-        "daylength": 3600,
+        "total_timesteps": 3600,
         "buffer": 100,
         "timestep": 1.0,
         "entrances": [{"floor": "0", "name": "aisle213"}],

@@ -36,10 +36,15 @@ def get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict:
     return {"data": count}
 
 
+def get_total_timesteps(sim_id: str) -> Dict:
+    manifest_data = settings.storage_driver.get_manifest(sim_id)
+    nsteps = manifest_data["TotalTimesteps"]
+    return {"data": nsteps}
+
+
 def get_trajectories(
     sim_id: str,
     floor: Union[str, int] = None,
-    offset: int = 0,
     first_timestep: int = 0,
     max_steps: int = 5000,
 ) -> Dict:
