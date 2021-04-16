@@ -12,13 +12,14 @@
     "NumberOfEntrances": 1,
     "NumberOfExits": 1,
     "EntranceScreening": false,
-    "trajectory_file": "trajectory.txt",
-    "floors": [
+    "TrajectoryFile": "trajectory.txt",
+    "Floors": [
         {
             "name": "0",
             "directory": "floor_0/"
         }
     ],
-    "scaleMultiplier": 10,
-    "timestep": 1
+    "ScaleMultiplier": 10,
+    "Timestep": 1,
+    "TotalTimesteps": 12200
 }

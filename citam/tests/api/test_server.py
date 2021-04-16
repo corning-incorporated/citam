@@ -57,8 +57,29 @@ def test_trajectory_response(client):
     )
     assert result.status_code == 200
     assert result.json.get("data")
+    assert len(result.json["data"]) == 1899
     assert result.json.get("statistics")
     assert result.json["statistics"].get("cfl")
+
+
+def test_trajectory_response_large_traj(client):
+    result: testing.Result = client.simulate_get(
+        "/v1/140b517c-acf8-4b24-ae09-8cc219b5590e/trajectory?first_timestep=0&max_steps=15000"
+    )
+    assert result.status_code == 200
+    assert result.json.get("data")
+    assert len(result.json["data"]) == 12200
+    assert result.json.get("statistics")
+    assert result.json["statistics"].get("cfl")
+
+
+def test_get_total_timesteps(client):
+    result: testing.Result = client.simulate_get(
+        "/v1/140b517c-acf8-4b24-ae09-8cc219b5590e/total_timesteps"
+    )
+    assert result.status_code == 200
+    assert result.json.get("data")
+    assert result.json["data"] == 12200
 
 
 def test_contact_response(client):

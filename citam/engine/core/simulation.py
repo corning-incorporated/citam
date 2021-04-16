@@ -51,7 +51,7 @@ class Simulation:
     def __init__(
         self,
         facility: Facility,
-        daylength: int,
+        total_timesteps: int,
         n_agents: int,
         shifts: List[Dict],
         buffer: int = 300,
@@ -70,8 +70,8 @@ class Simulation:
 
         :param facility: Facility object for which to run this simulation.
         :type facility: Facility
-        :param daylength: Total number of timesteps to run this simulation for.
-        :type daylength: int
+        :param total_timesteps: Total number of timesteps to run this simulation for.
+        :type total_timesteps: int
         :param n_agents: Total number of people in this facility.
         :type n_agents: int
         :param shifts: A shift is a group of agents who
@@ -110,7 +110,7 @@ class Simulation:
         """
 
         self.facility = facility
-        self.daylength = daylength
+        self.total_timesteps = total_timesteps
         self.buffer = buffer
         self.timestep = timestep
         self.contact_distance = contact_distance
@@ -153,7 +153,7 @@ class Simulation:
 
         m = hashlib.blake2b(digest_size=10)
         data = [
-            self.daylength,
+            self.total_timesteps,
             self.n_agents,
             self.occupancy_rate,
             self.buffer,
@@ -213,7 +213,7 @@ class Simulation:
         self.meeting_policy = MeetingPolicy(
             meeting_room_objects,
             agent_ids,
-            daylength=self.daylength,
+            daylength=self.total_timesteps,
             policy_params=self.meetings_policy_params,
         )
 
@@ -298,8 +298,8 @@ class Simulation:
             contact_outfiles.append(open(contact_file, "w"))
 
         # Run simulation
-        pbar = pb.ProgressBar(max_value=self.daylength + self.buffer)
-        for i in range(self.daylength + self.buffer):
+        pbar = pb.ProgressBar(max_value=self.total_timesteps + self.buffer)
+        for i in range(self.total_timesteps + self.buffer):
             pbar.update(i)
             self.step(
                 traj_outfile=t_outfile, contact_outfiles=contact_outfiles
@@ -383,11 +383,11 @@ class Simulation:
                 exit_time = 0
                 while (
                     exit_time == 0
-                    or exit_time > self.daylength + self.buffer
-                    or exit_time < self.daylength - self.buffer
+                    or exit_time > self.total_timesteps + self.buffer
+                    or exit_time < self.total_timesteps - self.buffer
                 ):
 
-                    exit_time = round(np.random.poisson(self.daylength))
+                    exit_time = round(np.random.poisson(self.total_timesteps))
 
                 # Exit through the same door
                 exit_door = entrance_door
@@ -677,7 +677,7 @@ class Simulation:
             "TimestepInSec": 1,
             "NumberOfFloors": self.facility.number_of_floors,
             "NumberOfOneWayAisles": n_one_way_aisles,
-            "NumberOfEmployees": len(self.agents),
+            "NumberOfAgents": len(self.agents),
             "SimulationName": self.simulation_name,
             "SimulationID": self.simid,
             "FacilityName": self.facility.facility_name,
@@ -687,10 +687,11 @@ class Simulation:
             "NumberOfEntrances": 1,
             "NumberOfExits": 1,
             "EntranceScreening": False,
-            "trajectory_file": "trajectory.txt",
-            "floors": floors,
-            "scaleMultiplier": max(1, round(fp_width / 1500.0)),
-            "timestep": 1,
+            "TrajectoryFile": "trajectory.txt",
+            "Floors": floors,
+            "ScaleMultiplier": max(1, round(fp_width / 1500.0)),
+            "Timestep": 1,
+            "TotalTimesteps": self.total_timesteps,
         }
 
         manifest_file = os.path.join(work_directory, "manifest.json")

@@ -10,7 +10,11 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-from citam.api.parser import get_contacts, get_trajectories
+from citam.api.parser import (
+    get_contacts,
+    get_total_timesteps,
+    get_trajectories,
+)
 
 
 def test_contacts_parsing_num_steps(use_local_storage):
@@ -67,6 +71,11 @@ def test_trajectories_num_steps(use_local_storage):
     assert len(trajectories["data"]) == 1900
 
 
+def test_get_total_timesteps(use_local_storage):
+    nsteps = get_total_timesteps("140b517c-acf8-4b24-ae09-8cc219b5590e")
+    assert nsteps["data"] == 12200
+
+
 def test_get_trajectories_2agents(use_local_storage):
     trajectories = get_trajectories("sim_id_0001")
     expected_trajectories = [
@@ -107,3 +116,14 @@ def test_get_trajectories_long_trajectory_last_block(use_local_storage):
     )
     assert len(trajectories["data"]) == 2200
     assert len(trajectories["data"][0]) == 207
+
+
+def test_get_trajectories_long_trajectory_all(use_local_storage):
+    trajectories = get_trajectories(
+        "140b517c-acf8-4b24-ae09-8cc219b5590e",
+        first_timestep=0,
+        max_steps=15000,
+    )
+    assert len(trajectories["data"]) == 12200
+    assert len(trajectories["data"][0]) == 0
+    assert len(trajectories["data"][-1]) == 207
