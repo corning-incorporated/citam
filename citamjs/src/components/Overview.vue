@@ -60,14 +60,16 @@
                   <template v-if="subRows.includes(idx)">
                     <tr v-for="(sim, index) in simRuns[0].simulationRuns" :key="index">
                       <td class="noBorder"> </td>
-                      <td class="noBorder"> {{sim.simName}}</td> 
+                      <td class="noBorder">
+                        <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMaps')">{{sim.simName}}</button>
+                      </td> 
                       <td v-for="(stats, ind) in sim.statisctics" :key="sim.simName + ind">
                         {{stats.value}}
                       </td>
-                      <td colspan="4">
+                      <!-- <td colspan="4">
                         <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMaps')">Simulation Map</button>
                         <button type="button" class="btn btn-link" @click="showSimulations(item.policyName, sim.simName, 'dataViz')">Data Visualizations</button>
-                      </td>                      
+                      </td>                       -->
                     </tr>
                   </template>               
               </tbody>

@@ -15,7 +15,7 @@
   <div>
     <nav class="topnav navbar navbar-expand sticky-top navbar-dark justify-content-between">
       <div class="navbar-brand title"><router-link to="/"> CITAM </router-link> 
-      COVID-19 Indoor Transmission Agent-based Modeling</div>
+      Indoor Agent-based Modeling</div>
       <form class="form-inline">
         <div class="mr-sm-2 navbar-text text">
           <a :href="docLink" target="_blank">Documentation</a></div> 
