@@ -20,107 +20,113 @@
 </template>
 
 <script>
-import Map2D from '../../script/basic_map';
-import * as dat from 'dat.gui';
-import {getSummary} from '@/script/data_service';
+import Map2D from "../../script/basic_map";
+import * as dat from "dat.gui";
+import { getSummary } from "@/script/data_service";
 
 export default {
   name: "PlotVisualization",
-  props: ['simId'],
+  props: ["simId"],
   data() {
     return {
       mapInstance: null,
       gui: null,
-      newSimId: false    
-    }
+      newSimId: false,
+    };
   },
   watch: {
     simId(selectedSimId) {
-      this.simId = selectedSimId      
-      this.gui = null
-      this.mapInstance = null
-      this.newSimId = true
-      this.showSimulationMap()
-    }
+      this.simId = selectedSimId;
+      this.gui = null;
+      this.mapInstance = null;
+      this.newSimId = true;
+      this.showSimulationMap();
+    },
   },
   beforeDestroy() {
     this.mapInstance.destroy();
-    this.gui.destroy()
+    this.gui.destroy();
   },
   mounted() {
-    this.showSimulationMap()
+    this.showSimulationMap();
   },
 
   methods: {
-    showSimulationMap() {   
-        let animationParams = {};
-        let GUI, timestepSlider;
-        let mapRoot = this.$refs.mapRoot;
-        let mapInstance = this.mapInstance = new Map2D(mapRoot);
+    showSimulationMap() {
+      let animationParams = {};
+      let GUI, timestepSlider;
+      let mapRoot = this.$refs.mapRoot;
+      let mapInstance = (this.mapInstance = new Map2D(mapRoot));
 
-    /** Control Panel Parameters */
-    animationParams = {
-      startAnimation: () => mapInstance.startAnimation(),
-      stopAnimation: () => mapInstance.stopAnimation(),
-      animationSpeed: 10,
-      floorOptions: ["1"],
-      floor: "1",
-    };
-    /** Create Control Panel */
-    this.gui = GUI = new dat.GUI({autoPlace: false});
-    if(this.newSimId){
-      while(this.$refs.controls.hasChildNodes()){
-        this.$refs.controls.removeChild(this.$refs.controls.firstChild)
+      /** Control Panel Parameters */
+      animationParams = {
+        startAnimation: () => mapInstance.startAnimation(),
+        stopAnimation: () => mapInstance.stopAnimation(),
+        animationSpeed: 10,
+        floorOptions: ["1"],
+        floor: "1",
+      };
+      /** Create Control Panel */
+      this.gui = GUI = new dat.GUI({ autoPlace: false });
+      if (this.newSimId) {
+        while (this.$refs.controls.hasChildNodes()) {
+          this.$refs.controls.removeChild(this.$refs.controls.firstChild);
+        }
+        this.$refs.controls.appendChild(this.gui.domElement);
+      } else {
+        this.$refs.controls.appendChild(this.gui.domElement);
       }
-      this.$refs.controls.appendChild(this.gui.domElement);
-    }
-    else {
-      this.$refs.controls.appendChild(this.gui.domElement);
-    }    
 
-    let guiFloorWidget = GUI.add(animationParams, 'floor', animationParams.floorOptions)
-        .name('Floor')
-        .onChange(value => mapInstance.setFloor(value));
+      let guiFloorWidget = GUI.add(
+        animationParams,
+        "floor",
+        animationParams.floorOptions
+      )
+        .name("Floor")
+        .onChange((value) => mapInstance.setFloor(value));
 
-    GUI.add(animationParams, 'animationSpeed', 1, 10)
-        .name('Speed')
+      GUI.add(animationParams, "animationSpeed", 1, 10)
+        .name("Speed")
         .step(1)
-        .onChange(value => mapInstance.setSpeed(value));
+        .onChange((value) => mapInstance.setSpeed(value));
 
-    GUI.add(animationParams, 'startAnimation')
-        .name('Start');
+      GUI.add(animationParams, "startAnimation").name("Start");
 
-    GUI.add(animationParams, 'stopAnimation')
-        .name('Stop');
+      GUI.add(animationParams, "stopAnimation").name("Stop");
 
-    timestepSlider = GUI.add(mapInstance, 'currentStep')
-        .name('Timestep')
+      timestepSlider = GUI.add(mapInstance, "currentStep")
+        .name("Timestep")
         .min(0)
         .max(1600)
         .step(1)
         .onChange(() => mapInstance.update())
         .listen();
-      
 
       getSummary(this.simId).then((response) => {
-        animationParams.floorOptions = response.data.floors.map(x => x.name);
+        animationParams.floorOptions = response.data.floors.map((x) => x.name);
         animationParams.floor = animationParams.floorOptions[0];
-        mapInstance.floor = animationParams.floor;
 
-        guiFloorWidget = guiFloorWidget.options(animationParams.floorOptions)
-            .name('Floor')
-            .onChange(value => mapInstance.setFloor(value));
+        /** Consider not modifying properties of the map instance here */
+        console.log("Get summary results for this sim: ", response.data);
+        mapInstance.floor = animationParams.floor;
+        mapInstance.nAgents = response.data.NumberOfAgents;
+        mapInstance.totalSteps = response.data.TotalTimesteps;
+
+        guiFloorWidget = guiFloorWidget
+          .options(animationParams.floorOptions)
+          .name("Floor")
+          .onChange((value) => mapInstance.setFloor(value));
 
         mapInstance.scaleFactor = response.data.scaleMultiplier || 1;
-        
+
         mapInstance.setSimulation(this.simId).then(() => {
           timestepSlider.min(0);
           timestepSlider.max(mapInstance.totalSteps);
         });
       });
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -20,19 +20,13 @@ import { scaleSequential } from 'd3-scale';
 import { Loader } from './utils/loader';
 import {
     getBaseMap,
-    getContact,
-    getTotalTimesteps,
     getTrajectory,
-    getContactPositionDist,
     getSummary,
 } from './data_service';
 import { Colorbar } from './utils/colorbar';
 import { Timer } from './utils/timer';
 import '../css/_basic_map.scss';
-import { Frame } from './utils/agent_data';
 
-
-let trajectoryCollection = []
 
 /**
  * 2D map visualization
@@ -99,8 +93,6 @@ export default class Map2D {
     async setSimulation(sim_id) {
         if (sim_id != this.simulation) {
             this.simulation = sim_id;
-            // this.totalSteps = totalSteps;
-            // this.nAgents = nAgents;
             return this.reloadSimulation();
         }
     }
@@ -115,41 +107,27 @@ export default class Map2D {
         return this.reloadSimulation();
     }
 
-    async getTrajectoryData(totalSteps) {
-        // let _this = this;
-        this.totalSteps = 255;
-        this.nAgents = 621;
-        let max_steps = this.totalSteps;
-        if (totalSteps * this.nAgents > 1e7) {
-            max_steps = Math.ceil(this.totalSteps * this.nAgents / 700);
-        }
-        let request_arr = [], first_timestep = 0, max_contacts = 1000;
-        trajectoryCollection = [];
-        while (first_timestep < this.totalSteps) {
-            request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_steps));
-            first_timestep += max_steps;
-        }
-        console.log("Total number of traj requests:", request_arr.length)
-        await Promise.all(request_arr).then((response) => {
-            console.log("Response is: ", response)
-            response.forEach((chunk) => {
-                console.log("Processing this chunk: ", chunk)
-                let i = 0;
-                chunk.data.data.forEach((timestep) => {
-                    let new_frame = new Frame(chunk.data.first_timestep + i, this.nAgents);
-                    timestep.forEach((agent) => {
-                        new_frame.agentPositions[agent.agent].setPosition(agent.x, agent.y, agent.z);
-                        new_frame.agentPositions[agent.agent].setCount(agent.count);
-                    });
-                    trajectoryCollection.push(new_frame);
-                    i++;
-                });
 
-            });
+    async getTrajectoryData() {
+        this.trajectories = [];
+        this.totalSteps = 255;
+        let max_chunk_size = Math.ceil(1e8 / this.nAgents);
+        let request_arr = [], first_timestep = 0, max_contacts = 0;
+
+        while (first_timestep < this.totalSteps) {
+            request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_chunk_size));
+            first_timestep += max_chunk_size;
+        }
+        await Promise.all(request_arr).then((response) => {
+            if (response !== undefined) {
+                response.forEach((chunk) => {
+                    this.trajectories = this.trajectories.concat(chunk.data.data);
+                    max_contacts = Math.max(max_contacts, response.data.max_count);
+                });
+            }
+
         });
-        console.log("Total frames: ", trajectoryCollection.length, "total steps: ", this.totalSteps)
-        this.totalSteps = trajectoryCollection.length;
-        this.trajectories = trajectoryCollection;
+        this.totalSteps = this.trajectories.length;
         let contactDomain = [0, max_contacts];
         this.colorMap.domain(contactDomain);
         this.colorBar.update(...contactDomain);
@@ -183,37 +161,17 @@ export default class Map2D {
                 this.timer.lengthOfStep = response.data['TimestepInSec'] || 1;
             });
 
-        // eslint-disable-next-line no-unused-vars
-        let contactsRequest = getContact(this.simulation, this.floor)
-            .then(response => {
-                this.contacts = response.data;
-                this.loader.contactLoaded();
-            });
-
-        getTotalTimesteps(this.simulation).then((response) => {
-            this.getTrajectoryData(response.data.data);
-        });
-
-
         let mapRequest = getBaseMap(this.simulation, this.floor)
             .then(response => {
                 this._init_map(response.data);
                 this.loader.mapLoaded();
             });
 
-        let contactDist = getContactPositionDist(this.simulation, this.floor)
-            .then(response => {
-                this.contactPositionDist = response.data;
-                this.loader.distributionsLoaded();
-            });
+        this.getTrajectoryData();
 
-        // let trajectoriesLinesRequest = await getTrajectoryLines(this.simulation, this.floor)
-        // console.log(trajectoriesLinesRequest)
-        // this.trajectoriesLines = trajectoriesLinesRequest.data.data;
+
         await Promise.all([
             summaryRequest,
-            contactDist,
-            contactsRequest,
             mapRequest,
         ])
         return this;
@@ -252,7 +210,7 @@ export default class Map2D {
      * @param {number} newSpeed
      */
     setSpeed(newSpeed) {
-        this.animationInterval = (11 - newSpeed) * 20;
+        this.animationInterval = 1000 / newSpeed;
         this._resetInterval();
     }
 
@@ -323,7 +281,7 @@ export default class Map2D {
         let circle = select('#svg-map').select('#root')
             .select('g#trajectories')
             .selectAll('circle')
-            .data(this.trajectories[this.currentStep].agentPositions);
+            .data(this.trajectories[this.currentStep]);
 
         // Remove missing trajectories
         // circle.exit()
@@ -338,12 +296,12 @@ export default class Map2D {
         // update positions
         circle.transition()
             .duration(this.animationInterval)
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y)
+            .attr('cx', d => d[0])
+            .attr('cy', d => d[1])
             .attr('r', this.agentSize * this.scaleFactor)
             .style('stroke', 'black')
             .attr('stroke-width', this.agentSize * this.scaleFactor / 2)
-            .style('fill', d => this.colorMap(d.count));
+            .style('fill', d => this.colorMap(d[3]));
     }
 
     /**

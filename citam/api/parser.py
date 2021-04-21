@@ -42,6 +42,11 @@ def get_total_timesteps(sim_id: str) -> Dict:
     return {"data": nsteps}
 
 
+def get_number_of_agents(sim_id: str) -> int:
+    manifest_data = settings.storage_driver.get_manifest(sim_id)
+    return manifest_data["NumberOfAgents"]
+
+
 def get_trajectories(
     sim_id: str,
     floor: Union[str, int] = None,
@@ -67,6 +72,8 @@ def get_trajectories(
         LOG.info("Filtering trajectories for floor %d", floor)
 
     start_time = time.time()
+    n_agents = get_number_of_agents(sim_id=sim_id)
+    max_count = 0
     steps = []
     curr_file_line = 0
     current_pos_line, n_position_lines = 0, 0
@@ -94,7 +101,7 @@ def get_trajectories(
                     position_lines = True
                 else:
                     new_step = True
-                step = []
+                step = [(None, None, None, None) for _ in range(n_agents)]
                 continue
             if position_lines:
                 data = line.strip().split()
@@ -104,15 +111,13 @@ def get_trajectories(
                 if floor is not None and int(data[3]) != floor:
                     continue
 
-                step.append(
-                    {
-                        "x": round(float(data[1])),
-                        "y": round(float(data[2])),
-                        "z": round(float(data[3])),
-                        "agent": int(data[0]),
-                        "count": int(data[4]),
-                    }
+                step[int(data[0])] = (
+                    round(float(data[1])),
+                    round(float(data[2])),
+                    round(float(data[3])),
+                    int(data[4]),
                 )
+                max_count = max(max_count, int(data[4]))
                 if current_pos_line == n_position_lines:
                     new_step = True
                     position_lines = False
@@ -127,6 +132,7 @@ def get_trajectories(
     return {
         "data": steps,
         "first_timestep": first_timestep,
+        "max_count": max_count,
         "statistics": {"cfl": curr_file_line},
     }
 
