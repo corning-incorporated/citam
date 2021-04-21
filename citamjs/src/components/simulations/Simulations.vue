@@ -25,14 +25,6 @@
             <policy-list :policyData="policyData" v-model="policyData" @getSimMap="getSimMap($event)"></policy-list>        
           </div>
           <div class="col-sm-10">
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link simMaps active" data-toggle="tab" @click="setSelectedComponent('simulation-maps')">Simulation Maps</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link dataViz" data-toggle="tab" @click="setSelectedComponent('data-visualization')">Data Visualizations</a>
-              </li>
-            </ul>
             <div>     
               <component :is="selectedComponent" :simId="currSimId"></component>
             </div>
