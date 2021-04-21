@@ -23,7 +23,7 @@ import {
     getTrajectory,
     getSummary,
 } from './data_service';
-import { Colorbar } from './utils/colorbar';
+// import { Colorbar } from './utils/colorbar';
 import { Timer } from './utils/timer';
 import '../css/_basic_map.scss';
 
@@ -43,9 +43,9 @@ export default class Map2D {
 
 
         /** Colorbar **/
-        this.colorBar = new Colorbar({ palette: d3.interpolateOrRd, scale: scaleSequential });
-        this.mapRoot.append(this.colorBar.domElement);
-        this.colorBar.hide();
+        // this.colorBar = new Colorbar({ palette: d3.interpolateOrRd, scale: scaleSequential });
+        // this.mapRoot.append(this.colorBar.domElement);
+        // this.colorBar.hide();
 
         /** Timer **/
         this.timer = new Timer(1);
@@ -83,6 +83,9 @@ export default class Map2D {
         /** Marker sizes */
         this.contactSize = 0.5;
         this.agentSize = 1.5;
+
+        this.trajectories = [];
+
     }
 
     /**
@@ -91,10 +94,13 @@ export default class Map2D {
      * @param {string} sim_id - Simulation Name
      */
     async setSimulation(sim_id) {
-        if (sim_id != this.simulation) {
-            this.simulation = sim_id;
-            return this.reloadSimulation();
+        let reloadTrajectoryData = false;
+        console.log("This is what it is:", sim_id, this.simulation)
+        if (sim_id !== this.simulation) {
+            reloadTrajectoryData = true;
         }
+        this.simulation = sim_id;
+        return this.reloadSimulation(reloadTrajectoryData);
     }
 
     /**
@@ -104,13 +110,13 @@ export default class Map2D {
      */
     async setFloor(floor) {
         this.floor = floor;
-        return this.reloadSimulation();
+        return this.reloadSimulation(false);
     }
 
 
     async getTrajectoryData() {
+
         this.trajectories = [];
-        this.totalSteps = 255;
         let max_chunk_size = Math.ceil(1e8 / this.nAgents);
         let request_arr = [], first_timestep = 0, max_contacts = 0;
 
@@ -122,19 +128,19 @@ export default class Map2D {
             if (response !== undefined) {
                 response.forEach((chunk) => {
                     this.trajectories = this.trajectories.concat(chunk.data.data);
-                    max_contacts = Math.max(max_contacts, response.data.max_count);
+                    max_contacts = Math.max(max_contacts, chunk.data.max_count);
                 });
             }
 
         });
         this.totalSteps = this.trajectories.length;
-        let contactDomain = [0, max_contacts];
-        this.colorMap.domain(contactDomain);
-        this.colorBar.update(...contactDomain);
+        // let contactDomain = [0, max_contacts];
+        // this.colorMap.domain(contactDomain);
+        // this.colorBar.update(...contactDomain);
         this.loader.trajectoryLoaded();
         this.loader.hide();
         this.timer.show();
-        this.colorBar.show();
+        // this.colorBar.show();
         this.startAnimation();
     }
 
@@ -142,9 +148,9 @@ export default class Map2D {
      * Reload the configured simulation.  this should be done after changing
      * simulation_id or floor
      */
-    async reloadSimulation() {
+    async reloadSimulation(downloadTrajectoryData) {
         this.stopAnimation();
-        this.colorBar.hide();
+        // this.colorBar.hide();
         this.timer.hide();
         this.loader.show();
 
@@ -167,8 +173,9 @@ export default class Map2D {
                 this.loader.mapLoaded();
             });
 
-        this.getTrajectoryData();
-
+        if (downloadTrajectoryData) {
+            this.getTrajectoryData();
+        }
 
         await Promise.all([
             summaryRequest,
@@ -300,8 +307,8 @@ export default class Map2D {
             .attr('cy', d => d[1])
             .attr('r', this.agentSize * this.scaleFactor)
             .style('stroke', 'black')
-            .attr('stroke-width', this.agentSize * this.scaleFactor / 2)
-            .style('fill', d => this.colorMap(d[3]));
+            .attr('stroke-width', this.agentSize * this.scaleFactor / 2);
+        // .style('fill', d => this.colorMap(d[3]));
     }
 
     /**

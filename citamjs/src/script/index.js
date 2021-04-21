@@ -54,7 +54,7 @@ function init() {
         simulation: simulation_ids[0],
         startAnimation: () => mapInstance.startAnimation(),
         stopAnimation: () => mapInstance.stopAnimation(),
-        animationSpeed: 10,
+        animationSpeed: 120,
         floorOptions: ["1"],
         floor: "1",
       };
@@ -97,7 +97,7 @@ function init() {
       timestepSlider = GUI.add(mapInstance, 'currentStep')
         .name('Timestep')
         .min(0)
-        .max(3600)
+        .max(mapInstance.totalSteps)
         .step(1)
         .onChange(() => mapInstance.update())
         .listen();
@@ -115,7 +115,7 @@ function init() {
           /** Load first simulation */
           mapInstance.setSimulation(animationParams.simulation).then(() => {
             timestepSlider.min(0);
-            timestepSlider.max(mapInstance.totalSteps);
+            timestepSlider.max(response.data.TotalTimesteps);
           });
         });
     });
