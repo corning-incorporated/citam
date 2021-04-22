@@ -2,7 +2,7 @@
     "TimestepInSec": 1,
     "NumberOfFloors": 1,
     "NumberOfOneWayAisles": 0,
-    "NumberOfEmployees": 0,
+    "NumberOfAgents": 207,
     "SimulationName": "51a37fa7054a3f8e8d55",
     "SimulationID": "140b517c-acf8-4b24-ae09-8cc219b5590e",
     "Campus": "F1",

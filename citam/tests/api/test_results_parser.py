@@ -78,21 +78,18 @@ def test_get_total_timesteps(use_local_storage):
 
 def test_get_trajectories_2agents(use_local_storage):
     trajectories = get_trajectories("sim_id_0001")
-    expected_trajectories = [
-        {"agent": 5, "x": 0, "y": 602, "z": 0, "count": 0},
-        {"agent": 6, "x": 0, "y": 602, "z": 0, "count": 0},
-    ]
-    for ix, expected in enumerate(expected_trajectories):
-        assert trajectories["data"][82][ix] == expected
+    expected_trajectories = {5: (0, 602, 0, 0), 6: (0, 602, 0, 0)}
+
+    for idx, expected in expected_trajectories.items():
+        assert trajectories["data"][82][idx] == expected
 
 
 def test_get_trajectories_2agents_filtered(use_local_storage):
     trajectories = get_trajectories("sim_id_0001", floor=1)
-    expected_trajectories = [
-        {"agent": 5, "x": 0, "y": 602, "z": 1, "count": 0},
-    ]
-    for ix, expected in enumerate(expected_trajectories):
-        assert trajectories["data"][79][ix] == expected
+    expected_trajectories = {5: (0, 602, 1, 0)}
+
+    for idx, expected in expected_trajectories.items():
+        assert trajectories["data"][79][idx] == expected
 
 
 def test_get_trajectories_long_trajectory_next_block(use_local_storage):
@@ -125,5 +122,5 @@ def test_get_trajectories_long_trajectory_all(use_local_storage):
         max_steps=15000,
     )
     assert len(trajectories["data"]) == 12200
-    assert len(trajectories["data"][0]) == 0
+    assert trajectories["data"][0] == [(None, None, None, None)] * 207
     assert len(trajectories["data"][-1]) == 207

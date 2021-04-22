@@ -1,6 +1,7 @@
 {
     "TimestepInSec": 1,
     "NumberOfFloors": 1,
+    "NumberOfAgents": 200,
     "SimulationName": "sim_name_0001",
     "SimulationID": "sim_id_0001",
     "PolicyID": "pol_id_0001",

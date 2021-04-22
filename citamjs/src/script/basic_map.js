@@ -94,13 +94,13 @@ export default class Map2D {
      * @param {string} sim_id - Simulation Name
      */
     async setSimulation(sim_id) {
-        let reloadTrajectoryData = false;
+        let loadTrajectoryData = false;
         console.log("This is what it is:", sim_id, this.simulation)
         if (sim_id !== this.simulation) {
-            reloadTrajectoryData = true;
+            loadTrajectoryData = true;
         }
         this.simulation = sim_id;
-        return this.reloadSimulation(reloadTrajectoryData);
+        return this.reloadSimulation(loadTrajectoryData);
     }
 
     /**

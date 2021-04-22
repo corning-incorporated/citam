@@ -74,6 +74,14 @@ def get_trajectories(
     start_time = time.time()
     n_agents = get_number_of_agents(sim_id=sim_id)
     max_count = 0
+
+    if n_agents <= 0:
+        return {
+            "data": [],
+            "first_timestep": first_timestep,
+            "max_count": max_count,
+            "statistics": {"cfl": 0},
+        }
     steps = []
     curr_file_line = 0
     current_pos_line, n_position_lines = 0, 0
@@ -111,12 +119,18 @@ def get_trajectories(
                 if floor is not None and int(data[3]) != floor:
                     continue
 
+                if int(data[0]) > len(step):
+                    raise ValueError(
+                        "More agents found in trajectory file. Please update manifest."
+                    )
+
                 step[int(data[0])] = (
                     round(float(data[1])),
                     round(float(data[2])),
                     round(float(data[3])),
                     int(data[4]),
                 )
+
                 max_count = max(max_count, int(data[4]))
                 if current_pos_line == n_position_lines:
                     new_step = True
