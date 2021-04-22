@@ -85,8 +85,8 @@ export default {
         .name("Floor")
         .onChange((value) => mapInstance.setFloor(value));
 
-      GUI.add(animationParams, "animationSpeed", 1, 10)
-        .name("Speed")
+      GUI.add(animationParams, "animationSpeed", 1, 300)
+        .name("Speed (fps)")
         .step(1)
         .onChange((value) => mapInstance.setSpeed(value));
 
@@ -97,7 +97,7 @@ export default {
       timestepSlider = GUI.add(mapInstance, "currentStep")
         .name("Timestep")
         .min(0)
-        .max(1600)
+        .max(mapInstance.totalSteps)
         .step(1)
         .onChange(() => mapInstance.update())
         .listen();

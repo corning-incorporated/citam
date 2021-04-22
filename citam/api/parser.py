@@ -121,7 +121,8 @@ def get_trajectories(
 
                 if int(data[0]) > len(step):
                     raise ValueError(
-                        "More agents found in trajectory file. Please update manifest."
+                        "More agents found in trajectory file. "
+                        + "Please update NumberOfAgents in manifest file."
                     )
 
                 step[int(data[0])] = (
