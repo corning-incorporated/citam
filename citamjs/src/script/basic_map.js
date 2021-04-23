@@ -17,12 +17,12 @@ import * as d3 from 'd3';
 import { select, event } from 'd3-selection';
 import { zoom } from 'd3-zoom';
 import { scaleSequential } from 'd3-scale';
-import { Loader } from './utils/loader';
-import {
-    getBaseMap,
-    getTrajectory,
-    getSummary,
-} from './data_service';
+// import { Loader } from './utils/loader';
+// import {
+//     getBaseMap,
+//     getTrajectory,
+//     getSummary,
+// } from './data_service';
 // import { Colorbar } from './utils/colorbar';
 import { Timer } from './utils/timer';
 import '../css/_basic_map.scss';
@@ -38,7 +38,7 @@ export default class Map2D {
      * @constructor
      * @param {Element} mapRoot - Root HTML Element to use as a container for the map
      */
-    constructor(mapRoot) {
+    constructor(mapRoot, mapData, nAgents, totalSteps, trajectories) {
         this.mapRoot = mapRoot;
 
 
@@ -66,13 +66,13 @@ export default class Map2D {
         this.colorMap = scaleSequential(d3.interpolateOrRd);
 
         /** Loader element */
-        this.loader = new Loader();
+        // this.loader = new Loader();
 
         /** Total Timesteps for the current Simulation */
-        this.totalSteps = null;
+        this.totalSteps = totalSteps;
 
         /** Number of agents in current simulation */
-        this.nAgents = null;
+        this.nAgents = nAgents;
 
         /** Simulation Details */
         this.simulation = null;
@@ -84,8 +84,10 @@ export default class Map2D {
         this.contactSize = 0.5;
         this.agentSize = 1.5;
 
-        this.trajectories = [];
+        this.trajectories = trajectories;
+        this._init_map(mapData);
 
+        console.log("This is what we have inside basic map: ", this.nAgents, this.totalSteps, this.trajectories)
     }
 
     /**
@@ -93,15 +95,15 @@ export default class Map2D {
      *
      * @param {string} sim_id - Simulation Name
      */
-    async setSimulation(sim_id) {
-        let loadTrajectoryData = false;
-        console.log("This is what it is:", sim_id, this.simulation)
-        if (sim_id !== this.simulation) {
-            loadTrajectoryData = true;
-        }
-        this.simulation = sim_id;
-        return this.reloadSimulation(loadTrajectoryData);
-    }
+    // async setSimulation(sim_id) {
+    //     let loadTrajectoryData = false;
+    //     console.log("This is what it is:", sim_id, this.simulation)
+    //     if (sim_id !== this.simulation) {
+    //         loadTrajectoryData = true;
+    //     }
+    //     this.simulation = sim_id;
+    //     return this.reloadSimulation(loadTrajectoryData);
+    // }
 
     /**
      * Change the floor for the current simulation
@@ -110,49 +112,49 @@ export default class Map2D {
      */
     async setFloor(floor) {
         this.floor = floor;
-        return this.reloadSimulation(false);
+        return this.reloadSimulation();
     }
 
 
-    async getTrajectoryData() {
+    // async getTrajectoryData() {
 
-        this.trajectories = [];
-        let max_chunk_size = Math.ceil(1e8 / this.nAgents);
-        let request_arr = [], first_timestep = 0, max_contacts = 0;
+    //     this.trajectories = [];
+    //     let max_chunk_size = Math.ceil(1e8 / this.nAgents);
+    //     let request_arr = [], first_timestep = 0, max_contacts = 0;
 
-        while (first_timestep < this.totalSteps) {
-            request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_chunk_size));
-            first_timestep += max_chunk_size;
-        }
-        await Promise.all(request_arr).then((response) => {
-            if (response !== undefined) {
-                response.forEach((chunk) => {
-                    this.trajectories = this.trajectories.concat(chunk.data.data);
-                    max_contacts = Math.max(max_contacts, chunk.data.max_count);
-                });
-            }
+    //     while (first_timestep < this.totalSteps) {
+    //         request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_chunk_size));
+    //         first_timestep += max_chunk_size;
+    //     }
+    //     await Promise.all(request_arr).then((response) => {
+    //         if (response !== undefined) {
+    //             response.forEach((chunk) => {
+    //                 this.trajectories = this.trajectories.concat(chunk.data.data);
+    //                 max_contacts = Math.max(max_contacts, chunk.data.max_count);
+    //             });
+    //         }
 
-        });
-        this.totalSteps = this.trajectories.length;
-        // let contactDomain = [0, max_contacts];
-        // this.colorMap.domain(contactDomain);
-        // this.colorBar.update(...contactDomain);
-        this.loader.trajectoryLoaded();
-        this.loader.hide();
-        this.timer.show();
-        // this.colorBar.show();
-        this.startAnimation();
-    }
+    //     });
+    //     this.totalSteps = this.trajectories.length;
+    //     // let contactDomain = [0, max_contacts];
+    //     // this.colorMap.domain(contactDomain);
+    //     // this.colorBar.update(...contactDomain);
+    //     this.loader.trajectoryLoaded();
+    //     this.loader.hide();
+    //     this.timer.show();
+    //     // this.colorBar.show();
+    //     this.startAnimation();
+    // }
 
     /**
      * Reload the configured simulation.  this should be done after changing
      * simulation_id or floor
      */
-    async reloadSimulation(downloadTrajectoryData) {
+    async reloadSimulation() {
         this.stopAnimation();
         // this.colorBar.hide();
         this.timer.hide();
-        this.loader.show();
+        // this.loader.show();
 
         select('#svg-map').remove();
         select('#svg-map').attr('transform', d3.zoomIdentity);
@@ -162,25 +164,25 @@ export default class Map2D {
 
         /* Set timestep length for timer */
         // eslint-disable-next-line no-unused-vars
-        let summaryRequest = getSummary(this.simulation)
-            .then(response => {
-                this.timer.lengthOfStep = response.data['TimestepInSec'] || 1;
-            });
+        // let summaryRequest = getSummary(this.simulation)
+        //     .then(response => {
+        //         this.timer.lengthOfStep = response.data['TimestepInSec'] || 1;
+        //     });
 
-        let mapRequest = getBaseMap(this.simulation, this.floor)
-            .then(response => {
-                this._init_map(response.data);
-                this.loader.mapLoaded();
-            });
+        // let mapRequest = getBaseMap(this.simulation, this.floor)
+        //     .then(response => {
+        //         this._init_map(response.data);
+        //         this.loader.mapLoaded();
+        //     });
 
-        if (downloadTrajectoryData) {
-            this.getTrajectoryData();
-        }
+        // if (downloadTrajectoryData) {
+        //     this.getTrajectoryData();
+        // }
 
-        await Promise.all([
-            summaryRequest,
-            mapRequest,
-        ])
+        // await Promise.all([
+        //     summaryRequest,
+        //     mapRequest,
+        // ])
         return this;
     }
 
@@ -235,7 +237,7 @@ export default class Map2D {
      */
     destroy() {
         window.clearInterval(this.animationIntervalID);
-        this.loader.destroy();
+        // this.loader.destroy();
         this.timer.destroy();
         this.colorBar.destroy();
         while (this.mapRoot.firstChild) {

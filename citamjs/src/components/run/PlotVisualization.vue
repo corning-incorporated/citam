@@ -22,7 +22,7 @@
 <script>
 import Map2D from "../../script/basic_map";
 import * as dat from "dat.gui";
-import { getSummary } from "@/script/data_service";
+import { getBaseMap, getTrajectory, getSummary } from "@/script/data_service";
 
 export default {
   name: "PlotVisualization",
@@ -32,6 +32,10 @@ export default {
       mapInstance: null,
       gui: null,
       newSimId: false,
+      trajectories: null,
+      nAgents: null,
+      totalSteps: null,
+      isLoadingData: null,
     };
   },
   watch: {
@@ -40,6 +44,8 @@ export default {
       this.gui = null;
       this.mapInstance = null;
       this.newSimId = true;
+      this.mapData = null;
+      this.floor = 0;
       this.showSimulationMap();
     },
   },
@@ -47,16 +53,79 @@ export default {
     this.mapInstance.destroy();
     this.gui.destroy();
   },
-  mounted() {
+  created() {
     this.showSimulationMap();
   },
 
   methods: {
+    getSimulationData() {
+      getSummary(this.simId).then((response) => {
+        this.floorOptions = response.data.floors.map((x) => x.name);
+        this.nAgents = response.data.NumberOfAgents;
+        this.$store.commit("setNumberOfAgents", this.nAgents);
+        this.totalSteps = response.data.TotalTimesteps;
+        this.$store.commit("setTotalSteps", this.totalSteps);
+        this.scaleMultiplier = response.data.scaleMultiplier;
+        this.$store.commit("setScaleMultiplier", this.scaleMultiplier);
+        getBaseMap(this.simId, this.floor).then((map) => {
+          this.mapData = map;
+          this.$store.commit("setMapData", map);
+        });
+        this.getTrajectoryData();
+      });
+    },
+
+    async getTrajectoryData() {
+      this.trajectories = [];
+      let max_chunk_size = Math.ceil(1e8 / this.nAgents);
+      let request_arr = [],
+        first_timestep = 0,
+        max_contacts = 0;
+
+      while (first_timestep < this.totalSteps) {
+        request_arr.push(
+          getTrajectory(this.simId, this.floor, first_timestep, max_chunk_size)
+        );
+        first_timestep += max_chunk_size;
+      }
+      await Promise.all(request_arr).then((response) => {
+        if (response !== undefined) {
+          response.forEach((chunk) => {
+            this.trajectories = this.trajectories.concat(chunk.data.data);
+            max_contacts = Math.max(max_contacts, chunk.data.max_count);
+          });
+          this.$store.commit("setTrajectoryData", this.trajectories);
+          this.createMapInstance();
+          this.$store.commit("setIsLoadingData", false);
+        }
+      });
+      this.totalSteps = this.trajectories.length;
+      this.$store.commit("setTrajectoryData", this.trajectories);
+    },
+
     showSimulationMap() {
+      if (
+        this.$store.state.trajectoryData === null &&
+        !this.$store.state.isLoadingData
+      ) {
+        this.$store.commit("setIsLoadingData", true);
+        this.getSimulationData();
+      } else if (this.$store.state.trajectoryData !== null) {
+        this.createMapInstance();
+      }
+    },
+
+    createMapInstance() {
       let animationParams = {};
       let GUI, timestepSlider;
       let mapRoot = this.$refs.mapRoot;
-      let mapInstance = (this.mapInstance = new Map2D(mapRoot));
+      let mapInstance = (this.mapInstance = new Map2D(
+        mapRoot,
+        this.$store.state.mapData,
+        this.$store.state.nAgents,
+        this.$store.state.totalSteps,
+        this.$store.state.trajectoryData
+      ));
 
       /** Control Panel Parameters */
       animationParams = {
@@ -83,7 +152,10 @@ export default {
         animationParams.floorOptions
       )
         .name("Floor")
-        .onChange((value) => mapInstance.setFloor(value));
+        .onChange((value) => {
+          mapInstance.setFloor(value);
+          this.floor = value;
+        });
 
       GUI.add(animationParams, "animationSpeed", 1, 300)
         .name("Speed (fps)")
@@ -102,28 +174,17 @@ export default {
         .onChange(() => mapInstance.update())
         .listen();
 
-      getSummary(this.simId).then((response) => {
-        animationParams.floorOptions = response.data.floors.map((x) => x.name);
-        animationParams.floor = animationParams.floorOptions[0];
+      animationParams.floorOptions = this.floorOptions;
+      animationParams.floor = animationParams.floorOptions[0];
+      mapInstance.floor = animationParams.floor;
 
-        /** Consider not modifying properties of the map instance here */
-        console.log("Get summary results for this sim: ", response.data);
-        mapInstance.floor = animationParams.floor;
-        mapInstance.nAgents = response.data.NumberOfAgents;
-        mapInstance.totalSteps = response.data.TotalTimesteps;
+      guiFloorWidget
+        .options(animationParams.floorOptions)
+        .name("Floor")
+        .onChange((value) => mapInstance.setFloor(value));
 
-        guiFloorWidget = guiFloorWidget
-          .options(animationParams.floorOptions)
-          .name("Floor")
-          .onChange((value) => mapInstance.setFloor(value));
-
-        mapInstance.scaleFactor = response.data.scaleMultiplier || 1;
-
-        mapInstance.setSimulation(this.simId).then(() => {
-          timestepSlider.min(0);
-          timestepSlider.max(mapInstance.totalSteps);
-        });
-      });
+      mapInstance.scaleFactor = this.$store.state.scaleMultiplier || 1;
+      timestepSlider.max(this.$store.state.totalSteps);
     },
   },
 };
