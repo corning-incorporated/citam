@@ -72,7 +72,10 @@ export default {
           this.$store.commit("setMapData", resp.data);
           this.createMapInstance();
           this.mapInstance.loader.mapLoaded();
-          let expectedDuration = 120;
+          // The factor of 160000 is based on observations and used here for a
+          // rough estimate of how long it will take to process the trajectory
+          // data based on number of agents and total steps.
+          let expectedDuration = (this.totalSteps * this.nAgents) / 160000;
           this.mapInstance.loader.startCountdown(expectedDuration);
         });
         this.getTrajectoryData();
