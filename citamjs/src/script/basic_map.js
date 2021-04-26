@@ -23,7 +23,6 @@ import {
     getTrajectory,
     getSummary,
 } from './data_service';
-// import { Colorbar } from './utils/colorbar';
 import { Timer } from './utils/timer';
 import '../css/_basic_map.scss';
 
@@ -40,12 +39,6 @@ export default class Map2D {
      */
     constructor(mapRoot) {
         this.mapRoot = mapRoot;
-
-
-        /** Colorbar **/
-        // this.colorBar = new Colorbar({ palette: d3.interpolateOrRd, scale: scaleSequential });
-        // this.mapRoot.append(this.colorBar.domElement);
-        // this.colorBar.hide();
 
         /** Timer **/
         this.timer = new Timer(1);
@@ -95,7 +88,6 @@ export default class Map2D {
      */
     async setSimulation(sim_id) {
         let loadTrajectoryData = false;
-        console.log("This is what it is:", sim_id, this.simulation)
         if (sim_id !== this.simulation) {
             loadTrajectoryData = true;
         }
@@ -134,13 +126,9 @@ export default class Map2D {
 
         });
         this.totalSteps = this.trajectories.length;
-        // let contactDomain = [0, max_contacts];
-        // this.colorMap.domain(contactDomain);
-        // this.colorBar.update(...contactDomain);
         this.loader.trajectoryLoaded();
         this.loader.hide();
         this.timer.show();
-        // this.colorBar.show();
         this.startAnimation();
     }
 
@@ -217,6 +205,8 @@ export default class Map2D {
      * @param {number} newSpeed
      */
     setSpeed(newSpeed) {
+        // 1000 ms divided by the number of frames per second to get duration 
+        // per frame in seconds (or how often to update the animation).
         this.animationInterval = 1000 / newSpeed;
         this._resetInterval();
     }
@@ -261,23 +251,6 @@ export default class Map2D {
         map.call(zoom().on("zoom", () => this._handleZoom()));
     }
 
-    /**
-     * Update the map with current contacts
-     * @private
-     */
-    _updateContacts() {
-        // Bind new trajectory data
-        // let contactLayer = select('#svg-map').select("#root")
-        //     .select('g#contacts');
-
-        // this.contacts[this.currentStep].forEach((contact) => {
-        //     contactLayer.append('circle')
-        //         .attr('r', this.contactSize * this.scaleFactor)
-        //         .attr('cx', contact.x)
-        //         .attr('cy', contact.y)
-        //         .style('fill', '#FF0000');
-        // });
-    }
 
     /**
      * Update the map with current trajectory and contact info
@@ -289,10 +262,6 @@ export default class Map2D {
             .select('g#trajectories')
             .selectAll('circle')
             .data(this.trajectories[this.currentStep]);
-
-        // Remove missing trajectories
-        // circle.exit()
-        //     .remove();
 
         // Add new trajectories
         circle.enter()
@@ -308,7 +277,6 @@ export default class Map2D {
             .attr('r', this.agentSize * this.scaleFactor)
             .style('stroke', 'black')
             .attr('stroke-width', this.agentSize * this.scaleFactor / 2);
-        // .style('fill', d => this.colorMap(d[3]));
     }
 
     /**
@@ -316,7 +284,6 @@ export default class Map2D {
      * @private
      */
     _resetInterval() {
-        console.log("Restting the speed to: ", this.animationInterval)
         window.clearInterval(this.animationIntervalID);
         this.animationIntervalID = setInterval(() => {
             this.currentStep++;
