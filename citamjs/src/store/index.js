@@ -21,6 +21,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         facilities: [],
+        floorOptions: null,
         trajectoryData: null,
         totalSteps: null,
         nAgents: null,
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     mutations: {
         setFacilities(state, payload) {
             state.facilities = payload
+        },
+        setFloorOptions(state, floorOptions) {
+            state.floorOptions = floorOptions;
         },
         setIsLoadingData(state, status) {
             state.isLoadingData = status;
@@ -54,6 +58,7 @@ export default new Vuex.Store({
         removeTrajectoryData(state) {
             state.trajectoryData = null;
         }
+
     },
     actions: {}
 });

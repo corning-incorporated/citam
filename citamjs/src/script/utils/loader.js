@@ -126,7 +126,7 @@ export class Loader {
    * @private
    */
   _reset() {
-    [this._trajectoryElem, this._mapElem, this._contactElem, this._distributionsElem].forEach(
+    [this._trajectoryElem, this._mapElem].forEach(
       (elem) => {
         elem.classList.remove('loaded');
         elem.classList.add('loader');

@@ -53,7 +53,7 @@ export default {
     this.mapInstance.destroy();
     this.gui.destroy();
   },
-  created() {
+  mounted() {
     this.showSimulationMap();
   },
 
@@ -61,18 +61,26 @@ export default {
     getSimulationData() {
       getSummary(this.simId).then((response) => {
         this.floorOptions = response.data.floors.map((x) => x.name);
+        this.$store.commit("setFloorOptions", this.floorOptions);
         this.nAgents = response.data.NumberOfAgents;
         this.$store.commit("setNumberOfAgents", this.nAgents);
         this.totalSteps = response.data.TotalTimesteps;
         this.$store.commit("setTotalSteps", this.totalSteps);
         this.scaleMultiplier = response.data.scaleMultiplier;
         this.$store.commit("setScaleMultiplier", this.scaleMultiplier);
+
+        // Error management
+        if (this.nAgents === 0 || this.totalSteps === 0) {
+          // TODO: update loader to show status (including error message)!
+        }
+
         getBaseMap(this.simId, this.floor).then((resp) => {
           this.mapData = resp.data;
           this.$store.commit("setMapData", resp.data);
           this.createMapInstance();
+          this.mapInstance.loader.show();
           this.mapInstance.loader.mapLoaded();
-          // The factor of 160000 is based on observations and used here for a
+          // The factor of 160,000 is based on observations and used here for a
           // rough estimate of how long it will take to process the trajectory
           // data based on number of agents and total steps.
           let expectedDuration = (this.totalSteps * this.nAgents) / 160000;
@@ -106,7 +114,6 @@ export default {
         }
       });
       this.totalSteps = this.trajectories.length;
-      this.$store.commit("setTrajectoryData", this.trajectories);
       this.mapInstance.setTrajectoryData(this.trajectories);
       this.mapInstance.hideLoader();
       this.mapInstance.startAnimation();
@@ -121,6 +128,8 @@ export default {
         this.getSimulationData();
       } else if (this.$store.state.trajectoryData !== null) {
         this.createMapInstance();
+        this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
+        this.mapInstance.startAnimation();
       }
     },
 
@@ -182,7 +191,7 @@ export default {
         .onChange(() => mapInstance.update())
         .listen();
 
-      animationParams.floorOptions = this.floorOptions;
+      animationParams.floorOptions = this.$store.state.floorOptions;
       animationParams.floor = animationParams.floorOptions[0];
       mapInstance.floor = animationParams.floor;
 

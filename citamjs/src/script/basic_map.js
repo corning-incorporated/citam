@@ -51,7 +51,7 @@ export default class Map2D {
 
         /** Loader Element */
         this.loader = new Loader(this.mapRoot);
-        // this.mapRoot.append(this.loader.loader);
+        this.loader.hide();
 
         /** Color scale for contact data */
         // this.colorMap = d3.scaleLinear(d3.interpolateGreys);
