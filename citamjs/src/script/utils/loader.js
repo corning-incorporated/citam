@@ -15,30 +15,26 @@
 import '../../css/_loader.scss';
 
 export class Loader {
-  constructor() {
+  constructor(parentElement) {
     // Add Loader elements
     let loader = document.createElement('div');
-    document.body.prepend(loader);
-    loader.outerHTML = `
+    parentElement.append(loader);
+    // document.body.prepend(loader);
+    loader.innerHTML = `
       <div id="loader-root">
         <div class="simulation-loader-overlay"></div>
         <div class="simulation-loader">
           <div class="loader-title">Loading...</div>
           <div class="loader-wrapper">
             <div id="trajectory-loader" class="loader"></div>
-            <span class="loader-label">Trajectory File</span>
+            <div> 
+              <span class="loader-label">Trajectory Data</span>
+              <div id="countdown-root"></div>
+            </div>
            </div>
-          <div class="loader-wrapper">
-            <div id="contact-loader" class="loader"></div>
-            <span class="loader-label">Contacts File</span>
-          </div>
           <div class="loader-wrapper">
             <div id="map-loader" class="loader"></div>
             <span class="loader-label">Map File</span>
-          </div>
-          <div class="loader-wrapper">
-            <div id="distribution-loader" class="loader"></div>
-            <span class="loader-label">Contact Distribution Files</span>
           </div>
         </div>
       </div>
@@ -46,14 +42,16 @@ export class Loader {
 
     this.loaderRoot = document.getElementById('loader-root');
     this._trajectoryElem = document.getElementById('trajectory-loader');
-    this._contactElem = document.getElementById('contact-loader');
+    // this._contactElem = document.getElementById('contact-loader');
     this._mapElem = document.getElementById('map-loader');
-    this._distributionsElem = document.getElementById('distribution-loader');
+    // this._distributionsElem = document.getElementById('distribution-loader');
+    this.countdownRoot = document.getElementById('countdown-root');
+
   }
 
   /** Show the loader element */
   show() {
-    this.loaderRoot.style.display = 'block';
+    this.loaderRoot.style.display = 'inline';
     this._reset();
   }
 
@@ -80,6 +78,28 @@ export class Loader {
   /** Set the heatmap spinner to the loaded state */
   distributionsLoaded() {
     this._setComplete(this._distributionsElem);
+  }
+
+  startCountdown(distance) {
+    // Output the result in an element with id="demo"
+    this.duration = distance;
+    this.minutes = Math.floor((this.duration % (1000 * 60 * 60)) / (1000 * 60));
+    this.seconds = Math.floor((this.duration % (1000 * 60)) / 1000);
+    this.countdownRoot.innerHTML = this.minutes + " min " + this.seconds + " sec left...";
+    window.setInterval(() => {
+      if (this.duration > 0) {
+        this.duration--;
+        console.log("Doing this...", this.duration)
+        this.minutes = Math.floor((this.duration % (1000 * 60 * 60)) / (1000 * 60));
+        this.seconds = Math.floor((this.duration % (1000 * 60)) / 1000);
+        this.countdownRoot.innerHTML = this.minutes + " min " + this.seconds + " sec left...";
+      }
+    }, 1000);
+
+  }
+
+  stopCountdown() {
+    clearInterval(this.countdown);
   }
 
   /**

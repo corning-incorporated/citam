@@ -17,7 +17,7 @@ import * as d3 from 'd3';
 import { select, event } from 'd3-selection';
 import { zoom } from 'd3-zoom';
 import { scaleSequential } from 'd3-scale';
-// import { Loader } from './utils/loader';
+import { Loader } from './utils/loader';
 // import {
 //     getBaseMap,
 //     getTrajectory,
@@ -38,9 +38,8 @@ export default class Map2D {
      * @constructor
      * @param {Element} mapRoot - Root HTML Element to use as a container for the map
      */
-    constructor(mapRoot, mapData, nAgents, totalSteps, trajectories) {
+    constructor(mapRoot, mapData, nAgents, totalSteps) {
         this.mapRoot = mapRoot;
-
 
         /** Colorbar **/
         // this.colorBar = new Colorbar({ palette: d3.interpolateOrRd, scale: scaleSequential });
@@ -50,7 +49,7 @@ export default class Map2D {
         /** Timer **/
         this.timer = new Timer(1);
         this.mapRoot.append(this.timer.domElement);
-        this.timer.hide();
+        // this.timer.hide();
 
         /** Handle for running animation set by window.setInterval */
         this.animationIntervalID = null;
@@ -61,12 +60,13 @@ export default class Map2D {
         /** Current animation frame */
         this.currentStep = 0;
 
+        /** Loader Element */
+        this.loader = new Loader(this.mapRoot);
+        // this.mapRoot.append(this.loader.loader);
+
         /** Color scale for contact data */
         // this.colorMap = d3.scaleLinear(d3.interpolateGreys);
         this.colorMap = scaleSequential(d3.interpolateOrRd);
-
-        /** Loader element */
-        // this.loader = new Loader();
 
         /** Total Timesteps for the current Simulation */
         this.totalSteps = totalSteps;
@@ -84,10 +84,22 @@ export default class Map2D {
         this.contactSize = 0.5;
         this.agentSize = 1.5;
 
-        this.trajectories = trajectories;
+        // this.trajectories = trajectories;
         this._init_map(mapData);
+        // this.reloadSimulation();
+        // this.restartAnimation();
+    }
 
-        console.log("This is what we have inside basic map: ", this.nAgents, this.totalSteps, this.trajectories)
+    setTrajectoryData(trajData) {
+        this.trajectories = trajData;
+    }
+
+    showLoader() {
+        this.loader.show();
+    }
+
+    hideLoader() {
+        this.loader.hide()
     }
 
     /**
@@ -114,6 +126,8 @@ export default class Map2D {
         this.floor = floor;
         return this.reloadSimulation();
     }
+
+
 
 
     // async getTrajectoryData() {
@@ -153,7 +167,7 @@ export default class Map2D {
     async reloadSimulation() {
         this.stopAnimation();
         // this.colorBar.hide();
-        this.timer.hide();
+        // this.timer.hide();
         // this.loader.show();
 
         select('#svg-map').remove();

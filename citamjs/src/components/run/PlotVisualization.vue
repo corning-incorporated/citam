@@ -67,11 +67,16 @@ export default {
         this.$store.commit("setTotalSteps", this.totalSteps);
         this.scaleMultiplier = response.data.scaleMultiplier;
         this.$store.commit("setScaleMultiplier", this.scaleMultiplier);
-        getBaseMap(this.simId, this.floor).then((map) => {
-          this.mapData = map;
-          this.$store.commit("setMapData", map);
+        getBaseMap(this.simId, this.floor).then((resp) => {
+          this.mapData = resp.data;
+          this.$store.commit("setMapData", resp.data);
+          this.createMapInstance();
+          this.mapInstance.loader.mapLoaded();
+          let expectedDuration = 120000;
+          // this.mapInstance.loader.startCountdown(expectedDuration);
         });
         this.getTrajectoryData();
+        this.mapInstance.hideLoader();
       });
     },
 
@@ -95,12 +100,13 @@ export default {
             max_contacts = Math.max(max_contacts, chunk.data.max_count);
           });
           this.$store.commit("setTrajectoryData", this.trajectories);
-          this.createMapInstance();
           this.$store.commit("setIsLoadingData", false);
         }
       });
       this.totalSteps = this.trajectories.length;
       this.$store.commit("setTrajectoryData", this.trajectories);
+      this.mapInstance.setTrajectoryData(this.trajectories);
+      this.startAnimation();
     },
 
     showSimulationMap() {
@@ -123,8 +129,7 @@ export default {
         mapRoot,
         this.$store.state.mapData,
         this.$store.state.nAgents,
-        this.$store.state.totalSteps,
-        this.$store.state.trajectoryData
+        this.$store.state.totalSteps
       ));
 
       /** Control Panel Parameters */
