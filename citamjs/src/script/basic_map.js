@@ -165,7 +165,6 @@ export default class Map2D {
      */
     update() {
         this._updateTrajectories();
-        this._updateContacts();
         this.timer.setStep(this.currentStep);
     }
 

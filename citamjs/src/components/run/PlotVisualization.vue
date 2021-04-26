@@ -72,10 +72,10 @@ export default {
           this.$store.commit("setMapData", resp.data);
           this.createMapInstance();
           this.mapInstance.loader.mapLoaded();
-          let expectedDuration = 120000;
+          let expectedDuration = 120;
           this.mapInstance.loader.startCountdown(expectedDuration);
         });
-        // this.getTrajectoryData();
+        this.getTrajectoryData();
       });
     },
 

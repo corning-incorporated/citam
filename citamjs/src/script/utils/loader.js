@@ -81,17 +81,18 @@ export class Loader {
     this._setComplete(this._distributionsElem);
   }
 
-  startCountdown(distance) {
-    this.duration = distance;
-    this.minutes = Math.floor((this.duration % (1000 * 60 * 60)) / (1000 * 60));
-    this.seconds = Math.floor((this.duration % (1000 * 60)) / 1000);
-    this.countdownRoot.innerText = this.minutes + " min " + this.seconds + " sec left...";
-    window.setInterval(() => {
-      if (this.duration > 0) {
-        this.duration--;
-        this.minutes = Math.floor((this.duration % (1000 * 60 * 60)) / (1000 * 60));
-        this.seconds = Math.floor((this.duration % (1000 * 60)) / 1000);
-        this.countdownRoot.innerText = this.minutes + " min " + this.seconds + " sec left...";
+  startCountdown(duration) {
+    let minutes = Math.floor(duration / 60);
+    let seconds = Math.floor(duration % 60);
+    this.countdownRoot.innerText = minutes + " min " + seconds + " sec left";
+    this.countdown = setInterval(() => {
+      if (duration > 0) {
+        duration--;
+        minutes = Math.floor(duration / 60);
+        seconds = Math.floor(duration % 60);
+        this.countdownRoot.innerText = minutes + " min " + seconds + " sec left";
+      } else {
+        this.countdownRoot.innerText = "Finalizing... "
       }
     }, 1000);
 
