@@ -18,7 +18,7 @@
       floor. Data visualization per simulation run.
     </div>
     <div class="container-fluid">
-      <div class="row header">
+      <!-- <div class="row header">
         <div class="col-sm-2 policy">
           <div class="policyBtn">
             <button type="button" class="btn btn-link">Add Policy</button>
@@ -29,10 +29,11 @@
             @getSimMap="getSimMap($event)"
           ></policy-list>
         </div>
-        <div class="col-sm-10">
-          <div>
-            <component :is="selectedComponent" :simId="currSimId"></component>
-          </div>
+
+      </div> -->
+      <div class="col-sm-10">
+        <div>
+          <component :is="selectedComponent" :simId="currSimId"></component>
         </div>
       </div>
     </div>

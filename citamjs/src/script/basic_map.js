@@ -102,20 +102,6 @@ export default class Map2D {
         this.loader.hide()
     }
 
-    /**
-     * Change the loaded simulation
-     *
-     * @param {string} sim_id - Simulation Name
-     */
-    // async setSimulation(sim_id) {
-    //     let loadTrajectoryData = false;
-    //     console.log("This is what it is:", sim_id, this.simulation)
-    //     if (sim_id !== this.simulation) {
-    //         loadTrajectoryData = true;
-    //     }
-    //     this.simulation = sim_id;
-    //     return this.reloadSimulation(loadTrajectoryData);
-    // }
 
     /**
      * Change the floor for the current simulation
@@ -127,38 +113,6 @@ export default class Map2D {
         return this.reloadSimulation();
     }
 
-
-
-
-    // async getTrajectoryData() {
-
-    //     this.trajectories = [];
-    //     let max_chunk_size = Math.ceil(1e8 / this.nAgents);
-    //     let request_arr = [], first_timestep = 0, max_contacts = 0;
-
-    //     while (first_timestep < this.totalSteps) {
-    //         request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_chunk_size));
-    //         first_timestep += max_chunk_size;
-    //     }
-    //     await Promise.all(request_arr).then((response) => {
-    //         if (response !== undefined) {
-    //             response.forEach((chunk) => {
-    //                 this.trajectories = this.trajectories.concat(chunk.data.data);
-    //                 max_contacts = Math.max(max_contacts, chunk.data.max_count);
-    //             });
-    //         }
-
-    //     });
-    //     this.totalSteps = this.trajectories.length;
-    //     // let contactDomain = [0, max_contacts];
-    //     // this.colorMap.domain(contactDomain);
-    //     // this.colorBar.update(...contactDomain);
-    //     this.loader.trajectoryLoaded();
-    //     this.loader.hide();
-    //     this.timer.show();
-    //     // this.colorBar.show();
-    //     this.startAnimation();
-    // }
 
     /**
      * Reload the configured simulation.  this should be done after changing
@@ -175,28 +129,6 @@ export default class Map2D {
 
         /** Current animation frame */
         this.currentStep = 0;
-
-        /* Set timestep length for timer */
-        // eslint-disable-next-line no-unused-vars
-        // let summaryRequest = getSummary(this.simulation)
-        //     .then(response => {
-        //         this.timer.lengthOfStep = response.data['TimestepInSec'] || 1;
-        //     });
-
-        // let mapRequest = getBaseMap(this.simulation, this.floor)
-        //     .then(response => {
-        //         this._init_map(response.data);
-        //         this.loader.mapLoaded();
-        //     });
-
-        // if (downloadTrajectoryData) {
-        //     this.getTrajectoryData();
-        // }
-
-        // await Promise.all([
-        //     summaryRequest,
-        //     mapRequest,
-        // ])
         return this;
     }
 
@@ -332,7 +264,6 @@ export default class Map2D {
      * @private
      */
     _resetInterval() {
-        console.log("Restting the speed to: ", this.animationInterval)
         window.clearInterval(this.animationIntervalID);
         this.animationIntervalID = setInterval(() => {
             this.currentStep++;

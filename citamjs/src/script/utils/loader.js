@@ -29,7 +29,8 @@ export class Loader {
             <div id="trajectory-loader" class="loader"></div>
             <div> 
               <span class="loader-label">Trajectory Data</span>
-              <div id="countdown-root"></div>
+              <br/>
+              <span class="loader-label" id="countdown-root"></span>
             </div>
            </div>
           <div class="loader-wrapper">
@@ -81,18 +82,16 @@ export class Loader {
   }
 
   startCountdown(distance) {
-    // Output the result in an element with id="demo"
     this.duration = distance;
     this.minutes = Math.floor((this.duration % (1000 * 60 * 60)) / (1000 * 60));
     this.seconds = Math.floor((this.duration % (1000 * 60)) / 1000);
-    this.countdownRoot.innerHTML = this.minutes + " min " + this.seconds + " sec left...";
+    this.countdownRoot.innerText = this.minutes + " min " + this.seconds + " sec left...";
     window.setInterval(() => {
       if (this.duration > 0) {
         this.duration--;
-        console.log("Doing this...", this.duration)
         this.minutes = Math.floor((this.duration % (1000 * 60 * 60)) / (1000 * 60));
         this.seconds = Math.floor((this.duration % (1000 * 60)) / 1000);
-        this.countdownRoot.innerHTML = this.minutes + " min " + this.seconds + " sec left...";
+        this.countdownRoot.innerText = this.minutes + " min " + this.seconds + " sec left...";
       }
     }, 1000);
 

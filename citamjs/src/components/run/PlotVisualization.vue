@@ -73,10 +73,9 @@ export default {
           this.createMapInstance();
           this.mapInstance.loader.mapLoaded();
           let expectedDuration = 120000;
-          // this.mapInstance.loader.startCountdown(expectedDuration);
+          this.mapInstance.loader.startCountdown(expectedDuration);
         });
-        this.getTrajectoryData();
-        this.mapInstance.hideLoader();
+        // this.getTrajectoryData();
       });
     },
 
@@ -106,7 +105,8 @@ export default {
       this.totalSteps = this.trajectories.length;
       this.$store.commit("setTrajectoryData", this.trajectories);
       this.mapInstance.setTrajectoryData(this.trajectories);
-      this.startAnimation();
+      this.mapInstance.hideLoader();
+      this.mapInstance.startAnimation();
     },
 
     showSimulationMap() {
