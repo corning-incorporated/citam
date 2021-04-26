@@ -50,8 +50,12 @@ export default {
     },
   },
   beforeDestroy() {
-    this.mapInstance.destroy();
-    this.gui.destroy();
+    if (this.mapInstance !== null) {
+      this.mapInstance.destroy();
+    }
+    if (this.mapInstance !== null) {
+      this.gui.destroy();
+    }
   },
   mounted() {
     this.showSimulationMap();
