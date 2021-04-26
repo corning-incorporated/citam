@@ -20,18 +20,12 @@ import { scaleSequential } from 'd3-scale';
 import { Loader } from './utils/loader';
 import {
     getBaseMap,
-    getContact,
-    getTotalTimesteps,
     getTrajectory,
-    getContactPositionDist,
     getSummary,
 } from './data_service';
-import { Colorbar } from './utils/colorbar';
 import { Timer } from './utils/timer';
 import '../css/_basic_map.scss';
 
-
-let trajectoryCollection = []
 
 /**
  * 2D map visualization
@@ -45,12 +39,6 @@ export default class Map2D {
      */
     constructor(mapRoot) {
         this.mapRoot = mapRoot;
-
-
-        /** Colorbar **/
-        this.colorBar = new Colorbar({ palette: d3.interpolateOrRd, scale: scaleSequential });
-        this.mapRoot.append(this.colorBar.domElement);
-        this.colorBar.hide();
 
         /** Timer **/
         this.timer = new Timer(1);
@@ -73,10 +61,13 @@ export default class Map2D {
         /** Loader element */
         this.loader = new Loader();
 
-        /** Total Timesteps for the curret Simulation */
-        this.totalSteps = 0;
+        /** Total Timesteps for the current Simulation */
+        this.totalSteps = null;
 
-        /** Simulation ID */
+        /** Number of agents in current simulation */
+        this.nAgents = null;
+
+        /** Simulation Details */
         this.simulation = null;
 
         /** Map Scale Factor - for size of annotations */
@@ -85,6 +76,9 @@ export default class Map2D {
         /** Marker sizes */
         this.contactSize = 0.5;
         this.agentSize = 1.5;
+
+        this.trajectories = [];
+
     }
 
     /**
@@ -93,8 +87,12 @@ export default class Map2D {
      * @param {string} sim_id - Simulation Name
      */
     async setSimulation(sim_id) {
+        let loadTrajectoryData = false;
+        if (sim_id !== this.simulation) {
+            loadTrajectoryData = true;
+        }
         this.simulation = sim_id;
-        return this.reloadSimulation();
+        return this.reloadSimulation(loadTrajectoryData);
     }
 
     /**
@@ -104,53 +102,43 @@ export default class Map2D {
      */
     async setFloor(floor) {
         this.floor = floor;
-        return this.reloadSimulation();
+        return this.reloadSimulation(false);
     }
 
-    async getTrajectoryData(totalSteps, nAgents = 300) {
-        // let _this = this;
-        totalSteps = 10000;
-        let max_steps = totalSteps;
-        if (totalSteps * nAgents > 1e7) {
-            max_steps = Math.ceil(totalSteps * nAgents / 700);
-        }
-        let request_arr = [], first_timestep = 0, max_contacts = 1000;
-        trajectoryCollection = [];
-        while (first_timestep < totalSteps) {
-            request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_steps));
-            first_timestep += max_steps;
-        }
-        console.log("Total number of traj requests:", request_arr.length)
-        await Promise.all(request_arr).then((response) => {
-            console.log("Response is: ", response)
-            response.forEach((val) => {
-                console.log("Processing this: ", val)
-                trajectoryCollection = trajectoryCollection.concat(
-                    val.data.data.filter(v => v.length > 0));
 
-            });
-            this.totalSteps = trajectoryCollection.length;
-            this.trajectories = trajectoryCollection;
-            let contactDomain = [0, max_contacts];
-            this.colorMap.domain(contactDomain);
-            this.colorBar.update(...contactDomain);
-            this.loader.trajectoryLoaded();
-            this.loader.hide();
-            this.timer.show();
-            this.colorBar.show();
-            this.startAnimation();
+    async getTrajectoryData() {
+
+        this.trajectories = [];
+        let max_chunk_size = Math.ceil(1e8 / this.nAgents);
+        let request_arr = [], first_timestep = 0, max_contacts = 0;
+
+        while (first_timestep < this.totalSteps) {
+            request_arr.push(getTrajectory(this.simulation, this.floor, first_timestep, max_chunk_size));
+            first_timestep += max_chunk_size;
+        }
+        await Promise.all(request_arr).then((response) => {
+            if (response !== undefined) {
+                response.forEach((chunk) => {
+                    this.trajectories = this.trajectories.concat(chunk.data.data);
+                    max_contacts = Math.max(max_contacts, chunk.data.max_count);
+                });
+            }
 
         });
+        this.totalSteps = this.trajectories.length;
+        this.loader.trajectoryLoaded();
+        this.loader.hide();
+        this.timer.show();
+        this.startAnimation();
     }
-
 
     /**
      * Reload the configured simulation.  this should be done after changing
      * simulation_id or floor
      */
-    async reloadSimulation() {
+    async reloadSimulation(downloadTrajectoryData) {
         this.stopAnimation();
-        this.colorBar.hide();
+        // this.colorBar.hide();
         this.timer.hide();
         this.loader.show();
 
@@ -167,37 +155,18 @@ export default class Map2D {
                 this.timer.lengthOfStep = response.data['TimestepInSec'] || 1;
             });
 
-        // eslint-disable-next-line no-unused-vars
-        let contactsRequest = getContact(this.simulation, this.floor)
-            .then(response => {
-                this.contacts = response.data;
-                this.loader.contactLoaded();
-            });
-
-        getTotalTimesteps(this.simulation).then((response) => {
-            this.getTrajectoryData(response.data.data);
-        });
-
-
         let mapRequest = getBaseMap(this.simulation, this.floor)
             .then(response => {
                 this._init_map(response.data);
                 this.loader.mapLoaded();
             });
 
-        let contactDist = getContactPositionDist(this.simulation, this.floor)
-            .then(response => {
-                this.contactPositionDist = response.data;
-                this.loader.distributionsLoaded();
-            });
+        if (downloadTrajectoryData) {
+            this.getTrajectoryData();
+        }
 
-        // let trajectoriesLinesRequest = await getTrajectoryLines(this.simulation, this.floor)
-        // console.log(trajectoriesLinesRequest)
-        // this.trajectoriesLines = trajectoriesLinesRequest.data.data;
         await Promise.all([
             summaryRequest,
-            contactDist,
-            contactsRequest,
             mapRequest,
         ])
         return this;
@@ -236,7 +205,9 @@ export default class Map2D {
      * @param {number} newSpeed
      */
     setSpeed(newSpeed) {
-        this.animationInterval = (11 - newSpeed) * 5;
+        // 1000 ms divided by the number of frames per second to get duration 
+        // per frame in seconds (or how often to update the animation).
+        this.animationInterval = 1000 / newSpeed;
         this._resetInterval();
     }
 
@@ -280,23 +251,6 @@ export default class Map2D {
         map.call(zoom().on("zoom", () => this._handleZoom()));
     }
 
-    /**
-     * Update the map with current contacts
-     * @private
-     */
-    _updateContacts() {
-        // Bind new trajectory data
-        // let contactLayer = select('#svg-map').select("#root")
-        //     .select('g#contacts');
-
-        // this.contacts[this.currentStep].forEach((contact) => {
-        //     contactLayer.append('circle')
-        //         .attr('r', this.contactSize * this.scaleFactor)
-        //         .attr('cx', contact.x)
-        //         .attr('cy', contact.y)
-        //         .style('fill', '#FF0000');
-        // });
-    }
 
     /**
      * Update the map with current trajectory and contact info
@@ -309,10 +263,6 @@ export default class Map2D {
             .selectAll('circle')
             .data(this.trajectories[this.currentStep]);
 
-        // Remove missing trajectories
-        circle.exit()
-            .remove();
-
         // Add new trajectories
         circle.enter()
             .append("circle")
@@ -322,12 +272,11 @@ export default class Map2D {
         // update positions
         circle.transition()
             .duration(this.animationInterval)
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y)
+            .attr('cx', d => d[0])
+            .attr('cy', d => d[1])
             .attr('r', this.agentSize * this.scaleFactor)
             .style('stroke', 'black')
-            .attr('stroke-width', this.agentSize * this.scaleFactor / 2)
-            .style('fill', d => this.colorMap(d.count));
+            .attr('stroke-width', this.agentSize * this.scaleFactor / 2);
     }
 
     /**
