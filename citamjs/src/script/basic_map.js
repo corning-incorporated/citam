@@ -175,7 +175,6 @@ export default class Map2D {
         window.clearInterval(this.animationIntervalID);
         this.loader.destroy();
         this.timer.destroy();
-        // this.colorBar.destroy();
         while (this.mapRoot.firstChild) {
             this.mapRoot.removeChild(this.mapRoot.firstChild)
         }
