@@ -128,6 +128,10 @@ export default class Map2D {
         this._resetInterval();
     }
 
+    setCurrentStep(step) {
+        this.currentStep = step;
+    }
+
     /**
      * Stops the animation
      */

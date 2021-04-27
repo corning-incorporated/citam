@@ -22,7 +22,7 @@
 <script>
 import Map2D from "../../script/basic_map";
 import * as dat from "dat.gui";
-import { getBaseMap, getTrajectory, getSummary } from "@/script/data_service";
+import { mapState } from "vuex";
 
 export default {
   name: "PlotVisualization",
@@ -38,8 +38,25 @@ export default {
       isLoadingData: null,
     };
   },
+  computed: mapState(["mapData", "status"]),
+
   watch: {
+    status(newValue, oldValue) {
+      if (oldValue === "fetchingData" && newValue === "ready") {
+        this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
+        this.mapInstance.hideLoader();
+        this.mapInstance.startAnimation();
+      }
+    },
+    mapData() {
+      this.createMapInstance();
+      this.mapInstance.loader.show();
+      this.mapInstance.loader.mapLoaded();
+      let expectedDuration = this.computeEstimatedLoadTime();
+      this.mapInstance.loader.startCountdown(expectedDuration);
+    },
     simId(selectedSimId) {
+      console.log("We have a new simulation ID", selectedSimId);
       this.simId = selectedSimId;
       this.gui = null;
       this.mapInstance = null;
@@ -51,9 +68,12 @@ export default {
   },
   beforeDestroy() {
     if (this.mapInstance !== null) {
+      if (this.$store.state.trajectoryData !== null) {
+        this.$store.commit("setCurrentStep", this.mapInstance.currentStep);
+      }
       this.mapInstance.destroy();
     }
-    if (this.mapInstance !== null) {
+    if (this.gui !== null) {
       this.gui.destroy();
     }
   },
@@ -62,79 +82,41 @@ export default {
   },
 
   methods: {
-    getSimulationData() {
-      getSummary(this.simId).then((response) => {
-        this.floorOptions = response.data.floors.map((x) => x.name);
-        this.$store.commit("setFloorOptions", this.floorOptions);
-        this.nAgents = response.data.NumberOfAgents;
-        this.$store.commit("setNumberOfAgents", this.nAgents);
-        this.totalSteps = response.data.TotalTimesteps;
-        this.$store.commit("setTotalSteps", this.totalSteps);
-        this.scaleMultiplier = response.data.scaleMultiplier;
-        this.$store.commit("setScaleMultiplier", this.scaleMultiplier);
-
-        // Error management
-        if (this.nAgents === 0 || this.totalSteps === 0) {
-          // TODO: update loader to show status (including error message)!
-        }
-
-        getBaseMap(this.simId, this.floor).then((resp) => {
-          this.mapData = resp.data;
-          this.$store.commit("setMapData", resp.data);
-          this.createMapInstance();
-          this.mapInstance.loader.show();
-          this.mapInstance.loader.mapLoaded();
-          // The factor of 160,000 is based on observations and used here for a
-          // rough estimate of how long it will take to process the trajectory
-          // data based on number of agents and total steps.
-          let expectedDuration = (this.totalSteps * this.nAgents) / 160000;
-          this.mapInstance.loader.startCountdown(expectedDuration);
-        });
-        this.getTrajectoryData();
-      });
-    },
-
-    async getTrajectoryData() {
-      this.trajectories = [];
-      let max_chunk_size = Math.ceil(1e8 / this.nAgents);
-      let request_arr = [],
-        first_timestep = 0,
-        max_contacts = 0;
-
-      while (first_timestep < this.totalSteps) {
-        request_arr.push(
-          getTrajectory(this.simId, this.floor, first_timestep, max_chunk_size)
-        );
-        first_timestep += max_chunk_size;
-      }
-      await Promise.all(request_arr).then((response) => {
-        if (response !== undefined) {
-          response.forEach((chunk) => {
-            this.trajectories = this.trajectories.concat(chunk.data.data);
-            max_contacts = Math.max(max_contacts, chunk.data.max_count);
-          });
-          this.$store.commit("setTrajectoryData", this.trajectories);
-          this.$store.commit("setIsLoadingData", false);
-        }
-      });
-      this.totalSteps = this.trajectories.length;
-      this.mapInstance.setTrajectoryData(this.trajectories);
-      this.mapInstance.hideLoader();
-      this.mapInstance.startAnimation();
-    },
-
     showSimulationMap() {
       if (
         this.$store.state.trajectoryData === null &&
-        !this.$store.state.isLoadingData
+        (this.$store.state.status === "ready" ||
+          this.$store.state.status === null)
       ) {
-        this.$store.commit("setIsLoadingData", true);
-        this.getSimulationData();
+        this.$store.commit("setSimulationID", this.simId);
+        this.$store.dispatch("fetchSimulationData");
       } else if (this.$store.state.trajectoryData !== null) {
         this.createMapInstance();
         this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
+        this.mapInstance.setCurrentStep(this.$store.state.currentStep);
         this.mapInstance.startAnimation();
+      } else if (this.$store.state.status === "fetchingData") {
+        if (this.$store.state.mapData !== null) {
+          this.createMapInstance();
+          this.mapInstance.loader.show();
+          this.mapInstance.loader.mapLoaded();
+          let expectedDuration = this.computeEstimatedLoadTime();
+          let currentTime = new Date().getTime() / 1000;
+          let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
+          this.mapInstance.loader.startCountdown(
+            expectedDuration - elapsedTime
+          );
+        }
       }
+    },
+
+    computeEstimatedLoadTime() {
+      // The factor of 160,000 is based on observations and used here for a
+      // rough estimate of how long it will take to process the trajectory
+      // data based on number of agents and total steps.
+      return (
+        (this.$store.state.totalSteps * this.$store.state.nAgents) / 160000
+      );
     },
 
     createMapInstance() {
