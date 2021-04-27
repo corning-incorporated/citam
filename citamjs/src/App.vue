@@ -15,53 +15,77 @@
 <template style="background-color: black">
   <div id="app">
     <the-navigation></the-navigation>
-    <main id="mainLayout">            
+    <main id="mainLayout">
       <router-view>
-      <home v-show="showDash"></home>      
+        <home v-show="showDash"></home>
       </router-view>
       <!-- <dashboard v-if="false"></dashboard> -->
       <footer class="py-4 bg-light mt-auto">
-      <div class="container-fluid">
-      <div class="d-flex align-items-center justify-content-between small">
-        <div class="text-muted"> &copy; CITAM</div>
-          <div>
-            <a href="https://github.com/corning-incorporated/citam/blob/main/LICENSE" target="_blank">License</a>
+        <div class="container-fluid">
+          <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">&copy; Corning Incorporated</div>
+            <div>
+              <a
+                href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+                target="_blank"
+                >License</a
+              >
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
     </main>
   </div>
 </template>
 
 <script>
 //import Dashboard from "@/components/Dashboard";
-import TheNavigation from '@/components/nav/Navigation'
-import Home from '@/components/Home';
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {faChartBar, faChartArea, faTable, faArrowAltCircleLeft,
-  faSort, faMap, faQuestionCircle, faChevronDown, faChevronRight} from '@fortawesome/free-solid-svg-icons'
-import {faGithub} from '@fortawesome/free-brands-svg-icons'
+import TheNavigation from "@/components/nav/Navigation";
+import Home from "@/components/Home";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faChartBar,
+  faChartArea,
+  faTable,
+  faArrowAltCircleLeft,
+  faSort,
+  faMap,
+  faQuestionCircle,
+  faChevronDown,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
-library.add(faGithub, faChartBar, faChartArea, faTable,
-    faArrowAltCircleLeft, faSort, faMap, faQuestionCircle, faChevronDown, faChevronRight)
+library.add(
+  faGithub,
+  faChartBar,
+  faChartArea,
+  faTable,
+  faArrowAltCircleLeft,
+  faSort,
+  faMap,
+  faQuestionCircle,
+  faChevronDown,
+  faChevronRight
+);
 
-import axios from 'axios'
+import axios from "axios";
 
-axios.defaults.baseURL = '/v1';
+axios.defaults.baseURL = "/v1";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Home,
     TheNavigation,
     //Dashboard
   },
-  data(){return {
-    showDash: true,
-    
-    }}
-}
+  data() {
+    return {
+      showDash: true,
+    };
+  },
+};
 </script>
 
 <style>
@@ -77,7 +101,7 @@ body {
   background-color: black;
 }
 #mainLayout {
-margin: 0 30px 0 30px;
+  margin: 0 30px 0 30px;
 }
 
 #mainLayout footer {
