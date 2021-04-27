@@ -163,50 +163,16 @@ export default {
     },
   },
   created() {
-    axios
-      .get("/list") //get list of policies, simulations, facilities
-      .then((response) => {
-        this.policyList = response.data.map((list) => list);
-        return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
-      })
-      .then((runResponse) => {
-        // eslint-disable-next-line no-unused-vars
-        this.runList = runResponse.map((run) => run.data);
-        return axios.all(
-          runResponse.map((x) =>
-            axios.get(`/${x.data.SimulationID}/statistics`)
-          )
-        );
-      })
-      .then((response) => {
-        response.map((statCard, i) => {
-          statCard.data.sim_id = response[i].config.url
-            .match(/(?<=\/)(.*)(?=\/)/)[0]
-            .toString();
-          this.statsList.push(statCard.data);
-        });
-
-        this.getOverviewData();
-        this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
-        this.$emit("setFacilities", this.overviewData.facilities); // To display facility list in the dropdown
-
-        if (this.selectedFacility) {
-          this.policyData = {
-            policies: this.overviewData.facilities.find(
-              (item) => item.facilityName == this.selectedFacility
-            ).policies,
-          };
-        } else {
-          this.policyData = {
-            policies: this.overviewData.facilities[0].policies,
-          }; // Display first facility by default
-        }
-        this.calculatePolicyAvg();
-      })
-
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (this.$store.state.facilities === null) {
+      this.fetchData();
+    } else {
+      this.overviewData.facilities = this.$store.state.facilities;
+      this.policyList = this.$store.state.policyList;
+      this.statsList = this.$store.state.statsList;
+      this.getRunList();
+      this.setDefaultPolicy();
+      this.calculatePolicyAvg();
+    }
   },
   methods: {
     sortTable(att) {
@@ -220,7 +186,58 @@ export default {
       ]);
       this.$store.state.facilities;
     },
+    setDefaultPolicy() {
+      if (this.selectedFacility) {
+        this.policyData = {
+          policies: this.overviewData.facilities.find(
+            (item) => item.facilityName == this.selectedFacility
+          ).policies,
+        };
+      } else {
+        this.policyData = {
+          policies: this.overviewData.facilities[0].policies,
+        }; // Display first facility by default
+      }
+    },
+    fetchData() {
+      axios
+        .get("/list") //get list of policies, simulations, facilities
+        .then((response) => {
+          this.policyList = response.data.map((list) => list);
+          this.$store.commit("setPolicyList", this.policyList);
+          return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
+        })
+        .then((runResponse) => {
+          // eslint-disable-next-line no-unused-vars
+          this.runList = runResponse.map((run) => run.data);
+          return axios.all(
+            runResponse.map((x) =>
+              axios.get(`/${x.data.SimulationID}/statistics`)
+            )
+          );
+        })
+        .then((response) => {
+          response.map((statCard, i) => {
+            statCard.data.sim_id = response[i].config.url
+              .match(/(?<=\/)(.*)(?=\/)/)[0]
+              .toString();
+            this.statsList.push(statCard.data);
+          });
+          this.$store.commit("setStatsList", this.statsList);
+          this.getOverviewData();
 
+          this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
+          this.$emit("setFacilities", this.overviewData.facilities); // To display facility list in the dropdown
+
+          this.getRunList();
+          this.setDefaultPolicy();
+          this.calculatePolicyAvg();
+        })
+
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     viewRuns(idx) {
       const index = this.subRows.indexOf(idx);
       if (index > -1) {
@@ -265,7 +282,9 @@ export default {
           });
         });
       });
+    },
 
+    getRunList() {
       // build stats object for each simulation run within each policies for each facility
       this.overviewData.facilities.forEach((facility) => {
         facility.policies.forEach((policy) => {
@@ -306,9 +325,9 @@ export default {
           });
         });
       });
-      document.getElementById(
-        "metricCols"
-      ).colSpan = this.metricAttributes.length;
+      // document.getElementById(
+      //   "metricCols"
+      // ).colSpan = this.metricAttributes.length;
     },
 
     pushUniqueFacilities(item) {
