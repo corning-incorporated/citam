@@ -67,7 +67,6 @@ export default new Vuex.Store({
             state.currentStep = step;
         },
         setFetchingStartTime(state, startTime) {
-            console.log("Updating fetching start time:", startTime)
             state.fetchingStartTime = startTime;
         },
         updateStatus(state, status) {
@@ -104,7 +103,6 @@ export default new Vuex.Store({
                     });
 
                 } catch (e) {
-                    console.error(e);
                     commit('updateStatus', 'error');
                 }
             });

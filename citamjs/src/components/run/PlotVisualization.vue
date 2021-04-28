@@ -56,7 +56,6 @@ export default {
       this.mapInstance.loader.startCountdown(expectedDuration);
     },
     simId(selectedSimId) {
-      console.log("We have a new simulation ID", selectedSimId);
       this.simId = selectedSimId;
       this.gui = null;
       this.mapInstance = null;
