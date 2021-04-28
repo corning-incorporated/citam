@@ -15,6 +15,7 @@
 
 import Vue from "vue";
 import Vuex from "vuex";
+import { getBaseMap, getTrajectory, getSummary } from "@/script/data_service";
 
 Vue.use(Vuex);
 
@@ -22,12 +23,16 @@ export default new Vuex.Store({
     state: {
         facilities: [],
         floorOptions: null,
+        currentSimID: null,
         trajectoryData: null,
         totalSteps: null,
         nAgents: null,
         mapData: null,
         scaleMultiplier: null,
-        isLoadingData: false,
+        status: null, // fetchingData | error | ready | null
+        fetchingStartTime: null,
+        currentStep: null,
+        currentFloor: null
     },
     getters: {},
     mutations: {
@@ -36,9 +41,6 @@ export default new Vuex.Store({
         },
         setFloorOptions(state, floorOptions) {
             state.floorOptions = floorOptions;
-        },
-        setIsLoadingData(state, status) {
-            state.isLoadingData = status;
         },
         setTrajectoryData(state, trajectoryData) {
             state.trajectoryData = trajectoryData;
@@ -55,10 +57,83 @@ export default new Vuex.Store({
         setScaleMultiplier(state, scaleMultiplier) {
             state.scaleMultiplier = scaleMultiplier;
         },
+        setSimulationID(state, simId) {
+            state.currentSimID = simId;
+        },
+        setCurrentFloor(state, floor) {
+            state.currentFloor = floor;
+        },
+        setCurrentStep(state, step) {
+            state.currentStep = step;
+        },
+        setFetchingStartTime(state, startTime) {
+            state.fetchingStartTime = startTime;
+        },
+        updateStatus(state, status) {
+            state.status = status;
+        },
         removeTrajectoryData(state) {
             state.trajectoryData = null;
+            state.totalSteps = null;
+            state.currentSimID = null;
+            state.nAgents = null;
+            state.mapData = null;
+            state.status = 'ready';
+            state.currentFloor = null;
         }
-
     },
-    actions: {}
+    actions: {
+        async fetchSimulationData({ dispatch, commit, state }) {
+            commit("updateStatus", "fetchingData");
+            commit("setFetchingStartTime", new Date().getTime() / 1000);
+            return new Promise(() => {
+                try {
+                    getSummary(state.currentSimID).then(async (response) => {
+                        let floorOptions = response.data.floors.map((x) => x.name);
+                        commit("setFloorOptions", floorOptions);
+                        commit("setNumberOfAgents", response.data.NumberOfAgents);
+                        commit("setTotalSteps", response.data.TotalTimesteps);
+                        commit("setScaleMultiplier", response.data.scaleMultiplier);
+
+                        getBaseMap(state.currentSimID, state.currentFloor).then((resp) => {
+                            commit("setMapData", resp.data);
+                        });
+                        await dispatch("getTrajectoryData");
+                        commit('updateStatus', 'ready');
+                    });
+
+                } catch (e) {
+                    commit('updateStatus', 'error');
+                }
+            });
+
+        },
+        async getTrajectoryData({ commit, state }) {
+            let trajectories = [];
+            let max_chunk_size = Math.ceil(1e8 / state.nAgents);
+            let request_arr = [], first_timestep = 0, max_contacts = 0;
+
+            while (first_timestep < state.totalSteps) {
+                request_arr.push(
+                    getTrajectory(
+                        state.currentSimID,
+                        state.currentFloor,
+                        first_timestep,
+                        max_chunk_size)
+                );
+                first_timestep += max_chunk_size;
+            }
+            await Promise.all(request_arr).then((response) => {
+                if (response !== undefined) {
+                    response.forEach((chunk) => {
+                        trajectories = trajectories.concat(chunk.data.data);
+                        max_contacts = Math.max(max_contacts, chunk.data.max_count);
+                    });
+                    commit("setTrajectoryData", trajectories);
+                    commit("updateStatus", "ready");
+                }
+            });
+            commit("setTotalSteps", trajectories.length);
+        },
+    }
 });

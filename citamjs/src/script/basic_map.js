@@ -38,7 +38,6 @@ export default class Map2D {
         /** Timer **/
         this.timer = new Timer(1);
         this.mapRoot.append(this.timer.domElement);
-        // this.timer.hide();
 
         /** Handle for running animation set by window.setInterval */
         this.animationIntervalID = null;
@@ -54,7 +53,6 @@ export default class Map2D {
         this.loader.hide();
 
         /** Color scale for contact data */
-        // this.colorMap = d3.scaleLinear(d3.interpolateGreys);
         this.colorMap = scaleSequential(d3.interpolateOrRd);
 
         /** Total Timesteps for the current Simulation */
@@ -73,10 +71,7 @@ export default class Map2D {
         this.contactSize = 0.5;
         this.agentSize = 1.5;
 
-        // this.trajectories = trajectories;
         this._init_map(mapData);
-        // this.reloadSimulation();
-        // this.restartAnimation();
     }
 
     setTrajectoryData(trajData) {
@@ -109,10 +104,6 @@ export default class Map2D {
      */
     async reloadSimulation() {
         this.stopAnimation();
-        // this.colorBar.hide();
-        // this.timer.hide();
-        // this.loader.show();
-
         select('#svg-map').remove();
         select('#svg-map').attr('transform', d3.zoomIdentity);
 
@@ -126,6 +117,10 @@ export default class Map2D {
      */
     startAnimation() {
         this._resetInterval();
+    }
+
+    setCurrentStep(step) {
+        this.currentStep = step;
     }
 
     /**

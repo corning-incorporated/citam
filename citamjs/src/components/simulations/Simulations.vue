@@ -14,8 +14,8 @@
 <template>
   <div id="simLayout">
     <div id="title">
-      <span>Simulations</span>Individual simulation maps per policy, run, and
-      floor. Data visualization per simulation run.
+      <span>Visualizer</span>Interactive visualization of trajectory data of a
+      specific run.
     </div>
     <div class="container-fluid">
       <!-- <div class="row header">
