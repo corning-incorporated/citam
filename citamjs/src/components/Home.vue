@@ -56,10 +56,6 @@
           >Policies</a
         >
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link flrTab" id="flr-tab" data-toggle="tab" role="tab"
-           aria-controls="profile" aria-selected="false" @click="setSelectedComponent('floor-plans')">Floor Plans</a>
-      </li> -->
     </ul>
     <div>
       <component
@@ -77,8 +73,6 @@
 </template>
 
 <script>
-//import axios from 'axios'
-//import AddPolicy from '@/components/AddPolicy';
 import Simulations from "./simulations/Simulations.vue";
 import Policies from "./Policies.vue";
 import FloorPlans from "./FloorPlans.vue";

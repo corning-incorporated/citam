@@ -25,9 +25,7 @@
             <table class="table table-bordered" v-if="statsList">
               <thead>
                 <tr class="tableHeader">
-                  <th colspan="2">
-                    <!-- <button type="button" class="policyBtn btn btn-link">Add Policy</button> -->
-                  </th>
+                  <th colspan="2"></th>
                   <th id="metricCols">KEY METRICS</th>
                   <th colspan="4">KEY POLICY INPUTS</th>
                 </tr>
@@ -101,10 +99,6 @@
                     >
                       {{ stats.value }}
                     </td>
-                    <!-- <td colspan="4">
-                        <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMaps')">Simulation Map</button>
-                        <button type="button" class="btn btn-link" @click="showSimulations(item.policyName, sim.simName, 'dataViz')">Data Visualizations</button>
-                      </td>                       -->
                   </tr>
                 </template>
               </tbody>
@@ -203,10 +197,6 @@ export default {
         }
         this.calculatePolicyAvg();
       })
-
-      .catch(function (error) {
-        console.log(error);
-      });
   },
   methods: {
     sortTable(att) {
@@ -295,12 +285,7 @@ export default {
                 policy.simulationRuns.totalTimeStep = sim.timeStep;
                 policy.simulationRuns.totalScaleMultiplier =
                   sim.scaleMultiplier;
-                policy.simulationRuns.individuals = sim.individuals;
-
-                // policy.simulationRuns.totalContact += sim.overall_total_contact_duration
-                // policy.simulationRuns.avgContactsPerAgent += sim.avg_n_contacts_per_agent/policy.simulationRuns.length
-                // policy.simulationRuns.avgContactDuration += sim.avg_contact_duration_per_agent/policy.simulationRuns.length
-                // policy.simulationRuns.avgPeoplePerAgent += sim.avg_number_of_people_per_agent/policy.simulationRuns.length
+                policy.simulationRuns.individuals = sim.individuals;                
               }
             });
           });
@@ -343,8 +328,7 @@ export default {
           _.each(dynamicKeys, function (statKeys) {
             sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
           });
-        });
-        console.log("Sums", sums);
+        });        
         p.simulationRuns.average = sums;
         stat_list = [];
       }
@@ -392,7 +376,6 @@ export default {
   font-family: Inter;
   text-align: left;
   padding: 10px 0 10px 15px;
-  /* border-right: 1px solid #DAE0E6 !important; */
 }
 .subTitle div button {
   padding: 0px !important;
@@ -405,7 +388,6 @@ export default {
   display: flex;
   align-items: center;
 }
-
 .policyBtn {
   line-height: 0.7;
 }
@@ -414,7 +396,6 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-
 .table {
   margin-bottom: 0px !important;
 }
@@ -423,7 +404,6 @@ export default {
   float: left;
   padding: 0px !important;
 }
-
 .table thead th {
   font-family: Inter;
   font-weight: 500;
@@ -433,18 +413,15 @@ export default {
   text-align: center;
   color: #607080;
 }
-
 .tableHeader {
   background-color: #ebeff2;
 }
 .simBtn {
   margin-right: 50px;
 }
-
 .btn:focus {
   box-shadow: none !important;
 }
-
 .noBorder {
   border-left: none !important;
   border-right: none !important;
