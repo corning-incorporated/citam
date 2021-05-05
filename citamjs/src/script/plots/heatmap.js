@@ -12,8 +12,8 @@
  ==========================================================================
 **/
 
-import {SimpleHeat} from '../utils/simpleheat';
-import {getContactPositionDist} from '../data_service';
+import { SimpleHeat } from '../utils/simpleheat';
+import { getContactPositionDist } from '../data_service';
 
 export class Heatmap {
   /**
@@ -31,9 +31,7 @@ export class Heatmap {
 
   setSimulation(sim_id) {
     this.simulation = sim_id;
-    console.log("Setting sim");
     getContactPositionDist(sim_id).then(response => {
-      console.log("Setting data");
       this.setData(response.data);
     });
     let img = new Image();
@@ -72,37 +70,13 @@ export class Heatmap {
   redraw() {
     // First, clear out all old heatmap data
     this.clear();
-
     // Redraw the map
     let img = new Image();
     img.onload = () => {
-      console.log("image loaded");
       // TODO: Only works in chrome?
       this.domElement.getContext('2d').drawImage(img, 0, 0);
     };
     img.src = `/v1/${this.simulation}/map`;
-
-    // let width = map.getBoundingClientRect().width,
-    //   height = map.getBoundingClientRect().height,
-    //   viewBox = map.getAttribute('viewBox')
-    //     .split(' ')
-    //     .map(value => parseFloat(value));
-    //
-    // this.heatMapXScale = scaleLinear()
-    //   .range([0, width])
-    //   .domain([viewBox[0], viewBox[0] + viewBox[2]]);
-    // this.heatMapYScale = scaleLinear()
-    //   .range([0, height])
-    //   .domain([viewBox[1], viewBox[1] + viewBox[3]]);
-    //
-    // // Set data
-    // this._heat.data(
-    //   this.data.map(d => [this.heatMapXScale(d.x), this.heatMapYScale(d.y), d.count]),
-    // );
-    // this._heat.data(
-    //   this.data.map(d => [d.x, d.y, d.count]),
-    // );
-
     // draw into canvas, with minimum opacity threshold
     this._heat.draw();
   }

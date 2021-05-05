@@ -19,7 +19,6 @@
       <router-view>
         <home v-show="showDash"></home>
       </router-view>
-      <!-- <dashboard v-if="false"></dashboard> -->
       <footer class="py-4 bg-light mt-auto">
         <div class="container-fluid">
           <div class="d-flex align-items-center justify-content-between small">
