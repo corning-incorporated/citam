@@ -21,7 +21,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        facilities: [],
+        facilities: null,
+        policyList: null,
+        statsList: null,
         floorOptions: null,
         currentSimID: null,
         trajectoryData: null,
@@ -38,6 +40,12 @@ export default new Vuex.Store({
     mutations: {
         setFacilities(state, payload) {
             state.facilities = payload
+        },
+        setPolicyList(state, policyList) {
+            state.policyList = policyList;
+        },
+        setStatsList(state, stats) {
+            state.statsList = stats;
         },
         setFloorOptions(state, floorOptions) {
             state.floorOptions = floorOptions;
