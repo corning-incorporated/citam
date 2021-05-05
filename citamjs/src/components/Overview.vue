@@ -226,9 +226,7 @@ export default {
           this.getRunList();
           this.setDefaultPolicy();
           this.calculatePolicyAvg();
-        })
-
-        .catch(function (error) {});
+        });
     },
     viewRuns(idx) {
       const index = this.subRows.indexOf(idx);
