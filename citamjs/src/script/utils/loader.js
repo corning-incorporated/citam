@@ -17,18 +17,17 @@ import '../../css/_loader.scss';
 export class Loader {
   constructor(parentElement) {
     // Add Loader elements
-    let loader = document.createElement('div');
-    parentElement.append(loader);
+    this.loader = document.createElement('div');
+    parentElement.append(this.loader);
     // document.body.prepend(loader);
-    loader.innerHTML = `
+    this.loader.innerHTML = `
       <div id="loader-root">
         <div class="simulation-loader-overlay"></div>
         <div class="simulation-loader">
-          <div class="loader-title">Loading...</div>
           <div class="loader-wrapper">
             <div id="trajectory-loader" class="loader"></div>
             <div> 
-              <span class="loader-label">Trajectory Data</span>
+              <span class="loader-label" id="traj-loader-label">Loading trajectory Data</span>
               <br/>
               <span class="loader-label" id="countdown-root"></span>
             </div>
@@ -43,6 +42,8 @@ export class Loader {
 
     this.loaderRoot = document.getElementById('loader-root');
     this._trajectoryElem = document.getElementById('trajectory-loader');
+    this.trajLoaderLabel = document.getElementById('traj-loader-label');
+
     // this._contactElem = document.getElementById('contact-loader');
     this._mapElem = document.getElementById('map-loader');
     // this._distributionsElem = document.getElementById('distribution-loader');
@@ -54,6 +55,16 @@ export class Loader {
   show() {
     this.loaderRoot.style.display = 'inline';
     this._reset();
+  }
+
+  showError(message) {
+    this._setError(this._trajectoryElem);
+    // this._setComplete(this._trajectoryElem);
+    this.trajLoaderLabel.innerText = "Error loading trajectory"
+    if (message !== undefined) {
+      this.countdownRoot.innerText = message;
+    }
+
   }
 
   /** Hide the loader element */
@@ -121,6 +132,18 @@ export class Loader {
   }
 
   /**
+ * Set a spinner to the loaded state
+ *
+ * @param {HTMLElement} node
+ * @private
+ */
+  _setError(node) {
+    node.classList.remove('loader');
+    node.classList.add('loader-error');
+
+  }
+
+  /**
    * Reset all spinners to the unloaded state
    *
    * @private
@@ -129,6 +152,7 @@ export class Loader {
     [this._trajectoryElem, this._mapElem].forEach(
       (elem) => {
         elem.classList.remove('loaded');
+        elem.classList.remove('error');
         elem.classList.add('loader');
       });
   }

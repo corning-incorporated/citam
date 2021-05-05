@@ -167,7 +167,6 @@ export default {
       this.setDefaultPolicy();
       this.calculatePolicyAvg();
     }
-
   },
   methods: {
     sortTable(att) {
@@ -229,9 +228,7 @@ export default {
           this.calculatePolicyAvg();
         })
 
-        .catch(function (error) {
-          console.log(error);
-        });
+        .catch(function (error) {});
     },
     viewRuns(idx) {
       const index = this.subRows.indexOf(idx);
@@ -309,7 +306,7 @@ export default {
                 policy.simulationRuns.totalTimeStep = sim.timeStep;
                 policy.simulationRuns.totalScaleMultiplier =
                   sim.scaleMultiplier;
-                policy.simulationRuns.individuals = sim.individuals;                
+                policy.simulationRuns.individuals = sim.individuals;
               }
             });
           });
@@ -352,7 +349,7 @@ export default {
           _.each(dynamicKeys, function (statKeys) {
             sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
           });
-        });        
+        });
         p.simulationRuns.average = sums;
         stat_list = [];
       }

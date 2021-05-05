@@ -59,6 +59,16 @@
   display: inline-block;
 }
 
+.loader-error {
+  width: 2rem;
+  height: 2rem;
+  box-sizing: border-box;
+  border-top: 0.3rem solid red;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+}
+
 .loaded:after {
   position: absolute;
   content: "L";
