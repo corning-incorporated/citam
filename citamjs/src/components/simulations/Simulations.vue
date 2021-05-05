@@ -18,20 +18,7 @@
       specific run.
     </div>
     <div class="container-fluid">
-      <!-- <div class="row header">
-        <div class="col-sm-2 policy">
-          <div class="policyBtn">
-            <button type="button" class="btn btn-link">Add Policy</button>
-          </div>
-          <policy-list
-            :policyData="policyData"
-            v-model="policyData"
-            @getSimMap="getSimMap($event)"
-          ></policy-list>
-        </div>
-
-      </div> -->
-      <div class="col-sm-10">
+      <div>
         <div>
           <component :is="selectedComponent" :simId="currSimId"></component>
         </div>
