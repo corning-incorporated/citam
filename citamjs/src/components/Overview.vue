@@ -25,9 +25,7 @@
             <table class="table table-bordered" v-if="statsList">
               <thead>
                 <tr class="tableHeader">
-                  <th colspan="2">
-                    <!-- <button type="button" class="policyBtn btn btn-link">Add Policy</button> -->
-                  </th>
+                  <th colspan="2"></th>
                   <th id="metricCols">KEY METRICS</th>
                   <th colspan="4">KEY POLICY INPUTS</th>
                 </tr>
@@ -101,10 +99,6 @@
                     >
                       {{ stats.value }}
                     </td>
-                    <!-- <td colspan="4">
-                        <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMaps')">Simulation Map</button>
-                        <button type="button" class="btn btn-link" @click="showSimulations(item.policyName, sim.simName, 'dataViz')">Data Visualizations</button>
-                      </td>                       -->
                   </tr>
                 </template>
               </tbody>
@@ -203,10 +197,6 @@ export default {
         }
         this.calculatePolicyAvg();
       })
-
-      .catch(function (error) {
-        console.log(error);
-      });
   },
   methods: {
     sortTable(att) {
