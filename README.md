@@ -1,3 +1,5 @@
+NOTE: THIS REPOSITORY IS IN PRE-RELEASE MODE AND IS NOT READY FOR PUBLIC USE YET. PLEASE CHECK BACK ON MAY 28.
+
 # CITAM
 
 Covid-19 Indoor Transmission Agent-based Modeling platform.
@@ -36,9 +38,9 @@ Below are the different ways to install CITAM.
 ### From Python-Wheel (Recommended)
 
 1. Download the python-wheel zip file from the latest release tag [here](https://github.com/corning-incorporated/citam/releases).
-2. Extract the compressed file locally, 
-3. change directory to the extracted python-wheel folder.  Do not rename this file.
-4. run `pip install <citam wheel>` where citam_wheel is the extracted .whl file
+2. Extract the compressed file locally.
+3. Change directory to the extracted python-wheel folder.  Do not rename this file.
+4. Run `pip install <citam wheel>` where citam_wheel is the extracted `.whl` file.
 
 ### From Source
 
@@ -50,7 +52,7 @@ $node --version      # should be 12 or above
 $npm --version       # should be 6 or above
 ```
 
-If all pre-requisites are satisfied, download the source code as follow:
+If all pre-requisites are satisfied, download the source code as follows:
 
 ```
 $git clone https://github.com/corning-incorporated/citam.git
@@ -77,13 +79,6 @@ After a successful installation, you are ready to ingest your facilities and run
 
 ```
 $citam -h
-```
-
- > Note: In case matplotlib gives an error, these steps have been found to solve the problem:
-```
-   $pip uninstall matplotlib  # uninstall the package
-
-   $pip install matplotlib   # reinstall it
 ```
 
 ## Add Facilities
@@ -121,7 +116,7 @@ remove walls that are between hallways.
 
 **2. Validate Ingested Data**
 
- You can export the ingested floorplan as an SVG file for visualization as follow:
+ You can export the ingested floorplan as an SVG file for visualization as follows:
 
   ```
   $citam engine export-floorplan foo_facility foo_floor -o foo_output.svg -v
