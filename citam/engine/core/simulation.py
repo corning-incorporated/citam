@@ -123,8 +123,8 @@ class Simulation:
         self.agents = OrderedDict()
         self.shifts = shifts
         self.dry_run = dry_run
-        self.simulation_name = None
-        self.simid = str(uuid.uuid4())
+        self.simulation_hash = None
+        self.run_id = str(uuid.uuid4())
 
         # list used to keep track of total contact events per xy location per
         #  floor
@@ -195,7 +195,7 @@ class Simulation:
             data = nx.to_edgelist(hg)
             m.update(repr(data).encode("utf-8"))
 
-        self.simulation_name = m.hexdigest()
+        self.simulation_hash = m.hexdigest()
 
     def generate_meetings(self) -> None:
         """
@@ -678,8 +678,8 @@ class Simulation:
             "NumberOfFloors": self.facility.number_of_floors,
             "NumberOfOneWayAisles": n_one_way_aisles,
             "NumberOfAgents": len(self.agents),
-            "SimulationName": self.simulation_name,
-            "SimulationID": self.simid,
+            "SimulationHash": self.simulation_hash,
+            "RunID": self.run_id,
             "FacilityName": self.facility.facility_name,
             "FacilityOccupancy": self.occupancy_rate,  # between 0.0 and 1.0
             "MaxRoomOccupancy": 1.0,
@@ -873,7 +873,7 @@ class Simulation:
         # Statistics
         statistics = self.contact_events.extract_statistics()
         statistics_dict = {
-            "SimulationName": self.simulation_name,
+            "SimulationName": self.simulation_hash,
             "data": statistics,
         }
         filename = os.path.join(work_directory, "statistics.json")
