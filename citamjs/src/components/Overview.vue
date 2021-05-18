@@ -26,15 +26,15 @@
               <thead>
                 <tr class="tableHeader">
                   <th colspan="2"></th>
-                  <th id="metricCols">KEY METRICS</th>
+                  <!-- <th id="metricCols">KEY METRICS</th> -->
                   <th colspan="4">KEY POLICY INPUTS</th>
                 </tr>
                 <tr>
                   <th class="noBorder">View runs</th>
                   <th class="noBorder">Policies</th>
-                  <th v-for="(att, id) in metricAttributes" :key="id">
+                  <!-- <th v-for="(att, id) in metricAttributes" :key="id">
                     <div class="th-container">{{ att }}</div>
-                  </th>
+                  </th> -->
                   <th
                     v-for="(header, id) in policyInputHeaders"
                     :key="'p' + id"
@@ -67,10 +67,10 @@
                   >
                     {{ avg }}
                   </td>
-                  <td>{{ item.simulationRuns.individuals }}</td>
+                  <td>{{ item.simulationRuns.agents }}</td>
                   <td>{{ item.simulationRuns.totalFloors }}</td>
-                  <td>{{ item.simulationRuns.totalTimeStep }}</td>
-                  <td>{{ item.simulationRuns.totalScaleMultiplier }}</td>
+                  <td>{{ item.simulationRuns.totalSteps }}</td>
+                  <td>{{ item.simulationRuns.numberOfEntrances }}</td>
                 </tr>
                 <template v-if="subRows.includes(idx)">
                   <tr
@@ -93,12 +93,12 @@
                         {{ sim.simName }}
                       </button>
                     </td>
-                    <td
+                    <!-- <td
                       v-for="(stats, ind) in sim.statisctics"
                       :key="sim.simName + ind"
                     >
                       {{ stats.value }}
-                    </td>
+                    </td> -->
                   </tr>
                 </template>
               </tbody>
@@ -130,10 +130,10 @@ export default {
       ],
       metricAttributes: [],
       policyInputHeaders: [
-        "Individuals",
+        "Number of Agents",
         "Total Floors",
-        "Time Step",
-        "Scale Multiplier",
+        "Total Duration",
+        "Number of Entrances",
       ],
       simRuns: [],
       subRows: [],
@@ -263,7 +263,7 @@ export default {
           facility.policies.forEach((pol) => {
             if (policy.policy_id === pol.policyName) {
               pol.simulationRuns.push({ simName: policy.sim_id });
-              pol.simulationRuns.totalIndividuals = 0;
+              pol.simulationRuns.agents = 0;
               pol.simulationRuns.totalFloors = 0;
               pol.simulationRuns.totalTimeStep = 0;
               pol.simulationRuns.totalScaleMultiplier = 0;
@@ -282,10 +282,10 @@ export default {
             this.runList.forEach((run) => {
               if (run.sim_id === sim.simName) {
                 Vue.set(sim, "floors", run.floors);
-                Vue.set(sim, "timeStep", run.TimestepInSec);
+                Vue.set(sim, "totalSteps", run.TotalTimesteps);
                 Vue.set(sim, "scaleMultiplier", run.scaleMultiplier);
-                Vue.set(sim, "individuals", run.NumberOfEmployees);
-                Vue.set(sim, "individuals", run.NumberOfEmployees);
+                Vue.set(sim, "agents", run.NumberOfAgents);
+                Vue.set(sim, "numberOfEntrances", run.NumberOfEntrances);
 
                 this.statsList.forEach((stats) => {
                   if (this.metricAttributes.length == 0) {
@@ -297,14 +297,15 @@ export default {
                     stats.forEach((item) => {
                       Vue.set(sim, item.name, item.value);
                     });
-                    Vue.set(sim, "statisctics", stats);
+                    Vue.set(sim, "statistics", stats);
                   }
                 });
+                console.log("Sim is: ", sim);
                 policy.simulationRuns.totalFloors = sim.floors.length;
-                policy.simulationRuns.totalTimeStep = sim.timeStep;
-                policy.simulationRuns.totalScaleMultiplier =
-                  sim.scaleMultiplier;
-                policy.simulationRuns.individuals = sim.individuals;
+                policy.simulationRuns.totalSteps = sim.totalSteps;
+                policy.simulationRuns.numberOfEntrances = sim.numberOfEntrances;
+                policy.simulationRuns.agents = sim.agents;
+                console.log(policy.simulationRuns);
               }
             });
           });
