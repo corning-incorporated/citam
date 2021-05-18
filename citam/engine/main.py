@@ -308,7 +308,11 @@ def run_simulation(inputs: dict):
 
     work_directory = inputs["output_directory"]
     LOG.info("Running simulation...")
-    my_model.run_serial(workdir=work_directory)
+    my_model.run_serial(
+        workdir=work_directory,
+        sim_name=inputs["simulation_name"],
+        run_name=inputs["run_name"],
+    )
 
     LOG.info("Extracting stats...")
     my_model.save_outputs(work_directory)

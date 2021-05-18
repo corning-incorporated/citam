@@ -221,7 +221,7 @@ class Simulation:
         if n_meeting_rooms > 0 and self.create_meetings:
             self.meeting_policy.create_all_meetings()
 
-    def run_serial(self, workdir: str) -> None:
+    def run_serial(self, workdir: str, sim_name: str, run_name: str) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
 
@@ -272,7 +272,7 @@ class Simulation:
         LOG.info("Total agents: " + str(self.n_agents))
 
         self.create_sim_hash()
-        self.save_manifest(workdir)
+        self.save_manifest(workdir, sim_name, run_name)
         self.save_maps(workdir)
         self.generate_meetings()
         self.add_agents_and_build_schedules()
@@ -643,7 +643,9 @@ class Simulation:
 
         return agent_ids, n_contacts
 
-    def save_manifest(self, work_directory: str) -> None:
+    def save_manifest(
+        self, work_directory: str, sim_name: str, run_name: str
+    ) -> None:
         """
         Save manifest file, used by the dashboard to show results.
 
@@ -678,6 +680,8 @@ class Simulation:
             "NumberOfFloors": self.facility.number_of_floors,
             "NumberOfOneWayAisles": n_one_way_aisles,
             "NumberOfAgents": len(self.agents),
+            "SimulationName": sim_name,
+            "RunName": run_name,
             "SimulationHash": self.simulation_hash,
             "RunID": self.run_id,
             "FacilityName": self.facility.facility_name,
