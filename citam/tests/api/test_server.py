@@ -133,17 +133,17 @@ def test_list_response(client):
     assert result.status_code == 200
     assert isinstance(result.json, list)
     assert len(result.json) == 3
-    assert "run_id" in result.json[0]
-    assert "sim_hash" in result.json[0]
-    assert "facility_name" in result.json[0]
+    assert "RunID" in result.json[0]
+    assert "SimulationHash" in result.json[0]
+    assert "FacilityName" in result.json[0]
 
     run_ids = [
         "run_id_0001",
         "run_id_0002",
         "51a37fa7054a3f8e8d55",
     ]
-    assert result.json[0]["run_id"] in run_ids
-    assert result.json[1]["run_id"] in run_ids
+    assert result.json[0]["RunID"] in run_ids
+    assert result.json[1]["RunID"] in run_ids
 
 
 def test_redoc(client):

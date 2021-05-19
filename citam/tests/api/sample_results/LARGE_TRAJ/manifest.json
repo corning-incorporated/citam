@@ -7,7 +7,7 @@
     "SimulationHash": "140b517c-acf8-4b24-ae09-8cc219b5590e",
     "SimulationName": "test_sim",
     "RunName": "run_name",
-    "Campus": "F1",
+    "FacilityName": "F1",
     "FacilityOccupancy": null,
     "MaxRoomOccupancy": 1.0,
     "NumberOfShifts": 1,

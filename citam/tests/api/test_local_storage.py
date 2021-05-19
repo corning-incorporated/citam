@@ -56,19 +56,25 @@ def test_no_results_found():
 def test_list_runs():
     expected = [
         {
-            "run_id": "run_id_0001",
-            "facility_name": "TEST",
-            "sim_hash": "_hash_0001",
+            "RunID": "run_id_0001",
+            "RunName": "run_name_0001",
+            "FacilityName": "TEST",
+            "SimulationName": "sim_name_0001",
+            "SimulationHash": "_hash_0001",
         },
         {
-            "run_id": "run_id_0002",
-            "facility_name": "TEST",
-            "sim_hash": "_hash_0001",
+            "RunID": "run_id_0002",
+            "RunName": "run_name_0002",
+            "FacilityName": "TEST",
+            "SimulationName": "sim_name_0001",
+            "SimulationHash": "_hash_0001",
         },
         {
-            "run_id": "51a37fa7054a3f8e8d55",
-            "facility_name": "F1",
-            "sim_hash": "140b517c-acf8-4b24-ae09-8cc219b5590e",
+            "RunID": "51a37fa7054a3f8e8d55",
+            "RunName": "run_name",
+            "FacilityName": "F1",
+            "SimulationHash": "140b517c-acf8-4b24-ae09-8cc219b5590e",
+            "SimulationName": "test_sim",
         }
         # the result in TFBAD has a malformed manifest and should be ignored
     ]

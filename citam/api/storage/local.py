@@ -72,7 +72,8 @@ class LocalStorageDriver(BaseStorageDriver):
                     "SimulationHash",
                     "RunName",
                     "SimulationName",
-                    "Campus",
+                    "FacilityName",
+                    "NumberOfAgents",
                 ]
                 keys_not_found = []
                 is_manifest_valid = True
@@ -98,7 +99,7 @@ class LocalStorageDriver(BaseStorageDriver):
                         "SimulationHash": manifest_data["SimulationHash"],
                         "RunName": manifest_data["RunName"],
                         "SimulationName": manifest_data["SimulationName"],
-                        "FacilityName": manifest_data["Campus"],
+                        "FacilityName": manifest_data["FacilityName"],
                     }
                 )
 

@@ -52,6 +52,9 @@ def result_dir(tmpdir):
             '{"RunID": "testing",'
             + '"SimulationHash": "testing", '
             + '"SimulationName": "testing", '
+            + '"FacilityName": "Fac",'
+            + '"RunName": "Fac-Run",'
+            + '"NumberOfAgents": 100,'
             + '"PolicyID": "pol_ID", "FacilityName":"TEST"}'
         )
     return str(result_dir)
