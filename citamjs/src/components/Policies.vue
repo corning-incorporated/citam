@@ -69,12 +69,16 @@
               <span class="headingFont">DAY LENGTH</span>
               <div class="row polSubSection">
                 <div class="col">
-                  <span>Entrance time</span>
-                  <div class="polValue">Input</div>
+                  <span>Total Steps</span>
+                  <div class="polValue">
+                    {{ policyDetails.general.daylength }}
+                  </div>
                 </div>
                 <div class="col">
-                  <span>Leave time</span>
-                  <div class="polValue">Input</div>
+                  <span>Total Hours</span>
+                  <div class="polValue">
+                    {{ policyDetails.general.daylength / 3600 }}
+                  </div>
                 </div>
                 <div class="col"></div>
               </div>
@@ -180,8 +184,13 @@
               </div>
               <div class="row polSubSection">
                 <div class="col">
-                  <span>Average meeting rooms used</span>
-                  <div class="polValue">Input</div>
+                  <span>Average meeting rooms used (percentage)</span>
+                  <div class="polValue">
+                    {{
+                      policyDetails.meetings.percent_meeting_rooms_used * 100 +
+                      "%"
+                    }}
+                  </div>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
@@ -283,7 +292,7 @@
                   v-for="(traffic, id) in policyDetails.traffic"
                   :key="id"
                 >
-                  {{ traffic.aisle }}
+                  {{ traffic.floor }}
                 </div>
               </div>
               <div class="col">
@@ -293,7 +302,7 @@
                   v-for="(traffic, id) in policyDetails.traffic"
                   :key="id"
                 >
-                  {{ traffic.value }}
+                  {{ traffic.aisle }}
                 </div>
               </div>
               <div class="col">
@@ -303,7 +312,7 @@
                   v-for="(traffic, id) in policyDetails.traffic"
                   :key="id"
                 >
-                  input
+                  {{ traffic.value }}
                 </div>
               </div>
             </div>
