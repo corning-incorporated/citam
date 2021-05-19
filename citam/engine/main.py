@@ -15,7 +15,6 @@ import errno
 import logging
 import os
 import time
-from copy import deepcopy
 from typing import List
 
 import networkx as nx
