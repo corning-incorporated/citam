@@ -77,7 +77,7 @@ def test_parse_input_file_no_issues(datadir):
     inputfile = os.path.join(datadir, "example_sim_inputs.json")
     res = parse_input_file(inputfile)
     assert res is not None
-    assert len(res) == 19
+    assert len(res) == 21
 
 
 def test_parse_input_file_missing_values(datadir):

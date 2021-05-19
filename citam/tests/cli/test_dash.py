@@ -49,7 +49,8 @@ def result_dir(tmpdir):
     result_dir = tmpdir.mkdir("test_result")
     with open(os.path.join(result_dir, "manifest.json"), "w") as manifest:
         manifest.write(
-            '{"SimulationID": "testing", '
+            '{"RunID": "testing",'
+            + '"SimulationHash": "testing", '
             + '"SimulationName": "testing", '
             + '"PolicyID": "pol_ID", "FacilityName":"TEST"}'
         )

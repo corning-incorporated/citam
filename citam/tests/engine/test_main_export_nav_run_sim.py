@@ -14,6 +14,8 @@ def test_export_navigation_graph_to_svg_no_issue(datadir, tmpdir, monkeypatch):
 
 def test_run_simulation_no_issues(datadir, tmpdir, monkeypatch):
     inputs_dict = {
+        "simulation_name": "sim_name",
+        "run_name": "run_name",
         "upload_results": False,
         "upload_location": None,
         "facility_name": "TEST",
