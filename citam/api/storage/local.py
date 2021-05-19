@@ -68,10 +68,19 @@ class LocalStorageDriver(BaseStorageDriver):
             with open(manifest, "r") as manifest_file:
                 manifest_data = json.load(manifest_file)
                 try:
-                    sim_id = manifest_data["SimulationID"]
+                    run_id = manifest_data["RunID"]
                 except KeyError:
                     LOG.warning(
-                        '"%s" does not define "SimulationID". '
+                        '"%s" does not define "RunID". '
+                        "The results for this manifest will be ignored ",
+                        manifest,
+                    )
+                    continue
+                try:
+                    sim_hash = manifest_data["SimulationHash"]
+                except KeyError:
+                    LOG.warning(
+                        '"%s" does not define "SimulationHash". '
                         "The results for this manifest will be ignored ",
                         manifest,
                     )
@@ -85,9 +94,6 @@ class LocalStorageDriver(BaseStorageDriver):
                 #         manifest,
                 #     )
                 #     continue
-                policy_id = None
-                if "PolicyID" in manifest_data:
-                    policy_id = manifest_data["PolicyID"]
 
                 if "FacilityName" in manifest_data:
                     facility_name = manifest_data["FacilityName"]
@@ -101,11 +107,11 @@ class LocalStorageDriver(BaseStorageDriver):
                     )
                     continue
 
-                self.result_dirs[sim_id] = os.path.dirname(manifest)
+                self.result_dirs[run_id] = os.path.dirname(manifest)
                 self.runs.append(
                     {
-                        "sim_id": sim_id,
-                        "policy_id": policy_id,
+                        "run_id": run_id,
+                        "sim_hash": sim_hash,
                         "facility_name": facility_name,
                     }
                 )
