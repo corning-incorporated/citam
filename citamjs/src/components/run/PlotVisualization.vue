@@ -81,10 +81,16 @@ export default {
     }
   },
   mounted() {
-    if (this.simId === null) {
+    if (
+      this.simId === undefined &&
+      this.$store.state.currentSimID === undefined
+    ) {
       // TODO: show message asking the user to pick a simulation first.
-    } else if (this.simId !== this.$store.state.currentSimID) {
-      // reset data
+    } else if (
+      this.simId !== undefined &&
+      this.simId !== this.$store.state.currentSimID
+    ) {
+      // user selected a new run, let's reset data
       this.gui = null;
       this.mapInstance = null;
       // this.newSimId = true;
@@ -115,6 +121,7 @@ export default {
         this.mapInstance.startAnimation();
       } else if (this.$store.state.status === "fetchingData") {
         if (this.$store.state.mapData !== null) {
+          this.mapInstance.setMapData(this.$store.state.mapData);
           this.mapInstance.loader.show();
           this.mapInstance.loader.mapLoaded();
           let expectedDuration = this.computeEstimatedLoadTime();
