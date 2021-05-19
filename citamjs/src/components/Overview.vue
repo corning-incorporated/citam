@@ -157,46 +157,17 @@ export default {
     },
   },
   created() {
-    axios
-      .get("/list") //get list of policies, simulations, facilities
-      .then((response) => {
-        this.policyList = response.data.map((list) => list);
-        return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
-      })
-      .then((runResponse) => {
-        // eslint-disable-next-line no-unused-vars
-        this.runList = runResponse.map((run) => run.data);
-        return axios.all(
-          runResponse.map((x) =>
-            axios.get(`/${x.data.SimulationID}/statistics`)
-          )
-        );
-      })
-      .then((response) => {
-        response.map((statCard, i) => {
-          statCard.data.sim_id = response[i].config.url
-            .match(/(?<=\/)(.*)(?=\/)/)[0]
-            .toString();
-          this.statsList.push(statCard.data);
-        });
+    if (this.$store.state.facilities === null) {
+      this.fetchData();
+    } else {
+      this.overviewData.facilities = this.$store.state.facilities;
+      this.policyList = this.$store.state.policyList;
+      this.statsList = this.$store.state.statsList;
+      this.getRunList();
+      this.setDefaultPolicy();
+      this.calculatePolicyAvg();
+    }
 
-        this.getOverviewData();
-        this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
-        this.$emit("setFacilities", this.overviewData.facilities); // To display facility list in the dropdown
-
-        if (this.selectedFacility) {
-          this.policyData = {
-            policies: this.overviewData.facilities.find(
-              (item) => item.facilityName == this.selectedFacility
-            ).policies,
-          };
-        } else {
-          this.policyData = {
-            policies: this.overviewData.facilities[0].policies,
-          }; // Display first facility by default
-        }
-        this.calculatePolicyAvg();
-      })
   },
   methods: {
     sortTable(att) {
@@ -210,7 +181,58 @@ export default {
       ]);
       this.$store.state.facilities;
     },
+    setDefaultPolicy() {
+      if (this.selectedFacility) {
+        this.policyData = {
+          policies: this.overviewData.facilities.find(
+            (item) => item.facilityName == this.selectedFacility
+          ).policies,
+        };
+      } else {
+        this.policyData = {
+          policies: this.overviewData.facilities[0].policies,
+        }; // Display first facility by default
+      }
+    },
+    fetchData() {
+      axios
+        .get("/list") //get list of policies, simulations, facilities
+        .then((response) => {
+          this.policyList = response.data.map((list) => list);
+          this.$store.commit("setPolicyList", this.policyList);
+          return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
+        })
+        .then((runResponse) => {
+          // eslint-disable-next-line no-unused-vars
+          this.runList = runResponse.map((run) => run.data);
+          return axios.all(
+            runResponse.map((x) =>
+              axios.get(`/${x.data.SimulationID}/statistics`)
+            )
+          );
+        })
+        .then((response) => {
+          response.map((statCard, i) => {
+            statCard.data.sim_id = response[i].config.url
+              .match(/(?<=\/)(.*)(?=\/)/)[0]
+              .toString();
+            this.statsList.push(statCard.data);
+          });
+          this.$store.commit("setStatsList", this.statsList);
+          this.getOverviewData();
 
+          this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
+          this.$emit("setFacilities", this.overviewData.facilities); // To display facility list in the dropdown
+
+          this.getRunList();
+          this.setDefaultPolicy();
+          this.calculatePolicyAvg();
+        })
+
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     viewRuns(idx) {
       const index = this.subRows.indexOf(idx);
       if (index > -1) {
@@ -255,7 +277,9 @@ export default {
           });
         });
       });
+    },
 
+    getRunList() {
       // build stats object for each simulation run within each policies for each facility
       this.overviewData.facilities.forEach((facility) => {
         facility.policies.forEach((policy) => {
@@ -285,20 +309,15 @@ export default {
                 policy.simulationRuns.totalTimeStep = sim.timeStep;
                 policy.simulationRuns.totalScaleMultiplier =
                   sim.scaleMultiplier;
-                policy.simulationRuns.individuals = sim.individuals;
-
-                // policy.simulationRuns.totalContact += sim.overall_total_contact_duration
-                // policy.simulationRuns.avgContactsPerAgent += sim.avg_n_contacts_per_agent/policy.simulationRuns.length
-                // policy.simulationRuns.avgContactDuration += sim.avg_contact_duration_per_agent/policy.simulationRuns.length
-                // policy.simulationRuns.avgPeoplePerAgent += sim.avg_number_of_people_per_agent/policy.simulationRuns.length
+                policy.simulationRuns.individuals = sim.individuals;                
               }
             });
           });
         });
       });
-      document.getElementById(
-        "metricCols"
-      ).colSpan = this.metricAttributes.length;
+      // document.getElementById(
+      //   "metricCols"
+      // ).colSpan = this.metricAttributes.length;
     },
 
     pushUniqueFacilities(item) {
@@ -333,8 +352,7 @@ export default {
           _.each(dynamicKeys, function (statKeys) {
             sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
           });
-        });
-        console.log("Sums", sums);
+        });        
         p.simulationRuns.average = sums;
         stat_list = [];
       }
@@ -382,7 +400,6 @@ export default {
   font-family: Inter;
   text-align: left;
   padding: 10px 0 10px 15px;
-  /* border-right: 1px solid #DAE0E6 !important; */
 }
 .subTitle div button {
   padding: 0px !important;
@@ -395,7 +412,6 @@ export default {
   display: flex;
   align-items: center;
 }
-
 .policyBtn {
   line-height: 0.7;
 }
@@ -404,7 +420,6 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-
 .table {
   margin-bottom: 0px !important;
 }
@@ -413,7 +428,6 @@ export default {
   float: left;
   padding: 0px !important;
 }
-
 .table thead th {
   font-family: Inter;
   font-weight: 500;
@@ -423,18 +437,15 @@ export default {
   text-align: center;
   color: #607080;
 }
-
 .tableHeader {
   background-color: #ebeff2;
 }
 .simBtn {
   margin-right: 50px;
 }
-
 .btn:focus {
   box-shadow: none !important;
 }
-
 .noBorder {
   border-left: none !important;
   border-right: none !important;

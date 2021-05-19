@@ -70,8 +70,6 @@ function init() {
               .name('Floor')
               .onChange(value => mapInstance.setFloor(value));
             mapInstance.scaleFactor = response.data.scaleMultiplier || 1;
-            // console.log('scale_multiplier', response.data.scaleMultiplier);
-            // console.log('scaleFactor', mapInstance.scaleFactor);
             mapInstance.setSimulation(value).then(() => {
               timestepSlider.min(0);
               timestepSlider.max(response.data.TotalTimesteps);
