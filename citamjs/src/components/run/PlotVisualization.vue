@@ -81,11 +81,13 @@ export default {
     }
   },
   mounted() {
+
     if (
       this.simId === undefined &&
       this.$store.state.currentSimID === undefined
     ) {
-      // TODO: show message asking the user to pick a simulation first.
+      // show message asking the user to pick a simulation first.
+      alert('Please select the Simulation Run from the overview tab to see the visualization ')
     } else if (
       this.simId !== undefined &&
       this.simId !== this.$store.state.currentSimID

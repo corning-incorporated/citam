@@ -68,9 +68,9 @@ export default {
     if (_.isEmpty(this.overviewSimObj)) {
       this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
     } else {
-      this.currSimId = this.overviewSimObj.simId;
-      this.policyData.selectedPolicy = this.overviewSimObj.policyName;
-      this.policyData.selectedSim = this.overviewSimObj.simId;
+      this.currSimId = this.overviewSimObj.runId;
+      this.policyData.selectedPolicy = this.overviewSimObj.policyHash;
+      this.policyData.selectedSim = this.overviewSimObj.runId;
       this.selectedComponent =
         this.overviewSimObj.type == "simMaps"
           ? "simulation-maps"
