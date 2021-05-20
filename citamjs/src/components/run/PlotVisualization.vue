@@ -81,8 +81,9 @@ export default {
     }
   },
   mounted() {
-    if (this.simId === null) {
-      // TODO: show message asking the user to pick a simulation first.
+    if (this.simId === null || this.simId === undefined ) {
+      // show message asking the user to pick a simulation first.
+      alert('Please select the Simulation Run from the overview tab to see the visualization ')
     } else if (this.simId !== this.$store.state.currentSimID) {
       // reset data
       this.gui = null;
