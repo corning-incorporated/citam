@@ -26,15 +26,11 @@
               <thead>
                 <tr class="tableHeader">
                   <th colspan="2"></th>
-                  <!-- <th id="metricCols">KEY METRICS</th> -->
-                  <th colspan="4">KEY POLICY INPUTS</th>
+                  <th colspan="4">KEY INPUTS</th>
                 </tr>
                 <tr>
                   <th class="noBorder">View runs</th>
-                  <th class="noBorder">Policies</th>
-                  <!-- <th v-for="(att, id) in metricAttributes" :key="id">
-                    <div class="th-container">{{ att }}</div>
-                  </th> -->
+                  <th class="noBorder">Simulations</th>
                   <th
                     v-for="(header, id) in policyInputHeaders"
                     :key="'p' + id"
@@ -358,10 +354,10 @@ export default {
       }
     },
 
-    showSimulations(policyHash, simId, type) {
+    showSimulations(policyHash, runId, type) {
       this.$emit("showSims", {
         policyHash: policyHash,
-        simId: simId,
+        runId: runId,
         type: type,
       });
     },
