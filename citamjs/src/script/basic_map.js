@@ -32,7 +32,7 @@ export default class Map2D {
      * @constructor
      * @param {Element} mapRoot - Root HTML Element to use as a container for the map
      */
-    constructor(mapRoot, mapData, nAgents, totalSteps) {
+    constructor(mapRoot) {
         this.mapRoot = mapRoot;
 
         /** Timer **/
@@ -55,12 +55,6 @@ export default class Map2D {
         /** Color scale for contact data */
         this.colorMap = scaleSequential(d3.interpolateOrRd);
 
-        /** Total Timesteps for the current Simulation */
-        this.totalSteps = totalSteps;
-
-        /** Number of agents in current simulation */
-        this.nAgents = nAgents;
-
         /** Simulation Details */
         this.simulation = null;
 
@@ -71,11 +65,28 @@ export default class Map2D {
         this.contactSize = 0.5;
         this.agentSize = 1.5;
 
+    }
+
+    setTotalSteps(totalSteps) {
+        /** Total Timesteps for the current Simulation */
+        this.totalSteps = totalSteps;
+    }
+
+    setNumberOfAgents(nAgents) {
+        /** Number of agents in current simulation */
+        this.nAgents = nAgents;
+    }
+
+    setMapData(mapData) {
         this._init_map(mapData);
     }
 
     setTrajectoryData(trajData) {
         this.trajectories = trajData;
+    }
+
+    showError(message) {
+        this.loader.showError(message);
     }
 
     showLoader() {

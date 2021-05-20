@@ -32,6 +32,7 @@ export default new Vuex.Store({
         mapData: null,
         scaleMultiplier: null,
         status: null, // fetchingData | error | ready | null
+        errorMessage: null,
         fetchingStartTime: null,
         currentStep: null,
         currentFloor: null
@@ -77,8 +78,9 @@ export default new Vuex.Store({
         setFetchingStartTime(state, startTime) {
             state.fetchingStartTime = startTime;
         },
-        updateStatus(state, status) {
+        updateStatus(state, { status, msg }) {
             state.status = status;
+            state.errorMessage = msg;
         },
         removeTrajectoryData(state) {
             state.trajectoryData = null;
@@ -92,7 +94,7 @@ export default new Vuex.Store({
     },
     actions: {
         async fetchSimulationData({ dispatch, commit, state }) {
-            commit("updateStatus", "fetchingData");
+            commit("updateStatus", { status: "fetchingData", msg: null });
             commit("setFetchingStartTime", new Date().getTime() / 1000);
             return new Promise(() => {
                 try {
@@ -106,12 +108,16 @@ export default new Vuex.Store({
                         getBaseMap(state.currentSimID, state.currentFloor).then((resp) => {
                             commit("setMapData", resp.data);
                         });
-                        await dispatch("getTrajectoryData");
-                        commit('updateStatus', 'ready');
+                        if (response.data.NumberOfAgents > 0 || response.data.TotalTimesteps >= 0) {
+                            await dispatch("getTrajectoryData");
+                        } else {
+                            commit('updateStatus', { status: 'error', msg: 'Number of agents or total steps is zero.' });
+                        }
+
                     });
 
                 } catch (e) {
-                    commit('updateStatus', 'error');
+                    commit('updateStatus', { status: 'error', msg: 'Unable to fetch data.' });
                 }
             });
 
@@ -138,7 +144,7 @@ export default new Vuex.Store({
                         max_contacts = Math.max(max_contacts, chunk.data.max_count);
                     });
                     commit("setTrajectoryData", trajectories);
-                    commit("updateStatus", "ready");
+                    commit("updateStatus", { status: "ready", msg: null });
                 }
             });
             commit("setTotalSteps", trajectories.length);

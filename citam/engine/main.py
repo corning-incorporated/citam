@@ -15,7 +15,6 @@ import errno
 import logging
 import os
 import time
-from copy import deepcopy
 from typing import List
 
 import networkx as nx
@@ -286,21 +285,26 @@ def run_simulation(inputs: dict):
     floorplans = load_floorplans(inputs["floors"], inputs["facility_name"])
 
     if len(floorplans) > 0:
-        model_inputs = deepcopy(inputs)
-        del model_inputs["upload_results"]
-        del model_inputs["upload_location"]
-        del model_inputs["floors"]
-        del model_inputs["output_directory"]
+        excluded_keys = [
+            "upload_results",
+            "upload_location",
+            "floors",
+            "output_directory",
+            "simulation_name",
+            "run_name",
+            "entrances",
+            "facility_name",
+            "traffic_policy",
+        ]
+        model_inputs = {
+            key: val for key, val in inputs.items() if key not in excluded_keys
+        }
         facility = Facility(
             floorplans,
-            model_inputs["entrances"],
-            model_inputs["facility_name"],
-            traffic_policy=model_inputs["traffic_policy"],
+            inputs["entrances"],
+            inputs["facility_name"],
+            traffic_policy=inputs["traffic_policy"],
         )
-        del model_inputs["entrances"]
-        del model_inputs["facility_name"]
-        del model_inputs["traffic_policy"]
-
         model_inputs["facility"] = facility
         my_model = Simulation(**model_inputs)
     else:
@@ -308,7 +312,11 @@ def run_simulation(inputs: dict):
 
     work_directory = inputs["output_directory"]
     LOG.info("Running simulation...")
-    my_model.run_serial(workdir=work_directory)
+    my_model.run_serial(
+        workdir=work_directory,
+        sim_name=inputs["simulation_name"],
+        run_name=inputs["run_name"],
+    )
 
     LOG.info("Extracting stats...")
     my_model.save_outputs(work_directory)

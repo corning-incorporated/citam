@@ -123,8 +123,8 @@ class Simulation:
         self.agents = OrderedDict()
         self.shifts = shifts
         self.dry_run = dry_run
-        self.simulation_name = None
-        self.simid = str(uuid.uuid4())
+        self.simulation_hash = None
+        self.run_id = str(uuid.uuid4())
 
         # list used to keep track of total contact events per xy location per
         #  floor
@@ -195,7 +195,7 @@ class Simulation:
             data = nx.to_edgelist(hg)
             m.update(repr(data).encode("utf-8"))
 
-        self.simulation_name = m.hexdigest()
+        self.simulation_hash = m.hexdigest()
 
     def generate_meetings(self) -> None:
         """
@@ -221,7 +221,7 @@ class Simulation:
         if n_meeting_rooms > 0 and self.create_meetings:
             self.meeting_policy.create_all_meetings()
 
-    def run_serial(self, workdir: str) -> None:
+    def run_serial(self, workdir: str, sim_name: str, run_name: str) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
 
@@ -272,7 +272,7 @@ class Simulation:
         LOG.info("Total agents: " + str(self.n_agents))
 
         self.create_sim_hash()
-        self.save_manifest(workdir)
+        self.save_manifest(workdir, sim_name, run_name)
         self.save_maps(workdir)
         self.generate_meetings()
         self.add_agents_and_build_schedules()
@@ -643,7 +643,9 @@ class Simulation:
 
         return agent_ids, n_contacts
 
-    def save_manifest(self, work_directory: str) -> None:
+    def save_manifest(
+        self, work_directory: str, sim_name: str, run_name: str
+    ) -> None:
         """
         Save manifest file, used by the dashboard to show results.
 
@@ -678,8 +680,10 @@ class Simulation:
             "NumberOfFloors": self.facility.number_of_floors,
             "NumberOfOneWayAisles": n_one_way_aisles,
             "NumberOfAgents": len(self.agents),
-            "SimulationName": self.simulation_name,
-            "SimulationID": self.simid,
+            "SimulationName": sim_name,
+            "RunName": run_name,
+            "SimulationHash": self.simulation_hash,
+            "RunID": self.run_id,
             "FacilityName": self.facility.facility_name,
             "FacilityOccupancy": self.occupancy_rate,  # between 0.0 and 1.0
             "MaxRoomOccupancy": 1.0,
@@ -873,7 +877,7 @@ class Simulation:
         # Statistics
         statistics = self.contact_events.extract_statistics()
         statistics_dict = {
-            "SimulationName": self.simulation_name,
+            "SimulationName": self.simulation_hash,
             "data": statistics,
         }
         filename = os.path.join(work_directory, "statistics.json")
