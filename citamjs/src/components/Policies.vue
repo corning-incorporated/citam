@@ -388,21 +388,29 @@ export default {
     if (_.isEmpty(this.polName)) {
       this.selectedPolicyData.policyInfo = this.policyData.policies[0];
       axios
-      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].simName}/policy`) //get policy info with any of the simid
+      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`) //get policy info with any of the simid
       .then((response) => {
         this.policyDetails = response.data;
         return response.data;
       })
+       .catch((error) => {
+         console.log(error.response)
+         alert('No policy data found, please check if policy.json file exists')
+       });
     } else {
       this.selectedPolicyData.policyInfo = this.policyData.policies.find(
         (item) => item.policyHash == this.polName
       );
       axios
-      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].simName}/policy`) //get policy info with any of the simid
+      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`) //get policy info with any of the simid
       .then((response) => {
         this.policyDetails = response.data;
         return response.data;
       })
+        .catch((error) => {
+         console.log(error.response)
+         alert('No policy data found, please check if policy.json file exists')
+       });
       this.polIndex = this.policyData.policies.findIndex(
         (item) => item.policyHash == this.polName
       );
