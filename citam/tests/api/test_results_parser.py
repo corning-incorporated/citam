@@ -18,7 +18,7 @@ from citam.api.parser import (
 
 
 def test_contacts_parsing_num_steps(use_local_storage):
-    contacts = get_contacts("sim_id_0001", "0")
+    contacts = get_contacts("run_id_0001", "0")
     assert len(contacts) == 1900
 
 
@@ -27,7 +27,7 @@ def test_get_contacts_no_contact_step(use_local_storage):
     Test that the correct data is parsed when a single contact was made in a
     step
     """
-    contacts = get_contacts("sim_id_0001", "0")
+    contacts = get_contacts("run_id_0001", "0")
     assert len(contacts[0]) == 0
 
 
@@ -36,7 +36,7 @@ def test_get_contacts_single_contact_step(use_local_storage):
     Test that the correct data is parsed when a single contact was made in a
     step
     """
-    contacts = get_contacts("sim_id_0001", "0")
+    contacts = get_contacts("run_id_0001", "0")
     step = contacts[87]
     assert len(step) == 1
     assert step[0]["x"] == 120.0
@@ -49,7 +49,7 @@ def test_get_contacts_multiple_contact_step(use_local_storage):
     Test that the correct data is parsed when a multiple contacts were made
     in a step
     """
-    contacts = get_contacts("sim_id_0001", "0")
+    contacts = get_contacts("run_id_0001", "0")
     step = contacts[86]
     assert len(step) == 2
     expected = [
@@ -61,23 +61,23 @@ def test_get_contacts_multiple_contact_step(use_local_storage):
 
 
 def test_trajectories_num_structure(use_local_storage):
-    trajectories = get_trajectories("sim_id_0001")
+    trajectories = get_trajectories("run_id_0001")
     assert trajectories.get("data")
     assert trajectories.get("statistics")
 
 
 def test_trajectories_num_steps(use_local_storage):
-    trajectories = get_trajectories("sim_id_0001")
+    trajectories = get_trajectories("run_id_0001")
     assert len(trajectories["data"]) == 1900
 
 
 def test_get_total_timesteps(use_local_storage):
-    nsteps = get_total_timesteps("140b517c-acf8-4b24-ae09-8cc219b5590e")
+    nsteps = get_total_timesteps("51a37fa7054a3f8e8d55")
     assert nsteps["data"] == 12200
 
 
 def test_get_trajectories_2agents(use_local_storage):
-    trajectories = get_trajectories("sim_id_0001")
+    trajectories = get_trajectories("run_id_0001")
     expected_trajectories = {5: (0, 602, 0, 0), 6: (0, 602, 0, 0)}
 
     for idx, expected in expected_trajectories.items():
@@ -85,7 +85,7 @@ def test_get_trajectories_2agents(use_local_storage):
 
 
 def test_get_trajectories_2agents_filtered(use_local_storage):
-    trajectories = get_trajectories("sim_id_0001", floor=1)
+    trajectories = get_trajectories("run_id_0001", floor=1)
     expected_trajectories = {5: (0, 602, 1, 0)}
 
     for idx, expected in expected_trajectories.items():
@@ -94,7 +94,7 @@ def test_get_trajectories_2agents_filtered(use_local_storage):
 
 def test_get_trajectories_long_trajectory_next_block(use_local_storage):
     trajectories = get_trajectories(
-        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=5000
+        "51a37fa7054a3f8e8d55", first_timestep=5000
     )
     assert len(trajectories["data"]) == 5000
     assert len(trajectories["data"][0]) == 207
@@ -102,14 +102,14 @@ def test_get_trajectories_long_trajectory_next_block(use_local_storage):
 
 def test_get_trajectories_long_trajectory_no_block(use_local_storage):
     trajectories = get_trajectories(
-        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=30000
+        "51a37fa7054a3f8e8d55", first_timestep=30000
     )  # File has less than 30,000 steps
     assert len(trajectories["data"]) == 0
 
 
 def test_get_trajectories_long_trajectory_last_block(use_local_storage):
     trajectories = get_trajectories(
-        "140b517c-acf8-4b24-ae09-8cc219b5590e", first_timestep=10000
+        "51a37fa7054a3f8e8d55", first_timestep=10000
     )
     assert len(trajectories["data"]) == 2200
     assert len(trajectories["data"][0]) == 207
@@ -117,7 +117,7 @@ def test_get_trajectories_long_trajectory_last_block(use_local_storage):
 
 def test_get_trajectories_long_trajectory_all(use_local_storage):
     trajectories = get_trajectories(
-        "140b517c-acf8-4b24-ae09-8cc219b5590e",
+        "51a37fa7054a3f8e8d55",
         first_timestep=0,
         max_steps=15000,
     )

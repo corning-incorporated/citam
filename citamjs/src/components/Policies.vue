@@ -27,9 +27,9 @@
                 class="polName"
                 :id="id"
                 href="#"
-                @click="getPolicyDetails(policy.policyName, id)"
+                @click="getPolicyDetails(policy.policyHash, id)"
               >
-                {{ policy.policyName }}
+                {{ policy.policyHash }}
               </a>
             </li>
           </ul>
@@ -395,7 +395,7 @@ export default {
       })
     } else {
       this.selectedPolicyData.policyInfo = this.policyData.policies.find(
-        (item) => item.policyName == this.polName
+        (item) => item.policyHash == this.polName
       );
       axios
       .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].simName}/policy`) //get policy info with any of the simid
@@ -404,7 +404,7 @@ export default {
         return response.data;
       })
       this.polIndex = this.policyData.policies.findIndex(
-        (item) => item.policyName == this.polName
+        (item) => item.policyHash == this.polName
       );
     }
   },
@@ -419,7 +419,7 @@ export default {
   methods: {
     getPolicyDetails(policyName, Id) {
       this.selectedPolicyData.policyInfo = this.policyData.policies.find(
-        (item) => item.policyName == policyName
+        (item) => item.policyHash == policyName
       );
       this.setActiveSelectedPolicy(Id);
     },

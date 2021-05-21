@@ -2,9 +2,10 @@
     "TimestepInSec": 1,
     "NumberOfFloors": 1,
     "NumberOfAgents": 200,
-    "SimulationName": "sim_name_0002",
-    "SimulationID": "sim_id_0002",
-    "PolicyID": "pol_id_0001",
+    "SimulationName": "sim_name_0001",
+    "RunName": "run_name_0002",
+    "SimulationHash": "_hash_0001",
+    "RunID": "run_id_0002",
     "FacilityName": "TEST",
     "trajectory_file": "trajectory.txt",
     "floors": [

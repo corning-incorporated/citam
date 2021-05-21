@@ -46,10 +46,10 @@ def test_create_sim_hash(simple_facility_model):
     model = simple_facility_model
     model.create_sim_hash()
 
-    name1 = model.simulation_name
+    name1 = model.simulation_hash
 
     model.create_sim_hash()
-    name2 = model.simulation_name
+    name2 = model.simulation_hash
 
     assert isinstance(name1, str)
     assert name1 == name2
@@ -237,7 +237,7 @@ def test_step(simple_facility_model):
 def test_run_serial(simple_facility_model, tmpdir):
 
     model = simple_facility_model
-    model.run_serial(tmpdir)
+    model.run_serial(tmpdir, "sim_name", "run_name")
 
     assert model.meeting_policy is not None
     assert len(model.agents) == model.n_agents
@@ -263,14 +263,17 @@ def test_extract_contact_distribution_per_agent(simple_facility_model):
 
 def test_save_manifest(tmpdir, simple_facility_model):
     model = simple_facility_model
-    model.save_manifest(tmpdir)
+    model.save_manifest(tmpdir, "sim_name", "run_name")
     manifest_file = os.path.join(tmpdir, "manifest.json")
     assert os.path.isfile(manifest_file)
 
     with open(manifest_file, "r") as infile:
         data = json.load(infile)
 
-    assert "SimulationID" in data
+    assert "RunID" in data
+    assert "RunName" in data
+    assert "SimulationName" in data
+    assert "SimulationHash" in data
     assert "TimestepInSec" in data
     assert "NumberOfFloors" in data
     assert "NumberOfOneWayAisles" in data
@@ -371,7 +374,7 @@ def test_close_dining(simple_facility_floorplan, monkeypatch, request):
 def test_no_meetings(simple_facility_model, request, tmpdir):
 
     simple_facility_model.create_meetings = False
-    simple_facility_model.run_serial(tmpdir)
+    simple_facility_model.run_serial(tmpdir, "sim_name", "run_name")
 
     assert len(simple_facility_model.meeting_policy.meetings) == 0
     assert os.path.isfile(os.path.join(tmpdir, "agent_ids.csv"))

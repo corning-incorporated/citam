@@ -26,15 +26,11 @@
               <thead>
                 <tr class="tableHeader">
                   <th colspan="2"></th>
-                  <th id="metricCols">KEY METRICS</th>
-                  <th colspan="4">KEY POLICY INPUTS</th>
+                  <th colspan="4">KEY INPUTS</th>
                 </tr>
                 <tr>
                   <th class="noBorder">View runs</th>
-                  <th class="noBorder">Policies</th>
-                  <th v-for="(att, id) in metricAttributes" :key="id">
-                    <div class="th-container">{{ att }}</div>
-                  </th>
+                  <th class="noBorder">Simulations</th>
                   <th
                     v-for="(header, id) in policyInputHeaders"
                     :key="'p' + id"
@@ -54,9 +50,9 @@
                     <button
                       type="button"
                       class="btn btn-link"
-                      @click="showPolicyInfo(item.policyName)"
+                      @click="showPolicyInfo(item.policyHash)"
                     >
-                      {{ item.policyName }}
+                      {{ item.simulationName }}
                     </button>
                     <br />
                     {{ item.simulationRuns.length }} Runs
@@ -67,10 +63,10 @@
                   >
                     {{ avg }}
                   </td>
-                  <td>{{ item.simulationRuns.individuals }}</td>
+                  <td>{{ item.simulationRuns.agents }}</td>
                   <td>{{ item.simulationRuns.totalFloors }}</td>
-                  <td>{{ item.simulationRuns.totalTimeStep }}</td>
-                  <td>{{ item.simulationRuns.totalScaleMultiplier }}</td>
+                  <td>{{ item.simulationRuns.totalSteps }}</td>
+                  <td>{{ item.simulationRuns.numberOfEntrances }}</td>
                 </tr>
                 <template v-if="subRows.includes(idx)">
                   <tr
@@ -83,22 +79,18 @@
                         type="button"
                         class="btn btn-link simBtn"
                         @click="
-                          showSimulations(
-                            item.policyName,
-                            sim.simName,
-                            'simMaps'
-                          )
+                          showSimulations(item.policyHash, sim.runID, 'simMaps')
                         "
                       >
-                        {{ sim.simName }}
+                        {{ sim.runName }}
                       </button>
                     </td>
-                    <td
+                    <!-- <td
                       v-for="(stats, ind) in sim.statisctics"
                       :key="sim.simName + ind"
                     >
                       {{ stats.value }}
-                    </td>
+                    </td> -->
                   </tr>
                 </template>
               </tbody>
@@ -130,10 +122,10 @@ export default {
       ],
       metricAttributes: [],
       policyInputHeaders: [
-        "Individuals",
+        "Number of Agents",
         "Total Floors",
-        "Time Step",
-        "Scale Multiplier",
+        "Total Duration (Hours)",
+        "Number of Entrances",
       ],
       simRuns: [],
       subRows: [],
@@ -167,7 +159,6 @@ export default {
       this.setDefaultPolicy();
       this.calculatePolicyAvg();
     }
-
   },
   methods: {
     sortTable(att) {
@@ -200,20 +191,18 @@ export default {
         .then((response) => {
           this.policyList = response.data.map((list) => list);
           this.$store.commit("setPolicyList", this.policyList);
-          return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
+          return axios.all(response.data.map((x) => axios.get(`/${x.RunID}`)));
         })
         .then((runResponse) => {
           // eslint-disable-next-line no-unused-vars
           this.runList = runResponse.map((run) => run.data);
           return axios.all(
-            runResponse.map((x) =>
-              axios.get(`/${x.data.SimulationID}/statistics`)
-            )
+            runResponse.map((x) => axios.get(`/${x.data.RunID}/statistics`))
           );
         })
         .then((response) => {
           response.map((statCard, i) => {
-            statCard.data.sim_id = response[i].config.url
+            statCard.data.runID = response[i].config.url
               .match(/(?<=\/)(.*)(?=\/)/)[0]
               .toString();
             this.statsList.push(statCard.data);
@@ -227,10 +216,6 @@ export default {
           this.getRunList();
           this.setDefaultPolicy();
           this.calculatePolicyAvg();
-        })
-
-        .catch(function (error) {
-          console.log(error);
         });
     },
     viewRuns(idx) {
@@ -249,26 +234,36 @@ export default {
     getOverviewData() {
       this.overviewData = { facilities: [] };
       this.policyList.forEach((policy) => {
-        if (this.pushUniqueFacilities(policy.facility_name)) {
+        if (this.pushUniqueFacilities(policy.FacilityName)) {
           this.overviewData.facilities.push({
-            facilityName: policy.facility_name,
-            policies: [{ policyName: policy.policy_id, simulationRuns: [] }],
+            facilityName: policy.FacilityName,
+            policies: [
+              {
+                simulationName: policy.SimulationName,
+                policyHash: policy.SimulationHash,
+                simulationRuns: [],
+              },
+            ],
           });
         }
         this.overviewData.facilities.forEach((facility) => {
           if (
-            facility.facilityName === policy.facility_name &&
-            this.pushUniquePolicies(facility, policy.policy_id)
+            facility.facilityName === policy.FacilityName &&
+            this.pushUniquePolicies(facility, policy.SimulationHash)
           ) {
             facility.policies.push({
-              policyName: policy.policy_id,
+              simulationName: policy.SimulationName,
+              policyHash: policy.SimulationHash,
               simulationRuns: [],
             });
           }
           facility.policies.forEach((pol) => {
-            if (policy.policy_id === pol.policyName) {
-              pol.simulationRuns.push({ simName: policy.sim_id });
-              pol.simulationRuns.totalIndividuals = 0;
+            if (policy.SimulationHash === pol.policyHash) {
+              pol.simulationRuns.push({
+                runName: policy.RunName,
+                runID: policy.RunID,
+              });
+              pol.simulationRuns.agents = 0;
               pol.simulationRuns.totalFloors = 0;
               pol.simulationRuns.totalTimeStep = 0;
               pol.simulationRuns.totalScaleMultiplier = 0;
@@ -285,12 +280,12 @@ export default {
         facility.policies.forEach((policy) => {
           policy.simulationRuns.forEach((sim) => {
             this.runList.forEach((run) => {
-              if (run.sim_id === sim.simName) {
+              if (run.RunID === sim.runID) {
                 Vue.set(sim, "floors", run.floors);
-                Vue.set(sim, "timeStep", run.TimestepInSec);
+                Vue.set(sim, "totalSteps", run.TotalTimesteps);
                 Vue.set(sim, "scaleMultiplier", run.scaleMultiplier);
-                Vue.set(sim, "individuals", run.NumberOfEmployees);
-                Vue.set(sim, "individuals", run.NumberOfEmployees);
+                Vue.set(sim, "agents", run.NumberOfAgents);
+                Vue.set(sim, "numberOfEntrances", run.NumberOfEntrances);
 
                 this.statsList.forEach((stats) => {
                   if (this.metricAttributes.length == 0) {
@@ -298,18 +293,19 @@ export default {
                       this.metricAttributes.push(stat.name)
                     );
                   }
-                  if (stats.sim_id === sim.simName) {
+                  if (stats.runID === sim.runID) {
                     stats.forEach((item) => {
                       Vue.set(sim, item.name, item.value);
                     });
-                    Vue.set(sim, "statisctics", stats);
+                    Vue.set(sim, "statistics", stats);
                   }
                 });
                 policy.simulationRuns.totalFloors = sim.floors.length;
-                policy.simulationRuns.totalTimeStep = sim.timeStep;
-                policy.simulationRuns.totalScaleMultiplier =
-                  sim.scaleMultiplier;
-                policy.simulationRuns.individuals = sim.individuals;                
+                policy.simulationRuns.totalSteps = (
+                  sim.totalSteps / 3600
+                ).toFixed(2);
+                policy.simulationRuns.numberOfEntrances = sim.numberOfEntrances;
+                policy.simulationRuns.agents = sim.agents;
               }
             });
           });
@@ -332,7 +328,7 @@ export default {
     pushUniquePolicies(facility, item) {
       var index = facility.policies
         .map(function (e) {
-          return e.policyName;
+          return e.policyHash;
         })
         .indexOf(item);
       return index === -1 ? true : false;
@@ -352,22 +348,22 @@ export default {
           _.each(dynamicKeys, function (statKeys) {
             sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
           });
-        });        
+        });
         p.simulationRuns.average = sums;
         stat_list = [];
       }
     },
 
-    showSimulations(policyName, simId, type) {
+    showSimulations(policyHash, runId, type) {
       this.$emit("showSims", {
-        policyName: policyName,
-        simId: simId,
+        policyHash: policyHash,
+        runId: runId,
         type: type,
       });
     },
 
-    showPolicyInfo(policyName) {
-      this.$emit("showPolicy", policyName);
+    showPolicyInfo(policyHash) {
+      this.$emit("showPolicy", policyHash);
     },
   },
 };

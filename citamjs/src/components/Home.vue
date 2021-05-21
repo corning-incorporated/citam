@@ -53,7 +53,7 @@
           aria-controls="profile"
           aria-selected="false"
           @click="setSelectedComponent('policies')"
-          >Policies</a
+          >Simulation Inputs</a
         >
       </li>
     </ul>
@@ -137,7 +137,7 @@ export default {
 }
 
 .nav-tabs .nav-item {
-  width: 140px;
+  width: 170px;
   height: 50px;
   border-right: 1px solid black !important;
   background-color: #ebeff2;
