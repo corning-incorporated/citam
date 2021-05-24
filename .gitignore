@@ -32,8 +32,8 @@ share/python-wheels/
 MANIFEST
 
 citam/api/static/dash/
-public/doctrees/
-public/html/
+docs/doctrees/
+docs/html/
 **/.scannerwork/**
 
 # PyInstaller
