@@ -101,7 +101,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}    
-          branch: ${{ github.base_ref }}
+          branch: ${{ github.head_ref }}
 
   package:
     runs-on: ubuntu-latest
