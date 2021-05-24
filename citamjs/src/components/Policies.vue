@@ -43,26 +43,42 @@
                 <div class="row polSubSection">
                   <div class="col">
                     <span>Space name</span>
-                    <div class="polValue">Input</div>
+                    <div
+                      class="polValue"
+                      v-for="(entrance, id) in policyDetails.general.entrances"
+                      :key="id"
+                    >
+                      {{ entrance.name }}
+                    </div>
                   </div>
                   <div class="col">
                     <span>Floor</span>
-                    <div class="polValue">Input</div>
+                    <div
+                      class="polValue"
+                      v-for="(entrance, id) in policyDetails.general.entrances"
+                      :key="id"
+                    >
+                      {{ entrance.floor }}
+                    </div>
                   </div>
                   <div class="col"></div>
                 </div>
               </template>
             </div>
             <div>
-              <span class="headingFont">DAY LENGTH</span>
+              <span class="headingFont">SIMULATION DURATION</span>
               <div class="row polSubSection">
                 <div class="col">
-                  <span>Entrance time</span>
-                  <div class="polValue">Input</div>
+                  <span>Total Steps</span>
+                  <div class="polValue">
+                    {{ policyDetails.general.daylength }}
+                  </div>
                 </div>
                 <div class="col">
-                  <span>Leave time</span>
-                  <div class="polValue">Input</div>
+                  <span>Total Hours</span>
+                  <div class="polValue">
+                    {{ policyDetails.general.daylength / 3600 }}
+                  </div>
                 </div>
                 <div class="col"></div>
               </div>
@@ -71,8 +87,10 @@
               <span class="headingFont">NUMBER OF AGENTS</span>
               <div class="row polSubSection">
                 <div class="col">
-                  <span>Quantity</span>
-                  <div class="polValue">Input</div>
+                  <span>Number of Agents</span>
+                  <div class="polValue">
+                    {{ policyDetails.general.NumberOfEmployees }}
+                  </div>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
@@ -83,7 +101,9 @@
               <div class="row polSubSection">
                 <div class="col">
                   <span>Distance (Meters)</span>
-                  <div class="polValue">Input</div>
+                  <div class="polValue">
+                    {{ policyDetails.general.contact_distance }}
+                  </div>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
@@ -94,15 +114,33 @@
               <div class="row polSubSection">
                 <div class="col">
                   <span>Name of Shift</span>
-                  <div class="polValue">Input</div>
+                  <div
+                    class="polValue"
+                    v-for="(shift, id) in policyDetails.general.shifts"
+                    :key="id"
+                  >
+                    {{ shift.name }}
+                  </div>
                 </div>
                 <div class="col">
                   <span>Shift Start time</span>
-                  <div class="polValue">Input</div>
+                  <div
+                    class="polValue"
+                    v-for="(shift, id) in policyDetails.general.shifts"
+                    :key="id"
+                  >
+                    {{ shift.start_time }}
+                  </div>
                 </div>
                 <div class="col">
                   <span>Percent of agents assigned to shift</span>
-                  <div class="polValue">Input</div>
+                  <div
+                    class="polValue"
+                    v-for="(shift, id) in policyDetails.general.shifts"
+                    :key="id"
+                  >
+                    {{ shift.percent_workforce }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,26 +160,37 @@
               <div class="row polSubSection">
                 <div class="col">
                   <span>Minimum duration</span>
-                  <div class="polValue">Input</div>
+                  <div class="polValue">
+                    {{ policyDetails.meetings.min_meeting_duration }}
+                  </div>
                 </div>
                 <div class="col">
                   <span>Maximum duration</span>
-                  <div class="polValue">Input</div>
+                  <div class="polValue">
+                    {{ policyDetails.meetings.max_meeting_length }}
+                  </div>
                 </div>
                 <div class="col"></div>
               </div>
               <div class="row polSubSection">
                 <div class="col">
                   <span>Average meeting per room per day</span>
-                  <div class="polValue">Input</div>
+                  <div class="polValue">
+                    {{ policyDetails.meetings.avg_meetings_per_room }}
+                  </div>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
               </div>
               <div class="row polSubSection">
                 <div class="col">
-                  <span>Average meeting rooms used</span>
-                  <div class="polValue">Input</div>
+                  <span>Average meeting rooms used (percentage)</span>
+                  <div class="polValue">
+                    {{
+                      policyDetails.meetings.percent_meeting_rooms_used * 100 +
+                      "%"
+                    }}
+                  </div>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
@@ -149,7 +198,9 @@
               <div class="row polSubSection">
                 <div class="col">
                   <span>Average meeting per agent</span>
-                  <div class="polValue">Input</div>
+                  <div class="polValue">
+                    {{ policyDetails.meetings.avg_meetings_per_person }}
+                  </div>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
@@ -157,7 +208,9 @@
               <div class="row polSubSection">
                 <div class="col">
                   <span>Minimum attendees per meeting</span>
-                  <div class="polValue">Input</div>
+                  <div class="polValue">
+                    {{ policyDetails.meetings.min_attendees_per_meeting }}
+                  </div>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
@@ -175,23 +228,53 @@
             <div class="row polSubSection">
               <div class="col">
                 <span>Purpose</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(schedule, id) in policyDetails.scheduling"
+                  :key="id"
+                >
+                  {{ schedule.purpose }}
+                </div>
               </div>
               <div class="col">
                 <span>Minimum duration</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(schedule, id) in policyDetails.scheduling"
+                  :key="id"
+                >
+                  {{ schedule.min_duration }}
+                </div>
               </div>
               <div class="col">
                 <span>Maximum duration</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(schedule, id) in policyDetails.scheduling"
+                  :key="id"
+                >
+                  {{ schedule.max_duration }}
+                </div>
               </div>
               <div class="col">
                 <span>Minimum Instance</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(schedule, id) in policyDetails.scheduling"
+                  :key="id"
+                >
+                  {{ schedule.min_instances }}
+                </div>
               </div>
               <div class="col">
                 <span>Maximum Instance</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(schedule, id) in policyDetails.scheduling"
+                  :key="id"
+                >
+                  {{ schedule.max_instances }}
+                </div>
               </div>
             </div>
           </div>
@@ -204,15 +287,33 @@
             <div class="row polSubSection">
               <div class="col">
                 <span>Floor</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(traffic, id) in policyDetails.traffic"
+                  :key="id"
+                >
+                  {{ traffic.floor }}
+                </div>
               </div>
               <div class="col">
                 <span>Aisle SSegment Id</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(traffic, id) in policyDetails.traffic"
+                  :key="id"
+                >
+                  {{ traffic.aisle }}
+                </div>
               </div>
               <div class="col">
                 <span>Direction</span>
-                <div class="polValue">Input</div>
+                <div
+                  class="polValue"
+                  v-for="(traffic, id) in policyDetails.traffic"
+                  :key="id"
+                >
+                  {{ traffic.value }}
+                </div>
               </div>
             </div>
           </div>
@@ -224,6 +325,7 @@
 
 <script>
 import _ from "lodash";
+import axios from "axios";
 
 export default {
   props: {
@@ -263,6 +365,7 @@ export default {
         trafficPolicy: { floor: "", aisleId: "", direction: "" },
       },
       polIndex: "",
+      policyDetails: {},
     };
   },
   watch: {
@@ -284,10 +387,30 @@ export default {
     };
     if (_.isEmpty(this.polName)) {
       this.selectedPolicyData.policyInfo = this.policyData.policies[0];
+      axios
+      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`) //get policy info with any of the simid
+      .then((response) => {
+        this.policyDetails = response.data;
+        return response.data;
+      })
+       .catch((error) => {
+         console.log(error.response)
+         alert('No policy data found, please check if policy.json file exists')
+       });
     } else {
       this.selectedPolicyData.policyInfo = this.policyData.policies.find(
         (item) => item.policyHash == this.polName
       );
+      axios
+      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`) //get policy info with any of the simid
+      .then((response) => {
+        this.policyDetails = response.data;
+        return response.data;
+      })
+        .catch((error) => {
+         console.log(error.response)
+         alert('No policy data found, please check if policy.json file exists')
+       });
       this.polIndex = this.policyData.policies.findIndex(
         (item) => item.policyHash == this.polName
       );
