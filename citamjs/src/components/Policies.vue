@@ -66,7 +66,7 @@
               </template>
             </div>
             <div>
-              <span class="headingFont">DAY LENGTH</span>
+              <span class="headingFont">SIMULATION DURATION</span>
               <div class="row polSubSection">
                 <div class="col">
                   <span>Total Steps</span>
@@ -87,7 +87,7 @@
               <span class="headingFont">NUMBER OF AGENTS</span>
               <div class="row polSubSection">
                 <div class="col">
-                  <span>Quantity</span>
+                  <span>Number of Agents</span>
                   <div class="polValue">
                     {{ policyDetails.general.NumberOfEmployees }}
                   </div>
