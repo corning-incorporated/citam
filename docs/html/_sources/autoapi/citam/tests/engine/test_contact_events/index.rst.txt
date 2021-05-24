@@ -1,0 +1,82 @@
+:mod:`citam.tests.engine.test_contact_events`
+=============================================
+
+.. py:module:: citam.tests.engine.test_contact_events
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_contact_events.sample_contacts
+   citam.tests.engine.test_contact_events.test_init
+   citam.tests.engine.test_contact_events.test_add_contact_simple
+   citam.tests.engine.test_contact_events.test_add_contact_extend
+   citam.tests.engine.test_contact_events.test_add_contact_extend2
+   citam.tests.engine.test_contact_events.test_count
+   citam.tests.engine.test_contact_events.test_count_no_contact
+   citam.tests.engine.test_contact_events.test_save_pairwise_contacts
+   citam.tests.engine.test_contact_events.test_save_pairwise_contacts2
+   citam.tests.engine.test_contact_events.test_extract_statistics
+   citam.tests.engine.test_contact_events.test_extract_statistics_no_data
+   citam.tests.engine.test_contact_events.test_get_floor_contact_coords
+   citam.tests.engine.test_contact_events.test_get_floor_contact_coords_2
+   citam.tests.engine.test_contact_events.test_get_floor_contact_coords_3
+   citam.tests.engine.test_contact_events.test_get_contacts_per_coordinates
+   citam.tests.engine.test_contact_events.test_save_raw_contact_data
+
+
+
+.. function:: sample_contacts()
+
+
+.. function:: test_init()
+
+
+.. function:: test_add_contact_simple()
+
+
+.. function:: test_add_contact_extend()
+
+
+.. function:: test_add_contact_extend2(sample_contacts)
+
+
+.. function:: test_count(sample_contacts)
+
+
+.. function:: test_count_no_contact()
+
+
+.. function:: test_save_pairwise_contacts(tmpdir, sample_contacts)
+
+
+.. function:: test_save_pairwise_contacts2(tmpdir)
+
+
+.. function:: test_extract_statistics(sample_contacts)
+
+
+.. function:: test_extract_statistics_no_data()
+
+
+.. function:: test_get_floor_contact_coords(sample_contacts)
+
+
+.. function:: test_get_floor_contact_coords_2(sample_contacts)
+
+
+.. function:: test_get_floor_contact_coords_3(sample_contacts)
+
+
+.. function:: test_get_contacts_per_coordinates(sample_contacts)
+
+
+.. function:: test_save_raw_contact_data(tmpdir, sample_contacts)
+
+

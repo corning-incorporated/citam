@@ -1,0 +1,213 @@
+:mod:`citam.cli`
+================
+
+.. py:module:: citam.cli
+
+.. autoapi-nested-parse::
+
+   The CITAM CLI
+
+   ..
+       !! processed by numpydoc !!
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.cli.main
+   citam.cli.get_parser
+   citam.cli._add_engine_commands
+   citam.cli._add_config_commands
+   citam.cli._add_dash_commands
+   citam.cli._placeholder_func
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.cli.FACILITY_NAME
+   citam.cli.FLOOR_NAME
+   citam.cli.SVG_PATH
+
+
+.. data:: FACILITY_NAME
+   :annotation: = Facility name
+
+   
+
+.. data:: FLOOR_NAME
+   :annotation: = Floor name
+
+   
+
+.. data:: SVG_PATH
+   :annotation: = Path to SVG file
+
+   
+
+.. function:: main()
+
+   CLI Entrypoint
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: get_parser()
+
+   Create the CLI argparse instance.
+
+   .. note::
+       this is a big CLI, so parser generation has been split into multiple
+       methods in an attempt to make reading this easier.
+
+   https://docs.python.org/dev/library/argparse.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: _add_engine_commands(subparser, global_args)
+
+   Add ``engine`` sub-command to the parser
+
+   :params argparse.ArgumentParser subparser:
+       Subparsers instance for attaching child parsers to
+   :params argparse.ArgumentParser global_args:
+       Global arguments to use as parent for spawned parsers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: _add_config_commands(subparser, global_args)
+
+   Add ``config`` sub-command to the parser
+
+   :params argparse.ArgumentParser subparser:
+       Subparsers instance for attaching child parsers to
+   :params argparse.ArgumentParser global_args:
+       Global arguments to use as parent for spawned parsers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: _add_dash_commands(subparser, global_args)
+
+   Add ``dash`` sub-command to the parser
+
+   :params argparse.ArgumentParser subparser:
+       Subparsers instance for attaching child parsers to
+   :params argparse.ArgumentParser global_args:
+       Global arguments to use as parent for spawned parsers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: _placeholder_func(*args, **kwargs)
+
+   This is a placeholder function for subcommands which
+   are not yet implemented
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
