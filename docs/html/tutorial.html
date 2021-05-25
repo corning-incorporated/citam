@@ -1,392 +1,372 @@
+
 <!DOCTYPE html>
 
 <html>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <head>
+    <meta charset="utf-8" />
+    <title>Tutorial &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="_static/style.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+<script id="documentation_options" data-url_root="./"
+  src="_static/documentation_options.js"></script>
+<script src="_static/jquery.js"></script>
+<script src="_static/underscore.js"></script>
+<script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulation Input Requirements" href="input_requirements.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
 
-  <title>Tutorial &#8212; CITAM 0.9.0 documentation</title>
-  <link rel="stylesheet" href="static/style.css" type="text/css" />
-  <link rel="stylesheet" href="static/pygments.css" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="static/pygments.css" />
-  <link rel="stylesheet" type="text/css" href="static/style.css" />
-  <link rel="stylesheet" type="text/css" href="static/graphviz.css" />
-  <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
-  <script data-url_root="./" id="documentation_options" src="static/documentation_options.js"></script>
-  <script src="static/jquery.js"></script>
-  <script src="static/underscore.js"></script>
-  <script src="static/doctools.js"></script>
-  <link rel="index" title="Index" href="genindex.html" />
-  <link rel="search" title="Search" href="search.html" />
-  <link rel="next" title="Simulation Input Requirements" href="input_requirements.html" />
-  <link rel="prev" title="Getting Started" href="getting_started.html" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-
-<body class=tutorial.html>
-  <div class="container-fluid">
-    <div class="row customNav fixed-top">
-      <div class="col-sm-3">
-        <p><i>free</i> <small>and</small> <i> open-source</i></p>
-      </div>
-      <div class="col-sm-9">
-        <!-- Nav tabs -->
-        <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
-          <ul class="nav navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link itemStyle" id="home.html" href="../index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
-                GitHub</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">Getting Started</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+  <body class=tutorial.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+      <p><i>free</i> <small>and</small> <i> open-source</i></p>
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html" href="../index.html"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              href="https://github.com/corning-incorporated/citam"
+              target="_blank"
+              >View on GitHub</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="getting_started.html"
+              href="getting_started.html"
+              >Getting Started</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="tutorial.html"
+              href="tutorial.html"
+              >Tutorial</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html"
+              >Documentation</a
+            >
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
+</div>
 
-  <script>
-    function navHighlight(elem, home, active) {
-      var className = document.getElementsByTagName("body")[0].className,
-        link = document.querySelectorAll(elem);
-      for (var i = 0; i < link.length; i++) {
-        var page = link[i].id;
-        if (page == className || (page == home && className == "")) {
-          link[i].className += " " + active;
-        }
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
       }
     }
-    navHighlight(
-      ".customNav a",
-      "home.html",
-      "active"
-    ); /* menu link selector, home page, highlight class */
-  </script>
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="right" >
+      <a href="input_requirements.html" title="Simulation Input Requirements" accesskey="N">next</a> |
+    </li>
+    <li class="right" >
+      <a href="getting_started.html" title="Getting Started" accesskey="P">previous</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.9.0 documentation</a> &#187;</li> 
+  </ul>
+</div>  
 
-  <div class="related" role="navigation" aria-label="related navigation">
-    <h3>Navigation</h3>
-    <ul>
-      <li class="right" style="margin-right: 10px">
-        <a href="genindex.html" title="General Index" accesskey="I">index</a>
-      </li>
-      <li class="right">
-        <a href="py-modindex.html" title="Python Module Index">modules</a> |
-      </li>
-      <li class="right">
-        <a href="input_requirements.html" title="Simulation Input Requirements" accesskey="N">next</a> |
-      </li>
-      <li class="right">
-        <a href="getting_started.html" title="Getting Started" accesskey="P">previous</a> |
-      </li>
-      <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.9.0 documentation</a> &#187;</li>
-    </ul>
-  </div>
-
-  <div class="document">
-    <div class="documentwrapper">
-      <div class="bodywrapper">
-        <div class="body" role="main">
-
-          <section id="tutorial">
-            <span id="id1"></span>
-            <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-            <dl class="simple">
-              <dt><strong>Contents</strong></dt>
-              <dd>
-                <ul class="simple">
-                  <li>
-                    <p><a class="reference internal" href="#introduction">Introduction</a></p>
-                  </li>
-                  <li>
-                    <p><a class="reference internal" href="#adding-a-facility">Adding a facility</a></p>
-                  </li>
-                  <li>
-                    <p><a class="reference internal" href="#generating-the-navigation-network">Generating the navigation
-                        network</a></p>
-                  </li>
-                  <li>
-                    <p><a class="reference internal" href="#running-a-simulation">Running a simulation</a></p>
-                  </li>
-                  <li>
-                    <p><a class="reference internal" href="#exploring-policies">Exploring policies</a></p>
-                  </li>
-                </ul>
-              </dd>
-            </dl>
-            <section id="introduction">
-              <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-              <p>This is a brief tutorial on how to use CITAM.</p>
-              <p>CITAM is an agent-based modeling platform that can assist in the management of indoor facilities in the
-                context of
-                contact-based pandemics like COVID-19 and help make policy decisions to mitigate
-                indoor transmission risks.</p>
-              <p>This tutorial assumes that you have already downloaded and installed CITAM. For details
-                on how to install, visit the <a class="reference internal"
-                  href="getting_started.html#getting-started"><span class="std std-ref">Getting Started</span></a> page.
-                To verify
-                that CITAM has been installed properly, run the following command from your terminal:</p>
-              <div class="highlight-console notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="gp">$ </span>citam -h
-</pre>
-                </div>
-              </div>
-              <p>In the context of CITAM, individuals are referred to as “agents” (not the secret kind!).
-                Before you can run simulations, you must add your facilities to CITAM (a process
-                that we call ingestion). The ingestion process leads to a navigation-aware facility
-                in which agents can move in a realistic fashion.</p>
-              <p>Agents can be employees, visitors or any other users of your facility. To determine
-                how, when and where they move around in the facility, CITAM attempts to automatically
-                create a schedule and associated itinerary for them using scheduling and meeting policies that you can
-                provide. We will come back to those later in this tutorial. Let’s start by
-                adding a facility.</p>
-            </section>
-            <section id="adding-a-facility">
-              <h2>Adding a facility<a class="headerlink" href="#adding-a-facility"
-                  title="Permalink to this headline">¶</a></h2>
-              <p>To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
-                each space in “path” elements. CITAM also needs information about the function of
-                each space so it can build realistic schedules for the individuals who use them. Those information can
-                be
-                provided in a companion CSV file where the “id” of each space is used to match them with the
-                SVG file.</p>
-              <p>For this tutorial, we will use example files provided with CITAM in the <a class="reference external"
-                  href="https://www.github.com/corning-incorporated/citam/examples/">examples/
-                  directory</a>. Please download those files from GitHub if you don’t have them.</p>
-              <p>The example floorplan that we will use can be found in the <strong>examples/basic_example_2</strong>
-                folder located inside the main citam folder. The files that we need for now are named
-                <strong>TF2.csv</strong> and <strong>TF2.svg</strong>
-                Fig. 1 shows how the floor plan given by TF2.svg looks like. You can use any SVG viewer to visualize it
-                (any web browser will do).</p>
-              <img alt="Floorplan before ingestion" src="_images/floorplan_before_ingestion.png" />
-              <p>Fig. 1: Layout of the floorplan used in this tutorial. Notice how the boundaries for each space are
-                clearly shown.</p>
-              <p>Before ingestion, let’s take a look at the content of TF2.svg. Use a text editor such
-                as <a class="reference external" href="https://www.notepad-plus-plus.org">notepad++</a> to open the file
-                and inspect its contents. Here is the top 30 lines of this file:</p>
-              <div class="highlight-xml notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="linenos"> 1</span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
-<span class="linenos"> 2</span><span class="nt">&lt;svg</span> 
-<span class="linenos"> 3</span>	<span class="na">xmlns:rdf=</span><span class="s">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span> 
-<span class="linenos"> 4</span>	<span class="na">xmlns:svg=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
-<span class="linenos"> 5</span>	<span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
-<span class="linenos"> 6</span>	<span class="na">id=</span><span class="s">&quot;svg224&quot;</span> 
-<span class="linenos"> 7</span>	<span class="na">viewBox=</span><span class="s">&quot;-120.6 -120.6 1441.2 1441.2&quot;</span> 
-<span class="linenos"> 8</span>	<span class="na">version=</span><span class="s">&quot;1.1&quot;</span> 
-<span class="linenos"> 9</span>	<span class="na">height=</span><span class="s">&quot;600px&quot;</span>
-<span class="linenos">10</span>	<span class="nt">&gt;</span>
-<span class="linenos">11</span>	<span class="nt">&lt;defs</span> <span class="na">id=</span><span class="s">&quot;defs228&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">12</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;1&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1152 L 96,1152  L 96,1200  L 0,1200 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">13</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;2&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,0 L 96,0  L 96,48  L 0,48 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">14</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;3&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1152 L 192,1152  L 192,1200  L 96,1200 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">15</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;4&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,0 L 192,0  L 192,48  L 96,48 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">16</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;5&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,1152 L 288,1152  L 288,1200  L 192,1200 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">17</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;6&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,0 L 288,0  L 288,48  L 192,48 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">18</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;7&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,1152 L 384,1152  L 384,1200  L 288,1200 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">19</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;8&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,0 L 384,0  L 384,48  L 288,48 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">20</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;9&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,1152 L 480,1152  L 480,1200  L 384,1200 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">21</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;10&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,0 L 480,0  L 480,48  L 384,48 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">22</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;11&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,1152 L 576,1152  L 576,1200  L 480,1200 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">23</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;12&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,0 L 576,0  L 576,48  L 480,48 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">24</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;13&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1128 L 240,1128  L 240,1152  L 0,1152 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">25</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;14&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1080 L 48,1080  L 48,1128  L 0,1128 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">26</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;15&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1032 L 48,1032  L 48,1080  L 0,1080 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">27</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;16&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1080 L 96,1080  L 96,1128  L 48,1128 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">28</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;17&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1032 L 96,1032  L 96,1080  L 48,1080 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">29</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;18&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1080 L 144,1080  L 144,1128  L 96,1128 z&quot;</span><span class="nt">/&gt;</span>
-<span class="linenos">30</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;19&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1032 L 144,1032  L 144,1080  L 96,1080 z&quot;</span><span class="nt">/&gt;</span>
-</pre>
-                </div>
-              </div>
-              <p>If you are not familiar with SVG files, there is a brief tutorial on the <a class="reference external"
-                  href="https://www.w3schools.com/graphics/svg_intro.asp">W3 Schools website</a> to get you started.
-                The file contains a list of spaces with a geometric description of their boundaries in the “d” sub
-                element.
-                Each space also has a (unique) ID used to identify them.</p>
-              <p>For a detailed discussion of the SVG format and the required information, please visit: <a
-                  class="reference internal" href="facility_data_requirement.html#svg-requirements"><span
-                    class="std std-ref">Facility Data Requirements</span></a></p>
-              <p>The second file of interest in TF2.csv. Let’s take a closer look at it:</p>
-              <div class="highlight-csv notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="linenos"> 1</span>ID,facility,Building,Floor,unique_name,space_function
-<span class="linenos"> 2</span>1,TF,TF1,0,ROOM_1,Office
-<span class="linenos"> 3</span>2,TF,TF1,0,ROOM2,Office
-<span class="linenos"> 4</span>3,TF,TF1,0,ROOM_3,Office
-<span class="linenos"> 5</span>4,TF,TF1,0,ROOM4,Office
-<span class="linenos"> 6</span>5,TF,TF1,0,ROOM_5,Office
-<span class="linenos"> 7</span>6,TF,TF1,0,ROOM6,Office
-<span class="linenos"> 8</span>7,TF,TF1,0,ROOM_7,Office
-<span class="linenos"> 9</span>8,TF,TF1,0,ROOM8,Office
-<span class="linenos">10</span>9,TF,TF1,0,ROOM_9,Office
-<span class="linenos">11</span>10,TF,TF1,0,ROOM10,Office
-<span class="linenos">12</span>11,TF,TF1,0,ROOM_11,Office
-<span class="linenos">13</span>12,TF,TF1,0,ROOM12,Office
-<span class="linenos">14</span>13,TF,TF1,0,AISLE13,Circulation
-<span class="linenos">15</span>14,TF,TF1,0,ROOM14,Office
-<span class="linenos">16</span>15,TF,TF1,0,ROOM15,Office
-<span class="linenos">17</span>16,TF,TF1,0,ROOM16,Office
-<span class="linenos">18</span>17,TF,TF1,0,ROOM17,Office
-<span class="linenos">19</span>18,TF,TF1,0,ROOM18,Office
-<span class="linenos">20</span>19,TF,TF1,0,ROOM19,Office
-<span class="linenos">21</span>20,TF,TF1,0,ROOM20,Office
-<span class="linenos">22</span>21,TF,TF1,0,ROOM21,Office
-<span class="linenos">23</span>22,TF,TF1,0,ROOM22,Office
-<span class="linenos">24</span>23,TF,TF1,0,ROOM23,Office
-<span class="linenos">25</span>24,TF,TF1,0,AISLE24,Circulation
-<span class="linenos">26</span>25,TF,TF1,0,ROOM25,Office
-<span class="linenos">27</span>26,TF,TF1,0,ROOM26,Office
-<span class="linenos">28</span>27,TF,TF1,0,ROOM27,Office
-<span class="linenos">29</span>28,TF,TF1,0,ROOM28,Office
-<span class="linenos">30</span>29,TF,TF1,0,ROOM29,Office
-</pre>
-                </div>
-              </div>
-              <p>As you can see, this file simply contains additional information about each space as identified by
-                their ID.
-                For example, we can see that space ID “1” is an office on floor “0”. For a list of supported values and
-                metadata please go to the <a class="reference internal"
-                  href="facility_data_requirement.html#svg-requirements"><span class="std std-ref">Facility Data
-                    Requirements</span></a> page of the documentation. The ID field is read as a string. The only
-                requirement is that it is unique. The space information provided in the CSV file can also be added to
-                the SVG file (supported soon).</p>
-              <p>Now that we know what’s in those two input files, let’s ingest this floor plan using the <code
-                  class="docutils literal notranslate"><span class="pre">citam</span> <span class="pre">engine</span> <span class="pre">ingest</span></code>
-                command as follow (from the
-                main citam directory):</p>
-              <div class="highlight-console notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="gp">$ </span>citam engine ingest TF2 <span class="m">0</span> -csv examples/basic_examples/TF2.csv -map examples/basic_example/TF2.svg -v
-</pre>
-                </div>
-              </div>
-              <p><cite>TF2</cite> is the name of the facility under which this floorplan will be saved and
-                <cite>0</cite> is the name of this floor. For all
-                subsequent operations on this facility, the same facility name must be provided. Alternatively, you may
-                use:</p>
-              <p>The <code class="docutils literal notranslate"><span class="pre">-v</span></code> argument is for
-                verbose, to show more information as the ingestion process progresses.</p>
-              <p>After successful ingestion, you can export the ingested floorplans as an SVG file for inspection and
-                validation.
-                This step is important because in the next step, you will build the navigation network (navnet) which
-                can be a fairly expensive
-                process (it takes a few hours for large facilities) depending on the size of your facility. You
-                definitely want to make sure the ingested facility looks good before building the navnet so
-                you don’t have to repeat that step.
-                Let’s export the ingested floorplan into a file named <cite>TF2_ingested.svg</cite>,
-                you can use the <code
-                  class="docutils literal notranslate"><span class="pre">citam</span> <span class="pre">engine</span> <span class="pre">export-floorplan</span></code>
-                command as follow:</p>
-              <div class="highlight-console notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="gp">$ </span>citam engine export-floorplan TF2 <span class="m">0</span> -o TF2_ingested.svg -v
-</pre>
-                </div>
-              </div>
-              <p>Use any SVG viewer (such as your favorite web browser) to visualize the exported file. Fig. 2 shows
-                what the ingested floor plan looks like. CITAM has removed walls that it thinks are unnecessary
-                (based on whether they fall between two hallways). CITAM has also added doors to each
-                space.</p>
-              <img alt="Floorplan after ingestion" src="_images/FirstOutputFilewithLabel.png" />
-              <p>Fig. 2: The ingestion process will remove walls that are between hallways and add doors to all other
-                spaces.</p>
-              <p>As you can see, the TF2 facility does not have an entrance and some valid walls have been mistakenly
-                removed.
-                The good news, is that you can edit the SVG file to add the walls and doors that are missing. For that,
-                you will need an SVG editor such <a class="reference external"
-                  href="https://www.inkscape.com">Inkscape</a> (free and open-source). These are the actions permitted:
-              </p>
-              <ol class="arabic simple">
-                <li>
-                  <p>Add a wall: To add a wall, you just need to draw a straight line where it should be.</p>
-                </li>
-                <li>
-                  <p>Delete a wall: To delete an existing wall, simply delete the corresponding line in the drawing.</p>
-                </li>
-                <li>
-                  <p>Modify a Wall: To modify a wall (make it shorter, or longer, or change its position), just
-                    manipulate the corresponding line in the drawing accordingly.</p>
-                </li>
-                <li>
-                  <p>Add a door: To add a new door, you need to draw a line where desired, but you must assign an ID
-                    that contains the keyword “door” to it. Note that you can draw a door line on top of an existing
-                    wall line. CITAM will know to carve out the door from the wall.</p>
-                </li>
-                <li>
-                  <p>Remove a door: To remove a door, you have to extend an existing wall or create a new wall to
-                    completely cover the door opening.</p>
-                </li>
-              </ol>
-              <p>An example of the floor plan after using Inkscape to include wall features is as shown in Fig. 3.</p>
-              <img alt="Edited floorplan." src="_images/FirstOutputFileEdited.png" />
-              <p>Fig. 3: Floorplan as edited in Inkscape. The newly added lines are darker. Notice how a door is added
-                to the left outside wall as a regular line except its ID is set to “door_1”.</p>
-              <p>Save your edited svg file as “TF2_edited.svg”. Now update it within CITAM using the citam engine
-                update-floorplan
-                command as follow (assuming ):</p>
-              <div class="highlight-console notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="gp">$ </span>citam engine update-floorplan TF2 <span class="m">0</span> -s ../../TF2_edited.svg -v
-</pre>
-                </div>
-              </div>
-              <p>To verify that the floorplan looks good, you can export it again using the export-floorplan
-                command:</p>
-              <div class="highlight-console notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="gp">$ </span>citam engine export-floorplan TF2 <span class="m">0</span> -o TF2_updated.svg -v
-</pre>
-                </div>
-              </div>
-              <p>You can edit and re-update the floorplan as many times as needed until you are happy with it.</p>
-              <p>Congratulations! You have ingested your first floorplan. This is the most involved step in the process
-                but you only have to do it once for each floor of your facility. Once you are happy with the
-                floorplan, the next step is to generate the navigation network.</p>
-            </section>
-            <section id="generating-the-navigation-network">
-              <h2>Generating the Navigation Network<a class="headerlink" href="#generating-the-navigation-network"
-                  title="Permalink to this headline">¶</a></h2>
-              <p>The navigation network (navnet) is what is used internally by citam to compute routes between
-                different locations in the facility. Use the following command to build the navnet for TF2:</p>
-              <div class="highlight-console notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="gp">$ </span>citam engine build-navnet TF2 <span class="m">0</span>
-</pre>
-                </div>
-              </div>
-              <p>Please note that you only have to go through this process (ingestion and building the navnet)
-                only once per facility per floor.</p>
-              <p>If you are curious, you can also export the navnet as an SVG file for visualization using the
-                export-navnet command.</p>
-              <p>Once the navnet is created, you are good to go! Now you can run as many simulations
-                as you want for this floorplan.</p>
-            </section>
-            <section id="running-a-simulation">
-              <h2>Running a simulation<a class="headerlink" href="#running-a-simulation"
-                  title="Permalink to this headline">¶</a></h2>
-              <p>To run a simulation, you need an input file in JSON format. Please
-                create a new folder to run the simulation. We will refer to this folder as
-                SIMULATION_FOLDER. Now open your favorite text editor and create a new file called
-                sim_inputs.json inside SIMULATION_FOLDER.</p>
-              <p>Below is an example input file.</p>
-              <div class="highlight-default notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="p">{</span>
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt><strong>Contents</strong></dt><dd><ul class="simple">
+<li><p><a class="reference internal" href="#introduction">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#adding-a-facility">Adding a facility</a></p></li>
+<li><p><a class="reference internal" href="#generating-the-navigation-network">Generating the navigation network</a></p></li>
+<li><p><a class="reference internal" href="#running-a-simulation">Running a simulation</a></p></li>
+<li><p><a class="reference internal" href="#exploring-policies">Exploring policies</a></p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This is a brief tutorial on how to use CITAM.</p>
+<p>CITAM is an agent-based modeling platform that can assist in the management of indoor facilities in the context of
+contact-based pandemics like COVID-19 and help make policy decisions to mitigate
+indoor transmission risks.</p>
+<p>This tutorial assumes that you have already downloaded and installed CITAM. For details
+on how to install, visit the <a class="reference internal" href="getting_started.html#getting-started"><span class="std std-ref">Getting Started</span></a> page. To verify
+that CITAM has been installed properly, run the following command from your terminal:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam -h
+</pre></div>
+</div>
+<p>In the context of CITAM, individuals are referred to as “agents” (not the secret kind!).
+Before you can run simulations, you must add your facilities to CITAM (a process
+that we call ingestion). The ingestion process leads to a navigation-aware facility
+in which agents can move in a realistic fashion.</p>
+<p>Agents can be employees, visitors or any other users of your facility. To determine
+how, when and where they move around in the facility, CITAM attempts to automatically
+create a schedule and associated itinerary for them using scheduling and meeting policies that you can
+provide. We will come back to those later in this tutorial. Let’s start by
+adding a facility.</p>
+</div>
+<div class="section" id="adding-a-facility">
+<h2>Adding a facility<a class="headerlink" href="#adding-a-facility" title="Permalink to this headline">¶</a></h2>
+<p>To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
+each space in “path” elements. CITAM also needs information about the function of
+each space so it can build realistic schedules for the individuals who use them. Those information can be
+provided in a companion CSV file where the “id” of each space is used to match them with the
+SVG file.</p>
+<p>For this tutorial, we will use example files provided with CITAM in the <a class="reference external" href="https://www.github.com/corning-incorporated/citam/examples/">examples/
+directory</a>. Please download those files from GitHub if you don’t have them.</p>
+<p>The example floorplan that we will use can be found in the <strong>examples/basic_example_2</strong>
+folder located inside the main citam folder. The files that we need for now are named <strong>TF2.csv</strong> and <strong>TF2.svg</strong>
+Fig. 1 shows how the floor plan given by TF2.svg looks like. You can use any SVG viewer to visualize it (any web browser will do).</p>
+<img alt="Floorplan before ingestion" src="_images/floorplan_before_ingestion.png" />
+<p>Fig. 1: Layout of the floorplan used in this tutorial. Notice how the boundaries for each space are clearly shown.</p>
+<p>Before ingestion, let’s take a look at the content of TF2.svg. Use a text editor such
+as <a class="reference external" href="https://www.notepad-plus-plus.org">notepad++</a> to open the file and inspect its contents. Here is the top 30 lines of this file:</p>
+<div class="highlight-xml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
+<span class="nt">&lt;svg</span> 
+	<span class="na">xmlns:rdf=</span><span class="s">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span> 
+	<span class="na">xmlns:svg=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
+	<span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
+	<span class="na">id=</span><span class="s">&quot;svg224&quot;</span> 
+	<span class="na">viewBox=</span><span class="s">&quot;-120.6 -120.6 1441.2 1441.2&quot;</span> 
+	<span class="na">version=</span><span class="s">&quot;1.1&quot;</span> 
+	<span class="na">height=</span><span class="s">&quot;600px&quot;</span>
+	<span class="nt">&gt;</span>
+	<span class="nt">&lt;defs</span> <span class="na">id=</span><span class="s">&quot;defs228&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;1&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1152 L 96,1152  L 96,1200  L 0,1200 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;2&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,0 L 96,0  L 96,48  L 0,48 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;3&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1152 L 192,1152  L 192,1200  L 96,1200 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;4&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,0 L 192,0  L 192,48  L 96,48 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;5&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,1152 L 288,1152  L 288,1200  L 192,1200 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;6&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,0 L 288,0  L 288,48  L 192,48 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;7&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,1152 L 384,1152  L 384,1200  L 288,1200 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;8&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,0 L 384,0  L 384,48  L 288,48 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;9&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,1152 L 480,1152  L 480,1200  L 384,1200 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;10&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,0 L 480,0  L 480,48  L 384,48 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;11&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,1152 L 576,1152  L 576,1200  L 480,1200 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;12&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,0 L 576,0  L 576,48  L 480,48 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;13&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1128 L 240,1128  L 240,1152  L 0,1152 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;14&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1080 L 48,1080  L 48,1128  L 0,1128 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;15&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1032 L 48,1032  L 48,1080  L 0,1080 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;16&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1080 L 96,1080  L 96,1128  L 48,1128 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;17&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1032 L 96,1032  L 96,1080  L 48,1080 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;18&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1080 L 144,1080  L 144,1128  L 96,1128 z&quot;</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;19&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1032 L 144,1032  L 144,1080  L 96,1080 z&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</td></tr></table></div>
+<p>If you are not familiar with SVG files, there is a brief tutorial on the <a class="reference external" href="https://www.w3schools.com/graphics/svg_intro.asp">W3 Schools website</a> to get you started.
+The file contains a list of spaces with a geometric description of their boundaries in the “d” sub element.
+Each space also has a (unique) ID used to identify them.</p>
+<p>For a detailed discussion of the SVG format and the required information, please visit: <a class="reference internal" href="facility_data_requirement.html#svg-requirements"><span class="std std-ref">Facility Data Requirements</span></a></p>
+<p>The second file of interest in TF2.csv. Let’s take a closer look at it:</p>
+<div class="highlight-csv notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>ID,facility,Building,Floor,unique_name,space_function
+1,TF,TF1,0,ROOM_1,Office
+2,TF,TF1,0,ROOM2,Office
+3,TF,TF1,0,ROOM_3,Office
+4,TF,TF1,0,ROOM4,Office
+5,TF,TF1,0,ROOM_5,Office
+6,TF,TF1,0,ROOM6,Office
+7,TF,TF1,0,ROOM_7,Office
+8,TF,TF1,0,ROOM8,Office
+9,TF,TF1,0,ROOM_9,Office
+10,TF,TF1,0,ROOM10,Office
+11,TF,TF1,0,ROOM_11,Office
+12,TF,TF1,0,ROOM12,Office
+13,TF,TF1,0,AISLE13,Circulation
+14,TF,TF1,0,ROOM14,Office
+15,TF,TF1,0,ROOM15,Office
+16,TF,TF1,0,ROOM16,Office
+17,TF,TF1,0,ROOM17,Office
+18,TF,TF1,0,ROOM18,Office
+19,TF,TF1,0,ROOM19,Office
+20,TF,TF1,0,ROOM20,Office
+21,TF,TF1,0,ROOM21,Office
+22,TF,TF1,0,ROOM22,Office
+23,TF,TF1,0,ROOM23,Office
+24,TF,TF1,0,AISLE24,Circulation
+25,TF,TF1,0,ROOM25,Office
+26,TF,TF1,0,ROOM26,Office
+27,TF,TF1,0,ROOM27,Office
+28,TF,TF1,0,ROOM28,Office
+29,TF,TF1,0,ROOM29,Office
+</pre></div>
+</td></tr></table></div>
+<p>As you can see, this file simply contains additional information about each space as identified by their ID.
+For example, we can see that space ID “1” is an office on floor “0”. For a list of supported values and
+metadata please go to the <a class="reference internal" href="facility_data_requirement.html#svg-requirements"><span class="std std-ref">Facility Data Requirements</span></a> page of the documentation. The ID field is read as a string. The only requirement is that it is unique. The space information provided in the CSV file can also be added to the SVG file (supported soon).</p>
+<p>Now that we know what’s in those two input files, let’s ingest this floor plan using the <code class="docutils literal notranslate"><span class="pre">citam</span> <span class="pre">engine</span> <span class="pre">ingest</span></code> command as follow (from the
+main citam directory):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine ingest TF2 <span class="m">0</span> -csv examples/basic_examples/TF2.csv -map examples/basic_example/TF2.svg -v
+</pre></div>
+</div>
+<p><cite>TF2</cite> is the name of the facility under which this floorplan will be saved and <cite>0</cite> is the name of this floor. For all
+subsequent operations on this facility, the same facility name must be provided. Alternatively, you may use:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-v</span></code> argument is for verbose, to show more information as the ingestion process progresses.</p>
+<p>After successful ingestion, you can export the ingested floorplans as an SVG file for inspection and validation.
+This step is important because in the next step, you will build the navigation network (navnet) which can be a fairly expensive
+process (it takes a few hours for large facilities) depending on the size of your facility. You definitely want to make sure the ingested facility looks good before building the navnet so
+you don’t have to repeat that step.
+Let’s export the ingested floorplan into a file named <cite>TF2_ingested.svg</cite>,
+you can use the <code class="docutils literal notranslate"><span class="pre">citam</span> <span class="pre">engine</span> <span class="pre">export-floorplan</span></code> command as follow:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine export-floorplan TF2 <span class="m">0</span> -o TF2_ingested.svg -v
+</pre></div>
+</div>
+<p>Use any SVG viewer (such as your favorite web browser) to visualize the exported file. Fig. 2 shows
+what the ingested floor plan looks like. CITAM has removed walls that it thinks are unnecessary
+(based on whether they fall between two hallways). CITAM has also added doors to each
+space.</p>
+<img alt="Floorplan after ingestion" src="_images/FirstOutputFilewithLabel.png" />
+<p>Fig. 2: The ingestion process will remove walls that are between hallways and add doors to all other spaces.</p>
+<p>As you can see, the TF2 facility does not have an entrance and some valid walls have been mistakenly removed.
+The good news, is that you can edit the SVG file to add the walls and doors that are missing. For that,
+you will need an SVG editor such  <a class="reference external" href="https://www.inkscape.com">Inkscape</a> (free and open-source). These are the actions permitted:</p>
+<ol class="arabic simple">
+<li><p>Add a wall: To add a wall, you just need to draw a straight line where it should be.</p></li>
+<li><p>Delete a wall: To delete an existing wall, simply delete the corresponding line in the drawing.</p></li>
+<li><p>Modify a Wall: To modify a wall (make it shorter, or longer, or change its position), just manipulate the corresponding line in the drawing accordingly.</p></li>
+<li><p>Add a door: To add a new door, you need to draw a line where desired, but you must assign an ID that contains the keyword “door” to it. Note that you can draw a door line on top of an existing wall line. CITAM will know to carve out the door from the wall.</p></li>
+<li><p>Remove a door: To remove a door, you have to extend an existing wall or create a new wall to completely cover the door opening.</p></li>
+</ol>
+<p>An example of the floor plan after using Inkscape to include wall features is as shown in Fig. 3.</p>
+<img alt="Edited floorplan." src="_images/FirstOutputFileEdited.png" />
+<p>Fig. 3: Floorplan as edited in Inkscape. The newly added lines are darker. Notice how a door is added to the left outside wall as a regular line except its ID is set to “door_1”.</p>
+<p>Save your edited svg file as “TF2_edited.svg”. Now update it within CITAM using the citam engine update-floorplan
+command as follow (assuming ):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine update-floorplan TF2 <span class="m">0</span> -s ../../TF2_edited.svg -v
+</pre></div>
+</div>
+<p>To verify that the floorplan looks good, you can export it again using the export-floorplan
+command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine export-floorplan TF2 <span class="m">0</span> -o TF2_updated.svg -v
+</pre></div>
+</div>
+<p>You can edit and re-update the floorplan as many times as needed until you are happy with it.</p>
+<p>Congratulations! You have ingested your first floorplan. This is the most involved step in the process
+but you only have to do it once for each floor of your facility. Once you are happy with the
+floorplan, the next step is to generate the navigation network.</p>
+</div>
+<div class="section" id="generating-the-navigation-network">
+<h2>Generating the Navigation Network<a class="headerlink" href="#generating-the-navigation-network" title="Permalink to this headline">¶</a></h2>
+<p>The navigation network (navnet) is what is used internally by citam to compute routes between
+different locations in the facility. Use the following command to build the navnet for TF2:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine build-navnet TF2 <span class="m">0</span>
+</pre></div>
+</div>
+<p>Please note that you only have to go through this process (ingestion and building the navnet)
+only once per facility per floor.</p>
+<p>If you are curious, you can also export the navnet as an SVG file for visualization using the export-navnet command.</p>
+<p>Once the navnet is created, you are good to go! Now you can run as many simulations
+as you want for this floorplan.</p>
+</div>
+<div class="section" id="running-a-simulation">
+<h2>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h2>
+<p>To run a simulation, you need an input file in JSON format. Please
+create a new folder to run the simulation. We will refer to this folder as
+SIMULATION_FOLDER. Now open your favorite text editor and create a new file called
+sim_inputs.json inside SIMULATION_FOLDER.</p>
+<p>Below is an example input file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;facility_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;TF2&quot;</span><span class="p">,</span>
     <span class="s2">&quot;simulation_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test_run_1&quot;</span><span class="p">,</span>
     <span class="s2">&quot;floors&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">],</span>
@@ -399,26 +379,18 @@
     <span class="s2">&quot;contact_distance&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
     <span class="s2">&quot;shifts&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;percent_agents&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}]</span>
 <span class="p">}</span>
-</pre>
-                </div>
-              </div>
-              <p>A detailed description of the input parameters can be found in <a class="reference internal"
-                  href="input_requirements.html#input-requirements"><span class="std std-ref">Simulation Input
-                    Requirements</span></a>.</p>
-              <p>Copy and paste the contents above in your input file, then save and close the file.</p>
-              <p>Now navigate to your SIMULATION_FOLDER and start a new simulation using:</p>
-              <div class="highlight-console notranslate">
-                <div class="highlight">
-                  <pre><span></span><span class="gp">$ </span>citam engine run sim_inputs.json
-</pre>
-                </div>
-              </div>
-              <p>Sit back and relax as your simulation runs. Soon you will have results to analyze.</p>
-              <p>After less than one minute, the simulation should be completed and you should have
-                the following files created in your SIMULATION_FOLDER:</p>
-              <div class="highlight-default notranslate">
-                <div class="highlight">
-                  <pre><span></span>SIMULATION_FOLDER
+</pre></div>
+</div>
+<p>A detailed description of the input parameters can be found in <a class="reference internal" href="input_requirements.html#input-requirements"><span class="std std-ref">Simulation Input Requirements</span></a>.</p>
+<p>Copy and paste the contents above in your input file, then save and close the file.</p>
+<p>Now navigate to your SIMULATION_FOLDER and start a new simulation using:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine run sim_inputs.json
+</pre></div>
+</div>
+<p>Sit back and relax as your simulation runs. Soon you will have results to analyze.</p>
+<p>After less than one minute, the simulation should be completed and you should have
+the following files created in your SIMULATION_FOLDER:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SIMULATION_FOLDER
 ├── floor_0
 │   ├── contact_dist_per_coord.csv
 │   |── contacts.txt
@@ -433,156 +405,139 @@
 |── raw_contact_data.ccd
 |── timing.txt
 └── trajectory.txt
-</pre>
-                </div>
-              </div>
-              <p>Congratulations, you successfully ran your first simulation!</p>
-              <p>For a description of all the output files, go to: <a class="reference internal"
-                  href="outputs_description.html#outputs"><span class="std std-ref">Output Description</span></a></p>
-              <p>For details on how to visualize and interpret your results go to: <a class="reference internal"
-                  href="visualize_results.html#visualize"><span class="std std-ref">Visualize Results</span></a></p>
-            </section>
-            <section id="exploring-policies">
-              <h2>Exploring Policies<a class="headerlink" href="#exploring-policies"
-                  title="Permalink to this headline">¶</a></h2>
-              <p>Coming soon</p>
-            </section>
-            <section id="to-learn-more">
-              <h2>To Learn More<a class="headerlink" href="#to-learn-more" title="Permalink to this headline">¶</a></h2>
-              <div class="toctree-wrapper compound">
-                <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="input_requirements.html">Simulation Input
-                      Requirements</a>
-                    <ul>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="input_requirements.html#main-simulation-inputs">Main Simulation Inputs</a></li>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="input_requirements.html#scheduling-policy">Scheduling Policy</a></li>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="input_requirements.html#meetings-policy">Meetings Policy</a></li>
-                    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="facility_data_requirement.html">Facility
-                      Data Requirements</a>
-                    <ul>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="facility_data_requirement.html#svg-bare-essentials">SVG Bare Essentials</a></li>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="facility_data_requirement.html#detailed-requirements">Detailed Requirements</a></li>
-                    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="outputs_description.html">Output
-                      Description</a>
-                    <ul>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="outputs_description.html#floor-based-results">Floor-Based Results</a></li>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="outputs_description.html#overall-results">Overall Results</a></li>
-                    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="visualize_results.html">Visualize
-                      Results</a>
-                    <ul>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="visualize_results.html#the-main-results-page">The Main Results Page</a></li>
-                      <li class="toctree-l2"><a class="reference internal"
-                          href="visualize_results.html#the-details-page">The Details Page</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </section>
-          </section>
+</pre></div>
+</div>
+<p>Congratulations, you successfully ran your first simulation!</p>
+<p>For a description of all the output files, go to: <a class="reference internal" href="outputs_description.html#outputs"><span class="std std-ref">Output Description</span></a></p>
+<p>For details on how to visualize and interpret your results go to: <a class="reference internal" href="visualize_results.html#visualize"><span class="std std-ref">Visualize Results</span></a></p>
+</div>
+<div class="section" id="exploring-policies">
+<h2>Exploring Policies<a class="headerlink" href="#exploring-policies" title="Permalink to this headline">¶</a></h2>
+<p>Coming soon</p>
+</div>
+<div class="section" id="to-learn-more">
+<h2>To Learn More<a class="headerlink" href="#to-learn-more" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="input_requirements.html">Simulation Input Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_requirements.html#main-simulation-inputs">Main Simulation Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_requirements.html#scheduling-policy">Scheduling Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_requirements.html#meetings-policy">Meetings Policy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="facility_data_requirement.html">Facility Data Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="facility_data_requirement.html#svg-bare-essentials">SVG Bare Essentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facility_data_requirement.html#detailed-requirements">Detailed Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="outputs_description.html">Output Description</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="outputs_description.html#floor-based-results">Floor-Based Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="outputs_description.html#overall-results">Overall Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualize_results.html">Visualize Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="visualize_results.html#the-main-results-page">The Main Results Page</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualize_results.html#the-details-page">The Details Page</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
 
 
-        </div>
-      </div>
-    </div>
-    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-      <div class="sphinxsidebarwrapper">
-        <h3><a href="index.html">Table of Contents</a></h3>
-        <ul>
-          <li><a class="reference internal" href="#">Tutorial</a>
-            <ul>
-              <li><a class="reference internal" href="#introduction">Introduction</a></li>
-              <li><a class="reference internal" href="#adding-a-facility">Adding a facility</a></li>
-              <li><a class="reference internal" href="#generating-the-navigation-network">Generating the Navigation
-                  Network</a></li>
-              <li><a class="reference internal" href="#running-a-simulation">Running a simulation</a></li>
-              <li><a class="reference internal" href="#exploring-policies">Exploring Policies</a></li>
-              <li><a class="reference internal" href="#to-learn-more">To Learn More</a></li>
-            </ul>
-          </li>
-        </ul>
-
-        <h4>Previous topic</h4>
-        <p class="topless"><a href="getting_started.html" title="previous chapter">Getting Started</a></p>
-        <h4>Next topic</h4>
-        <p class="topless"><a href="input_requirements.html" title="next chapter">Simulation Input Requirements</a></p>
-        <div role="note" aria-label="source link">
-          <h3>This Page</h3>
-          <ul class="this-page-menu">
-            <li><a href="_sources/tutorial.rst.txt" rel="nofollow">Show Source</a></li>
-          </ul>
-        </div>
-        <div id="searchbox" style="display: none" role="search">
-          <h3 id="searchlabel">Quick search</h3>
-          <div class="searchformwrapper">
-            <form class="search" action="search.html" method="get">
-              <input type="text" name="q" aria-labelledby="searchlabel" />
-              <input type="submit" value="Go" />
-            </form>
           </div>
         </div>
-        <script>$('#searchbox').show(0);</script>
       </div>
-    </div>
-    <div class="clearer"></div>
-  </div>
-  <div class="related" role="navigation" aria-label="related navigation">
-    <h3>Navigation</h3>
-    <ul>
-      <li class="right" style="margin-right: 10px">
-        <a href="genindex.html" title="General Index">index</a>
-      </li>
-      <li class="right">
-        <a href="py-modindex.html" title="Python Module Index">modules</a> |
-      </li>
-      <li class="right">
-        <a href="input_requirements.html" title="Simulation Input Requirements">next</a> |
-      </li>
-      <li class="right">
-        <a href="getting_started.html" title="Getting Started">previous</a> |
-      </li>
-      <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.9.0 documentation</a> &#187;</li>
-    </ul>
-  </div>
-  <div class="container-fluid">
-    <!--    Footer Section-->
-    <div class="row customNav fixed-bottom">
-      <div class="col-sm-6">
-        <nav class="navbar navbar-expand-sm">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Terms of Use</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Privacy Notice</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
-                target="_blank">Licensing</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div class="col-sm-6">
-        <p id="copyRight">
-          &#169; 2020 Corning Incorporated. All Rights Reserved.
-        </p>
-      </div>
-    </div>
-  </div>
-</body>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tutorial</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#adding-a-facility">Adding a facility</a></li>
+<li><a class="reference internal" href="#generating-the-navigation-network">Generating the Navigation Network</a></li>
+<li><a class="reference internal" href="#running-a-simulation">Running a simulation</a></li>
+<li><a class="reference internal" href="#exploring-policies">Exploring Policies</a></li>
+<li><a class="reference internal" href="#to-learn-more">To Learn More</a></li>
+</ul>
+</li>
+</ul>
 
-</html>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="getting_started.html"
+                        title="previous chapter">Getting Started</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="input_requirements.html"
+                        title="next chapter">Simulation Input Requirements</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tutorial.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="right" >
+      <a href="input_requirements.html" title="Simulation Input Requirements" >next</a> |
+    </li>
+    <li class="right" >
+      <a href="getting_started.html" title="Getting Started" >previous</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.9.0 documentation</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

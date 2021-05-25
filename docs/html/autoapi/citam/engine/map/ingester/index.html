@@ -4,17 +4,13 @@
 <html>
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
     <title>citam.engine.map.ingester &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
 <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
-<link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-<link rel="stylesheet" type="text/css" href="../../../../../_static/style.css" />
 <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
 <script id="documentation_options" data-url_root="../../../../../"
   src="../../../../../_static/documentation_options.js"></script>
-<script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
@@ -111,11 +107,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="module-citam.engine.map.ingester">
+  <div class="section" id="module-citam.engine.map.ingester">
 <span id="citam-engine-map-ingester"></span><h1><a class="reference internal" href="#module-citam.engine.map.ingester" title="citam.engine.map.ingester"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.ingester</span></code></a><a class="headerlink" href="#module-citam.engine.map.ingester" title="Permalink to this headline">¶</a></h1>
-<section id="module-contents">
+<div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<section id="classes">
+<div class="section" id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -128,8 +124,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="functions">
+</div>
+<div class="section" id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -145,8 +141,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="attributes">
+</div>
+<div class="section" id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -160,59 +156,59 @@
 </tbody>
 </table>
 <dl class="py data">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.LOG">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></span><span class="sig-name descname"><span class="pre">LOG</span></span><a class="headerlink" href="#citam.engine.map.ingester.LOG" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.LOG">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></code><code class="sig-name descname"><span class="pre">LOG</span></code><a class="headerlink" href="#citam.engine.map.ingester.LOG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></span><span class="sig-name descname"><span class="pre">FloorplanIngester</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract_doors_from_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buildings_to_keep</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluded_buildings</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></code><code class="sig-name descname"><span class="pre">FloorplanIngester</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract_doors_from_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buildings_to_keep</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluded_buildings</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ingest floorplan data from svg and csv files.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.create_spaces_from_csv_and_svg_data">
-<span class="sig-name descname"><span class="pre">create_spaces_from_csv_and_svg_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.create_spaces_from_csv_and_svg_data" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.create_spaces_from_csv_and_svg_data">
+<code class="sig-name descname"><span class="pre">create_spaces_from_csv_and_svg_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.create_spaces_from_csv_and_svg_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.create_spaces_from_csv_and_svg_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create space objects from data extracted in csv and svg files</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.create_spaces_from_svg_data">
-<span class="sig-name descname"><span class="pre">create_spaces_from_svg_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.create_spaces_from_svg_data" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.create_spaces_from_svg_data">
+<code class="sig-name descname"><span class="pre">create_spaces_from_svg_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.create_spaces_from_svg_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.create_spaces_from_svg_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create space objects from data extracted in standalone svg file</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.validate_buildings">
-<span class="sig-name descname"><span class="pre">validate_buildings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.validate_buildings" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.validate_buildings">
+<code class="sig-name descname"><span class="pre">validate_buildings</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.validate_buildings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.validate_buildings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make sure we take all user-provided building names into account</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.read_data_from_svg_file">
-<span class="sig-name descname"><span class="pre">read_data_from_svg_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.read_data_from_svg_file" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.read_data_from_svg_file">
+<code class="sig-name descname"><span class="pre">read_data_from_svg_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.read_data_from_svg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.read_data_from_svg_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and parse floorplan from svg file</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.read_data_from_csv_and_svg_files">
-<span class="sig-name descname"><span class="pre">read_data_from_csv_and_svg_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.read_data_from_csv_and_svg_files" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.read_data_from_csv_and_svg_files">
+<code class="sig-name descname"><span class="pre">read_data_from_csv_and_svg_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.read_data_from_csv_and_svg_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.read_data_from_csv_and_svg_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and parse csv and svg files</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.read_input_files">
-<span class="sig-name descname"><span class="pre">read_input_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.read_input_files" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.read_input_files">
+<code class="sig-name descname"><span class="pre">read_input_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.read_input_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.read_input_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read and parse csv and svg files</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.run" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform the ingestion process</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.find_space_index_for_door">
-<span class="sig-name descname"><span class="pre">find_space_index_for_door</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Path</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_space_index_for_door" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.find_space_index_for_door">
+<code class="sig-name descname"><span class="pre">find_space_index_for_door</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Path</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.find_space_index_for_door"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_space_index_for_door" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a door SVG element, find the index of the space to which it
 belongs.</p>
 <dl class="field-list simple">
@@ -232,8 +228,8 @@ belongs.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.find_closest_wall_and_best_door_line">
-<span class="sig-name descname"><span class="pre">find_closest_wall_and_best_door_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_lines</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_closest_wall_and_best_door_line" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.find_closest_wall_and_best_door_line">
+<code class="sig-name descname"><span class="pre">find_closest_wall_and_best_door_line</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_lines</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.find_closest_wall_and_best_door_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_closest_wall_and_best_door_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a number of lines in the door SVG element, find the best line
 based on proximity to a wall.</p>
 <dl class="field-list simple">
@@ -255,8 +251,8 @@ far from the door., defaults to 10.0</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester._find_all_overlapping_walls">
-<span class="sig-name descname"><span class="pre">_find_all_overlapping_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester._find_all_overlapping_walls" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester._find_all_overlapping_walls">
+<code class="sig-name descname"><span class="pre">_find_all_overlapping_walls</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester._find_all_overlapping_walls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester._find_all_overlapping_walls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a door line, find all overlapping walls.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -272,8 +268,8 @@ far from the door., defaults to 10.0</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.build_door_line">
-<span class="sig-name descname"><span class="pre">build_door_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Path</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">svgpathtools.Line</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.build_door_line" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.build_door_line">
+<code class="sig-name descname"><span class="pre">build_door_line</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Path</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">svgpathtools.Line</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.build_door_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.build_door_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a door path (Line or Bezier Curve) and return a Line that
 corresponds to where it acutally falls on the map based on
 overlap with existing walls.</p>
@@ -291,8 +287,8 @@ overlap with existing walls.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester._create_door_object">
-<span class="sig-name descname"><span class="pre">_create_door_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_indices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester._create_door_object" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester._create_door_object">
+<code class="sig-name descname"><span class="pre">_create_door_object</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_indices</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester._create_door_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester._create_door_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a door line and space indices, create new door object and add it
 to the list of doors for this floorplan.</p>
 <dl class="field-list simple">
@@ -306,8 +302,8 @@ to the list of doors for this floorplan.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester._remove_door_from_overlapping_walls">
-<span class="sig-name descname"><span class="pre">_remove_door_from_overlapping_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlapping_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester._remove_door_from_overlapping_walls" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester._remove_door_from_overlapping_walls">
+<code class="sig-name descname"><span class="pre">_remove_door_from_overlapping_walls</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlapping_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester._remove_door_from_overlapping_walls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester._remove_door_from_overlapping_walls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a door line and a dict of overlapping walls grouped by their
 corresponding space index, carve out the door in each wall and update
 walls accordingly.</p>
@@ -322,15 +318,15 @@ walls accordingly.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.process_doors">
-<span class="sig-name descname"><span class="pre">process_doors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.process_doors" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.process_doors">
+<code class="sig-name descname"><span class="pre">process_doors</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.process_doors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.process_doors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over the door paths extracted from the SVG file, find
 associated spaces and create door objects.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.create_new_door_to_room">
-<span class="sig-name descname"><span class="pre">create_new_door_to_room</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">room_wall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">room_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.create_new_door_to_room" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.create_new_door_to_room">
+<code class="sig-name descname"><span class="pre">create_new_door_to_room</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">room_wall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">room_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.create_new_door_to_room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.create_new_door_to_room" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add door to access a given room from a given wall.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -343,15 +339,15 @@ associated spaces and create door objects.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.check_for_overlap_with_other_walls_and_add_door_to_wall">
-<span class="sig-name descname"><span class="pre">check_for_overlap_with_other_walls_and_add_door_to_wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_wall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_space_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_door</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.check_for_overlap_with_other_walls_and_add_door_to_wall" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.check_for_overlap_with_other_walls_and_add_door_to_wall">
+<code class="sig-name descname"><span class="pre">check_for_overlap_with_other_walls_and_add_door_to_wall</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_wall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_space_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_door</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.check_for_overlap_with_other_walls_and_add_door_to_wall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.check_for_overlap_with_other_walls_and_add_door_to_wall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check for overlap between a given wall and all other walls in facility
 and add door if overlap exists with room wall that has no door.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.find_and_remove_overlaps_between_walls">
-<span class="sig-name descname"><span class="pre">find_and_remove_overlaps_between_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_wall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_space_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_door</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_and_remove_overlaps_between_walls" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.find_and_remove_overlaps_between_walls">
+<code class="sig-name descname"><span class="pre">find_and_remove_overlaps_between_walls</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_wall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_space_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_door</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.find_and_remove_overlaps_between_walls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_and_remove_overlaps_between_walls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a hallway wall, iterate over all other walls to test for overlap.
 If found, remove overlap.</p>
 <dl class="field-list simple">
@@ -376,8 +372,8 @@ defaults to True</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.get_building_walls">
-<span class="sig-name descname"><span class="pre">get_building_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.get_building_walls" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.get_building_walls">
+<code class="sig-name descname"><span class="pre">get_building_walls</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.get_building_walls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.get_building_walls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract all walls from building and return the room walls and hallway
 walls seperately.</p>
 <dl class="field-list simple">
@@ -395,8 +391,8 @@ and walls.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.find_valid_walls_and_create_doors">
-<span class="sig-name descname"><span class="pre">find_valid_walls_and_create_doors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_valid_walls_and_create_doors" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.find_valid_walls_and_create_doors">
+<code class="sig-name descname"><span class="pre">find_valid_walls_and_create_doors</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.find_valid_walls_and_create_doors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_valid_walls_and_create_doors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all invalid walls, create missing doors and return the remaining
 walls.</p>
 <dl class="field-list simple">
@@ -413,22 +409,22 @@ walls.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.get_floorplan">
-<span class="sig-name descname"><span class="pre">get_floorplan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.get_floorplan" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.get_floorplan">
+<code class="sig-name descname"><span class="pre">get_floorplan</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.get_floorplan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.get_floorplan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the ingested floorplan object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.FloorplanIngester.find_min_and_max_coordinates">
-<span class="sig-name descname"><span class="pre">find_min_and_max_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_min_and_max_coordinates" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.FloorplanIngester.find_min_and_max_coordinates">
+<code class="sig-name descname"><span class="pre">find_min_and_max_coordinates</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#FloorplanIngester.find_min_and_max_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.FloorplanIngester.find_min_and_max_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the min and max coordinates for both x and y.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.find_invalid_walls">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></span><span class="sig-name descname"><span class="pre">find_invalid_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hallway_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.map.ingester.find_invalid_walls" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.find_invalid_walls">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></code><code class="sig-name descname"><span class="pre">find_invalid_walls</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hallway_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#find_invalid_walls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.find_invalid_walls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find and remove any wall that seperates 2 hallways (or aisles).</p>
 <blockquote>
 <div><dl>
@@ -458,8 +454,8 @@ walls.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.map.ingester.check_for_overlap_with_other_walls">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></span><span class="sig-name descname"><span class="pre">check_for_overlap_with_other_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wall_index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invalid_hallway_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#citam.engine.map.ingester.check_for_overlap_with_other_walls" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.map.ingester.check_for_overlap_with_other_walls">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.map.ingester.</span></code><code class="sig-name descname"><span class="pre">check_for_overlap_with_other_walls</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wall_index</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invalid_hallway_walls</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="../../../../../_modules/citam/engine/map/ingester.html#check_for_overlap_with_other_walls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.ingester.check_for_overlap_with_other_walls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given hallway wall at index wall_index, iterate over all hallway walls and
 check for overlap. If there is overlap, update list of invalid hallways.</p>
 <dl class="field-list simple">
@@ -473,9 +469,9 @@ check for overlap. If there is overlap, update list of invalid hallways.</p>
 </dl>
 </dd></dl>
 
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>

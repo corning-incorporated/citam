@@ -4,17 +4,13 @@
 <html>
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
     <title>citam.engine.main &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
 <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
 <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
 <script id="documentation_options" data-url_root="../../../../"
   src="../../../../_static/documentation_options.js"></script>
-<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
 <script src="../../../../_static/jquery.js"></script>
 <script src="../../../../_static/underscore.js"></script>
 <script src="../../../../_static/doctools.js"></script>
@@ -111,11 +107,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="module-citam.engine.main">
+  <div class="section" id="module-citam.engine.main">
 <span id="citam-engine-main"></span><h1><a class="reference internal" href="#module-citam.engine.main" title="citam.engine.main"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.main</span></code></a><a class="headerlink" href="#module-citam.engine.main" title="Permalink to this headline">¶</a></h1>
-<section id="module-contents">
+<div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<section id="functions">
+<div class="section" id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -126,16 +122,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.list_facilities" title="citam.engine.main.list_facilities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_facilities</span></code></a>(**kwargs)</p></td>
 <td><p>List all the floorplans already ingested</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.ingest_floorplan" title="citam.engine.main.ingest_floorplan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ingest_floorplan</span></code></a>(svg: str, csv: str, facility: str, scale: float = 1 / 12, floor: str = '0', buildings: List[str] = None, output_directory=None, force_overwrite=False, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.ingest_floorplan" title="citam.engine.main.ingest_floorplan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ingest_floorplan</span></code></a>(svg: str, csv: str, facility: str, scale: float = 1 / 12, floor: str = ‘0’, buildings: List[str] = None, output_directory=None, force_overwrite=False, **kwargs)</p></td>
 <td><p>Ingest raw floorplan and data files for a given floor of a facility.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.export_floorplan_to_svg" title="citam.engine.main.export_floorplan_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_floorplan_to_svg</span></code></a>(facility: str, floor: str, outputfile: str, doors=False, floorplan_directory: str = None, **kwargs)</p></td>
 <td><p>Export a given floorplan to an SVG file for visualization and editing.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.build_navigation_network" title="citam.engine.main.build_navigation_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_navigation_network</span></code></a>(facility: str, floor: str = '0', floorplan_directory: str = None, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.build_navigation_network" title="citam.engine.main.build_navigation_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_navigation_network</span></code></a>(facility: str, floor: str = ‘0’, floorplan_directory: str = None, **kwargs)</p></td>
 <td><p>Build the navigation network for a given facility floor plan.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.update_floorplan_from_svg_file" title="citam.engine.main.update_floorplan_from_svg_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_floorplan_from_svg_file</span></code></a>(svg: str, facility: str, floor: str = '0', floorplan_directory: str = None, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.update_floorplan_from_svg_file" title="citam.engine.main.update_floorplan_from_svg_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_floorplan_from_svg_file</span></code></a>(svg: str, facility: str, floor: str = ‘0’, floorplan_directory: str = None, **kwargs)</p></td>
 <td><p>Update the walls and doors in a floorplan using an SVG file</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.export_navigation_graph_to_svg" title="citam.engine.main.export_navigation_graph_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_navigation_graph_to_svg</span></code></a>(facility: str, floor: str, outputfile: str, floorplan_directory: str = None, **kwargs)</p></td>
@@ -158,8 +154,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="attributes">
+</div>
+<div class="section" id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -176,24 +172,24 @@
 </tbody>
 </table>
 <dl class="py data">
-<dt class="sig sig-object py" id="citam.engine.main.LOG">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">LOG</span></span><a class="headerlink" href="#citam.engine.main.LOG" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.LOG">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">LOG</span></code><a class="headerlink" href="#citam.engine.main.LOG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="citam.engine.main.ROUTES_JSON_FILE">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">ROUTES_JSON_FILE</span></span><em class="property"> <span class="pre">=</span> <span class="pre">routes.json</span></em><a class="headerlink" href="#citam.engine.main.ROUTES_JSON_FILE" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.ROUTES_JSON_FILE">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">ROUTES_JSON_FILE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">routes.json</span></em><a class="headerlink" href="#citam.engine.main.ROUTES_JSON_FILE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.list_facilities">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">list_facilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.list_facilities" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.list_facilities">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">list_facilities</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#list_facilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.list_facilities" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the floorplans already ingested</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.ingest_floorplan">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">ingest_floorplan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buildings</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.ingest_floorplan" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.ingest_floorplan">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">ingest_floorplan</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buildings</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#ingest_floorplan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.ingest_floorplan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ingest raw floorplan and data files for a given floor of a facility.</p>
 <p>This method is executed with the CLI call <code class="docutils literal notranslate"><span class="pre">citam</span> <span class="pre">engine</span> <span class="pre">ingest</span></code></p>
 <dl class="field-list simple">
@@ -216,8 +212,8 @@ found in SVG file)</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.export_floorplan_to_svg">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">export_floorplan_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.export_floorplan_to_svg" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.export_floorplan_to_svg">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">export_floorplan_to_svg</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#export_floorplan_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.export_floorplan_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export a given floorplan to an SVG file for visualization and editing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -238,8 +234,8 @@ found in SVG file)</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.build_navigation_network">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">build_navigation_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.build_navigation_network" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.build_navigation_network">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">build_navigation_network</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#build_navigation_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.build_navigation_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the navigation network for a given facility floor plan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -259,8 +255,8 @@ found in SVG file)</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.update_floorplan_from_svg_file">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">update_floorplan_from_svg_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.update_floorplan_from_svg_file" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.update_floorplan_from_svg_file">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">update_floorplan_from_svg_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#update_floorplan_from_svg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.update_floorplan_from_svg_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the walls and doors in a floorplan using an SVG file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -281,8 +277,8 @@ found in SVG file)</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.export_navigation_graph_to_svg">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">export_navigation_graph_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.export_navigation_graph_to_svg" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.export_navigation_graph_to_svg">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">export_navigation_graph_to_svg</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#export_navigation_graph_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.export_navigation_graph_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export navigation network to svg file for visualization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -303,13 +299,13 @@ found in SVG file)</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.load_floorplans">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">load_floorplans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.load_floorplans" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.load_floorplans">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">load_floorplans</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#load_floorplans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.load_floorplans" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.run_simulation">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">run_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.run_simulation" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.run_simulation">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">run_simulation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#run_simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.run_simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform an agent-based simulation given a dictionary of input values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -319,18 +315,18 @@ found in SVG file)</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.initialize_oneway_network">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">initialize_oneway_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">navnet</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">networkx.classes.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">networkx.classes.graph.Graph</span><a class="headerlink" href="#citam.engine.main.initialize_oneway_network" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.initialize_oneway_network">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">initialize_oneway_network</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">navnet</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">networkx.classes.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">networkx.classes.graph.Graph</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#initialize_oneway_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.initialize_oneway_network" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.check_and_remove_node_from_oneway_network">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">check_and_remove_node_from_oneway_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oneway_network</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.check_and_remove_node_from_oneway_network" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.check_and_remove_node_from_oneway_network">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">check_and_remove_node_from_oneway_network</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oneway_network</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#check_and_remove_node_from_oneway_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.check_and_remove_node_from_oneway_network" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="citam.engine.main.find_and_save_potential_one_way_aisles">
-<span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">find_and_save_potential_one_way_aisles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.main.find_and_save_potential_one_way_aisles" title="Permalink to this definition">¶</a></dt>
+<dt id="citam.engine.main.find_and_save_potential_one_way_aisles">
+<code class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></code><code class="sig-name descname"><span class="pre">find_and_save_potential_one_way_aisles</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#find_and_save_potential_one_way_aisles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.find_and_save_potential_one_way_aisles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over nodes and edges in the navigation network and identify
 segments that could potentially be assigned one-way traffic.</p>
 <p>Creates a list of potential one-way nav segments where each segment is a
@@ -355,9 +351,9 @@ for later retrieval and outputs it to an SVG file for the user.</p>
 </dl>
 </dd></dl>
 
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>
