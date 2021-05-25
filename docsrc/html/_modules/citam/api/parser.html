@@ -1,0 +1,454 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.api.parser &#8212; CITAM 0.9.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head><body class=_modules/citam/api/parser.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+      <p><i>free</i> <small>and</small> <i> open-source</i></p>
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html" href="../index.html"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              href="https://github.com/corning-incorporated/citam"
+              target="_blank"
+              >View on GitHub</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="getting_started.html"
+              href="getting_started.html"
+              >Getting Started</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="tutorial.html"
+              href="tutorial.html"
+              >Tutorial</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html"
+              >Documentation</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../api.html" accesskey="U">citam.api</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.api.parser</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2020. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1">#  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1">#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1">#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span>
+<span class="c1">#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1">#  ==========================================================================</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;get_contacts&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_trajectories&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_coordinate_distribution&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_trajectories_lines&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">citam.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_trajectories_lines"><a class="viewcode-back" href="../../../autoapi/citam/api/parser/index.html#citam.api.parser.get_trajectories_lines">[docs]</a><span class="k">def</span> <span class="nf">get_trajectories_lines</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">floor</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="n">result_file</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_trajectory_file</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">result_file</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">count</span><span class="p">}</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_total_timesteps</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="n">manifest_data</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+    <span class="n">nsteps</span> <span class="o">=</span> <span class="n">manifest_data</span><span class="p">[</span><span class="s2">&quot;TotalTimesteps&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">nsteps</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">get_number_of_agents</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">manifest_data</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">manifest_data</span><span class="p">[</span><span class="s2">&quot;NumberOfAgents&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="get_trajectories"><a class="viewcode-back" href="../../../autoapi/citam/api/parser/index.html#citam.api.parser.get_trajectories">[docs]</a><span class="k">def</span> <span class="nf">get_trajectories</span><span class="p">(</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">floor</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">first_timestep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get trajectory information for a simulation</span>
+
+<span class="sd">    :param sim_id: simulation identifier</span>
+<span class="sd">    :param floor: Floor number.  Use None to return all floors</span>
+<span class="sd">    :param offset: Offset number.  Start with 0</span>
+<span class="sd">    :return: List of trajectories broken down by step</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result_file</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_trajectory_file_location</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;trajectory file parsing process started&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">floor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">floor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">floor</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Filtering trajectories for floor </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">n_agents</span> <span class="o">=</span> <span class="n">get_number_of_agents</span><span class="p">(</span><span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">)</span>
+    <span class="n">max_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">n_agents</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;first_timestep&quot;</span><span class="p">:</span> <span class="n">first_timestep</span><span class="p">,</span>
+            <span class="s2">&quot;max_count&quot;</span><span class="p">:</span> <span class="n">max_count</span><span class="p">,</span>
+            <span class="s2">&quot;statistics&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;cfl&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="p">}</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">curr_file_line</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">current_pos_line</span><span class="p">,</span> <span class="n">n_position_lines</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">step_num</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">new_step</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">position_lines</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">result_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">curr_file_line</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">new_step</span><span class="p">:</span>
+                <span class="n">n_position_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">current_pos_line</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">timestep_line</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">new_step</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">step_num</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">step_num</span> <span class="o">&gt;=</span> <span class="n">first_timestep</span><span class="p">:</span>
+                    <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_steps</span><span class="p">:</span>
+                        <span class="k">break</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">timestep_line</span><span class="p">:</span>
+                <span class="n">step_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;step: &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                <span class="n">timestep_line</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">n_position_lines</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">position_lines</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_step</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_agents</span><span class="p">)]</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">position_lines</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">current_pos_line</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">floor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">!=</span> <span class="n">floor</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;More agents found in trajectory file. &quot;</span>
+                        <span class="o">+</span> <span class="s2">&quot;Please update NumberOfAgents in manifest file.&quot;</span>
+                    <span class="p">)</span>
+
+                <span class="n">step</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">])),</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span>
+                <span class="p">)</span>
+
+                <span class="n">max_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_count</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">current_pos_line</span> <span class="o">==</span> <span class="n">n_position_lines</span><span class="p">:</span>
+                    <span class="n">new_step</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">position_lines</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_steps</span> <span class="ow">and</span> <span class="n">step_num</span> <span class="o">&gt;=</span> <span class="n">first_timestep</span>
+        <span class="p">):</span>  <span class="c1"># We finished reading the file before max steps reached</span>
+            <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>  <span class="c1"># Add last step data</span>
+
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;trajectory file parsing process is complete in </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2"> sec&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">steps</span><span class="p">,</span>
+        <span class="s2">&quot;first_timestep&quot;</span><span class="p">:</span> <span class="n">first_timestep</span><span class="p">,</span>
+        <span class="s2">&quot;max_count&quot;</span><span class="p">:</span> <span class="n">max_count</span><span class="p">,</span>
+        <span class="s2">&quot;statistics&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;cfl&quot;</span><span class="p">:</span> <span class="n">curr_file_line</span><span class="p">},</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="get_contacts"><a class="viewcode-back" href="../../../autoapi/citam/api/parser/index.html#citam.api.parser.get_contacts">[docs]</a><span class="k">def</span> <span class="nf">get_contacts</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">floor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve contact information for a simulation</span>
+
+<span class="sd">    :param sim_id: simulation identifier</span>
+<span class="sd">    :param floor: Floor number</span>
+<span class="sd">    :return: List of contacts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result_file</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_contact_file</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;contacts file parsing process started&quot;</span><span class="p">)</span>
+
+    <span class="n">steps</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">count_line</span> <span class="o">=</span> <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">count_line</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count_line</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">num_contacts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count_line</span><span class="p">)</span>
+        <span class="n">step_num</span> <span class="o">=</span> <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">step_num</span> <span class="o">=</span> <span class="n">step_num</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;step :&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># noqa</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_contacts</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">step</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="n">count_line</span> <span class="o">=</span> <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;contacts file parsing process is complete. </span><span class="si">%d</span><span class="s2"> steps&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">steps</span></div>
+
+
+<div class="viewcode-block" id="get_coordinate_distribution"><a class="viewcode-back" href="../../../autoapi/citam/api/parser/index.html#citam.api.parser.get_coordinate_distribution">[docs]</a><span class="k">def</span> <span class="nf">get_coordinate_distribution</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">floor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve contact/coordinate distribution for a simulation</span>
+
+<span class="sd">    :param sim_id: simulation identifier</span>
+<span class="sd">    :param floor: Floor number</span>
+<span class="sd">    :return: List of contacts per coordinate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result_file</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_coordinate_distribution_file</span><span class="p">(</span>
+        <span class="n">sim_id</span><span class="p">,</span>
+        <span class="n">floor</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;coordinate distribution file parsing process started&quot;</span><span class="p">)</span>
+
+    <span class="n">contacts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>  <span class="c1"># header</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">line</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">contacts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;coordinate distribution file parsing process complete&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">contacts</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_pair_contacts</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve pair contact information for a simulation</span>
+
+<span class="sd">    :param sim_id: simulation identifier</span>
+<span class="sd">    :return: List of pair contacts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result_file</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_pair_contact_file</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;pair contacts file parsing process started&quot;</span><span class="p">)</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">result_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result_file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>  <span class="c1"># pragma: nocover</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Corrupted file! 4 values are expected for each line &quot;</span>
+                <span class="s2">&quot;in pair_contact.csv. </span><span class="si">%d</span><span class="s2"> found.&quot;</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;Agent1&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s2">&quot;Agent2&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="s2">&quot;N_Contacts&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                <span class="s2">&quot;TotalContactDuration&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">pairs</span>
+
+
+<span class="k">def</span> <span class="nf">get_statistics_json</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve get_statistics json information for a simulation</span>
+
+<span class="sd">    :param str sim_id: simulation identifier</span>
+<span class="sd">    :return: List of statistics</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_statistics_file</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Statistics JSON file parsing process started&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result_dict</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="s2">&quot;Corrupted file! Statistics JSON file does &quot;</span>
+            <span class="s2">&quot;not have required attributes.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">get_policy_json</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+
+    <span class="n">result_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_policy_file</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Statistics JSON file parsing process started&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_dict</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../api.html" >citam.api</a> &#187;</li> 
+      </ul>
+    </div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+</html>

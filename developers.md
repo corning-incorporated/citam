@@ -11,10 +11,12 @@ As mentioned in the README, The code is divided into the following components:
 We recommend going through the documentation of the component of interest to understand the code structure before you start writing your own code.
 
 ### Contents
-* [Environment Setup](#environment-setup)
-* [Building and Writing Documentation](#building-and-writing-documentation)
-* [Running Tests](#running-tests)
-* [Coding Rules](#coding-rules)
+- [Developing for CITAM](#developing-for-citam)
+    - [Contents](#contents)
+  - [## Environment Setup](#-environment-setup)
+  - [## Building and Writing Documentation](#-building-and-writing-documentation)
+  - [## Running Tests](#-running-tests)
+  - [## Coding Rules](#-coding-rules)
 
 
 ## Environment Setup
@@ -57,7 +59,7 @@ You are now ready to build the documentation using the following command:
 $make html
 ```
 
-Html outputs form the build process are automatically copied to the [public](public/) folder where they are integrated with CITAM's landing page. To view the documentation, open the local copy of `public/index.html` file with your web browser.
+Html outputs form the build process are automatically copied to the [docs](docs/) folder where they are integrated with CITAM's landing page. To view the documentation, open the local copy of `docs/index.html` file with your web browser.
 
 To edit the documentation, find the appropriate RST file in the docs folder and edit it as needed. Rebuild the documentation and visualize it locally to make sure everything looks good before submitting your work.
 
