@@ -72,6 +72,40 @@ jobs:
         working-directory: ${{ github.workspace }}/citamjs
         run: npm run test
 
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.3'
+      - name: Install dependencies
+        working-directory: ./docsrc
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U sphinx
+          pip install -r requirements.txt
+      - name: Build docs
+        working-directory: ./docsrc
+        run: |
+          make html
+      - name: Commit files
+        run: |
+          echo ${{ github.ref }}
+          git add --force docs/html/
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "CI: Automated docs build push" -a | exit 0
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}    
+          branch: gh-page
+
   package:
     runs-on: ubuntu-latest
     steps:
