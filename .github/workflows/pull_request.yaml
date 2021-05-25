@@ -100,11 +100,11 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "CI: Automated docs build push" -a | exit 0
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}    
-          branch: ${{ github.head_ref }}
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}    
+      #     branch: ${{ github.head_ref }}
 
   package:
     runs-on: ubuntu-latest
