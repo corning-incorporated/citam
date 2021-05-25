@@ -1,0 +1,65 @@
+:mod:`serializer`
+=================
+
+.. py:module:: serializer
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   serializer._Serializer
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   serializer.serializer
+
+
+.. class:: _Serializer(classname_key='__class__')
+
+
+   Helper class to manage encoding and decoding classes to/from JSON.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. method:: __call__(self, class_)
+
+
+   .. method:: decoder_hook(self, d: dict)
+
+
+   .. method:: encoder_default(self, obj)
+
+
+
+.. data:: serializer
+   
+
+   
+

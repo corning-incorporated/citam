@@ -1,0 +1,69 @@
+:mod:`citam.engine.constants`
+=============================
+
+.. py:module:: citam.engine.constants
+
+
+Module Contents
+---------------
+
+.. data:: REQUIRED_SPACE_METADATA
+   :annotation: = ['id', 'building', 'unique_name', 'space_function']
+
+   
+
+.. data:: OPTIONAL_SPACE_METADATA
+   :annotation: = ['facility', 'space_category', 'floor', 'department', 'capacity', 'square_footage']
+
+   
+
+.. data:: SUPPORTED_SPACE_FUNCTIONS
+   :annotation: = ['circulation', 'office', 'lab', 'restroom (men)', 'restroom (women)', 'restroom', 'cafeteria',...
+
+   
+
+.. data:: RESTROOM_VISIT
+   :annotation: = Restroom visit
+
+   
+
+.. data:: MEETING
+   :annotation: = Meeting
+
+   
+
+.. data:: LAB_WORK
+   :annotation: = Lab work
+
+   
+
+.. data:: CAFETERIA_VISIT
+   :annotation: = Cafeteria
+
+   
+
+.. data:: OFFICE_WORK
+   :annotation: = Office work
+
+   
+
+.. data:: DEFAULT_SCHEDULING_RULES
+   
+
+   
+
+.. data:: DEFAULT_MEETINGS_POLICY
+   
+
+   
+
+.. data:: MEETING_BUFFER
+   
+
+   
+
+.. data:: DEFAULT_MEETING_ROOM_CAPACITY
+   :annotation: = 25
+
+   
+

@@ -1,0 +1,104 @@
+:mod:`citam.api.parser`
+=======================
+
+.. py:module:: citam.api.parser
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.api.parser.get_trajectories_lines
+   citam.api.parser.get_trajectories
+   citam.api.parser.get_contacts
+   citam.api.parser.get_coordinate_distribution
+
+
+
+.. function:: get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict
+
+
+.. function:: get_trajectories(sim_id: str, floor: Union[str, int] = None, first_timestep: int = 0, max_steps: int = 5000) -> Dict
+
+   Get trajectory information for a simulation
+
+   :param sim_id: simulation identifier
+   :param floor: Floor number.  Use None to return all floors
+   :param offset: Offset number.  Start with 0
+   :return: List of trajectories broken down by step
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: get_contacts(sim_id: str, floor: str) -> List[List[Dict]]
+
+   Retrieve contact information for a simulation
+
+   :param sim_id: simulation identifier
+   :param floor: Floor number
+   :return: List of contacts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: get_coordinate_distribution(sim_id: str, floor: str) -> List[Dict]
+
+   Retrieve contact/coordinate distribution for a simulation
+
+   :param sim_id: simulation identifier
+   :param floor: Floor number
+   :return: List of contacts per coordinate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+

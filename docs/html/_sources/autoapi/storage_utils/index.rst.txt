@@ -1,0 +1,111 @@
+:mod:`storage_utils`
+====================
+
+.. py:module:: storage_utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   storage_utils.get_user_cache
+   storage_utils.get_floorplans_directory
+   storage_utils.create_datadir
+   storage_utils.get_datadir
+
+
+
+.. function:: get_user_cache() -> Union[str, pathlib.Path]
+
+   Get the path to this user's OS cache directory. The cache directory is
+   used to save facility and policy information.
+
+   :return: path to the cache directory
+   :rtype: Union[str, pathlib.Path]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: get_floorplans_directory() -> Union[str, pathlib.Path]
+
+
+.. function:: create_datadir(facility_name: str, floor_name: str) -> Union[str, pathlib.Path]
+
+   Create a new directory in the user's cache to save data for a given
+   facility and floor.
+
+   :param facility_name: The name of the facility
+   :type facility_name: str
+   :param floor_name: The name of the floor.
+   :type floor_name: str
+   :return: The path of the newly created directory.
+   :rtype: Union[str, pathlib.Path]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: get_datadir(facility_name: str, floor_name: str) -> Union[str, pathlib.Path]
+
+   Get the directory where data for a given facility and floor are saved.
+
+   :param facility_name: The name of the facility.
+   :type facility_name: str
+   :param floor_name: The name of the floor.
+   :type floor_name: str
+   :return: path of the directory where data for this facility and floor are
+           found.
+   :rtype: Union[str, pathlib.Path]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
