@@ -19,7 +19,12 @@
       </span>
     </div>
     <div class="card-body">
-      <span v-if="totalContactsPerAgentHistogram && totalContactsPerAgentHistogram.length > 0 ">
+      <span
+        v-if="
+          totalContactsPerAgentHistogram &&
+          totalContactsPerAgentHistogram.length > 0
+        "
+      >
         <histogram
           :pair-data="totalContactsPerAgentHistogram"
           :options="totalContactsHistogramOption"
@@ -28,7 +33,11 @@
     </div>
     <div class="card-body">
       <span
-        v-if="avgContactDurationPerAgentHistogram && avgContactDurationPerAgentHistogram.length > 0">
+        v-if="
+          avgContactDurationPerAgentHistogram &&
+          avgContactDurationPerAgentHistogram.length > 0
+        "
+      >
         <histogram
           :pair-data="avgContactDurationPerAgentHistogram"
           :options="avgContactDurationHistogramOption"
@@ -144,9 +153,6 @@ export default {
           };
           cb();
         })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
   },
 };

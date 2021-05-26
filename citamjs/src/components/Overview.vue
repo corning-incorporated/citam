@@ -16,7 +16,8 @@
   <main>
     <div id="overviewLayout">
       <div id="title">
-        <span>Policy Results</span>Select metric (header) to determine the best policy
+        <span>Overview of Simulation Results</span>Runs are grouped by policy.
+        Select a row to view individual runs.
       </div>
       <div class="container-fluid">
         <div class="row">
@@ -24,52 +25,74 @@
             <table class="table table-bordered" v-if="statsList">
               <thead>
                 <tr class="tableHeader">
-                  <th colspan="2"><button type="button" class="policyBtn btn btn-link">Add Policy</button></th>
-                  <th id="metricCols">KEY METRICS</th>
-                  <th colspan="4">KEY POLICY INPUTS</th>
+                  <th colspan="2"></th>
+                  <th colspan="4">KEY INPUTS</th>
                 </tr>
                 <tr>
                   <th class="noBorder">View runs</th>
-                  <th class="noBorder">Policies</th>                  
-                  <th v-for="(att, id) in metricAttributes" :key="id">
-                    <div class="th-container"> {{ att }}
-                    </div>
-                  </th>
-                  <th v-for="(header, id) in policyInputHeaders" :key="'p'+id">
-                    <div class="th-container"> {{ header }}
-                    </div>
+                  <th class="noBorder">Simulations</th>
+                  <th
+                    v-for="(header, id) in policyInputHeaders"
+                    :key="'p' + id"
+                  >
+                    <div class="th-container">{{ header }}</div>
                   </th>
                 </tr>
               </thead>
-              <tbody  v-for="(item, idx) in policyData.policies" :key="idx">             
+              <tbody v-for="(item, idx) in policyData.policies" :key="idx">
                 <tr>
                   <td class="noBorder">
                     <button type="button" class="btn" @click="viewRuns(idx)">
                       <span><font-awesome-icon icon="chevron-down" /></span>
                     </button>
                   </td>
-                  <td class="noBorder"><button type="button" class="btn btn-link" @click="showPolicyInfo(item.policyName)">{{ item.policyName }}</button> <br/> {{ item.simulationRuns.length }} Runs </td>
-                  <td v-for="(avg, id) in item.simulationRuns.average" :key="id">
-                        {{avg}}
+                  <td class="noBorder">
+                    <button
+                      type="button"
+                      class="btn btn-link"
+                      @click="showPolicyInfo(item.policyHash)"
+                    >
+                      {{ item.simulationName }}
+                    </button>
+                    <br />
+                    {{ item.simulationRuns.length }} Runs
                   </td>
-                  <td>{{ item.simulationRuns.individuals }}</td>
+                  <td
+                    v-for="(avg, id) in item.simulationRuns.average"
+                    :key="id"
+                  >
+                    {{ avg }}
+                  </td>
+                  <td>{{ item.simulationRuns.agents }}</td>
                   <td>{{ item.simulationRuns.totalFloors }}</td>
-                  <td>{{ item.simulationRuns.totalTimeStep }}</td>
-                  <td>{{ item.simulationRuns.totalScaleMultiplier }}</td>
+                  <td>{{ item.simulationRuns.totalSteps }}</td>
+                  <td>{{ item.simulationRuns.numberOfEntrances }}</td>
                 </tr>
-                  <template v-if="subRows.includes(idx)">
-                    <tr v-for="(sim, index) in simRuns[0].simulationRuns" :key="index">
-                      <td class="noBorder"> </td>
-                      <td class="noBorder"> {{sim.simName}}</td> 
-                      <td v-for="(stats, ind) in sim.statisctics" :key="sim.simName + ind">
-                        {{stats.value}}
-                      </td>
-                      <td colspan="4">
-                        <button type="button" class="btn btn-link simBtn" @click="showSimulations(item.policyName, sim.simName, 'simMaps')">Simulation Map</button>
-                        <button type="button" class="btn btn-link" @click="showSimulations(item.policyName, sim.simName, 'dataViz')">Data Visualizations</button>
-                      </td>                      
-                    </tr>
-                  </template>               
+                <template v-if="subRows.includes(idx)">
+                  <tr
+                    v-for="(sim, index) in simRuns[0].simulationRuns"
+                    :key="index"
+                  >
+                    <td class="noBorder"></td>
+                    <td class="noBorder">
+                      <button
+                        type="button"
+                        class="btn btn-link simBtn"
+                        @click="
+                          showSimulations(item.policyHash, sim.runID, 'simMaps')
+                        "
+                      >
+                        {{ sim.runName }}
+                      </button>
+                    </td>
+                    <!-- <td
+                      v-for="(stats, ind) in sim.statisctics"
+                      :key="sim.simName + ind"
+                    >
+                      {{ stats.value }}
+                    </td> -->
+                  </tr>
+                </template>
               </tbody>
             </table>
           </div>
@@ -87,14 +110,23 @@ import _ from "lodash";
 export default {
   name: "Overview",
   props: {
-    selectedFacility: String
+    selectedFacility: String,
   },
   data() {
     return {
-      metricHeaders: ["Total Contact (minutes)", "Average Contacts/Agent",
-        "Average Contact Duration (min/Agent)", "Average Number of People/Agent"],
+      metricHeaders: [
+        "Total Contact (minutes)",
+        "Average Contacts/Agent",
+        "Average Contact Duration (min/Agent)",
+        "Average Number of People/Agent",
+      ],
       metricAttributes: [],
-      policyInputHeaders: ["Individuals", "Total Floors","Time Step", "Scale Multiplier"],
+      policyInputHeaders: [
+        "Number of Agents",
+        "Total Floors",
+        "Total Duration (Hours)",
+        "Number of Entrances",
+      ],
       simRuns: [],
       subRows: [],
       policyList: [],
@@ -102,53 +134,31 @@ export default {
       runList: [],
       policyData: {},
       overviewData: { facilities: [] },
-      hasSims: false
+      hasSims: false,
     };
   },
   watch: {
     selectedFacility(newFacility) {
-      this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == newFacility).policies}
-      this.subRows = []
-      this.calculatePolicyAvg() 
-    }
+      this.policyData = {
+        policies: this.overviewData.facilities.find(
+          (item) => item.facilityName == newFacility
+        ).policies,
+      };
+      this.subRows = [];
+      this.calculatePolicyAvg();
+    },
   },
   created() {
-    axios
-      .get("/list") //get list of policies, simulations, facilities
-      .then((response) => {
-        this.policyList = response.data.map((list) => list);
-        return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
-      })
-      .then((runResponse) => {
-        // eslint-disable-next-line no-unused-vars
-        this.runList = runResponse.map((run) => run.data);
-        return axios.all(
-          runResponse.map((x) =>
-            axios.get(`/${x.data.SimulationID}/statistics`)
-          )
-        );
-      })
-      .then((response) => {
-        response.map((statCard, i) => {         
-          statCard.data.sim_id = response[i].config.url .match(/(?<=\/)(.*)(?=\/)/)[0].toString();
-          this.statsList.push(statCard.data);
-        });    
-       
-        this.getOverviewData();
-        this.$store.commit("setFacilities", this.overviewData.facilities) // Store it in a centralized variable to use in other components
-        this.$emit('setFacilities', this.overviewData.facilities) // To display facility list in the dropdown
-        
-        if(this.selectedFacility){
-          this.policyData = {policies: this.overviewData.facilities.find(item=>item.facilityName == this.selectedFacility).policies}
-        } else {
-          this.policyData = { policies: this.overviewData.facilities[0].policies}; // Display first facility by default
-          }
-        this.calculatePolicyAvg() 
-        })
-
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (this.$store.state.facilities === null) {
+      this.fetchData();
+    } else {
+      this.overviewData.facilities = this.$store.state.facilities;
+      this.policyList = this.$store.state.policyList;
+      this.statsList = this.$store.state.statsList;
+      this.getRunList();
+      this.setDefaultPolicy();
+      this.calculatePolicyAvg();
+    }
   },
   methods: {
     sortTable(att) {
@@ -157,88 +167,153 @@ export default {
       this.statsList = _.sortBy(this.statsList, [att]);
       this.policyData;
       this.metricAttributes;
-      this.overviewData.facilities = _.sortBy(this.overviewData.facilities, [att,]);
-      this.$store.state.facilities
+      this.overviewData.facilities = _.sortBy(this.overviewData.facilities, [
+        att,
+      ]);
+      this.$store.state.facilities;
     },
-
-    viewRuns(idx) {      
-      const index = this.subRows.indexOf(idx)
-      if(index > -1) {
-        this.subRows.splice(index, 1)
-        this.simRuns =  [] 
+    setDefaultPolicy() {
+      if (this.selectedFacility) {
+        this.policyData = {
+          policies: this.overviewData.facilities.find(
+            (item) => item.facilityName == this.selectedFacility
+          ).policies,
+        };
+      } else {
+        this.policyData = {
+          policies: this.overviewData.facilities[0].policies,
+        }; // Display first facility by default
       }
-      else{
-        this.subRows = []
-        this.subRows.push(idx)
-        this.simRuns = []        
-        this.simRuns.push(this.policyData.policies[idx])   
-      }      
+    },
+    fetchData() {
+      axios
+        .get("/list") //get list of policies, simulations, facilities
+        .then((response) => {
+          this.policyList = response.data.map((list) => list);
+          this.$store.commit("setPolicyList", this.policyList);
+          return axios.all(response.data.map((x) => axios.get(`/${x.RunID}`)));
+        })
+        .then((runResponse) => {
+          // eslint-disable-next-line no-unused-vars
+          this.runList = runResponse.map((run) => run.data);
+          return axios.all(
+            runResponse.map((x) => axios.get(`/${x.data.RunID}/statistics`))
+          );
+        })
+        .then((response) => {
+          response.map((statCard, i) => {
+            statCard.data.runID = response[i].config.url
+              .match(/(?<=\/)(.*)(?=\/)/)[0]
+              .toString();
+            this.statsList.push(statCard.data);
+          });
+          this.$store.commit("setStatsList", this.statsList);
+          this.getOverviewData();
+
+          this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
+          this.$emit("setFacilities", this.overviewData.facilities); // To display facility list in the dropdown
+
+          this.getRunList();
+          this.setDefaultPolicy();
+          this.calculatePolicyAvg();
+        });
+    },
+    viewRuns(idx) {
+      const index = this.subRows.indexOf(idx);
+      if (index > -1) {
+        this.subRows.splice(index, 1);
+        this.simRuns = [];
+      } else {
+        this.subRows = [];
+        this.subRows.push(idx);
+        this.simRuns = [];
+        this.simRuns.push(this.policyData.policies[idx]);
+      }
     },
 
     getOverviewData() {
       this.overviewData = { facilities: [] };
       this.policyList.forEach((policy) => {
-        if (this.pushUniqueFacilities(policy.facility_name)) {
+        if (this.pushUniqueFacilities(policy.FacilityName)) {
           this.overviewData.facilities.push({
-            facilityName: policy.facility_name, policies: [{policyName: policy.policy_id, simulationRuns: [] } ],            
-          });          
-        } 
-        this.overviewData.facilities.forEach((facility) => {     
-          if (facility.facilityName === policy.facility_name && this.pushUniquePolicies(facility, policy.policy_id)) {
-            facility.policies.push({policyName: policy.policy_id, simulationRuns: [] })
-          } 
+            facilityName: policy.FacilityName,
+            policies: [
+              {
+                simulationName: policy.SimulationName,
+                policyHash: policy.SimulationHash,
+                simulationRuns: [],
+              },
+            ],
+          });
+        }
+        this.overviewData.facilities.forEach((facility) => {
+          if (
+            facility.facilityName === policy.FacilityName &&
+            this.pushUniquePolicies(facility, policy.SimulationHash)
+          ) {
+            facility.policies.push({
+              simulationName: policy.SimulationName,
+              policyHash: policy.SimulationHash,
+              simulationRuns: [],
+            });
+          }
           facility.policies.forEach((pol) => {
-            if(policy.policy_id === pol.policyName){
-              pol.simulationRuns.push({ simName: policy.sim_id })            
-              pol.simulationRuns.totalIndividuals = 0
-              pol.simulationRuns.totalFloors = 0
-              pol.simulationRuns.totalTimeStep = 0
-              pol.simulationRuns.totalScaleMultiplier = 0
-              pol.simulationRuns.individuals = 0
-            } 
-          })       
+            if (policy.SimulationHash === pol.policyHash) {
+              pol.simulationRuns.push({
+                runName: policy.RunName,
+                runID: policy.RunID,
+              });
+              pol.simulationRuns.agents = 0;
+              pol.simulationRuns.totalFloors = 0;
+              pol.simulationRuns.totalTimeStep = 0;
+              pol.simulationRuns.totalScaleMultiplier = 0;
+              pol.simulationRuns.individuals = 0;
+            }
+          });
         });
       });
+    },
 
+    getRunList() {
       // build stats object for each simulation run within each policies for each facility
       this.overviewData.facilities.forEach((facility) => {
         facility.policies.forEach((policy) => {
           policy.simulationRuns.forEach((sim) => {
-            this.runList.forEach((run) => {            
-              if (run.sim_id === sim.simName) {
-                Vue.set(sim,"floors", run.floors);
-                Vue.set(sim,"timeStep", run.TimestepInSec);
-                Vue.set(sim,"scaleMultiplier", run.scaleMultiplier);
-                Vue.set(sim, "individuals", run.NumberOfEmployees);
-                Vue.set(sim, "individuals", run.NumberOfEmployees);
+            this.runList.forEach((run) => {
+              if (run.RunID === sim.runID) {
+                Vue.set(sim, "floors", run.floors);
+                Vue.set(sim, "totalSteps", run.TotalTimesteps);
+                Vue.set(sim, "scaleMultiplier", run.scaleMultiplier);
+                Vue.set(sim, "agents", run.NumberOfAgents);
+                Vue.set(sim, "numberOfEntrances", run.NumberOfEntrances);
 
                 this.statsList.forEach((stats) => {
-                  if(this.metricAttributes.length == 0)  {
-                    stats.forEach((stat) => 
-                    this.metricAttributes.push(stat.name))
-                  }                
-                  if (stats.sim_id === sim.simName) {
-                    stats.forEach((item) => {
-                      Vue.set(sim,item.name,item.value);
-                    });
-                    Vue.set(sim,"statisctics",stats);                
+                  if (this.metricAttributes.length == 0) {
+                    stats.forEach((stat) =>
+                      this.metricAttributes.push(stat.name)
+                    );
                   }
-                });                
-                policy.simulationRuns.totalFloors = sim.floors.length
-                policy.simulationRuns.totalTimeStep = sim.timeStep
-                policy.simulationRuns.totalScaleMultiplier = sim.scaleMultiplier
-                policy.simulationRuns.individuals = sim.individuals
-
-                // policy.simulationRuns.totalContact += sim.overall_total_contact_duration
-                // policy.simulationRuns.avgContactsPerAgent += sim.avg_n_contacts_per_agent/policy.simulationRuns.length
-                // policy.simulationRuns.avgContactDuration += sim.avg_contact_duration_per_agent/policy.simulationRuns.length                
-                // policy.simulationRuns.avgPeoplePerAgent += sim.avg_number_of_people_per_agent/policy.simulationRuns.length
+                  if (stats.runID === sim.runID) {
+                    stats.forEach((item) => {
+                      Vue.set(sim, item.name, item.value);
+                    });
+                    Vue.set(sim, "statistics", stats);
+                  }
+                });
+                policy.simulationRuns.totalFloors = sim.floors.length;
+                policy.simulationRuns.totalSteps = (
+                  sim.totalSteps / 3600
+                ).toFixed(2);
+                policy.simulationRuns.numberOfEntrances = sim.numberOfEntrances;
+                policy.simulationRuns.agents = sim.agents;
               }
-            });            
-          })
-        })
-      })
-      document.getElementById("metricCols").colSpan= this.metricAttributes.length;  
+            });
+          });
+        });
+      });
+      // document.getElementById(
+      //   "metricCols"
+      // ).colSpan = this.metricAttributes.length;
     },
 
     pushUniqueFacilities(item) {
@@ -249,42 +324,47 @@ export default {
         .indexOf(item);
       return index === -1 ? true : false;
     },
-    
+
     pushUniquePolicies(facility, item) {
       var index = facility.policies
         .map(function (e) {
-          return e.policyName;
+          return e.policyHash;
         })
         .indexOf(item);
       return index === -1 ? true : false;
     },
 
     calculatePolicyAvg() {
-      var stat_list = []
-      for(var p of this.policyData.policies){
-        for (var sruns of p.simulationRuns){
-          stat_list.push(_.mapValues(_.keyBy(sruns.statisctics, 'name'), 'value'))
+      var stat_list = [];
+      for (var p of this.policyData.policies) {
+        for (var sruns of p.simulationRuns) {
+          stat_list.push(
+            _.mapValues(_.keyBy(sruns.statisctics, "name"), "value")
+          );
         }
-        var dynamicKeys = _.keys(stat_list[0])
-        var sums = {}
+        var dynamicKeys = _.keys(stat_list[0]);
+        var sums = {};
         _.each(stat_list, function (item) {
           _.each(dynamicKeys, function (statKeys) {
             sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
           });
         });
-        console.log("Sums", sums)
-        p.simulationRuns.average = sums
-        stat_list = []
+        p.simulationRuns.average = sums;
+        stat_list = [];
       }
     },
-    
-    showSimulations(policyName, simId, type) {
-      this.$emit('showSims', {'policyName':policyName, 'simId':simId, 'type':type})
+
+    showSimulations(policyHash, runId, type) {
+      this.$emit("showSims", {
+        policyHash: policyHash,
+        runId: runId,
+        type: type,
+      });
     },
 
-    showPolicyInfo(policyName){
-      this.$emit('showPolicy', policyName)
-    }
+    showPolicyInfo(policyHash) {
+      this.$emit("showPolicy", policyHash);
+    },
   },
 };
 </script>
@@ -316,7 +396,6 @@ export default {
   font-family: Inter;
   text-align: left;
   padding: 10px 0 10px 15px;
-  /* border-right: 1px solid #DAE0E6 !important; */
 }
 .subTitle div button {
   padding: 0px !important;
@@ -329,16 +408,14 @@ export default {
   display: flex;
   align-items: center;
 }
-
 .policyBtn {
-line-height: 0.7;
+  line-height: 0.7;
 }
 .sort-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 .table {
   margin-bottom: 0px !important;
 }
@@ -347,7 +424,6 @@ line-height: 0.7;
   float: left;
   padding: 0px !important;
 }
-
 .table thead th {
   font-family: Inter;
   font-weight: 500;
@@ -357,18 +433,15 @@ line-height: 0.7;
   text-align: center;
   color: #607080;
 }
-
 .tableHeader {
-  background-color: #EBEFF2;
+  background-color: #ebeff2;
 }
 .simBtn {
   margin-right: 50px;
 }
-
 .btn:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
-
 .noBorder {
   border-left: none !important;
   border-right: none !important;

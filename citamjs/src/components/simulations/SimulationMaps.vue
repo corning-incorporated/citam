@@ -12,8 +12,7 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-   <div id="simMapLayout">                                                 
-      <div class="title"> SIMULATION</div>            
+   <div id="simMapLayout">                                                                 
       <plot-visualization :simId="currSimId"></plot-visualization>        
     </div>                                                  
 </template>

@@ -14,7 +14,7 @@
 
 import axios from 'axios';
 
-axios.defaults.timeout = 20000*60;
+axios.defaults.timeout = 20000 * 60;
 /**
  * Create a promise which resolves immediately contianing data
  *
@@ -33,7 +33,7 @@ function makePromise(data) {
  * @returns {XMLDocument} Base Map as SVG
  */
 export function getBaseMap(simulation, floor) {
-  return axios.get(`${simulation}/map`, {params: {floor: floor}});
+  return axios.get(`${simulation}/map`, { params: { floor: floor } });
 }
 
 
@@ -45,7 +45,7 @@ export function getBaseMap(simulation, floor) {
  * @returns {XMLDocument} Base Map as SVG
  */
 export function getContactPositionDist(simulation, floor) {
-  return axios.get(`${simulation}/distribution/coordinate`, {params: {floor: floor}});
+  return axios.get(`${simulation}/distribution/coordinate`, { params: { floor: floor } });
 }
 
 /**
@@ -56,7 +56,17 @@ export function getContactPositionDist(simulation, floor) {
  * @return {Promise<AxiosResponse>} contact data
  */
 export function getContact(simulation, floor) {
-  return axios.get(`${simulation}/contact`, {params: {floor: floor}});
+  return axios.get(`${simulation}/contact`, { params: { floor: floor } });
+}
+
+/**
+ * Get the total number of steps for a given simulation
+ *
+ * @param {string} simulation - Simulation id
+ * @return {Promise<AxiosResponse>} contact data
+ */
+export function getTotalTimesteps(simulation) {
+  return axios.get(`${simulation}/total_timesteps`);
 }
 
 /**
@@ -69,21 +79,21 @@ export function getContact(simulation, floor) {
  * * @param {number} max_steps - max_steps
  * @return {Promise<AxiosResponse>} trajectory data
  */
-export function getTrajectory(simulation, floor, offset,
-                              first_timestep, max_steps) {
-  return axios.get(`${simulation}/trajectory`, {params:
-        {floor: floor, offset: offset, first_timestep: first_timestep, max_steps:max_steps}
+export function getTrajectory(simulation, floor, first_timestep, max_steps) {
+  return axios.get(`${simulation}/trajectory`, {
+    params:
+      { floor: floor, first_timestep: first_timestep, max_steps: max_steps }
   });
 }
 
-  /**
-   *
-   * @param simulation
-   * @param floor
-   * @returns {Promise<AxiosResponse<any>>}
-   */
+/**
+ *
+ * @param simulation
+ * @param floor
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export function getTrajectoryLines(simulation, floor) {
-  return axios.get(`${simulation}/trajectory_lines`, {params: {floor: floor}});
+  return axios.get(`${simulation}/trajectory_lines`, { params: { floor: floor } });
 }
 
 /** Cache summary responses **/

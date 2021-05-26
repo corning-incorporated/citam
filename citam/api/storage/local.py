@@ -66,25 +66,40 @@ class LocalStorageDriver(BaseStorageDriver):
 
         for manifest in manifests:
             with open(manifest, "r") as manifest_file:
-                try:
-                    manifest_data = json.load(manifest_file)
-                    sim_id = manifest_data["SimulationID"]
-                    policy_id = manifest_data["PolicyID"]
-                    facility_name = manifest_data["FacilityName"]
-                except KeyError:
+                manifest_data = json.load(manifest_file)
+                required_keys = [
+                    "RunID",
+                    "SimulationHash",
+                    "RunName",
+                    "SimulationName",
+                    "FacilityName",
+                    "NumberOfAgents",
+                ]
+                keys_not_found = []
+                is_manifest_valid = True
+                for r_key in required_keys:
+                    try:
+                        _ = manifest_data[r_key]
+                    except KeyError:
+                        keys_not_found.append(r_key)
+                        is_manifest_valid = False
+                if not is_manifest_valid:
                     LOG.warning(
-                        '"%s" does not define "SimulationName". '
-                        "The results for this manifest will be ignored ",
-                        manifest,
+                        f'"{manifest}" does not define "{keys_not_found}". '
+                        "The results for this manifest will be ignored "
                     )
                     continue
 
-                self.result_dirs[sim_id] = os.path.dirname(manifest)
+                self.result_dirs[manifest_data["RunID"]] = os.path.dirname(
+                    manifest
+                )
                 self.runs.append(
                     {
-                        "sim_id": sim_id,
-                        "policy_id": policy_id,
-                        "facility_name": facility_name,
+                        "RunID": manifest_data["RunID"],
+                        "SimulationHash": manifest_data["SimulationHash"],
+                        "RunName": manifest_data["RunName"],
+                        "SimulationName": manifest_data["SimulationName"],
+                        "FacilityName": manifest_data["FacilityName"],
                     }
                 )
 
@@ -97,77 +112,77 @@ class LocalStorageDriver(BaseStorageDriver):
     def list_runs(self):
         return self.runs
 
-    def get_coordinate_distribution_file(self, sim_id, floor):
-        manifest = self.get_manifest(sim_id)
+    def get_coordinate_distribution_file(self, run_id, floor):
+        manifest = self.get_manifest(run_id)
         return open(
             os.path.join(
-                self.result_dirs[sim_id],
+                self.result_dirs[run_id],
                 f'{manifest["floor_dict"][floor]}contact_dist_per_coord.csv',
             ),
             "r",
         )
 
-    def get_trajectory_file(self, sim_id):
-        manifest = self.get_manifest(sim_id)
+    def get_trajectory_file(self, run_id):
+        manifest = self.get_manifest(run_id)
         return open(
             os.path.join(
-                self.result_dirs[sim_id],
+                self.result_dirs[run_id],
                 manifest.get("trajectory_file", "trajectory.txt"),
             ),
             "r",
         )
 
-    def get_trajectory_file_location(self, sim_id):
-        manifest = self.get_manifest(sim_id)
+    def get_trajectory_file_location(self, run_id):
+        manifest = self.get_manifest(run_id)
         return os.path.join(
-            self.result_dirs[sim_id],
+            self.result_dirs[run_id],
             manifest.get("trajectory_file", "trajectory.txt"),
         )
 
-    def get_contact_file(self, sim_id, floor):
-        manifest = self.get_manifest(sim_id)
+    def get_contact_file(self, run_id, floor):
+        manifest = self.get_manifest(run_id)
         return open(
             os.path.join(
-                self.result_dirs[sim_id],
+                self.result_dirs[run_id],
                 f'{manifest["floor_dict"][floor]}contacts.txt',
             ),
             "r",
         )
 
-    def get_map_file(self, sim_id, floor):
-        manifest = self.get_manifest(sim_id)
+    def get_map_file(self, run_id, floor):
+        manifest = self.get_manifest(run_id)
         return open(
             os.path.join(
-                self.result_dirs[sim_id],
+                self.result_dirs[run_id],
                 f'{manifest["floor_dict"][floor]}map.svg',
             ),
             "rb",
         )
 
-    def get_heatmap_file(self, sim_id, floor):
-        manifest = self.get_manifest(sim_id)
+    def get_heatmap_file(self, run_id, floor):
+        manifest = self.get_manifest(run_id)
         return open(
             os.path.join(
-                self.result_dirs[sim_id],
+                self.result_dirs[run_id],
                 f'{manifest["floor_dict"][floor]}heatmap.svg',
             ),
             "rb",
         )
 
-    def get_manifest_file(self, sim_id):
+    def get_manifest_file(self, run_id):
         return open(
-            os.path.join(self.result_dirs[sim_id], "manifest.json"), "r"
+            os.path.join(self.result_dirs[run_id], "manifest.json"), "r"
         )
 
-    def get_pair_contact_file(self, sim_id):
+    def get_pair_contact_file(self, run_id):
         return open(
-            os.path.join(self.result_dirs[sim_id], "pair_contact.csv"), "r"
+            os.path.join(self.result_dirs[run_id], "pair_contact.csv"), "r"
         )
 
-    def get_statistics_file(self, sim_id):
+    def get_statistics_file(self, run_id):
         return open(
-            os.path.join(self.result_dirs[sim_id], "statistics.json"), "r"
+            os.path.join(self.result_dirs[run_id], "statistics.json"), "r"
         )
 
-    def get_policy_file(self, sim_id):
-        return open(os.path.join(self.result_dirs[sim_id], "policy.json"), "r")
+    def get_policy_file(self, run_id):
+        return open(os.path.join(self.result_dirs[run_id], "policy.json"), "r")

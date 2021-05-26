@@ -269,3 +269,6 @@ dist
 **/db_dist/
 
 **/dist_electron/
+
+# VS Code Files
+.vscode/

@@ -13,24 +13,36 @@
 <!--  ==============================================================================-->
 
 <template>
-    <div id="policyListLayout">
-        <ul class="ulStyle">
-            <li v-for="(policy, id) in policyData.policies" :key="id">
-                <button type="button" class="btn" @click="viewRuns(id)">
-                    <span><font-awesome-icon icon="chevron-down" /></span>                    
-                    <span class="polName"> {{policy.policyName}} </span> <span class="polRuns"> {{ policy.simulationRuns.length }} Runs </span>
-                </button>
-                <div id="empty"> </div> 
-                <template v-if="subRows.includes(id)">
-                    <ul class="subUlStyle">
-                        <li v-for="(sim, index) in simRuns[0].simulationRuns" :key="index" :value="sim.simName">
-                            <a class="simName" :id="index" @click="setSimMap(sim.simName, index)" href="#"> Run {{sim.simName}} </a>
-                        </li>
-                    </ul>
-                </template>    
+  <div id="policyListLayout">
+    <ul class="ulStyle">
+      <li v-for="(policy, id) in policyData.policies" :key="id">
+        <button type="button" class="btn" @click="viewRuns(id)">
+          <span><font-awesome-icon icon="chevron-down" /></span>
+          <span class="polName"> {{ policy.policyHash }} </span>
+          <span class="polRuns"> {{ policy.simulationRuns.length }} Runs </span>
+        </button>
+        <div id="empty"></div>
+        <template v-if="subRows.includes(id)">
+          <ul class="subUlStyle">
+            <li
+              v-for="(sim, index) in simRuns[0].simulationRuns"
+              :key="index"
+              :value="sim.simName"
+            >
+              <a
+                class="simName"
+                :id="index"
+                @click="setSimMap(sim.simName, index)"
+                href="#"
+              >
+                Run {{ sim.simName }}
+              </a>
             </li>
-        </ul>   
-    </div>   
+          </ul>
+        </template>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -60,8 +72,8 @@ export default {
   created() {
       if(this.policyData.selectedPolicy) {
         this.currSimId = this.policyData.selectedSim
-        this.subRows.push(this.policyData.policies.findIndex(item=>item.policyName == this.policyData.selectedPolicy))        
-        this.simRuns.push(this.policyData.policies.find(item=>item.policyName == this.policyData.selectedPolicy))
+        this.subRows.push(this.policyData.policies.findIndex(item=>item.policyHash == this.policyData.selectedPolicy))        
+        this.simRuns.push(this.policyData.policies.find(item=>item.policyHash == this.policyData.selectedPolicy))
         this.simIndex = this.simRuns[0].simulationRuns.findIndex(item=>item.simName == this.currSimId)     
       }
       else {
@@ -123,67 +135,67 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap");
 #policyListLayout {
-    background-color: #F7F9FA;
+  background-color: #f7f9fa;
 }
 
 .ulStyle {
-    list-style-type: none;
-    padding-inline-start: 5px;
+  list-style-type: none;
+  padding-inline-start: 5px;
 }
 
 .ulStyle li {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .subUlStyle {
-    list-style-type: none;
-    color: #607080;
-    font-size: 14px;
+  list-style-type: none;
+  color: #607080;
+  font-size: 14px;
 }
 
 .subUlStyle li {
-    height: 45px;
-    border-bottom: 2px solid white;
-    padding: 5px;
+  height: 45px;
+  border-bottom: 2px solid white;
+  padding: 5px;
 }
 
 .polName {
-    font-family: Inter;    
-    color: #0080FF;
-    font-weight: 600;
-    margin: 0 5px 0 5px;
+  font-family: Inter;
+  color: #0080ff;
+  font-weight: 600;
+  margin: 0 5px 0 5px;
 }
 
 .polRuns {
-    font-family: Inter;
-    color: #607080 !important;
+  font-family: Inter;
+  color: #607080 !important;
 }
 
 .btn span {
-    color: #0080FF;
+  color: #0080ff;
 }
 
 .btn:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .simName {
-    color: #607080;
+  color: #607080;
 }
 
 .simName:hover {
-    color: #0080FF;
-    text-decoration: none;
+  color: #0080ff;
+  text-decoration: none;
 }
 
 .simName:focus {
-    color: #0080FF;
+  color: #0080ff;
 }
 
 .simName.setActive {
-  color: #0080FF;
+  color: #0080ff;
 }
 /* a.simName {
     color: #0080FF;

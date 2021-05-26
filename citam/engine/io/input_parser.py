@@ -511,6 +511,8 @@ def check_for_required_values(input_dict: dict) -> None:
         "daylength",
         "entrance_time",
         "n_agents",
+        "simulation_name",
+        "run_name",
     ]
     for key in required_values:
         if key not in input_dict:
@@ -677,6 +679,8 @@ def parse_input_file(
     daylength = input_dict["daylength"]
     entrances = input_dict["entrances"]
     buffer = input_dict["entrance_time"]
+    simulation_name = input_dict["simulation_name"]
+    run_name = input_dict["run_name"]
 
     # Make sure all required values are of the correct type
     validate_input_values(
@@ -726,6 +730,8 @@ def parse_input_file(
 
     converted_contact_distance = contact_distance / floorplan_scale
     return {
+        "simulation_name": simulation_name,
+        "run_name": run_name,
         "upload_results": upload_results,
         "upload_location": upload_location,
         "facility_name": facility_name,

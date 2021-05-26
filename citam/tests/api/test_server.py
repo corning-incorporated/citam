@@ -47,57 +47,79 @@ def client(use_local_storage) -> testing.TestClient:
 
 
 def test_get_summary(client):
-    result = client.simulate_get("/v1/sim_id_0001")
+    result = client.simulate_get("/v1/run_id_0001")
     assert result.status_code == 200
 
 
 def test_trajectory_response(client):
     result: testing.Result = client.simulate_get(
-        "/v1/sim_id_0001/trajectory?first_timestep=1&max_steps=5000"
+        "/v1/run_id_0001/trajectory?first_timestep=1&max_steps=5000"
     )
     assert result.status_code == 200
     assert result.json.get("data")
+    assert len(result.json["data"]) == 1899
     assert result.json.get("statistics")
     assert result.json["statistics"].get("cfl")
 
 
+def test_trajectory_response_large_traj(client):
+    result: testing.Result = client.simulate_get(
+        "/v1/51a37fa7054a3f8e8d55/trajectory?"
+        + "first_timestep=0&max_steps=15000"
+    )
+    assert result.status_code == 200
+    assert result.json.get("data")
+    assert len(result.json["data"]) == 12200
+    assert result.json.get("statistics")
+    assert result.json["statistics"].get("cfl")
+
+
+def test_get_total_timesteps(client):
+    result: testing.Result = client.simulate_get(
+        "/v1/51a37fa7054a3f8e8d55/total_timesteps"
+    )
+    assert result.status_code == 200
+    assert result.json.get("data")
+    assert result.json["data"] == 12200
+
+
 def test_contact_response(client):
-    result: testing.Result = client.simulate_get("/v1/sim_id_0001/contact")
+    result: testing.Result = client.simulate_get("/v1/run_id_0001/contact")
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
 
 def test_contact_distribution_response(client):
     result: testing.Result = client.simulate_get(
-        "/v1/sim_id_0001/distribution/coordinate"
+        "/v1/run_id_0001/distribution/coordinate"
     )
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
 
 def test_map_response(client):
-    result: testing.Result = client.simulate_get("/v1/sim_id_0001/map")
+    result: testing.Result = client.simulate_get("/v1/run_id_0001/map")
     assert result.status_code == 200
 
 
 def test_get_heatmap(client):
-    result = client.simulate_get("/v1/sim_id_0001/heatmap")
+    result = client.simulate_get("/v1/run_id_0001/heatmap")
     assert result.status_code == 200
 
 
 def test_get_policy(client):
-    result = client.simulate_get("/v1/sim_id_0001/policy")
+    result = client.simulate_get("/v1/run_id_0001/policy")
     assert result.status_code == 200
 
 
 def test_get_statistics(client):
-    result = client.simulate_get("/v1/sim_id_0001/statistics")
+    result = client.simulate_get("/v1/run_id_0001/statistics")
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
 
 def test_get_pair_contact(client):
-    result = client.simulate_get("/v1/sim_id_0001/pair")
+    result = client.simulate_get("/v1/run_id_0001/pair")
     assert result.status_code == 200
     assert isinstance(result.json, list)
 
@@ -110,14 +132,18 @@ def test_list_response(client):
     result: testing.Result = client.simulate_get("/v1/list")
     assert result.status_code == 200
     assert isinstance(result.json, list)
-    assert len(result.json) == 2
-    assert "sim_id" in result.json[0]
-    assert "policy_id" in result.json[0]
-    assert "facility_name" in result.json[0]
+    assert len(result.json) == 3
+    assert "RunID" in result.json[0]
+    assert "SimulationHash" in result.json[0]
+    assert "FacilityName" in result.json[0]
 
-    sim_ids = ["sim_id_0001", "sim_id_0002"]
-    assert result.json[0]["sim_id"] in sim_ids
-    assert result.json[1]["sim_id"] in sim_ids
+    run_ids = [
+        "run_id_0001",
+        "run_id_0002",
+        "51a37fa7054a3f8e8d55",
+    ]
+    assert result.json[0]["RunID"] in run_ids
+    assert result.json[1]["RunID"] in run_ids
 
 
 def test_redoc(client):

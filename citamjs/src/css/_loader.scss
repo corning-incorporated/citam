@@ -17,6 +17,8 @@
   top: 25%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10; /* keep on top of other elements on the page */
+
 }
 
 .loader-title {
@@ -26,12 +28,12 @@
 
 .simulation-loader-overlay {
   content: '';
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #FFFFFF;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
 }
 
 .loader-wrapper {
@@ -52,6 +54,16 @@
   height: 2rem;
   box-sizing: border-box;
   background-color: darkgreen;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+}
+
+.loader-error {
+  width: 2rem;
+  height: 2rem;
+  box-sizing: border-box;
+  border-top: 0.3rem solid red;
   border-radius: 50%;
   position: relative;
   display: inline-block;

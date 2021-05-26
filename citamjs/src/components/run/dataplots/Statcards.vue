@@ -14,12 +14,21 @@
 
 <template>
   <div class="row" v-if="cardsData.length > 0">
-    <div class="col-xl-3 col-md-6" v-for="(cd, idx) in cardsData" :key="cd.name">
-      <div class="card card-shadow text-white mb-4" :class="cd.style" :id="`card-${idx}`">
+    <div
+      class="col-xl-3 col-md-6"
+      v-for="(cd, idx) in cardsData"
+      :key="cd.name"
+    >
+      <div
+        class="card card-shadow text-white mb-4"
+        :class="cd.style"
+        :id="`card-${idx}`"
+      >
         <div class="card-body">{{ cd.name }}</div>
         <div class="card-footer">
           <span class="small text-white">
-            <span class="card-value">{{ cd.value }}</span> {{ cd.unit }}</span>
+            <span class="card-value">{{ cd.value }}</span> {{ cd.unit }}</span
+          >
           <div class="small text-white"></div>
         </div>
       </div>
@@ -74,9 +83,6 @@ export default {
               return statCard;
             });
           })
-          .catch(function (error) {
-            console.log(error);
-          })
     }
   }
 }
@@ -88,7 +94,8 @@ export default {
 }
 
 .card-shadow {
-  box-shadow: 4px 10px 25px rgba(0, 0, 0, 0.45), 8px 15px 35px rgba(0, 0, 0, 0.04);
+  box-shadow: 4px 10px 25px rgba(0, 0, 0, 0.45),
+    8px 15px 35px rgba(0, 0, 0, 0.04);
 }
 
 .card-value {
