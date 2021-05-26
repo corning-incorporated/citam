@@ -7,17 +7,17 @@ This page contains auto-generated API reference documentation [#f1]_.
    :titlesonly:
 
    /autoapi/citam/index
-   /autoapi/agent/index
-   /autoapi/contacts/index
-   /autoapi/simulation/index
    /autoapi/indoor_facility/index
    /autoapi/navbuilder/index
    /autoapi/navigation/index
    /autoapi/input_parser/index
    /autoapi/serializer/index
-   /autoapi/storage_utils/index
    /autoapi/visualization/index
-   /autoapi/daily_schedule/index
+   /autoapi/storage_utils/index
    /autoapi/meetings/index
+   /autoapi/daily_schedule/index
+   /autoapi/simulation/index
+   /autoapi/contacts/index
+   /autoapi/agent/index
 
 .. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_

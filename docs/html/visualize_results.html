@@ -4,13 +4,17 @@
 <html>
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Visualize Results &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="_static/style.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="_static/style.css" />
 <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
 <script id="documentation_options" data-url_root="./"
   src="_static/documentation_options.js"></script>
+<script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
 <script src="_static/jquery.js"></script>
 <script src="_static/underscore.js"></script>
 <script src="_static/doctools.js"></script>
@@ -116,7 +120,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="visualize-results">
+  <section id="visualize-results">
 <span id="visualize"></span><h1>Visualize Results<a class="headerlink" href="#visualize-results" title="Permalink to this headline">¶</a></h1>
 <p>Simulation results can be visualized using a rudimentary dashboard.</p>
 <p>There are some known issues with the dashboard including speed issues when
@@ -134,7 +138,7 @@ visualizing large trajectory files.</p>
 as a parent directory from which all results subdirectories are accessible.</p>
 <p>To set your environment variable, a quick web search should provide instructions
 on how to do it on your machine. For more customization options, please see the global configuration page.</p>
-<div class="section" id="the-main-results-page">
+<section id="the-main-results-page">
 <h2>The Main Results Page<a class="headerlink" href="#the-main-results-page" title="Permalink to this headline">¶</a></h2>
 <p>The dashboard displays a list all of the simulations found in the specified results location
 along with floor level information in tabular format. The table lists all the details extracted from
@@ -180,11 +184,11 @@ To view data for a given simulation, click on <em>View Details</em>.</p>
 </table>
 <p><strong>Developer Note</strong>: These data are read from the <em>manifest.json</em> file by the <em>get_manifest</em> API endpoint.</p>
 <p><img alt="Main dashboard" class="align-middle" src="_images/main_dash.png" /></p>
-</div>
-<div class="section" id="the-details-page">
+</section>
+<section id="the-details-page">
 <h2>The Details Page<a class="headerlink" href="#the-details-page" title="Permalink to this headline">¶</a></h2>
 <p>This details page has two tabs: Summary and Visualizer.</p>
-<div class="section" id="the-summary-tab">
+<section id="the-summary-tab">
 <h3>The Summary Tab<a class="headerlink" href="#the-summary-tab" title="Permalink to this headline">¶</a></h3>
 <p>The summary tab show key statistics in a “cards” on top of the page about the simulation results and
 a few plots to give more details.</p>
@@ -206,16 +210,16 @@ a few plots to give more details.</p>
 <p>It also show a floorplan-based heatmap showing hotspot (where most contact events take place).</p>
 <p><img alt="Summary image 1" class="align-middle" src="_images/summary1.png" /></p>
 <p><img alt="Summary image 2" class="align-middle" src="_images/summary2.png" /></p>
-</div>
-<div class="section" id="the-visualizer-tab">
+</section>
+<section id="the-visualizer-tab">
 <h3>The Visualizer Tab<a class="headerlink" href="#the-visualizer-tab" title="Permalink to this headline">¶</a></h3>
 <p>The visualization offers an interactive way to explore the time-dependent contact
 data and trajectories of each agent. The page has a colorbar to denote the number of contacts of each agent.
 An agent with higher number of contact will be represented with a darker shade of red.</p>
 <p><img alt="Visualization image" class="align-middle" src="_images/visual.png" /></p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

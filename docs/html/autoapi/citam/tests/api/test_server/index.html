@@ -4,13 +4,17 @@
 <html>
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>citam.tests.api.test_server &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
 <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../../_static/style.css" />
 <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
 <script id="documentation_options" data-url_root="../../../../../"
   src="../../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
@@ -107,11 +111,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-citam.tests.api.test_server">
+  <section id="module-citam.tests.api.test_server">
 <span id="citam-tests-api-test-server"></span><h1><a class="reference internal" href="#module-citam.tests.api.test_server" title="citam.tests.api.test_server"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.tests.api.test_server</span></code></a><a class="headerlink" href="#module-citam.tests.api.test_server" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-contents">
+<section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="functions">
+<section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -182,112 +186,112 @@
 </tbody>
 </table>
 <dl class="py function">
-<dt id="citam.tests.api.test_server.static_path">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">static_path</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmp_path_factory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#static_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.static_path" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.static_path">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">static_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmp_path_factory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.static_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a directory with mocked versions of dash static files</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.static_route">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">static_route</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monkeypatch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#static_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.static_route" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.static_route">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">static_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monkeypatch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.static_route" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mock static routes to test dash logic without requiring JS</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.client">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">client</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_local_storage</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">falcon.testing.TestClient</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.client" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.client">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_local_storage</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">falcon.testing.TestClient</span><a class="headerlink" href="#citam.tests.api.test_server.client" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_get_summary">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_get_summary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_get_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_get_summary" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_get_summary">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_get_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_get_summary" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_trajectory_response">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_trajectory_response</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_trajectory_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_trajectory_response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_trajectory_response">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_trajectory_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_trajectory_response" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_trajectory_response_large_traj">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_trajectory_response_large_traj</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_trajectory_response_large_traj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_trajectory_response_large_traj" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_trajectory_response_large_traj">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_trajectory_response_large_traj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_trajectory_response_large_traj" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_get_total_timesteps">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_get_total_timesteps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_get_total_timesteps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_get_total_timesteps" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_get_total_timesteps">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_get_total_timesteps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_get_total_timesteps" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_contact_response">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_contact_response</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_contact_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_contact_response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_contact_response">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_contact_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_contact_response" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_contact_distribution_response">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_contact_distribution_response</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_contact_distribution_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_contact_distribution_response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_contact_distribution_response">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_contact_distribution_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_contact_distribution_response" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_map_response">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_map_response</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_map_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_map_response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_map_response">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_map_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_map_response" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_get_heatmap">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_get_heatmap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_get_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_get_heatmap" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_get_heatmap">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_get_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_get_heatmap" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_get_policy">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_get_policy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_get_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_get_policy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_get_policy">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_get_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_get_policy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_get_statistics">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_get_statistics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_get_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_get_statistics" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_get_statistics">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_get_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_get_statistics" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_get_pair_contact">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_get_pair_contact</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_get_pair_contact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_get_pair_contact" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_get_pair_contact">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_get_pair_contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_get_pair_contact" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_list_response">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_list_response</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_list_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_list_response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_list_response">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_list_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_list_response" title="Permalink to this definition">¶</a></dt>
 <dd><p>note: The result here is set by the mock.
 See <code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.tests.conftest</span></code> for more information.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_redoc">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_redoc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_redoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_redoc" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_redoc">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_redoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_redoc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_openapi_response">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_openapi_response</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_openapi_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_openapi_response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_openapi_response">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_openapi_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_openapi_response" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_index">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_index" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_index">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_index" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_404">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_404</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_404"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_404" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_404">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_404</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_404" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.api.test_server.test_static_route">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></code><code class="sig-name descname"><span class="pre">test_static_route</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/api/test_server.html#test_static_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.api.test_server.test_static_route" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.api.test_server.test_static_route">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.api.test_server.</span></span><span class="sig-name descname"><span class="pre">test_static_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.api.test_server.test_static_route" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

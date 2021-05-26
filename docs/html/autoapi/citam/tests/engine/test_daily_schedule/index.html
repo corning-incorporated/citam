@@ -4,13 +4,17 @@
 <html>
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>citam.tests.engine.test_daily_schedule &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
 <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../../_static/style.css" />
 <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
 <script id="documentation_options" data-url_root="../../../../../"
   src="../../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
@@ -107,11 +111,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-citam.tests.engine.test_daily_schedule">
+  <section id="module-citam.tests.engine.test_daily_schedule">
 <span id="citam-tests-engine-test-daily-schedule"></span><h1><a class="reference internal" href="#module-citam.tests.engine.test_daily_schedule" title="citam.tests.engine.test_daily_schedule"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.tests.engine.test_daily_schedule</span></code></a><a class="headerlink" href="#module-citam.tests.engine.test_daily_schedule" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-contents">
+<section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="functions">
+<section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -170,91 +174,91 @@
 </tbody>
 </table>
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.sample_empty_schedule_object">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">sample_empty_schedule_object</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simple_facility_floorplan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monkeypatch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rect_floorplan_ingester_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#sample_empty_schedule_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.sample_empty_schedule_object" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.sample_empty_schedule_object">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">sample_empty_schedule_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simple_facility_floorplan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monkeypatch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rect_floorplan_ingester_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.sample_empty_schedule_object" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_build_schedule_item_not_enough_time">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_build_schedule_item_not_enough_time</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_build_schedule_item_not_enough_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_build_schedule_item_not_enough_time" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_build_schedule_item_not_enough_time">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_build_schedule_item_not_enough_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_build_schedule_item_not_enough_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Not enough time before next meeting, raise error</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_build_schedule_item">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_build_schedule_item</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_build_schedule_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_build_schedule_item" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_build_schedule_item">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_build_schedule_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_build_schedule_item" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_first_item">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_find_next_schedule_item_first_item</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_find_next_schedule_item_first_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_first_item" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_first_item">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_find_next_schedule_item_first_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_first_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>If no upcoming meeting, start schedule with office work</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_upcoming_meeting">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_find_next_schedule_item_upcoming_meeting</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_find_next_schedule_item_upcoming_meeting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_upcoming_meeting" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_upcoming_meeting">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_find_next_schedule_item_upcoming_meeting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_upcoming_meeting" title="Permalink to this definition">¶</a></dt>
 <dd><p>upcoming meeting found, just return it</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_existing_item">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_find_next_schedule_item_existing_item</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_find_next_schedule_item_existing_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_existing_item" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_existing_item">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_find_next_schedule_item_existing_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_existing_item" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_choose_valid_scheduling_purpose">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_choose_valid_scheduling_purpose</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_choose_valid_scheduling_purpose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_choose_valid_scheduling_purpose" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_choose_valid_scheduling_purpose">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_choose_valid_scheduling_purpose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_choose_valid_scheduling_purpose" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_find_possible_purposes">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_find_possible_purposes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_find_possible_purposes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_possible_purposes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_find_possible_purposes">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_find_possible_purposes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_find_possible_purposes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_get_valid_purposes_from_possible_purposes">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_get_valid_purposes_from_possible_purposes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_get_valid_purposes_from_possible_purposes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_get_valid_purposes_from_possible_purposes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_get_valid_purposes_from_possible_purposes">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_get_valid_purposes_from_possible_purposes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_get_valid_purposes_from_possible_purposes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_get_valid_purposes_no_consecutive_restroom_visits">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_get_valid_purposes_no_consecutive_restroom_visits</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_get_valid_purposes_no_consecutive_restroom_visits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_get_valid_purposes_no_consecutive_restroom_visits" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_get_valid_purposes_no_consecutive_restroom_visits">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_get_valid_purposes_no_consecutive_restroom_visits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_get_valid_purposes_no_consecutive_restroom_visits" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_get_pace">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_get_pace</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_get_pace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_get_pace" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_get_pace">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_get_pace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_get_pace" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_update_itinerary">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_update_itinerary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_update_itinerary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_itinerary" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_update_itinerary">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_update_itinerary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_itinerary" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_update_itinerary_route_is_none">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_update_itinerary_route_is_none</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_update_itinerary_route_is_none"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_itinerary_route_is_none" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_update_itinerary_route_is_none">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_update_itinerary_route_is_none</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_itinerary_route_is_none" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_update_schedule_continue_last_item">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_update_schedule_continue_last_item</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_update_schedule_continue_last_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_schedule_continue_last_item" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_update_schedule_continue_last_item">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_update_schedule_continue_last_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_schedule_continue_last_item" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_update_schedule_items_add">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_update_schedule_items_add</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_update_schedule_items_add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_schedule_items_add" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_update_schedule_items_add">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_update_schedule_items_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_update_schedule_items_add" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="citam.tests.engine.test_daily_schedule.test_build">
-<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></code><code class="sig-name descname"><span class="pre">test_build</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_daily_schedule.html#test_build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_build" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.tests.engine.test_daily_schedule.test_build">
+<span class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_daily_schedule.</span></span><span class="sig-name descname"><span class="pre">test_build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_empty_schedule_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.tests.engine.test_daily_schedule.test_build" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

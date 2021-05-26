@@ -4,13 +4,17 @@
 <html>
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Simulation Input Requirements &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="_static/style.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="_static/style.css" />
 <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
 <script id="documentation_options" data-url_root="./"
   src="_static/documentation_options.js"></script>
+<script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
 <script src="_static/jquery.js"></script>
 <script src="_static/underscore.js"></script>
 <script src="_static/doctools.js"></script>
@@ -116,12 +120,12 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="simulation-input-requirements">
+  <section id="simulation-input-requirements">
 <span id="input-requirements"></span><h1>Simulation Input Requirements<a class="headerlink" href="#simulation-input-requirements" title="Permalink to this headline">¶</a></h1>
 <p>Simulation inputs are provided in JSON files. There is one required input file:
 the main simulation input file; and two optional input files:
 the meetings and scheduling policies respectively.</p>
-<div class="section" id="main-simulation-inputs">
+<section id="main-simulation-inputs">
 <h2>Main Simulation Inputs<a class="headerlink" href="#main-simulation-inputs" title="Permalink to this headline">¶</a></h2>
 <p><em>Required Inputs</em></p>
 <dl class="field-list simple">
@@ -186,8 +190,8 @@ shown below. Example: [{“floor”: “0”, “segment_id”:”0”, “direc
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">citam engine export-potential-oneway-aisles -o OUTPUT_FILE</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="scheduling-policy">
+</section>
+<section id="scheduling-policy">
 <h2>Scheduling Policy<a class="headerlink" href="#scheduling-policy" title="Permalink to this headline">¶</a></h2>
 <p>The optional scheduling policy file contains parameters that describe where and when agents
 move within the facility. The default values can be found in citam/engine/constants.py.</p>
@@ -241,14 +245,14 @@ satisfied.</p>
 </dl>
 </div></blockquote>
 <p>}</p>
-</div>
-<div class="section" id="meetings-policy">
+</section>
+<section id="meetings-policy">
 <h2>Meetings Policy<a class="headerlink" href="#meetings-policy" title="Permalink to this headline">¶</a></h2>
 <p>The meetings policy file defines how many meetings take place as well as when, where they
 happen and who participate.</p>
 <p>TODO: complete this section.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

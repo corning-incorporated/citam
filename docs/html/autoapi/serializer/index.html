@@ -4,13 +4,17 @@
 <html>
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>serializer &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
 <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../_static/style.css" />
 <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
 <script id="documentation_options" data-url_root="../../"
   src="../../_static/documentation_options.js"></script>
+<script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
 <script src="../../_static/jquery.js"></script>
 <script src="../../_static/underscore.js"></script>
 <script src="../../_static/doctools.js"></script>
@@ -107,11 +111,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-serializer">
+  <section id="module-serializer">
 <span id="serializer"></span><h1><a class="reference internal" href="#module-serializer" title="serializer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">serializer</span></code></a><a class="headerlink" href="#module-serializer" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-contents">
+<section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="classes">
+<section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -124,8 +128,8 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="attributes">
+</section>
+<section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -139,34 +143,34 @@
 </tbody>
 </table>
 <dl class="py class">
-<dt id="serializer._Serializer">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">serializer.</span></code><code class="sig-name descname"><span class="pre">_Serializer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classname_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'__class__'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="serializer._Serializer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">serializer.</span></span><span class="sig-name descname"><span class="pre">_Serializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classname_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'__class__'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper class to manage encoding and decoding classes to/from JSON.</p>
 <dl class="py method">
-<dt id="serializer._Serializer.__call__">
-<code class="sig-name descname"><span class="pre">__call__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer.__call__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="serializer._Serializer.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer.__call__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="serializer._Serializer.decoder_hook">
-<code class="sig-name descname"><span class="pre">decoder_hook</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer.decoder_hook" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="serializer._Serializer.decoder_hook">
+<span class="sig-name descname"><span class="pre">decoder_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer.decoder_hook" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="serializer._Serializer.encoder_default">
-<code class="sig-name descname"><span class="pre">encoder_default</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer.encoder_default" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="serializer._Serializer.encoder_default">
+<span class="sig-name descname"><span class="pre">encoder_default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializer._Serializer.encoder_default" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py data">
-<dt id="serializer.serializer">
-<code class="sig-prename descclassname"><span class="pre">serializer.</span></code><code class="sig-name descname"><span class="pre">serializer</span></code><a class="headerlink" href="#serializer.serializer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="serializer.serializer">
+<span class="sig-prename descclassname"><span class="pre">serializer.</span></span><span class="sig-name descname"><span class="pre">serializer</span></span><a class="headerlink" href="#serializer.serializer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

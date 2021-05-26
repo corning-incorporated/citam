@@ -4,13 +4,17 @@
 <html>
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>citam.api.storage.local &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
 <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../../_static/style.css" />
 <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
 <script id="documentation_options" data-url_root="../../../../../"
   src="../../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
@@ -107,11 +111,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-citam.api.storage.local">
+  <section id="module-citam.api.storage.local">
 <span id="citam-api-storage-local"></span><h1><a class="reference internal" href="#module-citam.api.storage.local" title="citam.api.storage.local"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.storage.local</span></code></a><a class="headerlink" href="#module-citam.api.storage.local" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-contents">
+<section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="classes">
+<section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -125,8 +129,8 @@
 </tbody>
 </table>
 <dl class="py class">
-<dt id="citam.api.storage.local.LocalStorageDriver">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">citam.api.storage.local.</span></code><code class="sig-name descname"><span class="pre">LocalStorageDriver</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">citam.api.storage.local.</span></span><span class="sig-name descname"><span class="pre">LocalStorageDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../index.html#citam.api.storage.BaseStorageDriver" title="citam.api.storage.BaseStorageDriver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">citam.api.storage.BaseStorageDriver</span></code></a></p>
 <p>Local storage driver for simulation results.</p>
 <p>This driver will scan the provided search_path for valid manifest.json
@@ -137,8 +141,8 @@ files when initialized.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.list_runs">
-<code class="sig-name descname"><span class="pre">list_runs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.list_runs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.list_runs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.list_runs">
+<span class="sig-name descname"><span class="pre">list_runs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.list_runs" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all simulations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -148,8 +152,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_coordinate_distribution_file">
-<code class="sig-name descname"><span class="pre">get_coordinate_distribution_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_coordinate_distribution_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_coordinate_distribution_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_coordinate_distribution_file">
+<span class="sig-name descname"><span class="pre">get_coordinate_distribution_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_coordinate_distribution_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Coordinate Distribution file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -165,8 +169,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_trajectory_file">
-<code class="sig-name descname"><span class="pre">get_trajectory_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_trajectory_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_trajectory_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_trajectory_file">
+<span class="sig-name descname"><span class="pre">get_trajectory_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_trajectory_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the trajectory file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -179,8 +183,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_trajectory_file_location">
-<code class="sig-name descname"><span class="pre">get_trajectory_file_location</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_trajectory_file_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_trajectory_file_location" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_trajectory_file_location">
+<span class="sig-name descname"><span class="pre">get_trajectory_file_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_trajectory_file_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the trajectory file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -193,8 +197,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_contact_file">
-<code class="sig-name descname"><span class="pre">get_contact_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_contact_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_contact_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_contact_file">
+<span class="sig-name descname"><span class="pre">get_contact_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_contact_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the contact file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -210,8 +214,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_map_file">
-<code class="sig-name descname"><span class="pre">get_map_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_map_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_map_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_map_file">
+<span class="sig-name descname"><span class="pre">get_map_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_map_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the map image for given simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -227,8 +231,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_heatmap_file">
-<code class="sig-name descname"><span class="pre">get_heatmap_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_heatmap_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_heatmap_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_heatmap_file">
+<span class="sig-name descname"><span class="pre">get_heatmap_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_heatmap_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a heatmap file for a simulation and floor</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -244,8 +248,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_manifest_file">
-<code class="sig-name descname"><span class="pre">get_manifest_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_manifest_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_manifest_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_manifest_file">
+<span class="sig-name descname"><span class="pre">get_manifest_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_manifest_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the manifest file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -258,8 +262,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_pair_contact_file">
-<code class="sig-name descname"><span class="pre">get_pair_contact_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_pair_contact_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_pair_contact_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_pair_contact_file">
+<span class="sig-name descname"><span class="pre">get_pair_contact_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_pair_contact_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the pair contact file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -272,8 +276,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_statistics_file">
-<code class="sig-name descname"><span class="pre">get_statistics_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_statistics_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_statistics_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_statistics_file">
+<span class="sig-name descname"><span class="pre">get_statistics_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_statistics_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the statistics file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -283,8 +287,8 @@ files when initialized.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="citam.api.storage.local.LocalStorageDriver.get_policy_file">
-<code class="sig-name descname"><span class="pre">get_policy_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/local.html#LocalStorageDriver.get_policy_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_policy_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="citam.api.storage.local.LocalStorageDriver.get_policy_file">
+<span class="sig-name descname"><span class="pre">get_policy_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.api.storage.local.LocalStorageDriver.get_policy_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the statistics file for a simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -295,9 +299,9 @@ files when initialized.</p>
 
 </dd></dl>
 
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

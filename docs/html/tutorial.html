@@ -4,13 +4,17 @@
 <html>
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Tutorial &#8212; CITAM 0.9.0 documentation</title>
 <link rel="stylesheet" href="_static/style.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="_static/style.css" />
 <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
 <script id="documentation_options" data-url_root="./"
   src="_static/documentation_options.js"></script>
+<script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
 <script src="_static/jquery.js"></script>
 <script src="_static/underscore.js"></script>
 <script src="_static/doctools.js"></script>
@@ -115,7 +119,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="tutorial">
+  <section id="tutorial">
 <span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
 <dl class="simple">
 <dt><strong>Contents</strong></dt><dd><ul class="simple">
@@ -127,7 +131,7 @@
 </ul>
 </dd>
 </dl>
-<div class="section" id="introduction">
+<section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>This is a brief tutorial on how to use CITAM.</p>
 <p>CITAM is an agent-based modeling platform that can assist in the management of indoor facilities in the context of
@@ -148,8 +152,8 @@ how, when and where they move around in the facility, CITAM attempts to automati
 create a schedule and associated itinerary for them using scheduling and meeting policies that you can
 provide. We will come back to those later in this tutorial. Let’s start by
 adding a facility.</p>
-</div>
-<div class="section" id="adding-a-facility">
+</section>
+<section id="adding-a-facility">
 <h2>Adding a facility<a class="headerlink" href="#adding-a-facility" title="Permalink to this headline">¶</a></h2>
 <p>To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
 each space in “path” elements. CITAM also needs information about the function of
@@ -165,133 +169,75 @@ Fig. 1 shows how the floor plan given by TF2.svg looks like. You can use any SVG
 <p>Fig. 1: Layout of the floorplan used in this tutorial. Notice how the boundaries for each space are clearly shown.</p>
 <p>Before ingestion, let’s take a look at the content of TF2.svg. Use a text editor such
 as <a class="reference external" href="https://www.notepad-plus-plus.org">notepad++</a> to open the file and inspect its contents. Here is the top 30 lines of this file:</p>
-<div class="highlight-xml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
-<span class="nt">&lt;svg</span> 
-	<span class="na">xmlns:rdf=</span><span class="s">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span> 
-	<span class="na">xmlns:svg=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
-	<span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
-	<span class="na">id=</span><span class="s">&quot;svg224&quot;</span> 
-	<span class="na">viewBox=</span><span class="s">&quot;-120.6 -120.6 1441.2 1441.2&quot;</span> 
-	<span class="na">version=</span><span class="s">&quot;1.1&quot;</span> 
-	<span class="na">height=</span><span class="s">&quot;600px&quot;</span>
-	<span class="nt">&gt;</span>
-	<span class="nt">&lt;defs</span> <span class="na">id=</span><span class="s">&quot;defs228&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;1&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1152 L 96,1152  L 96,1200  L 0,1200 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;2&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,0 L 96,0  L 96,48  L 0,48 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;3&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1152 L 192,1152  L 192,1200  L 96,1200 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;4&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,0 L 192,0  L 192,48  L 96,48 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;5&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,1152 L 288,1152  L 288,1200  L 192,1200 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;6&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,0 L 288,0  L 288,48  L 192,48 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;7&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,1152 L 384,1152  L 384,1200  L 288,1200 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;8&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,0 L 384,0  L 384,48  L 288,48 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;9&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,1152 L 480,1152  L 480,1200  L 384,1200 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;10&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,0 L 480,0  L 480,48  L 384,48 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;11&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,1152 L 576,1152  L 576,1200  L 480,1200 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;12&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,0 L 576,0  L 576,48  L 480,48 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;13&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1128 L 240,1128  L 240,1152  L 0,1152 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;14&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1080 L 48,1080  L 48,1128  L 0,1128 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;15&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1032 L 48,1032  L 48,1080  L 0,1080 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;16&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1080 L 96,1080  L 96,1128  L 48,1128 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;17&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1032 L 96,1032  L 96,1080  L 48,1080 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;18&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1080 L 144,1080  L 144,1128  L 96,1128 z&quot;</span><span class="nt">/&gt;</span>
-	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;19&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1032 L 144,1032  L 144,1080  L 96,1080 z&quot;</span><span class="nt">/&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
+<span class="linenos"> 2</span><span class="nt">&lt;svg</span> 
+<span class="linenos"> 3</span>	<span class="na">xmlns:rdf=</span><span class="s">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span> 
+<span class="linenos"> 4</span>	<span class="na">xmlns:svg=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
+<span class="linenos"> 5</span>	<span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/2000/svg&quot;</span> 
+<span class="linenos"> 6</span>	<span class="na">id=</span><span class="s">&quot;svg224&quot;</span> 
+<span class="linenos"> 7</span>	<span class="na">viewBox=</span><span class="s">&quot;-120.6 -120.6 1441.2 1441.2&quot;</span> 
+<span class="linenos"> 8</span>	<span class="na">version=</span><span class="s">&quot;1.1&quot;</span> 
+<span class="linenos"> 9</span>	<span class="na">height=</span><span class="s">&quot;600px&quot;</span>
+<span class="linenos">10</span>	<span class="nt">&gt;</span>
+<span class="linenos">11</span>	<span class="nt">&lt;defs</span> <span class="na">id=</span><span class="s">&quot;defs228&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">12</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;1&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1152 L 96,1152  L 96,1200  L 0,1200 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">13</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;2&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,0 L 96,0  L 96,48  L 0,48 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">14</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;3&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1152 L 192,1152  L 192,1200  L 96,1200 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">15</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;4&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,0 L 192,0  L 192,48  L 96,48 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">16</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;5&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,1152 L 288,1152  L 288,1200  L 192,1200 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">17</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;6&quot;</span> <span class="na">d=</span><span class="s">&quot;M 192,0 L 288,0  L 288,48  L 192,48 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">18</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;7&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,1152 L 384,1152  L 384,1200  L 288,1200 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">19</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;8&quot;</span> <span class="na">d=</span><span class="s">&quot;M 288,0 L 384,0  L 384,48  L 288,48 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">20</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;9&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,1152 L 480,1152  L 480,1200  L 384,1200 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">21</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;10&quot;</span> <span class="na">d=</span><span class="s">&quot;M 384,0 L 480,0  L 480,48  L 384,48 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">22</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;11&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,1152 L 576,1152  L 576,1200  L 480,1200 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">23</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;12&quot;</span> <span class="na">d=</span><span class="s">&quot;M 480,0 L 576,0  L 576,48  L 480,48 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">24</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;13&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1128 L 240,1128  L 240,1152  L 0,1152 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">25</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;14&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1080 L 48,1080  L 48,1128  L 0,1128 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">26</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;15&quot;</span> <span class="na">d=</span><span class="s">&quot;M 0,1032 L 48,1032  L 48,1080  L 0,1080 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">27</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;16&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1080 L 96,1080  L 96,1128  L 48,1128 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">28</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;17&quot;</span> <span class="na">d=</span><span class="s">&quot;M 48,1032 L 96,1032  L 96,1080  L 48,1080 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">29</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;18&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1080 L 144,1080  L 144,1128  L 96,1128 z&quot;</span><span class="nt">/&gt;</span>
+<span class="linenos">30</span>	<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&quot;19&quot;</span> <span class="na">d=</span><span class="s">&quot;M 96,1032 L 144,1032  L 144,1080  L 96,1080 z&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>If you are not familiar with SVG files, there is a brief tutorial on the <a class="reference external" href="https://www.w3schools.com/graphics/svg_intro.asp">W3 Schools website</a> to get you started.
 The file contains a list of spaces with a geometric description of their boundaries in the “d” sub element.
 Each space also has a (unique) ID used to identify them.</p>
 <p>For a detailed discussion of the SVG format and the required information, please visit: <a class="reference internal" href="facility_data_requirement.html#svg-requirements"><span class="std std-ref">Facility Data Requirements</span></a></p>
 <p>The second file of interest in TF2.csv. Let’s take a closer look at it:</p>
-<div class="highlight-csv notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>ID,facility,Building,Floor,unique_name,space_function
-1,TF,TF1,0,ROOM_1,Office
-2,TF,TF1,0,ROOM2,Office
-3,TF,TF1,0,ROOM_3,Office
-4,TF,TF1,0,ROOM4,Office
-5,TF,TF1,0,ROOM_5,Office
-6,TF,TF1,0,ROOM6,Office
-7,TF,TF1,0,ROOM_7,Office
-8,TF,TF1,0,ROOM8,Office
-9,TF,TF1,0,ROOM_9,Office
-10,TF,TF1,0,ROOM10,Office
-11,TF,TF1,0,ROOM_11,Office
-12,TF,TF1,0,ROOM12,Office
-13,TF,TF1,0,AISLE13,Circulation
-14,TF,TF1,0,ROOM14,Office
-15,TF,TF1,0,ROOM15,Office
-16,TF,TF1,0,ROOM16,Office
-17,TF,TF1,0,ROOM17,Office
-18,TF,TF1,0,ROOM18,Office
-19,TF,TF1,0,ROOM19,Office
-20,TF,TF1,0,ROOM20,Office
-21,TF,TF1,0,ROOM21,Office
-22,TF,TF1,0,ROOM22,Office
-23,TF,TF1,0,ROOM23,Office
-24,TF,TF1,0,AISLE24,Circulation
-25,TF,TF1,0,ROOM25,Office
-26,TF,TF1,0,ROOM26,Office
-27,TF,TF1,0,ROOM27,Office
-28,TF,TF1,0,ROOM28,Office
-29,TF,TF1,0,ROOM29,Office
+<div class="highlight-csv notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>ID,facility,Building,Floor,unique_name,space_function
+<span class="linenos"> 2</span>1,TF,TF1,0,ROOM_1,Office
+<span class="linenos"> 3</span>2,TF,TF1,0,ROOM2,Office
+<span class="linenos"> 4</span>3,TF,TF1,0,ROOM_3,Office
+<span class="linenos"> 5</span>4,TF,TF1,0,ROOM4,Office
+<span class="linenos"> 6</span>5,TF,TF1,0,ROOM_5,Office
+<span class="linenos"> 7</span>6,TF,TF1,0,ROOM6,Office
+<span class="linenos"> 8</span>7,TF,TF1,0,ROOM_7,Office
+<span class="linenos"> 9</span>8,TF,TF1,0,ROOM8,Office
+<span class="linenos">10</span>9,TF,TF1,0,ROOM_9,Office
+<span class="linenos">11</span>10,TF,TF1,0,ROOM10,Office
+<span class="linenos">12</span>11,TF,TF1,0,ROOM_11,Office
+<span class="linenos">13</span>12,TF,TF1,0,ROOM12,Office
+<span class="linenos">14</span>13,TF,TF1,0,AISLE13,Circulation
+<span class="linenos">15</span>14,TF,TF1,0,ROOM14,Office
+<span class="linenos">16</span>15,TF,TF1,0,ROOM15,Office
+<span class="linenos">17</span>16,TF,TF1,0,ROOM16,Office
+<span class="linenos">18</span>17,TF,TF1,0,ROOM17,Office
+<span class="linenos">19</span>18,TF,TF1,0,ROOM18,Office
+<span class="linenos">20</span>19,TF,TF1,0,ROOM19,Office
+<span class="linenos">21</span>20,TF,TF1,0,ROOM20,Office
+<span class="linenos">22</span>21,TF,TF1,0,ROOM21,Office
+<span class="linenos">23</span>22,TF,TF1,0,ROOM22,Office
+<span class="linenos">24</span>23,TF,TF1,0,ROOM23,Office
+<span class="linenos">25</span>24,TF,TF1,0,AISLE24,Circulation
+<span class="linenos">26</span>25,TF,TF1,0,ROOM25,Office
+<span class="linenos">27</span>26,TF,TF1,0,ROOM26,Office
+<span class="linenos">28</span>27,TF,TF1,0,ROOM27,Office
+<span class="linenos">29</span>28,TF,TF1,0,ROOM28,Office
+<span class="linenos">30</span>29,TF,TF1,0,ROOM29,Office
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>As you can see, this file simply contains additional information about each space as identified by their ID.
 For example, we can see that space ID “1” is an office on floor “0”. For a list of supported values and
 metadata please go to the <a class="reference internal" href="facility_data_requirement.html#svg-requirements"><span class="std std-ref">Facility Data Requirements</span></a> page of the documentation. The ID field is read as a string. The only requirement is that it is unique. The space information provided in the CSV file can also be added to the SVG file (supported soon).</p>
@@ -345,8 +291,8 @@ command:</p>
 <p>Congratulations! You have ingested your first floorplan. This is the most involved step in the process
 but you only have to do it once for each floor of your facility. Once you are happy with the
 floorplan, the next step is to generate the navigation network.</p>
-</div>
-<div class="section" id="generating-the-navigation-network">
+</section>
+<section id="generating-the-navigation-network">
 <h2>Generating the Navigation Network<a class="headerlink" href="#generating-the-navigation-network" title="Permalink to this headline">¶</a></h2>
 <p>The navigation network (navnet) is what is used internally by citam to compute routes between
 different locations in the facility. Use the following command to build the navnet for TF2:</p>
@@ -358,8 +304,8 @@ only once per facility per floor.</p>
 <p>If you are curious, you can also export the navnet as an SVG file for visualization using the export-navnet command.</p>
 <p>Once the navnet is created, you are good to go! Now you can run as many simulations
 as you want for this floorplan.</p>
-</div>
-<div class="section" id="running-a-simulation">
+</section>
+<section id="running-a-simulation">
 <h2>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h2>
 <p>To run a simulation, you need an input file in JSON format. Please
 create a new folder to run the simulation. We will refer to this folder as
@@ -410,12 +356,12 @@ the following files created in your SIMULATION_FOLDER:</p>
 <p>Congratulations, you successfully ran your first simulation!</p>
 <p>For a description of all the output files, go to: <a class="reference internal" href="outputs_description.html#outputs"><span class="std std-ref">Output Description</span></a></p>
 <p>For details on how to visualize and interpret your results go to: <a class="reference internal" href="visualize_results.html#visualize"><span class="std std-ref">Visualize Results</span></a></p>
-</div>
-<div class="section" id="exploring-policies">
+</section>
+<section id="exploring-policies">
 <h2>Exploring Policies<a class="headerlink" href="#exploring-policies" title="Permalink to this headline">¶</a></h2>
 <p>Coming soon</p>
-</div>
-<div class="section" id="to-learn-more">
+</section>
+<section id="to-learn-more">
 <h2>To Learn More<a class="headerlink" href="#to-learn-more" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -442,8 +388,8 @@ the following files created in your SIMULATION_FOLDER:</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
