@@ -16,7 +16,11 @@
   <div class="container-fluid">
     <div class="row customNav fixed-top">
       <div class="col-sm-3">
-        <p><i>free</i> <small>and</small> <i> open-source</i></p>
+        <div class="row titleBorder">
+          <div class="col-sm-2 colSpacing">
+            <img src="./Images/CITAM_vector.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+          </div>
+        </div>
       </div>
       <div class="col-sm-9">
         <!-- Nav tabs -->
@@ -46,24 +50,11 @@
 
     <div class="row bckImg">
       <div class="col">
-        <div class="row titleBorder">
-          <div class="col-sm-2 colSpacing">
-            <img src="./Images/CITAM_vector.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
-          </div>
-          <div class="col-sm-10 colSpacing">
-            <p id="citamSubTitle">
-              <i>
-                COVID-19 Indoor Transmission <br />
-                Agent-based Modeling Software</i>
-            </p>
-          </div>
-        </div>
         <div class="row">
           <div class="col subTitleMargin">
             <p>
               <i>
-                An agent-based simulation platform <br />
-                for indoor environments</i>
+                Free and open-source agent-based<br /> simulation platform for indoor environments</i>
             </p>
             <button class="customButton btn">
               <a href="html/getting_started.html">Get Started</a>
@@ -78,11 +69,12 @@
     <div class="row">
       <div class="col d-flex justify-content-center">
         <p id="citamDesc">
-          <i>COVID-19 Indoor Transmission Agent-based Modeling (CITAM)
-            software simulates <br />
-            the movement of individuals inside a facility over time to aid
-            risk assessment <br />
-            and decision-making to help minimize COVID-19 infection risks.</i>
+          <i>CITAM (COVID-19 Indoor Transmission Agent-based Modeling) is a Python agent-based modeling platform for
+            indoor environments. It can be used to create "virtual" analogs of real facilities to run different types of
+            simulations that benefit from the use of real floor plans. It was designed to simulate the movement of
+            individuals in indoor environments for risk assessment and decision making related to infectious disease
+            spread but is not limited to that use case.
+          </i>
         </p>
       </div>
     </div>
@@ -110,10 +102,10 @@
       </div>
       <div class="col-sm-4">
         <div class="featureItem">
-          <h6><b>PEDESTRIAN TRAFFIC MANAGEMENT</b></h6>
+          <h6><b>EXTENSIBLE</b></h6>
           <p>
-            Supports the implementation of pedestrian traffic rules such as
-            one-way aisles
+            CITAM can be used as a general Python library for a wide variety of use cases including facility management
+            and smart manufacturing.
           </p>
         </div>
         <div class="featureItem">
@@ -130,7 +122,7 @@
           <p>
             A contact event is recorded when individuals come within a
             predefined distance (e.g., 6 feet) of one another
-            <br /><br />Detailed contact statistics including locations and
+            <br /><br />detailed contact statistics including locations and
             individuals involved are available at the end of a simulation
             <br /><br />
           </p>
@@ -141,12 +133,8 @@
       <div class="col">
         <h4><b>HOW TO USE</b></h4>
         <h6>
-          CITAM is meant to be downloaded and used locally. The current
-          version of CITAM assumes the user has basic technical knowledge on
-          how to use the terminal and manipulate text and JSON files as most
-          operations take place with a CLI (command-line interface). The plan
-          is to build a fully functional Graphical User Interface (GUI) to
-          make easier for everyone to use.
+          Download and install CITAM through GitHub. We assume the user has basic technical knowledge in Python, how to
+          use the terminal and manipulate JSON and SVG files.
         </h6>
         <br /><br />
         <button class="customButton btn">
@@ -179,7 +167,7 @@
               <a class="nav-link" href="#">Terms of Use</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="https://www.corning.com/worldwide/en/privacy-policy.html">Privacy Notice</a>
+              <a class="nav-link" href="#">Privacy Notice</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
