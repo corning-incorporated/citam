@@ -82,6 +82,11 @@ instance/
 docs/_build/
 public/html/
 public/doctrees/
+docs/html/
+docs/doctrees/
+docsrc/html/
+docsrc/doctrees/
+docsrc/_build/
 
 # PyBuilder
 .pybuilder/
