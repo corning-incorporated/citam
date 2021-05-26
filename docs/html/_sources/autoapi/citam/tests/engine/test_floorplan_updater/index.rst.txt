@@ -1,0 +1,22 @@
+:mod:`citam.tests.engine.test_floorplan_updater`
+================================================
+
+.. py:module:: citam.tests.engine.test_floorplan_updater
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_floorplan_updater.test_update_from_svg_data
+
+
+
+.. function:: test_update_from_svg_data(rect_floorplan, datadir)
+
+

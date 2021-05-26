@@ -1,0 +1,6 @@
+:mod:`citam.__main__`
+=====================
+
+.. py:module:: citam.__main__
+
+

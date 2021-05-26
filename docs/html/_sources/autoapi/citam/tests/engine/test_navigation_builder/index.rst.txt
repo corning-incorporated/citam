@@ -1,0 +1,157 @@
+:mod:`citam.tests.engine.test_navigation_builder`
+=================================================
+
+.. py:module:: citam.tests.engine.test_navigation_builder
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_navigation_builder.test__init
+   citam.tests.engine.test_navigation_builder.test_find_valid_boundaries
+   citam.tests.engine.test_navigation_builder.test__find_location_of_point_1
+   citam.tests.engine.test_navigation_builder.test__find_location_of_point_2
+   citam.tests.engine.test_navigation_builder.test__find_location_of_point_3
+   citam.tests.engine.test_navigation_builder.test__aisle_has_nav_segment_1
+   citam.tests.engine.test_navigation_builder.test__find_location_of_point
+   citam.tests.engine.test_navigation_builder.test_compute_nav_segments_starting_point_on_wall
+   citam.tests.engine.test_navigation_builder.test_compute_nav_segments_overlap_with_wall
+   citam.tests.engine.test_navigation_builder.test_compute_nav_segments_starts_from_mid_aisle_no_issue
+   citam.tests.engine.test_navigation_builder.test_compute_nav_segments_across_spaces
+   citam.tests.engine.test_navigation_builder.test_create_nav_segment_for_aisle_1
+   citam.tests.engine.test_navigation_builder.test_create_nav_segment_for_aisle_2
+   citam.tests.engine.test_navigation_builder.test__aisle_has_nav_segment_2
+   citam.tests.engine.test_navigation_builder.test_simplify_navigation_network_1
+   citam.tests.engine.test_navigation_builder.test_simplify_navigation_network_2
+   citam.tests.engine.test_navigation_builder.test_simplify_navigation_network_3
+   citam.tests.engine.test_navigation_builder.test_sanitize_graph
+   citam.tests.engine.test_navigation_builder.test_sanitize_graph_2
+   citam.tests.engine.test_navigation_builder.test_build_x
+   citam.tests.engine.test_navigation_builder.test_build_navnet_for_rect_space
+   citam.tests.engine.test_navigation_builder.test_build_navnet_for_2_adjacent_rect_spaces
+   citam.tests.engine.test_navigation_builder.test_export_navdata_to_json
+   citam.tests.engine.test_navigation_builder.test_export_navnet_to_svg
+   citam.tests.engine.test_navigation_builder.test_load_navdata_from_json_files_1
+   citam.tests.engine.test_navigation_builder.test_load_navdata_from_json_files_2
+   citam.tests.engine.test_navigation_builder.test_load_navdata_from_json_files_3
+   citam.tests.engine.test_navigation_builder.test_load_nav_segments_from_svg_file
+   citam.tests.engine.test_navigation_builder.test_update_network_from_svg_file
+   citam.tests.engine.test_navigation_builder.test__add_spaces_to_hallway_graph
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_navigation_builder.NAVNET_JSON_FILE
+   citam.tests.engine.test_navigation_builder.HALLWAY_GRAPH_JSON_FILE
+
+
+.. data:: NAVNET_JSON_FILE
+   :annotation: = navnet.json
+
+   
+
+.. data:: HALLWAY_GRAPH_JSON_FILE
+   :annotation: = hallway_graph.json
+
+   
+
+.. function:: test__init(x_floorplan)
+
+
+.. function:: test_find_valid_boundaries(x_floorplan)
+
+
+.. function:: test__find_location_of_point_1(rect_floorplan)
+
+
+.. function:: test__find_location_of_point_2(rect_floorplan)
+
+
+.. function:: test__find_location_of_point_3(x_floorplan)
+
+
+.. function:: test__aisle_has_nav_segment_1(x_floorplan, aisle_from_x_floorplan)
+
+
+.. function:: test__find_location_of_point(x_floorplan)
+
+
+.. function:: test_compute_nav_segments_starting_point_on_wall(rect_floorplan)
+
+
+.. function:: test_compute_nav_segments_overlap_with_wall(rect_floorplan)
+
+
+.. function:: test_compute_nav_segments_starts_from_mid_aisle_no_issue(rect_floorplan)
+
+
+.. function:: test_compute_nav_segments_across_spaces(rect_floorplan2)
+
+
+.. function:: test_create_nav_segment_for_aisle_1(rect_floorplan)
+
+
+.. function:: test_create_nav_segment_for_aisle_2(rect_floorplan)
+
+
+.. function:: test__aisle_has_nav_segment_2(rect_floorplan)
+
+
+.. function:: test_simplify_navigation_network_1(x_floorplan, aisle_from_x_floorplan)
+
+
+.. function:: test_simplify_navigation_network_2(x_floorplan, aisle_from_x_floorplan2)
+
+
+.. function:: test_simplify_navigation_network_3(x_floorplan, aisle_from_x_floorplan, aisle_from_x_floorplan2)
+
+
+.. function:: test_sanitize_graph(x_floorplan, aisle_from_x_floorplan, aisle_from_x_floorplan2)
+
+
+.. function:: test_sanitize_graph_2(rect_floorplan)
+
+
+.. function:: test_build_x(x_floorplan)
+
+
+.. function:: test_build_navnet_for_rect_space(rect_floorplan)
+
+
+.. function:: test_build_navnet_for_2_adjacent_rect_spaces(rect_floorplan2)
+
+
+.. function:: test_export_navdata_to_json(x_floorplan, tmp_path)
+
+
+.. function:: test_export_navnet_to_svg(x_floorplan, tmp_path)
+
+
+.. function:: test_load_navdata_from_json_files_1(x_floorplan, tmp_path)
+
+
+.. function:: test_load_navdata_from_json_files_2(x_floorplan, tmp_path)
+
+
+.. function:: test_load_navdata_from_json_files_3(x_floorplan, tmp_path)
+
+
+.. function:: test_load_nav_segments_from_svg_file(x_floorplan)
+
+
+.. function:: test_update_network_from_svg_file(x_floorplan)
+
+
+.. function:: test__add_spaces_to_hallway_graph(x_floorplan, x_space, rect_space)
+
+

@@ -1,0 +1,650 @@
+:mod:`citam.engine.map.geometry`
+================================
+
+.. py:module:: citam.engine.map.geometry
+
+.. autoapi-nested-parse::
+
+   geometry_and_svg_utils.py
+
+   Author: Mardochee Reveil
+   Date Created: May 12, 2020
+
+   ..
+       !! processed by numpydoc !!
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.map.geometry.on_segment
+   citam.engine.map.geometry.determine_orientation
+   citam.engine.map.geometry.do_intersect
+   citam.engine.map.geometry.is_one_segment_within_the_other
+   citam.engine.map.geometry.do_lines_intersect_at_endpoint
+   citam.engine.map.geometry.calculate_normal_vector_between_walls
+   citam.engine.map.geometry._compute_key_vectors
+   citam.engine.map.geometry.calculate_dot_product_and_distance_between_walls
+   citam.engine.map.geometry.calculate_dot_product_between_walls
+   citam.engine.map.geometry.calculate_distance_between_walls
+   citam.engine.map.geometry.calculate_x_and_y_overlap
+   citam.engine.map.geometry.round_coords
+   citam.engine.map.geometry.sample_random_points_from_line
+   citam.engine.map.geometry.create_parallel_line
+   citam.engine.map.geometry.compute_new_door_line
+   citam.engine.map.geometry.find_door_line
+   citam.engine.map.geometry.align_to_reference
+   citam.engine.map.geometry.is_point_on_line
+   citam.engine.map.geometry.remove_segment_from_wall
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.map.geometry.calculate_perpendicular_vector
+
+
+.. function:: on_segment(p: citam.engine.map.point.Point, q: citam.engine.map.point.Point, r: citam.engine.map.point.Point) -> bool
+
+   Given three points p, q, r, the function checks if point q lies on line
+   segment 'pr'
+
+   :param p: First point
+   :type p: Point
+   :param q: Second point
+   :type q: Point
+   :param r: Third point
+   :type r: Point
+   :return: Whether q falls on [pr] or not.
+   :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: determine_orientation(p: citam.engine.map.point.Point, q: citam.engine.map.point.Point, r: citam.engine.map.point.Point) -> int
+
+   Find orientation of ordered triplet (p, q, r).
+
+   The function returns the following values:
+     0 --> p, q and r are colinear
+     1 --> Clockwise
+     2 --> Counterclockwise
+
+   :param p: The first point.
+   :type p: Point
+   :param q: The second point.
+   :type q: Point
+   :param r: The third point.
+   :type r: Point
+   :return: Orientation of the triplet
+   :rtype: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: do_intersect(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) -> bool
+
+   Check if two segments as given by their respective end points intersect.
+
+   :param p1: First endpoint of first segment.
+   :type p1: Point
+   :param q1: Second endpoint of first segment.
+   :type q1: Point
+   :param p2: First endpoint of second segment.
+   :type p2: Point
+   :param q2: Second endpoint of second segment.
+   :type q2: Point
+   :return: True if segments intersect, False otherwise.
+   :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: is_one_segment_within_the_other(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) -> bool
+
+   Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
+   within the other.
+
+   :param p1: The first endpoint of the first segment.
+   :type p1: Point
+   :param q1: The second endpoint of the first segment.
+   :type q1: Point
+   :param p2: The first endpoint of the second segment.
+   :type p2: Point
+   :param q2: The second endpoint of the second segment.
+   :type q2: Point
+   :return: True, if [p1q1] is included in [p2q2] or vice-versa
+   :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: do_lines_intersect_at_endpoint(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) -> bool
+
+   Check if one of the lines start or ends on the other line.
+
+   :param p1: The first endpoint of the first segment.
+   :type p1: Point
+   :param q1: The second endpoint of the first segment.
+   :type q1: Point
+   :param p2: The first endpoint of the second segment.
+   :type p2: Point
+   :param q2: The second endpoint of the second segment.
+   :type q2: Point
+   :return: True, if p1 or q1 belongs to [p2q2] and vice-versa
+   :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: calculate_normal_vector_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> numpy.ndarray
+
+   Given two Line objects, compute the normal vector between them (computed
+   with respect to Wall 1).
+
+   :param wall1: The first wall
+   :type wall1: Line
+   :param wall2: The second wall
+   :type wall2: Line
+   :return: the perpendicular vector
+   :rtype: np.ndarray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. data:: calculate_perpendicular_vector
+   
+
+   
+
+.. function:: _compute_key_vectors(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]
+
+   Helper function used to compute the vector for wall1 and wall2 as well as
+   an arbitrary vector W joining both lines.
+
+   :param wall1: The first wall.
+   :type wall1: Line
+   :param wall2: The second wall
+   :type wall2: Line
+   :return: The key vectors.
+   :rtype: Tuple[np.ndarray, np.ndarray, np.ndarray]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: calculate_dot_product_and_distance_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> Tuple[Optional[float], float]
+
+   Compute the dot product and distance between two walls.
+
+   :param wall1: The first wall
+   :type wall1: Line
+   :param wall2: The second wall
+   :type wall2: Line
+   :return: the dot product and the distance
+   :rtype: Tuple[Optional[float], float]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: calculate_dot_product_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> numpy.ndarray
+
+   Calculate the dot product between 2 walls. NB: If the 2 walls are parallel,
+    the dot product will equal 1.0
+
+   :param wall1: The first wall
+   :type wall1: Line
+   :param wall2: The second wall
+   :type wall2: Line
+   :return: The dot product value between the two walls
+   :rtype: np.ndarray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: calculate_distance_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> float
+
+   Calculate distance between 2 walls.
+
+   This function assumes the 2 walls are parallel but does not
+   check for that. Calculate the dot product first to verify yourself.
+   Calculate a vector perpendicular to both walls and returns its
+   euclidian norm.
+
+   :param wall1: The first wall
+   :type wall1: Line
+   :param wall2: The second wall
+   :type wall2: Line
+   :return: distance between the walls
+   :rtype: float
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: calculate_x_and_y_overlap(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> Tuple[float, float]
+
+   Given two lines, calculate their x and y overlaps (e.g. if the x values
+   for line 1 and 2 are [0, 6] and [3, 10] resp, the overlap is [3, 6] = 3).
+
+   :param wall1: The first wall
+   :type wall1: Line
+   :param wall2: The second wall
+   :type wall2: Line
+   :return: The x and y overlaps in distance units
+   :rtype: Tuple[float, float]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: round_coords(wall: svgpathtools.Line) -> svgpathtools.Line
+
+   Given a line, round the its start and end coordinates to the nearest
+   integer.
+
+   :param wall: The initial wall.
+   :type wall: Line
+   :return: The wall will rounded up coordinates.
+   :rtype: Line
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: sample_random_points_from_line(line: svgpathtools.Line, npoints=10) -> List[Tuple[int, int]]
+
+   Sample n random points from line
+
+   :param line: the line to sample from.
+   :type line: Line
+   :param npoints: The number of points to sample, defaults to 10
+   :type npoints: int, optional
+   :return: The list of points
+   :rtype: List[Tuple[int, int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: create_parallel_line(line: svgpathtools.Line, d=1) -> svgpathtools.Line
+
+   Create a parallel line at a distance 'd' from a reference line. Both x
+   and y are changed by d.
+
+   :param line: The reference line.
+   :type line: Line
+   :param d: The distance at which to create the parallel line,
+        defaults to 1
+   :type d: int, optional
+   :return: [description]
+   :rtype: Line
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: compute_new_door_line(room_wall: svgpathtools.Line, door_size=2.0) -> svgpathtools.Line
+
+   Compute a door line to add to a wall. This door line is computed from
+   one of the end points of the wall.
+
+   :param room_wall: The reference wall.
+   :type room_wall: Line
+   :param door_size: the size of the door, defaults to 2.0
+   :type door_size: float, optional
+   :return: The door line.
+   :rtype: Line
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: find_door_line(cubic_bezier: svgpathtools.CubicBezier) -> svgpathtools.Line
+
+   Given a cubic bezier, find the line that is most likely to corresponds to
+   the door line.
+
+   :param cubic_bezier: The cubic bezier to analyze.
+   :type cubic_bezier: CubicBezier
+   :return: The most likely door line.
+   :rtype: Line
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: align_to_reference(reference_line: svgpathtools.Line, test_line: svgpathtools.Line) -> svgpathtools.Line
+
+   Given a reference line, modify a test line to be parallel with the
+   reference.
+
+   :param reference_line: The reference line.
+   :type reference_line: Line
+   :param test_line: The test line.
+   :type test_line: Line
+   :return: The new line, translated to align with the reference.
+   :rtype: Line
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: is_point_on_line(line: svgpathtools.Line, p_test: citam.engine.map.point.Point, tol: float = 0.001) -> bool
+
+   Verify if a test point is on a given Line.
+
+   :param line: The Line of interest.
+   :type line: Line
+   :param p_test: The test point.
+   :type p_test: Point
+   :param tol: The tolerance within which the point is labeled as belonging
+       to the line, defaults to 1e-3
+   :type tol: float, optional
+   :return: Whether the point falls on line or not.
+   :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: remove_segment_from_wall(wall: svgpathtools.Line, segment: svgpathtools.Line) -> List[svgpathtools.Line]
+
+   Given a wall, subtract an arbitrary segment from the wall and return the
+   remaining wall segments.
+
+   :param wall: The wall to subtract from.
+   :type wall: Line
+   :param segment: The segment to subtract.
+   :type segment: Line
+   :return: The remaining segments.
+   :rtype: List[Line]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
