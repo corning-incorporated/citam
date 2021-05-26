@@ -94,6 +94,7 @@ jobs:
           git checkout gh-page
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          echo ${{ github.head_ref }}
           git pull origin ${{ github.head_ref }}
       - name: Build docs
         working-directory: ./docsrc
