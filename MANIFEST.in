@@ -6,7 +6,7 @@ prune citam/tests/
 prune citamjs/
 prune docs/
 prune examples/
-prune public/
+prune docs/
 prune .github/
 
 recursive-include citam/api/static/ *
