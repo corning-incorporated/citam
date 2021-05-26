@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.engine.map.utils &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/engine/map/utils.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+      <p><i>free</i> <small>and</small> <i> open-source</i></p>
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html" href="../index.html"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              href="https://github.com/corning-incorporated/citam"
+              target="_blank"
+              >View on GitHub</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="getting_started.html"
+              href="getting_started.html"
+              >Getting Started</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="tutorial.html"
+              href="tutorial.html"
+              >Tutorial</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html"
+              >Documentation</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" accesskey="U">citam.engine</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.engine.map.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2020. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1"># CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1"># ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">Line</span><span class="p">,</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">citam.engine.map.geometry</span> <span class="k">as</span> <span class="nn">g</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.space</span> <span class="kn">import</span> <span class="n">Space</span>
+
+
+<div class="viewcode-block" id="find_closest_parallel_wall"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.find_closest_parallel_wall">[docs]</a><span class="k">def</span> <span class="nf">find_closest_parallel_wall</span><span class="p">(</span>
+    <span class="n">space_boundaries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">],</span> <span class="n">ref_wall</span><span class="p">:</span> <span class="n">Line</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Line</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For a given wall, find other walls in same space that are</span>
+<span class="sd">    parallel to this (with some x or y overlap) and return the</span>
+<span class="sd">    closest wall.</span>
+
+<span class="sd">    :param space_boundaries: The hallway object under consideration.</span>
+<span class="sd">    :type space_boundaries: List[Line]</span>
+<span class="sd">    :param ref_wall: Reference wall for which to find closest parallel wall.</span>
+<span class="sd">    :type ref_wall: Line</span>
+<span class="sd">    :return: The closest parallel wall</span>
+<span class="sd">    :rtype: Line</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">best_wall</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># The closest parallel wall to return</span>
+    <span class="n">min_dist</span> <span class="o">=</span> <span class="mf">1e10</span>  <span class="c1"># Initialize to very large number</span>
+    <span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="n">space_boundaries</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">wall</span> <span class="o">==</span> <span class="n">ref_wall</span> <span class="ow">or</span> <span class="n">wall</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">x_overlap</span><span class="p">,</span> <span class="n">y_overlap</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">calculate_x_and_y_overlap</span><span class="p">(</span><span class="n">ref_wall</span><span class="p">,</span> <span class="n">wall</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x_overlap</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">y_overlap</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">dot_prod</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">calculate_dot_product_between_walls</span><span class="p">(</span><span class="n">ref_wall</span><span class="p">,</span> <span class="n">wall</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_prod</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
+            <span class="c1"># This wall is parallel to ref wall</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">calculate_distance_between_walls</span><span class="p">(</span><span class="n">ref_wall</span><span class="p">,</span> <span class="n">wall</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">:</span>
+                <span class="n">best_wall</span> <span class="o">=</span> <span class="n">wall</span>
+                <span class="n">min_dist</span> <span class="o">=</span> <span class="n">dist</span>
+
+    <span class="k">return</span> <span class="n">best_wall</span></div>
+
+
+<div class="viewcode-block" id="is_wall_valid_for_aisle"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.is_wall_valid_for_aisle">[docs]</a><span class="k">def</span> <span class="nf">is_wall_valid_for_aisle</span><span class="p">(</span>
+    <span class="n">no_repeat</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">wall</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Line</span><span class="p">],</span> <span class="n">aisles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a wall is valid to be apart of an aisle.</span>
+
+<span class="sd">    :param no_repeat: Whether to consider walls that are already part of an</span>
+<span class="sd">        aisle or not.</span>
+<span class="sd">    :type no_repeat: bool</span>
+<span class="sd">    :param wall: the wall of interst</span>
+<span class="sd">    :type wall: Optional[Line]</span>
+<span class="sd">    :param aisles: the list of all currently identified aisles.</span>
+<span class="sd">    :type aisles: List[Tuple[Line, Line]]</span>
+<span class="sd">    :return: whether this is a valid wall or not.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">wall</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="ow">or</span> <span class="n">wall</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1.0</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">no_repeat</span> <span class="ow">and</span> <span class="n">is_this_wall_part_of_an_aisle</span><span class="p">(</span><span class="n">wall</span><span class="p">,</span> <span class="n">aisles</span><span class="p">))</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="find_aisles"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.find_aisles">[docs]</a><span class="k">def</span> <span class="nf">find_aisles</span><span class="p">(</span>
+    <span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">valid_boundaries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">],</span> <span class="n">no_repeat</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given the svg path of the boundaries of a space, find all pairs of 2 walls</span>
+<span class="sd">     that define an aisle (parallel walls with navigable space between them).</span>
+
+<span class="sd">    :param space: The space of interest.</span>
+<span class="sd">    :type space: Space</span>
+<span class="sd">    :param valid_boundaries: List of valid boundaries to consider.</span>
+<span class="sd">    :type valid_boundaries: List[Line]</span>
+<span class="sd">    :param no_repeat: A wall cannot belong to two different aisles,</span>
+<span class="sd">         defaults to True</span>
+<span class="sd">    :type no_repeat: bool, optional</span>
+<span class="sd">    :return: [description]</span>
+<span class="sd">    :rtype: List[Tuple[Line, Line]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">aisles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">wall1</span> <span class="ow">in</span> <span class="n">valid_boundaries</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_wall_valid_for_aisle</span><span class="p">(</span><span class="n">no_repeat</span><span class="p">,</span> <span class="n">wall1</span><span class="p">,</span> <span class="n">aisles</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">wall2</span> <span class="o">=</span> <span class="n">find_closest_parallel_wall</span><span class="p">(</span><span class="n">valid_boundaries</span><span class="p">,</span> <span class="n">wall1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_wall_valid_for_aisle</span><span class="p">(</span><span class="n">no_repeat</span><span class="p">,</span> <span class="n">wall2</span><span class="p">,</span> <span class="n">aisles</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">wall1</span><span class="p">,</span> <span class="n">wall2</span><span class="p">)</span> <span class="ow">in</span> <span class="n">aisles</span> <span class="ow">or</span> <span class="p">(</span><span class="n">wall2</span><span class="p">,</span> <span class="n">wall1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">aisles</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">is_this_an_aisle</span><span class="p">(</span><span class="n">wall1</span><span class="p">,</span> <span class="n">wall2</span><span class="p">,</span> <span class="n">space</span><span class="p">):</span>
+            <span class="n">aisles</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">wall1</span><span class="p">,</span> <span class="n">wall2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">aisles</span></div>
+
+
+<div class="viewcode-block" id="is_this_wall_part_of_an_aisle"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.is_this_wall_part_of_an_aisle">[docs]</a><span class="k">def</span> <span class="nf">is_this_wall_part_of_an_aisle</span><span class="p">(</span>
+    <span class="n">wall</span><span class="p">:</span> <span class="n">Line</span><span class="p">,</span> <span class="n">aisles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify if a wall already belongs to an aisle.</span>
+
+<span class="sd">    :param wall: The wall of interest.</span>
+<span class="sd">    :type wall: Line</span>
+<span class="sd">    :param aisles: List of aisles to check.</span>
+<span class="sd">    :type aisles: List[Tuple[Line, Line]]</span>
+<span class="sd">    :return: Whether this wall is part of an aisle or not.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">wall</span> <span class="ow">in</span> <span class="p">[</span><span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">aisle</span> <span class="ow">in</span> <span class="n">aisles</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_aisle_center_point_and_width"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.get_aisle_center_point_and_width">[docs]</a><span class="k">def</span> <span class="nf">get_aisle_center_point_and_width</span><span class="p">(</span>
+    <span class="n">aisle</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the center point and the width of an aisle.</span>
+
+<span class="sd">    :param aisle: The aisle of interest.</span>
+<span class="sd">    :type aisle: Tuple[Line, Line]</span>
+<span class="sd">    :return: The center point and width of the aisle.</span>
+<span class="sd">    :rtype: Tuple[Point, float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Perpendicular vector between the two walls</span>
+    <span class="n">v_perp</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">calculate_perpendicular_vector</span><span class="p">(</span><span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1"># Half way between the two walls from the middle of the first wall</span>
+    <span class="n">mid_point</span> <span class="o">=</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">center_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">mid_point</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">v_perp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)),</span>
+        <span class="n">y</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">mid_point</span><span class="o">.</span><span class="n">imag</span> <span class="o">+</span> <span class="n">v_perp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)),</span>
+    <span class="p">)</span>
+    <span class="c1"># Width of aisle</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_perp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">v_perp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+    <span class="k">return</span> <span class="n">center_point</span><span class="p">,</span> <span class="n">width</span></div>
+
+
+<div class="viewcode-block" id="is_this_an_aisle"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.is_this_an_aisle">[docs]</a><span class="k">def</span> <span class="nf">is_this_an_aisle</span><span class="p">(</span><span class="n">wall1</span><span class="p">:</span> <span class="n">Line</span><span class="p">,</span> <span class="n">wall2</span><span class="p">:</span> <span class="n">Line</span><span class="p">,</span> <span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify that 2 walls form an aisle. Works by verifying that the center point</span>
+<span class="sd">     of this aisle is part of the same space. Note that this is a rather weak</span>
+<span class="sd">     definition. Use accordingly.</span>
+
+<span class="sd">    :param wall1: The first wall.</span>
+<span class="sd">    :type wall1: Line</span>
+<span class="sd">    :param wall2: The second wall.</span>
+<span class="sd">    :type wall2: Line</span>
+<span class="sd">    :param space: The space where this aisle would presumably fall.</span>
+<span class="sd">    :type space: Space</span>
+<span class="sd">    :return: Whether the two walls form an aisle or not.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">wall1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">wall2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">aisle</span> <span class="o">=</span> <span class="p">(</span><span class="n">wall1</span><span class="p">,</span> <span class="n">wall2</span><span class="p">)</span>
+    <span class="n">center_point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_aisle_center_point_and_width</span><span class="p">(</span><span class="n">aisle</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">is_point_inside_space</span><span class="p">(</span><span class="n">center_point</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="compute_bounding_box"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.compute_bounding_box">[docs]</a><span class="k">def</span> <span class="nf">compute_bounding_box</span><span class="p">(</span>
+    <span class="n">walls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the bounding box of the floorplan given by all its walls and</span>
+<span class="sd">    return the min and max x and y values.</span>
+
+<span class="sd">    :param walls: List of all the walls to consider.</span>
+<span class="sd">    :type walls: List[Line]</span>
+<span class="sd">    :return: The minimum and the maximum x and y values</span>
+<span class="sd">    :rtype: Tuple[float, float, float, float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="mf">1e10</span><span class="p">,</span> <span class="mf">1e10</span>  <span class="c1"># very large number</span>
+    <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-10</span>  <span class="c1"># very small number</span>
+
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">walls</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">real</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">xmin</span><span class="p">:</span>
+                <span class="n">xmin</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">xmax</span><span class="p">:</span>
+                <span class="n">xmax</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">w</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">imag</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">ymin</span><span class="p">:</span>
+                <span class="n">ymin</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="k">elif</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">ymax</span><span class="p">:</span>
+                <span class="n">ymax</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">return</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span></div>
+
+
+<div class="viewcode-block" id="generate_closed_path_for_aisle"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.generate_closed_path_for_aisle">[docs]</a><span class="k">def</span> <span class="nf">generate_closed_path_for_aisle</span><span class="p">(</span><span class="n">aisle</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given an aisle (tuple of two walls), add new walls to create a closed</span>
+<span class="sd">    path for this aisle.</span>
+
+<span class="sd">    :param aisle: Aisle of interest.</span>
+<span class="sd">    :type aisle: Tuple[Line, Line]</span>
+<span class="sd">    :return: Closed path for this aisle</span>
+<span class="sd">    :rtype: Path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">()</span>
+    <span class="n">path</span> <span class="o">+=</span> <span class="p">[</span><span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="n">wall1</span> <span class="o">=</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">wall2</span> <span class="o">=</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">segment1</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">wall1</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">wall2</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">segment2</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">wall1</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">wall2</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">segment1</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">segment2</span><span class="o">.</span><span class="n">length</span><span class="p">():</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment2</span><span class="p">)</span>
+
+    <span class="n">segment3</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">wall1</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">wall2</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">segment4</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">wall1</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">wall2</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">segment3</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">segment4</span><span class="o">.</span><span class="n">length</span><span class="p">():</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment3</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment4</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">path</span></div>
+
+
+<div class="viewcode-block" id="do_walls_overlap"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.do_walls_overlap">[docs]</a><span class="k">def</span> <span class="nf">do_walls_overlap</span><span class="p">(</span>
+    <span class="n">wall1</span><span class="p">:</span> <span class="n">Line</span><span class="p">,</span> <span class="n">wall2</span><span class="p">:</span> <span class="n">Line</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify if two walls overlap.</span>
+
+<span class="sd">    Uses the start and end points of each line and verifies if either one</span>
+<span class="sd">    of them falls on the other segment. If so, it checks if all 4 points</span>
+<span class="sd">    are collinear and returns True if the dot product and the</span>
+<span class="sd">    distance between the 2 walls are respectively ~1.0 and ~0.0.</span>
+
+<span class="sd">    :param wall1:  line object corresponding to wall 1</span>
+<span class="sd">    :type wall1: Line</span>
+<span class="sd">    :param wall2: line object corresponding to wall 2</span>
+<span class="sd">    :type wall2: Line</span>
+<span class="sd">    :param max_distance: the max distance beyond which the walls are not</span>
+<span class="sd">            considered overlapping, defaults to 1.0</span>
+<span class="sd">    :type max_distance: float, optional</span>
+<span class="sd">    :return: Whether the walls overlap or not</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">x_overlap</span><span class="p">,</span> <span class="n">y_overlap</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">calculate_x_and_y_overlap</span><span class="p">(</span><span class="n">wall1</span><span class="p">,</span> <span class="n">wall2</span><span class="p">)</span>
+
+    <span class="n">p1</span><span class="p">,</span> <span class="n">q1</span> <span class="o">=</span> <span class="n">extract_end_points</span><span class="p">(</span><span class="n">wall1</span><span class="p">)</span>
+    <span class="n">p2</span><span class="p">,</span> <span class="n">q2</span> <span class="o">=</span> <span class="n">extract_end_points</span><span class="p">(</span><span class="n">wall2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_one_segment_within_the_other</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">q2</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">x_overlap</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">y_overlap</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">do_lines_intersect_at_endpoint</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">q2</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">check_for_collinearity</span><span class="p">(</span><span class="n">wall1</span><span class="p">,</span> <span class="n">wall2</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="extract_end_points"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.extract_end_points">[docs]</a><span class="k">def</span> <span class="nf">extract_end_points</span><span class="p">(</span><span class="n">wall</span><span class="p">:</span> <span class="n">Line</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">,</span> <span class="n">Point</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the end points of a wall returned as integer coordinates.</span>
+
+<span class="sd">    :param wall: The wall of interest.</span>
+<span class="sd">    :type wall: Line</span>
+<span class="sd">    :return: The end points.</span>
+<span class="sd">    :rtype: Tuple[Point, Point]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span></div>
+
+
+<div class="viewcode-block" id="check_for_collinearity"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/utils/index.html#citam.engine.map.utils.check_for_collinearity">[docs]</a><span class="k">def</span> <span class="nf">check_for_collinearity</span><span class="p">(</span>
+    <span class="n">wall1</span><span class="p">:</span> <span class="n">Line</span><span class="p">,</span> <span class="n">wall2</span><span class="p">:</span> <span class="n">Line</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify that two walls are collinear by making sure all end points are or</span>
+<span class="sd">    by measuring the distance and angle between the walls.</span>
+
+<span class="sd">    :param wall1: The first wall</span>
+<span class="sd">    :type wall1: Line</span>
+<span class="sd">    :param wall2: The second wall</span>
+<span class="sd">    :type wall2: Line</span>
+<span class="sd">    :param max_distance: The max distance to consider them to be collinear</span>
+<span class="sd">    :type max_distance: float</span>
+<span class="sd">    :return: Whether they are collinear or not</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p1</span><span class="p">,</span> <span class="n">q1</span> <span class="o">=</span> <span class="n">extract_end_points</span><span class="p">(</span><span class="n">wall1</span><span class="p">)</span>
+    <span class="n">p2</span><span class="p">,</span> <span class="n">q2</span> <span class="o">=</span> <span class="n">extract_end_points</span><span class="p">(</span><span class="n">wall2</span><span class="p">)</span>
+
+    <span class="c1"># Check if all 4 point are collinear</span>
+    <span class="n">o1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">determine_orientation</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    <span class="n">o2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">determine_orientation</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">o1</span> <span class="o">==</span> <span class="n">o2</span> <span class="ow">and</span> <span class="n">o1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># only do this for walls that are diagonal</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-2</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+        <span class="nb">abs</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">q1</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span>
+        <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">q1</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span>
+        <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">q2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span>
+        <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">q2</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span>
+    <span class="p">):</span>
+        <span class="p">(</span>
+            <span class="n">dot_product</span><span class="p">,</span>
+            <span class="n">distance</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">calculate_dot_product_and_distance_between_walls</span><span class="p">(</span><span class="n">wall1</span><span class="p">,</span> <span class="n">wall2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">dot_product</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_product</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-3</span>
+            <span class="ow">and</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">max_distance</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" >citam.engine</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

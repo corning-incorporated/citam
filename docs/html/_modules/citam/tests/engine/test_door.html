@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.tests.engine.test_door &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/tests/engine/test_door.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+      <p><i>free</i> <small>and</small> <i> open-source</i></p>
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html" href="../index.html"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              href="https://github.com/corning-incorporated/citam"
+              target="_blank"
+              >View on GitHub</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="getting_started.html"
+              href="getting_started.html"
+              >Getting Started</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="tutorial.html"
+              href="tutorial.html"
+              >Tutorial</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html"
+              >Documentation</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.tests.engine.test_door</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">citam.engine.io.serializer</span> <span class="kn">import</span> <span class="n">serializer</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.door</span> <span class="kn">import</span> <span class="n">Door</span>
+
+
+<span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">parse_path</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<div class="viewcode-block" id="test_serialize"><a class="viewcode-back" href="../../../../autoapi/citam/tests/engine/test_door/index.html#citam.tests.engine.test_door.test_serialize">[docs]</a><span class="k">def</span> <span class="nf">test_serialize</span><span class="p">(</span><span class="n">rect_space</span><span class="p">):</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">parse_path</span><span class="p">(</span><span class="s2">&quot;M 0,0 L 100,0&quot;</span><span class="p">)</span>
+    <span class="n">test_door</span> <span class="o">=</span> <span class="n">Door</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">space1</span><span class="o">=</span><span class="n">rect_space</span><span class="p">)</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_door</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">encoder_default</span><span class="p">)</span>
+    <span class="n">door_decoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">decoder_hook</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">path</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">emergency_only</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">emergency_only</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">space1</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">space1_id</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">space2</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">space2</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">in_service</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">in_service</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">special_access</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">special_access</span></div>
+
+
+<div class="viewcode-block" id="test_serialize2"><a class="viewcode-back" href="../../../../autoapi/citam/tests/engine/test_door/index.html#citam.tests.engine.test_door.test_serialize2">[docs]</a><span class="k">def</span> <span class="nf">test_serialize2</span><span class="p">(</span><span class="n">rect_space</span><span class="p">,</span> <span class="n">x_space</span><span class="p">):</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">parse_path</span><span class="p">(</span><span class="s2">&quot;M 0,0 L 100,0&quot;</span><span class="p">)</span>
+    <span class="n">test_door</span> <span class="o">=</span> <span class="n">Door</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">space1</span><span class="o">=</span><span class="n">rect_space</span><span class="p">,</span> <span class="n">space2</span><span class="o">=</span><span class="n">x_space</span><span class="p">)</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_door</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">encoder_default</span><span class="p">)</span>
+    <span class="n">door_decoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">decoder_hook</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">path</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">emergency_only</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">emergency_only</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">space1</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">space1_id</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">space2</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">space2_id</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">in_service</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">in_service</span>
+    <span class="k">assert</span> <span class="n">test_door</span><span class="o">.</span><span class="n">special_access</span> <span class="o">==</span> <span class="n">door_decoded</span><span class="o">.</span><span class="n">special_access</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

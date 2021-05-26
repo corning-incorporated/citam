@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.tests.api.test_server &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/tests/api/test_server.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+      <p><i>free</i> <small>and</small> <i> open-source</i></p>
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html" href="../index.html"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              href="https://github.com/corning-incorporated/citam"
+              target="_blank"
+              >View on GitHub</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="getting_started.html"
+              href="getting_started.html"
+              >Getting Started</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="tutorial.html"
+              href="tutorial.html"
+              >Tutorial</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html"
+              >Documentation</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.tests.api.test_server</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2020. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1">#  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1">#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1">#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span>
+<span class="c1">#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1">#  ==========================================================================</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">falcon</span> <span class="kn">import</span> <span class="n">testing</span>
+<span class="kn">from</span> <span class="nn">falcon.routing</span> <span class="kn">import</span> <span class="n">StaticRoute</span>
+
+<span class="kn">import</span> <span class="nn">citam</span>
+<span class="kn">from</span> <span class="nn">citam.api</span> <span class="kn">import</span> <span class="n">server</span>
+
+
+<div class="viewcode-block" id="static_path"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.static_path">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">static_path</span><span class="p">(</span><span class="n">tmp_path_factory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a directory with mocked versions of dash static files&quot;&quot;&quot;</span>
+    <span class="n">static_dir</span> <span class="o">=</span> <span class="n">tmp_path_factory</span><span class="o">.</span><span class="n">mktemp</span><span class="p">(</span><span class="n">basename</span><span class="o">=</span><span class="s2">&quot;dash&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">static_dir</span><span class="p">,</span> <span class="s2">&quot;main.js&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;file: main.js&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">static_dir</span><span class="p">,</span> <span class="s2">&quot;index.html&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;file: index.html&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">static_dir</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="static_route"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.static_route">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">static_route</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">,</span> <span class="n">static_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mock static routes to test dash logic without requiring JS&quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">MockedStaticRoute</span><span class="p">(</span><span class="n">StaticRoute</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># noqa</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">static_path</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="n">citam</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s2">&quot;StaticRoute&quot;</span><span class="p">,</span> <span class="n">MockedStaticRoute</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="client"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.client">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="n">use_local_storage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">testing</span><span class="o">.</span><span class="n">TestClient</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">testing</span><span class="o">.</span><span class="n">TestClient</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">get_wsgi_app</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="test_get_summary"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_get_summary">[docs]</a><span class="k">def</span> <span class="nf">test_get_summary</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/run_id_0001&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+<div class="viewcode-block" id="test_trajectory_response"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_trajectory_response">[docs]</a><span class="k">def</span> <span class="nf">test_trajectory_response</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span>
+        <span class="s2">&quot;/v1/run_id_0001/trajectory?first_timestep=1&amp;max_steps=5000&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1899</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;statistics&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;statistics&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cfl&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_trajectory_response_large_traj"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_trajectory_response_large_traj">[docs]</a><span class="k">def</span> <span class="nf">test_trajectory_response_large_traj</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span>
+        <span class="s2">&quot;/v1/51a37fa7054a3f8e8d55/trajectory?&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;first_timestep=0&amp;max_steps=15000&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">12200</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;statistics&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;statistics&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cfl&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_get_total_timesteps"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_get_total_timesteps">[docs]</a><span class="k">def</span> <span class="nf">test_get_total_timesteps</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span>
+        <span class="s2">&quot;/v1/51a37fa7054a3f8e8d55/total_timesteps&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">12200</span></div>
+
+
+<div class="viewcode-block" id="test_contact_response"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_contact_response">[docs]</a><span class="k">def</span> <span class="nf">test_contact_response</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/run_id_0001/contact&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_contact_distribution_response"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_contact_distribution_response">[docs]</a><span class="k">def</span> <span class="nf">test_contact_distribution_response</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span>
+        <span class="s2">&quot;/v1/run_id_0001/distribution/coordinate&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_map_response"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_map_response">[docs]</a><span class="k">def</span> <span class="nf">test_map_response</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/run_id_0001/map&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+<div class="viewcode-block" id="test_get_heatmap"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_get_heatmap">[docs]</a><span class="k">def</span> <span class="nf">test_get_heatmap</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/run_id_0001/heatmap&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+<div class="viewcode-block" id="test_get_policy"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_get_policy">[docs]</a><span class="k">def</span> <span class="nf">test_get_policy</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/run_id_0001/policy&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+<div class="viewcode-block" id="test_get_statistics"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_get_statistics">[docs]</a><span class="k">def</span> <span class="nf">test_get_statistics</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/run_id_0001/statistics&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_get_pair_contact"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_get_pair_contact">[docs]</a><span class="k">def</span> <span class="nf">test_get_pair_contact</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/run_id_0001/pair&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_list_response"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_list_response">[docs]</a><span class="k">def</span> <span class="nf">test_list_response</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    note: The result here is set by the mock.</span>
+<span class="sd">    See :mod:`citam.api.tests.conftest` for more information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/list&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="k">assert</span> <span class="s2">&quot;RunID&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;SimulationHash&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;FacilityName&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">run_ids</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;run_id_0001&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;run_id_0002&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;51a37fa7054a3f8e8d55&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;RunID&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">run_ids</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;RunID&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">run_ids</span></div>
+
+
+<div class="viewcode-block" id="test_redoc"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_redoc">[docs]</a><span class="k">def</span> <span class="nf">test_redoc</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+<div class="viewcode-block" id="test_openapi_response"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_openapi_response">[docs]</a><span class="k">def</span> <span class="nf">test_openapi_response</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/v1/openapi.yaml&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+<div class="viewcode-block" id="test_index"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_index">[docs]</a><span class="k">def</span> <span class="nf">test_index</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+<div class="viewcode-block" id="test_404"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_404">[docs]</a><span class="k">def</span> <span class="nf">test_404</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/invalid/path&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">actual</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="n">actual</span><span class="o">.</span><span class="n">content</span> <span class="o">==</span> <span class="n">expected</span><span class="o">.</span><span class="n">content</span></div>
+
+
+<div class="viewcode-block" id="test_static_route"><a class="viewcode-back" href="../../../../autoapi/citam/tests/api/test_server/index.html#citam.tests.api.test_server.test_static_route">[docs]</a><span class="k">def</span> <span class="nf">test_static_route</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">testing</span><span class="o">.</span><span class="n">Result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">simulate_get</span><span class="p">(</span><span class="s2">&quot;/main.js&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;file: main.js&quot;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>
