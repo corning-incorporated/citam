@@ -107,11 +107,11 @@ jobs:
           echo ${{ github.ref }}
           git add --force docs/html/
           git commit -m "CI: Automated docs build push" -a | exit 0
-      # - name: Push changes
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}    
-      #     branch: gh-page
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}    
+          branch: gh-page
 
   package:
     runs-on: ubuntu-latest
