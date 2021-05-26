@@ -1,0 +1,102 @@
+:mod:`citam.tests.engine.test_navigation`
+=========================================
+
+.. py:module:: citam.tests.engine.test_navigation
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_navigation.test_get_corresponding_vertical_space_bad_method_naming
+   citam.tests.engine.test_navigation.test_get_corresponding_vertical_space
+   citam.tests.engine.test_navigation.test_add_all_vertical_edges_no_edges
+   citam.tests.engine.test_navigation.test_add_all_vertical_edges_no_matching_stairs
+   citam.tests.engine.test_navigation.test_add_all_vertical_edges_2_edges
+   citam.tests.engine.test_navigation.test_load_floor_oneway_net_file_not_found
+   citam.tests.engine.test_navigation.test_init_hallway_graph_not_found
+   citam.tests.engine.test_navigation.test_init_navnet_not_found
+   citam.tests.engine.test_navigation.test_init
+   citam.tests.engine.test_navigation.test_init_2_floors
+   citam.tests.engine.test_navigation.test_set_policy_for_aisle
+   citam.tests.engine.test_navigation.test_oneway_policy_missing_network
+   citam.tests.engine.test_navigation.test_get_best_possible_routes_same_floor
+   citam.tests.engine.test_navigation.test_get_best_possible_routes_multifloor_no_stairs
+   citam.tests.engine.test_navigation.test_get_best_possible_routes_multifloor
+   citam.tests.engine.test_navigation.test_remove_unnecessary_coords_same_floor
+   citam.tests.engine.test_navigation.test_remove_unnecessary_coords_same_floor2
+   citam.tests.engine.test_navigation.test_remove_unnecessary_coords_2_floors
+   citam.tests.engine.test_navigation.test_remove_unnecessary_coords_2_floors2
+   citam.tests.engine.test_navigation.test_unroll_route
+   citam.tests.engine.test_navigation.test_unroll_route_2_floors
+
+
+
+.. function:: test_get_corresponding_vertical_space_bad_method_naming(simple_facility_floorplan_2_floors, monkeypatch, datadir)
+
+
+.. function:: test_get_corresponding_vertical_space(simple_facility_floorplan_2_floors, monkeypatch, datadir)
+
+
+.. function:: test_add_all_vertical_edges_no_edges(simple_facility_floorplan_2_floors, datadir, monkeypatch)
+
+
+.. function:: test_add_all_vertical_edges_no_matching_stairs(simple_facility_floorplan_2_floors, datadir, monkeypatch)
+
+
+.. function:: test_add_all_vertical_edges_2_edges(simple_facility_floorplan_2_floors, datadir, monkeypatch)
+
+
+.. function:: test_load_floor_oneway_net_file_not_found(simple_facility_floorplan, monkeypatch, datadir)
+
+
+.. function:: test_init_hallway_graph_not_found(simple_facility_floorplan, monkeypatch, datadir)
+
+
+.. function:: test_init_navnet_not_found(simple_facility_floorplan, monkeypatch, datadir)
+
+
+.. function:: test_init(simple_facility_floorplan, monkeypatch, datadir)
+
+
+.. function:: test_init_2_floors(simple_facility_floorplan_2_floors, monkeypatch, datadir)
+
+
+.. function:: test_set_policy_for_aisle(simple_facility_floorplan, monkeypatch, datadir)
+
+
+.. function:: test_oneway_policy_missing_network(simple_facility_floorplan_2_floors, monkeypatch, datadir)
+
+
+.. function:: test_get_best_possible_routes_same_floor(simple_facility_floorplan, monkeypatch, datadir)
+
+
+.. function:: test_get_best_possible_routes_multifloor_no_stairs(simple_facility_floorplan_2_floors, monkeypatch, datadir)
+
+
+.. function:: test_get_best_possible_routes_multifloor(simple_facility_floorplan_2_floors, monkeypatch, datadir)
+
+
+.. function:: test_remove_unnecessary_coords_same_floor()
+
+
+.. function:: test_remove_unnecessary_coords_same_floor2()
+
+
+.. function:: test_remove_unnecessary_coords_2_floors()
+
+
+.. function:: test_remove_unnecessary_coords_2_floors2()
+
+
+.. function:: test_unroll_route()
+
+
+.. function:: test_unroll_route_2_floors()
+
+

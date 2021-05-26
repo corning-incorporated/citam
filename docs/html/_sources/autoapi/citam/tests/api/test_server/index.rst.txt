@@ -1,0 +1,159 @@
+:mod:`citam.tests.api.test_server`
+==================================
+
+.. py:module:: citam.tests.api.test_server
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.api.test_server.static_path
+   citam.tests.api.test_server.static_route
+   citam.tests.api.test_server.client
+   citam.tests.api.test_server.test_get_summary
+   citam.tests.api.test_server.test_trajectory_response
+   citam.tests.api.test_server.test_trajectory_response_large_traj
+   citam.tests.api.test_server.test_get_total_timesteps
+   citam.tests.api.test_server.test_contact_response
+   citam.tests.api.test_server.test_contact_distribution_response
+   citam.tests.api.test_server.test_map_response
+   citam.tests.api.test_server.test_get_heatmap
+   citam.tests.api.test_server.test_get_policy
+   citam.tests.api.test_server.test_get_statistics
+   citam.tests.api.test_server.test_get_pair_contact
+   citam.tests.api.test_server.test_list_response
+   citam.tests.api.test_server.test_redoc
+   citam.tests.api.test_server.test_openapi_response
+   citam.tests.api.test_server.test_index
+   citam.tests.api.test_server.test_404
+   citam.tests.api.test_server.test_static_route
+
+
+
+.. function:: static_path(tmp_path_factory)
+
+   Create a directory with mocked versions of dash static files
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: static_route(monkeypatch, static_path)
+
+   Mock static routes to test dash logic without requiring JS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: client(use_local_storage) -> falcon.testing.TestClient
+
+
+.. function:: test_get_summary(client)
+
+
+.. function:: test_trajectory_response(client)
+
+
+.. function:: test_trajectory_response_large_traj(client)
+
+
+.. function:: test_get_total_timesteps(client)
+
+
+.. function:: test_contact_response(client)
+
+
+.. function:: test_contact_distribution_response(client)
+
+
+.. function:: test_map_response(client)
+
+
+.. function:: test_get_heatmap(client)
+
+
+.. function:: test_get_policy(client)
+
+
+.. function:: test_get_statistics(client)
+
+
+.. function:: test_get_pair_contact(client)
+
+
+.. function:: test_list_response(client)
+
+   note: The result here is set by the mock.
+   See :mod:`citam.api.tests.conftest` for more information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: test_redoc(client)
+
+
+.. function:: test_openapi_response(client)
+
+
+.. function:: test_index(client)
+
+
+.. function:: test_404(client)
+
+
+.. function:: test_static_route(client)
+
+

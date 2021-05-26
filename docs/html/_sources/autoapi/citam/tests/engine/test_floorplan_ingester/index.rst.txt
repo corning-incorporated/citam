@@ -1,0 +1,83 @@
+:mod:`citam.tests.engine.test_floorplan_ingester`
+=================================================
+
+.. py:module:: citam.tests.engine.test_floorplan_ingester
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_floorplan_ingester.rect_floorplan_ingester_data_no_csv
+   citam.tests.engine.test_floorplan_ingester.rect_floorplan_ingester
+   citam.tests.engine.test_floorplan_ingester.test_init_correct_number_of_objects
+   citam.tests.engine.test_floorplan_ingester.test_create_spaces_correct_number_of_spaces
+   citam.tests.engine.test_floorplan_ingester.test_create_spaces_correct_number_of_spaces_no_csv
+   citam.tests.engine.test_floorplan_ingester.test_run_correct_number_of_objects
+   citam.tests.engine.test_floorplan_ingester.test_run_correct_number_of_objects_no_csv
+   citam.tests.engine.test_floorplan_ingester.test_find_walls_and_create_doors
+   citam.tests.engine.test_floorplan_ingester.test_find_min_and_max_coordinates
+   citam.tests.engine.test_floorplan_ingester.test__find_all_overlapping_walls
+   citam.tests.engine.test_floorplan_ingester.test__find_all_overlapping_walls2
+
+
+
+.. function:: rect_floorplan_ingester_data_no_csv()
+
+   Basic rect floorplan with one main aisle, 4 office spaces on each side
+   and a big room at the end of the hallway.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: rect_floorplan_ingester(rect_floorplan_ingester_data)
+
+
+.. function:: test_init_correct_number_of_objects(datadir)
+
+
+.. function:: test_create_spaces_correct_number_of_spaces(rect_floorplan_ingester_data)
+
+
+.. function:: test_create_spaces_correct_number_of_spaces_no_csv(rect_floorplan_ingester_data_no_csv)
+
+
+.. function:: test_run_correct_number_of_objects(rect_floorplan_ingester_data)
+
+
+.. function:: test_run_correct_number_of_objects_no_csv(rect_floorplan_ingester_data_no_csv)
+
+
+.. function:: test_find_walls_and_create_doors(rect_floorplan_ingester)
+
+
+.. function:: test_find_min_and_max_coordinates(rect_floorplan_ingester)
+
+
+.. function:: test__find_all_overlapping_walls(rect_floorplan_ingester)
+
+
+.. function:: test__find_all_overlapping_walls2(rect_floorplan_ingester)
+
+

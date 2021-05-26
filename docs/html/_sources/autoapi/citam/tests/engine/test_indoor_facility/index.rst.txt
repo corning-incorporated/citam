@@ -1,0 +1,26 @@
+:mod:`citam.tests.engine.test_indoor_facility`
+==============================================
+
+.. py:module:: citam.tests.engine.test_indoor_facility
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_indoor_facility.simple_facility
+   citam.tests.engine.test_indoor_facility.test_init
+
+
+
+.. function:: simple_facility(simple_facility_floorplan, monkeypatch, request)
+
+
+.. function:: test_init(simple_facility)
+
+

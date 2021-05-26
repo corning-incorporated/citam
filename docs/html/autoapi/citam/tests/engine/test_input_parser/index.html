@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.tests.engine.test_input_parser &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../../"
+  src="../../../../../_static/documentation_options.js"></script>
+<script src="../../../../../_static/jquery.js"></script>
+<script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=autoapi/citam/tests/engine/test_input_parser/index.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+      <p><i>free</i> <small>and</small> <i> open-source</i></p>
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html" href="../index.html"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              href="https://github.com/corning-incorporated/citam"
+              target="_blank"
+              >View on GitHub</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="getting_started.html"
+              href="getting_started.html"
+              >Getting Started</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link itemStyle"
+              id="tutorial.html"
+              href="tutorial.html"
+              >Tutorial</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html"
+              >Documentation</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-citam.tests.engine.test_input_parser">
+<span id="citam-tests-engine-test-input-parser"></span><h1><a class="reference internal" href="#module-citam.tests.engine.test_input_parser" title="citam.tests.engine.test_input_parser"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.tests.engine.test_input_parser</span></code></a><a class="headerlink" href="#module-citam.tests.engine.test_input_parser" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_file_not_found" title="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_file_not_found"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_csv_metadata_file_file_not_found</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_column" title="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_csv_metadata_file_missing_column</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_value" title="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_csv_metadata_file_missing_value</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_invalid_value" title="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_invalid_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_csv_metadata_file_invalid_value</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_correct_number_of_rows" title="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_correct_number_of_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_csv_metadata_file_correct_number_of_rows</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_optional_columns_support" title="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_optional_columns_support"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_csv_metadata_file_optional_columns_support</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_file_not_found" title="citam.tests.engine.test_input_parser.parse_svg_floorplan_file_not_found"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_svg_floorplan_file_not_found</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_good_file" title="citam.tests.engine.test_input_parser.parse_svg_floorplan_good_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_svg_floorplan_good_file</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_bad_file_no_path_id" title="citam.tests.engine.test_input_parser.parse_svg_floorplan_bad_file_no_path_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_svg_floorplan_bad_file_no_path_id</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_no_issues" title="citam.tests.engine.test_input_parser.test_parse_input_file_no_issues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_input_file_no_issues</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_missing_values" title="citam.tests.engine.test_input_parser.test_parse_input_file_missing_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_input_file_missing_values</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_file_not_found" title="citam.tests.engine.test_input_parser.test_parse_input_file_file_not_found"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_input_file_file_not_found</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_invalid_daylength" title="citam.tests.engine.test_input_parser.test_parse_input_file_invalid_daylength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_input_file_invalid_daylength</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_issues" title="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_issues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_svg_map_file_no_issues</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_building" title="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_building"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_svg_map_file_no_building</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space" title="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_svg_map_file_no_space</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space_function" title="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_svg_map_file_no_space_function</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_invalid_building" title="citam.tests.engine.test_input_parser.test_parse_svg_map_file_invalid_building"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_svg_map_file_invalid_building</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_bad_office_assignment_file" title="citam.tests.engine.test_input_parser.test_parse_bad_office_assignment_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_bad_office_assignment_file</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_empty_office_assignment_file" title="citam.tests.engine.test_input_parser.test_parse_empty_office_assignment_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_empty_office_assignment_file</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_office_assignemnt_file" title="citam.tests.engine.test_input_parser.test_parse_office_assignemnt_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_parse_office_assignemnt_file</span></code></a>(datadir)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_file_not_found">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_csv_metadata_file_file_not_found</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_csv_metadata_file_file_not_found"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_file_not_found" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_column">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_csv_metadata_file_missing_column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_csv_metadata_file_missing_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_value">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_csv_metadata_file_missing_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_csv_metadata_file_missing_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_invalid_value">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_csv_metadata_file_invalid_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_csv_metadata_file_invalid_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_invalid_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_correct_number_of_rows">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_csv_metadata_file_correct_number_of_rows</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_csv_metadata_file_correct_number_of_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_correct_number_of_rows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_optional_columns_support">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_csv_metadata_file_optional_columns_support</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_csv_metadata_file_optional_columns_support"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_optional_columns_support" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.parse_svg_floorplan_file_not_found">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">parse_svg_floorplan_file_not_found</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#parse_svg_floorplan_file_not_found"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_file_not_found" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.parse_svg_floorplan_good_file">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">parse_svg_floorplan_good_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#parse_svg_floorplan_good_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_good_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.parse_svg_floorplan_bad_file_no_path_id">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">parse_svg_floorplan_bad_file_no_path_id</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#parse_svg_floorplan_bad_file_no_path_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_bad_file_no_path_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_input_file_no_issues">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_input_file_no_issues</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_input_file_no_issues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_input_file_no_issues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_input_file_missing_values">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_input_file_missing_values</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_input_file_missing_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_input_file_missing_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_input_file_file_not_found">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_input_file_file_not_found</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_input_file_file_not_found"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_input_file_file_not_found" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_input_file_invalid_daylength">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_input_file_invalid_daylength</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_input_file_invalid_daylength"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_input_file_invalid_daylength" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_issues">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_svg_map_file_no_issues</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_svg_map_file_no_issues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_issues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_building">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_svg_map_file_no_building</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_svg_map_file_no_building"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_building" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_svg_map_file_no_space</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_svg_map_file_no_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space_function">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_svg_map_file_no_space_function</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_svg_map_file_no_space_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_svg_map_file_invalid_building">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_svg_map_file_invalid_building</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_svg_map_file_invalid_building"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_invalid_building" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_bad_office_assignment_file">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_bad_office_assignment_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_bad_office_assignment_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_bad_office_assignment_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_empty_office_assignment_file">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_empty_office_assignment_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_empty_office_assignment_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_empty_office_assignment_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="citam.tests.engine.test_input_parser.test_parse_office_assignemnt_file">
+<code class="sig-prename descclassname"><span class="pre">citam.tests.engine.test_input_parser.</span></code><code class="sig-name descname"><span class="pre">test_parse_office_assignemnt_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/tests/engine/test_input_parser.html#test_parse_office_assignemnt_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.tests.engine.test_input_parser.test_parse_office_assignemnt_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.tests.engine.test_input_parser</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_file_not_found">test_parse_csv_metadata_file_file_not_found</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_column">test_parse_csv_metadata_file_missing_column</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_missing_value">test_parse_csv_metadata_file_missing_value</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_invalid_value">test_parse_csv_metadata_file_invalid_value</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_correct_number_of_rows">test_parse_csv_metadata_file_correct_number_of_rows</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_csv_metadata_file_optional_columns_support">test_parse_csv_metadata_file_optional_columns_support</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_file_not_found">parse_svg_floorplan_file_not_found</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_good_file">parse_svg_floorplan_good_file</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.parse_svg_floorplan_bad_file_no_path_id">parse_svg_floorplan_bad_file_no_path_id</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_no_issues">test_parse_input_file_no_issues</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_missing_values">test_parse_input_file_missing_values</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_file_not_found">test_parse_input_file_file_not_found</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_input_file_invalid_daylength">test_parse_input_file_invalid_daylength</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_issues">test_parse_svg_map_file_no_issues</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_building">test_parse_svg_map_file_no_building</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space">test_parse_svg_map_file_no_space</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_no_space_function">test_parse_svg_map_file_no_space_function</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_svg_map_file_invalid_building">test_parse_svg_map_file_invalid_building</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_bad_office_assignment_file">test_parse_bad_office_assignment_file</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_empty_office_assignment_file">test_parse_empty_office_assignment_file</a></li>
+<li><a class="reference internal" href="#citam.tests.engine.test_input_parser.test_parse_office_assignemnt_file">test_parse_office_assignemnt_file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/autoapi/citam/tests/engine/test_input_parser/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>
