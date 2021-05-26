@@ -50,13 +50,13 @@
 .titleBorder {
   /*border-bottom: 1px solid black; */
   width: 85%;
-  margin-top: 50px;
+  margin-top: -20px;
 }
 
 .titleBorder img {
   margin: 15px 0 0 55px;
-  width: 170px;
-  height: 40px;
+  width: 150px;
+  height: 35px;
 }
 #citamTitle {
   font-size: 55px;
@@ -70,7 +70,10 @@
   font-size: 18px;
 }
 .subTitleMargin {
-  margin: 10px 0 0 60px;
+  margin: 70px 0 0 60px;
+}
+.subTitleMargin p {
+  font-size: 20px;
 }
 /*Custom button Styling with hover effects*/
 .customButton {
@@ -110,12 +113,12 @@
   margin: 20px 0 20px 0;
   padding-bottom: 25px;
   text-align: center;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 /*Key features section styling*/
 .centerMargin {
-  margin: 0 85px 30px 85px !important;
+  margin: 0 85px 40px 85px !important;
 }
 .featureItem {
   margin: 0 0 20px 0;
