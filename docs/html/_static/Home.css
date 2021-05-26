@@ -36,14 +36,7 @@
 .customNav a:hover {
   color: orange;
 }
-.bckImg {
-  background-image: url("./Images/CITAM-hero.png");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% 80%;
-  height: 400px;
-  margin-top: 50px;
-}
+
 .colSpacing {
   margin-top: 15px;
 }
