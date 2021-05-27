@@ -14,8 +14,8 @@
 
 import {mount, createLocalVue} from "@vue/test-utils";
 import Dashboard from "@/components/Dashboard";
-import Scatterplot from "@/components/Scatterplot";
-import Histogram from "@/components/Histogram"
+import Scatterplot from "@/components/run/dataplots/Scatterplot";
+import Histogram from "@/components/run/dataplots/Histogram"
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import dashData from '../data/dashboard'
 

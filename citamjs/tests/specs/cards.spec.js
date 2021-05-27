@@ -13,7 +13,7 @@
 **/
 
 import {shallowMount} from "@vue/test-utils";
-import Statcards from "@/components/Statcards";
+import Statcards from "@/components/run/dataplots/Statcards";
 import cards from '../data/cards'
 
 describe('Statcards Tests', () => {

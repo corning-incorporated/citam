@@ -1,21 +1,21 @@
-  /**
- Copyright 2020. Corning Incorporated. All rights reserved.
+/**
+Copyright 2020. Corning Incorporated. All rights reserved.
 
- This software may only be used in accordance with the identified license(s).
+This software may only be used in accordance with the identified license(s).
 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
- ==========================================================================
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+==========================================================================
 **/
 
 import axios from 'axios';
 import Map2D from './basic_map';
 import * as dat from 'dat.gui';
-import {getSummary} from './data_service';
+import { getSummary } from './data_service';
 
 /**
  * Base URL for the CITAM Results API
@@ -54,7 +54,7 @@ function init() {
         simulation: simulation_ids[0],
         startAnimation: () => mapInstance.startAnimation(),
         stopAnimation: () => mapInstance.stopAnimation(),
-        animationSpeed: 10,
+        animationSpeed: 120,
         floorOptions: ["1"],
         floor: "1",
       };
@@ -70,11 +70,9 @@ function init() {
               .name('Floor')
               .onChange(value => mapInstance.setFloor(value));
             mapInstance.scaleFactor = response.data.scaleMultiplier || 1;
-            console.log('scale_multiplier', response.data.scaleMultiplier);
-            console.log('scaleFactor', mapInstance.scaleFactor);
             mapInstance.setSimulation(value).then(() => {
               timestepSlider.min(0);
-              timestepSlider.max(mapInstance.totalSteps);
+              timestepSlider.max(response.data.TotalTimesteps);
             });
           });
         });
@@ -83,8 +81,8 @@ function init() {
         .name('Floor')
         .onChange(value => mapInstance.setFloor(value));
 
-      GUI.add(animationParams, 'animationSpeed', 1, 10)
-        .name('Speed')
+      GUI.add(animationParams, 'animationSpeed', 1, 120)
+        .name('Speed (fps)')
         .step(1)
         .onChange(value => mapInstance.setSpeed(value));
 
@@ -97,7 +95,7 @@ function init() {
       timestepSlider = GUI.add(mapInstance, 'currentStep')
         .name('Timestep')
         .min(0)
-        .max(3600)
+        .max(mapInstance.totalSteps)
         .step(1)
         .onChange(() => mapInstance.update())
         .listen();
@@ -115,7 +113,7 @@ function init() {
           /** Load first simulation */
           mapInstance.setSimulation(animationParams.simulation).then(() => {
             timestepSlider.min(0);
-            timestepSlider.max(mapInstance.totalSteps);
+            timestepSlider.max(response.data.TotalTimesteps);
           });
         });
     });

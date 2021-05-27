@@ -1,6 +1,7 @@
 {
     "facility_name": "TEST",
     "simulation_name": "test_run_1",
+    "run_name": "test_run_1",
     "floors": [
         "0"
     ],

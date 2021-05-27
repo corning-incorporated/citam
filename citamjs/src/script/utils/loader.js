@@ -15,30 +15,26 @@
 import '../../css/_loader.scss';
 
 export class Loader {
-  constructor() {
+  constructor(parentElement) {
     // Add Loader elements
-    let loader = document.createElement('div');
-    document.body.prepend(loader);
-    loader.outerHTML = `
+    this.loader = document.createElement('div');
+    parentElement.append(this.loader);
+    // document.body.prepend(loader);
+    this.loader.innerHTML = `
       <div id="loader-root">
         <div class="simulation-loader-overlay"></div>
         <div class="simulation-loader">
-          <div class="loader-title">Loading...</div>
           <div class="loader-wrapper">
             <div id="trajectory-loader" class="loader"></div>
-            <span class="loader-label">Trajectory File</span>
+            <div> 
+              <span class="loader-label" id="traj-loader-label">Loading trajectory Data</span>
+              <br/>
+              <span class="loader-label" id="countdown-root"></span>
+            </div>
            </div>
-          <div class="loader-wrapper">
-            <div id="contact-loader" class="loader"></div>
-            <span class="loader-label">Contacts File</span>
-          </div>
           <div class="loader-wrapper">
             <div id="map-loader" class="loader"></div>
             <span class="loader-label">Map File</span>
-          </div>
-          <div class="loader-wrapper">
-            <div id="distribution-loader" class="loader"></div>
-            <span class="loader-label">Contact Distribution Files</span>
           </div>
         </div>
       </div>
@@ -46,15 +42,29 @@ export class Loader {
 
     this.loaderRoot = document.getElementById('loader-root');
     this._trajectoryElem = document.getElementById('trajectory-loader');
-    this._contactElem = document.getElementById('contact-loader');
+    this.trajLoaderLabel = document.getElementById('traj-loader-label');
+
+    // this._contactElem = document.getElementById('contact-loader');
     this._mapElem = document.getElementById('map-loader');
-    this._distributionsElem = document.getElementById('distribution-loader');
+    // this._distributionsElem = document.getElementById('distribution-loader');
+    this.countdownRoot = document.getElementById('countdown-root');
+
   }
 
   /** Show the loader element */
   show() {
-    this.loaderRoot.style.display = 'block';
+    this.loaderRoot.style.display = 'inline';
     this._reset();
+  }
+
+  showError(message) {
+    this._setError(this._trajectoryElem);
+    // this._setComplete(this._trajectoryElem);
+    this.trajLoaderLabel.innerText = "Error loading trajectory"
+    if (message !== undefined) {
+      this.countdownRoot.innerText = message;
+    }
+
   }
 
   /** Hide the loader element */
@@ -82,6 +92,27 @@ export class Loader {
     this._setComplete(this._distributionsElem);
   }
 
+  startCountdown(duration) {
+    let minutes = Math.floor(duration / 60);
+    let seconds = Math.floor(duration % 60);
+    this.countdownRoot.innerText = minutes + " min " + seconds + " sec left";
+    this.countdown = setInterval(() => {
+      if (duration > 0) {
+        duration--;
+        minutes = Math.floor(duration / 60);
+        seconds = Math.floor(duration % 60);
+        this.countdownRoot.innerText = minutes + " min " + seconds + " sec left";
+      } else {
+        this.countdownRoot.innerText = "Finalizing... "
+      }
+    }, 1000);
+
+  }
+
+  stopCountdown() {
+    clearInterval(this.countdown);
+  }
+
   /**
    * Remove this element from the dom
    */
@@ -101,14 +132,27 @@ export class Loader {
   }
 
   /**
+ * Set a spinner to the loaded state
+ *
+ * @param {HTMLElement} node
+ * @private
+ */
+  _setError(node) {
+    node.classList.remove('loader');
+    node.classList.add('loader-error');
+
+  }
+
+  /**
    * Reset all spinners to the unloaded state
    *
    * @private
    */
   _reset() {
-    [this._trajectoryElem, this._mapElem, this._contactElem, this._distributionsElem].forEach(
+    [this._trajectoryElem, this._mapElem].forEach(
       (elem) => {
         elem.classList.remove('loaded');
+        elem.classList.remove('error');
         elem.classList.add('loader');
       });
   }

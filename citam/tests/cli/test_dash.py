@@ -48,7 +48,15 @@ def result_dir(tmpdir):
     # Populate the directory with a minimal result manifest
     result_dir = tmpdir.mkdir("test_result")
     with open(os.path.join(result_dir, "manifest.json"), "w") as manifest:
-        manifest.write('{"SimulationName": "testing"}')
+        manifest.write(
+            '{"RunID": "testing",'
+            + '"SimulationHash": "testing", '
+            + '"SimulationName": "testing", '
+            + '"FacilityName": "Fac",'
+            + '"RunName": "Fac-Run",'
+            + '"NumberOfAgents": 100,'
+            + '"PolicyID": "pol_ID", "FacilityName":"TEST"}'
+        )
     return str(result_dir)
 
 
@@ -72,6 +80,9 @@ def test_result_not_set_fails():
 
 def test_valid_results_option(result_dir):
     parser = cli.get_parser()
+
+    print("result dir is: ", result_dir)
+
     parsed = parser.parse_args(["dash", "--results", result_dir])
     parsed.func(**vars(parsed))
 

@@ -51,7 +51,7 @@ class Simulation:
     def __init__(
         self,
         facility: Facility,
-        daylength: int,
+        total_timesteps: int,
         n_agents: int,
         shifts: List[Dict],
         buffer: int = 300,
@@ -70,8 +70,8 @@ class Simulation:
 
         :param facility: Facility object for which to run this simulation.
         :type facility: Facility
-        :param daylength: Total number of timesteps to run this simulation for.
-        :type daylength: int
+        :param total_timesteps: Total timesteps to run this simulation for.
+        :type total_timesteps: int
         :param n_agents: Total number of people in this facility.
         :type n_agents: int
         :param shifts: A shift is a group of agents who
@@ -110,7 +110,7 @@ class Simulation:
         """
 
         self.facility = facility
-        self.daylength = daylength
+        self.total_timesteps = total_timesteps
         self.buffer = buffer
         self.timestep = timestep
         self.contact_distance = contact_distance
@@ -123,8 +123,8 @@ class Simulation:
         self.agents = OrderedDict()
         self.shifts = shifts
         self.dry_run = dry_run
-        self.simulation_name = None
-        self.simid = str(uuid.uuid4())
+        self.simulation_hash = None
+        self.run_id = str(uuid.uuid4())
 
         # list used to keep track of total contact events per xy location per
         #  floor
@@ -153,7 +153,7 @@ class Simulation:
 
         m = hashlib.blake2b(digest_size=10)
         data = [
-            self.daylength,
+            self.total_timesteps,
             self.n_agents,
             self.occupancy_rate,
             self.buffer,
@@ -195,7 +195,7 @@ class Simulation:
             data = nx.to_edgelist(hg)
             m.update(repr(data).encode("utf-8"))
 
-        self.simulation_name = m.hexdigest()
+        self.simulation_hash = m.hexdigest()
 
     def generate_meetings(self) -> None:
         """
@@ -213,7 +213,7 @@ class Simulation:
         self.meeting_policy = MeetingPolicy(
             meeting_room_objects,
             agent_ids,
-            daylength=self.daylength,
+            daylength=self.total_timesteps,
             policy_params=self.meetings_policy_params,
         )
 
@@ -221,7 +221,7 @@ class Simulation:
         if n_meeting_rooms > 0 and self.create_meetings:
             self.meeting_policy.create_all_meetings()
 
-    def run_serial(self, workdir: str) -> None:
+    def run_serial(self, workdir: str, sim_name: str, run_name: str) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
 
@@ -272,7 +272,7 @@ class Simulation:
         LOG.info("Total agents: " + str(self.n_agents))
 
         self.create_sim_hash()
-        self.save_manifest(workdir)
+        self.save_manifest(workdir, sim_name, run_name)
         self.save_maps(workdir)
         self.generate_meetings()
         self.add_agents_and_build_schedules()
@@ -298,8 +298,8 @@ class Simulation:
             contact_outfiles.append(open(contact_file, "w"))
 
         # Run simulation
-        pbar = pb.ProgressBar(max_value=self.daylength + self.buffer)
-        for i in range(self.daylength + self.buffer):
+        pbar = pb.ProgressBar(max_value=self.total_timesteps + self.buffer)
+        for i in range(self.total_timesteps + self.buffer):
             pbar.update(i)
             self.step(
                 traj_outfile=t_outfile, contact_outfiles=contact_outfiles
@@ -383,11 +383,11 @@ class Simulation:
                 exit_time = 0
                 while (
                     exit_time == 0
-                    or exit_time > self.daylength + self.buffer
-                    or exit_time < self.daylength - self.buffer
+                    or exit_time > self.total_timesteps + self.buffer
+                    or exit_time < self.total_timesteps - self.buffer
                 ):
 
-                    exit_time = round(np.random.poisson(self.daylength))
+                    exit_time = round(np.random.poisson(self.total_timesteps))
 
                 # Exit through the same door
                 exit_door = entrance_door
@@ -643,7 +643,9 @@ class Simulation:
 
         return agent_ids, n_contacts
 
-    def save_manifest(self, work_directory: str) -> None:
+    def save_manifest(
+        self, work_directory: str, sim_name: str, run_name: str
+    ) -> None:
         """
         Save manifest file, used by the dashboard to show results.
 
@@ -677,20 +679,23 @@ class Simulation:
             "TimestepInSec": 1,
             "NumberOfFloors": self.facility.number_of_floors,
             "NumberOfOneWayAisles": n_one_way_aisles,
-            "NumberOfEmployees": len(self.agents),
-            "SimulationName": self.simulation_name,
-            "SimulationID": self.simid,
-            "Campus": self.facility.facility_name,
+            "NumberOfAgents": len(self.agents),
+            "SimulationName": sim_name,
+            "RunName": run_name,
+            "SimulationHash": self.simulation_hash,
+            "RunID": self.run_id,
+            "FacilityName": self.facility.facility_name,
             "FacilityOccupancy": self.occupancy_rate,  # between 0.0 and 1.0
             "MaxRoomOccupancy": 1.0,
             "NumberOfShifts": 1,
             "NumberOfEntrances": 1,
             "NumberOfExits": 1,
             "EntranceScreening": False,
-            "trajectory_file": "trajectory.txt",
-            "floors": floors,
-            "scaleMultiplier": max(1, round(fp_width / 1500.0)),
-            "timestep": 1,
+            "TrajectoryFile": "trajectory.txt",
+            "Floors": floors,
+            "ScaleMultiplier": max(1, round(fp_width / 1500.0)),
+            "Timestep": 1,
+            "TotalTimesteps": self.total_timesteps,
         }
 
         manifest_file = os.path.join(work_directory, "manifest.json")
@@ -872,7 +877,7 @@ class Simulation:
         # Statistics
         statistics = self.contact_events.extract_statistics()
         statistics_dict = {
-            "SimulationName": self.simulation_name,
+            "SimulationName": self.simulation_hash,
             "data": statistics,
         }
         filename = os.path.join(work_directory, "statistics.json")
