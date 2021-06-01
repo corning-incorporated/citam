@@ -35,8 +35,7 @@
                 GitHub</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link itemStyle" id="getting_started.html" href="html/getting_started.html">Getting
-                Started</a>
+              <a class="nav-link itemStyle" id="getting_started.html" href="html/getting_started.html">How it Works</a>
             </li>
             <li class="nav-item">
               <a class="nav-link itemStyle" id="tutorial.html" href="html/tutorial.html">Tutorial</a>
@@ -58,10 +57,7 @@
                 Free and open-source agent-based<br /> simulation platform for indoor environments</i>
             </p>
             <button class="customButton btn">
-              <a href="html/getting_started.html">Get Started</a>
-            </button>
-            <button class="customButton btn">
-              <a href="https://github.com/corning-incorporated/citam" target="_blank">Download</a>
+              <a href="https://github.com/corning-incorporated/citam" target="_blank">View on GitHub</a>
             </button>
           </div>
         </div>
@@ -71,8 +67,8 @@
       <div class="col d-flex justify-content-center">
         <p id="citamDesc">
           <i>CITAM (COVID-19 Indoor Transmission Agent-based Modeling) is a Python agent-based modeling platform for
-            indoor environments. It can be used to create "virtual" analogs of real facilities to run different types of
-            simulations that benefit from the use of real floor plans. It was designed to simulate the movement of
+            indoor environments. CITAM creates "virtual" analogs of real facilities to run
+            simulations based on real floor plans. It was designed to simulate the movement of
             individuals in indoor environments for risk assessment and decision making related to infectious disease
             spread but is not limited to that use case.
           </i>
@@ -132,11 +128,81 @@
     </div>
     <div class="row centerMargin customBorder">
       <div class="col">
-        <h4><b>HOW TO USE</b></h4>
-        <h6>
-          Download and install CITAM through GitHub. We assume the user has basic technical knowledge in Python, how to
-          use the terminal and manipulate JSON and SVG files.
-        </h6>
+        <h4><b>QUICKSTART GUIDE</b></h4>
+        <h5> Install CITAM </h5>
+        <p>
+          Download the python-wheel zip file under <strong>Assets</strong> from the latest release tag:</p>
+        <button class="customButton btn">
+          <a href="https://github.com/corning-incorporated/citam/releases">View and Download Release</a>
+        </button>
+        <br /><br />
+        <p>
+          Extract the compressed file locally:
+          <code>unzip python-wheel.zip</code>
+        </p>
+        <p>
+          Change directory to the extracted python-wheel folder. Do not rename this file:
+          <code>cd python-wheel</code>
+        </p>
+        <p>
+          Install CITAM:
+          <code>pip install [citam_wheel] </code> where citam_wheel is the extracted .whl file.
+
+        </p>
+
+        <h5>Ingest Floorplan</h5>
+
+        <p>
+          If you haven't downloaded the code yet, you can clone the repository as follows:
+          <code>git clone https://github.com/corning-incorporated/citam.git</code>
+        </p>
+
+        <p>
+          Navigate to the citam folder:
+          <code>
+          cd citam
+          </code>
+        </p>
+
+        <p>
+          Run the engine ingest command to ingest your first floorplan:
+          <code>
+          citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --svg
+          examples/basic_example/TF1.svg -v
+        </code>
+        </p>
+
+        <p>
+          Build the navigation network for this facility:
+          <code>citam engine build-navnet foo_facility foo_floor -v</code>
+        </p>
+        <p>
+          You are now ready to run your first simulation!
+        </p>
+
+
+        <h5>Run Simulation</h5>
+
+        <p>
+          Let's start by making a directory to run your simulation:
+          <code> mkdir citam_simulation</code>
+        </p>
+
+        <p>
+          Now copy an example input file:
+          <code>
+          cp citam/examples/basic_example/example_sim_inputs.json citam_simulation/.
+        </code>
+        </p>
+
+        <p>
+          Start the simulation:
+          <code>
+            cd citam_simulation
+            citam engine run example_sim_inputs.json
+          </code>
+        </p>
+
         <br /><br />
         <button class="customButton btn">
           <a href="html/tutorial.html">Learn More</a>
