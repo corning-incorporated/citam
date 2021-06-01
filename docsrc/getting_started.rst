@@ -34,7 +34,6 @@ CITAM is built as a cross-platform software compatible with all major operating 
 
 CITAM is available on `GitHub <https://www.github.com/corning-incorporated/citam/>`_.
 
-
-We recommend going through the tutorial for a more in-depth guide on how to use CITAM: :ref:`tutorial`
+We recommend going through the :ref:`tutorial` for a more in-depth guide on how to use CITAM.
 
 
