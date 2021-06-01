@@ -111,7 +111,6 @@
             
   <section id="how-it-works">
 <span id="getting-started"></span><h1>How it Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h1>
-<p>Covid-19 Indoor Transmission Agent-based Modeling platform.</p>
 <p>When you use CITAM to model your facility (e.g. a school, a manufacturing facility, an office building, etc.), it creates a “virtual” version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts and traffic patterns and compare the contact statistics to find the best mitigation strategy to limit transmission within your facility.</p>
 <p>As a simulation platform, CITAM does not implement nor does it support real-world tracking of visitors, employees or other people within the facilities of interest. CITAM actually provides an alternative to that approach by allowing a simulation to be used to assess and understand the implications of
 various mitigation policies. At its core, CITAM is an agent-based
@@ -121,7 +120,7 @@ possible to mimic daily activities in various indoor environments.</p>
 format for ingestion as well as some metadata about each space in each floorplan. For a list
 of required metadata, please visit the <a class="reference internal" href="input_requirements.html#input-requirements"><span class="std std-ref">Simulation Input Requirements</span></a> section of the documentation.
 Example input files are also available in the <a class="reference external" href="https://www.github.com/corning-incorporated/citam/examples/">examples folder</a> of the git repository.</p>
-<p>Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below (example usage is provided in the [How to add facilities](#how-to-add-facilities) section):</p>
+<p>Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below:</p>
 <ol class="arabic simple">
 <li><p>Ingestion (required): In this step, CITAM reads your SVG and CSV files, automatically adds doors to spaces where missing, removes map artifacts that are deemed unnecessary for the simulation, and stores the resulting data in your local cache for future retrieval.</p></li>
 <li><p>Validation (optional): In this step, you get to inspect results from the ingestion step and make any necessary changes. This step is optional but highly recommended to ensure valid simulation results.</p></li>

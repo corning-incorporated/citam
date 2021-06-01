@@ -12,15 +12,18 @@ Outputs from a CITAM simulation are as follows.
     ├── floor_0
     │   ├── contact_dist_per_coord.csv
     │   |── contacts.txt
-    |   |── heatmap.svg
-    │   └── map.svg
+    |   |── map.svg
+    │   └── heatmap.svg
+    ├── agents.ids
     ├── citam.log
     ├── contact_dist_per_agent.csv
-    ├── employee_ids.txt
-    ├── simulation.json
     ├── manifest.json
+    ├── meetings.txt
+    ├── office_assignment.json
     ├── pair_contacts.csv
     |── raw_contact_data.ccd
+    ├── schedules.txt
+    ├── statistics.json
     |── timing.txt
     └── trajectory.txt
 
@@ -53,20 +56,27 @@ Overall Results
 
 CITAM also includes results that pertain to the entire facility. Here is a description of each file:
 
+* agents_ids.txt
+    List of IDs used for each agent in this simulation. This file is subject to removal in subsequent version of CITAM.
+
 * citam.log
-    This is the log file with all the details of the simulation. This is particularly useful for debugging.
+    This is the log file with all the details of the simulation. This is particularly useful for debugging. 
 
 * contact_dist_per_agent.csv
-    Each line contains the total number of contacts for each agent.
-
-* employee_ids.txt
-    List of IDs used for each agent in this simulation. This file is subject to removal in subsequent version of CITAM.
+    Each line contains the cumulative contact duration (or steps) for each agent. 
 
 * inputs.json
     Input parameters for this simulation as provided by the user.
 
 * manifest.json
-    A description of the key information related to this simulation for use by the dashboard.
+    A description of the key information related to this simulation for use by the GUI.
+
+* meetings.txt
+    List of meetings automatically scheduled in this simulation. Each meeting has a location, list of attendees, start and end time.
+
+* office_assignment.json
+    List of agents and the work space automatically assigned to them in this simulation. This file can be provided as input in case
+    the same simulation is to be repeated.
 
 * pair_contacts.csv
     This is one of the primary outputs from CITAM simulations. This file records the number of individual contact events and the total duration of contact

@@ -148,13 +148,13 @@ adding a facility.</p>
 <p>To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
 each space in “path” elements. CITAM also needs information about the function of
 each space so it can build realistic schedules for the individuals who use them. Those information can be
-provided in a companion CSV file where the “id” of each space is used to match them with the
-SVG file.</p>
+provided in an optional companion CSV file where the “id” of each space is used to match them with the
+SVG file. Everything can also be included in the SVG file (recommended).</p>
 <p>For this tutorial, we will use example files provided with CITAM in the <a class="reference external" href="https://www.github.com/corning-incorporated/citam/examples/">examples/
 directory</a>. Please download those files from GitHub if you don’t have them.</p>
 <p>The example floorplan that we will use can be found in the <strong>examples/basic_example_2</strong>
 folder located inside the main citam folder. The files that we need for now are named <strong>TF2.csv</strong> and <strong>TF2.svg</strong>
-Fig. 1 shows how the floor plan given by TF2.svg looks like. You can use any SVG viewer to visualize it (any web browser will do).</p>
+Fig. 1 shows the floor plan given by TF2.svg. You can use any SVG viewer to visualize it (your favorite web browser will do).</p>
 <img alt="Floorplan before ingestion" src="_images/floorplan_before_ingestion.png" />
 <p>Fig. 1: Layout of the floorplan used in this tutorial. Notice how the boundaries for each space are clearly shown.</p>
 <p>Before ingestion, let’s take a look at the content of TF2.svg. Use a text editor such
@@ -230,14 +230,23 @@ Each space also has a (unique) ID used to identify them.</p>
 </div>
 <p>As you can see, this file simply contains additional information about each space as identified by their ID.
 For example, we can see that space ID “1” is an office on floor “0”. For a list of supported values and
-metadata please go to the <a class="reference internal" href="facility_data_requirement.html#svg-requirements"><span class="std std-ref">Facility Data Requirements</span></a> page of the documentation. The ID field is read as a string. The only requirement is that it is unique. The space information provided in the CSV file can also be added to the SVG file (supported soon).</p>
+metadata please go to the <a class="reference internal" href="facility_data_requirement.html#svg-requirements"><span class="std std-ref">Facility Data Requirements</span></a> page of the documentation. The ID field is read as a string. The only requirement is that it is unique.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The CSV file is not required as long as each path element in the SVG file contains an additional “function” property that specifies how the corresponding space is to be used.
+For example: &lt;path id=”SI_3DBF” function=”Lab” d=”M3240 0 0 0 0 -600 3240 -600Z”/&gt;</p>
+</div>
 <p>Now that we know what’s in those two input files, let’s ingest this floor plan using the <code class="docutils literal notranslate"><span class="pre">citam</span> <span class="pre">engine</span> <span class="pre">ingest</span></code> command as follow (from the
 main citam directory):</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine ingest TF2 <span class="m">0</span> -csv examples/basic_examples/TF2.csv -map examples/basic_example/TF2.svg -v
 </pre></div>
 </div>
-<p><cite>TF2</cite> is the name of the facility under which this floorplan will be saved and <cite>0</cite> is the name of this floor. For all
-subsequent operations on this facility, the same facility name must be provided. Alternatively, you may use:</p>
+<p><cite>TF2</cite> is the user-provided name of the facility under which this floorplan will be saved and <cite>0</cite> is the name of this floor (feel free to use other names, if desired). For all
+subsequent operations on this facility (including adding more floors), the same facility name must be provided. The same holds for the floor name.</p>
+<p>..note:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">This</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">currently</span> <span class="n">enforced</span> <span class="n">but</span> <span class="n">please</span> <span class="n">treat</span> <span class="n">the</span> <span class="n">facility</span> <span class="ow">and</span> <span class="n">floor</span> <span class="n">names</span> <span class="k">as</span> <span class="n">case</span><span class="o">-</span><span class="n">insensitive</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">problematic</span> <span class="n">on</span> <span class="n">Linux</span> <span class="n">but</span> <span class="n">may</span> <span class="n">create</span> <span class="n">problems</span> <span class="n">on</span> <span class="n">Windows</span><span class="o">.</span>
+</pre></div>
+</div>
 <p>The <code class="docutils literal notranslate"><span class="pre">-v</span></code> argument is for verbose, to show more information as the ingestion process progresses.</p>
 <p>After successful ingestion, you can export the ingested floorplans as an SVG file for inspection and validation.
 This step is important because in the next step, you will build the navigation network (navnet) which can be a fairly expensive
@@ -264,7 +273,7 @@ you will need an SVG editor such  <a class="reference external" href="https://ww
 <li><p>Add a door: To add a new door, you need to draw a line where desired, but you must assign an ID that contains the keyword “door” to it. Note that you can draw a door line on top of an existing wall line. CITAM will know to carve out the door from the wall.</p></li>
 <li><p>Remove a door: To remove a door, you have to extend an existing wall or create a new wall to completely cover the door opening.</p></li>
 </ol>
-<p>An example of the floor plan after using Inkscape to include wall features is as shown in Fig. 3.</p>
+<p>An example of the floor plan after using Inkscape to include walls that were mistakenly removed is shown in Fig. 3.</p>
 <img alt="Edited floorplan." src="_images/FirstOutputFileEdited.png" />
 <p>Fig. 3: Floorplan as edited in Inkscape. The newly added lines are darker. Notice how a door is added to the left outside wall as a regular line except its ID is set to “door_1”.</p>
 <p>Save your edited svg file as “TF2_edited.svg”. Now update it within CITAM using the citam engine update-floorplan
@@ -272,7 +281,7 @@ command as follow (assuming ):</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine update-floorplan TF2 <span class="m">0</span> -s ../../TF2_edited.svg -v
 </pre></div>
 </div>
-<p>To verify that the floorplan looks good, you can export it again using the export-floorplan
+<p>To verify that the floorplan is correct, you can export it again using the export-floorplan
 command:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine export-floorplan TF2 <span class="m">0</span> -o TF2_updated.svg -v
 </pre></div>
@@ -310,9 +319,6 @@ sim_inputs.json inside SIMULATION_FOLDER.</p>
     <span class="s2">&quot;daylength&quot;</span> <span class="p">:</span> <span class="mi">1800</span><span class="p">,</span>
     <span class="s2">&quot;entrance_time&quot;</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
     <span class="s2">&quot;n_agents&quot;</span> <span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="s2">&quot;occupancy_rate&quot;</span> <span class="p">:</span> <span class="n">null</span><span class="p">,</span>
-    <span class="s2">&quot;floorplan_scale&quot;</span><span class="p">:</span> <span class="mf">0.08333333333</span><span class="p">,</span>
-    <span class="s2">&quot;contact_distance&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
     <span class="s2">&quot;shifts&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;percent_agents&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}]</span>
 <span class="p">}</span>
 </pre></div>
@@ -332,13 +338,16 @@ the following files created in your SIMULATION_FOLDER:</p>
 │   |── contacts.txt
 |   |── map.svg
 │   └── heatmap.svg
+├── agents.ids
 ├── citam.log
 ├── contact_dist_per_agent.csv
-├── employee_ids.txt
-├── simulation.json
 ├── manifest.json
+├── meetings.txt
+├── office_assignment.json
 ├── pair_contacts.csv
 |── raw_contact_data.ccd
+├── schedules.txt
+├── statistics.json
 |── timing.txt
 └── trajectory.txt
 </pre></div>
@@ -371,11 +380,7 @@ the following files created in your SIMULATION_FOLDER:</p>
 <li class="toctree-l2"><a class="reference internal" href="outputs_description.html#overall-results">Overall Results</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="visualize_results.html">Visualize Results</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="visualize_results.html#the-main-results-page">The Main Results Page</a></li>
-<li class="toctree-l2"><a class="reference internal" href="visualize_results.html#the-details-page">The Details Page</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="visualize_results.html">Visualize Results</a></li>
 </ul>
 </div>
 </section>

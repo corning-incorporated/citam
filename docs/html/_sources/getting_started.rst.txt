@@ -4,7 +4,6 @@
 How it Works
 ================
 
-Covid-19 Indoor Transmission Agent-based Modeling platform.
 
 When you use CITAM to model your facility (e.g. a school, a manufacturing facility, an office building, etc.), it creates a "virtual" version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts and traffic patterns and compare the contact statistics to find the best mitigation strategy to limit transmission within your facility.
 
@@ -18,7 +17,7 @@ format for ingestion as well as some metadata about each space in each floorplan
 of required metadata, please visit the :ref:`input_requirements` section of the documentation.
 Example input files are also available in the `examples folder <https://www.github.com/corning-incorporated/citam/examples/>`_ of the git repository.
 
-Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below (example usage is provided in the [How to add facilities](#how-to-add-facilities) section):
+Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below:
 
 1. Ingestion (required): In this step, CITAM reads your SVG and CSV files, automatically adds doors to spaces where missing, removes map artifacts that are deemed unnecessary for the simulation, and stores the resulting data in your local cache for future retrieval.
 2. Validation (optional): In this step, you get to inspect results from the ingestion step and make any necessary changes. This step is optional but highly recommended to ensure valid simulation results.

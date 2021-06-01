@@ -117,15 +117,18 @@
 ├── floor_0
 │   ├── contact_dist_per_coord.csv
 │   |── contacts.txt
-|   |── heatmap.svg
-│   └── map.svg
+|   |── map.svg
+│   └── heatmap.svg
+├── agents.ids
 ├── citam.log
 ├── contact_dist_per_agent.csv
-├── employee_ids.txt
-├── simulation.json
 ├── manifest.json
+├── meetings.txt
+├── office_assignment.json
 ├── pair_contacts.csv
 |── raw_contact_data.ccd
+├── schedules.txt
+├── statistics.json
 |── timing.txt
 └── trajectory.txt
 </pre></div>
@@ -165,17 +168,17 @@ take place in each location. This file is used in the dashboard visualizer to pl
 <p>CITAM also includes results that pertain to the entire facility. Here is a description of each file:</p>
 <ul class="simple">
 <li><dl class="simple">
+<dt>agents_ids.txt</dt><dd><p>List of IDs used for each agent in this simulation. This file is subject to removal in subsequent version of CITAM.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
 <dt>citam.log</dt><dd><p>This is the log file with all the details of the simulation. This is particularly useful for debugging.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>contact_dist_per_agent.csv</dt><dd><p>Each line contains the total number of contacts for each agent.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>employee_ids.txt</dt><dd><p>List of IDs used for each agent in this simulation. This file is subject to removal in subsequent version of CITAM.</p>
+<dt>contact_dist_per_agent.csv</dt><dd><p>Each line contains the cumulative contact duration (or steps) for each agent.</p>
 </dd>
 </dl>
 </li>
@@ -185,7 +188,18 @@ take place in each location. This file is used in the dashboard visualizer to pl
 </dl>
 </li>
 <li><dl class="simple">
-<dt>manifest.json</dt><dd><p>A description of the key information related to this simulation for use by the dashboard.</p>
+<dt>manifest.json</dt><dd><p>A description of the key information related to this simulation for use by the GUI.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>meetings.txt</dt><dd><p>List of meetings automatically scheduled in this simulation. Each meeting has a location, list of attendees, start and end time.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>office_assignment.json</dt><dd><p>List of agents and the work space automatically assigned to them in this simulation. This file can be provided as input in case
+the same simulation is to be repeated.</p>
 </dd>
 </dl>
 </li>
