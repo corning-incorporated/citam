@@ -6,3 +6,10 @@
     height: 400px;
     margin-top: 50px;
   }
+
+  code {
+    background-color: #eee;
+    display: block;
+    padding: 20px;
+    color: black;
+  }

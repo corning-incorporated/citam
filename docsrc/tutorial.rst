@@ -21,7 +21,7 @@ contact-based pandemics like COVID-19 and help make policy decisions to mitigate
 indoor transmission risks.
 
 This tutorial assumes that you have already downloaded and installed CITAM. For details
-on how to install, visit the :ref:`getting_started` page. To verify
+on how to install, visit the `GitHub Repo <https://github.com/corning-incorporated/citam>`_. To verify
 that CITAM has been installed properly, run the following command from your terminal:
 
 .. code-block:: console
