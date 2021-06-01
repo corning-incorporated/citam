@@ -44,7 +44,12 @@ Main Simulation Inputs
 :traffic_policy: (*Array<object>*) Each element of this array must have a floor name,
         the segment_id and direction of the traffic. To find the segment id use the CLI as
         shown below. Example: [{"floor": "0", "segment_id":"0", "direction": -1}]
-
+:close_dining: (*boolean*) Whether to close all cafeteria and dining spaces or not.
+:create_meetings: (*boolean*) Whether meetings are permitted in this facility or not.
+:office_assignment_file: (*string*) Relative path to a file defining which office space (or work station) belongs to which agent. If this
+        file is not provided, office spaces will be assigned randomly and the file will be created automatically. This file can then
+        be used for subsequent repeat simulations.
+        
 .. code-block:: console
 
     citam engine export-potential-oneway-aisles -o OUTPUT_FILE
