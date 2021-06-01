@@ -101,7 +101,7 @@ main citam directory):
 `TF2` is the user-provided name of the facility under which this floorplan will be saved and `0` is the name of this floor (feel free to use other names, if desired). For all
 subsequent operations on this facility (including adding more floors), the same facility name must be provided. The same holds for the floor name. 
 
-..note::
+.. note::
 
     This is not currently enforced but please treat the facility and floor names as case-insensitive. This is not problematic on Linux but may create problems on Windows.
 
