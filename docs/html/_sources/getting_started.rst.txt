@@ -1,7 +1,7 @@
 .. _getting_started:
 
 ================
-Getting Started
+How it Works
 ================
 
 Covid-19 Indoor Transmission Agent-based Modeling platform.
@@ -34,72 +34,6 @@ CITAM is built as a cross-platform software compatible with all major operating 
 
 CITAM is available on `GitHub <https://www.github.com/corning-incorporated/citam/>`_.
 
-Below you will find a quickstart guide. We also recommend going through the :ref:`tutorial` for more in-depth explanation.
-
------------------
-Quickstart Guide
------------------
-
-Install
---------
-
-Please refer to this `Installation Guide <https://github.com/corning-incorporated/citam/tree/alpha#install-citam>`_.
-
-View List of Commands
------------------
-
-A reference guide for all the CLI commands is available in this document: :ref:`cli_commands`.
-
-Add Example Facility
-----------------------
-
-Detailed instructions are available `here <https://github.com/corning-incorporated/citam/tree/alpha#add-facilities>`_.
-
-**TL;DR**
-
-.. code-block:: console
-
-  $cd citam
-  $citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --svg examples/basic_example/TF1.svg -v
-  $citam engine export-floorplan foo_facility foo_floor -o foo_output.svg -v
-
-Use your favorite SVG viewer to open and inspect the exported `foo_output.svg` file. Make necessary changes and update as follows:
-
-.. code-block:: console
-
-  $citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg -v
-
-Build and validate navigation network:
-
-.. code-block:: console
-
-  $citam engine build-navnet foo_facility foo_floor -v
-  $citam engine export-navnet foo_facility foo_floor -o foo_navnet_output.svg -v
-
-
-Run your First Simulation
----------------------------
-
-Create simulation folder and copy example input file:
-
-.. code-block:: console
-
-  $mkdir citam_simulation
-  $cp citam/examples/basic_example/example_sim_inputs.json citam_simulation/.
-
-
-Start simulation:
-
-.. code-block:: console
-
-    $cd citam_simulation
-    $citam engine run example_sim_inputs.json
-
-Congrats you've run your first simulation!
-
-Read the Tutorial
-------------------
-
-We recommend going through the tutorial for a more in-depth guide on how to use CITAM: :ref:`tutorial`
+We recommend going through the :ref:`tutorial` for a more in-depth guide on how to use CITAM.
 
 
