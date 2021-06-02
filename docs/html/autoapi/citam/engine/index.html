@@ -107,6 +107,25 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/agent/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.agent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/contacts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.contacts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/simulation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.simulation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="facility/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="facility/indoor_facility/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.indoor_facility</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="facility/navbuilder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.navbuilder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="facility/navigation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.navigation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="io/input_parser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.input_parser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/serializer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.serializer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/storage_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.storage_utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/visualization/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.visualization</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="map/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map</span></code></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="map/door/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.door</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="map/floorplan/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.floorplan</span></code></a></li>
@@ -116,6 +135,11 @@
 <li class="toctree-l2"><a class="reference internal" href="map/space/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.space</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="map/updater/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.updater</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="map/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="policy/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.policy</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="policy/daily_schedule/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.policy.daily_schedule</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="policy/meetings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.policy.meetings</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -140,10 +164,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.run_simulation" title="citam.engine.run_simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_simulation</span></code></a>(inputs: dict)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.parse_input_file" title="citam.engine.parse_input_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_input_file</span></code></a>(input_file: Union[str, pathlib.Path]) → Dict[str, Any]</p></td>
+<td><p>Read primary simulation input file in json format, validate values,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.run_simulation" title="citam.engine.run_simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_simulation</span></code></a>(inputs: dict)</p></td>
 <td><p>Perform an agent-based simulation given a dictionary of input values</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.engine_run" title="citam.engine.engine_run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">engine_run</span></code></a>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.engine_run" title="citam.engine.engine_run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">engine_run</span></code></a>(**kwargs)</p></td>
 <td><p>Run a simulation</p></td>
 </tr>
 </tbody>
@@ -162,6 +189,37 @@
 </tr>
 </tbody>
 </table>
+<dl class="py function">
+<dt class="sig sig-object py" id="citam.engine.parse_input_file">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.</span></span><span class="sig-name descname"><span class="pre">parse_input_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#citam.engine.parse_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read primary simulation input file in json format, validate values,
+load floorplans and returns dictionary of model inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – path to input file expected in json format</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If unable to decode JSON file.</p></li>
+<li><p><strong>FileNotFoundError</strong> – If the file is not found.</p></li>
+<li><p><a class="reference internal" href="io/input_parser/index.html#citam.engine.io.input_parser.MissingInputError" title="citam.engine.io.input_parser.MissingInputError"><strong>MissingInputError</strong></a> – If a required value is not found</p></li>
+<li><p><strong>TypeError</strong> – If incorrect value type is found for one or more inputs.</p></li>
+<li><p><strong>ValueError</strong> – If an input value is invalid.</p></li>
+<li><p><strong>FileNotFoundError</strong> – If path to another to a meetings policy is file
+is not valid.</p></li>
+<li><p><strong>FileNotFoundError</strong> – If path to another to a scheduling policy is
+file is not valid.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary of inputs</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="citam.engine.run_simulation">
 <span class="sig-prename descclassname"><span class="pre">citam.engine.</span></span><span class="sig-name descname"><span class="pre">run_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#citam.engine.run_simulation" title="Permalink to this definition">¶</a></dt>
@@ -203,6 +261,7 @@
 <li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.parse_input_file">parse_input_file</a></li>
 <li><a class="reference internal" href="#citam.engine.run_simulation">run_simulation</a></li>
 <li><a class="reference internal" href="#citam.engine.LOG">LOG</a></li>
 <li><a class="reference internal" href="#citam.engine.engine_run">engine_run</a></li>

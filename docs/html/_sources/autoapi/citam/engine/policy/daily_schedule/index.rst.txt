@@ -1,0 +1,420 @@
+:mod:`citam.engine.policy.daily_schedule`
+=========================================
+
+.. py:module:: citam.engine.policy.daily_schedule
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.policy.daily_schedule.ScheduleItem
+   citam.engine.policy.daily_schedule.Schedule
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.policy.daily_schedule.LOG
+
+
+.. data:: LOG
+   
+
+   
+
+.. class:: ScheduleItem(purpose, location, floor_number, duration)
+
+
+
+.. class:: Schedule(timestep: int, start_time: int, exit_time: int, entrance_door: citam.engine.map.door.Door, entrance_floor: int, exit_door: citam.engine.map.door.Door, exit_floor: int, office_location: int, office_floor: int, navigation: citam.engine.facility.navigation.Navigation, scheduling_rules: Dict[str, Any], meetings: List[citam.engine.policy.meetings.Meeting] = None)
+
+
+   Create and manage a schedule typically associated with one agent. Schedules
+   are created based on rules encoded in a scheduling policy and include a
+   full itinerary.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. method:: build_schedule_item(self, purpose: str, next_meeting_start_time: Optional[int]) -> ScheduleItem
+
+      Given a purpose and additional properties such as meeting duration,
+      build a schedule item for this agent.
+
+      :param purpose: The purpose for this schedule item.
+      :type purpose: str
+      :param next_meeting_start_time: Start of any upcoming meeting. None if
+          there is no upcoming meeting.
+      :type next_meeting_start_time: int
+      :raises ValueError: If no suitable location is found for this purpose.
+      :return: The newly created schedule item.
+      :rtype: ScheduleItem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: find_next_schedule_item(self) -> ScheduleItem
+
+      Check if a meeting is happening within MEETING_BUFFER time. If so,
+      return the meeting as the next schedule item, otherwise, build a new
+      item that must ned before the next meeting time for this agent.
+
+      ..Note:: MEETING BUFFER is a constant specified in settings.
+
+      :return: The next schedule item.
+      :rtype: ScheduleItem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: find_possible_purposes(self) -> List[str]
+
+      Feturn list of possible purposes for this agent in this facility.
+
+      Iterate over purposes defined in scheduling rules and compare with
+      purposes specified for the different locations in this facility. The
+      possible purposes are the ones for which at least one location is
+      available.
+
+      ..Note:: Possible purposes are not checked for validity based on
+      scheduling rules.
+
+      :return: list of possible purposes.
+      :rtype: List[str]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: get_max_duration_for_purpose(self, purpose: str, next_meeting_start_time: Optional[int]) -> int
+
+      Calculate the maximum duration possible for a given scheduling purpose
+      while taking into account any upcoming meeting after this schedule
+      item.
+
+      :param purpose: The purpose of the next meeting.
+      :type purpose: str
+      :param next_meeting_start_time: Start time of the next meeting.
+      :type next_meeting_start_time: int
+      :return: The maximum duration.
+      :rtype: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: count_purpose_occurence_in_schedule_items(self) -> List[int]
+
+      Iterate over schedule items and count how many items each scheduling
+      purpose exists.
+
+      :return: List of counts, one per possible purpose.
+      :rtype: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: get_valid_purposes_from_possible_purposes(self, next_meeting_start_time: Optional[int]) -> List[str]
+
+      Iterate through list of purposes under consideration, remove any that
+      doesn't satisfy exisiting scheduling rules.
+
+      :param next_meeting_start_time: Start time of any upcoming meeting.
+      :type next_meeting_start_time: int
+      :return: List of valid purposes
+      :rtype: List[str]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: choose_valid_scheduling_purpose(self, next_meeting_start_time: Optional[int]) -> str
+
+      Find a valid scheduling purpose using rules defined in the
+      scheduling policy for this facility. Common purposes include:
+      restroom visits, lab work, office work and cafeteria visit.
+
+      :param next_meeting_start_time: Start time of the next meeting
+      :type next_meeting_start_time: Optional[int]
+      :raises ValueError: If not valid purpose is found.
+      :return: A randomly chosen purpose from list of valid purposes.
+      :rtype: str
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: get_pace(self, scale: float) -> float
+
+      Randomly pick a walking pace for this agent by sampling from a
+      gaussian distribution around a pace of 4 ft/sec. The acceptable
+      range is set between 2 and 6 ft/sec.
+
+      :param scale: the scale of the floorplan in [ft]/[drawing unit].
+      :type scale: float
+      :return: the agent's pace in [drawing unit]/[timestep]
+      :rtype: float
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: update_schedule_items(self, new_item: ScheduleItem) -> None
+
+      Update list of schedule items by adding this new item. If previous item
+      is the same location and purpose as this new one, merge them.
+
+      :param new_item: The new schedule item to add to the list.
+      :type new_item: ScheduleItem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: update_itinerary(self, route: List[Tuple[Any, Ellipsis]], schedule_item: ScheduleItem) -> None
+
+      Given a route and a next schedule item, update this agent's itinerary
+      accordingly
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: build(self) -> None
+
+      Build this agent's schedule and corresponding itinerary.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: __str__(self) -> str
+
+      Convert current schedule to a str for output purposes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: get_next_position(self) -> Tuple[Optional[int], Ellipsis]
+
+      Return the next position of this agent from its itinerary
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+

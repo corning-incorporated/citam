@@ -10,7 +10,11 @@ Subpackages
    :titlesonly:
    :maxdepth: 3
 
+   core/index.rst
+   facility/index.rst
+   io/index.rst
    map/index.rst
+   policy/index.rst
 
 
 Submodules
@@ -32,6 +36,7 @@ Functions
 
 .. autoapisummary::
 
+   citam.engine.parse_input_file
    citam.engine.run_simulation
    citam.engine.engine_run
 
@@ -43,6 +48,43 @@ Attributes
 .. autoapisummary::
 
    citam.engine.LOG
+
+
+.. function:: parse_input_file(input_file: Union[str, pathlib.Path]) -> Dict[str, Any]
+
+   Read primary simulation input file in json format, validate values,
+   load floorplans and returns dictionary of model inputs.
+
+   :param input_file: path to input file expected in json format
+   :type input_file: Union[str, pathlib.Path]
+   :raises ValueError: If unable to decode JSON file.
+   :raises FileNotFoundError: If the file is not found.
+   :raises MissingInputError: If a required value is not found
+   :raises TypeError: If incorrect value type is found for one or more inputs.
+   :raises ValueError: If an input value is invalid.
+   :raises FileNotFoundError: If path to another to a meetings policy is file
+           is not valid.
+   :raises FileNotFoundError: If path to another to a scheduling policy is
+           file is not valid.
+   :return: dictionary of inputs
+   :rtype: Dict[str, Any]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 
 .. function:: run_simulation(inputs: dict)

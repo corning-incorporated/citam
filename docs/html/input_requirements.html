@@ -120,8 +120,15 @@ the meetings and scheduling policies respectively.</p>
 <p><em>Required Inputs</em></p>
 <dl class="field-list simple">
 <dt class="field-odd">facility_name</dt>
-<dd class="field-odd"><p>(<em>string</em>), the name of the facility to run this simulation for. This must be
+<dd class="field-odd"><p>(<em>string</em>) The name of the facility to run this simulation for. This must be
 a facility that’s already been added.</p>
+</dd>
+<dt class="field-even">simulation_name</dt>
+<dd class="field-even"><p>(<em>string</em>) User-provided name for this simulation. Note that a simulation (same set of inputs) may have
+different runs associated with it.</p>
+</dd>
+<dt class="field-odd">run_name</dt>
+<dd class="field-odd"><p>(<em>string</em>) User-provided name for this run.</p>
 </dd>
 <dt class="field-even">floors</dt>
 <dd class="field-even"><p>(<em>Array&lt;string&gt;</em>) List of floors to simulate. Each floor is identified by its name.

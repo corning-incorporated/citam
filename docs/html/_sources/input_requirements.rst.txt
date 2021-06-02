@@ -15,8 +15,11 @@ Main Simulation Inputs
 
 *Required Inputs*
 
-:facility_name: (*string*), the name of the facility to run this simulation for. This must be
+:facility_name: (*string*) The name of the facility to run this simulation for. This must be
                 a facility that's already been added.
+:simulation_name: (*string*) User-provided name for this simulation. Note that a simulation (same set of inputs) may have
+                different runs associated with it.
+:run_name: (*string*) User-provided name for this run.
 :floors: (*Array<string>*) List of floors to simulate. Each floor is identified by its name.
         Example: ["0"]
 :entrances: (*Array<object>*) Each entrance is identified by the space name where it is located
