@@ -1,3 +1,4 @@
 numpydoc
 sphinx-autoapi
 sphinx-argparse
+falcon
