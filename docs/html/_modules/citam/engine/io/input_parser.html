@@ -1,0 +1,926 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.engine.io.input_parser &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/engine/io/input_parser.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_vector.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" accesskey="U">citam.engine</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.engine.io.input_parser</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2020. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1">#  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1">#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1">#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span>
+<span class="c1">#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1">#  ==========================================================================</span>
+
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">errno</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">svg2paths</span><span class="p">,</span> <span class="n">Line</span><span class="p">,</span> <span class="n">parse_path</span><span class="p">,</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">citam.engine.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">REQUIRED_SPACE_METADATA</span><span class="p">,</span>
+    <span class="n">OPTIONAL_SPACE_METADATA</span><span class="p">,</span>
+    <span class="n">SUPPORTED_SPACE_FUNCTIONS</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">UNABLE_TO_READ_FILE_STR</span> <span class="o">=</span> <span class="s2">&quot;Could not read input file&quot;</span>
+
+
+<div class="viewcode-block" id="MissingInputError"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.MissingInputError">[docs]</a><span class="k">class</span> <span class="nc">MissingInputError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="InvalidSVGError"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.InvalidSVGError">[docs]</a><span class="k">class</span> <span class="nc">InvalidSVGError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="_process_row"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine._process_row">[docs]</a><span class="k">def</span> <span class="nf">_process_row</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">row_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process row data from floorplan CSV file.</span>
+
+<span class="sd">    :param header: List of header values.</span>
+<span class="sd">    :type header: List[str]</span>
+<span class="sd">    :param row_id: index of this row</span>
+<span class="sd">    :type row_id: int</span>
+<span class="sd">    :param row: row data as list of values</span>
+<span class="sd">    :type row: List[str]</span>
+<span class="sd">    :raises ValueError: if row has the wrong number of values.</span>
+<span class="sd">    :raises ValueError: if required value(s) missing.</span>
+<span class="sd">    :raises ValueError: if unrecoginzed space function is found.</span>
+<span class="sd">    :return: row data as a dictionary with key taken from header</span>
+<span class="sd">    :rtype: [type]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SUPPORTED_METADATA</span> <span class="o">=</span> <span class="n">REQUIRED_SPACE_METADATA</span> <span class="o">+</span> <span class="n">OPTIONAL_SPACE_METADATA</span>
+
+    <span class="n">row_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wrong number of columsn in row </span><span class="si">{</span><span class="n">row_id</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">REQUIRED_SPACE_METADATA</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; found in this row </span><span class="si">{</span><span class="n">row_id</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">header</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="ow">in</span> <span class="n">SUPPORTED_METADATA</span><span class="p">:</span>
+            <span class="n">row_data</span><span class="p">[</span><span class="n">header</span><span class="p">[</span><span class="n">c</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">header</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;space_function&quot;</span>
+                <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SUPPORTED_SPACE_FUNCTIONS</span>
+            <span class="p">):</span>
+
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Invalid space function: &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39; in row </span><span class="se">\</span>
+<span class="s2">                        </span><span class="si">{</span><span class="n">row_id</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. Valid entries are: </span><span class="se">\</span>
+<span class="s2">                        </span><span class="si">{</span><span class="n">SUPPORTED_SPACE_FUNCTIONS</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">row_data</span></div>
+
+
+<div class="viewcode-block" id="parse_csv_metadata_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.parse_csv_metadata_file">[docs]</a><span class="k">def</span> <span class="nf">parse_csv_metadata_file</span><span class="p">(</span>
+    <span class="n">csv_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read and parse CSV floorplan metadata file with list of spaces and their</span>
+<span class="sd">    attributes (id, function, etc.).</span>
+
+<span class="sd">    :param csv_file: path to csv file.</span>
+<span class="sd">    :type csv_file: Union[str, pathlib.Path]</span>
+<span class="sd">    :raises FileNotFoundError: If CSV file is not found.</span>
+<span class="sd">    :raises ValueError: If a required column is missing from file.</span>
+<span class="sd">    :return: List of dictionaries (one dict per entry in the CSV file) with</span>
+<span class="sd">            column headers as keys</span>
+<span class="sd">    :rtype: List[Dict[str, str]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">csv_file</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;File not found. </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">csv_file</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+            <span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">),</span> <span class="n">csv_file</span>
+        <span class="p">)</span>
+
+    <span class="n">space_info</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">required_data</span> <span class="ow">in</span> <span class="n">REQUIRED_SPACE_METADATA</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">required_data</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">required_data</span><span class="si">}</span><span class="s2"> column is missing in csv file&quot;</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row_data</span> <span class="o">=</span> <span class="n">_process_row</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+                <span class="n">space_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">space_info</span></div>
+
+
+<div class="viewcode-block" id="extract_buildings_elem"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.extract_buildings_elem">[docs]</a><span class="k">def</span> <span class="nf">extract_buildings_elem</span><span class="p">(</span>
+    <span class="n">contents_elem</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract building elements from SVG contents</span>
+
+<span class="sd">    :param contents_elem: The list of SVG elements with building info</span>
+<span class="sd">    :type contents_elem: List[ET.Element]</span>
+<span class="sd">    :raises InvalidSVGError: if no building elem found</span>
+<span class="sd">    :return: List of building elements</span>
+<span class="sd">    :rtype: List[ET.Element]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">buildings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">building_elem</span> <span class="ow">in</span> <span class="n">contents_elem</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">building_elem</span><span class="o">.</span><span class="n">attrib</span>
+            <span class="ow">or</span> <span class="s2">&quot;class&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">building_elem</span><span class="o">.</span><span class="n">attrib</span>
+        <span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">building_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;floorplan&quot;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">buildings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">building_elem</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buildings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="s2">&quot;At least 1 building element with class==&#39;floorplan&#39; required&quot;</span>
+        <span class="k">raise</span> <span class="n">InvalidSVGError</span><span class="p">(</span><span class="n">errmsg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">buildings</span></div>
+
+
+<div class="viewcode-block" id="parse_standalone_svg_floorplan_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.parse_standalone_svg_floorplan_file">[docs]</a><span class="k">def</span> <span class="nf">parse_standalone_svg_floorplan_file</span><span class="p">(</span>
+    <span class="n">svg_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read standalone svg input file to extract floorplan information. The SVG</span>
+<span class="sd">    file should include and ID and a function for each space.</span>
+
+<span class="sd">    :param svg_file: input file in SVG format to parse.</span>
+<span class="sd">    :type svg_file: Union[str, pathlib.Path]</span>
+<span class="sd">    :raises InvalidSVGError: If no element with id=contents is found</span>
+<span class="sd">    :raises InvalidSVGError: If no element with class=floorplan is found.</span>
+<span class="sd">    :raises InvalidSVGError: If no buildings were found (elements with</span>
+<span class="sd">            id=spaces and id=doors)</span>
+<span class="sd">    :return: Tuple with list of space paths, list of space attributes and</span>
+<span class="sd">            list of door paths</span>
+<span class="sd">    :rtype: Tuple[List[Path], List[Dict[str, str]], List[Path]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Load XML and get root elem</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+    <span class="c1"># Find element with tag &#39;g&#39; and id == contents</span>
+    <span class="n">contents_elem</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">possible_content_elems</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>  <span class="c1"># Remove namespace</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;g&quot;</span> <span class="ow">and</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">possible_content_elems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">possible_content_elems</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">level</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;contents&quot;</span><span class="p">:</span>
+            <span class="n">contents_elem</span> <span class="o">=</span> <span class="n">level</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">contents_elem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;An element with tag &#39;g&#39; &amp; id==contents is required&quot;</span>
+        <span class="k">raise</span> <span class="n">InvalidSVGError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+    <span class="c1"># Verify that there is data at least for one building and extract spaces</span>
+    <span class="n">buildings_elem</span> <span class="o">=</span> <span class="n">extract_buildings_elem</span><span class="p">(</span><span class="n">contents_elem</span><span class="p">)</span>
+    <span class="n">space_paths</span><span class="p">,</span> <span class="n">space_attrib</span><span class="p">,</span> <span class="n">door_paths</span> <span class="o">=</span> <span class="n">_load_buildings_data</span><span class="p">(</span>
+        <span class="n">buildings_elem</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">space_paths</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidSVGError</span><span class="p">(</span><span class="s2">&quot;No space data found in SVG file&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">space_paths</span><span class="p">,</span> <span class="n">space_attrib</span><span class="p">,</span> <span class="n">door_paths</span></div>
+
+
+<div class="viewcode-block" id="_load_buildings_data"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine._load_buildings_data">[docs]</a><span class="k">def</span> <span class="nf">_load_buildings_data</span><span class="p">(</span>
+    <span class="n">contents_elem</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a SVG tree element with sub-elements with building information,</span>
+<span class="sd">    extract data for each building and add to overall list of space paths,</span>
+<span class="sd">    space attributes and doors for this floorplan.</span>
+
+<span class="sd">    :param contents_elem: Element from the SVG file with data for each building</span>
+<span class="sd">            as subelements.</span>
+<span class="sd">    :type contents_elem: List[ET.Element]</span>
+<span class="sd">    :raises InvalidSVGError: If no sub-element with class spaces were found.</span>
+<span class="sd">    :return: tuple with list of space paths, list of space attributes and list</span>
+<span class="sd">        of door paths.</span>
+<span class="sd">    :rtype: Tuple[List[Path], List[Dict[str, str]], List[Path]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">space_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">space_attributes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">door_paths</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># For each building, extract space paths, space attr and door paths</span>
+    <span class="k">for</span> <span class="n">building_elem</span> <span class="ow">in</span> <span class="n">contents_elem</span><span class="p">:</span>
+
+        <span class="n">building_name</span> <span class="o">=</span> <span class="n">building_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+        <span class="n">doors_elem</span><span class="p">,</span> <span class="n">spaces_elem</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">sub_elem</span> <span class="ow">in</span> <span class="n">building_elem</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;class&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sub_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">sub_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;spaces&quot;</span><span class="p">:</span>
+                <span class="n">spaces_elem</span> <span class="o">=</span> <span class="n">sub_elem</span>
+            <span class="k">elif</span> <span class="n">sub_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;doors&quot;</span><span class="p">:</span>
+                <span class="n">doors_elem</span> <span class="o">=</span> <span class="n">sub_elem</span>
+
+        <span class="k">if</span> <span class="n">spaces_elem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidSVGError</span><span class="p">(</span><span class="s2">&quot;Sub-element of class &#39;spaces&#39; required&quot;</span><span class="p">)</span>
+
+        <span class="n">sp_paths</span><span class="p">,</span> <span class="n">sp_attr</span> <span class="o">=</span> <span class="n">_extract_spaces</span><span class="p">(</span><span class="n">spaces_elem</span><span class="p">,</span> <span class="n">building_name</span><span class="p">)</span>
+        <span class="n">space_paths</span> <span class="o">+=</span> <span class="n">sp_paths</span>
+        <span class="n">space_attributes</span> <span class="o">+=</span> <span class="n">sp_attr</span>
+
+        <span class="k">if</span> <span class="n">doors_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">door_paths</span> <span class="o">+=</span> <span class="n">_extract_doors</span><span class="p">(</span><span class="n">doors_elem</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">space_paths</span><span class="p">,</span> <span class="n">space_attributes</span><span class="p">,</span> <span class="n">door_paths</span></div>
+
+
+<div class="viewcode-block" id="_extract_space_metadata"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine._extract_space_metadata">[docs]</a><span class="k">def</span> <span class="nf">_extract_space_metadata</span><span class="p">(</span>
+    <span class="n">space_elem</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">building_name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract data from space SVG element and return dictionary of values.</span>
+
+<span class="sd">    :param space_elem: The space SVG element.</span>
+<span class="sd">    :type space_elem: ET.Element</span>
+<span class="sd">    :param building_name: Name of the building where this space is found.</span>
+<span class="sd">    :type building_name: str</span>
+<span class="sd">    :raises ValueError: if space ID or function is missing.</span>
+<span class="sd">    :raises ValueError: if space function is invalid.</span>
+<span class="sd">    :return: Dictionary with key-value pairs of space metadata.</span>
+<span class="sd">    :rtype: Dict[str, str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span> <span class="ow">or</span> <span class="s2">&quot;function&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;id&#39; and &#39;function&#39; required for space paths </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">space_metadata</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">space_metadata</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;unique_name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+        <span class="n">space_metadata</span><span class="p">[</span><span class="s2">&quot;unique_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+
+    <span class="n">space_function</span> <span class="o">=</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">space_function</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SUPPORTED_SPACE_FUNCTIONS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported space function </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">space_function</span><span class="p">)</span>
+    <span class="n">space_metadata</span><span class="p">[</span><span class="s2">&quot;space_function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">space_function</span>
+
+    <span class="n">space_metadata</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">building_name</span>
+
+    <span class="k">if</span> <span class="s2">&quot;capacity&quot;</span> <span class="ow">in</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+        <span class="n">space_metadata</span><span class="p">[</span><span class="s2">&quot;capacity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;capacity&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">space_metadata</span></div>
+
+
+<div class="viewcode-block" id="_extract_spaces"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine._extract_spaces">[docs]</a><span class="k">def</span> <span class="nf">_extract_spaces</span><span class="p">(</span>
+    <span class="n">spaces_elem</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">building_name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a SVG tree element, extract all space paths and attributes.</span>
+
+<span class="sd">    :param spaces_elem: SVG element with each subelement representing a space.</span>
+<span class="sd">    :type spaces_elem: ET.Element</span>
+<span class="sd">    :param building_name: The name of the building</span>
+<span class="sd">    :type building_name: str</span>
+<span class="sd">    :raises ValueError: If the function assigned to the space is unknown.</span>
+<span class="sd">    :raises ValueError: If the space path has no ID or function specified.</span>
+<span class="sd">    :return: list of space paths and attributes.</span>
+<span class="sd">    :rtype: Tuple[List[Path], List[Dict[str, str]]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">space_paths</span><span class="p">,</span> <span class="n">space_attributes</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">space_elem</span> <span class="ow">in</span> <span class="n">spaces_elem</span><span class="p">:</span>
+        <span class="c1"># Remove namespace</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
+        <span class="c1"># Extract space data</span>
+        <span class="k">if</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span> <span class="ow">and</span> <span class="s2">&quot;d&quot;</span> <span class="ow">in</span> <span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">space_path</span> <span class="o">=</span> <span class="n">parse_path</span><span class="p">(</span><span class="n">space_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">])</span>
+            <span class="n">space_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">space_path</span><span class="p">)</span>
+
+            <span class="c1"># Add space metadata</span>
+            <span class="n">space_metadata</span> <span class="o">=</span> <span class="n">_extract_space_metadata</span><span class="p">(</span><span class="n">space_elem</span><span class="p">,</span> <span class="n">building_name</span><span class="p">)</span>
+            <span class="n">space_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">space_metadata</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">space_paths</span><span class="p">,</span> <span class="n">space_attributes</span></div>
+
+
+<div class="viewcode-block" id="_extract_doors"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine._extract_doors">[docs]</a><span class="k">def</span> <span class="nf">_extract_doors</span><span class="p">(</span><span class="n">doors_elem</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a SVG tree element, extract all door paths.</span>
+
+<span class="sd">    :param doors_elem: SVG element with each subelement representing a door.</span>
+<span class="sd">    :type doors_elem: ET.Element</span>
+<span class="sd">    :return: list of door paths.</span>
+<span class="sd">    :rtype: List[Path]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">door_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">door_elem</span> <span class="ow">in</span> <span class="n">doors_elem</span><span class="p">:</span>
+        <span class="c1"># Remove namespace</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">door_elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">door_elem</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">door_elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span> <span class="ow">and</span> <span class="s2">&quot;d&quot;</span> <span class="ow">in</span> <span class="n">door_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">door_path</span> <span class="o">=</span> <span class="n">parse_path</span><span class="p">(</span><span class="n">door_elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">])</span>
+            <span class="n">door_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">door_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">door_paths</span></div>
+
+
+<div class="viewcode-block" id="parse_svg_floorplan_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.parse_svg_floorplan_file">[docs]</a><span class="k">def</span> <span class="nf">parse_svg_floorplan_file</span><span class="p">(</span>
+    <span class="n">svg_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read and parse SVG floorplan file.</span>
+
+<span class="sd">     Each space is represented by a path element with and id that matches the</span>
+<span class="sd">    id in the csv file.</span>
+
+<span class="sd">    :param svg_file: path to csv file</span>
+<span class="sd">    :type svg_file: Union[str, pathlib.Path]</span>
+<span class="sd">    :raises FileNotFoundError: If SVG file is not found.</span>
+<span class="sd">    :return: List of path elements and their attributes as well as door paths.</span>
+<span class="sd">    :rtype: Tuple[List[Path], List[Dict[str, str]], List[Path]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">svg_file</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;File not found. </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+            <span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">),</span> <span class="n">svg_file</span>
+        <span class="p">)</span>
+
+    <span class="n">paths</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">svg2paths</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span>
+
+    <span class="n">door_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">space_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">space_attributes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># TODO: Change this to expect a path_type attribute for each path</span>
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">new_start</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">real</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+            <span class="p">)</span>
+            <span class="n">new_end</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">real</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+            <span class="p">)</span>
+            <span class="n">new_line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">new_start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">new_end</span><span class="p">)</span>
+            <span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_line</span>
+
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attr</span> <span class="ow">or</span> <span class="s2">&quot;door&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]:</span>
+            <span class="n">door_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">space_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">space_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of door paths: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">door_paths</span><span class="p">))</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of space paths: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">space_paths</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">space_paths</span><span class="p">,</span> <span class="n">space_attributes</span><span class="p">,</span> <span class="n">door_paths</span></div>
+
+
+<div class="viewcode-block" id="parse_meetings_policy_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.parse_meetings_policy_file">[docs]</a><span class="k">def</span> <span class="nf">parse_meetings_policy_file</span><span class="p">(</span>
+    <span class="n">input_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read and parse the json meeting policy file if found in input dict.</span>
+
+<span class="sd">    The meetings policy for a given facility exposes parameters</span>
+<span class="sd">    for when, where, how often and how long meetings take place</span>
+<span class="sd">    in the facility.</span>
+
+<span class="sd">    :param input_dict: dictionary of inputs with path to meetings policy file.</span>
+<span class="sd">    :type input_dict: dict</span>
+<span class="sd">    :raises FileNotFoundError: IIf the file is not found.</span>
+<span class="sd">    :return: data extracted from the file as a dictionary</span>
+<span class="sd">    :rtype: Optional[Dict[str, Union[int, str, float, dict]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;meetings_file&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">json_filepath</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;meetings_file&quot;</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">meetings_policy_params</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">meetings_policy_params</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">UNABLE_TO_READ_FILE_STR</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">json_filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">exception</span></div>
+
+
+<div class="viewcode-block" id="parse_scheduling_policy_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.parse_scheduling_policy_file">[docs]</a><span class="k">def</span> <span class="nf">parse_scheduling_policy_file</span><span class="p">(</span>
+    <span class="n">input_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read and parse the json scheduling policy file if found in input dict.</span>
+
+<span class="sd">    Together with the meetings policy file, this file encodes</span>
+<span class="sd">    how and when people will be moving within a given facility.</span>
+<span class="sd">    Scheduling policies revolve around the concept of &quot;scheduling</span>
+<span class="sd">    purpose&quot; which ties them to a category of space in the floorplan.</span>
+<span class="sd">    See the documentation for more information.</span>
+
+<span class="sd">    :param input_dict: dictionary with path to scheduling policy file.</span>
+<span class="sd">    :type input_dict: dict</span>
+<span class="sd">    :raises FileNotFoundError: [description]</span>
+<span class="sd">    :return: data extracted from the file as a dictionary.</span>
+<span class="sd">    :rtype: Optional[Dict[str, Union[int, str, float, dict]]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;scheduling_policy_file&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">json_filepath</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;scheduling_policy_file&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">scheduling_policy</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scheduling_policy</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">UNABLE_TO_READ_FILE_STR</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">json_filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">exception</span></div>
+
+
+<div class="viewcode-block" id="parse_office_assignment_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.parse_office_assignment_file">[docs]</a><span class="k">def</span> <span class="nf">parse_office_assignment_file</span><span class="p">(</span>
+    <span class="n">input_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read and parse office assignment file if found in input dic.</span>
+
+<span class="sd">    :param input_dict: dictionary with path to office assignment file.</span>
+<span class="sd">    :type input_dict: dict</span>
+<span class="sd">    :raises exception: if unable to read file</span>
+<span class="sd">    :raises ValueError: if invalid values are found in assignment file.</span>
+<span class="sd">    :return: office space ID and floor number assigned to each agent.</span>
+<span class="sd">    :rtype: Optional[List[Tuple[int, int]]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;office_assignment_file&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">office_assignment</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;office_assignment_file&quot;</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">infile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">office_assignment</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;Invalid file: three comma-seperated values expected </span><span class="se">\</span>
+<span class="s2">                            (index, office_id, floor_id)&quot;</span>
+                    <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">UNABLE_TO_READ_FILE_STR</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">exception</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">office_assignment</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Could not load any office assignment from file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">filepath</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">office_assignment</span></div>
+
+
+<div class="viewcode-block" id="check_for_required_values"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.check_for_required_values">[docs]</a><span class="k">def</span> <span class="nf">check_for_required_values</span><span class="p">(</span><span class="n">input_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify that all required values are found in the input dict.</span>
+
+<span class="sd">    :param input_dict: dictionary of inputs</span>
+<span class="sd">    :type input_dict: dict</span>
+<span class="sd">    :raises MissingInputError: if a required value is missing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">required_values</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;facility_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;floors&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;entrances&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;daylength&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;entrance_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n_agents&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;simulation_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;run_name&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_values</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MissingInputError</span><span class="p">(</span><span class="s2">&quot;{</span><span class="si">%s</span><span class="s2">} is a required input&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="validate_input_values"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.validate_input_values">[docs]</a><span class="k">def</span> <span class="nf">validate_input_values</span><span class="p">(</span>
+    <span class="n">facility_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">floors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">n_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">daylength</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">entrances</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">buffer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify that input values are of the correct type and have valid values.</span>
+
+<span class="sd">    :param facility_name: Name of the facility of interest.</span>
+<span class="sd">    :type facility_name: str</span>
+<span class="sd">    :param floors: List of floors for this simulation</span>
+<span class="sd">    :type floors: List[int]</span>
+<span class="sd">    :param n_agents: Number of agents in this simulation</span>
+<span class="sd">    :type n_agents: int</span>
+<span class="sd">    :param daylength: duration of the simulaiton</span>
+<span class="sd">    :type daylength: int</span>
+<span class="sd">    :param entrances: Entrances available for agents to enter the facility</span>
+<span class="sd">    :type entrances: List[dict]</span>
+<span class="sd">    :param buffer: when do agents start entering the facility.</span>
+<span class="sd">    :type buffer: int</span>
+<span class="sd">    :raises TypeError: if any input value is of the wrong type</span>
+<span class="sd">    :raises ValueError: if invalid input values are found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;facility_name must be a string&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">floors</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;floors must be a list&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">floors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least one floor is required.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">floors</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">floors</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duplicates found in list of floors&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_agents</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;n_agents must be an integer&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">daylength</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;daylength must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entrances</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;entrances must be a list&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;entrance time must be an integer&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">daylength</span> <span class="o">&lt;</span> <span class="mi">1800</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Daylength is too short (min is 30 min after entrance time)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">buffer</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Buffer must be a positive value.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">n_agents</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least one agent is required.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="validate_shifts"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.validate_shifts">[docs]</a><span class="k">def</span> <span class="nf">validate_shifts</span><span class="p">(</span><span class="n">shifts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate input values for shifts. A shift is a group of agents who enter</span>
+<span class="sd">    the facility at the same time.</span>
+
+<span class="sd">    :param shifts: List of shifts</span>
+<span class="sd">    :type shifts: List[dict]</span>
+<span class="sd">    :raises TypeError: if shifts is not a list.</span>
+<span class="sd">    :raises ValueError: if shift does not define a name, start time and percent</span>
+<span class="sd">        agents.</span>
+<span class="sd">    :raises TypeError: if percent agents is not a number</span>
+<span class="sd">    :raises ValueError: if percent agents is not a number between 0.0 and 1.0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shifts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;shifts must be a list&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shifts</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s</span>
+            <span class="ow">or</span> <span class="s2">&quot;start_time&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s</span>
+            <span class="ow">or</span> <span class="s2">&quot;percent_agents&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;A shift must define a name, start time and percent agents&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;percent_agents&quot;</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Percent agents must be a number&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;percent_agents&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;percent_agents&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Percent agents must be between 0.0 than 1.0&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="validate_traffic_policy"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.validate_traffic_policy">[docs]</a><span class="k">def</span> <span class="nf">validate_traffic_policy</span><span class="p">(</span><span class="n">traffic_policy</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">traffic_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">traffic_policy</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;traffic_policy must be a list. Found {</span><span class="si">%s</span><span class="s2">}&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="p">(</span><span class="n">traffic_policy</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">traffic_policy</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pol</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;A dictionary with these keys expected:&quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;floor, segment_id, direction&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;floor&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pol</span>
+            <span class="ow">or</span> <span class="s2">&quot;segment_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pol</span>
+            <span class="ow">or</span> <span class="s2">&quot;direction&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pol</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;The following keys are expected in each policy:&quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;floor, segment_id, direction&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="parse_input_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/input_parser/index.html#citam.engine.parse_input_file">[docs]</a><span class="k">def</span> <span class="nf">parse_input_file</span><span class="p">(</span>
+    <span class="n">input_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read primary simulation input file in json format, validate values,</span>
+<span class="sd">    load floorplans and returns dictionary of model inputs.</span>
+
+<span class="sd">    :param input_file: path to input file expected in json format</span>
+<span class="sd">    :type input_file: Union[str, pathlib.Path]</span>
+<span class="sd">    :raises ValueError: If unable to decode JSON file.</span>
+<span class="sd">    :raises FileNotFoundError: If the file is not found.</span>
+<span class="sd">    :raises MissingInputError: If a required value is not found</span>
+<span class="sd">    :raises TypeError: If incorrect value type is found for one or more inputs.</span>
+<span class="sd">    :raises ValueError: If an input value is invalid.</span>
+<span class="sd">    :raises FileNotFoundError: If path to another to a meetings policy is file</span>
+<span class="sd">            is not valid.</span>
+<span class="sd">    :raises FileNotFoundError: If path to another to a scheduling policy is</span>
+<span class="sd">            file is not valid.</span>
+<span class="sd">    :return: dictionary of inputs</span>
+<span class="sd">    :rtype: Dict[str, Any]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">input_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">UNABLE_TO_READ_FILE_STR</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">input_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">exception</span>
+
+    <span class="c1"># Make sure all required values are provided</span>
+    <span class="n">check_for_required_values</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)</span>
+
+    <span class="c1"># extract required values</span>
+    <span class="n">facility_name</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">]</span>
+    <span class="n">floors</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">]</span>
+    <span class="n">n_agents</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;n_agents&quot;</span><span class="p">]</span>
+    <span class="n">daylength</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;daylength&quot;</span><span class="p">]</span>
+    <span class="n">entrances</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;entrances&quot;</span><span class="p">]</span>
+    <span class="n">buffer</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;entrance_time&quot;</span><span class="p">]</span>
+    <span class="n">simulation_name</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;simulation_name&quot;</span><span class="p">]</span>
+    <span class="n">run_name</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s2">&quot;run_name&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Make sure all required values are of the correct type</span>
+    <span class="n">validate_input_values</span><span class="p">(</span>
+        <span class="n">facility_name</span><span class="p">,</span> <span class="n">floors</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">,</span> <span class="n">daylength</span><span class="p">,</span> <span class="n">entrances</span><span class="p">,</span> <span class="n">buffer</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Optional arguments</span>
+    <span class="n">create_meetings</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;create_meetings&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">close_dining</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;close_dining&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">upload_results</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;upload_results&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">upload_location</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;upload_location&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">occupancy_rate</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;occupancy_rate&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">contact_distance</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;contact_distance&quot;</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">)</span>
+
+    <span class="c1"># Handle pre-assigned offices, if any</span>
+    <span class="n">preassigned_offices</span> <span class="o">=</span> <span class="n">parse_office_assignment_file</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">upload_results</span> <span class="ow">and</span> <span class="n">upload_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;upload_location must be specified.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Floorplan scale, defautls to 1 drawing unit = 12 inches</span>
+    <span class="n">floorplan_scale</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floorplan_scale&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">12.0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">floorplan_scale</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Floorplan scale must be a float or an int&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Shifts</span>
+    <span class="n">default_shifts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;primary&quot;</span><span class="p">,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">:</span> <span class="n">buffer</span><span class="p">,</span> <span class="s2">&quot;percent_agents&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+    <span class="p">]</span>
+    <span class="n">shifts</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;shifts&quot;</span><span class="p">,</span> <span class="n">default_shifts</span><span class="p">)</span>
+    <span class="n">validate_shifts</span><span class="p">(</span><span class="n">shifts</span><span class="p">)</span>
+
+    <span class="c1"># Meetings and scheduling policies</span>
+    <span class="n">scheduling_policy</span> <span class="o">=</span> <span class="n">parse_scheduling_policy_file</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)</span>
+    <span class="n">meetings_policy</span> <span class="o">=</span> <span class="n">parse_meetings_policy_file</span><span class="p">(</span><span class="n">input_dict</span><span class="p">)</span>
+
+    <span class="c1"># Traffic policy</span>
+    <span class="n">traffic_policy</span> <span class="o">=</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;traffic_policy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">validate_traffic_policy</span><span class="p">(</span><span class="n">traffic_policy</span><span class="p">)</span>
+
+    <span class="n">total_percent</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;percent_agents&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shifts</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="n">total_percent</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Total percent of agents cannot be greater than 1.0&quot;</span><span class="p">)</span>
+
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of agents: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;User provided floorplan scale is: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">floorplan_scale</span><span class="p">)</span>
+
+    <span class="n">converted_contact_distance</span> <span class="o">=</span> <span class="n">contact_distance</span> <span class="o">/</span> <span class="n">floorplan_scale</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;simulation_name&quot;</span><span class="p">:</span> <span class="n">simulation_name</span><span class="p">,</span>
+        <span class="s2">&quot;run_name&quot;</span><span class="p">:</span> <span class="n">run_name</span><span class="p">,</span>
+        <span class="s2">&quot;upload_results&quot;</span><span class="p">:</span> <span class="n">upload_results</span><span class="p">,</span>
+        <span class="s2">&quot;upload_location&quot;</span><span class="p">:</span> <span class="n">upload_location</span><span class="p">,</span>
+        <span class="s2">&quot;facility_name&quot;</span><span class="p">:</span> <span class="n">facility_name</span><span class="p">,</span>
+        <span class="s2">&quot;floors&quot;</span><span class="p">:</span> <span class="n">floors</span><span class="p">,</span>
+        <span class="s2">&quot;n_agents&quot;</span><span class="p">:</span> <span class="n">n_agents</span><span class="p">,</span>
+        <span class="s2">&quot;occupancy_rate&quot;</span><span class="p">:</span> <span class="n">occupancy_rate</span><span class="p">,</span>
+        <span class="s2">&quot;total_timesteps&quot;</span><span class="p">:</span> <span class="n">daylength</span><span class="p">,</span>
+        <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="n">buffer</span><span class="p">,</span>
+        <span class="s2">&quot;timestep&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="s2">&quot;entrances&quot;</span><span class="p">:</span> <span class="n">entrances</span><span class="p">,</span>
+        <span class="s2">&quot;contact_distance&quot;</span><span class="p">:</span> <span class="n">converted_contact_distance</span><span class="p">,</span>
+        <span class="s2">&quot;shifts&quot;</span><span class="p">:</span> <span class="n">shifts</span><span class="p">,</span>
+        <span class="s2">&quot;meetings_policy_params&quot;</span><span class="p">:</span> <span class="n">meetings_policy</span><span class="p">,</span>
+        <span class="s2">&quot;scheduling_policy&quot;</span><span class="p">:</span> <span class="n">scheduling_policy</span><span class="p">,</span>
+        <span class="s2">&quot;traffic_policy&quot;</span><span class="p">:</span> <span class="n">traffic_policy</span><span class="p">,</span>
+        <span class="s2">&quot;output_directory&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;create_meetings&quot;</span><span class="p">:</span> <span class="n">create_meetings</span><span class="p">,</span>
+        <span class="s2">&quot;close_dining&quot;</span><span class="p">:</span> <span class="n">close_dining</span><span class="p">,</span>
+        <span class="s2">&quot;preassigned_offices&quot;</span><span class="p">:</span> <span class="n">preassigned_offices</span><span class="p">,</span>
+    <span class="p">}</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" >citam.engine</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>
