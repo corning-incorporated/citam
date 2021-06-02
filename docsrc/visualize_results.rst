@@ -6,7 +6,7 @@ Visualize Results
 
 Simulation results can be visualized using a basic GUI. 
 
-..note::
+.. note::
 
     There are known issues with the GUI including speed issues when visualizing large trajectory files.
 

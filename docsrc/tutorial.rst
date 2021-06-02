@@ -21,7 +21,7 @@ contact-based pandemics like COVID-19 and help make policy decisions to mitigate
 indoor transmission risks.
 
 This tutorial assumes that you have already downloaded and installed CITAM. For details
-on how to install, visit the `GitHub Repo <https://github.com/corning-incorporated/citam>`_. To verify
+on how to install, visit the :ref:`getting_started` page. To verify
 that CITAM has been installed properly, run the following command from your terminal:
 
 .. code-block:: console
@@ -45,15 +45,15 @@ Adding a facility
 To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
 each space in "path" elements. CITAM also needs information about the function of
 each space so it can build realistic schedules for the individuals who use them. Those information can be
-provided in an optional companion CSV file where the "id" of each space is used to match them with the
-SVG file. Everything can also be included in the SVG file (recommended).
+provided in a companion CSV file where the "id" of each space is used to match them with the
+SVG file.
 
 For this tutorial, we will use example files provided with CITAM in the `examples/
 directory <https://www.github.com/corning-incorporated/citam/examples/>`_. Please download those files from GitHub if you don't have them.
 
 The example floorplan that we will use can be found in the **examples/basic_example_2**
 folder located inside the main citam folder. The files that we need for now are named **TF2.csv** and **TF2.svg**
-Fig. 1 shows the floor plan given by TF2.svg. You can use any SVG viewer to visualize it (your favorite web browser will do).
+Fig. 1 shows how the floor plan given by TF2.svg looks like. You can use any SVG viewer to visualize it (any web browser will do).
 
 .. image:: assets/floorplan_before_ingestion.png
   :alt: Floorplan before ingestion
@@ -85,25 +85,17 @@ The second file of interest in TF2.csv. Let's take a closer look at it:
 
 As you can see, this file simply contains additional information about each space as identified by their ID.
 For example, we can see that space ID "1" is an office on floor "0". For a list of supported values and
-metadata please go to the :ref:`svg_requirements` page of the documentation. The ID field is read as a string. The only requirement is that it is unique. 
-
-.. Note::
-    The CSV file is not required as long as each path element in the SVG file contains an additional "function" property that specifies how the corresponding space is to be used.
-    For example: <path id="SI_3DBF" function="Lab" d="M3240 0 0 0 0 -600 3240 -600Z"/>
+metadata please go to the :ref:`svg_requirements` page of the documentation. The ID field is read as a string. The only requirement is that it is unique. The space information provided in the CSV file can also be added to the SVG file (supported soon).
 
 Now that we know what's in those two input files, let's ingest this floor plan using the ``citam engine ingest`` command as follow (from the
 main citam directory):
 
 .. code-block:: console
 
-    $ citam engine ingest TF2 0 -csv examples/basic_examples/TF2.csv -map examples/basic_example/TF2.svg -v
+    $ citam engine ingest TF2 0 --csv examples/basic_examples/TF2.csv --svg examples/basic_example/TF2.svg -v
 
-`TF2` is the user-provided name of the facility under which this floorplan will be saved and `0` is the name of this floor (feel free to use other names, if desired). For all
-subsequent operations on this facility (including adding more floors), the same facility name must be provided. The same holds for the floor name. 
-
-..note::
-
-    This is not currently enforced but please treat the facility and floor names as case-insensitive. This is not problematic on Linux but may create problems on Windows.
+`TF2` is the name of the facility under which this floorplan will be saved and `0` is the name of this floor. For all
+subsequent operations on this facility, the same facility name must be provided. Alternatively, you may use:
 
 
 The ``-v`` argument is for verbose, to show more information as the ingestion process progresses.
@@ -140,7 +132,7 @@ you will need an SVG editor such  `Inkscape <https://www.inkscape.com>`_ (free a
 4. Add a door: To add a new door, you need to draw a line where desired, but you must assign an ID that contains the keyword "door" to it. Note that you can draw a door line on top of an existing wall line. CITAM will know to carve out the door from the wall.
 5. Remove a door: To remove a door, you have to extend an existing wall or create a new wall to completely cover the door opening.
 
-An example of the floor plan after using Inkscape to include walls that were mistakenly removed is shown in Fig. 3.
+An example of the floor plan after using Inkscape to include wall features is as shown in Fig. 3.
 
 .. image:: assets/FirstOutputFileEdited.png
   :alt: Edited floorplan.
@@ -154,7 +146,7 @@ command as follow (assuming ):
 
     $ citam engine update-floorplan TF2 0 -s ../../TF2_edited.svg -v
 
-To verify that the floorplan is correct, you can export it again using the export-floorplan
+To verify that the floorplan looks good, you can export it again using the export-floorplan
 command:
 
 .. code-block:: console
@@ -200,12 +192,16 @@ Below is an example input file.
 
     {
         "facility_name" : "TF2",
-        "simulation_name" : "test_run_1",
+        "simulation_name" : "test_sim_2",
+        "run_name": "run_1",
         "floors" : ["0"],
         "entrances" : [ {"name":"AISLE213", "floor": 0}],
         "daylength" : 1800,
         "entrance_time" : 100,
         "n_agents" : 20,
+        "occupancy_rate" : null,
+        "floorplan_scale": 0.08333333333,
+        "contact_distance": 6,
         "shifts": [{"name":"1", "start_time": 0, "percent_agents": 1.0}]
     }
 
@@ -233,16 +229,13 @@ the following files created in your SIMULATION_FOLDER:
     │   |── contacts.txt
     |   |── map.svg
     │   └── heatmap.svg
-    ├── agents.ids
     ├── citam.log
     ├── contact_dist_per_agent.csv
+    ├── employee_ids.txt
+    ├── simulation.json
     ├── manifest.json
-    ├── meetings.txt
-    ├── office_assignment.json
     ├── pair_contacts.csv
     |── raw_contact_data.ccd
-    ├── schedules.txt
-    ├── statistics.json
     |── timing.txt
     └── trajectory.txt
 
