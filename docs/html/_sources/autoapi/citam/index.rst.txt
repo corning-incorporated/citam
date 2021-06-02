@@ -12,7 +12,6 @@ Subpackages
 
    api/index.rst
    engine/index.rst
-   tests/index.rst
 
 
 Submodules
