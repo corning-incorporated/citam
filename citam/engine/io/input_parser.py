@@ -738,7 +738,7 @@ def parse_input_file(
         "floors": floors,
         "n_agents": n_agents,
         "occupancy_rate": occupancy_rate,
-        "daylength": daylength,
+        "total_timesteps": daylength,
         "buffer": buffer,
         "timestep": 1.0,
         "entrances": entrances,
