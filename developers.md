@@ -59,7 +59,7 @@ You are now ready to build the documentation using the following command:
 $make html
 ```
 
-Html outputs form the build process are automatically copied to the [public](docs/) folder where they are integrated with CITAM's landing page. To view the documentation, open the local copy of `docs/index.html` file with your web browser.
+Html outputs form the build process are automatically copied to the [docs](docs/) folder where they are integrated with CITAM's landing page. To view the documentation, open the local copy of `docs/index.html` file with your web browser.
 
 To edit the documentation, find the appropriate RST file in the docs folder and edit it as needed. Rebuild the documentation and visualize it locally to make sure everything looks good before submitting your work.
 

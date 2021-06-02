@@ -1,13 +1,14 @@
 {
-    "facility_name": "foo_facility",
-    "simulation_name": "test_run_1",
+    "facility_name": "TF2",
+    "simulation_name": "test_sim_2",
+    "run_name": "run_1",
     "floors": [
-        "foo_floor"
+        "0"
     ],
     "entrances": [
         {
             "name": "AISLE213",
-            "floor": "foo_floor"
+            "floor": "0"
         }
     ],
     "daylength": 1800,

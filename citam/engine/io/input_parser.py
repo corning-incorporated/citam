@@ -32,7 +32,7 @@ LOG = logging.getLogger(__name__)
 UNABLE_TO_READ_FILE_STR = "Could not read input file"
 
 
-class MissingInputError(TypeError):
+class MissingInputError(ValueError):
     pass
 
 
@@ -516,7 +516,7 @@ def check_for_required_values(input_dict: dict) -> None:
     ]
     for key in required_values:
         if key not in input_dict:
-            raise MissingInputError(r'"{key}" is a required input')
+            raise MissingInputError("{%s} is a required input", key)
 
 
 def validate_input_values(
@@ -569,7 +569,7 @@ def validate_input_values(
     if not isinstance(buffer, int):
         raise TypeError("entrance time must be an integer")
 
-    if daylength < buffer + 1800:
+    if daylength < 1800:
         raise ValueError(
             "Daylength is too short (min is 30 min after entrance time)"
         )
@@ -738,7 +738,7 @@ def parse_input_file(
         "floors": floors,
         "n_agents": n_agents,
         "occupancy_rate": occupancy_rate,
-        "daylength": daylength,
+        "total_timesteps": daylength,
         "buffer": buffer,
         "timestep": 1.0,
         "entrances": entrances,

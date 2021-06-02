@@ -1,10 +1,9 @@
 .. _getting_started:
 
 ================
-Getting Started
+How it Works
 ================
 
-Covid-19 Indoor Transmission Agent-based Modeling platform.
 
 When you use CITAM to model your facility (e.g. a school, a manufacturing facility, an office building, etc.), it creates a "virtual" version of that facility and simulates the movement of individuals while keeping track of time and location of contact events as well as the individuals involved. You can vary different input parameters such as number of people, number of shifts and traffic patterns and compare the contact statistics to find the best mitigation strategy to limit transmission within your facility.
 
@@ -18,7 +17,7 @@ format for ingestion as well as some metadata about each space in each floorplan
 of required metadata, please visit the :ref:`input_requirements` section of the documentation.
 Example input files are also available in the `examples folder <https://www.github.com/corning-incorporated/citam/examples/>`_ of the git repository.
 
-Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below (example usage is provided in the [How to add facilities](#how-to-add-facilities) section):
+Floorplans must be imported into CITAM before any simulation can be performed with them. This  process is done in four easy steps (2 are required and 2 are optional) described below:
 
 1. Ingestion (required): In this step, CITAM reads your SVG and CSV files, automatically adds doors to spaces where missing, removes map artifacts that are deemed unnecessary for the simulation, and stores the resulting data in your local cache for future retrieval.
 2. Validation (optional): In this step, you get to inspect results from the ingestion step and make any necessary changes. This step is optional but highly recommended to ensure valid simulation results.
@@ -34,72 +33,6 @@ CITAM is built as a cross-platform software compatible with all major operating 
 
 CITAM is available on `GitHub <https://www.github.com/corning-incorporated/citam/>`_.
 
-Below you will find a quickstart guide. We also recommend going through the :ref:`tutorial` for more in-depth explanation.
-
------------------
-Quickstart Guide
------------------
-
-Install
---------
-
-Please refer to this `Installation Guide <https://github.com/corning-incorporated/citam/tree/alpha#install-citam>`_.
-
-View List of Commands
------------------
-
-A reference guide for all the CLI commands is available in this document: :ref:`cli_commands`.
-
-Add Example Facility
-----------------------
-
-Detailed instructions are available `here <https://github.com/corning-incorporated/citam/tree/alpha#add-facilities>`_.
-
-**TL;DR**
-
-.. code-block:: console
-
-  $cd citam
-  $citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --svg examples/basic_example/TF1.svg -v
-  $citam engine export-floorplan foo_facility foo_floor -o foo_output.svg -v
-
-Use your favorite SVG viewer to open and inspect the exported `foo_output.svg` file. Make necessary changes and update as follows:
-
-.. code-block:: console
-
-  $citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg -v
-
-Build and validate navigation network:
-
-.. code-block:: console
-
-  $citam engine build-navnet foo_facility foo_floor -v
-  $citam engine export-navnet foo_facility foo_floor -o foo_navnet_output.svg -v
-
-
-Run your First Simulation
----------------------------
-
-Create simulation folder and copy example input file:
-
-.. code-block:: console
-
-  $mkdir citam_simulation
-  $cp citam/examples/basic_example/example_sim_inputs.json citam_simulation/.
-
-
-Start simulation:
-
-.. code-block:: console
-
-    $cd citam_simulation
-    $citam engine run example_sim_inputs.json
-
-Congrats you've run your first simulation!
-
-Read the Tutorial
-------------------
-
-We recommend going through the tutorial for a more in-depth guide on how to use CITAM: :ref:`tutorial`
+We recommend going through the :ref:`tutorial` for a more in-depth guide on how to use CITAM.
 
 

@@ -92,7 +92,7 @@ main citam directory):
 
 .. code-block:: console
 
-    $ citam engine ingest TF2 0 -csv examples/basic_examples/TF2.csv -map examples/basic_example/TF2.svg -v
+    $ citam engine ingest TF2 0 --csv examples/basic_examples/TF2.csv --svg examples/basic_example/TF2.svg -v
 
 `TF2` is the name of the facility under which this floorplan will be saved and `0` is the name of this floor. For all
 subsequent operations on this facility, the same facility name must be provided. Alternatively, you may use:
@@ -192,7 +192,8 @@ Below is an example input file.
 
     {
         "facility_name" : "TF2",
-        "simulation_name" : "test_run_1",
+        "simulation_name" : "test_sim_2",
+        "run_name": "run_1",
         "floors" : ["0"],
         "entrances" : [ {"name":"AISLE213", "floor": 0}],
         "daylength" : 1800,

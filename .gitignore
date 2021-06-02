@@ -80,8 +80,10 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docsrc/_build/
 public/html/
 public/doctrees/
+
 docs/html
 docs/doctrees/
 docsrc/html/
