@@ -1,8 +1,8 @@
 .. _cli_commands:
 
-==================
-CLI Command List
-==================
+================
+CLI Reference
+================
 
 .. argparse::
    :module: citam.cli
