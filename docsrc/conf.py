@@ -13,7 +13,7 @@ author = "Mardochee Reveil, Chris Soper, Amit Jha"
 release = "0.9.0"
 master_doc = "index"
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "tests/*", "test_"]
 
 extensions = [
     "autoapi.extension",
@@ -58,3 +58,4 @@ autodoc_default_options = {
 }
 autoapi_type = "python"
 autoapi_dirs = ["../citam"]
+autoapi_ignore = ["*test*"]
