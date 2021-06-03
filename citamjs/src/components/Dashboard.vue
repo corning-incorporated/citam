@@ -207,7 +207,6 @@
 
 <script>
 import axios from "axios";
-import Visualizer from "@/components/run/Visualizer.vue";
 import Scatterplot from "@/components/run/dataplots/Scatterplot";
 import Histogram from "@/components/run/dataplots/Histogram";
 import Statcards from "@/components/run/dataplots/Statcards";
@@ -233,7 +232,7 @@ library.add(
 
 export default {
   name: "Dashboard",
-  components: { Scatterplot, Histogram, Statcards, Visualizer },
+  components: { Scatterplot, Histogram, Statcards },
   data() {
     return {
       runList: [],
@@ -257,7 +256,7 @@ export default {
         return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
       })
       .then((runResponse) => {
-        // eslint-disable-next-line no-unused-vars
+        /* eslint-disable no-unused-vars */
         this.runList = runResponse
           .map((run) => run.data)
           .map(
@@ -270,6 +269,7 @@ export default {
               ...item
             }) => item
           );
+        /* eslint-enable no-unused-vars */
         this.runAttributes = Object.keys(this.runList[0]);
       });
   },
