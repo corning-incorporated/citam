@@ -1,6 +1,6 @@
 ### NOTE: THIS REPOSITORY IS IN PRE-RELEASE MODE AND IS NOT READY FOR PUBLIC USE YET. PLEASE CHECK BACK LATER.
 
-![build](https://github.com/corning-incorporated/citam/actions/workflows/pull_request.yml/badge.svg)
+![build](https://github.com/corning-incorporated/citam/actions/workflows/pull_request.yaml/badge.svg)
 
 # CITAM
 
