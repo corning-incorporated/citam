@@ -83,6 +83,8 @@ docs/_build/
 docsrc/_build/
 public/html/
 public/doctrees/
+docs/html/
+docs/doctrees/
 
 docs/html
 docs/doctrees/
@@ -279,3 +281,4 @@ dist
 
 # VS Code Files
 .vscode/
+
