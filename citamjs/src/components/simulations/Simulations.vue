@@ -67,14 +67,11 @@ export default {
         (item) => item.facilityName == this.selectedFacility
       ).policies,
     };
-    console.log("Policies are:", this.policyData);
 
     for (let element of this.policyData.policies) {
-      console.log("Run ID in store:", this.$store.state.currentSimID);
       let run = element.simulationRuns.find(
         (run) => run.runID === this.$store.state.currentSimID
       );
-      console.log("Run is", run);
       if (run !== undefined) {
         this.runName = run.runName;
         this.simulationName = element.simulationName;
