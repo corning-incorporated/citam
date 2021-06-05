@@ -25,7 +25,7 @@ import * as dat from "dat.gui";
 import { mapState } from "vuex";
 
 export default {
-  name: "PlotVisualization",
+  name: "Visualizer",
   props: ["simId"],
   data() {
     return {
@@ -81,19 +81,28 @@ export default {
     }
   },
   mounted() {
-    if (this.simId === null || this.simId === undefined ) {
-      // show message asking the user to pick a simulation first.
-      alert('Please select the Simulation Run from the overview tab to see the visualization ')
-    } else if (this.simId !== this.$store.state.currentSimID) {
-      // reset data
-      this.gui = null;
-      this.mapInstance = null;
-      // this.newSimId = true;
-      this.$store.commit("setMapData", null);
-      this.$store.commit("removeTrajectoryData");
-      this.floor = 0;
+    if (
+      (this.simId !== undefined && this.simId !== null) ||
+      (this.$store.state.currentSimID !== undefined &&
+        this.$store.state.currentSimID !== null)
+    ) {
+      if (
+        this.simId !== undefined &&
+        this.simId !== this.$store.state.currentSimID
+      ) {
+        // A new run was selected. Reset map and trajectory data
+        this.gui = null;
+        this.mapInstance = null;
+        this.$store.commit("setMapData", null);
+        this.$store.commit("removeTrajectoryData");
+        this.floor = 0;
+      }
+      this.showSimulationMap();
+    } else {
+      alert(
+        "Please select a run from the Overview tab to see the visualization "
+      );
     }
-    this.showSimulationMap();
   },
 
   methods: {
@@ -116,6 +125,7 @@ export default {
         this.mapInstance.startAnimation();
       } else if (this.$store.state.status === "fetchingData") {
         if (this.$store.state.mapData !== null) {
+          this.mapInstance.setMapData(this.$store.state.mapData);
           this.mapInstance.loader.show();
           this.mapInstance.loader.mapLoaded();
           let expectedDuration = this.computeEstimatedLoadTime();

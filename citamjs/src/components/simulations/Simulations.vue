@@ -14,8 +14,8 @@
 <template>
   <div id="simLayout">
     <div id="title">
-      <span>Visualizer</span>Interactive visualization of trajectory data of a
-      specific run.
+      <span>Visualizer</span>Interactive visualization of trajectory data for:
+      <b style="color: #0080ff">{{ simulationName }} -> {{ runName }}</b>
     </div>
     <div class="container-fluid">
       <div>
@@ -47,6 +47,8 @@ export default {
       currSimId: "",
       selectedPolicy: "",
       selectedSim: "",
+      runName: "",
+      simulationName: "",
     };
   },
   watch: {
@@ -65,6 +67,18 @@ export default {
         (item) => item.facilityName == this.selectedFacility
       ).policies,
     };
+
+    for (let element of this.policyData.policies) {
+      let run = element.simulationRuns.find(
+        (run) => run.runID === this.$store.state.currentSimID
+      );
+      if (run !== undefined) {
+        this.runName = run.runName;
+        this.simulationName = element.simulationName;
+        break;
+      }
+    }
+
     if (_.isEmpty(this.overviewSimObj)) {
       this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
     } else {
