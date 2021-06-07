@@ -6,7 +6,7 @@ The code is divided into the following components:
 + **Engine**: the core simulation engine to manage facilities and run simulations written in (Python).
 + **CLI**: The Command-Line Interface is currently the primary way of interacting with CITAM written (Python).
 + **API**: used to read and expose simulation results that are served locally over http (Python)
-+ **Dashboard**: The dashboard is the frontend component to visualize and analyze results (JavaScript).
++ **GUI**: The GUI or dashboard is the frontend component to visualize and analyze results (JavaScript).
 
 We recommend going through the documentation of the component of interest to understand the code structure before you start writing your own code.
 
