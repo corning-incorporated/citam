@@ -1,4 +1,9 @@
-NOTE: THIS REPOSITORY IS IN PRE-RELEASE MODE AND IS NOT READY FOR PUBLIC USE YET. PLEASE CHECK BACK LATER.
+### NOTE: THIS REPOSITORY IS IN PRE-RELEASE MODE AND IS NOT READY FOR PUBLIC USE YET. PLEASE CHECK BACK LATER.
+
+![pull request workflow](https://github.com/corning-incorporated/citam/actions/workflows/pull_request.yaml/badge.svg) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/corning-incorporated/citam/issues) ![code style](https://img.shields.io/badge/code%20style-black-black) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
+
 
 # CITAM
 
