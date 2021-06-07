@@ -1,0 +1,3412 @@
+Agent ID: 0
+Schedule
+-----------------------
+Day length: 30991 Number of items: 8
+
+Schedule details
+0. 940: 84.45 min	Office work
+1. 527: 7.05 min	Restroom visit
+2. 940: 221.57 min	Office work
+3. 911: 10.1 min	Restroom visit
+4. 940: 169.28 min	Office work
+5. 1110: 10.6 min	Restroom visit
+6. 940: 13.47 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 1
+Schedule
+-----------------------
+Day length: 29863 Number of items: 8
+
+Schedule details
+0. 734: 85.18 min	Office work
+1. 534: 13.27 min	Restroom visit
+2. 734: 75.93 min	Office work
+3. 150: 14.62 min	Restroom visit
+4. 734: 122.0 min	Office work
+5. 739: 5.27 min	Restroom visit
+6. 734: 181.45 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 2
+Schedule
+-----------------------
+Day length: 29633 Number of items: 10
+
+Schedule details
+0. 305: 90.98 min	Office work
+1. 1110: 10.67 min	Restroom visit
+2. 305: 65.22 min	Office work
+3. 348: 11.4 min	Restroom visit
+4. 305: 33.17 min	Office work
+5. 1123: 14.03 min	Restroom visit
+6. 305: 29.95 min	Office work
+7. 150: 13.65 min	Restroom visit
+8. 305: 224.82 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 3
+Schedule
+-----------------------
+Day length: 30002 Number of items: 8
+
+Schedule details
+0. 201: 226.43 min	Office work
+1. 1103: 9.77 min	Restroom visit
+2. 201: 108.0 min	Office work
+3. 739: 14.88 min	Restroom visit
+4. 201: 115.52 min	Office work
+5. 1123: 10.05 min	Restroom visit
+6. 201: 15.38 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 4
+Schedule
+-----------------------
+Day length: 29320 Number of items: 10
+
+Schedule details
+0. 52: 103.43 min	Office work
+1. 719: 5.3 min	Restroom visit
+2. 52: 106.25 min	Office work
+3. 931: 8.42 min	Restroom visit
+4. 52: 140.1 min	Office work
+5. 1116: 12.18 min	Restroom visit
+6. 52: 89.7 min	Office work
+7. 931: 13.22 min	Restroom visit
+8. 52: 10.07 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 5
+Schedule
+-----------------------
+Day length: 30113 Number of items: 10
+
+Schedule details
+0. 33: 52.82 min	Office work
+1. 355: 5.65 min	Restroom visit
+2. 33: 81.95 min	Office work
+3. 931: 12.12 min	Restroom visit
+4. 33: 103.6 min	Office work
+5. 911: 9.23 min	Restroom visit
+6. 33: 215.07 min	Office work
+7. 335: 7.82 min	Restroom visit
+8. 33: 13.63 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 6
+Schedule
+-----------------------
+Day length: 30233 Number of items: 10
+
+Schedule details
+0. 64: 72.7 min	Office work
+1. 527: 5.57 min	Restroom visit
+2. 64: 68.6 min	Office work
+3. 719: 7.95 min	Restroom visit
+4. 64: 106.95 min	Office work
+5. 150: 8.27 min	Restroom visit
+6. 64: 92.43 min	Office work
+7. 924: 12.7 min	Restroom visit
+8. 64: 128.72 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 7
+Schedule
+-----------------------
+Day length: 30586 Number of items: 10
+
+Schedule details
+0. 385: 16.78 min	Office work
+1. 739: 5.0 min	Restroom visit
+2. 385: 107.58 min	Office work
+3. 931: 5.77 min	Restroom visit
+4. 385: 87.67 min	Office work
+5. 355: 14.4 min	Restroom visit
+6. 385: 61.08 min	Office work
+7. 335: 9.73 min	Restroom visit
+8. 385: 201.75 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 8
+Schedule
+-----------------------
+Day length: 29819 Number of items: 10
+
+Schedule details
+0. 306: 105.88 min	Office work
+1. 163: 6.55 min	Restroom visit
+2. 306: 41.03 min	Office work
+3. 156: 14.57 min	Restroom visit
+4. 306: 17.35 min	Office work
+5. 1116: 9.25 min	Restroom visit
+6. 306: 54.13 min	Office work
+7. 924: 10.98 min	Restroom visit
+8. 306: 237.23 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 9
+Schedule
+-----------------------
+Day length: 31163 Number of items: 4
+
+Schedule details
+0. 369: 397.65 min	Office work
+1. 918: 8.62 min	Restroom visit
+2. 369: 113.12 min	Office work
+3. None: 0.0 min	Leave for the day
+
+
+Agent ID: 10
+Schedule
+-----------------------
+Day length: 29467 Number of items: 10
+
+Schedule details
+0. 926: 28.4 min	Office work
+1. 348: 6.35 min	Restroom visit
+2. 926: 90.08 min	Office work
+3. 547: 13.9 min	Restroom visit
+4. 926: 36.9 min	Office work
+5. 1116: 11.37 min	Restroom visit
+6. 926: 20.98 min	Office work
+7. 534: 10.18 min	Restroom visit
+8. 926: 272.95 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 11
+Schedule
+-----------------------
+Day length: 30595 Number of items: 10
+
+Schedule details
+0. 167: 92.7 min	Office work
+1. 1110: 14.98 min	Restroom visit
+2. 167: 126.53 min	Office work
+3. 156: 7.4 min	Restroom visit
+4. 167: 179.4 min	Office work
+5. 726: 14.88 min	Restroom visit
+6. 167: 14.95 min	Office work
+7. 143: 10.25 min	Restroom visit
+8. 167: 48.82 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 12
+Schedule
+-----------------------
+Day length: 30590 Number of items: 8
+
+Schedule details
+0. 666: 77.57 min	Office work
+1. 143: 10.6 min	Restroom visit
+2. 666: 78.95 min	Office work
+3. 143: 11.43 min	Restroom visit
+4. 666: 59.57 min	Office work
+5. 719: 13.68 min	Restroom visit
+6. 666: 258.03 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 13
+Schedule
+-----------------------
+Day length: 30941 Number of items: 8
+
+Schedule details
+0. 528: 69.68 min	Office work
+1. 911: 5.6 min	Restroom visit
+2. 528: 223.12 min	Office work
+3. 355: 9.63 min	Restroom visit
+4. 528: 179.0 min	Office work
+5. 348: 6.78 min	Restroom visit
+6. 528: 21.87 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 14
+Schedule
+-----------------------
+Day length: 30371 Number of items: 10
+
+Schedule details
+0. 637: 37.62 min	Office work
+1. 726: 9.75 min	Restroom visit
+2. 637: 102.68 min	Office work
+3. 540: 7.07 min	Restroom visit
+4. 637: 31.72 min	Office work
+5. 156: 10.63 min	Restroom visit
+6. 637: 78.2 min	Office work
+7. 911: 12.8 min	Restroom visit
+8. 637: 215.72 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 15
+Schedule
+-----------------------
+Day length: 30986 Number of items: 2
+
+Schedule details
+0. 951: 516.43 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 16
+Schedule
+-----------------------
+Day length: 29910 Number of items: 10
+
+Schedule details
+0. 916: 44.98 min	Office work
+1. 739: 6.58 min	Restroom visit
+2. 916: 40.08 min	Office work
+3. 931: 10.62 min	Restroom visit
+4. 916: 216.02 min	Office work
+5. 150: 14.67 min	Restroom visit
+6. 916: 135.6 min	Office work
+7. 342: 13.85 min	Restroom visit
+8. 916: 16.1 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 17
+Schedule
+-----------------------
+Day length: 29247 Number of items: 10
+
+Schedule details
+0. 270: 46.87 min	Office work
+1. 924: 9.13 min	Restroom visit
+2. 270: 100.43 min	Office work
+3. 739: 13.73 min	Restroom visit
+4. 270: 42.4 min	Office work
+5. 355: 13.53 min	Restroom visit
+6. 270: 81.8 min	Office work
+7. 335: 6.13 min	Restroom visit
+8. 270: 173.42 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 18
+Schedule
+-----------------------
+Day length: 30810 Number of items: 8
+
+Schedule details
+0. 749: 344.25 min	Office work
+1. 726: 9.5 min	Restroom visit
+2. 749: 27.83 min	Office work
+3. 931: 11.1 min	Restroom visit
+4. 749: 103.83 min	Office work
+5. 1116: 5.47 min	Restroom visit
+6. 749: 11.52 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 19
+Schedule
+-----------------------
+Day length: 29186 Number of items: 8
+
+Schedule details
+0. 1112: 155.78 min	Office work
+1. 143: 10.03 min	Restroom visit
+2. 1112: 202.02 min	Office work
+3. 355: 11.33 min	Restroom visit
+4. 1112: 33.02 min	Office work
+5. 150: 8.45 min	Restroom visit
+6. 1112: 65.8 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 20
+Schedule
+-----------------------
+Day length: 30246 Number of items: 6
+
+Schedule details
+0. 992: 44.93 min	Office work
+1. 156: 5.37 min	Restroom visit
+2. 992: 84.85 min	Office work
+3. 355: 11.53 min	Restroom visit
+4. 992: 357.42 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 21
+Schedule
+-----------------------
+Day length: 29646 Number of items: 10
+
+Schedule details
+0. 266: 118.23 min	Office work
+1. 726: 10.67 min	Restroom visit
+2. 266: 97.28 min	Office work
+3. 732: 9.98 min	Restroom visit
+4. 266: 58.97 min	Office work
+5. 719: 13.32 min	Restroom visit
+6. 266: 26.4 min	Office work
+7. 1110: 5.93 min	Restroom visit
+8. 266: 153.32 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 22
+Schedule
+-----------------------
+Day length: 30072 Number of items: 10
+
+Schedule details
+0. 473: 36.48 min	Office work
+1. 156: 7.95 min	Restroom visit
+2. 473: 198.22 min	Office work
+3. 335: 9.08 min	Restroom visit
+4. 473: 88.8 min	Office work
+5. 1123: 8.08 min	Restroom visit
+6. 473: 124.78 min	Office work
+7. 931: 10.58 min	Restroom visit
+8. 473: 17.22 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 23
+Schedule
+-----------------------
+Day length: 29604 Number of items: 10
+
+Schedule details
+0. 1067: 37.98 min	Office work
+1. 719: 10.12 min	Restroom visit
+2. 1067: 118.63 min	Office work
+3. 1110: 14.63 min	Restroom visit
+4. 1067: 81.6 min	Office work
+5. 1103: 11.42 min	Restroom visit
+6. 1067: 73.32 min	Office work
+7. 163: 6.27 min	Restroom visit
+8. 1067: 139.43 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 24
+Schedule
+-----------------------
+Day length: 30023 Number of items: 10
+
+Schedule details
+0. 790: 67.67 min	Office work
+1. 150: 11.78 min	Restroom visit
+2. 790: 105.05 min	Office work
+3. 547: 10.12 min	Restroom visit
+4. 790: 36.03 min	Office work
+5. 719: 9.43 min	Restroom visit
+6. 790: 29.13 min	Office work
+7. 156: 9.38 min	Restroom visit
+8. 790: 221.78 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 25
+Schedule
+-----------------------
+Day length: 30442 Number of items: 10
+
+Schedule details
+0. 539: 85.8 min	Office work
+1. 355: 7.77 min	Restroom visit
+2. 539: 63.75 min	Office work
+3. 1103: 14.12 min	Restroom visit
+4. 539: 95.88 min	Office work
+5. 355: 11.43 min	Restroom visit
+6. 539: 62.47 min	Office work
+7. 1103: 6.08 min	Restroom visit
+8. 539: 160.07 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 26
+Schedule
+-----------------------
+Day length: 29383 Number of items: 8
+
+Schedule details
+0. 1010: 52.22 min	Office work
+1. 156: 5.25 min	Restroom visit
+2. 1010: 84.95 min	Office work
+3. 348: 5.42 min	Restroom visit
+4. 1010: 32.32 min	Office work
+5. 1116: 8.25 min	Restroom visit
+6. 1010: 301.32 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 27
+Schedule
+-----------------------
+Day length: 31279 Number of items: 6
+
+Schedule details
+0. 144: 60.35 min	Office work
+1. 335: 10.87 min	Restroom visit
+2. 144: 118.15 min	Office work
+3. 156: 11.87 min	Restroom visit
+4. 144: 320.08 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 28
+Schedule
+-----------------------
+Day length: 30639 Number of items: 10
+
+Schedule details
+0. 584: 92.77 min	Office work
+1. 726: 6.58 min	Restroom visit
+2. 584: 208.97 min	Office work
+3. 547: 7.17 min	Restroom visit
+4. 584: 26.53 min	Office work
+5. 911: 5.92 min	Restroom visit
+6. 584: 101.35 min	Office work
+7. 156: 8.53 min	Restroom visit
+8. 584: 52.83 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 29
+Schedule
+-----------------------
+Day length: 30496 Number of items: 8
+
+Schedule details
+0. 796: 293.75 min	Office work
+1. 1123: 5.72 min	Restroom visit
+2. 796: 71.22 min	Office work
+3. 1103: 14.6 min	Restroom visit
+4. 796: 26.72 min	Office work
+5. 931: 8.85 min	Restroom visit
+6. 796: 87.42 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 30
+Schedule
+-----------------------
+Day length: 30283 Number of items: 10
+
+Schedule details
+0. 582: 63.5 min	Office work
+1. 547: 10.5 min	Restroom visit
+2. 582: 61.45 min	Office work
+3. 163: 14.92 min	Restroom visit
+4. 582: 115.3 min	Office work
+5. 1110: 7.13 min	Restroom visit
+6. 582: 136.65 min	Office work
+7. 355: 14.98 min	Restroom visit
+8. 582: 80.28 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 31
+Schedule
+-----------------------
+Day length: 30157 Number of items: 6
+
+Schedule details
+0. 1016: 248.43 min	Office work
+1. 931: 7.03 min	Restroom visit
+2. 1016: 115.32 min	Office work
+3. 355: 11.13 min	Restroom visit
+4. 1016: 120.7 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 32
+Schedule
+-----------------------
+Day length: 29350 Number of items: 10
+
+Schedule details
+0. 13: 59.25 min	Office work
+1. 931: 12.03 min	Restroom visit
+2. 13: 110.08 min	Office work
+3. 534: 13.55 min	Restroom visit
+4. 13: 138.67 min	Office work
+5. 911: 10.95 min	Restroom visit
+6. 13: 46.73 min	Office work
+7. 342: 7.98 min	Restroom visit
+8. 13: 89.92 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 33
+Schedule
+-----------------------
+Day length: 30881 Number of items: 10
+
+Schedule details
+0. 747: 130.08 min	Office work
+1. 540: 10.22 min	Restroom visit
+2. 747: 55.83 min	Office work
+3. 726: 7.43 min	Restroom visit
+4. 747: 73.3 min	Office work
+5. 150: 7.23 min	Restroom visit
+6. 747: 163.07 min	Office work
+7. 911: 13.37 min	Restroom visit
+8. 747: 54.15 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 34
+Schedule
+-----------------------
+Day length: 30370 Number of items: 8
+
+Schedule details
+0. 649: 96.2 min	Office work
+1. 527: 10.8 min	Restroom visit
+2. 649: 79.23 min	Office work
+3. 335: 11.9 min	Restroom visit
+4. 649: 75.58 min	Office work
+5. 1110: 7.62 min	Restroom visit
+6. 649: 224.83 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 35
+Schedule
+-----------------------
+Day length: 29598 Number of items: 8
+
+Schedule details
+0. 1049: 214.55 min	Office work
+1. 163: 6.43 min	Restroom visit
+2. 1049: 154.45 min	Office work
+3. 156: 12.12 min	Restroom visit
+4. 1049: 72.4 min	Office work
+5. 156: 5.57 min	Restroom visit
+6. 1049: 27.78 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 36
+Schedule
+-----------------------
+Day length: 30663 Number of items: 4
+
+Schedule details
+0. 815: 150.23 min	Office work
+1. 163: 9.98 min	Restroom visit
+2. 815: 350.83 min	Office work
+3. None: 0.0 min	Leave for the day
+
+
+Agent ID: 37
+Schedule
+-----------------------
+Day length: 30107 Number of items: 8
+
+Schedule details
+0. 1042: 92.65 min	Office work
+1. 1116: 9.43 min	Restroom visit
+2. 1042: 198.47 min	Office work
+3. 534: 13.25 min	Restroom visit
+4. 1042: 67.2 min	Office work
+5. 719: 12.18 min	Restroom visit
+6. 1042: 108.6 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 38
+Schedule
+-----------------------
+Day length: 30561 Number of items: 6
+
+Schedule details
+0. 50: 84.77 min	Office work
+1. 924: 5.92 min	Restroom visit
+2. 50: 397.53 min	Office work
+3. 355: 6.83 min	Restroom visit
+4. 50: 14.3 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 39
+Schedule
+-----------------------
+Day length: 29619 Number of items: 10
+
+Schedule details
+0. 244: 25.52 min	Office work
+1. 1110: 14.22 min	Restroom visit
+2. 244: 193.37 min	Office work
+3. 739: 10.9 min	Restroom visit
+4. 244: 35.73 min	Office work
+5. 150: 13.42 min	Restroom visit
+6. 244: 97.0 min	Office work
+7. 911: 12.5 min	Restroom visit
+8. 244: 91.0 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 40
+Schedule
+-----------------------
+Day length: 30522 Number of items: 10
+
+Schedule details
+0. 802: 71.65 min	Office work
+1. 1123: 8.22 min	Restroom visit
+2. 802: 111.58 min	Office work
+3. 924: 13.3 min	Restroom visit
+4. 802: 181.83 min	Office work
+5. 143: 9.17 min	Restroom visit
+6. 802: 94.17 min	Office work
+7. 163: 7.42 min	Restroom visit
+8. 802: 11.37 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 41
+Schedule
+-----------------------
+Day length: 30915 Number of items: 8
+
+Schedule details
+0. 1068: 204.22 min	Office work
+1. 1110: 11.67 min	Restroom visit
+2. 1068: 211.77 min	Office work
+3. 732: 9.4 min	Restroom visit
+4. 1068: 60.17 min	Office work
+5. 355: 5.42 min	Restroom visit
+6. 1068: 12.62 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 42
+Schedule
+-----------------------
+Day length: 30208 Number of items: 8
+
+Schedule details
+0. 272: 108.2 min	Office work
+1. 911: 8.23 min	Restroom visit
+2. 272: 254.5 min	Office work
+3. 150: 7.75 min	Restroom visit
+4. 272: 39.25 min	Office work
+5. 918: 9.45 min	Restroom visit
+6. 272: 76.08 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 43
+Schedule
+-----------------------
+Day length: 30069 Number of items: 8
+
+Schedule details
+0. 794: 84.43 min	Office work
+1. 534: 11.98 min	Restroom visit
+2. 794: 15.58 min	Office work
+3. 143: 13.77 min	Restroom visit
+4. 794: 260.87 min	Office work
+5. 719: 12.67 min	Restroom visit
+6. 794: 101.85 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 44
+Schedule
+-----------------------
+Day length: 29713 Number of items: 10
+
+Schedule details
+0. 232: 96.03 min	Office work
+1. 1110: 13.17 min	Restroom visit
+2. 232: 24.68 min	Office work
+3. 1116: 10.35 min	Restroom visit
+4. 232: 41.25 min	Office work
+5. 163: 6.62 min	Restroom visit
+6. 232: 154.3 min	Office work
+7. 335: 6.73 min	Restroom visit
+8. 232: 142.08 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 45
+Schedule
+-----------------------
+Day length: 30570 Number of items: 8
+
+Schedule details
+0. 84: 74.02 min	Office work
+1. 348: 14.45 min	Restroom visit
+2. 84: 24.12 min	Office work
+3. 156: 13.37 min	Restroom visit
+4. 84: 254.22 min	Office work
+5. 348: 6.47 min	Restroom visit
+6. 84: 122.87 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 46
+Schedule
+-----------------------
+Day length: 30571 Number of items: 6
+
+Schedule details
+0. 307: 416.32 min	Office work
+1. 342: 14.97 min	Restroom visit
+2. 307: 38.05 min	Office work
+3. 924: 7.85 min	Restroom visit
+4. 307: 32.33 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 47
+Schedule
+-----------------------
+Day length: 29914 Number of items: 10
+
+Schedule details
+0. 580: 66.33 min	Office work
+1. 342: 14.48 min	Restroom visit
+2. 580: 25.48 min	Office work
+3. 1123: 11.52 min	Restroom visit
+4. 580: 90.58 min	Office work
+5. 348: 7.55 min	Restroom visit
+6. 580: 236.37 min	Office work
+7. 534: 14.87 min	Restroom visit
+8. 580: 31.38 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 48
+Schedule
+-----------------------
+Day length: 30756 Number of items: 4
+
+Schedule details
+0. 48: 288.82 min	Office work
+1. 732: 7.67 min	Restroom visit
+2. 48: 216.12 min	Office work
+3. None: 0.0 min	Leave for the day
+
+
+Agent ID: 49
+Schedule
+-----------------------
+Day length: 30062 Number of items: 8
+
+Schedule details
+0. 410: 361.78 min	Office work
+1. 739: 12.6 min	Restroom visit
+2. 410: 58.65 min	Office work
+3. 1110: 7.7 min	Restroom visit
+4. 410: 35.8 min	Office work
+5. 163: 11.42 min	Restroom visit
+6. 410: 13.08 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 50
+Schedule
+-----------------------
+Day length: 29631 Number of items: 9
+
+Schedule details
+0. 57: 176.35 min	Office work
+1. 1116: 14.12 min	Restroom visit
+2. 57: 61.97 min	Office work
+3. 732: 13.08 min	Restroom visit
+4. 57: 74.3 min	Office work
+5. 163: 7.97 min	Restroom visit
+6. 57: 134.33 min	Office work
+7. 348: 11.73 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 51
+Schedule
+-----------------------
+Day length: 29048 Number of items: 10
+
+Schedule details
+0. 96: 62.18 min	Office work
+1. 143: 11.98 min	Restroom visit
+2. 96: 164.33 min	Office work
+3. 732: 13.6 min	Restroom visit
+4. 96: 30.03 min	Office work
+5. 1103: 12.68 min	Restroom visit
+6. 96: 80.43 min	Office work
+7. 1123: 12.33 min	Restroom visit
+8. 96: 96.55 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 52
+Schedule
+-----------------------
+Day length: 30548 Number of items: 10
+
+Schedule details
+0. 720: 105.83 min	Office work
+1. 732: 11.4 min	Restroom visit
+2. 720: 25.17 min	Office work
+3. 726: 13.3 min	Restroom visit
+4. 720: 198.35 min	Office work
+5. 534: 9.23 min	Restroom visit
+6. 720: 115.25 min	Office work
+7. 163: 6.2 min	Restroom visit
+8. 720: 24.4 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 53
+Schedule
+-----------------------
+Day length: 29715 Number of items: 10
+
+Schedule details
+0. 199: 201.77 min	Office work
+1. 739: 13.0 min	Restroom visit
+2. 199: 117.32 min	Office work
+3. 1103: 7.72 min	Restroom visit
+4. 199: 58.05 min	Office work
+5. 355: 7.35 min	Restroom visit
+6. 199: 69.25 min	Office work
+7. 732: 5.92 min	Restroom visit
+8. 199: 14.88 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 54
+Schedule
+-----------------------
+Day length: 30559 Number of items: 6
+
+Schedule details
+0. 87: 102.45 min	Office work
+1. 348: 6.62 min	Restroom visit
+2. 87: 128.43 min	Office work
+3. 726: 10.3 min	Restroom visit
+4. 87: 261.52 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 55
+Schedule
+-----------------------
+Day length: 30908 Number of items: 4
+
+Schedule details
+0. 1127: 344.62 min	Office work
+1. 918: 11.2 min	Restroom visit
+2. 1127: 159.32 min	Office work
+3. None: 0.0 min	Leave for the day
+
+
+Agent ID: 56
+Schedule
+-----------------------
+Day length: 30283 Number of items: 10
+
+Schedule details
+0. 469: 60.72 min	Office work
+1. 732: 7.27 min	Restroom visit
+2. 469: 78.95 min	Office work
+3. 719: 9.97 min	Restroom visit
+4. 469: 147.1 min	Office work
+5. 547: 12.8 min	Restroom visit
+6. 469: 36.83 min	Office work
+7. 143: 11.82 min	Restroom visit
+8. 469: 139.27 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 57
+Schedule
+-----------------------
+Day length: 29941 Number of items: 8
+
+Schedule details
+0. 754: 201.08 min	Office work
+1. 924: 6.23 min	Restroom visit
+2. 754: 154.77 min	Office work
+3. 150: 5.02 min	Restroom visit
+4. 754: 104.33 min	Office work
+5. 150: 6.47 min	Restroom visit
+6. 754: 21.12 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 58
+Schedule
+-----------------------
+Day length: 29269 Number of items: 10
+
+Schedule details
+0. 938: 43.6 min	Office work
+1. 719: 8.88 min	Restroom visit
+2. 938: 140.48 min	Office work
+3. 342: 6.03 min	Restroom visit
+4. 938: 170.62 min	Office work
+5. 342: 13.18 min	Restroom visit
+6. 938: 51.77 min	Office work
+7. 342: 13.15 min	Restroom visit
+8. 938: 40.1 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 59
+Schedule
+-----------------------
+Day length: 29777 Number of items: 10
+
+Schedule details
+0. 5: 89.82 min	Office work
+1. 924: 9.55 min	Restroom visit
+2. 5: 78.97 min	Office work
+3. 1110: 14.85 min	Restroom visit
+4. 5: 156.82 min	Office work
+5. 540: 11.6 min	Restroom visit
+6. 5: 116.48 min	Office work
+7. 348: 8.1 min	Restroom visit
+8. 5: 10.1 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 60
+Schedule
+-----------------------
+Day length: 30800 Number of items: 6
+
+Schedule details
+0. 977: 211.37 min	Office work
+1. 726: 13.15 min	Restroom visit
+2. 977: 107.62 min	Office work
+3. 918: 12.88 min	Restroom visit
+4. 977: 168.32 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 61
+Schedule
+-----------------------
+Day length: 30473 Number of items: 10
+
+Schedule details
+0. 360: 27.58 min	Office work
+1. 540: 9.6 min	Restroom visit
+2. 360: 30.88 min	Office work
+3. 527: 12.88 min	Restroom visit
+4. 360: 43.78 min	Office work
+5. 143: 14.53 min	Restroom visit
+6. 360: 114.68 min	Office work
+7. 1103: 5.08 min	Restroom visit
+8. 360: 248.85 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 62
+Schedule
+-----------------------
+Day length: 31162 Number of items: 8
+
+Schedule details
+0. 1106: 24.83 min	Office work
+1. 924: 12.2 min	Restroom visit
+2. 1106: 256.87 min	Office work
+3. 719: 6.78 min	Restroom visit
+4. 1106: 190.25 min	Office work
+5. 732: 14.48 min	Restroom visit
+6. 1106: 13.95 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 63
+Schedule
+-----------------------
+Day length: 30474 Number of items: 7
+
+Schedule details
+0. 608: 77.4 min	Office work
+1. 534: 9.8 min	Restroom visit
+2. 608: 234.65 min	Office work
+3. 1123: 9.35 min	Restroom visit
+4. 608: 161.77 min	Office work
+5. 911: 14.93 min	Restroom visit
+6. None: 0.0 min	Leave for the day
+
+
+Agent ID: 64
+Schedule
+-----------------------
+Day length: 28884 Number of items: 10
+
+Schedule details
+0. 1145: 16.98 min	Office work
+1. 150: 10.1 min	Restroom visit
+2. 1145: 77.13 min	Office work
+3. 726: 10.47 min	Restroom visit
+4. 1145: 26.03 min	Office work
+5. 143: 10.35 min	Restroom visit
+6. 1145: 100.25 min	Office work
+7. 726: 6.03 min	Restroom visit
+8. 1145: 224.05 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 65
+Schedule
+-----------------------
+Day length: 29810 Number of items: 10
+
+Schedule details
+0. 1078: 158.1 min	Office work
+1. 1123: 11.42 min	Restroom visit
+2. 1078: 131.47 min	Office work
+3. 156: 13.43 min	Restroom visit
+4. 1078: 43.57 min	Office work
+5. 732: 11.68 min	Restroom visit
+6. 1078: 54.92 min	Office work
+7. 732: 6.37 min	Restroom visit
+8. 1078: 65.88 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 66
+Schedule
+-----------------------
+Day length: 30029 Number of items: 10
+
+Schedule details
+0. 887: 195.23 min	Office work
+1. 726: 7.27 min	Restroom visit
+2. 887: 91.92 min	Office work
+3. 355: 8.63 min	Restroom visit
+4. 887: 24.95 min	Office work
+5. 726: 9.37 min	Restroom visit
+6. 887: 129.12 min	Office work
+7. 732: 6.97 min	Restroom visit
+8. 887: 27.03 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 67
+Schedule
+-----------------------
+Day length: 30388 Number of items: 6
+
+Schedule details
+0. 1059: 93.07 min	Office work
+1. 348: 8.72 min	Restroom visit
+2. 1059: 141.52 min	Office work
+3. 739: 5.98 min	Restroom visit
+4. 1059: 257.18 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 68
+Schedule
+-----------------------
+Day length: 30524 Number of items: 10
+
+Schedule details
+0. 1080: 169.53 min	Office work
+1. 924: 13.83 min	Restroom visit
+2. 1080: 84.3 min	Office work
+3. 1110: 13.02 min	Restroom visit
+4. 1080: 61.9 min	Office work
+5. 924: 5.83 min	Restroom visit
+6. 1080: 104.68 min	Office work
+7. 719: 8.02 min	Restroom visit
+8. 1080: 47.62 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 69
+Schedule
+-----------------------
+Day length: 31406 Number of items: 5
+
+Schedule details
+0. 501: 406.82 min	Office work
+1. 342: 12.75 min	Restroom visit
+2. 501: 95.7 min	Office work
+3. 924: 8.17 min	Restroom visit
+4. None: 0.0 min	Leave for the day
+
+
+Agent ID: 70
+Schedule
+-----------------------
+Day length: 30407 Number of items: 9
+
+Schedule details
+0. 312: 155.05 min	Office work
+1. 348: 12.33 min	Restroom visit
+2. 312: 59.65 min	Office work
+3. 1116: 9.9 min	Restroom visit
+4. 312: 202.13 min	Office work
+5. 150: 8.0 min	Restroom visit
+6. 312: 46.75 min	Office work
+7. 150: 12.97 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 71
+Schedule
+-----------------------
+Day length: 30924 Number of items: 6
+
+Schedule details
+0. 686: 255.8 min	Office work
+1. 739: 13.03 min	Restroom visit
+2. 686: 122.07 min	Office work
+3. 1110: 13.68 min	Restroom visit
+4. 686: 110.82 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 72
+Schedule
+-----------------------
+Day length: 30407 Number of items: 10
+
+Schedule details
+0. 661: 62.57 min	Office work
+1. 527: 10.97 min	Restroom visit
+2. 661: 100.55 min	Office work
+3. 1110: 11.6 min	Restroom visit
+4. 661: 18.43 min	Office work
+5. 1103: 10.43 min	Restroom visit
+6. 661: 25.42 min	Office work
+7. 1110: 14.2 min	Restroom visit
+8. 661: 252.62 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 73
+Schedule
+-----------------------
+Day length: 30324 Number of items: 10
+
+Schedule details
+0. 1084: 94.45 min	Office work
+1. 143: 6.7 min	Restroom visit
+2. 1084: 114.25 min	Office work
+3. 1123: 13.8 min	Restroom visit
+4. 1084: 43.35 min	Office work
+5. 1103: 8.7 min	Restroom visit
+6. 1084: 15.03 min	Office work
+7. 1110: 10.9 min	Restroom visit
+8. 1084: 198.22 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 74
+Schedule
+-----------------------
+Day length: 30844 Number of items: 6
+
+Schedule details
+0. 536: 78.08 min	Office work
+1. 143: 14.67 min	Restroom visit
+2. 536: 216.65 min	Office work
+3. 163: 9.85 min	Restroom visit
+4. 536: 194.82 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 75
+Schedule
+-----------------------
+Day length: 30188 Number of items: 8
+
+Schedule details
+0. 1113: 46.48 min	Office work
+1. 156: 5.87 min	Restroom visit
+2. 1113: 179.53 min	Office work
+3. 342: 11.38 min	Restroom visit
+4. 1113: 172.82 min	Office work
+5. 911: 10.08 min	Restroom visit
+6. 1113: 76.97 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 76
+Schedule
+-----------------------
+Day length: 30226 Number of items: 9
+
+Schedule details
+0. 671: 95.35 min	Office work
+1. 143: 13.53 min	Restroom visit
+2. 671: 31.77 min	Office work
+3. 1110: 6.7 min	Restroom visit
+4. 671: 321.92 min	Office work
+5. 335: 6.0 min	Restroom visit
+6. 671: 19.6 min	Office work
+7. 150: 8.9 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 77
+Schedule
+-----------------------
+Day length: 30362 Number of items: 10
+
+Schedule details
+0. 179: 12.52 min	Office work
+1. 348: 12.45 min	Restroom visit
+2. 179: 332.05 min	Office work
+3. 931: 5.47 min	Restroom visit
+4. 179: 63.9 min	Office work
+5. 156: 13.85 min	Restroom visit
+6. 179: 45.23 min	Office work
+7. 1110: 10.23 min	Restroom visit
+8. 179: 10.33 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 78
+Schedule
+-----------------------
+Day length: 31205 Number of items: 4
+
+Schedule details
+0. 617: 193.93 min	Office work
+1. 540: 7.32 min	Restroom visit
+2. 617: 318.83 min	Office work
+3. None: 0.0 min	Leave for the day
+
+
+Agent ID: 79
+Schedule
+-----------------------
+Day length: 30250 Number of items: 8
+
+Schedule details
+0. 872: 205.93 min	Office work
+1. 534: 13.57 min	Restroom visit
+2. 872: 98.88 min	Office work
+3. 726: 14.75 min	Restroom visit
+4. 872: 123.23 min	Office work
+5. 719: 13.47 min	Restroom visit
+6. 872: 34.33 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 80
+Schedule
+-----------------------
+Day length: 30136 Number of items: 8
+
+Schedule details
+0. 218: 101.87 min	Office work
+1. 931: 9.82 min	Restroom visit
+2. 218: 198.92 min	Office work
+3. 739: 6.87 min	Restroom visit
+4. 218: 167.22 min	Office work
+5. 1110: 5.3 min	Restroom visit
+6. 218: 12.28 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 81
+Schedule
+-----------------------
+Day length: 30735 Number of items: 10
+
+Schedule details
+0. 293: 36.77 min	Office work
+1. 348: 8.62 min	Restroom visit
+2. 293: 64.8 min	Office work
+3. 918: 12.92 min	Restroom visit
+4. 293: 43.3 min	Office work
+5. 163: 11.75 min	Restroom visit
+6. 293: 122.77 min	Office work
+7. 150: 6.07 min	Restroom visit
+8. 293: 205.27 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 82
+Schedule
+-----------------------
+Day length: 30052 Number of items: 10
+
+Schedule details
+0. 826: 191.3 min	Office work
+1. 143: 9.13 min	Restroom visit
+2. 826: 27.45 min	Office work
+3. 1123: 5.6 min	Restroom visit
+4. 826: 64.75 min	Office work
+5. 540: 11.35 min	Restroom visit
+6. 826: 101.77 min	Office work
+7. 924: 7.0 min	Restroom visit
+8. 826: 82.52 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 83
+Schedule
+-----------------------
+Day length: 29943 Number of items: 9
+
+Schedule details
+0. 529: 101.88 min	Office work
+1. 1123: 10.6 min	Restroom visit
+2. 529: 144.43 min	Office work
+3. 355: 8.55 min	Restroom visit
+4. 529: 185.77 min	Office work
+5. 1110: 6.33 min	Restroom visit
+6. 529: 34.02 min	Office work
+7. 911: 7.47 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 84
+Schedule
+-----------------------
+Day length: 30222 Number of items: 10
+
+Schedule details
+0. 193: 52.58 min	Office work
+1. 150: 6.85 min	Restroom visit
+2. 193: 97.48 min	Office work
+3. 924: 6.02 min	Restroom visit
+4. 193: 141.35 min	Office work
+5. 732: 11.32 min	Restroom visit
+6. 193: 103.0 min	Office work
+7. 163: 12.33 min	Restroom visit
+8. 193: 72.77 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 85
+Schedule
+-----------------------
+Day length: 31132 Number of items: 6
+
+Schedule details
+0. 249: 102.13 min	Office work
+1. 143: 5.58 min	Restroom visit
+2. 249: 194.48 min	Office work
+3. 534: 11.12 min	Restroom visit
+4. 249: 205.55 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 86
+Schedule
+-----------------------
+Day length: 30531 Number of items: 6
+
+Schedule details
+0. 77: 234.85 min	Office work
+1. 355: 11.15 min	Restroom visit
+2. 77: 219.25 min	Office work
+3. 1110: 10.52 min	Restroom visit
+4. 77: 33.08 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 87
+Schedule
+-----------------------
+Day length: 30573 Number of items: 10
+
+Schedule details
+0. 381: 48.37 min	Office work
+1. 1110: 11.68 min	Restroom visit
+2. 381: 208.13 min	Office work
+3. 534: 10.67 min	Restroom visit
+4. 381: 24.05 min	Office work
+5. 335: 13.05 min	Restroom visit
+6. 381: 24.77 min	Office work
+7. 534: 13.42 min	Restroom visit
+8. 381: 155.42 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 88
+Schedule
+-----------------------
+Day length: 30888 Number of items: 10
+
+Schedule details
+0. 397: 117.07 min	Office work
+1. 163: 14.75 min	Restroom visit
+2. 397: 104.8 min	Office work
+3. 348: 6.87 min	Restroom visit
+4. 397: 222.13 min	Office work
+5. 547: 12.22 min	Restroom visit
+6. 397: 10.45 min	Office work
+7. 719: 14.95 min	Restroom visit
+8. 397: 11.57 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 89
+Schedule
+-----------------------
+Day length: 30151 Number of items: 6
+
+Schedule details
+0. 216: 113.33 min	Office work
+1. 911: 9.12 min	Restroom visit
+2. 216: 306.55 min	Office work
+3. 1103: 9.67 min	Restroom visit
+4. 216: 63.85 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 90
+Schedule
+-----------------------
+Day length: 30284 Number of items: 10
+
+Schedule details
+0. 614: 90.63 min	Office work
+1. 1123: 14.37 min	Restroom visit
+2. 614: 56.03 min	Office work
+3. 918: 14.12 min	Restroom visit
+4. 614: 48.05 min	Office work
+5. 527: 13.07 min	Restroom visit
+6. 614: 156.6 min	Office work
+7. 1123: 7.67 min	Restroom visit
+8. 614: 104.2 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 91
+Schedule
+-----------------------
+Day length: 29665 Number of items: 10
+
+Schedule details
+0. 984: 225.92 min	Office work
+1. 931: 5.5 min	Restroom visit
+2. 984: 39.27 min	Office work
+3. 918: 13.87 min	Restroom visit
+4. 984: 53.05 min	Office work
+5. 348: 12.57 min	Restroom visit
+6. 984: 112.28 min	Office work
+7. 150: 12.33 min	Restroom visit
+8. 984: 19.63 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 92
+Schedule
+-----------------------
+Day length: 30810 Number of items: 6
+
+Schedule details
+0. 567: 240.62 min	Office work
+1. 1110: 11.88 min	Restroom visit
+2. 567: 152.82 min	Office work
+3. 911: 12.98 min	Restroom visit
+4. 567: 95.2 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 93
+Schedule
+-----------------------
+Day length: 29836 Number of items: 9
+
+Schedule details
+0. 242: 101.23 min	Office work
+1. 1103: 10.63 min	Restroom visit
+2. 242: 75.88 min	Office work
+3. 732: 14.52 min	Restroom visit
+4. 242: 77.25 min	Office work
+5. 540: 14.83 min	Restroom visit
+6. 242: 197.9 min	Office work
+7. 163: 5.02 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 94
+Schedule
+-----------------------
+Day length: 29646 Number of items: 6
+
+Schedule details
+0. 191: 283.5 min	Office work
+1. 1116: 5.92 min	Restroom visit
+2. 191: 10.73 min	Office work
+3. 924: 10.42 min	Restroom visit
+4. 191: 183.53 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 95
+Schedule
+-----------------------
+Day length: 30075 Number of items: 9
+
+Schedule details
+0. 856: 33.4 min	Office work
+1. 540: 13.85 min	Restroom visit
+2. 856: 120.37 min	Office work
+3. 527: 11.6 min	Restroom visit
+4. 856: 175.98 min	Office work
+5. 335: 13.18 min	Restroom visit
+6. 856: 122.08 min	Office work
+7. 156: 10.78 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 96
+Schedule
+-----------------------
+Day length: 31064 Number of items: 6
+
+Schedule details
+0. 1000: 276.42 min	Office work
+1. 918: 13.73 min	Restroom visit
+2. 1000: 188.08 min	Office work
+3. 1116: 12.95 min	Restroom visit
+4. 1000: 26.55 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 97
+Schedule
+-----------------------
+Day length: 31003 Number of items: 4
+
+Schedule details
+0. 701: 172.75 min	Office work
+1. 156: 9.9 min	Restroom visit
+2. 701: 334.07 min	Office work
+3. None: 0.0 min	Leave for the day
+
+
+Agent ID: 98
+Schedule
+-----------------------
+Day length: 30149 Number of items: 10
+
+Schedule details
+0. 964: 226.7 min	Office work
+1. 540: 7.2 min	Restroom visit
+2. 964: 52.38 min	Office work
+3. 163: 14.65 min	Restroom visit
+4. 964: 103.68 min	Office work
+5. 732: 6.52 min	Restroom visit
+6. 964: 51.22 min	Office work
+7. 719: 11.98 min	Restroom visit
+8. 964: 28.15 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 99
+Schedule
+-----------------------
+Day length: 30036 Number of items: 10
+
+Schedule details
+0. 1114: 97.27 min	Office work
+1. 1123: 12.03 min	Restroom visit
+2. 1114: 83.02 min	Office work
+3. 547: 7.25 min	Restroom visit
+4. 1114: 85.22 min	Office work
+5. 348: 10.67 min	Restroom visit
+6. 1114: 79.82 min	Office work
+7. 732: 9.45 min	Restroom visit
+8. 1114: 115.88 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 100
+Schedule
+-----------------------
+Day length: 29697 Number of items: 8
+
+Schedule details
+0. 111: 167.85 min	Office work
+1. 335: 10.28 min	Restroom visit
+2. 111: 21.18 min	Office work
+3. 732: 9.07 min	Restroom visit
+4. 111: 222.65 min	Office work
+5. 732: 6.72 min	Restroom visit
+6. 111: 57.2 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 101
+Schedule
+-----------------------
+Day length: 30753 Number of items: 8
+
+Schedule details
+0. 588: 162.87 min	Office work
+1. 540: 13.37 min	Restroom visit
+2. 588: 28.67 min	Office work
+3. 335: 8.75 min	Restroom visit
+4. 588: 271.38 min	Office work
+5. 540: 14.62 min	Restroom visit
+6. 588: 12.9 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 102
+Schedule
+-----------------------
+Day length: 29644 Number of items: 6
+
+Schedule details
+0. 971: 178.23 min	Office work
+1. 534: 10.6 min	Restroom visit
+2. 971: 145.5 min	Office work
+3. 156: 7.98 min	Restroom visit
+4. 971: 151.75 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 103
+Schedule
+-----------------------
+Day length: 29290 Number of items: 10
+
+Schedule details
+0. 316: 46.28 min	Office work
+1. 1103: 11.85 min	Restroom visit
+2. 316: 13.77 min	Office work
+3. 931: 12.75 min	Restroom visit
+4. 316: 74.55 min	Office work
+5. 732: 10.95 min	Restroom visit
+6. 316: 63.23 min	Office work
+7. 719: 7.8 min	Restroom visit
+8. 316: 246.98 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 104
+Schedule
+-----------------------
+Day length: 30384 Number of items: 7
+
+Schedule details
+0. 919: 213.95 min	Office work
+1. 534: 9.72 min	Restroom visit
+2. 919: 84.35 min	Office work
+3. 540: 14.48 min	Restroom visit
+4. 919: 170.98 min	Office work
+5. 1110: 12.92 min	Restroom visit
+6. None: 0.0 min	Leave for the day
+
+
+Agent ID: 105
+Schedule
+-----------------------
+Day length: 30661 Number of items: 10
+
+Schedule details
+0. 630: 264.72 min	Office work
+1. 719: 11.02 min	Restroom visit
+2. 630: 90.82 min	Office work
+3. 156: 8.55 min	Restroom visit
+4. 630: 89.3 min	Office work
+5. 1110: 6.35 min	Restroom visit
+6. 630: 21.0 min	Office work
+7. 534: 7.18 min	Restroom visit
+8. 630: 12.08 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 106
+Schedule
+-----------------------
+Day length: 30347 Number of items: 6
+
+Schedule details
+0. 117: 161.33 min	Office work
+1. 1123: 6.07 min	Restroom visit
+2. 117: 86.73 min	Office work
+3. 150: 10.4 min	Restroom visit
+4. 117: 241.25 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 107
+Schedule
+-----------------------
+Day length: 29838 Number of items: 10
+
+Schedule details
+0. 1119: 101.93 min	Office work
+1. 527: 8.9 min	Restroom visit
+2. 1119: 197.58 min	Office work
+3. 547: 10.45 min	Restroom visit
+4. 1119: 54.22 min	Office work
+5. 931: 7.2 min	Restroom visit
+6. 1119: 87.13 min	Office work
+7. 931: 11.95 min	Restroom visit
+8. 1119: 17.93 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 108
+Schedule
+-----------------------
+Day length: 30175 Number of items: 10
+
+Schedule details
+0. 40: 241.33 min	Office work
+1. 143: 13.12 min	Restroom visit
+2. 40: 91.23 min	Office work
+3. 527: 7.2 min	Restroom visit
+4. 40: 38.45 min	Office work
+5. 1110: 12.18 min	Restroom visit
+6. 40: 76.58 min	Office work
+7. 348: 9.13 min	Restroom visit
+8. 40: 13.68 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 109
+Schedule
+-----------------------
+Day length: 29873 Number of items: 10
+
+Schedule details
+0. 1108: 153.12 min	Office work
+1. 150: 8.75 min	Restroom visit
+2. 1108: 162.68 min	Office work
+3. 924: 11.23 min	Restroom visit
+4. 1108: 104.08 min	Office work
+5. 739: 8.93 min	Restroom visit
+6. 1108: 11.78 min	Office work
+7. 534: 9.52 min	Restroom visit
+8. 1108: 27.78 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 110
+Schedule
+-----------------------
+Day length: 30081 Number of items: 8
+
+Schedule details
+0. 296: 142.58 min	Office work
+1. 726: 6.97 min	Restroom visit
+2. 296: 88.25 min	Office work
+3. 924: 6.63 min	Restroom visit
+4. 296: 81.22 min	Office work
+5. 924: 13.43 min	Restroom visit
+6. 296: 162.27 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 111
+Schedule
+-----------------------
+Day length: 30372 Number of items: 9
+
+Schedule details
+0. 445: 30.47 min	Office work
+1. 534: 12.85 min	Restroom visit
+2. 445: 162.27 min	Office work
+3. 911: 12.9 min	Restroom visit
+4. 445: 154.33 min	Office work
+5. 918: 5.63 min	Restroom visit
+6. 445: 118.02 min	Office work
+7. 143: 9.73 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 112
+Schedule
+-----------------------
+Day length: 30693 Number of items: 6
+
+Schedule details
+0. 1125: 321.58 min	Office work
+1. 719: 14.4 min	Restroom visit
+2. 1125: 145.58 min	Office work
+3. 540: 12.02 min	Restroom visit
+4. 1125: 17.97 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 113
+Schedule
+-----------------------
+Day length: 29758 Number of items: 9
+
+Schedule details
+0. 781: 186.1 min	Office work
+1. 739: 5.18 min	Restroom visit
+2. 781: 44.63 min	Office work
+3. 150: 14.22 min	Restroom visit
+4. 781: 61.82 min	Office work
+5. 150: 5.07 min	Restroom visit
+6. 781: 169.45 min	Office work
+7. 355: 9.5 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 114
+Schedule
+-----------------------
+Day length: 30053 Number of items: 10
+
+Schedule details
+0. 842: 133.23 min	Office work
+1. 342: 8.02 min	Restroom visit
+2. 842: 20.13 min	Office work
+3. 931: 6.05 min	Restroom visit
+4. 842: 91.23 min	Office work
+5. 732: 9.8 min	Restroom visit
+6. 842: 81.62 min	Office work
+7. 547: 12.65 min	Restroom visit
+8. 842: 138.15 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 115
+Schedule
+-----------------------
+Day length: 30040 Number of items: 7
+
+Schedule details
+0. 76: 70.17 min	Office work
+1. 355: 11.77 min	Restroom visit
+2. 76: 355.92 min	Office work
+3. 732: 13.13 min	Restroom visit
+4. 76: 36.65 min	Office work
+5. 924: 13.03 min	Restroom visit
+6. None: 0.0 min	Leave for the day
+
+
+Agent ID: 116
+Schedule
+-----------------------
+Day length: 30932 Number of items: 10
+
+Schedule details
+0. 830: 67.85 min	Office work
+1. 1103: 14.48 min	Restroom visit
+2. 830: 184.43 min	Office work
+3. 911: 11.63 min	Restroom visit
+4. 830: 74.58 min	Office work
+5. 918: 10.05 min	Restroom visit
+6. 830: 30.27 min	Office work
+7. 924: 9.8 min	Restroom visit
+8. 830: 112.43 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 117
+Schedule
+-----------------------
+Day length: 28990 Number of items: 8
+
+Schedule details
+0. 18: 104.07 min	Office work
+1. 1103: 14.32 min	Restroom visit
+2. 18: 99.32 min	Office work
+3. 534: 13.5 min	Restroom visit
+4. 18: 204.45 min	Office work
+5. 924: 6.52 min	Restroom visit
+6. 18: 41.0 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 118
+Schedule
+-----------------------
+Day length: 30874 Number of items: 10
+
+Schedule details
+0. 616: 10.12 min	Office work
+1. 726: 7.98 min	Restroom visit
+2. 616: 126.88 min	Office work
+3. 1123: 10.18 min	Restroom visit
+4. 616: 149.98 min	Office work
+5. 732: 7.02 min	Restroom visit
+6. 616: 67.1 min	Office work
+7. 719: 7.5 min	Restroom visit
+8. 616: 127.8 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 119
+Schedule
+-----------------------
+Day length: 30335 Number of items: 8
+
+Schedule details
+0. 280: 170.6 min	Office work
+1. 732: 5.65 min	Restroom visit
+2. 280: 161.23 min	Office work
+3. 732: 8.4 min	Restroom visit
+4. 280: 72.9 min	Office work
+5. 335: 13.03 min	Restroom visit
+6. 280: 73.77 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 120
+Schedule
+-----------------------
+Day length: 30481 Number of items: 6
+
+Schedule details
+0. 888: 138.0 min	Office work
+1. 355: 12.13 min	Restroom visit
+2. 888: 153.8 min	Office work
+3. 527: 8.05 min	Restroom visit
+4. 888: 196.03 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 121
+Schedule
+-----------------------
+Day length: 29980 Number of items: 8
+
+Schedule details
+0. 1121: 189.2 min	Office work
+1. 547: 11.23 min	Restroom visit
+2. 1121: 152.62 min	Office work
+3. 931: 7.87 min	Restroom visit
+4. 1121: 37.92 min	Office work
+5. 156: 10.35 min	Restroom visit
+6. 1121: 90.48 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 122
+Schedule
+-----------------------
+Day length: 29880 Number of items: 10
+
+Schedule details
+0. 848: 108.25 min	Office work
+1. 143: 11.5 min	Restroom visit
+2. 848: 20.03 min	Office work
+3. 527: 6.0 min	Restroom visit
+4. 848: 154.83 min	Office work
+5. 547: 7.58 min	Restroom visit
+6. 848: 55.65 min	Office work
+7. 739: 12.57 min	Restroom visit
+8. 848: 121.58 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 123
+Schedule
+-----------------------
+Day length: 30200 Number of items: 10
+
+Schedule details
+0. 418: 37.32 min	Office work
+1. 1123: 7.77 min	Restroom visit
+2. 418: 168.25 min	Office work
+3. 150: 8.95 min	Restroom visit
+4. 418: 27.03 min	Office work
+5. 534: 8.6 min	Restroom visit
+6. 418: 10.55 min	Office work
+7. 156: 9.77 min	Restroom visit
+8. 418: 225.1 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 124
+Schedule
+-----------------------
+Day length: 30527 Number of items: 9
+
+Schedule details
+0. 406: 145.22 min	Office work
+1. 156: 6.8 min	Restroom visit
+2. 406: 13.02 min	Office work
+3. 1110: 12.98 min	Restroom visit
+4. 406: 10.62 min	Office work
+5. 527: 11.7 min	Restroom visit
+6. 406: 295.63 min	Office work
+7. 355: 12.82 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 125
+Schedule
+-----------------------
+Day length: 29777 Number of items: 6
+
+Schedule details
+0. 1105: 246.28 min	Office work
+1. 739: 8.17 min	Restroom visit
+2. 1105: 186.58 min	Office work
+3. 156: 10.05 min	Restroom visit
+4. 1105: 45.2 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 126
+Schedule
+-----------------------
+Day length: 30967 Number of items: 8
+
+Schedule details
+0. 689: 153.53 min	Office work
+1. 156: 11.28 min	Restroom visit
+2. 689: 120.78 min	Office work
+3. 732: 11.02 min	Restroom visit
+4. 689: 118.4 min	Office work
+5. 918: 9.22 min	Restroom visit
+6. 689: 91.88 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 127
+Schedule
+-----------------------
+Day length: 31087 Number of items: 8
+
+Schedule details
+0. 509: 166.07 min	Office work
+1. 540: 13.0 min	Restroom visit
+2. 509: 159.57 min	Office work
+3. 335: 5.62 min	Restroom visit
+4. 509: 149.28 min	Office work
+5. 726: 13.68 min	Restroom visit
+6. 509: 10.9 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 128
+Schedule
+-----------------------
+Day length: 31053 Number of items: 7
+
+Schedule details
+0. 1045: 247.88 min	Office work
+1. 547: 5.75 min	Restroom visit
+2. 1045: 76.17 min	Office work
+3. 1116: 6.47 min	Restroom visit
+4. 1045: 172.43 min	Office work
+5. 1123: 8.85 min	Restroom visit
+6. None: 0.0 min	Leave for the day
+
+
+Agent ID: 129
+Schedule
+-----------------------
+Day length: 31322 Number of items: 10
+
+Schedule details
+0. 356: 39.87 min	Office work
+1. 534: 7.52 min	Restroom visit
+2. 356: 281.65 min	Office work
+3. 143: 7.17 min	Restroom visit
+4. 356: 135.82 min	Office work
+5. 355: 9.12 min	Restroom visit
+6. 356: 13.68 min	Office work
+7. 355: 8.03 min	Restroom visit
+8. 356: 19.18 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 130
+Schedule
+-----------------------
+Day length: 30185 Number of items: 8
+
+Schedule details
+0. 53: 99.27 min	Office work
+1. 143: 13.73 min	Restroom visit
+2. 53: 99.45 min	Office work
+3. 1110: 9.75 min	Restroom visit
+4. 53: 50.13 min	Office work
+5. 719: 9.68 min	Restroom visit
+6. 53: 221.07 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 131
+Schedule
+-----------------------
+Day length: 30690 Number of items: 7
+
+Schedule details
+0. 436: 97.05 min	Office work
+1. 156: 11.02 min	Restroom visit
+2. 436: 277.93 min	Office work
+3. 534: 5.22 min	Restroom visit
+4. 436: 105.53 min	Office work
+5. 156: 14.75 min	Restroom visit
+6. None: 0.0 min	Leave for the day
+
+
+Agent ID: 132
+Schedule
+-----------------------
+Day length: 31207 Number of items: 6
+
+Schedule details
+0. 851: 178.1 min	Office work
+1. 1110: 7.93 min	Restroom visit
+2. 851: 55.8 min	Office work
+3. 726: 8.67 min	Restroom visit
+4. 851: 269.62 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 133
+Schedule
+-----------------------
+Day length: 31446 Number of items: 8
+
+Schedule details
+0. 913: 206.75 min	Office work
+1. 931: 11.78 min	Restroom visit
+2. 913: 187.18 min	Office work
+3. 1110: 9.33 min	Restroom visit
+4. 913: 86.28 min	Office work
+5. 1103: 8.6 min	Restroom visit
+6. 913: 14.17 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 134
+Schedule
+-----------------------
+Day length: 30191 Number of items: 10
+
+Schedule details
+0. 488: 64.78 min	Office work
+1. 1103: 12.93 min	Restroom visit
+2. 488: 100.45 min	Office work
+3. 348: 14.77 min	Restroom visit
+4. 488: 101.68 min	Office work
+5. 1110: 14.22 min	Restroom visit
+6. 488: 89.63 min	Office work
+7. 150: 9.27 min	Restroom visit
+8. 488: 95.45 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 135
+Schedule
+-----------------------
+Day length: 30471 Number of items: 10
+
+Schedule details
+0. 742: 55.87 min	Office work
+1. 355: 8.38 min	Restroom visit
+2. 742: 67.6 min	Office work
+3. 931: 6.65 min	Restroom visit
+4. 742: 117.48 min	Office work
+5. 1123: 14.6 min	Restroom visit
+6. 742: 210.32 min	Office work
+7. 342: 11.8 min	Restroom visit
+8. 742: 15.15 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 136
+Schedule
+-----------------------
+Day length: 30601 Number of items: 10
+
+Schedule details
+0. 1051: 159.5 min	Office work
+1. 726: 8.65 min	Restroom visit
+2. 1051: 115.5 min	Office work
+3. 739: 12.68 min	Restroom visit
+4. 1051: 85.27 min	Office work
+5. 1116: 8.15 min	Restroom visit
+6. 1051: 40.3 min	Office work
+7. 342: 14.83 min	Restroom visit
+8. 1051: 65.13 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 137
+Schedule
+-----------------------
+Day length: 30041 Number of items: 10
+
+Schedule details
+0. 34: 119.42 min	Office work
+1. 719: 11.08 min	Restroom visit
+2. 34: 78.7 min	Office work
+3. 163: 6.47 min	Restroom visit
+4. 34: 112.2 min	Office work
+5. 931: 13.07 min	Restroom visit
+6. 34: 60.5 min	Office work
+7. 355: 9.57 min	Restroom visit
+8. 34: 89.68 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 138
+Schedule
+-----------------------
+Day length: 30094 Number of items: 10
+
+Schedule details
+0. 110: 150.4 min	Office work
+1. 918: 13.23 min	Restroom visit
+2. 110: 12.77 min	Office work
+3. 150: 14.9 min	Restroom visit
+4. 110: 174.02 min	Office work
+5. 540: 12.03 min	Restroom visit
+6. 110: 37.58 min	Office work
+7. 1103: 10.25 min	Restroom visit
+8. 110: 76.38 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 139
+Schedule
+-----------------------
+Day length: 30474 Number of items: 8
+
+Schedule details
+0. 604: 130.67 min	Office work
+1. 540: 5.68 min	Restroom visit
+2. 604: 29.27 min	Office work
+3. 342: 9.18 min	Restroom visit
+4. 604: 310.5 min	Office work
+5. 163: 11.75 min	Restroom visit
+6. 604: 10.85 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 140
+Schedule
+-----------------------
+Day length: 29456 Number of items: 10
+
+Schedule details
+0. 157: 12.35 min	Office work
+1. 931: 13.15 min	Restroom visit
+2. 157: 167.53 min	Office work
+3. 150: 10.27 min	Restroom visit
+4. 157: 75.38 min	Office work
+5. 1103: 8.0 min	Restroom visit
+6. 157: 155.37 min	Office work
+7. 534: 6.35 min	Restroom visit
+8. 157: 42.53 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 141
+Schedule
+-----------------------
+Day length: 30840 Number of items: 6
+
+Schedule details
+0. 572: 21.83 min	Office work
+1. 1103: 14.4 min	Restroom visit
+2. 572: 239.2 min	Office work
+3. 156: 14.93 min	Restroom visit
+4. 572: 223.63 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 142
+Schedule
+-----------------------
+Day length: 29704 Number of items: 10
+
+Schedule details
+0. 281: 59.27 min	Office work
+1. 1116: 8.87 min	Restroom visit
+2. 281: 47.08 min	Office work
+3. 355: 12.55 min	Restroom visit
+4. 281: 46.17 min	Office work
+5. 156: 13.55 min	Restroom visit
+6. 281: 55.83 min	Office work
+7. 726: 11.12 min	Restroom visit
+8. 281: 240.63 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 143
+Schedule
+-----------------------
+Day length: 30804 Number of items: 10
+
+Schedule details
+0. 502: 116.22 min	Office work
+1. 534: 7.52 min	Restroom visit
+2. 502: 87.9 min	Office work
+3. 739: 8.32 min	Restroom visit
+4. 502: 37.15 min	Office work
+5. 540: 13.48 min	Restroom visit
+6. 502: 214.18 min	Office work
+7. 540: 11.32 min	Restroom visit
+8. 502: 17.32 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 144
+Schedule
+-----------------------
+Day length: 30132 Number of items: 10
+
+Schedule details
+0. 407: 18.52 min	Office work
+1. 156: 6.02 min	Restroom visit
+2. 407: 96.1 min	Office work
+3. 348: 11.9 min	Restroom visit
+4. 407: 36.83 min	Office work
+5. 1123: 9.13 min	Restroom visit
+6. 407: 73.27 min	Office work
+7. 1103: 11.6 min	Restroom visit
+8. 407: 238.83 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 145
+Schedule
+-----------------------
+Day length: 30939 Number of items: 6
+
+Schedule details
+0. 449: 410.5 min	Office work
+1. 143: 14.68 min	Restroom visit
+2. 449: 71.65 min	Office work
+3. 918: 8.63 min	Restroom visit
+4. 449: 10.18 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 146
+Schedule
+-----------------------
+Day length: 29413 Number of items: 8
+
+Schedule details
+0. 158: 95.73 min	Office work
+1. 719: 14.83 min	Restroom visit
+2. 158: 282.87 min	Office work
+3. 1123: 7.1 min	Restroom visit
+4. 158: 70.92 min	Office work
+5. 348: 8.57 min	Restroom visit
+6. 158: 10.2 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 147
+Schedule
+-----------------------
+Day length: 30928 Number of items: 10
+
+Schedule details
+0. 760: 38.68 min	Office work
+1. 163: 7.75 min	Restroom visit
+2. 760: 94.2 min	Office work
+3. 719: 9.37 min	Restroom visit
+4. 760: 62.8 min	Office work
+5. 739: 6.9 min	Restroom visit
+6. 760: 45.42 min	Office work
+7. 918: 6.83 min	Restroom visit
+8. 760: 243.52 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 148
+Schedule
+-----------------------
+Day length: 30590 Number of items: 8
+
+Schedule details
+0. 946: 213.35 min	Office work
+1. 732: 14.58 min	Restroom visit
+2. 946: 56.07 min	Office work
+3. 540: 11.12 min	Restroom visit
+4. 946: 157.95 min	Office work
+5. 150: 5.67 min	Restroom visit
+6. 946: 51.1 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 149
+Schedule
+-----------------------
+Day length: 30188 Number of items: 10
+
+Schedule details
+0. 210: 70.27 min	Office work
+1. 527: 9.13 min	Restroom visit
+2. 210: 171.77 min	Office work
+3. 924: 12.7 min	Restroom visit
+4. 210: 72.3 min	Office work
+5. 342: 12.9 min	Restroom visit
+6. 210: 66.22 min	Office work
+7. 726: 7.45 min	Restroom visit
+8. 210: 80.4 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 150
+Schedule
+-----------------------
+Day length: 29816 Number of items: 10
+
+Schedule details
+0. 1056: 89.57 min	Office work
+1. 719: 13.62 min	Restroom visit
+2. 1056: 23.2 min	Office work
+3. 547: 14.83 min	Restroom visit
+4. 1056: 14.05 min	Office work
+5. 1116: 11.57 min	Restroom visit
+6. 1056: 191.88 min	Office work
+7. 719: 11.58 min	Restroom visit
+8. 1056: 126.63 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 151
+Schedule
+-----------------------
+Day length: 30130 Number of items: 10
+
+Schedule details
+0. 208: 130.02 min	Office work
+1. 1116: 12.42 min	Restroom visit
+2. 208: 210.82 min	Office work
+3. 719: 6.67 min	Restroom visit
+4. 208: 71.38 min	Office work
+5. 1110: 8.4 min	Restroom visit
+6. 208: 38.75 min	Office work
+7. 540: 9.48 min	Restroom visit
+8. 208: 14.23 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 152
+Schedule
+-----------------------
+Day length: 30664 Number of items: 6
+
+Schedule details
+0. 390: 113.42 min	Office work
+1. 726: 6.72 min	Restroom visit
+2. 390: 191.37 min	Office work
+3. 1116: 10.28 min	Restroom visit
+4. 390: 189.28 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 153
+Schedule
+-----------------------
+Day length: 30072 Number of items: 10
+
+Schedule details
+0. 959: 118.4 min	Office work
+1. 527: 11.25 min	Restroom visit
+2. 959: 79.35 min	Office work
+3. 1123: 14.97 min	Restroom visit
+4. 959: 100.08 min	Office work
+5. 342: 9.0 min	Restroom visit
+6. 959: 144.07 min	Office work
+7. 150: 13.05 min	Restroom visit
+8. 959: 11.03 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 154
+Schedule
+-----------------------
+Day length: 30436 Number of items: 8
+
+Schedule details
+0. 792: 53.72 min	Office work
+1. 156: 12.77 min	Restroom visit
+2. 792: 99.22 min	Office work
+3. 931: 13.97 min	Restroom visit
+4. 792: 79.62 min	Office work
+5. 931: 8.48 min	Restroom visit
+6. 792: 239.5 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 155
+Schedule
+-----------------------
+Day length: 31011 Number of items: 8
+
+Schedule details
+0. 467: 181.82 min	Office work
+1. 335: 13.12 min	Restroom visit
+2. 467: 96.67 min	Office work
+3. 335: 14.38 min	Restroom visit
+4. 467: 115.85 min	Office work
+5. 342: 10.52 min	Restroom visit
+6. 467: 84.5 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 156
+Schedule
+-----------------------
+Day length: 30701 Number of items: 10
+
+Schedule details
+0. 873: 82.93 min	Office work
+1. 527: 14.77 min	Restroom visit
+2. 873: 66.52 min	Office work
+3. 1110: 7.72 min	Restroom visit
+4. 873: 60.4 min	Office work
+5. 732: 14.53 min	Restroom visit
+6. 873: 34.37 min	Office work
+7. 1123: 9.92 min	Restroom visit
+8. 873: 220.53 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 157
+Schedule
+-----------------------
+Day length: 30527 Number of items: 10
+
+Schedule details
+0. 209: 113.27 min	Office work
+1. 1110: 12.1 min	Restroom visit
+2. 209: 99.62 min	Office work
+3. 348: 14.47 min	Restroom visit
+4. 209: 58.22 min	Office work
+5. 527: 14.6 min	Restroom visit
+6. 209: 32.88 min	Office work
+7. 335: 14.33 min	Restroom visit
+8. 209: 149.3 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 158
+Schedule
+-----------------------
+Day length: 29726 Number of items: 10
+
+Schedule details
+0. 318: 89.17 min	Office work
+1. 719: 6.6 min	Restroom visit
+2. 318: 74.4 min	Office work
+3. 931: 9.58 min	Restroom visit
+4. 318: 56.2 min	Office work
+5. 911: 9.18 min	Restroom visit
+6. 318: 78.65 min	Office work
+7. 1103: 10.07 min	Restroom visit
+8. 318: 161.58 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 159
+Schedule
+-----------------------
+Day length: 31267 Number of items: 3
+
+Schedule details
+0. 344: 515.95 min	Office work
+1. 732: 5.17 min	Restroom visit
+2. None: 0.0 min	Leave for the day
+
+
+Agent ID: 160
+Schedule
+-----------------------
+Day length: 29795 Number of items: 10
+
+Schedule details
+0. 274: 13.78 min	Office work
+1. 156: 12.13 min	Restroom visit
+2. 274: 59.72 min	Office work
+3. 924: 10.77 min	Restroom visit
+4. 274: 99.95 min	Office work
+5. 732: 9.25 min	Restroom visit
+6. 274: 33.52 min	Office work
+7. 1110: 9.4 min	Restroom visit
+8. 274: 248.07 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 161
+Schedule
+-----------------------
+Day length: 30900 Number of items: 6
+
+Schedule details
+0. 1024: 23.6 min	Office work
+1. 918: 7.92 min	Restroom visit
+2. 1024: 29.0 min	Office work
+3. 355: 7.15 min	Restroom visit
+4. 1024: 447.33 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 162
+Schedule
+-----------------------
+Day length: 31483 Number of items: 4
+
+Schedule details
+0. 275: 498.48 min	Office work
+1. 918: 11.58 min	Restroom visit
+2. 275: 14.65 min	Office work
+3. None: 0.0 min	Leave for the day
+
+
+Agent ID: 163
+Schedule
+-----------------------
+Day length: 29711 Number of items: 10
+
+Schedule details
+0. 302: 58.98 min	Office work
+1. 1110: 6.83 min	Restroom visit
+2. 302: 102.55 min	Office work
+3. 924: 8.35 min	Restroom visit
+4. 302: 16.88 min	Office work
+5. 719: 14.05 min	Restroom visit
+6. 302: 25.38 min	Office work
+7. 732: 11.75 min	Restroom visit
+8. 302: 250.4 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 164
+Schedule
+-----------------------
+Day length: 30016 Number of items: 8
+
+Schedule details
+0. 377: 227.82 min	Office work
+1. 1116: 7.38 min	Restroom visit
+2. 377: 150.82 min	Office work
+3. 918: 12.13 min	Restroom visit
+4. 377: 65.88 min	Office work
+5. 335: 10.92 min	Restroom visit
+6. 377: 25.32 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 165
+Schedule
+-----------------------
+Day length: 30659 Number of items: 6
+
+Schedule details
+0. 672: 154.78 min	Office work
+1. 1103: 11.6 min	Restroom visit
+2. 672: 116.6 min	Office work
+3. 342: 13.4 min	Restroom visit
+4. 672: 214.6 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 166
+Schedule
+-----------------------
+Day length: 29773 Number of items: 10
+
+Schedule details
+0. 299: 23.03 min	Office work
+1. 1123: 13.82 min	Restroom visit
+2. 299: 56.35 min	Office work
+3. 739: 9.25 min	Restroom visit
+4. 299: 73.8 min	Office work
+5. 342: 5.55 min	Restroom visit
+6. 299: 116.78 min	Office work
+7. 143: 12.57 min	Restroom visit
+8. 299: 185.07 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 167
+Schedule
+-----------------------
+Day length: 30185 Number of items: 10
+
+Schedule details
+0. 310: 106.2 min	Office work
+1. 163: 7.92 min	Restroom visit
+2. 310: 125.93 min	Office work
+3. 739: 7.62 min	Restroom visit
+4. 310: 15.93 min	Office work
+5. 1103: 14.0 min	Restroom visit
+6. 310: 64.58 min	Office work
+7. 931: 11.5 min	Restroom visit
+8. 310: 149.4 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 168
+Schedule
+-----------------------
+Day length: 30992 Number of items: 8
+
+Schedule details
+0. 598: 101.73 min	Office work
+1. 540: 8.05 min	Restroom visit
+2. 598: 20.47 min	Office work
+3. 547: 8.03 min	Restroom visit
+4. 598: 315.4 min	Office work
+5. 911: 7.2 min	Restroom visit
+6. 598: 55.65 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 169
+Schedule
+-----------------------
+Day length: 28942 Number of items: 10
+
+Schedule details
+0. 182: 102.83 min	Office work
+1. 739: 13.32 min	Restroom visit
+2. 182: 69.75 min	Office work
+3. 348: 10.18 min	Restroom visit
+4. 182: 142.13 min	Office work
+5. 1110: 11.47 min	Restroom visit
+6. 182: 26.6 min	Office work
+7. 1116: 9.1 min	Restroom visit
+8. 182: 96.98 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 170
+Schedule
+-----------------------
+Day length: 30179 Number of items: 8
+
+Schedule details
+0. 773: 118.63 min	Office work
+1. 335: 13.58 min	Restroom visit
+2. 773: 284.05 min	Office work
+3. 348: 8.9 min	Restroom visit
+4. 773: 52.85 min	Office work
+5. 348: 14.33 min	Restroom visit
+6. 773: 10.63 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 171
+Schedule
+-----------------------
+Day length: 31095 Number of items: 10
+
+Schedule details
+0. 698: 30.07 min	Office work
+1. 1103: 8.12 min	Restroom visit
+2. 698: 100.73 min	Office work
+3. 911: 7.5 min	Restroom visit
+4. 698: 307.8 min	Office work
+5. 931: 9.23 min	Restroom visit
+6. 698: 35.33 min	Office work
+7. 911: 7.03 min	Restroom visit
+8. 698: 12.43 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 172
+Schedule
+-----------------------
+Day length: 31163 Number of items: 8
+
+Schedule details
+0. 432: 137.1 min	Office work
+1. 163: 14.68 min	Restroom visit
+2. 432: 206.95 min	Office work
+3. 918: 13.45 min	Restroom visit
+4. 432: 125.4 min	Office work
+5. 342: 10.02 min	Restroom visit
+6. 432: 11.78 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 173
+Schedule
+-----------------------
+Day length: 30868 Number of items: 9
+
+Schedule details
+0. 729: 114.73 min	Office work
+1. 1103: 14.22 min	Restroom visit
+2. 729: 104.7 min	Office work
+3. 918: 8.33 min	Restroom visit
+4. 729: 95.1 min	Office work
+5. 163: 13.08 min	Restroom visit
+6. 729: 150.83 min	Office work
+7. 732: 13.47 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 174
+Schedule
+-----------------------
+Day length: 30804 Number of items: 10
+
+Schedule details
+0. 164: 45.42 min	Office work
+1. 726: 13.15 min	Restroom visit
+2. 164: 148.63 min	Office work
+3. 355: 11.83 min	Restroom visit
+4. 164: 39.3 min	Office work
+5. 342: 5.18 min	Restroom visit
+6. 164: 164.63 min	Office work
+7. 342: 8.27 min	Restroom visit
+8. 164: 76.98 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 175
+Schedule
+-----------------------
+Day length: 30645 Number of items: 10
+
+Schedule details
+0. 744: 82.97 min	Office work
+1. 911: 10.18 min	Restroom visit
+2. 744: 14.22 min	Office work
+3. 719: 11.55 min	Restroom visit
+4. 744: 31.1 min	Office work
+5. 1103: 6.65 min	Restroom visit
+6. 744: 113.87 min	Office work
+7. 527: 10.47 min	Restroom visit
+8. 744: 229.75 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 176
+Schedule
+-----------------------
+Day length: 30309 Number of items: 9
+
+Schedule details
+0. 1120: 95.95 min	Office work
+1. 732: 6.43 min	Restroom visit
+2. 1120: 189.85 min	Office work
+3. 348: 12.92 min	Restroom visit
+4. 1120: 20.92 min	Office work
+5. 918: 9.7 min	Restroom visit
+6. 1120: 157.47 min	Office work
+7. 732: 11.92 min	Restroom visit
+8. None: 0.0 min	Leave for the day
+
+
+Agent ID: 177
+Schedule
+-----------------------
+Day length: 30938 Number of items: 8
+
+Schedule details
+0. 1054: 148.15 min	Office work
+1. 918: 12.87 min	Restroom visit
+2. 1054: 110.78 min	Office work
+3. 547: 12.75 min	Restroom visit
+4. 1054: 75.52 min	Office work
+5. 924: 7.23 min	Restroom visit
+6. 1054: 148.33 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 178
+Schedule
+-----------------------
+Day length: 29509 Number of items: 7
+
+Schedule details
+0. 10: 56.07 min	Office work
+1. 719: 13.0 min	Restroom visit
+2. 10: 245.17 min	Office work
+3. 931: 10.18 min	Restroom visit
+4. 10: 158.77 min	Office work
+5. 918: 8.63 min	Restroom visit
+6. None: 0.0 min	Leave for the day
+
+
+Agent ID: 179
+Schedule
+-----------------------
+Day length: 30424 Number of items: 10
+
+Schedule details
+0. 510: 12.37 min	Office work
+1. 547: 6.6 min	Restroom visit
+2. 510: 62.35 min	Office work
+3. 1123: 12.68 min	Restroom visit
+4. 510: 39.62 min	Office work
+5. 163: 14.55 min	Restroom visit
+6. 510: 80.75 min	Office work
+7. 342: 6.25 min	Restroom visit
+8. 510: 271.9 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 180
+Schedule
+-----------------------
+Day length: 29316 Number of items: 8
+
+Schedule details
+0. 777: 89.1 min	Office work
+1. 156: 9.08 min	Restroom visit
+2. 777: 153.08 min	Office work
+3. 335: 6.08 min	Restroom visit
+4. 777: 75.62 min	Office work
+5. 348: 10.48 min	Restroom visit
+6. 777: 145.15 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 181
+Schedule
+-----------------------
+Day length: 30468 Number of items: 10
+
+Schedule details
+0. 105: 106.48 min	Office work
+1. 534: 10.43 min	Restroom visit
+2. 105: 244.27 min	Office work
+3. 534: 8.85 min	Restroom visit
+4. 105: 53.17 min	Office work
+5. 924: 13.03 min	Restroom visit
+6. 105: 22.95 min	Office work
+7. 335: 6.57 min	Restroom visit
+8. 105: 42.05 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 182
+Schedule
+-----------------------
+Day length: 30596 Number of items: 10
+
+Schedule details
+0. 557: 194.8 min	Office work
+1. 163: 6.88 min	Restroom visit
+2. 557: 34.37 min	Office work
+3. 1116: 6.22 min	Restroom visit
+4. 557: 87.3 min	Office work
+5. 163: 12.95 min	Restroom visit
+6. 557: 39.85 min	Office work
+7. 540: 11.2 min	Restroom visit
+8. 557: 116.37 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 183
+Schedule
+-----------------------
+Day length: 29805 Number of items: 10
+
+Schedule details
+0. 737: 133.03 min	Office work
+1. 342: 5.5 min	Restroom visit
+2. 737: 73.1 min	Office work
+3. 1110: 8.67 min	Restroom visit
+4. 737: 64.33 min	Office work
+5. 156: 13.65 min	Restroom visit
+6. 737: 15.7 min	Office work
+7. 1123: 10.52 min	Restroom visit
+8. 737: 172.25 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 184
+Schedule
+-----------------------
+Day length: 29522 Number of items: 10
+
+Schedule details
+0. 101: 43.6 min	Office work
+1. 732: 9.12 min	Restroom visit
+2. 101: 109.35 min	Office work
+3. 918: 12.52 min	Restroom visit
+4. 101: 23.72 min	Office work
+5. 739: 6.78 min	Restroom visit
+6. 101: 50.77 min	Office work
+7. 534: 5.38 min	Restroom visit
+8. 101: 230.8 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 185
+Schedule
+-----------------------
+Day length: 31025 Number of items: 10
+
+Schedule details
+0. 450: 27.35 min	Office work
+1. 534: 8.67 min	Restroom visit
+2. 450: 36.65 min	Office work
+3. 342: 11.17 min	Restroom visit
+4. 450: 235.83 min	Office work
+5. 547: 14.22 min	Restroom visit
+6. 450: 69.05 min	Office work
+7. 355: 13.95 min	Restroom visit
+8. 450: 100.2 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 186
+Schedule
+-----------------------
+Day length: 30161 Number of items: 10
+
+Schedule details
+0. 412: 46.22 min	Office work
+1. 1116: 5.12 min	Restroom visit
+2. 412: 37.7 min	Office work
+3. 150: 8.07 min	Restroom visit
+4. 412: 168.18 min	Office work
+5. 719: 6.28 min	Restroom visit
+6. 412: 198.57 min	Office work
+7. 726: 11.85 min	Restroom visit
+8. 412: 20.7 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 187
+Schedule
+-----------------------
+Day length: 29640 Number of items: 7
+
+Schedule details
+0. 70: 42.62 min	Office work
+1. 739: 10.23 min	Restroom visit
+2. 70: 133.78 min	Office work
+3. 1103: 14.13 min	Restroom visit
+4. 70: 278.53 min	Office work
+5. 1103: 14.7 min	Restroom visit
+6. None: 0.0 min	Leave for the day
+
+
+Agent ID: 188
+Schedule
+-----------------------
+Day length: 30878 Number of items: 6
+
+Schedule details
+0. 857: 98.88 min	Office work
+1. 342: 9.1 min	Restroom visit
+2. 857: 232.0 min	Office work
+3. 1123: 10.2 min	Restroom visit
+4. 857: 164.45 min	Office work
+5. None: 0.0 min	Leave for the day
+
+
+Agent ID: 189
+Schedule
+-----------------------
+Day length: 30279 Number of items: 10
+
+Schedule details
+0. 1013: 139.58 min	Office work
+1. 1110: 10.62 min	Restroom visit
+2. 1013: 40.1 min	Office work
+3. 156: 13.37 min	Restroom visit
+4. 1013: 19.48 min	Office work
+5. 1103: 14.03 min	Restroom visit
+6. 1013: 51.12 min	Office work
+7. 732: 5.87 min	Restroom visit
+8. 1013: 210.48 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 190
+Schedule
+-----------------------
+Day length: 30148 Number of items: 10
+
+Schedule details
+0. 791: 140.7 min	Office work
+1. 150: 10.03 min	Restroom visit
+2. 791: 62.07 min	Office work
+3. 931: 5.02 min	Restroom visit
+4. 791: 93.15 min	Office work
+5. 1116: 7.4 min	Restroom visit
+6. 791: 107.65 min	Office work
+7. 918: 5.67 min	Restroom visit
+8. 791: 70.78 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 191
+Schedule
+-----------------------
+Day length: 30412 Number of items: 8
+
+Schedule details
+0. 190: 76.08 min	Office work
+1. 918: 7.07 min	Restroom visit
+2. 190: 113.2 min	Office work
+3. 342: 11.28 min	Restroom visit
+4. 190: 260.48 min	Office work
+5. 547: 9.58 min	Restroom visit
+6. 190: 29.17 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 192
+Schedule
+-----------------------
+Day length: 30098 Number of items: 8
+
+Schedule details
+0. 1063: 108.6 min	Office work
+1. 726: 5.9 min	Restroom visit
+2. 1063: 32.85 min	Office work
+3. 348: 12.07 min	Restroom visit
+4. 1063: 263.02 min	Office work
+5. 911: 10.22 min	Restroom visit
+6. 1063: 68.98 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 193
+Schedule
+-----------------------
+Day length: 30675 Number of items: 8
+
+Schedule details
+0. 755: 48.1 min	Office work
+1. 348: 9.42 min	Restroom visit
+2. 755: 172.9 min	Office work
+3. 1123: 12.1 min	Restroom visit
+4. 755: 59.53 min	Office work
+5. 739: 8.17 min	Restroom visit
+6. 755: 201.03 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 194
+Schedule
+-----------------------
+Day length: 29467 Number of items: 10
+
+Schedule details
+0. 829: 19.18 min	Office work
+1. 1123: 11.73 min	Restroom visit
+2. 829: 224.9 min	Office work
+3. 1116: 8.25 min	Restroom visit
+4. 829: 68.37 min	Office work
+5. 163: 10.92 min	Restroom visit
+6. 829: 77.88 min	Office work
+7. 342: 9.78 min	Restroom visit
+8. 829: 60.1 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 195
+Schedule
+-----------------------
+Day length: 29639 Number of items: 10
+
+Schedule details
+0. 1086: 125.4 min	Office work
+1. 156: 12.9 min	Restroom visit
+2. 1086: 16.02 min	Office work
+3. 1123: 10.45 min	Restroom visit
+4. 1086: 159.93 min	Office work
+5. 163: 10.85 min	Restroom visit
+6. 1086: 60.12 min	Office work
+7. 342: 11.82 min	Restroom visit
+8. 1086: 86.5 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 196
+Schedule
+-----------------------
+Day length: 31059 Number of items: 10
+
+Schedule details
+0. 457: 68.98 min	Office work
+1. 156: 8.05 min	Restroom visit
+2. 457: 88.2 min	Office work
+3. 355: 7.1 min	Restroom visit
+4. 457: 104.37 min	Office work
+5. 342: 9.58 min	Restroom visit
+6. 457: 152.15 min	Office work
+7. 918: 9.73 min	Restroom visit
+8. 457: 69.48 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 197
+Schedule
+-----------------------
+Day length: 29682 Number of items: 8
+
+Schedule details
+0. 363: 174.58 min	Office work
+1. 918: 7.1 min	Restroom visit
+2. 363: 158.1 min	Office work
+3. 726: 8.57 min	Restroom visit
+4. 363: 32.68 min	Office work
+5. 1110: 7.87 min	Restroom visit
+6. 363: 105.8 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 198
+Schedule
+-----------------------
+Day length: 30291 Number of items: 8
+
+Schedule details
+0. 1085: 96.85 min	Office work
+1. 911: 8.18 min	Restroom visit
+2. 1085: 14.32 min	Office work
+3. 534: 9.77 min	Restroom visit
+4. 1085: 265.72 min	Office work
+5. 726: 9.13 min	Restroom visit
+6. 1085: 100.88 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 199
+Schedule
+-----------------------
+Day length: 29986 Number of items: 10
+
+Schedule details
+0. 832: 119.12 min	Office work
+1. 534: 13.83 min	Restroom visit
+2. 832: 100.82 min	Office work
+3. 547: 5.22 min	Restroom visit
+4. 832: 11.5 min	Office work
+5. 534: 5.43 min	Restroom visit
+6. 832: 96.07 min	Office work
+7. 1123: 5.22 min	Restroom visit
+8. 832: 142.57 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 200
+Schedule
+-----------------------
+Day length: 30317 Number of items: 8
+
+Schedule details
+0. 652: 71.17 min	Office work
+1. 719: 8.12 min	Restroom visit
+2. 652: 198.75 min	Office work
+3. 931: 8.63 min	Restroom visit
+4. 652: 97.93 min	Office work
+5. 156: 9.78 min	Restroom visit
+6. 652: 110.9 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 201
+Schedule
+-----------------------
+Day length: 30075 Number of items: 8
+
+Schedule details
+0. 282: 49.17 min	Office work
+1. 1116: 10.32 min	Restroom visit
+2. 282: 184.62 min	Office work
+3. 143: 7.48 min	Restroom visit
+4. 282: 108.57 min	Office work
+5. 540: 12.7 min	Restroom visit
+6. 282: 128.4 min	Office work
+7. None: 0.0 min	Leave for the day
+
+
+Agent ID: 202
+Schedule
+-----------------------
+Day length: 29499 Number of items: 10
+
+Schedule details
+0. 967: 56.48 min	Office work
+1. 348: 5.73 min	Restroom visit
+2. 967: 18.55 min	Office work
+3. 348: 6.2 min	Restroom visit
+4. 967: 61.32 min	Office work
+5. 163: 5.67 min	Restroom visit
+6. 967: 70.5 min	Office work
+7. 1123: 7.43 min	Restroom visit
+8. 967: 259.77 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 203
+Schedule
+-----------------------
+Day length: 30183 Number of items: 10
+
+Schedule details
+0. 1022: 176.18 min	Office work
+1. 1103: 10.88 min	Restroom visit
+2. 1022: 22.07 min	Office work
+3. 911: 5.18 min	Restroom visit
+4. 1022: 39.65 min	Office work
+5. 540: 11.65 min	Restroom visit
+6. 1022: 19.55 min	Office work
+7. 726: 12.83 min	Restroom visit
+8. 1022: 205.05 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 204
+Schedule
+-----------------------
+Day length: 31475 Number of items: 2
+
+Schedule details
+0. 458: 524.58 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 205
+Schedule
+-----------------------
+Day length: 30272 Number of items: 10
+
+Schedule details
+0. 1131: 77.82 min	Office work
+1. 1123: 13.6 min	Restroom visit
+2. 1131: 199.17 min	Office work
+3. 540: 10.18 min	Restroom visit
+4. 1131: 61.97 min	Office work
+5. 540: 12.47 min	Restroom visit
+6. 1131: 54.97 min	Office work
+7. 540: 11.63 min	Restroom visit
+8. 1131: 62.73 min	Office work
+9. None: 0.0 min	Leave for the day
+
+
+Agent ID: 206
+Schedule
+-----------------------
+Day length: 30461 Number of items: 10
+
+Schedule details
+0. 468: 94.72 min	Office work
+1. 540: 9.65 min	Restroom visit
+2. 468: 88.0 min	Office work
+3. 1116: 14.77 min	Restroom visit
+4. 468: 104.42 min	Office work
+5. 739: 9.23 min	Restroom visit
+6. 468: 168.32 min	Office work
+7. 348: 5.9 min	Restroom visit
+8. 468: 12.68 min	Office work
+9. None: 0.0 min	Leave for the day
+
+

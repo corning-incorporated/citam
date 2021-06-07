@@ -77,12 +77,12 @@ def test_parse_input_file_no_issues(datadir):
     inputfile = os.path.join(datadir, "example_sim_inputs.json")
     res = parse_input_file(inputfile)
     assert res is not None
-    assert len(res) == 19
+    assert len(res) == 21
 
 
 def test_parse_input_file_missing_values(datadir):
     inputfile = os.path.join(datadir, "missing_value.json")
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         parse_input_file(inputfile)
 
 
@@ -94,7 +94,7 @@ def test_parse_input_file_file_not_found(datadir):
 
 def test_parse_input_file_invalid_daylength(datadir):
     inputfile = os.path.join(datadir, "bad_daylength.json")
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         parse_input_file(inputfile)
 
 

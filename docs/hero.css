@@ -1,0 +1,15 @@
+.bckImg {
+    background-image: url("./Images/CITAM-hero.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 80%;
+    height: 400px;
+    margin-top: 50px;
+  }
+
+  code {
+    background-color: #eee;
+    display: block;
+    padding: 20px;
+    color: black;
+  }

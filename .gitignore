@@ -80,10 +80,17 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docsrc/_build/
 public/html/
 public/doctrees/
 docs/html/
 docs/doctrees/
+
+docs/html
+docs/doctrees/
+docsrc/html/
+docsrc/doctrees/
+docsrc/_build/
 
 # PyBuilder
 .pybuilder/
@@ -271,3 +278,7 @@ dist
 **/db_dist/
 
 **/dist_electron/
+
+# VS Code Files
+.vscode/
+

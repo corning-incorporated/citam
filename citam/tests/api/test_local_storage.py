@@ -44,7 +44,7 @@ def test_results_found(monkeypatch):
     correct arguments were used
     """
     driver = LocalStorageDriver(search_path=search_root)
-    assert len(driver.result_dirs) == 2
+    assert len(driver.result_dirs) == 3
 
 
 def test_no_results_found():
@@ -55,8 +55,27 @@ def test_no_results_found():
 
 def test_list_runs():
     expected = [
-        "sim_id_0001",
-        "sim_id_0002",
+        {
+            "RunID": "run_id_0001",
+            "RunName": "run_name_0001",
+            "FacilityName": "TEST",
+            "SimulationName": "sim_name_0001",
+            "SimulationHash": "_hash_0001",
+        },
+        {
+            "RunID": "run_id_0002",
+            "RunName": "run_name_0002",
+            "FacilityName": "TEST",
+            "SimulationName": "sim_name_0001",
+            "SimulationHash": "_hash_0001",
+        },
+        {
+            "RunID": "51a37fa7054a3f8e8d55",
+            "RunName": "run_name",
+            "FacilityName": "F1",
+            "SimulationHash": "140b517c-acf8-4b24-ae09-8cc219b5590e",
+            "SimulationName": "test_sim",
+        }
         # the result in TFBAD has a malformed manifest and should be ignored
     ]
     driver = LocalStorageDriver(search_path=search_root)
@@ -69,26 +88,32 @@ def test_list_runs():
 
 def test_get_trajectory_file():
     driver = LocalStorageDriver(search_path=search_root)
-    trajectory_file = driver.get_trajectory_file("sim_id_0001").readlines()
+    trajectory_file = driver.get_trajectory_file("run_id_0001").readlines()
     assert trajectory_file[0].strip() == "0"
 
 
 def test_get_contact_file():
     driver = LocalStorageDriver(search_path=search_root)
-    contact_file = driver.get_contact_file("sim_id_0001", "0").readlines()
+    contact_file = driver.get_contact_file("run_id_0001", "0").readlines()
     assert contact_file[0].strip() == "0"
 
 
 def test_get_map_file():
     driver = LocalStorageDriver(search_path=search_root)
-    driver.get_map_file("sim_id_0001", "0")
+    driver.get_map_file("run_id_0001", "0")
 
 
 def test_get_coordinate_distribution_file():
     driver = LocalStorageDriver(search_path=search_root)
-    driver.get_coordinate_distribution_file("sim_id_0001", "0")
+    driver.get_coordinate_distribution_file("run_id_0001", "0")
 
 
 def test_get_manifest():
     driver = LocalStorageDriver(search_path=search_root)
-    driver.get_manifest("sim_id_0001")
+    driver.get_manifest("run_id_0001")
+
+
+def test_get_policy_file():
+    driver = LocalStorageDriver(search_path=search_root)
+    policy_file = driver.get_policy_file("run_id_0001").readlines()
+    assert len(policy_file) >= 10

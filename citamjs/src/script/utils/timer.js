@@ -18,7 +18,7 @@
  * @author Chris Soper
  * @module colorbar
  */
-import {Draggable} from './draggable';
+import { Draggable } from './draggable';
 import '../../css/_timer.scss';
 
 /**
@@ -37,7 +37,7 @@ export class Timer {
     this.domElement.style.position = 'absolute';
     this.domElement.style.top = '0';
     this.domElement.style.left = '0';
-    this.startTime = {hour: 8, minute: 0, second: 0};
+    this.startTime = { hour: 8, minute: 0, second: 0 };
     this.startTimeTotSeconds = (
       (this.startTime.hour * 60 * 60) +
       (this.startTime.minute * 60) +
@@ -62,7 +62,7 @@ export class Timer {
     this.secondsElem.innerText = zeroPad(this.startTime.second);
     this.secondsElem.style.marginRight = '0.25em';
     this.ampmElem = document.createElement('span');
-    this.ampmElem.innerText = `&nbsp; ${this.startTime.hour < 13 ? 'AM' : 'PM'}`;
+    this.ampmElem.innerText = `${this.startTime.hour < 13 ? 'AM' : 'PM'}`;
     let sep = document.createElement('span');
     sep.innerText = ':';
     timerElem.appendChild(this.hoursElem);

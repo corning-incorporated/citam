@@ -150,3 +150,6 @@ class S3StorageDriver(BaseStorageDriver):
 
     def get_statistics_file(self, sim_id):
         return self._get_text_file(sim_id, "statistics.json")
+
+    def get_policy_file(self, sim_id):
+        return self._get_text_file(sim_id, "policy.json")

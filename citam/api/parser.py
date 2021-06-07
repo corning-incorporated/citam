@@ -36,10 +36,20 @@ def get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict:
     return {"data": count}
 
 
+def get_total_timesteps(sim_id: str) -> Dict:
+    manifest_data = settings.storage_driver.get_manifest(sim_id)
+    nsteps = manifest_data["TotalTimesteps"]
+    return {"data": nsteps}
+
+
+def get_number_of_agents(sim_id: str) -> int:
+    manifest_data = settings.storage_driver.get_manifest(sim_id)
+    return manifest_data["NumberOfAgents"]
+
+
 def get_trajectories(
     sim_id: str,
     floor: Union[str, int] = None,
-    offset: int = 0,
     first_timestep: int = 0,
     max_steps: int = 5000,
 ) -> Dict:
@@ -62,23 +72,32 @@ def get_trajectories(
         LOG.info("Filtering trajectories for floor %d", floor)
 
     start_time = time.time()
+    n_agents = get_number_of_agents(sim_id=sim_id)
+    max_count = 0
+
+    if n_agents <= 0:
+        return {
+            "data": [],
+            "first_timestep": first_timestep,
+            "max_count": max_count,
+            "statistics": {"cfl": 0},
+        }
     steps = []
     curr_file_line = 0
-    current_pos_line, n_position_lines, step_num = 0, 0, 0
+    current_pos_line, n_position_lines = 0, 0
+    step_num = None
     new_step = True
     step = []
     position_lines = False
     with open(result_file, "r") as infile:
         for line in infile:
             curr_file_line += 1
-            if curr_file_line < offset or step_num < first_timestep:
-                continue
             if new_step:
                 n_position_lines = int(line.strip())
                 current_pos_line = 0
                 timestep_line = True
                 new_step = False
-                if curr_file_line > 1:
+                if step_num is not None and step_num >= first_timestep:
                     steps.append(step)
                     if len(steps) == max_steps:
                         break
@@ -90,7 +109,7 @@ def get_trajectories(
                     position_lines = True
                 else:
                     new_step = True
-                step = []
+                step = [(None, None, None, None) for _ in range(n_agents)]
                 continue
             if position_lines:
                 data = line.strip().split()
@@ -100,27 +119,37 @@ def get_trajectories(
                 if floor is not None and int(data[3]) != floor:
                     continue
 
-                step.append(
-                    {
-                        "x": round(float(data[1])),
-                        "y": round(float(data[2])),
-                        "z": round(float(data[3])),
-                        "agent": int(data[0]),
-                        "count": int(data[4]),
-                    }
+                if int(data[0]) > len(step):
+                    raise ValueError(
+                        "More agents found in trajectory file. "
+                        + "Please update NumberOfAgents in manifest file."
+                    )
+
+                step[int(data[0])] = (
+                    round(float(data[1])),
+                    round(float(data[2])),
+                    round(float(data[3])),
+                    int(data[4]),
                 )
+
+                max_count = max(max_count, int(data[4]))
                 if current_pos_line == n_position_lines:
                     new_step = True
                     position_lines = False
         if (
-            len(steps) < max_steps
+            len(steps) < max_steps and step_num >= first_timestep
         ):  # We finished reading the file before max steps reached
             steps.append(step)  # Add last step data
 
     duration = time.time() - start_time
     LOG.info(f"trajectory file parsing process is complete in {duration} sec")
 
-    return {"data": steps, "statistics": {"cfl": curr_file_line}}
+    return {
+        "data": steps,
+        "first_timestep": first_timestep,
+        "max_count": max_count,
+        "statistics": {"cfl": curr_file_line},
+    }
 
 
 def get_contacts(sim_id: str, floor: str) -> List[List[Dict]]:
@@ -236,3 +265,13 @@ def get_statistics_json(sim_id: str) -> List[Dict]:
         )
         return []
     return result_dict["data"]
+
+
+def get_policy_json(sim_id: str) -> List[Dict]:
+
+    result_dict = json.loads(
+        settings.storage_driver.get_policy_file(sim_id).read()
+    )
+    LOG.info("Statistics JSON file parsing process started")
+
+    return result_dict
