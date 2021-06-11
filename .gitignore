@@ -282,3 +282,8 @@ dist
 # VS Code Files
 .vscode/
 
+# Example files
+citam_simulation/
+foo_navnet_output.svg
+foo_output.svg
+
