@@ -156,7 +156,7 @@ def test_identify_contacts_wall_seperation(simple_facility_model):
     assert len(model.step_contact_locations) == 1
     assert len(model.step_contact_locations[0]) == 0
     assert agent1.cumulative_contact_duration == 0
-    assert agent2.n_contcumulative_contact_durationacts == 0
+    assert agent2.cumulative_contact_duration == 0
 
 
 def test_identify_contacts_3_way(simple_facility_model):
