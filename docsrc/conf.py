@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath("../citam")))
 
 # -- Project information -----------------------------------------------------
 project = "CITAM"
-copyright = "2020, Corning Incorporated"
+copyright = "2021, Corning Incorporated"
 author = "Mardochee Reveil, Chris Soper, Amit Jha"
 
 release = "0.9.0"
