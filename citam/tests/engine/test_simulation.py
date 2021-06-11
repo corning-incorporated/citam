@@ -155,8 +155,8 @@ def test_identify_contacts_wall_seperation(simple_facility_model):
     assert len(model.contact_events.contact_data) == 0
     assert len(model.step_contact_locations) == 1
     assert len(model.step_contact_locations[0]) == 0
-    assert agent1.n_contacts == 0
-    assert agent2.n_contacts == 0
+    assert agent1.cumulative_contact_duration == 0
+    assert agent2.n_contcumulative_contact_durationacts == 0
 
 
 def test_identify_contacts_3_way(simple_facility_model):
@@ -183,9 +183,9 @@ def test_identify_contacts_3_way(simple_facility_model):
 
     assert len(model.contact_events.contact_data) == 3
     assert len(model.step_contact_locations[0]) == 3
-    assert agent1.n_contacts == 2
-    assert agent2.n_contacts == 2
-    assert agent3.n_contacts == 2
+    assert agent1.cumulative_contact_duration == 2
+    assert agent2.cumulative_contact_duration == 2
+    assert agent3.cumulative_contact_duration == 2
 
     for key, contact_pos in zip(["1-2", "1-3", "2-3"], contact_positions):
         assert key in model.contact_events.contact_data
@@ -219,8 +219,8 @@ def test_add_contact_event(simple_facility_model):
     assert len(model.step_contact_locations) == 1
     assert contact_pos in model.step_contact_locations[0]
     assert model.step_contact_locations[0][contact_pos] == 1
-    assert agent1.n_contacts == 1
-    assert agent2.n_contacts == 1
+    assert agent1.cumulative_contact_duration == 1
+    assert agent2.cumulative_contact_duration == 1
 
 
 def test_step(simple_facility_model):
