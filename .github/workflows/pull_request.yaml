@@ -1,4 +1,4 @@
-name: Pull Request Workflow
+name: build
 on: [ pull_request ]
 jobs:
   lint-python:

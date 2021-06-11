@@ -83,6 +83,14 @@ docs/_build/
 docsrc/_build/
 public/html/
 public/doctrees/
+docs/html/
+docs/doctrees/
+
+docs/html
+docs/doctrees/
+docsrc/html/
+docsrc/doctrees/
+docsrc/_build/
 
 docs/html
 docs/doctrees/

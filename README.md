@@ -1,3 +1,10 @@
+### NOTE: THIS REPOSITORY IS IN PRE-RELEASE MODE AND IS NOT READY FOR PUBLIC USE YET. PLEASE CHECK BACK LATER.
+
+![pull request workflow](https://github.com/corning-incorporated/citam/actions/workflows/pull_request.yaml/badge.svg) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/corning-incorporated/citam/issues) ![code style](https://img.shields.io/badge/code%20style-black-black) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
+
+
 # CITAM
 
 Covid-19 Indoor Transmission Agent-based Modeling platform.
@@ -26,7 +33,7 @@ Covid-19 Indoor Transmission Agent-based Modeling platform.
 Check your Python version as follows:
 
 ```shell script
-$python --version    # must be 3.x
+python --version    # must be 3.x
 ```
 
 > Consider creating a new [virtual environment](https://docs.python.org/3/library/venv.html) to install and run CITAM.
@@ -36,54 +43,47 @@ Below are the different ways to install CITAM.
 ### From Python-Wheel (Recommended)
 
 1. Download the python-wheel zip file from the latest release tag [here](https://github.com/corning-incorporated/citam/releases).
-2. Extract the compressed file locally, 
-3. change directory to the extracted python-wheel folder.  Do not rename this file.
-4. run `pip install <citam wheel>` where citam_wheel is the extracted .whl file
+2. Extract the compressed file locally.
+3. Change directory to the extracted python-wheel folder.  Do not rename this file.
+4. Run `pip install <citam wheel>` where citam_wheel is the extracted `.whl` file.
 
 ### From Source
 
 [NodeJS](https://nodejs.org/en/download/) and Git are additional pre-requisites to install from source. Use the following to make sure all additional pre-requisites are satisfied:
 
 ```shell script
-$git --version
-$node --version      # should be 12 or above
-$npm --version       # should be 6 or above
+git --version
+node --version      # should be 12 or above
+npm --version       # should be 6 or above
 ```
 
-If all pre-requisites are satisfied, download the source code as follow:
+If all pre-requisites are satisfied, download the source code as follows:
 
 ```
-$git clone https://github.com/corning-incorporated/citam.git
+git clone https://github.com/corning-incorporated/citam.git
 ```
 
 > For the latest usable version, please change directory to the citam directory and checkout the "alpha" branch as follows:
 
 ```
-$cd citam
-$git checkout alpha
+cd citam
+git checkout alpha
 ```
 
 Then install the pip package using the command
   ```
-  $pip install .
+  pip install .
   ```
 
 > Note: If you plan on making changes to the code, we recommend installing as follows instead:
   ```
-  $pip install -e .
+  pip install -e .
   ```
 
 After a successful installation, you are ready to ingest your facilities and run simulations for them. To check that the installation was successful, please run:
 
 ```
-$citam -h
-```
-
- > Note: In case matplotlib gives an error, these steps have been found to solve the problem:
-```
-   $pip uninstall matplotlib  # uninstall the package
-
-   $pip install matplotlib   # reinstall it
+citam -h
 ```
 
 ## Add Facilities
@@ -91,13 +91,13 @@ $citam -h
 Currently, the primary way to use CITAM is through the CLI. To get a list of commands, do:
 
   ```
-  $citam --help
+  citam --help
   ```
 
 Help is also available for each subcommand. For example, for the engine subcommand do:
 
 ```
-$citam engine --help
+citam engine --help
 ```
 
 Before running a simulation, at least one facility must be added. Each facility
@@ -112,7 +112,7 @@ Before you can ingest a floorplan, you need a map file in SVG format and a CSV
 file describing each space. To see examples of floorplan SVG and CSV files, go to the examples subdirectory. Use the following command to ingest floorplan data from the [citam/examples/basic_example/](examples/basic_example/) subdirectory:
 
   ```
-  $citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --svg examples/basic_example/TF1.svg -v
+  citam engine ingest foo_facility foo_floor --csv examples/basic_example/TF1.csv --svg examples/basic_example/TF1.svg -v
   ```
 
 During the ingestion process, CITAM will attempt to add doors to spaces that do not have any and
@@ -121,10 +121,10 @@ remove walls that are between hallways.
 
 **2. Validate Ingested Data**
 
- You can export the ingested floorplan as an SVG file for visualization as follow:
+ You can export the ingested floorplan as an SVG file for visualization as follows:
 
   ```
-  $citam engine export-floorplan foo_facility foo_floor -o foo_output.svg -v
+  citam engine export-floorplan foo_facility foo_floor -o foo_output.svg -v
   ```
 
 This will export the ingested floorplan in SVG format saved as OUTPUT_FILE.
@@ -136,7 +136,7 @@ If you notice errors in the ingested floorplan, please correct them using your
 favorite SVG editor, save the edited file with a new name (e.g. foo_edited.svg) and use the following command to update the floorplan:
 
    ```
-   $citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg -v
+   citam engine update-floorplan foo_facility foo_floor --svg foo_edited.svg -v
    ```
 
 **3. Build Navigation Network**
@@ -145,7 +145,7 @@ Once a floorplan has been ingested, the next step is to generate the Navigation
 Network (navnet) using the following command.
 
    ```
-   $citam engine build-navnet foo_facility foo_floor -v
+   citam engine build-navnet foo_facility foo_floor -v
    ```
 
 **4. Validate Navigation Network**
@@ -154,7 +154,7 @@ The network can also be exported as an SVG file to be visualized and updated man
 To export as an SVG file, run the following command:
 
    ```
-   $citam engine export-navnet foo_facility foo_floor -o foo_navnet_output.svg -v
+   citam engine export-navnet foo_facility foo_floor -o foo_navnet_output.svg -v
    ```
 
 The svg file can then be visualized using any SVG viewer.
@@ -169,15 +169,15 @@ Assuming at least one facility was successfully added and validated, any number 
 To run a test simulation, copy [example_sim_inputs.json](examples/basic_example/example_sim_inputs.json) file to a new directory (let's call it `citam_simulation`). If you are on a UNIX system, you can do:
 
    ```
-   $mkdir citam_simulation
-   $cp citam/examples/basic_example/example_sim_inputs.json citam_simulation/.
+   mkdir citam_simulation
+   cp citam/examples/basic_example/example_sim_inputs.json citam_simulation/.
    ```
 
 To run the simulation:
 
    ```
-   $cd citam_simulation
-   $citam engine run example_sim_inputs.json -v
+   cd citam_simulation
+   citam engine run example_sim_inputs.json -v
    ```
 
 Wait for your simulation to complete successfully before moving to the next section.
@@ -199,7 +199,7 @@ If you installed via python-wheel, the GUI should already be available for your 
 Once the GUI is built, and assuming the current directory has the simulation results to visualize, the server can be started using:
 
 ```
-$citam dash --results .
+citam dash --results .
 ```
 
 The GUI can then be accessed at [http://localhost:8000](http://localhost:8000). 
@@ -221,6 +221,6 @@ We encourage and welcome your contributions to any or all of the components of t
 ------------
 CITAM is made available to the public under GPLv3 and may only be used in accordance with the identified license(s).
 
-Copyright 2020. Corning Incorporated. All rights reserved.
+Copyright 2020-2021. Corning Incorporated. All rights reserved.
 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.

@@ -12,59 +12,58 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-   <div id="simMapLayout">                                                                 
-      <plot-visualization :simId="currSimId"></plot-visualization>        
-    </div>                                                  
+  <div id="simMapLayout">
+    <visualizer :simId="currSimId"></visualizer>
+  </div>
 </template>
 
 <script>
-
-import PlotVisualization from '@/components/run/PlotVisualization.vue'
+import Visualizer from "@/components/run/Visualizer.vue";
 
 export default {
-  name: 'SimulationMaps',
-  components: { PlotVisualization },
+  name: "SimulationMaps",
+  components: { Visualizer },
   props: {
     selectedFacility: String,
-    simId: String
+    simId: String,
   },
   watch: {
     simId(newSimId) {
-      this.currSimId = newSimId
-    }
+      this.currSimId = newSimId;
+    },
   },
   data() {
-      return {
-          policyData: {},          
-          simRuns: [],
-          currSimId: '',
-      }
+    return {
+      policyData: {},
+      simRuns: [],
+      currSimId: "",
+    };
   },
-  created (){
-    this.currSimId = this.simId
+  created() {
+    this.currSimId = this.simId;
   },
-  methods:{
+  methods: {
     getSimMap(simId) {
-      this.currSimId = simId
-    }   
-  }
-}
+      this.currSimId = simId;
+    },
+  },
+};
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap");
 #simMapLayout {
-    text-align: left !important;
-    background-color: white;
-    padding-top: 0px;
+  text-align: left !important;
+  background-color: white;
+  padding-top: 0px;
 }
 
 .title {
-    color: #607080;
-    font-family: Inter;
-    align-items: center; 
-    background-color:#EBEFF2;
-    height: 45px;
-    padding: 10px;
+  color: #607080;
+  font-family: Inter;
+  align-items: center;
+  background-color: #ebeff2;
+  height: 45px;
+  padding: 10px;
 }
 </style>

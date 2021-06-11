@@ -206,22 +206,33 @@
 </template>
 
 <script>
-
-
-import axios from 'axios'
-import PlotVisualization from '@/components/run/PlotVisualization.vue'
-import Scatterplot from '@/components/run/dataplots/Scatterplot';
+import axios from "axios";
+import Scatterplot from "@/components/run/dataplots/Scatterplot";
 import Histogram from "@/components/run/dataplots/Histogram";
 import Statcards from "@/components/run/dataplots/Statcards";
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {faChartBar, faChartArea, faTable, faArrowAltCircleLeft, faSort, faMap} from '@fortawesome/free-solid-svg-icons'
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faChartBar,
+  faChartArea,
+  faTable,
+  faArrowAltCircleLeft,
+  faSort,
+  faMap,
+} from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 
-library.add(faChartBar, faChartArea, faTable, faArrowAltCircleLeft, faSort, faMap)
+library.add(
+  faChartBar,
+  faChartArea,
+  faTable,
+  faArrowAltCircleLeft,
+  faSort,
+  faMap
+);
 
 export default {
   name: "Dashboard",
-  components: {Scatterplot, Histogram, Statcards, PlotVisualization},
+  components: { Scatterplot, Histogram, Statcards },
   data() {
     return {
       runList: [],
@@ -229,30 +240,40 @@ export default {
       runAttributes: [],
       showDetails: 0,
       showViz: false,
-      currSimId: '',
+      currSimId: "",
       chartData: [],
-      heatmapSrc: '',
+      heatmapSrc: "",
       totalContactsPerAgentHistogram: [],
       avgContactDurationPerAgentHistogram: [],
       totalContactsHistogramOption: {},
       avgContactDurationHistogramOption: {},
-    }
+    };
   },
   created() {
-    axios.get('/list')
-        .then((response) => {
-          return axios.all(response.data.map(x => axios.get(`/${x.sim_id}`)))
-        })
-        .then((runResponse) => {
-          // eslint-disable-next-line no-unused-vars
-          this.runList = runResponse.map(run => run.data).map(({floors, timestep, floor_dict, scaleMultiplier, trajectory_file,
-                                                                 ...item
-                                                               }) => item)
-          this.runAttributes = Object.keys(this.runList[0]);
-        })
+    axios
+      .get("/list")
+      .then((response) => {
+        return axios.all(response.data.map((x) => axios.get(`/${x.sim_id}`)));
+      })
+      .then((runResponse) => {
+        /* eslint-disable no-unused-vars */
+        this.runList = runResponse
+          .map((run) => run.data)
+          .map(
+            ({
+              floors,
+              timestep,
+              floor_dict,
+              scaleMultiplier,
+              trajectory_file,
+              ...item
+            }) => item
+          );
+        /* eslint-enable no-unused-vars */
+        this.runAttributes = Object.keys(this.runList[0]);
+      });
   },
   methods: {
-
     /**
      * Trigger view details
      * @param simId
@@ -261,8 +282,8 @@ export default {
       this.currSimId = simId;
       this.getPairContacts(simId, () => {
         this.getHeatmap(simId);
-        return this.showDetails = 1
-      })
+        return (this.showDetails = 1);
+      });
     },
 
     backToMainTable() {
@@ -273,34 +294,38 @@ export default {
       this.runList = _.sortBy(this.runList, [att]);
     },
 
-    toVizToggle(e){
-      this.showDetails = e.target.id === 'viz-tab'? 2 : 1;
+    toVizToggle(e) {
+      this.showDetails = e.target.id === "viz-tab" ? 2 : 1;
     },
 
     /**
      * Get Heatmap data
      * @param simId
      */
-    getHeatmap(simId){
-      this.heatmapSrc = '';
-      axios.get(`/${simId}/heatmap`)
-          .then(response=> {
-            if(response.data){
-              this.heatmapSrc = response.data;
-              const canvas = this.$refs.canvas;
-              const ctx = canvas.getContext('2d');
-              const DOMURL = window.URL || window.webkitURL || window;
-              const img = new Image();
-              const svgBlob = new Blob([this.heatmapSrc], {type: 'image/svg+xml;charset=utf-8'});
-              const url = DOMURL.createObjectURL(svgBlob);
-              img.onload = () => {
-                ctx.drawImage(img, 0, 0);
-              };
-              img.src = url;
-            }
-          }). catch(error => {
-            console.error(error)
-      })
+    getHeatmap(simId) {
+      this.heatmapSrc = "";
+      axios
+        .get(`/${simId}/heatmap`)
+        .then((response) => {
+          if (response.data) {
+            this.heatmapSrc = response.data;
+            const canvas = this.$refs.canvas;
+            const ctx = canvas.getContext("2d");
+            const DOMURL = window.URL || window.webkitURL || window;
+            const img = new Image();
+            const svgBlob = new Blob([this.heatmapSrc], {
+              type: "image/svg+xml;charset=utf-8",
+            });
+            const url = DOMURL.createObjectURL(svgBlob);
+            img.onload = () => {
+              ctx.drawImage(img, 0, 0);
+            };
+            img.src = url;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
 
     /**
@@ -309,31 +334,45 @@ export default {
      * @param cb
      */
     getPairContacts(simId, cb) {
-      axios.get(`/${simId}/pair`)
-          .then(response => {
-            this.chartData = _.map(_.union(_.map(response.data, 'Agent1'), _.map(response.data, 'Agent2')), (agent) => {
-              let agentGrp = _.filter(response.data, (f) => {
-                return f.Agent1 === agent || f.Agent2 === agent
-              })
-              let totalContactsPerAgent = _.sumBy(agentGrp, 'N_Contacts')
-              let avgContactDurationPerAgent = (_.sumBy(agentGrp, (o) => {
-                return parseFloat(o.TotalContactDuration)
-              }) / totalContactsPerAgent).toPrecision(2)
-              return {a: agent, x: totalContactsPerAgent, y: avgContactDurationPerAgent}
-            })
+      axios.get(`/${simId}/pair`).then((response) => {
+        this.chartData = _.map(
+          _.union(
+            _.map(response.data, "Agent1"),
+            _.map(response.data, "Agent2")
+          ),
+          (agent) => {
+            let agentGrp = _.filter(response.data, (f) => {
+              return f.Agent1 === agent || f.Agent2 === agent;
+            });
+            let totalContactsPerAgent = _.sumBy(agentGrp, "N_Contacts");
+            let avgContactDurationPerAgent = (
+              _.sumBy(agentGrp, (o) => {
+                return parseFloat(o.TotalContactDuration);
+              }) / totalContactsPerAgent
+            ).toPrecision(2);
+            return {
+              a: agent,
+              x: totalContactsPerAgent,
+              y: avgContactDurationPerAgent,
+            };
+          }
+        );
 
-            this.totalContactsPerAgentHistogram = _.map(this.chartData, 'x')
-            this.totalContactsHistogramOption = {chartTitle: "Total Contact per Agent", chartCol: "#5290f1"}
-            this.avgContactDurationPerAgentHistogram = _.map(this.chartData, 'y')
-            this.avgContactDurationHistogramOption = {
-              chartTitle: "Average Contact Duration (minutes)",
-              chartCol: "#5fd0c7"
-            }
-            cb();
-          })
+        this.totalContactsPerAgentHistogram = _.map(this.chartData, "x");
+        this.totalContactsHistogramOption = {
+          chartTitle: "Total Contact per Agent",
+          chartCol: "#5290f1",
+        };
+        this.avgContactDurationPerAgentHistogram = _.map(this.chartData, "y");
+        this.avgContactDurationHistogramOption = {
+          chartTitle: "Average Contact Duration (minutes)",
+          chartCol: "#5fd0c7",
+        };
+        cb();
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped>

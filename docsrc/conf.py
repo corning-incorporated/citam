@@ -10,7 +10,7 @@ project = "CITAM"
 copyright = "2020, Corning Incorporated"
 author = "Mardochee Reveil, Chris Soper, Amit Jha"
 
-release = "0.9.0"
+release = "0.13.0"
 master_doc = "index"
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "tests/*", "test_"]

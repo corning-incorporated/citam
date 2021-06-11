@@ -11,7 +11,7 @@ We welcome contributions of all types and from people of all backgrounds to make
 
 ## Code of Conduct
 ----
-In submitting your questions, answers, code, requests, etc. to this repository, you agree to do so while keeping it as a civil, open, inclusive and friendly space for people of all skill levels and backgrounds. The full Code of Conduct will be available soon.
+In submitting your questions, answers, code, requests, etc. to this repository, you agree to do so while keeping it as a civil, open, inclusive and friendly space for people of all skill levels and backgrounds. The full Code of Conduct can be found here: https://github.com/corning-incorporated/citam/blob/main/CODE_OF_CONDUCT.md.
 
 ## Questions and Problems
 ---
@@ -49,15 +49,15 @@ While you work on your fix, make sure you create appropriate test cases, you fol
 When you are done with your work, make sure all tests successfully pass locally on your machine. In addition, we recommend using `flake8` and `black` to catch and fix all styling problems. From within the main citam folder, you can run.
 
 ```
-$pytest
-$flake8
-$black citam
+pytest
+flake8
+black citam
 ```
 
 If everything looks good, push your changes to GitHub:
 
 ```
-$git push origin my-fix-branch
+git push origin my-fix-branch
 ```
 
 You are now ready to create a pull request against the dev branch. Make sure the title and description of your pull request are as descriptive as possible.
