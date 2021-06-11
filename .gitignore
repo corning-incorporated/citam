@@ -92,6 +92,12 @@ docsrc/html/
 docsrc/doctrees/
 docsrc/_build/
 
+docs/html
+docs/doctrees/
+docsrc/html/
+docsrc/doctrees/
+docsrc/_build/
+
 # PyBuilder
 .pybuilder/
 target/
@@ -281,4 +287,3 @@ dist
 
 # VS Code Files
 .vscode/
-

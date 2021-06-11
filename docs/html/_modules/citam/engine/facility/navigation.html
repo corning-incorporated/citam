@@ -1,0 +1,1114 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.engine.facility.navigation &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/engine/facility/navigation.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_vector.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" accesskey="U">citam.engine</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.engine.facility.navigation</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2020. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1">#  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1">#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1">#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span>
+<span class="c1">#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1">#  ==========================================================================</span>
+
+<span class="kn">import</span> <span class="nn">errno</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">networkx.classes.graph</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">Line</span>
+
+<span class="kn">import</span> <span class="nn">citam.engine.map.geometry</span> <span class="k">as</span> <span class="nn">gsu</span>
+<span class="kn">import</span> <span class="nn">citam.engine.io.storage_utils</span> <span class="k">as</span> <span class="nn">su</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.floorplan</span> <span class="kn">import</span> <span class="n">Floorplan</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.space</span> <span class="kn">import</span> <span class="n">Space</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TrafficPattern"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.TrafficPattern">[docs]</a><span class="k">class</span> <span class="nc">TrafficPattern</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">ONEWAY_POSITIVE_DIRECTION</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ONEWAY_NEGATIVE_DIRECTION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">TWO_WAY</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="MultifloorType"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.MultifloorType">[docs]</a><span class="k">class</span> <span class="nc">MultifloorType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enum to hold the different ways the different floors are connected in</span>
+<span class="sd">    multifloor facilities.</span>
+
+<span class="sd">    Two types are defined:</span>
+<span class="sd">    - naming-X: corresponding spaces on different floors don&#39;t necessarily have</span>
+<span class="sd">            the same xy but their names carry information about the floor.</span>
+<span class="sd">            The &#39;X&#39; at the end is for the position of the floor identifier in</span>
+<span class="sd">            space names. For example: &#39;naming-2&#39; =&gt; F2R13 or &#39;naming-1&#39; =&gt; 213</span>
+<span class="sd">            both are valid identifier of room 13 in the second floor.</span>
+<span class="sd">    - xy: corresponding spaces on different floors have the same xy. This means</span>
+<span class="sd">          the space directly on top of a stairway in terms of xy position is</span>
+<span class="sd">          also a stairway.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NAMING</span> <span class="o">=</span> <span class="s2">&quot;naming-2&quot;</span>
+    <span class="n">XY</span> <span class="o">=</span> <span class="s2">&quot;xy&quot;</span></div>
+
+
+<div class="viewcode-block" id="Navigation"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation">[docs]</a><span class="k">class</span> <span class="nc">Navigation</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements the navigation class to manage agents circulation between</span>
+<span class="sd">    different spaces in a facility.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">floorplans</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Floorplan</span><span class="p">],</span>
+        <span class="n">facility_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">traffic_policy</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span>
+        <span class="n">multifloor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">MultifloorType</span><span class="o">.</span><span class="n">NAMING</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new navigation object.</span>
+
+<span class="sd">        :param floorplans: list of floorplans in this facility.</span>
+<span class="sd">        :type floorplans: List[Floorplan]</span>
+<span class="sd">        :param facility_name: Name of the facility, used to retrive data for</span>
+<span class="sd">                this facility from the user cache.</span>
+<span class="sd">        :type facility_name: str</span>
+<span class="sd">        :param traffic_policy: The traffic policy in place in this facility.</span>
+<span class="sd">        :type traffic_policy: List[Dict[str, Union[str, int]]]</span>
+<span class="sd">        :param multifloor_type: type of correspondence between spaces in</span>
+<span class="sd">                different floors, defaults to &quot;naming&quot;</span>
+<span class="sd">        :type multifloor_type: str, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_type</span> <span class="o">=</span> <span class="n">multifloor_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oneway_network_per_floor</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph_per_floor</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span> <span class="o">=</span> <span class="n">floorplans</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facility_name</span> <span class="o">=</span> <span class="n">facility_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="o">=</span> <span class="n">traffic_policy</span>
+
+        <span class="k">for</span> <span class="n">fnum</span><span class="p">,</span> <span class="n">floorplan</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">):</span>
+
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Loading navigation data for floor {</span><span class="si">%s</span><span class="s2">}&quot;</span><span class="p">,</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">floor_name</span>
+            <span class="p">)</span>
+
+            <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span>
+                <span class="n">facility_name</span><span class="p">,</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">floor_name</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Load navigation network</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading navnet...&quot;</span><span class="p">)</span>
+            <span class="n">floor_navnet_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">floorplan_directory</span><span class="p">,</span> <span class="s2">&quot;routes.json&quot;</span>
+            <span class="p">)</span>
+            <span class="n">navnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_floor_navnet</span><span class="p">(</span><span class="n">floor_navnet_file</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">navnet</span><span class="p">)</span>
+
+            <span class="c1"># Load oneway network</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading oneway network...&quot;</span><span class="p">)</span>
+                <span class="n">oneway_net_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">floorplan_directory</span><span class="p">,</span> <span class="s2">&quot;oneway_network.json&quot;</span>
+                <span class="p">)</span>
+                <span class="n">oneway_net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_floor_oneway_net</span><span class="p">(</span><span class="n">oneway_net_file</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">oneway_network_per_floor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oneway_net</span><span class="p">)</span>
+
+            <span class="c1"># Load hallways graph</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading hallway graph for floor...&quot;</span><span class="p">)</span>
+            <span class="n">floor_hallway_graph_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">floorplan_directory</span><span class="p">,</span> <span class="s2">&quot;hallways_graph.json&quot;</span>
+            <span class="p">)</span>
+            <span class="n">hg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_hallway_graph</span><span class="p">(</span><span class="n">floor_hallway_graph_file</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph_per_floor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_multifloor_navnet</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">apply_traffic_policy</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Navigation.load_hallway_graph"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.load_hallway_graph">[docs]</a>    <span class="k">def</span> <span class="nf">load_hallway_graph</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">floor_hallway_graph_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the hallway graph from file. The hallway graph is a graph of</span>
+<span class="sd">        hallways that share at least one boundary.</span>
+
+<span class="sd">        :param floor_hallway_graph_file: location of the file containing the</span>
+<span class="sd">                 hallway graph in json format.</span>
+<span class="sd">        :type floor_hallway_graph_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :raises FileNotFoundError: If the provided file is not found.</span>
+<span class="sd">        :return: [description]</span>
+<span class="sd">        :rtype: nx.Graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">floor_hallway_graph_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">hg_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Failed to load hallway graph </span><span class="si">{</span><span class="n">floor_hallway_graph_file</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;This is the error: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">hg</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">json_graph</span><span class="o">.</span><span class="n">node_link_graph</span><span class="p">(</span><span class="n">hg_data</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Success loading the hallway graph!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hg</span></div>
+
+<div class="viewcode-block" id="Navigation.load_floor_oneway_net"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.load_floor_oneway_net">[docs]</a>    <span class="k">def</span> <span class="nf">load_floor_oneway_net</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">oneway_net_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the oneway network from file. The oneway network is a graph of</span>
+<span class="sd">        connected aisles that support one-way navigation.</span>
+
+<span class="sd">        :param oneway_net_file: location of one-way network file in json</span>
+<span class="sd">                format.</span>
+<span class="sd">        :type oneway_net_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :raises FileNotFoundError: If file not found.</span>
+<span class="sd">        :return: the network as read from file.</span>
+<span class="sd">        :rtype: nx.Graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">oneway_net_file</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">),</span> <span class="n">oneway_net_file</span>
+            <span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">oneway_net_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">oneway_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">oneway_net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">json_graph</span><span class="o">.</span><span class="n">node_link_graph</span><span class="p">(</span><span class="n">oneway_data</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Success loading the oneway network file!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">oneway_net</span></div>
+
+<div class="viewcode-block" id="Navigation.load_floor_navnet"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.load_floor_navnet">[docs]</a>    <span class="k">def</span> <span class="nf">load_floor_navnet</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">floor_navnet_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the navigation network (navnet) from file. The navnet is a graph</span>
+<span class="sd">        of connected notable points in the facility describing where agents</span>
+<span class="sd">        can move around.</span>
+
+<span class="sd">        :param floor_navnet_file: location of navnet file in json format.</span>
+<span class="sd">        :type floor_navnet_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :raises FileNotFoundError: if specified file is not found.</span>
+<span class="sd">        :return: The navnet object.</span>
+<span class="sd">        :rtype: nx.Graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">floor_navnet_file</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">),</span> <span class="n">floor_navnet_file</span>
+            <span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">floor_navnet_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">navnet_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">navnet</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">json_graph</span><span class="o">.</span><span class="n">node_link_graph</span><span class="p">(</span><span class="n">navnet_data</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Success loading navnet from file!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">navnet</span></div>
+
+<div class="viewcode-block" id="Navigation.get_corresponding_space_by_name"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.get_corresponding_space_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_corresponding_space_by_name</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ref_space</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">dest_floor</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Space</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a reference space, typically a vertical space (e.g. stairway),</span>
+<span class="sd">        find which space would be exactly at that same location on another</span>
+<span class="sd">        floor.</span>
+
+<span class="sd">        :param ref_space: The reference space.</span>
+<span class="sd">        :type ref_space: Space</span>
+<span class="sd">        :param dest_floor: The destination floor</span>
+<span class="sd">        :type dest_floor: int</span>
+<span class="sd">        :raises ValueError: If problems are found with the space names.</span>
+<span class="sd">        :return: The destination space and id.</span>
+<span class="sd">        :rtype: Tuple[Space, int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name1</span> <span class="o">=</span> <span class="n">ref_space</span><span class="o">.</span><span class="n">unique_name</span>
+
+        <span class="n">floor_identifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">floor_identifier</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number expected at the end of the multifloor type&quot;</span>
+            <span class="p">)</span>
+        <span class="n">fid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">floor_identifier</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fid</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">fid</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;This multifloor type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">multifloor_type</span><span class="si">}</span><span class="s2"> cannot </span><span class="se">\</span>
+<span class="s2">                    be used for the current naming (e.g. </span><span class="si">{</span><span class="n">name1</span><span class="si">}</span><span class="s2">). please </span><span class="se">\</span>
+<span class="s2">                    update (must be less than name length)&quot;</span>
+                <span class="p">)</span>
+            <span class="n">name2</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">name1</span><span class="p">[</span><span class="n">fid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dest_floor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">name1</span><span class="p">[</span><span class="n">fid</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>  <span class="c1"># noqa</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dest_floor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">name1</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">space</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">dest_floor</span><span class="p">]</span><span class="o">.</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">unique_name</span> <span class="o">==</span> <span class="n">name2</span> <span class="ow">and</span> <span class="n">space</span><span class="o">.</span><span class="n">is_space_vertical</span><span class="p">():</span>
+                <span class="n">dest_space</span> <span class="o">=</span> <span class="n">space</span>
+                <span class="n">dest_space_id</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">dest_space</span><span class="p">,</span> <span class="n">dest_space_id</span></div>
+
+<div class="viewcode-block" id="Navigation.get_corresponding_vertical_space"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.get_corresponding_vertical_space">[docs]</a>    <span class="k">def</span> <span class="nf">get_corresponding_vertical_space</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ref_space</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">dest_floor</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Space</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a reference space and a destination floor, find the space</span>
+<span class="sd">        on the destination floor that lies in the same xy position as the</span>
+<span class="sd">        reference space. Mostly used for stairs and elevators.</span>
+
+<span class="sd">        :param ref_space: the reference space</span>
+<span class="sd">        :type ref_space: Space</span>
+<span class="sd">        :param dest_floor: index of the destination floor</span>
+<span class="sd">        :type dest_floor: int</span>
+<span class="sd">        :raises ValueError: if the value used for the multifloor_type is</span>
+<span class="sd">                 unknown.</span>
+<span class="sd">        :return: index of the corresponding space and the corresponding space</span>
+<span class="sd">                 itself.</span>
+<span class="sd">        :rtype: Tuple[Optional[int], Optional[Space]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Add regex as another method.</span>
+        <span class="n">dest_space</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">dest_space_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s2">&quot;naming&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_type</span><span class="p">:</span>
+            <span class="n">dest_space</span><span class="p">,</span> <span class="n">dest_space_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_corresponding_space_by_name</span><span class="p">(</span>
+                <span class="n">ref_space</span><span class="p">,</span> <span class="n">dest_floor</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_type</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">ref_space</span><span class="o">.</span><span class="n">get_random_internal_point</span><span class="p">()</span>
+            <span class="n">dest_space_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">dest_floor</span><span class="p">]</span><span class="o">.</span><span class="n">identify_this_location</span><span class="p">(</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">dest_space_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">dest_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">dest_floor</span><span class="p">]</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="n">dest_space_id</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown multifloor type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">multifloor_type</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;Expected: naming-D or &#39;xy&#39;&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dest_space_id</span><span class="p">,</span> <span class="n">dest_space</span></div>
+
+<div class="viewcode-block" id="Navigation.add_vertical_edges"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.add_vertical_edges">[docs]</a>    <span class="k">def</span> <span class="nf">add_vertical_edges</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">coords1</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">floor_number1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">coords2</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">floor_number2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add vertical edges between two lists of coordinates from different</span>
+<span class="sd">        floors.</span>
+
+<span class="sd">        :param coords1: list of coordinates on the first floor.</span>
+<span class="sd">        :type coords1: Tuple[int, int]</span>
+<span class="sd">        :param floor_number1: id of the first floor.</span>
+<span class="sd">        :type floor_number1: int</span>
+<span class="sd">        :param coords2: list of coordinates on the other floor.</span>
+<span class="sd">        :type coords2: Tuple[int, int]</span>
+<span class="sd">        :param floor_number2: id of the other floor.</span>
+<span class="sd">        :type floor_number2: int</span>
+<span class="sd">        :return: the number of edges successfully created.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_vert_edges</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">):</span>
+            <span class="n">node1</span> <span class="o">=</span> <span class="p">(</span><span class="n">c1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">floor_number1</span><span class="p">)</span>
+            <span class="n">node2</span> <span class="o">=</span> <span class="p">(</span><span class="n">c2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">floor_number2</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span>
+                <span class="n">node1</span>
+            <span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">node2</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">node1</span><span class="p">)</span>
+                <span class="n">n_vert_edges</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> or </span><span class="si">%s</span><span class="s2"> not found in graph&quot;</span><span class="p">,</span> <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">n_vert_edges</span></div>
+
+<div class="viewcode-block" id="Navigation.add_all_vertical_edges_between_floors"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.add_all_vertical_edges_between_floors">[docs]</a>    <span class="k">def</span> <span class="nf">add_all_vertical_edges_between_floors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">floor_number1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">floor_number2</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create new edges in the navigation network to connect vertical</span>
+<span class="sd">        spaces allowing multifloor navigation. If there are more than 2 floors</span>
+<span class="sd">        in the facility, this function should be used toconnect only</span>
+<span class="sd">        adjacent floors.</span>
+
+<span class="sd">        This function finds all the vertical spaces in the starting floor and</span>
+<span class="sd">        finds if there is a corresponding space on the destination floor in</span>
+<span class="sd">        which case edges are added between them.</span>
+
+<span class="sd">        :param floor_number1: index of the first floor.</span>
+<span class="sd">        :type floor_number1: int</span>
+<span class="sd">        :param floor_number2: index of the second floor.</span>
+<span class="sd">        :type floor_number2: int</span>
+<span class="sd">        :return: Number of vertical spaces connected.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get all vertical spaces in first floor</span>
+        <span class="n">n_vert_edges</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">starting_floor_verticals</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">space</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">space</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number1</span><span class="p">]</span><span class="o">.</span><span class="n">spaces</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">is_space_vertical</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sf_vert_space</span> <span class="ow">in</span> <span class="n">starting_floor_verticals</span><span class="p">:</span>
+            <span class="n">coords1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number1</span><span class="p">]</span><span class="o">.</span><span class="n">get_room_exit_coords</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">coords1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">j</span><span class="p">,</span> <span class="n">space2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_corresponding_vertical_space</span><span class="p">(</span>
+                <span class="n">sf_vert_space</span><span class="p">,</span> <span class="n">floor_number2</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">space2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">space2</span><span class="o">.</span><span class="n">is_space_vertical</span><span class="p">():</span>
+                <span class="k">continue</span>
+
+            <span class="n">coords2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number2</span><span class="p">]</span><span class="o">.</span><span class="n">get_room_exit_coords</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">coords2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># add edges between room the exit coords of the vertical spaces</span>
+            <span class="c1"># TODO: create edge between a random xy coords inside rooms</span>
+
+            <span class="n">n_new_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertical_edges</span><span class="p">(</span>
+                <span class="n">coords1</span><span class="p">,</span> <span class="n">floor_number1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">,</span> <span class="n">floor_number2</span>
+            <span class="p">)</span>
+            <span class="n">n_vert_edges</span> <span class="o">+=</span> <span class="n">n_new_edges</span>
+
+        <span class="k">return</span> <span class="n">n_vert_edges</span></div>
+
+<div class="viewcode-block" id="Navigation.create_multifloor_navnet"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.create_multifloor_navnet">[docs]</a>    <span class="k">def</span> <span class="nf">create_multifloor_navnet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Use vertical spaces to combine multiple floor navnets into a global</span>
+<span class="sd">        navnet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+        <span class="c1"># Relabel nodes in each floor navnet</span>
+        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">)):</span>
+            <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">node</span><span class="p">:</span> <span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fn</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">[</span><span class="n">fn</span><span class="p">]</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+            <span class="p">}</span>
+
+            <span class="n">navnet</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">relabel_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">[</span><span class="n">fn</span><span class="p">],</span> <span class="n">mapping</span><span class="p">)</span>
+            <span class="c1"># Compose new graph with all floor graphs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">compose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="p">,</span> <span class="n">navnet</span><span class="p">)</span>
+
+        <span class="n">floor_number1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">floor_number2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_all_vertical_edges_between_floors</span><span class="p">(</span>
+                <span class="n">floor_number1</span><span class="p">,</span> <span class="n">floor_number2</span>
+            <span class="p">)</span>
+            <span class="n">floor_number1</span> <span class="o">=</span> <span class="n">floor_number2</span></div>
+
+<div class="viewcode-block" id="Navigation.apply_traffic_policy"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.apply_traffic_policy">[docs]</a>    <span class="k">def</span> <span class="nf">apply_traffic_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove edges that should not exist based on user traffic policy</span>
+<span class="sd">        for all floors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Appling traffic policy...&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_policy_for_aisle</span><span class="p">(</span>
+                    <span class="n">pol</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">oneway_network_per_floor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">):</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Working with floor {</span><span class="si">%s</span><span class="s2">}&quot;</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">floor_name</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">pol</span><span class="p">[</span><span class="s2">&quot;floor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">fp</span><span class="o">.</span><span class="n">floor_name</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_policy_for_aisle</span><span class="p">(</span>
+                            <span class="n">pol</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">oneway_network_per_floor</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                            <span class="n">navnet_type</span><span class="o">=</span><span class="s2">&quot;multifloor&quot;</span><span class="p">,</span>
+                            <span class="n">floor_number</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+                        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Navigation.apply_traffic_policy_to_edge"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.apply_traffic_policy_to_edge">[docs]</a>    <span class="k">def</span> <span class="nf">apply_traffic_policy_to_edge</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">policy</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">all_coords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">navnet</span><span class="p">:</span> <span class="n">Graph</span><span class="p">,</span>
+        <span class="n">navnet_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given 2 coordinates corresponding to navnet nodes, remove any edge that</span>
+<span class="sd">        doesn&#39;t match the desired traffic direction.</span>
+
+<span class="sd">        :param policy: The policy to apply prescribing a desired traffic</span>
+<span class="sd">            direction.</span>
+<span class="sd">        :type policy: Dict[str, Union[str, int]]</span>
+<span class="sd">        :param all_coords: list of all coordinates under consideration.</span>
+<span class="sd">        :type all_coords: List[Tuple[int, int]]</span>
+<span class="sd">        :param i: index of the first node.</span>
+<span class="sd">        :type i: int</span>
+<span class="sd">        :param j: index of the second node.</span>
+<span class="sd">        :type j: int</span>
+<span class="sd">        :param navnet: the overall navigation network.</span>
+<span class="sd">        :type navnet: Graph</span>
+<span class="sd">        :param navnet_type: the type of navnet (singlefloor or multifloor)</span>
+<span class="sd">        :type navnet_type: str</span>
+<span class="sd">        :param floor_number: id of the floor of interest.</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">navnet_type</span> <span class="o">==</span> <span class="s2">&quot;singlefloor&quot;</span><span class="p">:</span>
+            <span class="n">test_edge1</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>
+            <span class="p">)</span>
+            <span class="n">test_edge2</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">test_edge1</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>  <span class="c1"># type: ignore</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>
+                <span class="n">floor_number</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">test_edge2</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>  <span class="c1"># type: ignore</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">all_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+                <span class="n">floor_number</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">test_edge</span> <span class="ow">in</span> <span class="p">[</span><span class="n">test_edge1</span><span class="p">,</span> <span class="n">test_edge2</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">navnet</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span>
+                <span class="n">test_edge</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">test_edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_matching_direction</span><span class="p">(</span>
+                <span class="n">test_edge</span><span class="p">,</span> <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span>
+            <span class="p">):</span>
+                <span class="n">navnet</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">test_edge</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">test_edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Edge removed {</span><span class="si">%s</span><span class="s2">}&quot;</span><span class="p">,</span> <span class="n">test_edge</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Navigation.set_policy_for_aisle"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.set_policy_for_aisle">[docs]</a>    <span class="k">def</span> <span class="nf">set_policy_for_aisle</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">policy</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">navnet</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
+        <span class="n">oneway_net</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
+        <span class="n">navnet_type</span><span class="o">=</span><span class="s2">&quot;singlefloor&quot;</span><span class="p">,</span>
+        <span class="n">floor_number</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find edge of interest from navnet and keep only the ones that</span>
+<span class="sd">        match the desired traffic pattern.</span>
+
+<span class="sd">        :param policy: The traffic policy to apply</span>
+<span class="sd">        :type policy: Dict[str, Union[str, int]]</span>
+<span class="sd">        :param navnet: the navnet to apply the policy to.</span>
+<span class="sd">        :type navnet: nx.Graph</span>
+<span class="sd">        :param oneway_net: The oneway navnet for this facility.</span>
+<span class="sd">        :type oneway_net: nx.Graph</span>
+<span class="sd">        :param navnet_type: the type of navnet, defaults to &quot;singlefloor&quot;</span>
+<span class="sd">        :type navnet_type: str, optional</span>
+<span class="sd">        :param floor_number: integer id of the floor of interst, defaults to 0</span>
+<span class="sd">        :type floor_number: int, optional</span>
+<span class="sd">        :raises ValueError: If the direction is not a valid value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Applying this policy {</span><span class="si">%s</span><span class="s2">}: &quot;</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">TWO_WAY</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span>
+            <span class="o">!=</span> <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">ONEWAY_NEGATIVE_DIRECTION</span><span class="o">.</span><span class="n">value</span>
+            <span class="ow">and</span> <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span>
+            <span class="o">!=</span> <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">ONEWAY_POSITIVE_DIRECTION</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Supported values are {</span><span class="si">%d</span><span class="s2">}, {</span><span class="si">%d</span><span class="s2">} and {</span><span class="si">%d</span><span class="s2">}. See docs.&quot;</span><span class="p">,</span>
+                <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">ONEWAY_POSITIVE_DIRECTION</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">ONEWAY_NEGATIVE_DIRECTION</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">TWO_WAY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown direction in traffic policy: </span><span class="si">{</span><span class="n">policy</span><span class="p">[</span><span class="s1">&#39;direction&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Find edges of interest and remove them from navnet if they don&#39;t</span>
+        <span class="c1"># match the desired traffic direction</span>
+        <span class="n">n_coords</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">oneway_net</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">policy</span><span class="p">[</span><span class="s2">&quot;segment_id&quot;</span><span class="p">]):</span>
+                <span class="n">all_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;inter_points&quot;</span><span class="p">]</span>
+                <span class="n">n_coords</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_coords</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">n_coords</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not find nav segment to apply traffic policy </span><span class="si">{</span><span class="n">policy</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_coords</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n_coords</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">apply_traffic_policy_to_edge</span><span class="p">(</span>
+                    <span class="n">policy</span><span class="p">,</span> <span class="n">all_coords</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">navnet</span><span class="p">,</span> <span class="n">navnet_type</span><span class="p">,</span> <span class="n">floor_number</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Navigation.is_edge_matching_direction"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.is_edge_matching_direction">[docs]</a>    <span class="k">def</span> <span class="nf">is_edge_matching_direction</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">edge</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+        <span class="n">desired_direction</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify if edge direction matches desired direction.</span>
+
+<span class="sd">        This is how the edge direction is defined and computed:</span>
+<span class="sd">        Use the start and end points to compute a direction angle alpha</span>
+<span class="sd">        with respect to the positive x-axis. The positive direction corresponds</span>
+<span class="sd">        to 0 &lt;= alpha &lt;= 90 or 270 &gt; alpha &gt;= 360. The negative direction is</span>
+<span class="sd">        the other half of the possible angles.</span>
+
+<span class="sd">        :param edge: The edge of interest.</span>
+<span class="sd">        :type edge: Tuple[Tuple[Any, ...], Tuple[Any, ...]]</span>
+<span class="sd">        :param desired_direction: The direction of interest.</span>
+<span class="sd">        :type desired_direction: int</span>
+<span class="sd">        :return: Whether a match is found or not.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Compute angle</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">&gt;</span> <span class="mi">180</span> <span class="ow">and</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mi">360</span><span class="p">):</span>
+            <span class="n">edge_direction</span> <span class="o">=</span> <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">ONEWAY_POSITIVE_DIRECTION</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">edge_direction</span> <span class="o">=</span> <span class="n">TrafficPattern</span><span class="o">.</span><span class="n">ONEWAY_NEGATIVE_DIRECTION</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">desired_direction</span><span class="p">)</span> <span class="o">==</span> <span class="n">edge_direction</span></div>
+
+<div class="viewcode-block" id="Navigation.get_route"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.get_route">[docs]</a>    <span class="k">def</span> <span class="nf">get_route</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">starting_location</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">starting_floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">destination</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">destination_floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">pace</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the shortest path between 2 spaces in the floorplans.</span>
+
+<span class="sd">        :param starting_location: index of the space where the agent is</span>
+<span class="sd">                currently located</span>
+<span class="sd">        :type starting_location: int</span>
+<span class="sd">        :param starting_floor_number: index of the the floor where the</span>
+<span class="sd">                agent is going</span>
+<span class="sd">        :type starting_floor_number: int</span>
+<span class="sd">        :param destination: index of the space where the agent is going.</span>
+<span class="sd">        :type destination: int</span>
+<span class="sd">        :param destination_floor_number: index of the floor where the</span>
+<span class="sd">                agent is going.</span>
+<span class="sd">        :type destination_floor_number: int</span>
+<span class="sd">        :param pace: The pace of walking [distance unit/timestep].</span>
+<span class="sd">        :type pace: float</span>
+<span class="sd">        :return: The sequence of xy points and floor numbers to get from</span>
+<span class="sd">                current location to destination. None if no route is found.</span>
+<span class="sd">        :rtype: Optional[List[Tuple[Any, int]]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">routes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_best_possible_routes_same_floor</span><span class="p">(</span>
+                <span class="n">starting_floor_number</span><span class="p">,</span> <span class="n">starting_location</span><span class="p">,</span> <span class="n">destination</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">routes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_best_possible_routes_multifloor</span><span class="p">(</span>
+                <span class="n">starting_location</span><span class="p">,</span>
+                <span class="n">starting_floor_number</span><span class="p">,</span>
+                <span class="n">destination</span><span class="p">,</span>
+                <span class="n">destination_floor_number</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">routes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">routes</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">route</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">route</span><span class="p">))</span>
+
+        <span class="n">tmp_route</span> <span class="o">=</span> <span class="n">unroll_route</span><span class="p">(</span><span class="n">routes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pace</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="p">[(</span><span class="n">r</span><span class="p">,</span> <span class="n">starting_floor_number</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">tmp_route</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="p">[((</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">tmp_route</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+
+        <span class="k">return</span> <span class="n">route</span></div>
+
+<div class="viewcode-block" id="Navigation.get_valid_multifloor_exit_nodes"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.get_valid_multifloor_exit_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_valid_multifloor_exit_nodes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find list of exit coords that corresponds to a valid node in the</span>
+<span class="sd">        navigation network.</span>
+
+<span class="sd">        :param location: index of the space where the agent is currently</span>
+<span class="sd">                located.</span>
+<span class="sd">        :type location: int</span>
+<span class="sd">        :param floor_number: Index of the floor number.</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        :return: List of exit coords as xy and floor number.</span>
+<span class="sd">        :rtype: List[Tuple[int, int, int]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">exit_nodes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">floor_number</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exit_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">get_room_exit_coords</span><span class="p">(</span>
+                <span class="n">location</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">exit_coords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No exit from this room. Check the navnet&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">exit_nodes</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">coor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coor</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">floor_number</span><span class="p">)</span> <span class="k">for</span> <span class="n">coor</span> <span class="ow">in</span> <span class="n">exit_coords</span>
+            <span class="p">]</span>
+
+        <span class="n">valid_exit_nodes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">node</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">exit_nodes</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_exit_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">loc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="n">location</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loc_name</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Exit coordinates not in navnet or disconnected: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">loc_name</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">valid_exit_nodes</span></div>
+
+<div class="viewcode-block" id="Navigation.get_valid_single_floor_exit_nodes"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.get_valid_single_floor_exit_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_valid_single_floor_exit_nodes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">],</span> <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find list of exit coords that corresponds to a valid node in the</span>
+<span class="sd">        navigation network.</span>
+
+<span class="sd">        :param location: index of the space where agent is located.</span>
+<span class="sd">        :type location: int</span>
+<span class="sd">        :param floor_number: index of floor number.</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        :return: List of exit coordinates.</span>
+<span class="sd">        :rtype: List[Tuple[int,int]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">exit_nodes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exit_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">get_room_exit_coords</span><span class="p">(</span>
+                <span class="n">location</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">exit_coords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No exit from this room. Check the navnet&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">exit_nodes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">coor</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coor</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">coor</span> <span class="ow">in</span> <span class="n">exit_coords</span><span class="p">]</span>
+
+        <span class="n">valid_exit_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">node</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">exit_nodes</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">node</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_exit_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">loc_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="n">location</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loc_name</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Exit coordinates not in navnet or disconnected: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">loc_name</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">valid_exit_nodes</span></div>
+
+<div class="viewcode-block" id="Navigation.get_best_possible_routes_multifloor"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.get_best_possible_routes_multifloor">[docs]</a>    <span class="k">def</span> <span class="nf">get_best_possible_routes_multifloor</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">starting_location</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">starting_floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">destination</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">destination_floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get list of valid routes between a starting space and a destination</span>
+<span class="sd">        space in the current multifloor facility.</span>
+
+<span class="sd">        :param starting_location: index of the starting space.</span>
+<span class="sd">        :type starting_location: int</span>
+<span class="sd">        :param starting_floor_number: index of the starting floor.</span>
+<span class="sd">        :type starting_floor_number: int</span>
+<span class="sd">        :param destination: index of the destination space.</span>
+<span class="sd">        :type destination: int</span>
+<span class="sd">        :param destination_floor_number: index of the destination floor.</span>
+<span class="sd">        :type destination_floor_number: int</span>
+<span class="sd">        :return: list of valid routes.</span>
+<span class="sd">        :rtype: List[List[Tuple[int, int, int]]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Start node</span>
+        <span class="n">starting_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_multifloor_exit_nodes</span><span class="p">(</span>
+            <span class="n">starting_location</span><span class="p">,</span> <span class="n">starting_floor_number</span>
+        <span class="p">)</span>
+
+        <span class="c1"># End node</span>
+        <span class="n">dest_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_multifloor_exit_nodes</span><span class="p">(</span>
+            <span class="n">destination</span><span class="p">,</span> <span class="n">destination_floor_number</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Get possible routes</span>
+        <span class="n">valid_routes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s_node</span><span class="p">,</span> <span class="n">e_node</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">starting_nodes</span><span class="p">,</span> <span class="n">dest_nodes</span><span class="p">):</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">route</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">astar_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multifloor_navnet</span><span class="p">,</span> <span class="n">s_node</span><span class="p">,</span> <span class="n">e_node</span><span class="p">)</span>
+                <span class="n">valid_routes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">route</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Here is the exception: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;No route between: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">starting_location</span><span class="p">,</span> <span class="n">destination</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">valid_routes</span></div>
+
+<div class="viewcode-block" id="Navigation.get_best_possible_routes_same_floor"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.get_best_possible_routes_same_floor">[docs]</a>    <span class="k">def</span> <span class="nf">get_best_possible_routes_same_floor</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">current_location</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find list of possible routes between two locations on the same floor in</span>
+<span class="sd">        this facility.</span>
+
+<span class="sd">        :param floor_number: index of the floor.</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        :param current_location: index of the starting space.</span>
+<span class="sd">        :type current_location: int</span>
+<span class="sd">        :param destination: index of the destination space.</span>
+<span class="sd">        :type destination: int</span>
+<span class="sd">        :return: list of valid routes between the two spaces.</span>
+<span class="sd">        :rtype: List[List[Tuple[int, int, int]]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Start node</span>
+        <span class="n">starting_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_single_floor_exit_nodes</span><span class="p">(</span>
+            <span class="n">current_location</span><span class="p">,</span> <span class="n">floor_number</span>
+        <span class="p">)</span>
+
+        <span class="c1"># End node</span>
+        <span class="n">dest_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_single_floor_exit_nodes</span><span class="p">(</span>
+            <span class="n">destination</span><span class="p">,</span> <span class="n">floor_number</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Get possible routes</span>
+        <span class="n">valid_routes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s_node</span><span class="p">,</span> <span class="n">e_node</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">starting_nodes</span><span class="p">,</span> <span class="n">dest_nodes</span><span class="p">):</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">route</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">astar_path</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">[</span><span class="n">floor_number</span><span class="p">],</span> <span class="n">s_node</span><span class="p">,</span> <span class="n">e_node</span>
+                <span class="p">)</span>
+                <span class="n">valid_routes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">route</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Here is the exception: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;No route between: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">current_location</span><span class="p">,</span> <span class="n">destination</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">valid_routes</span></div></div>
+
+
+<div class="viewcode-block" id="remove_unnecessary_coords"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.remove_unnecessary_coords">[docs]</a><span class="k">def</span> <span class="nf">remove_unnecessary_coords</span><span class="p">(</span>
+    <span class="n">route</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Inspect a route given by a set of coordinates and remove any intermediate</span>
+<span class="sd">    coords that&#39;s collinear with its two neighbors.</span>
+
+<span class="sd">    [extended_summary]</span>
+
+<span class="sd">    :param route: List of tuples of x, y coordinates</span>
+<span class="sd">    :type route: List[Tuple[int, int]]</span>
+<span class="sd">    :return: Trimmed down list of coordinates.</span>
+<span class="sd">    :rtype: List[Tuple[int, int]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">index_of_coords_to_delete</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">route</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">route</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">route</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+                <span class="ow">or</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">route</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="p">):</span>  <span class="c1"># pos can have a length of 3</span>
+                <span class="k">continue</span>
+            <span class="c1"># Check if this point and the points before and after are collinear</span>
+            <span class="n">test_line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">route</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">route</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">end</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">route</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">route</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">)</span>
+            <span class="n">test_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">gsu</span><span class="o">.</span><span class="n">is_point_on_line</span><span class="p">(</span><span class="n">test_line</span><span class="p">,</span> <span class="n">test_point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+                <span class="n">index_of_coords_to_delete</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">index_of_coords_to_delete</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">route</span><span class="p">[</span><span class="n">index_of_coords_to_delete</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">route</span></div>
+
+
+<div class="viewcode-block" id="unroll_route"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.unroll_route">[docs]</a><span class="k">def</span> <span class="nf">unroll_route</span><span class="p">(</span>
+    <span class="n">route</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="n">pace</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use the given pace to find intermediate coordinates between each</span>
+<span class="sd">    pair of nodes in this route.</span>
+
+<span class="sd">    Note that currently the agent is required to pass through all notable</span>
+<span class="sd">    points (e.g. turns at intersections)</span>
+
+<span class="sd">    :param route: initial route with only notable coordinates.</span>
+<span class="sd">    :type route: List[Union[Tuple[int, int], Tuple[int, int, int]]]</span>
+<span class="sd">    :param pace: The desired pace in units of [dist/time]</span>
+<span class="sd">    :type pace: float</span>
+<span class="sd">    :return: list of all coordinates required to navigate this route at the</span>
+<span class="sd">            desired pace.</span>
+<span class="sd">    :rtype: List[Union[Tuple[int, int], Tuple[int, int, int]]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">route</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot unroll. Route is None.&quot;</span><span class="p">)</span>
+
+    <span class="n">route</span> <span class="o">=</span> <span class="n">remove_unnecessary_coords</span><span class="p">(</span><span class="n">route</span><span class="p">)</span>
+    <span class="n">full_route</span> <span class="o">=</span> <span class="p">[</span><span class="n">route</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">route</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>  <span class="c1"># Look back and unroll</span>
+
+        <span class="n">current_x</span><span class="p">,</span> <span class="n">current_y</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">last_x</span><span class="p">,</span> <span class="n">last_y</span> <span class="o">=</span> <span class="n">route</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">route</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Check if this is between 2 floors</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">route</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+            <span class="n">full_route</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">current_x</span> <span class="o">-</span> <span class="n">last_x</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">current_y</span> <span class="o">-</span> <span class="n">last_y</span>
+
+        <span class="n">n_intermediate_steps</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pace</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pace</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_intermediate_steps</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="n">dx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">dx</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n_intermediate_steps</span><span class="p">))</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">dy</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n_intermediate_steps</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_intermediate_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">new_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">last_x</span> <span class="o">+</span> <span class="n">step</span> <span class="o">*</span> <span class="n">dx</span><span class="p">,</span> <span class="n">last_y</span> <span class="o">+</span> <span class="n">step</span> <span class="o">*</span> <span class="n">dy</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_pos</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">last_x</span> <span class="o">+</span> <span class="n">step</span> <span class="o">*</span> <span class="n">dx</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                        <span class="n">last_y</span> <span class="o">+</span> <span class="n">step</span> <span class="o">*</span> <span class="n">dy</span><span class="p">,</span>
+                        <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+                    <span class="p">)</span>
+                <span class="n">full_route</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_pos</span><span class="p">)</span>
+
+        <span class="n">full_route</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">full_route</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" >citam.engine</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

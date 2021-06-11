@@ -1,0 +1,133 @@
+:mod:`citam.tests.api.test_results_parser`
+==========================================
+
+.. py:module:: citam.tests.api.test_results_parser
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.api.test_results_parser.test_contacts_parsing_num_steps
+   citam.tests.api.test_results_parser.test_get_contacts_no_contact_step
+   citam.tests.api.test_results_parser.test_get_contacts_single_contact_step
+   citam.tests.api.test_results_parser.test_get_contacts_multiple_contact_step
+   citam.tests.api.test_results_parser.test_trajectories_num_structure
+   citam.tests.api.test_results_parser.test_trajectories_num_steps
+   citam.tests.api.test_results_parser.test_get_total_timesteps
+   citam.tests.api.test_results_parser.test_get_trajectories_2agents
+   citam.tests.api.test_results_parser.test_get_trajectories_2agents_filtered
+   citam.tests.api.test_results_parser.test_get_trajectories_long_trajectory_next_block
+   citam.tests.api.test_results_parser.test_get_trajectories_long_trajectory_no_block
+   citam.tests.api.test_results_parser.test_get_trajectories_long_trajectory_last_block
+   citam.tests.api.test_results_parser.test_get_trajectories_long_trajectory_all
+
+
+
+.. function:: test_contacts_parsing_num_steps(use_local_storage)
+
+
+.. function:: test_get_contacts_no_contact_step(use_local_storage)
+
+   Test that the correct data is parsed when a single contact was made in a
+   step
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: test_get_contacts_single_contact_step(use_local_storage)
+
+   Test that the correct data is parsed when a single contact was made in a
+   step
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: test_get_contacts_multiple_contact_step(use_local_storage)
+
+   Test that the correct data is parsed when a multiple contacts were made
+   in a step
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: test_trajectories_num_structure(use_local_storage)
+
+
+.. function:: test_trajectories_num_steps(use_local_storage)
+
+
+.. function:: test_get_total_timesteps(use_local_storage)
+
+
+.. function:: test_get_trajectories_2agents(use_local_storage)
+
+
+.. function:: test_get_trajectories_2agents_filtered(use_local_storage)
+
+
+.. function:: test_get_trajectories_long_trajectory_next_block(use_local_storage)
+
+
+.. function:: test_get_trajectories_long_trajectory_no_block(use_local_storage)
+
+
+.. function:: test_get_trajectories_long_trajectory_last_block(use_local_storage)
+
+
+.. function:: test_get_trajectories_long_trajectory_all(use_local_storage)
+
+

@@ -1,0 +1,48 @@
+:mod:`citam.conf`
+=================
+
+.. py:module:: citam.conf
+
+.. autoapi-nested-parse::
+
+   Methods to load overridable user-defined settings
+
+   ..
+       !! processed by numpydoc !!
+
+
+
+Module Contents
+---------------
+
+.. exception:: ConfigurationError(error_list)
+
+
+   Bases: :py:obj:`Exception`
+
+   This error is raised when the running CITAM configuration is invalid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. data:: settings
+   
+
+   
+

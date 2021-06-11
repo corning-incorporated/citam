@@ -1,0 +1,105 @@
+:mod:`citam.tests.engine.conftest`
+==================================
+
+.. py:module:: citam.tests.engine.conftest
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.conftest.x_floorplan
+   citam.tests.engine.conftest.rect_floorplan
+   citam.tests.engine.conftest.rect_floorplan2
+   citam.tests.engine.conftest.x_space
+   citam.tests.engine.conftest.rect_space
+   citam.tests.engine.conftest.datadir
+   citam.tests.engine.conftest.aisle_from_x_floorplan
+   citam.tests.engine.conftest.aisle_from_x_floorplan2
+   citam.tests.engine.conftest.simple_facility_floorplan
+   citam.tests.engine.conftest.simple_facility_floorplan_2_floors
+   citam.tests.engine.conftest.rect_floorplan_ingester_data
+
+
+
+.. function:: x_floorplan()
+
+
+.. function:: rect_floorplan()
+
+
+.. function:: rect_floorplan2()
+
+
+.. function:: x_space()
+
+
+.. function:: rect_space()
+
+
+.. function:: datadir(tmpdir, request)
+
+   Fixture responsible for searching a folder with the same name of test
+   module and, if available, moving all contents to a temporary directory so
+   tests can use them freely.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: aisle_from_x_floorplan(x_floorplan)
+
+
+.. function:: aisle_from_x_floorplan2(x_floorplan)
+
+
+.. function:: simple_facility_floorplan(request, monkeypatch)
+
+
+.. function:: simple_facility_floorplan_2_floors(simple_facility_floorplan)
+
+
+.. function:: rect_floorplan_ingester_data()
+
+   Basic rect floorplan with one main aisle, 4 office spaces on each side
+   and a big room at the end of the hallway
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+

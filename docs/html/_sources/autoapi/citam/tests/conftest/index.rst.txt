@@ -1,0 +1,55 @@
+:mod:`citam.tests.conftest`
+===========================
+
+.. py:module:: citam.tests.conftest
+
+.. autoapi-nested-parse::
+
+   CITAM Global Test Fixtures
+
+   .. warning::
+          This module is reserved for global auto-use fixtures. Only add fixtures
+          to this file if they impact code or functionality affecting the
+          majority of the codebase,
+
+   ..
+       !! processed by numpydoc !!
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.conftest.reinitialize_settings
+
+
+
+.. function:: reinitialize_settings(monkeypatch)
+
+   Before each command is run, reinitialize the citam settings
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+

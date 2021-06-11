@@ -1,0 +1,1113 @@
+:mod:`navbuilder`
+=================
+
+.. py:module:: navbuilder
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   navbuilder.NavigationBuilder
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   navbuilder.LOG
+
+
+.. data:: LOG
+   
+
+   
+
+.. class:: NavigationBuilder(floorplan: citam.engine.map.floorplan.Floorplan, add_all_nav_points=False)
+
+
+   Create the navigation network (navnet) for a given floorplan.
+
+   Each node in the navigation network is a notable xy coordinate in the
+   floorplan corresponding to entrances to various spaces and intersections
+   between navigation segments. The correspondence between nodes and
+   actual locations is handled at the floorplan and navigation (see the
+   navigation class) level.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. method:: build(self)
+
+      Build the navigation network (navnet) for a given floorplan.
+
+      The navigation network is created by adding a navigation segment
+      at the center of each aisle and then adding perpendicular nav segments
+      acroos each door that hasn't been added to the navnet yet.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _create_nav_segments_for_doors(self)
+
+      Iterate over each door in floorplan and create perpendicular nav
+      segments for each.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _create_nav_segments_for_aisles(self)
+
+      Iterate over each hallway and create nav segments along each
+      aisle.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _update_navnet(self, segments: List[List[citam.engine.map.point.Point]], seg_spaces: List[citam.engine.map.space.Space], width: float) -> None
+
+      For each segment in list of nav segments, create nodes and edges
+      in navnet. Also keep track in which space each segment falls.
+
+      [extended_summary]
+
+      :param segments: List of segments where each segment is a list of
+           points.
+      :type segments: List[List[Point]]
+      :param seg_spaces: List of spaces where each segment falls.
+      :type seg_spaces: List[Space]
+      :param width: Width of each edge to be added to navent.
+      :type width: float
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _aisle_has_nav_segment(self, aisle: Tuple[svgpathtools.Line, svgpathtools.Line], space: citam.engine.map.space.Space) -> bool
+
+      Check if aisle already has a navigation segment.
+
+      :param aisle: Aisle, given as a tuple of 2 walls.
+      :type aisle: Tuple[Line, Line]
+      :param space: The space where this aisle is located.
+      :type space: Space
+      :return: Whether a nav segment was found in this aisle or not.
+      :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _find_valid_boundaries(self, space: citam.engine.map.space.Space) -> List[svgpathtools.Line]
+
+      Iterate over boundary walls of a space and return only the
+       ones that are not between two hallways.
+
+      :param space: The space of interest.
+      :type space: Space
+      :return: List of valid boundaries.
+      :rtype: List[Line]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: create_nav_segment_for_aisle(self, aisle: tuple) -> None
+
+      Create navigation segements (edges in the navnet) to handle
+      circulation in this aisle.
+
+      :param aisle: An aisle, given by two parallel walls.
+      :type aisle: Tuple[Line, Line]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _find_location_of_point(self, point: citam.engine.map.point.Point) -> Tuple[Optional[citam.engine.map.space.Space], Optional[int]]
+
+      Find the space inside which this point is located.
+
+      :param point: The point of interest
+      :type point: Point
+      :return: Space object where the point is located (None if not found)
+              and its index in the list of spaces (None if not found).
+      :rtype: Tuple[Optional[Space], Optional[int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _is_point_on_boundaries(self, point: citam.engine.map.point.Point) -> List[citam.engine.map.space.Space]
+
+      Check if point falls on any boundary and return list of
+      corresponding spaces. If only one space, then this is an exterior
+      boundary.
+
+      :param point: The point of interest.
+      :type point: Point
+      :return: List of spaces on which boundaries this point lies.
+      :rtype: List[Space]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _add_segments_to_navnet(self, segments: List[List[citam.engine.map.point.Point]], seg_spaces: List[citam.engine.map.space.Space], width: float) -> None
+
+      Add nodes and edges to the navigation network based on a given list of
+      nav segments.
+
+      Each point in each segment is added as a node in the nav network
+      and a connection (edge) is created between each successive pair of
+      points.
+
+      :param segments: List of segments to consider.
+      :type segments: List[List[Point]]
+      :param seg_spaces: List of spaces where the segments fall.
+      :type seg_spaces: List[Space]
+      :param width: Width to assign to each edge in the navnet.
+      :type width: float
+      :raises ValueError: If a segment has less than 2 points.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _add_spaces_to_hallway_graph(self, spaces: List[citam.engine.map.space.Space]) -> None
+
+      Add hallways to the hallway graph.
+
+      The hallway graph keeps track of which hallway is accessible from
+      which hallway. A connection is created between each space given
+      as input.
+
+      :param spaces: The list of space objects to add to the graph.
+      :type spaces: List[Space]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: find_door_intersect(self, test_line: svgpathtools.Line) -> Tuple[Optional[Tuple[int, int]], Optional[citam.engine.map.door.Door]]
+
+      Check if the given line intersects with a door.
+
+      Intersect coords are to the nearest integer.
+
+      :param test_line: The line of interest.
+      :type test_line: Line
+      :return: The intersect xy coordinates and the door object, (None, None)
+              if not found.
+      :rtype: Tuple[Optional[Tuple[int, int]], Optional[Door]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: find_if_valid_nearby_space_exits(self, current_point: citam.engine.map.point.Point, direction: int, dx: float, dy: float) -> citam.engine.map.space.Space
+
+      Given a point and direction, look ahead by (dx, dy) to verify if a
+      valid space exists there and return that space.
+
+      This function is expected to be used to decide whether to continue with
+      a navigation segment or not when crossing the boundaries of the current
+      space (hence the direction parameter). Keep in mind that a boundary
+      does not need to correspond to a wall).
+
+      :param new_point: The current point that falls on the boundaries.
+      :type new_point: Point
+      :param direction: The current direction of the nav segment.
+      :type direction: int
+      :param dx: The look ahead distance in the x direction.
+      :type dx: float
+      :param dy: The look ahead distance in the y direction.
+      :type dy: float
+      :raises ValueError: If point is not on any boundary.
+      :raises ValueError: If space is found to be on the boundary of 2 or
+              more spaces but no space is found ahead (clearly something is
+              wrong).
+      :return: The space ahead
+      :rtype: Space
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _update_segments(self, new_point: citam.engine.map.point.Point, direction: int, segments: List[citam.engine.map.point.Point]) -> None
+
+      Given a valid new point, update the current navigation segments.
+
+      :param new_point: The new point to add to one of the segments
+      :type new_point: Point
+      :param direction: The current direction of the nav segment.
+      :type direction: int
+      :param segments: The current list of segments
+      :type segments: List[Point]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _is_crossing_wall(self, first_point: citam.engine.map.point.Point, new_point: citam.engine.map.point.Point) -> bool
+
+      Verify if the current nav segment has reached an existing wall.
+
+      :param first_point: The very first point of the navigation segment.
+      :type first_point: Point
+      :param new_point: The current point in the navigation segment.
+      :type new_point: Point
+      :return: Whether a wall is reached or not.
+      :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _is_heading_outside_facility(self, new_point: citam.engine.map.point.Point, direction: int, dx: float, dy: float, look_ahead_dist=3) -> bool
+
+      Verify if current nav segment is heading outside the facility
+      within a given look ahead distance.
+
+      [extended_summary]
+
+      :param new_point: The current point of the nav segment.
+      :type new_point: Point
+      :param direction: The direction (positive or negative) where the
+          segment is headed.
+      :type direction: int
+      :param dx: look ahead distance in the x direction
+      :type dx: float
+      :param dy: look ahead distance in the y direction
+      :type dy: float
+      :param look_ahead_dist: look-ahead distance multiplier, defaults to 3
+      :type look_ahead_dist: int, optional
+      :raises ValueError: If value for the direction is invalid.
+      :return: Whether the position ahead is outside the facility or not.
+      :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _is_crossing_door(self, first_point: citam.engine.map.point.Point, current_point: citam.engine.map.point.Point) -> Optional[Tuple[int, int]]
+
+      Verify if current nav segment is crossing a door, if so add door
+      to list of excluded doors and update segments accordingly.
+
+      ..Note: Expected to cross only one door at a time.
+
+      :param first_point: The very first point in the current nav segment.
+      :type first_point: Point
+      :param new_point: The current point in the nav segment.
+      :type new_point: Point
+      :return: The intersect coordinates with a door, if any, None otherwise.
+      :rtype: Optional[Tuple[int, int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _create_segments_for_new_space(self, first_point: citam.engine.map.point.Point, new_point: citam.engine.map.point.Point, segments: List[List[citam.engine.map.point.Point]], direction: int)
+
+      Create navigation segments when crossing from one space to another.
+
+      :param first_point: The first point in the current nav segment.
+      :type first_point: Point
+      :param new_point: The current point in the navigation segment.
+      :type new_point: Point
+      :param new_space: The new space.
+      :type new_space: Space
+      :param segments: List of all current nav segments to be updated.
+      :type segments: List[List[Point]]
+      :param segment_spaces: List of all current spaces where each segment is
+          located.
+      :type segment_spaces: List[Space]
+      :param direction: The direction of the segment (-1 or 1).
+      :type direction: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: compute_single_direction_nav_segment(self, current_space: citam.engine.map.space.Space, first_point: citam.engine.map.point.Point, direction: int, dx: float, dy: float, segments: List[List[Tuple[citam.engine.map.point.Point]]], segment_spaces: List[citam.engine.map.space.Space], stop_at_existing_segments: bool)
+
+      Compute navigation segments in a given direction. More than 1 segment
+      will be created if crossing into different spaces.
+
+      :param current_space: The current space.
+      :type current_space: Space
+      :param first_point: The first point in this navigation segment.
+      :type first_point: Point
+      :param direction: The direction of the navigation segment.
+      :type direction: int
+      :param dx: x-increment of the navigation segment.
+      :type dx: float
+      :param dy: y-increment of the navigation segment.
+      :type dy: float
+      :param segments: List of all current nav segments to be updated.
+      :type segments: List[List[Point]]
+      :param segment_spaces: List of all spaces where the nav segments are
+          located
+      :type segment_spaces: List[Space]
+      :param stop_at_existing_segments: Whether to stop when crossing an
+          existing nav segment or not.
+      :type stop_at_existing_segments: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: compute_nav_segments(self, first_point: citam.engine.map.point.Point, direction_vector: complex, stop_at_existing_segments: bool = False) -> Tuple[List, List]
+
+      Compute navigation segments from a given point and direction.
+      2 segments are created from the starting point going in opposite
+      directions.
+
+      A navigation segment corresponds to an edge in the navigation graph
+      connecting 2 nodes (usually doors or walls marking the end of the
+      navigation segment).
+
+      :param first_point: The initial point from which to start the segments
+      :type first_point: Point
+      :param direction_vector: Vector indicating the directions (positive and
+               negative) of the segments.
+      :type direction_vector: complex
+      :param width: The width to assign to edges in the navnet.
+      :type width: float
+      :param stop_at_existing_segments: Whether to stop if the segment
+           crosses an existing navigation segment in the navnet or not,
+           defaults to False
+      :type stop_at_existing_segments: bool, optional
+      :raises ValueError: if the number of segments is different from the
+          number of spaces at the end of the process, indicating that
+          something went wrong.
+      :return: list of segments and corresponding space ids where they fall.
+      :rtype: Tuple[List, List]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _handle_wall_intersects(self, intersects: List[Tuple], path_line: svgpathtools.Path, edge: List[List], half_width: float)
+
+      Break nav segments when they intersect with walls.
+
+      :param intersects: Points where nav segment intersects walls.
+      :type intersects: List[Tuple]
+      :param path_line: The path object representing the nav segment.
+      :type path_line: Path
+      :param edge: Edge in the navnet corresponding to current nav segment.
+      :type edge: List[List]
+      :param half_width: Half width of the current nav segment.
+      :type half_width: float
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: sanitize_navnet(self) -> None
+
+      Make sure navigation paths do not cross any walls, including
+      standalone walls.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _remove_node_if_invalid(self, node: tuple, neighbors: List[tuple], door_paths: List[svgpathtools.Path]) -> bool
+
+      Check if a node should be removed based on whether it has two neighbors
+      with which it forms a straight line.
+
+      :param node: The node of interest
+      :type node: tuple
+      :param neighbors: List of the neighboring nodes
+      :type neighbors: List[tuple]
+      :param door_paths: SVG path for all the doors in facility
+      :type door_paths: List[Path]
+      :return: Whether the node was removed or not.
+      :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: simplify_navigation_network(self) -> None
+
+      Remove unnecessary edges and nodes in navigation network.
+
+      A node is unnecessary if it only has 2 neighbors and all 3 together
+      form a straight line.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: find_and_collapse_parallel_segments(self, space: citam.engine.map.space.Space) -> None
+      :abstractmethod:
+
+      Iterate over segments in this space, test for overlap (parallel
+      segments) and remove any.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _compute_intersection_and_remove_segments(self, key: str, seg1: Tuple[citam.engine.map.point.Point], seg2: Tuple[citam.engine.map.point.Point]) -> False
+
+      Check if nav segments intersect and update list of nav segments
+      accordingly to capture the intersection point as a node in the graph.
+
+      :param key: key to find the space of interset.
+      :type key: str
+      :param seg1: The first segment
+      :type seg1: Tuple[Point]
+      :param seg2: The second segment
+      :type seg2: Tuple[Point]
+      :return: Whether an intersection point was found or not.
+      :rtype: False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _check_for_intersection_with_other_segments(self, key, i, n_segments)
+
+
+   .. method:: find_intersections_in_space(self, space: citam.engine.map.space.Space) -> None
+
+      Iterate through all nav segment pairs in this space, find any
+      intersections and add to navnet.
+
+      An intersection is when 2 nav segments cross each other.
+
+      :param space: The space of interest
+      :type space: Space
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: _remove_intersecting_edges(self, coords1: Tuple[int, int], coords2: Tuple[int, int], coords3: Tuple[int, int], coords4: Tuple[int, int]) -> Tuple[float, float]
+
+      Given 4 xy coordiantes where the first 2 form one segment and the next
+      2 form another segment, remove corresponding edges from navnet.
+
+      :param coords1: Coordinates of first point of first edge.
+      :type coords1: Tuple[int, int]
+      :param coords2: Coordinates of second point of first edge.
+      :type coords2: Tuple[int, int]
+      :param coords3: Coordinates of first point of second edge.
+      :type coords3: Tuple[int, int]
+      :param coords4: Coordinates of second point of second edge.
+      :type coords4: Tuple[int, int]
+      :return: Half widths of both edges.
+      :rtype: Tuple[float, float]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: find_and_add_intersection_node_to_graph(self, coords1: Tuple[int, int], coords2: Tuple[int, int], coords3: Tuple[int, int], coords4: Tuple[int, int]) -> Optional[Tuple[int, int]]
+
+      Given four points forming 2 lines, check if they intersect
+      and if so add new node to graph and create new edges.
+
+      :param coords1: Coordinates of first point.
+      :type coords1: Tuple[int, int]
+      :param coords2: Coordinates of first point.
+      :type coords2: Tuple[int, int]
+      :param coords3: Coordinates of first point.
+      :type coords3: Tuple[int, int]
+      :param coords4: Coordinates of first point.
+      :type coords4: Tuple[int, int]
+      :return: xy coordinates of the intersection. None if none.
+      :rtype: Point
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: export_navnet_to_svg(self, svg_file: Union[str, pathlib.Path]) -> None
+
+      Export the navigation network to an svg file for visualization.
+
+      Superimposes the navigation network on top of the floorplan for easier
+      interpretation.
+
+      :param svg_file: path the svg file to export to.
+      :type svg_file: Union[str, pathlib.Path]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: load_nav_paths_from_svg_file(self, svg_file: Union[str, pathlib.Path]) -> List[svgpathtools.Path]
+
+      Load all the nav segments found in an SVG file. Nav segments are paths
+      tagged with a 'nav' in their id attribute.
+
+      :param svg_file: Path to the SVG file
+      :type svg_file: Union[str, pathlib.Path]
+      :return: List of nav paths found in SVG file.
+      :rtype: List[Path]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: update_network_from_svg_file(self, svg_file: Union[str, pathlib.Path]) -> None
+
+      Update the navigation file using nav paths defined in an svg file. Can
+      be used to allow a user to edit the navnet after the fact to add, edit
+      or remove segments.
+
+      :param svg_file: full path to the svg file.
+      :type svg_file: Union[str, pathlib.Path]
+      :raises FileNotFoundError: If the svg file is not found.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: export_navdata_to_json(self, navnet_json_file: Union[str, pathlib.Path], hallway_graph_json_file: Union[str, pathlib.Path]) -> None
+
+      Export the navigation network data to json file for later use.
+
+      [extended_summary]
+
+      :param navnet_json_file: path to location to save navnet json file
+      :type navnet_json_file: Union[str, pathlib.Path]
+      :param hallway_graph_json_file: path to location to save the hallways
+           graph
+      :type hallway_graph_json_file: Union[str, pathlib.Path]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: load_navdata_from_json_files(self, navnet_json_file: Union[str, pathlib.Path], hallway_graph_json_file: Union[str, pathlib.Path]) -> None
+
+      Load the navigation network and the hallway graph from json files.
+
+      Used to initialize the navnet and hallway graph using data from
+      existing files.
+
+      :param navnet_json_file: Full path to the navigation graph json file
+      :type navnet_json_file: Union[str, pathlib.Path]
+      :param hallway_graph_json_file: Full path to the hallway graph json
+              file
+      :type hallway_graph_json_file: Union[str, pathlib.Path]
+      :raises ValueError: If a navnet or hallway graph currently exists, to
+              avoid accidental overwrite.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+

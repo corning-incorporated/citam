@@ -1,0 +1,70 @@
+:mod:`citam.tests.engine.test_meeting_policy`
+=============================================
+
+.. py:module:: citam.tests.engine.test_meeting_policy
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_meeting_policy.sample_policy_params
+   citam.tests.engine.test_meeting_policy.sample_meeting_policy
+   citam.tests.engine.test_meeting_policy.test__init
+   citam.tests.engine.test_meeting_policy.test_create_all_meetings
+   citam.tests.engine.test_meeting_policy.test__update_attendee_pool
+   citam.tests.engine.test_meeting_policy.test__update_attendee_pool_2
+   citam.tests.engine.test_meeting_policy.test_get_daily_meetings
+   citam.tests.engine.test_meeting_policy.test_get_daily_meetings_2
+   citam.tests.engine.test_meeting_policy.test__find_potential_attendees
+   citam.tests.engine.test_meeting_policy.test__find_potential_attendees_2
+   citam.tests.engine.test_meeting_policy.test__generate_meeting_attendee_list
+   citam.tests.engine.test_meeting_policy.test__generate_meeting_attendee_list2
+   citam.tests.engine.test_meeting_policy.test__create_meetings_for_room
+
+
+
+.. function:: sample_policy_params()
+
+
+.. function:: sample_meeting_policy(sample_policy_params, simple_facility_floorplan)
+
+
+.. function:: test__init(sample_policy_params, simple_facility_floorplan)
+
+
+.. function:: test_create_all_meetings(sample_meeting_policy, sample_policy_params)
+
+
+.. function:: test__update_attendee_pool(sample_meeting_policy)
+
+
+.. function:: test__update_attendee_pool_2(sample_meeting_policy)
+
+
+.. function:: test_get_daily_meetings(sample_meeting_policy)
+
+
+.. function:: test_get_daily_meetings_2(sample_meeting_policy)
+
+
+.. function:: test__find_potential_attendees(sample_meeting_policy)
+
+
+.. function:: test__find_potential_attendees_2(sample_meeting_policy)
+
+
+.. function:: test__generate_meeting_attendee_list(sample_meeting_policy)
+
+
+.. function:: test__generate_meeting_attendee_list2(sample_meeting_policy)
+
+
+.. function:: test__create_meetings_for_room(sample_meeting_policy)
+
+

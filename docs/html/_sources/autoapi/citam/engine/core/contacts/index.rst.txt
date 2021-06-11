@@ -1,0 +1,319 @@
+:mod:`citam.engine.core.contacts`
+=================================
+
+.. py:module:: citam.engine.core.contacts
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.core.contacts.ContactEvent
+   citam.engine.core.contacts.ContactEvents
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.core.contacts.update_data_dictionary
+
+
+
+.. function:: update_data_dictionary(datadict: dict, key: Hashable, data: Union[float, int]) -> dict
+
+   Utility function to update a dictionary to add data to existing value if
+   the key exist or create new key:value pair if not
+
+   :param dict datadict: the dictionary to update
+   :param str key: key for the value to update
+   :param float or int data: the value to add to current value
+   :return: the updated dictionary
+   :rtype: dict
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. class:: ContactEvent(floor_number: int, location: int, position: Tuple[int, int], current_step: int)
+
+
+   A contact event object keeps track of the initial timestep and total
+   duration as well as the list of xy positions, locations and floor numbers
+   of a contact (e.g. two people walking together).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. class:: ContactEvents
+
+
+   Class to keep track of every time 2 agents come in close proximity
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. method:: add_contact(self, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent, current_step: int, position: Tuple[int, int]) -> None
+
+      Add single contact event between two agents. If there was a contact
+      event in the previous step, update its duration and list of locations.
+      The floor number is extracted from the first agent's position.
+
+      ..note: a contact event is identified
+
+      :param agent1: First agent involved in this contact event.
+      :type agent1: Agent
+      :param agent2: Second agent involved in this contact event.
+      :type agent2: Agent
+      :param current_step: Current timestep of the simulation
+      :type current_step: int
+      :param position: xy position of contact
+      :type position: Tuple[int, int]
+      :raises ValueError: If the two agents have the same ID.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: count(self) -> int
+
+      compute the total number of unique contact events. A unique contact
+      event involves two specific agents and has a start and end time.
+
+      ..Note: two agents can have more than 1 unique contact event.
+
+      :return: total number of unique contact events
+      :rtype: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: save_pairwise_contacts(self, filename: str) -> None
+
+      Save pairwise contact data to file. The file is saved in a CSV format
+      with the following columns: Agent1, Agent2, total contacts and total
+      contact duration.
+
+      ..note: this is an aggregate over all the contacts between two agents.
+
+      :param filename: name of the file
+      :type filename: str
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: extract_statistics(self) -> List[Dict[str, Any]]
+
+      Extract important contact statistics from contact data.
+
+      :return: list of dictionaries of important statistics. Each stat is
+              given by its name, value and unit.
+      :rtype: list[dict[str, Dict]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: get_floor_contact_coords(self, key: str, floor_number: int) -> List[Tuple[int, int]]
+
+      Iterate over all contact events associated with key (referring to two
+      specific agents), and return the ones that took place on given floor
+      number.
+
+      :param key: the pair of agents given by a key of the form
+          <agent1_id>-<agent2_id> where agent1_id < agent2_id.
+      :type key: str
+      :param floor_number: index of the floor of interest.
+      :type floor_number: int
+      :return: the xy coordinates of where contacts took place
+      :rtype: List[Tuple[int, int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: get_contacts_per_coordinates(self, step: int, floor_number: int) -> Dict[Tuple[int, int], int]
+
+      Save per coordinate contact data to file.
+
+      :param step: Simulation step for which to extract contact data.
+      :type step: int
+      :param floor_number: Floor number for which to extract data.
+      :type floor_number: int
+      :return: Dictionary of contacts per location with xy positions as keys
+      :rtype: Dict[Tuple[int, int], int]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. method:: save_raw_contact_data(self, filename: str) -> None
+
+      Save all contact data to file.
+
+      This will write all the contact information in this simulation to file
+      (can be big). The data will be converted to a dictionary of list of
+      dictionaries where the top dictionary is keyed by agent_id - agent_id
+      with their corresponding list of contacts. Each contact event is
+      represented by a dictionary with property names and values of the
+      ContactEvent class.
+
+      :param filename: The file path to save the data
+      :type filename: str
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+
