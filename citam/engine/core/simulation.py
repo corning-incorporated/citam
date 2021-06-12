@@ -518,8 +518,8 @@ class Simulation:
         dx = (agent2.pos[0] - agent1.pos[0]) / 2.0
         dy = (agent2.pos[1] - agent1.pos[1]) / 2.0
         contact_pos = (agent1.pos[0] + dx, agent1.pos[1] + dy)
-        agent1.n_contacts += 1
-        agent2.n_contacts += 1
+        agent1.cumulative_contact_duration += 1
+        agent2.cumulative_contact_duration += 1
         self.contact_events.add_contact(
             agent1, agent2, self.current_step, contact_pos
         )
@@ -578,7 +578,7 @@ class Simulation:
                     + "\t"
                     + str(agent.current_floor)
                     + "\t"
-                    + str(agent.n_contacts)
+                    + str(agent.cumulative_contact_duration)
                     + "\n"
                 )
 
@@ -639,7 +639,7 @@ class Simulation:
         agent_ids, n_contacts = [], []
         for unique_id, agent in self.agents.items():
             agent_ids.append("ID_" + str(unique_id + 1))
-            n_contacts.append(agent.n_contacts)
+            n_contacts.append(agent.cumulative_contact_duration)
 
         return agent_ids, n_contacts
 

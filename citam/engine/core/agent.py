@@ -54,7 +54,7 @@ class Agent:
         self.office_id = office_id
         self.job_function = job_function
 
-        self.n_contacts = 0
+        self.cumulative_contact_duration = 0
         self.pos = None
         self.current_location = None
         self.current_floor = None
