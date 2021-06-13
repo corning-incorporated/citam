@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.engine.map.floorplan &#8212; CITAM 0.9.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/engine/map/floorplan.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_vector.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" accesskey="U">citam.engine</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.engine.map.floorplan</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2020. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1"># CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1"># ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">Line</span>
+
+<span class="kn">import</span> <span class="nn">citam.engine.io.visualization</span> <span class="k">as</span> <span class="nn">bv</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">citam.engine.io.serializer</span> <span class="kn">import</span> <span class="n">serializer</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.space</span> <span class="kn">import</span> <span class="n">Space</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.door</span> <span class="kn">import</span> <span class="n">Door</span>
+<span class="kn">from</span> <span class="nn">citam.engine.core.agent</span> <span class="kn">import</span> <span class="n">Agent</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Floorplan"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan">[docs]</a><span class="nd">@serializer</span>
+<span class="k">class</span> <span class="nc">Floorplan</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to represent and manipulate a floorplan in a given facility.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">spaces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">],</span>
+        <span class="n">doors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Door</span><span class="p">],</span>
+        <span class="n">walls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">],</span>
+        <span class="n">aisles</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">],</span>
+        <span class="n">minx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">miny</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">maxx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">maxy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">floor_name</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="n">special_walls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Walls not attached to any space</span>
+        <span class="n">traffic_policy</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">assign_doors_on_load</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new floorplan object.</span>
+
+<span class="sd">        :param scale: The scale of the floorplan in units of [drawing unit/ft]</span>
+<span class="sd">        :type scale: float</span>
+<span class="sd">        :param spaces: List of spaces in this floorplan</span>
+<span class="sd">        :type spaces: List[Space]</span>
+<span class="sd">        :param doors: List of doors in this floorplan.</span>
+<span class="sd">        :type doors: List[Door]</span>
+<span class="sd">        :param walls: List of walls in this floorplan.</span>
+<span class="sd">        :type walls: List[Line]</span>
+<span class="sd">        :param aisles: List of aisles</span>
+<span class="sd">        :type aisles: Tuple[Line, Line]</span>
+<span class="sd">        :param minx: Minimum x coordinate of the floorplan</span>
+<span class="sd">        :type minx: float</span>
+<span class="sd">        :param miny: Minimum y coordinate of the floorplan</span>
+<span class="sd">        :type miny: float</span>
+<span class="sd">        :param maxx: Maximum x coordinate of the floorplan</span>
+<span class="sd">        :type maxx: float</span>
+<span class="sd">        :param maxy: Maximum y coordinate of the floorplan</span>
+<span class="sd">        :type maxy: float</span>
+<span class="sd">        :param floor_name: Name of the floor, defaults to &quot;0&quot;</span>
+<span class="sd">        :type floor_name: str, optional</span>
+<span class="sd">        :param special_walls: List of special walls, defaults to None</span>
+<span class="sd">        :type special_walls: List[Line], optional</span>
+<span class="sd">        :param assign_doors_on_load: If doors should be assigned automatically,</span>
+<span class="sd">             defaults to False</span>
+<span class="sd">        :type assign_doors_on_load: bool, optional</span>
+<span class="sd">        :raises ValueError: If no doors, spaces, walls or aisles are provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_name</span> <span class="o">=</span> <span class="n">floor_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buildings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">special_walls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">]</span> <span class="o">=</span> <span class="n">special_walls</span> <span class="k">if</span> <span class="n">special_walls</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span> <span class="o">=</span> <span class="n">spaces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doors</span> <span class="o">=</span> <span class="n">doors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">walls</span> <span class="o">=</span> <span class="n">walls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aisles</span> <span class="o">=</span> <span class="n">aisles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxx</span> <span class="o">=</span> <span class="n">maxx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxy</span> <span class="o">=</span> <span class="n">maxy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minx</span> <span class="o">=</span> <span class="n">minx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">miny</span> <span class="o">=</span> <span class="n">miny</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ele</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="p">[</span><span class="n">doors</span><span class="p">,</span> <span class="n">spaces</span><span class="p">,</span> <span class="n">walls</span><span class="p">,</span> <span class="n">aisles</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid inputs for floorplan.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">assign_doors_on_load</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">match_doors_and_spaces</span><span class="p">()</span>
+
+        <span class="n">n_rooms_with_doors</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_rooms</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">space</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">building</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">buildings</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buildings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">building</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">space</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">():</span>
+                <span class="n">n_rooms</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">n_rooms_with_doors</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of spaces: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">)))</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of rooms: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_rooms</span><span class="p">))</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of rooms with doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_rooms_with_doors</span><span class="p">))</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of walls: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">walls</span><span class="p">)))</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Total number of doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doors</span><span class="p">)))</span>
+
+        <span class="n">n_outside_doors</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">door</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">doors</span>
+            <span class="k">if</span> <span class="n">door</span><span class="o">.</span><span class="n">space1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">door</span><span class="o">.</span><span class="n">space2</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of outside doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_outside_doors</span><span class="p">))</span>
+
+        <span class="c1"># This is to avoid using a grid and keeping track of all possible</span>
+        <span class="c1"># locations on the floor. Instead, only locations that have agents</span>
+        <span class="c1"># are tracked.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_locations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Agent</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="o">=</span> <span class="n">traffic_policy</span>
+
+<div class="viewcode-block" id="Floorplan.match_doors_and_spaces"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.match_doors_and_spaces">[docs]</a>    <span class="k">def</span> <span class="nf">match_doors_and_spaces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over all doors and create references to corresponding spaces.</span>
+<span class="sd">        This is useful when recreating a floorplan from serialized data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">door</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">doors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">door</span><span class="o">.</span><span class="n">space1_id</span><span class="p">:</span>
+                <span class="n">space1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_space_by_id</span><span class="p">(</span><span class="n">door</span><span class="o">.</span><span class="n">space1_id</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">space1</span><span class="p">:</span>
+                    <span class="n">space1</span><span class="o">.</span><span class="n">doors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">door</span><span class="p">)</span>
+                    <span class="n">door</span><span class="o">.</span><span class="n">space1</span> <span class="o">=</span> <span class="n">space1</span>
+            <span class="k">if</span> <span class="n">door</span><span class="o">.</span><span class="n">space2_id</span><span class="p">:</span>
+                <span class="n">space2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_space_by_id</span><span class="p">(</span><span class="n">door</span><span class="o">.</span><span class="n">space2_id</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">space2</span><span class="p">:</span>
+                    <span class="n">space2</span><span class="o">.</span><span class="n">doors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">door</span><span class="p">)</span>
+                    <span class="n">door</span><span class="o">.</span><span class="n">space2</span> <span class="o">=</span> <span class="n">space2</span></div>
+
+<div class="viewcode-block" id="Floorplan.find_space_by_id"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.find_space_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">find_space_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">space_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Space</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find and return the space object that has the given id.</span>
+
+<span class="sd">        :param space_id: The ID of the space of interest.</span>
+<span class="sd">        :type space_id: int</span>
+<span class="sd">        :return: The space that has this ID, None if no match found.</span>
+<span class="sd">        :rtype: Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">space</span> <span class="k">for</span> <span class="n">space</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span> <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">space_id</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Floorplan.place_agent"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.place_agent">[docs]</a>    <span class="k">def</span> <span class="nf">place_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">:</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Position an agent in a given x, y position on this floor</span>
+
+<span class="sd">        :param agent: The agent to place on this floor.</span>
+<span class="sd">        :type agent: Agent</span>
+<span class="sd">        :param pos: The xy location to place the agent.</span>
+<span class="sd">        :type pos: Tuple[int, int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_locations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent_locations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">agent</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent_locations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+        <span class="n">agent</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span></div>
+
+<div class="viewcode-block" id="Floorplan.remove_agent"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.remove_agent">[docs]</a>    <span class="k">def</span> <span class="nf">remove_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">:</span> <span class="n">Agent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove the agent from the floor and set its position to None.</span>
+
+<span class="sd">        :param agent: the agent to remove from this floor.</span>
+<span class="sd">        :type agent: Agent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">pos</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_locations</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot find any agent in this location.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent_locations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+        <span class="n">agent</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Floorplan.move_agent"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.move_agent">[docs]</a>    <span class="k">def</span> <span class="nf">move_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">:</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move an agent from its current position to a new position.</span>
+
+<span class="sd">        :param agent: Agent object to move. Assumed to have its current</span>
+<span class="sd">                location stored in a &#39;pos&#39; tuple.</span>
+<span class="sd">        :type agent: Agent</span>
+<span class="sd">        :param pos: Tuple of new position to move the agent to.</span>
+<span class="sd">        :type pos: Tuple[int, int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">place_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Floorplan.identify_this_location"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.identify_this_location">[docs]</a>    <span class="k">def</span> <span class="nf">identify_this_location</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">include_boundaries</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a point given by its xy coords, find the space inside of which it</span>
+<span class="sd">        is located. Returns the space integer id.</span>
+
+<span class="sd">        :param x: x-coordinate position</span>
+<span class="sd">        :type x: int</span>
+<span class="sd">        :param y: y-coordinate position</span>
+<span class="sd">        :type y: int</span>
+<span class="sd">        :param include_boundaries: whether to include space boundaries in the</span>
+<span class="sd">            definition of the space, defaults to True</span>
+<span class="sd">        :type include_boundaries: bool, optional</span>
+<span class="sd">        :return: The index of the space where this position falls.</span>
+<span class="sd">        :rtype: Optional[int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">location</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">room</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">room</span><span class="o">.</span><span class="n">is_point_inside_space</span><span class="p">(</span>
+                <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">),</span> <span class="n">include_boundaries</span><span class="o">=</span><span class="n">include_boundaries</span>
+            <span class="p">):</span>
+                <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">location</span></div>
+
+<div class="viewcode-block" id="Floorplan.get_room_exit_coords"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.get_room_exit_coords">[docs]</a>    <span class="k">def</span> <span class="nf">get_room_exit_coords</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">room_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a room id, find the exit coords (xy point at the middle of the</span>
+<span class="sd">        door)</span>
+
+<span class="sd">        :param room_id: [description]</span>
+<span class="sd">        :type room_id: int</span>
+<span class="sd">        :return: The xy coordinates where an agent can exit this space.</span>
+<span class="sd">        :rtype: Optional[Tuple[int, int]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">room</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="n">room_id</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">room</span><span class="o">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">room</span><span class="o">.</span><span class="n">unique_name</span><span class="si">}</span><span class="s2"> has no door&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">room_door</span><span class="o">.</span><span class="n">intersect_coords</span> <span class="k">for</span> <span class="n">room_door</span> <span class="ow">in</span> <span class="n">room</span><span class="o">.</span><span class="n">doors</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Floorplan.export_to_svg"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.export_to_svg">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_svg</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">include_doors</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export the current floorplan to an SVG file.</span>
+
+<span class="sd">        Each space is written to file as a path element. Doors are written</span>
+<span class="sd">        seperately as path element as well.</span>
+
+<span class="sd">        :param svg_file: location where to save the file.</span>
+<span class="sd">        :type svg_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :param include_doors: Whether to include doors in the SVG file or not,</span>
+<span class="sd">                 defaults to False</span>
+<span class="sd">        :type include_doors: bool, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">include_doors</span><span class="p">:</span>
+            <span class="n">doors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doors</span>
+
+        <span class="n">bv</span><span class="o">.</span><span class="n">export_world_to_svg</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span>
+            <span class="p">[],</span>
+            <span class="n">svg_file</span><span class="p">,</span>
+            <span class="n">marker_locations</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">marker_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">arrows</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">doors</span><span class="o">=</span><span class="n">doors</span><span class="p">,</span>
+            <span class="n">max_contacts</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">current_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">show_colobar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">viewbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Floorplan._as_dict"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan._as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">_as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the floorplan as a dictionary. The &quot;assign_doors_on_load&quot; flag</span>
+<span class="sd">        is added so that doors can be reassigned to the appropirate spaces</span>
+<span class="sd">        when the object is recreated.</span>
+
+<span class="sd">        :return: A dictionary representing this floorplan</span>
+<span class="sd">        :rtype: Dict[str, Any]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">d</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;spaces&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;doors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doors</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;walls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">walls</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;aisles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aisles</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;minx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minx</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;maxx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxx</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;miny&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">miny</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;maxy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxy</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;special_walls&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_walls</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;assign_doors_on_load&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="Floorplan.to_json_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.to_json_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_json_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export extracted floorplan data to a json file.</span>
+
+<span class="sd">        :param json_file: location of the json file to write to.</span>
+<span class="sd">        :type json_file: Union[str, pathlib.Path]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">encoder_default</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="floorplan_from_directory"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.floorplan_from_directory">[docs]</a><span class="k">def</span> <span class="nf">floorplan_from_directory</span><span class="p">(</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">floor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Floorplan</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a floorplan from a given floorplan directory. The floorplan is</span>
+<span class="sd">    expected to be in a file named floorplan.json or updated_floorplan.json</span>
+
+<span class="sd">    .. note:: additional kwargs will be passed to the Floorplan constructor</span>
+
+<span class="sd">    :param directory: Floorplan Directory</span>
+<span class="sd">    :type directory: Union[str, pathlib.Path]</span>
+<span class="sd">    :param floor: Name of the floor being imported</span>
+<span class="sd">    :type floor: str</span>
+<span class="sd">    :raises FileNotFoundError: If floorplan file cannot be found</span>
+<span class="sd">    :raises NotADirectoryError: path does not reference a valid directory</span>
+<span class="sd">    :raises NotADirectoryError: [description]</span>
+<span class="sd">    :raises FileNotFoundError: [description]</span>
+<span class="sd">    :return: Floorplan instance found in this directory.</span>
+<span class="sd">    :rtype: Floorplan</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotADirectoryError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Floor directory not found: </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fp_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;updated_floorplan.json&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fp_file</span><span class="p">):</span>
+        <span class="n">fp_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;floorplan.json&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fp_file</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fp_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">floorplan</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">decoder_hook</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Floorplan successfully loaded.&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find floorplan file: </span><span class="si">{</span><span class="n">fp_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fp_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">no_none_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updating fp_inputs with kwargs </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">no_none_kwargs</span><span class="p">)</span>
+        <span class="n">fp_inputs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">no_none_kwargs</span><span class="p">)</span>
+
+    <span class="n">floorplan</span><span class="o">.</span><span class="n">floor_name</span> <span class="o">=</span> <span class="n">floor</span>
+
+    <span class="k">if</span> <span class="s2">&quot;scale&quot;</span> <span class="ow">in</span> <span class="n">fp_inputs</span><span class="p">:</span>
+        <span class="n">floorplan</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">fp_inputs</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">floorplan</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.9.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" >citam.engine</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Terms of Use</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank"
+              >Licensing</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2020 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

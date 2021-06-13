@@ -13,10 +13,10 @@ We recommend going through the documentation of the component of interest to und
 ### Contents
 - [Developing for CITAM](#developing-for-citam)
     - [Contents](#contents)
-  - [Environment Setup](#-environment-setup)
-  - [Building and Writing Documentation](#-building-and-writing-documentation)
-  - [Running Tests](#-running-tests)
-  - [Coding Rules](#-coding-rules)
+  - [## Environment Setup](#-environment-setup)
+  - [## Building and Writing Documentation](#-building-and-writing-documentation)
+  - [## Running Tests](#-running-tests)
+  - [## Coding Rules](#-coding-rules)
 
 
 ## Environment Setup

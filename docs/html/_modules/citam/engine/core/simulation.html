@@ -1,0 +1,1080 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.engine.core.simulation &#8212; CITAM 0.13.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/engine/core/simulation.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_vector.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" accesskey="U">citam.engine</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.engine.core.simulation</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2020. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1">#  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1">#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1">#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span>
+<span class="c1">#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1">#  ==========================================================================</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TextIO</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.spatial.distance</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">import</span> <span class="nn">progressbar</span> <span class="k">as</span> <span class="nn">pb</span>
+
+<span class="kn">from</span> <span class="nn">citam.engine.core.agent</span> <span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span> <span class="nn">citam.engine.policy.daily_schedule</span> <span class="kn">import</span> <span class="n">Schedule</span>
+<span class="kn">import</span> <span class="nn">citam.engine.io.visualization</span> <span class="k">as</span> <span class="nn">bv</span>
+<span class="kn">import</span> <span class="nn">citam.engine.core.contacts</span> <span class="k">as</span> <span class="nn">cev</span>
+<span class="kn">from</span> <span class="nn">citam.engine.policy.meetings</span> <span class="kn">import</span> <span class="n">MeetingPolicy</span>
+<span class="kn">from</span> <span class="nn">citam.engine.constants</span> <span class="kn">import</span> <span class="n">DEFAULT_SCHEDULING_RULES</span><span class="p">,</span> <span class="n">CAFETERIA_VISIT</span>
+<span class="kn">from</span> <span class="nn">citam.engine.facility.indoor_facility</span> <span class="kn">import</span> <span class="n">Facility</span>
+
+<span class="n">ET</span><span class="o">.</span><span class="n">register_namespace</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.w3.org/2000/svg&quot;</span><span class="p">)</span>
+<span class="n">ET</span><span class="o">.</span><span class="n">register_namespace</span><span class="p">(</span><span class="s2">&quot;xlink&quot;</span><span class="p">,</span> <span class="s2">&quot;http://www.w3.org/1999/xlink&quot;</span><span class="p">)</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Simulation"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation">[docs]</a><span class="k">class</span> <span class="nc">Simulation</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements a CITAM indoor Agent-Based Modeling simulation.</span>
+
+<span class="sd">    Given a facility and simulation inputs, this implements routines to</span>
+<span class="sd">    initialize the agents and their scheduels, run a simulation and output</span>
+<span class="sd">    results to file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">facility</span><span class="p">:</span> <span class="n">Facility</span><span class="p">,</span>
+        <span class="n">total_timesteps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">shifts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span>
+        <span class="n">buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+        <span class="n">occupancy_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">contact_distance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.0</span><span class="p">,</span>
+        <span class="n">meetings_policy_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">create_meetings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">close_dining</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">scheduling_policy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">preassigned_offices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new simulation object.</span>
+
+<span class="sd">        :param facility: Facility object for which to run this simulation.</span>
+<span class="sd">        :type facility: Facility</span>
+<span class="sd">        :param total_timesteps: Total timesteps to run this simulation for.</span>
+<span class="sd">        :type total_timesteps: int</span>
+<span class="sd">        :param n_agents: Total number of people in this facility.</span>
+<span class="sd">        :type n_agents: int</span>
+<span class="sd">        :param shifts: A shift is a group of agents who</span>
+<span class="sd">                enter the facility at relatively the same time (Note: exit time</span>
+<span class="sd">                is not included). A shift is defined by a name, an entrance</span>
+<span class="sd">                 time, a percentage of agents.</span>
+<span class="sd">        :type shifts: List[Dict]</span>
+<span class="sd">        :param buffer: Number of timesteps at the beginning and ending of the</span>
+<span class="sd">                day when agents enter and exit the facility.</span>
+<span class="sd">        :type buffer: int</span>
+<span class="sd">        :param occupancy_rate: how many office spaces are occupied. Note:</span>
+<span class="sd">                &#39;n_agents&#39; supersedes &#39;occupancy_rate&#39; when specified, in which</span>
+<span class="sd">                case occupancy_rate can be None. defaults to None</span>
+<span class="sd">        :type occupancy_rate: float, optional</span>
+<span class="sd">        :param timestep: How long does one timestep corresponds to in seconds,</span>
+<span class="sd">                 defaults to 1.0</span>
+<span class="sd">        :type timestep: float, optional</span>
+<span class="sd">        :param contact_distance: Maximum between two agents for a contact to be</span>
+<span class="sd">                registered, defaults to 6.0</span>
+<span class="sd">        :type contact_distance: float, optional</span>
+<span class="sd">        :param meetings_policy_params: Parameters defining a meeting policy,</span>
+<span class="sd">                 defaults to None</span>
+<span class="sd">        :type meetings_policy_params: dict, optional</span>
+<span class="sd">        :param create_meetings: Whether meetings are allowed or not,</span>
+<span class="sd">                 defaults to True</span>
+<span class="sd">        :type create_meetings: bool, optional</span>
+<span class="sd">        :param close_dining: Wheter cafeterias are open or not,</span>
+<span class="sd">                defaults to False</span>
+<span class="sd">        :type close_dining: bool, optional</span>
+<span class="sd">        :param scheduling_policy: Policy defining how daily schedules are</span>
+<span class="sd">                created, defaults to None</span>
+<span class="sd">        :type scheduling_policy: dict, optional</span>
+<span class="sd">        :param dry_run: If true, generate itineraries but do not compute</span>
+<span class="sd">                contact statistics, defaults to False</span>
+<span class="sd">        :type dry_run: bool, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">facility</span> <span class="o">=</span> <span class="n">facility</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">=</span> <span class="n">total_timesteps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">buffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contact_distance</span> <span class="o">=</span> <span class="n">contact_distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span> <span class="o">=</span> <span class="n">n_agents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span> <span class="o">=</span> <span class="n">occupancy_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preassigned_offices</span> <span class="o">=</span> <span class="n">preassigned_offices</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">contact_events</span> <span class="o">=</span> <span class="n">cev</span><span class="o">.</span><span class="n">ContactEvents</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agents</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shifts</span> <span class="o">=</span> <span class="n">shifts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="n">dry_run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+
+        <span class="c1"># list used to keep track of total contact events per xy location per</span>
+        <span class="c1">#  floor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_contact_locations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_meetings</span> <span class="o">=</span> <span class="n">create_meetings</span>
+
+        <span class="c1"># Handle scheduling rules</span>
+        <span class="k">if</span> <span class="n">scheduling_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scheduling_rules</span> <span class="o">=</span> <span class="n">DEFAULT_SCHEDULING_RULES</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scheduling_rules</span> <span class="o">=</span> <span class="n">scheduling_policy</span>
+
+        <span class="k">if</span> <span class="n">close_dining</span> <span class="ow">and</span> <span class="n">CAFETERIA_VISIT</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduling_rules</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduling_rules</span><span class="p">[</span><span class="n">CAFETERIA_VISIT</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">meetings_policy_params</span> <span class="o">=</span> <span class="n">meetings_policy_params</span>
+
+<div class="viewcode-block" id="Simulation.create_sim_hash"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.create_sim_hash">[docs]</a>    <span class="k">def</span> <span class="nf">create_sim_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hash simulation inputs, scheduling policy, meetings policy,</span>
+<span class="sd">        navigation policy, floorplan and navigation data to generate a unique</span>
+<span class="sd">        ID for each simulation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">blake2b</span><span class="p">(</span><span class="n">digest_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">entrances</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contact_distance</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shifts</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meetings_policy_params</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scheduling_rules</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">:</span>
+            <span class="n">fp_data</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">spaces</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">doors</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">aisles</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">floor_name</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">special_walls</span><span class="p">,</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">traffic_policy</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">fp_data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">nv</span><span class="p">,</span> <span class="n">hg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">navigation</span><span class="o">.</span><span class="n">navnet_per_floor</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">navigation</span><span class="o">.</span><span class="n">hallways_graph_per_floor</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_edgelist</span><span class="p">(</span><span class="n">nv</span><span class="p">)</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_edgelist</span><span class="p">(</span><span class="n">hg</span><span class="p">)</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_hash</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Simulation.generate_meetings"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.generate_meetings">[docs]</a>    <span class="k">def</span> <span class="nf">generate_meetings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create meetings based on meeting policy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create meetings</span>
+        <span class="n">agent_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">))</span>
+        <span class="n">meeting_room_objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">fn</span><span class="p">,</span> <span class="n">floor_rooms</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="p">):</span>
+            <span class="n">floor_room_objs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">room_id</span> <span class="ow">in</span> <span class="n">floor_rooms</span><span class="p">:</span>
+                <span class="n">room_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">fn</span><span class="p">]</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="n">room_id</span><span class="p">]</span>
+                <span class="n">floor_room_objs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">room_obj</span><span class="p">)</span>
+            <span class="n">meeting_room_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">floor_room_objs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meeting_policy</span> <span class="o">=</span> <span class="n">MeetingPolicy</span><span class="p">(</span>
+            <span class="n">meeting_room_objects</span><span class="p">,</span>
+            <span class="n">agent_ids</span><span class="p">,</span>
+            <span class="n">daylength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span><span class="p">,</span>
+            <span class="n">policy_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">meetings_policy_params</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">n_meeting_rooms</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rooms</span><span class="p">)</span> <span class="k">for</span> <span class="n">rooms</span> <span class="ow">in</span> <span class="n">meeting_room_objects</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_meeting_rooms</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_meetings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meeting_policy</span><span class="o">.</span><span class="n">create_all_meetings</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Simulation.run_serial"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.run_serial">[docs]</a>    <span class="k">def</span> <span class="nf">run_serial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sim_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run a CITAM simulation serially (i.e. only one core will be used).</span>
+
+<span class="sd">        The serial runner is understandably slow because at each timestep,</span>
+<span class="sd">        contacts have to be computed while taking into account the specific</span>
+<span class="sd">        layout of the facility. A parallel version that computes contacts</span>
+<span class="sd">        for timestep blocks is desirable.</span>
+
+<span class="sd">        :param workdir: The directory where all results are to saved.</span>
+<span class="sd">        :type workdir: str</span>
+<span class="sd">        :raises ValueError: If occupancy rate is not between 0.0 and 1.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Compute occupancy rate and/or number of agents</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">occupancy_rate</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">total_offices</span><span class="p">,</span> <span class="mi">2</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">occupancy_rate</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;Occupancy rate is &quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">occupancy_rate</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot; &gt; 1.0 (Office spaces: &quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">total_offices</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span> <span class="o">=</span> <span class="n">occupancy_rate</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;One of &#39;n_agents&#39; or &#39;occupancy_rate&#39; must be specified&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid occupancy rate (must be &gt; 0 &amp; &lt;=1&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_offices</span><span class="p">)</span>
+
+        <span class="c1"># Load pre-assigned offices as needed</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">preassigned_offices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preassigned_offices</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Preassigned offices must equal number of agents </span><span class="si">%d</span><span class="s2"> vs </span><span class="si">%d</span><span class="s2">.&quot;</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preassigned_offices</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running simulation serially&quot;</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Total agents: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_sim_hash</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_manifest</span><span class="p">(</span><span class="n">workdir</span><span class="p">,</span> <span class="n">sim_name</span><span class="p">,</span> <span class="n">run_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_maps</span><span class="p">(</span><span class="n">workdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_meetings</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_agents_and_build_schedules</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_schedules</span><span class="p">(</span><span class="n">workdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_simulation_and_save_results</span><span class="p">(</span><span class="n">workdir</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.run_simulation_and_save_results"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.run_simulation_and_save_results">[docs]</a>    <span class="k">def</span> <span class="nf">run_simulation_and_save_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform simulation and save results to files.</span>
+
+<span class="sd">        :param workdir: path where results are saved.</span>
+<span class="sd">        :type workdir: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># open files</span>
+        <span class="n">traj_file</span> <span class="o">=</span> <span class="n">workdir</span> <span class="o">+</span> <span class="s2">&quot;/trajectory.txt&quot;</span>
+        <span class="n">t_outfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">traj_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>  <span class="c1"># Keep the trajectory file open</span>
+        <span class="n">contact_outfiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">floor_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span><span class="p">):</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;floor_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">floor_number</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+            <span class="n">contact_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;contacts.txt&quot;</span><span class="p">)</span>
+            <span class="n">contact_outfiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">contact_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Run simulation</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">ProgressBar</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+                <span class="n">traj_outfile</span><span class="o">=</span><span class="n">t_outfile</span><span class="p">,</span> <span class="n">contact_outfiles</span><span class="o">=</span><span class="n">contact_outfiles</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Current step is: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Current step is: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">))</span>
+
+        <span class="c1"># Close files</span>
+        <span class="n">t_outfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">cof</span> <span class="ow">in</span> <span class="n">contact_outfiles</span><span class="p">:</span>
+            <span class="n">cof</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Done with simulation.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.assign_office"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.assign_office">[docs]</a>    <span class="k">def</span> <span class="nf">assign_office</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assign an office to the current agent. If office spaces are not</span>
+<span class="sd">        pre-assigned, select one randomly and remove it from list of available</span>
+<span class="sd">        offices. Otherwise, return the next office from the queue.</span>
+
+<span class="sd">        :return: office id and floor</span>
+<span class="sd">        :rtype: Tuple[int, int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">preassigned_offices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">office_id</span><span class="p">,</span> <span class="n">office_floor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preassigned_offices</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">office_floor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span><span class="p">)</span>
+            <span class="n">n_offices</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">all_office_spaces</span><span class="p">[</span><span class="n">office_floor</span><span class="p">])</span>
+            <span class="n">rint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">n_offices</span><span class="p">)</span>
+            <span class="n">office_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">all_office_spaces</span><span class="p">[</span><span class="n">office_floor</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">rint</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">office_id</span><span class="p">,</span> <span class="n">office_floor</span></div>
+
+<div class="viewcode-block" id="Simulation.add_agents_and_build_schedules"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.add_agents_and_build_schedules">[docs]</a>    <span class="k">def</span> <span class="nf">add_agents_and_build_schedules</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the specified number of agents to the facility and create a</span>
+<span class="sd">        schedule and an itinerary for each of them.</span>
+
+<span class="sd">        :raises ValueError: If an entrance could not be found</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initializing with &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; agents...&quot;</span><span class="p">)</span>
+        <span class="n">current_agent</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">agent_pool</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">shift</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shifts</span><span class="p">:</span>
+            <span class="n">shift_start_time</span> <span class="o">=</span> <span class="n">shift</span><span class="p">[</span><span class="s2">&quot;start_time&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span>
+            <span class="n">n_shift_agents</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">shift</span><span class="p">[</span><span class="s2">&quot;percent_agents&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">)</span>
+            <span class="n">shift_agents</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">agent_pool</span><span class="p">,</span> <span class="n">n_shift_agents</span><span class="p">)</span>
+            <span class="n">agent_pool</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">agent_pool</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">shift_agents</span><span class="p">]</span>
+
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Working with shift: &quot;</span> <span class="o">+</span> <span class="n">shift</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Number of agents: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_shift_agents</span><span class="p">))</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Average starting step: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">shift_start_time</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pb</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">shift_agents</span><span class="p">):</span>
+
+                <span class="c1"># Find office space</span>
+                <span class="n">office_id</span><span class="p">,</span> <span class="n">office_floor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assign_office</span><span class="p">()</span>
+
+                <span class="c1"># Choose the closest entrance to office</span>
+                <span class="p">(</span>
+                    <span class="n">entrance_door</span><span class="p">,</span>
+                    <span class="n">entrance_floor</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">choose_best_entrance</span><span class="p">(</span><span class="n">office_floor</span><span class="p">,</span> <span class="n">office_id</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">entrance_door</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">office</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">office_floor</span><span class="p">]</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span>
+                        <span class="n">office_id</span>
+                    <span class="p">]</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unable to assign this office: </span><span class="si">{</span><span class="n">office</span><span class="o">.</span><span class="n">unique_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># Sample start time and exit time from a poisson distribution</span>
+                <span class="n">start_time</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="k">while</span> <span class="n">start_time</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">shift_start_time</span><span class="p">:</span>
+                    <span class="n">start_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">shift_start_time</span><span class="p">))</span>
+
+                <span class="n">exit_time</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="p">(</span>
+                    <span class="n">exit_time</span> <span class="o">==</span> <span class="mi">0</span>
+                    <span class="ow">or</span> <span class="n">exit_time</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span>
+                    <span class="ow">or</span> <span class="n">exit_time</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span>
+                <span class="p">):</span>
+
+                    <span class="n">exit_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span><span class="p">))</span>
+
+                <span class="c1"># Exit through the same door</span>
+                <span class="n">exit_door</span> <span class="o">=</span> <span class="n">entrance_door</span>
+                <span class="n">exit_floor</span> <span class="o">=</span> <span class="n">entrance_floor</span>
+
+                <span class="n">schedule</span> <span class="o">=</span> <span class="n">Schedule</span><span class="p">(</span>
+                    <span class="n">timestep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">,</span>
+                    <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+                    <span class="n">exit_time</span><span class="o">=</span><span class="n">exit_time</span><span class="p">,</span>
+                    <span class="n">entrance_door</span><span class="o">=</span><span class="n">entrance_door</span><span class="p">,</span>
+                    <span class="n">entrance_floor</span><span class="o">=</span><span class="n">entrance_floor</span><span class="p">,</span>
+                    <span class="n">exit_door</span><span class="o">=</span><span class="n">exit_door</span><span class="p">,</span>
+                    <span class="n">exit_floor</span><span class="o">=</span><span class="n">exit_floor</span><span class="p">,</span>
+                    <span class="n">office_location</span><span class="o">=</span><span class="n">office_id</span><span class="p">,</span>
+                    <span class="n">office_floor</span><span class="o">=</span><span class="n">office_floor</span><span class="p">,</span>
+                    <span class="n">navigation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">navigation</span><span class="p">,</span>
+                    <span class="n">scheduling_rules</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduling_rules</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="n">current_agent</span><span class="p">,</span> <span class="n">schedule</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">unique_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent</span>
+
+                <span class="n">schedule</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Schedule for agent: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_agent</span><span class="p">))</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">schedule</span><span class="p">))</span>
+
+                <span class="n">current_agent</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Simulation.identify_xy_proximity"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.identify_xy_proximity">[docs]</a>    <span class="k">def</span> <span class="nf">identify_xy_proximity</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">positions_vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute pairwise distances, given a vector of xy positions, and</span>
+<span class="sd">        return the indices of the ones that fall within the given contact</span>
+<span class="sd">        distance.</span>
+
+<span class="sd">        :param positions_vector: Array of current xy positions of all active</span>
+<span class="sd">                agents</span>
+<span class="sd">        :type positions_vector: np.ndarray</span>
+<span class="sd">        :return: Array of indices of agents that are within the contact</span>
+<span class="sd">            distance of each other</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Compute pairwise distances and find indices of agents within</span>
+        <span class="c1"># contact distance</span>
+        <span class="n">dists</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">positions_vector</span><span class="p">)</span>
+        <span class="n">dist_matrix</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">squareform</span><span class="p">(</span><span class="n">dists</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">dist_matrix</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">contact_distance</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.identify_contacts"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.identify_contacts">[docs]</a>    <span class="k">def</span> <span class="nf">identify_contacts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Agent</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over agents, compute whether they fall within the contact</span>
+<span class="sd">        distance or not and verify that they are indeed making contact (based</span>
+<span class="sd">        on whether they are in the same space or not).</span>
+
+<span class="sd">        :param agents: list of agents under consideration for contact</span>
+<span class="sd">            statistics</span>
+<span class="sd">        :type agents: List[Agent]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Immediately discard contact event if either:</span>
+        <span class="c1"># 1. agents are in different floors</span>
+        <span class="c1"># 2. agents are in different spaces but only if the spaces</span>
+        <span class="c1">#    are not neighbors in the hallway graphs</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">agents</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">positions_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">pos</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">agents</span><span class="p">])</span>
+        <span class="n">proximity_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">identify_xy_proximity</span><span class="p">(</span><span class="n">positions_vector</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">proximity_indices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">j</span><span class="p">:</span>  <span class="c1"># only consider upper right side of symmetric matrix</span>
+                <span class="k">continue</span>
+            <span class="n">agent1</span> <span class="o">=</span> <span class="n">agents</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">agent2</span> <span class="o">=</span> <span class="n">agents</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">agent1</span><span class="o">.</span><span class="n">current_location</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="ow">or</span> <span class="n">agent2</span><span class="o">.</span><span class="n">current_location</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">agent1</span><span class="o">.</span><span class="n">current_floor</span> <span class="o">==</span> <span class="n">agent2</span><span class="o">.</span><span class="n">current_floor</span><span class="p">:</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="n">agent1</span><span class="o">.</span><span class="n">current_floor</span>
+                <span class="k">if</span> <span class="n">agent1</span><span class="o">.</span><span class="n">current_location</span> <span class="o">==</span> <span class="n">agent2</span><span class="o">.</span><span class="n">current_location</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_contact_event</span><span class="p">(</span><span class="n">agent1</span><span class="p">,</span> <span class="n">agent2</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">verify_and_add_contact</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">agent1</span><span class="p">,</span> <span class="n">agent2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.verify_and_add_contact"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.verify_and_add_contact">[docs]</a>    <span class="k">def</span> <span class="nf">verify_and_add_contact</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">agent1</span><span class="p">:</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">agent2</span><span class="p">:</span> <span class="n">Agent</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify if agents are in nearby hallways before creating contact event.</span>
+
+<span class="sd">        :param floor_number: [description]</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        :param agent1: First agent</span>
+<span class="sd">        :type agent1: Agent</span>
+<span class="sd">        :param agent2: Second agent</span>
+<span class="sd">        :type agent2: Agent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hallways_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">navigation</span><span class="o">.</span><span class="n">hallways_graph_per_floor</span><span class="p">[</span>
+            <span class="n">floor_number</span>
+        <span class="p">]</span>
+        <span class="n">floorplan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span>
+        <span class="n">space1</span> <span class="o">=</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="n">agent1</span><span class="o">.</span><span class="n">current_location</span><span class="p">]</span>
+        <span class="n">space2</span> <span class="o">=</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">spaces</span><span class="p">[</span><span class="n">agent2</span><span class="o">.</span><span class="n">current_location</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">hallways_graph</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">space1</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">()</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">space2</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">hallways_graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">space1</span><span class="o">.</span><span class="n">unique_name</span><span class="p">,</span> <span class="n">space2</span><span class="o">.</span><span class="n">unique_name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_contact_event</span><span class="p">(</span><span class="n">agent1</span><span class="p">,</span> <span class="n">agent2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.add_contact_event"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.add_contact_event">[docs]</a>    <span class="k">def</span> <span class="nf">add_contact_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent1</span><span class="p">:</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">agent2</span><span class="p">:</span> <span class="n">Agent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Record contact event between agent1 and agent2.</span>
+
+<span class="sd">        :param agent1: The first agent.</span>
+<span class="sd">        :type agent1: Agent</span>
+<span class="sd">        :param agent2: The second agent.</span>
+<span class="sd">        :type agent2: Agent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="n">agent2</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">agent1</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">agent2</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">agent1</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">contact_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">agent1</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">agent1</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span>
+        <span class="n">agent1</span><span class="o">.</span><span class="n">cumulative_contact_duration</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">agent2</span><span class="o">.</span><span class="n">cumulative_contact_duration</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contact_events</span><span class="o">.</span><span class="n">add_contact</span><span class="p">(</span>
+            <span class="n">agent1</span><span class="p">,</span> <span class="n">agent2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span> <span class="n">contact_pos</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">contact_pos</span>
+            <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_contact_locations</span><span class="p">[</span><span class="n">agent1</span><span class="o">.</span><span class="n">current_floor</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_contact_locations</span><span class="p">[</span><span class="n">agent1</span><span class="o">.</span><span class="n">current_floor</span><span class="p">][</span><span class="n">contact_pos</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_contact_locations</span><span class="p">[</span><span class="n">agent1</span><span class="o">.</span><span class="n">current_floor</span><span class="p">][</span><span class="n">contact_pos</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Simulation.step"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">traj_outfile</span><span class="p">:</span> <span class="n">TextIO</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">contact_outfiles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Move the simulation one step ahead.</span>
+
+<span class="sd">        At each step, agents are advanced one step ahead in their itineraries</span>
+<span class="sd">        and contact statistics are computed.</span>
+
+<span class="sd">        :param traj_outfile: File to write trajectory data, defaults to None</span>
+<span class="sd">        :type traj_outfile: TextIO, optional</span>
+<span class="sd">        :param contact_outfiles: Files to write contact data, one per floor,</span>
+<span class="sd">                defaults to None</span>
+<span class="sd">        :type contact_outfiles: List[TextIO], optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_contact_locations</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{}</span>
+        <span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span>  <span class="c1"># One per floor</span>
+
+        <span class="n">active_agents</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_agents</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">active_agents</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+            <span class="c1"># At least 2 agents required</span>
+            <span class="n">moving_active_agents</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">active_agents</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">current_location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">identify_contacts</span><span class="p">(</span><span class="n">moving_active_agents</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">traj_outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">traj_outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">active_agents</span><span class="p">))</span>
+                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">step: &quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">active_agents</span><span class="p">:</span>
+                <span class="n">traj_outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">unique_id</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">current_floor</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">cumulative_contact_duration</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">contact_outfiles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span><span class="p">):</span>
+
+                <span class="n">n_contact_loc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_contact_locations</span><span class="p">[</span><span class="n">fn</span><span class="p">])</span>
+                <span class="n">contact_outfiles</span><span class="p">[</span><span class="n">fn</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">n_contact_loc</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">step :&quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">cl</span><span class="p">,</span> <span class="n">nc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_contact_locations</span><span class="p">[</span><span class="n">fn</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">contact_outfiles</span><span class="p">[</span><span class="n">fn</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">cl</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cl</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nc</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Simulation.move_agents"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.move_agents">[docs]</a>    <span class="k">def</span> <span class="nf">move_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Agent</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Agent</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over agents and move them to the next position in their</span>
+<span class="sd">        itinerary. Active agents are agents currently in the facility and</span>
+<span class="sd">        moving agents are agents currently moving from one location to the</span>
+<span class="sd">        next.</span>
+
+<span class="sd">        :return: list of active and moving agents</span>
+<span class="sd">        :rtype: Tuple[List[Agent], List[Agent]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">active_agents</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># All agents currently within the facility</span>
+
+        <span class="c1"># TODO: consider contacts for agents that are stationary as well</span>
+        <span class="n">moving_agents</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># All employees that are currently moving</span>
+
+        <span class="k">for</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">has_moved</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">active_agents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">has_moved</span><span class="p">:</span>
+                    <span class="n">moving_agents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">active_agents</span><span class="p">,</span> <span class="n">moving_agents</span></div>
+
+<div class="viewcode-block" id="Simulation.extract_contact_distribution_per_agent"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.extract_contact_distribution_per_agent">[docs]</a>    <span class="k">def</span> <span class="nf">extract_contact_distribution_per_agent</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute and return total contacts per agent.</span>
+
+<span class="sd">        :return: List of agent ids and their total contacts</span>
+<span class="sd">        :rtype: Tuple[List[int], List[int]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">agent_ids</span><span class="p">,</span> <span class="n">n_contacts</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">agent_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;ID_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">unique_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">n_contacts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">cumulative_contact_duration</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">agent_ids</span><span class="p">,</span> <span class="n">n_contacts</span></div>
+
+<div class="viewcode-block" id="Simulation.save_manifest"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.save_manifest">[docs]</a>    <span class="k">def</span> <span class="nf">save_manifest</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">work_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sim_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save manifest file, used by the dashboard to show results.</span>
+
+<span class="sd">        :param work_directory:  top level directory where all simulation</span>
+<span class="sd">            outputs are saved.</span>
+<span class="sd">        :type work_directory: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">floors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">floor</span><span class="p">),</span> <span class="s2">&quot;directory&quot;</span><span class="p">:</span> <span class="s2">&quot;floor_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">floor</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">floor</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Saving manifest file...&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO: total over all floors</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_one_way_aisles</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_one_way_aisles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">p</span>
+                    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">traffic_policy</span>
+                    <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="n">fp_width</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">maxx</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">minx</span>
+        <span class="p">)</span>
+        <span class="n">manifest_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;TimestepInSec&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;NumberOfFloors&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span><span class="p">,</span>
+            <span class="s2">&quot;NumberOfOneWayAisles&quot;</span><span class="p">:</span> <span class="n">n_one_way_aisles</span><span class="p">,</span>
+            <span class="s2">&quot;NumberOfAgents&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="p">),</span>
+            <span class="s2">&quot;SimulationName&quot;</span><span class="p">:</span> <span class="n">sim_name</span><span class="p">,</span>
+            <span class="s2">&quot;RunName&quot;</span><span class="p">:</span> <span class="n">run_name</span><span class="p">,</span>
+            <span class="s2">&quot;SimulationHash&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_hash</span><span class="p">,</span>
+            <span class="s2">&quot;RunID&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_id</span><span class="p">,</span>
+            <span class="s2">&quot;FacilityName&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">facility_name</span><span class="p">,</span>
+            <span class="s2">&quot;FacilityOccupancy&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupancy_rate</span><span class="p">,</span>  <span class="c1"># between 0.0 and 1.0</span>
+            <span class="s2">&quot;MaxRoomOccupancy&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;NumberOfShifts&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;NumberOfEntrances&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;NumberOfExits&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;EntranceScreening&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;TrajectoryFile&quot;</span><span class="p">:</span> <span class="s2">&quot;trajectory.txt&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Floors&quot;</span><span class="p">:</span> <span class="n">floors</span><span class="p">,</span>
+            <span class="s2">&quot;ScaleMultiplier&quot;</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">fp_width</span> <span class="o">/</span> <span class="mf">1500.0</span><span class="p">)),</span>
+            <span class="s2">&quot;Timestep&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;TotalTimesteps&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">manifest_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;manifest.json&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">manifest_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">manifest_dict</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.save_maps"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.save_maps">[docs]</a>    <span class="k">def</span> <span class="nf">save_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save svg maps for each floor for visualization. Each floor map is</span>
+<span class="sd">        saved in a separate subdirectory (created if not found).</span>
+
+<span class="sd">        :param work_directory: top level directory where all simulation</span>
+<span class="sd">                outputs are saved.</span>
+<span class="sd">        :type work_directory: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">floor_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span><span class="p">):</span>
+
+            <span class="n">floor_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;floor_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">floor_number</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">floor_directory</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">floor_directory</span><span class="p">)</span>
+
+            <span class="c1"># Map svg file for the entire facility</span>
+            <span class="n">svg_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">floor_directory</span><span class="p">,</span> <span class="s2">&quot;map.svg&quot;</span><span class="p">)</span>
+            <span class="n">bv</span><span class="o">.</span><span class="n">export_world_to_svg</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span>
+                <span class="p">[],</span>
+                <span class="n">svg_file</span><span class="p">,</span>
+                <span class="n">marker_locations</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">marker_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">arrows</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">max_contacts</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                <span class="n">current_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">show_colobar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">viewbox</span><span class="o">=</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">minx</span> <span class="o">-</span> <span class="mi">50</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">miny</span> <span class="o">-</span> <span class="mi">50</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">maxx</span> <span class="o">+</span> <span class="mi">50</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">floorplans</span><span class="p">[</span><span class="n">floor_number</span><span class="p">]</span><span class="o">.</span><span class="n">maxy</span> <span class="o">+</span> <span class="mi">50</span><span class="p">,</span>
+                <span class="p">],</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.create_svg_heatmap"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.create_svg_heatmap">[docs]</a>    <span class="k">def</span> <span class="nf">create_svg_heatmap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">contacts_per_coord</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">floor_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create and save a heatmap from coordinate contact data.</span>
+
+<span class="sd">        :param contacts_per_coord: dictionary where each key is an (x,y )</span>
+<span class="sd">                tuple and values are the number of contacts in that location.</span>
+<span class="sd">        :type contacts_per_coord: Dict[Tuple[int, int], int]</span>
+<span class="sd">        :param floor_directory: directory to save the heatmap file.</span>
+<span class="sd">        :type floor_directory: str</span>
+<span class="sd">        :raises FileNotFoundError: if the floor svg map file is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">heatmap_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">floor_directory</span><span class="p">,</span> <span class="s2">&quot;heatmap.svg&quot;</span><span class="p">)</span>
+        <span class="n">map_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">floor_directory</span><span class="p">,</span> <span class="s2">&quot;map.svg&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">map_file</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">map_file</span><span class="p">)</span>
+
+        <span class="n">max_contacts</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">contacts_per_coord</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">max_contacts</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">contacts_per_coord</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">map_file</span><span class="p">)</span>
+
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">filter_elem</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">)</span>
+        <span class="n">filter_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;blurMe&quot;</span><span class="p">)</span>
+        <span class="n">filter_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contact_distance</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">filter_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contact_distance</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">filter_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;-100%&quot;</span><span class="p">)</span>
+        <span class="n">filter_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;-100%&quot;</span><span class="p">)</span>
+
+        <span class="n">blur_elem</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;feGaussianBlur&quot;</span><span class="p">)</span>
+        <span class="n">blur_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;SourceGraphic&quot;</span><span class="p">)</span>
+        <span class="n">blur_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;stdDeviation&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contact_distance</span> <span class="o">*</span> <span class="mf">0.4</span><span class="p">))</span>
+        <span class="n">blur_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;edgeMode&quot;</span><span class="p">,</span> <span class="s2">&quot;duplicate&quot;</span><span class="p">)</span>
+
+        <span class="n">filter_elem</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">blur_elem</span><span class="p">)</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filter_elem</span><span class="p">)</span>
+        <span class="n">color_scale</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;RdYlGn&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">contacts_per_coord</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">color_scale</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">max_contacts</span><span class="p">)</span>
+            <span class="n">new_elem</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;circle&quot;</span><span class="p">)</span>
+            <span class="n">new_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;cx&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">new_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;cy&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+            <span class="n">new_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contact_distance</span><span class="p">))</span>
+            <span class="n">new_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+            <span class="n">new_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;fill-opacity&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="mf">0.2</span><span class="p">))</span>
+            <span class="n">new_elem</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="s2">&quot;url(#blurMe)&quot;</span><span class="p">)</span>
+            <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_elem</span><span class="p">)</span>
+
+        <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">heatmap_file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.save_schedules"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.save_schedules">[docs]</a>    <span class="k">def</span> <span class="nf">save_schedules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write schedules and meetings to file.</span>
+
+<span class="sd">        Three files are created: one for all the</span>
+<span class="sd">        meetings, one for the full schedule of all the agents and the last one</span>
+<span class="sd">        with each agent&#39;s assigned office.</span>
+
+<span class="sd">        :param work_directory: directory where output files are to be saved.</span>
+<span class="sd">        :type work_directory: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># agent ids</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;agent_ids.csv&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;AgentID,OfficeID,FloorID</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">unique_id</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;,&quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">office_location</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;,&quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">office_floor</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Meetings</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;meetings.txt&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s2">&quot;Total number of meetings: &quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meeting_policy</span><span class="o">.</span><span class="n">meetings</span><span class="p">))</span>
+                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">meeting</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meeting_policy</span><span class="o">.</span><span class="n">meetings</span><span class="p">:</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">meeting</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Full schedules of all agents</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;schedules.txt&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s2">&quot;Agent ID: &quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">unique_id</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">schedule</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Simulation.save_outputs"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/simulation/index.html#citam.engine.core.simulation.Simulation.save_outputs">[docs]</a>    <span class="k">def</span> <span class="nf">save_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write output files to the output directory</span>
+
+<span class="sd">        :param work_directory: directory where all output files are to be</span>
+<span class="sd">            saved.</span>
+<span class="sd">        :type work_directory: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># TODO: generate time-dependent cumulative contacts per coordinate</span>
+
+        <span class="c1"># Total contacts per agent</span>
+        <span class="n">agent_ids</span><span class="p">,</span> <span class="n">n_contacts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_contact_distribution_per_agent</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;contact_dist_per_agent.csv&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;agent_ID,Number_of_Contacts</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">eid</span><span class="p">,</span> <span class="n">nc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">agent_ids</span><span class="p">,</span> <span class="n">n_contacts</span><span class="p">):</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">eid</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nc</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Pair contacts</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;pair_contact.csv&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contact_events</span><span class="o">.</span><span class="n">save_pairwise_contacts</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># Raw contact data</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;raw_contact_data.ccd&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contact_events</span><span class="o">.</span><span class="n">save_raw_contact_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># Statistics</span>
+        <span class="n">statistics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contact_events</span><span class="o">.</span><span class="n">extract_statistics</span><span class="p">()</span>
+        <span class="n">statistics_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;SimulationName&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation_hash</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">statistics</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;statistics.json&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">statistics_dict</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span>
+
+        <span class="c1"># Per-floor outputs</span>
+        <span class="k">for</span> <span class="n">floor_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facility</span><span class="o">.</span><span class="n">number_of_floors</span><span class="p">):</span>
+
+            <span class="c1"># Distribution of contact locations</span>
+
+            <span class="n">floor_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;floor_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">floor_number</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="n">coord_contact_dist_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">floor_directory</span><span class="p">,</span> <span class="s2">&quot;contact_dist_per_coord.csv&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">contacts_per_coord</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contact_events</span><span class="o">.</span><span class="n">get_contacts_per_coordinates</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span><span class="p">,</span> <span class="n">floor_number</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">coord_contact_dist_filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;x,y,n_contacts</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">contacts_per_coord</span><span class="p">:</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span>
+                    <span class="n">dur</span> <span class="o">=</span> <span class="n">contacts_per_coord</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dur</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_svg_heatmap</span><span class="p">(</span><span class="n">contacts_per_coord</span><span class="p">,</span> <span class="n">floor_directory</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" >citam.engine</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.corning.com/worldwide/en/privacy-policy.html">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank">Licensing</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2021 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

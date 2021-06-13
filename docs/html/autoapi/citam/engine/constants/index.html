@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>citam.engine.constants &#8212; CITAM 0.13.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=autoapi/citam/engine/constants/index.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_vector.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-citam.engine.constants">
+<span id="citam-engine-constants"></span><h1><a class="reference internal" href="#module-citam.engine.constants" title="citam.engine.constants"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.constants</span></code></a><a class="headerlink" href="#module-citam.engine.constants" title="Permalink to this headline">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.REQUIRED_SPACE_METADATA">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">REQUIRED_SPACE_METADATA</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['id',</span> <span class="pre">'building',</span> <span class="pre">'unique_name',</span> <span class="pre">'space_function']</span></em><a class="headerlink" href="#citam.engine.constants.REQUIRED_SPACE_METADATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.OPTIONAL_SPACE_METADATA">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">OPTIONAL_SPACE_METADATA</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['facility',</span> <span class="pre">'space_category',</span> <span class="pre">'floor',</span> <span class="pre">'department',</span> <span class="pre">'capacity',</span> <span class="pre">'square_footage']</span></em><a class="headerlink" href="#citam.engine.constants.OPTIONAL_SPACE_METADATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.SUPPORTED_SPACE_FUNCTIONS">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">SUPPORTED_SPACE_FUNCTIONS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['circulation',</span> <span class="pre">'office',</span> <span class="pre">'lab',</span> <span class="pre">'restroom</span> <span class="pre">(men)',</span> <span class="pre">'restroom</span> <span class="pre">(women)',</span> <span class="pre">'restroom',</span> <span class="pre">'cafeteria',...</span></em><a class="headerlink" href="#citam.engine.constants.SUPPORTED_SPACE_FUNCTIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.RESTROOM_VISIT">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">RESTROOM_VISIT</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Restroom</span> <span class="pre">visit</span></em><a class="headerlink" href="#citam.engine.constants.RESTROOM_VISIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.MEETING">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">MEETING</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Meeting</span></em><a class="headerlink" href="#citam.engine.constants.MEETING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.LAB_WORK">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">LAB_WORK</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Lab</span> <span class="pre">work</span></em><a class="headerlink" href="#citam.engine.constants.LAB_WORK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.CAFETERIA_VISIT">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">CAFETERIA_VISIT</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Cafeteria</span></em><a class="headerlink" href="#citam.engine.constants.CAFETERIA_VISIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.OFFICE_WORK">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">OFFICE_WORK</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Office</span> <span class="pre">work</span></em><a class="headerlink" href="#citam.engine.constants.OFFICE_WORK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.DEFAULT_SCHEDULING_RULES">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SCHEDULING_RULES</span></span><a class="headerlink" href="#citam.engine.constants.DEFAULT_SCHEDULING_RULES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.DEFAULT_MEETINGS_POLICY">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_MEETINGS_POLICY</span></span><a class="headerlink" href="#citam.engine.constants.DEFAULT_MEETINGS_POLICY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.MEETING_BUFFER">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">MEETING_BUFFER</span></span><a class="headerlink" href="#citam.engine.constants.MEETING_BUFFER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="citam.engine.constants.DEFAULT_MEETING_ROOM_CAPACITY">
+<span class="sig-prename descclassname"><span class="pre">citam.engine.constants.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_MEETING_ROOM_CAPACITY</span></span><em class="property"> <span class="pre">=</span> <span class="pre">25</span></em><a class="headerlink" href="#citam.engine.constants.DEFAULT_MEETING_ROOM_CAPACITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.constants</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#citam.engine.constants.REQUIRED_SPACE_METADATA">REQUIRED_SPACE_METADATA</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.OPTIONAL_SPACE_METADATA">OPTIONAL_SPACE_METADATA</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.SUPPORTED_SPACE_FUNCTIONS">SUPPORTED_SPACE_FUNCTIONS</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.RESTROOM_VISIT">RESTROOM_VISIT</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.MEETING">MEETING</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.LAB_WORK">LAB_WORK</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.CAFETERIA_VISIT">CAFETERIA_VISIT</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.OFFICE_WORK">OFFICE_WORK</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.DEFAULT_SCHEDULING_RULES">DEFAULT_SCHEDULING_RULES</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.DEFAULT_MEETINGS_POLICY">DEFAULT_MEETINGS_POLICY</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.MEETING_BUFFER">MEETING_BUFFER</a></li>
+<li><a class="reference internal" href="#citam.engine.constants.DEFAULT_MEETING_ROOM_CAPACITY">DEFAULT_MEETING_ROOM_CAPACITY</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/autoapi/citam/engine/constants/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.corning.com/worldwide/en/privacy-policy.html">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank">Licensing</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2021 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

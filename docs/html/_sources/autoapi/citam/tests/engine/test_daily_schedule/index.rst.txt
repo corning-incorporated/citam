@@ -1,0 +1,142 @@
+:mod:`citam.tests.engine.test_daily_schedule`
+=============================================
+
+.. py:module:: citam.tests.engine.test_daily_schedule
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_daily_schedule.sample_empty_schedule_object
+   citam.tests.engine.test_daily_schedule.test_build_schedule_item_not_enough_time
+   citam.tests.engine.test_daily_schedule.test_build_schedule_item
+   citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_first_item
+   citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_upcoming_meeting
+   citam.tests.engine.test_daily_schedule.test_find_next_schedule_item_existing_item
+   citam.tests.engine.test_daily_schedule.test_choose_valid_scheduling_purpose
+   citam.tests.engine.test_daily_schedule.test_find_possible_purposes
+   citam.tests.engine.test_daily_schedule.test_get_valid_purposes_from_possible_purposes
+   citam.tests.engine.test_daily_schedule.test_get_valid_purposes_no_consecutive_restroom_visits
+   citam.tests.engine.test_daily_schedule.test_get_pace
+   citam.tests.engine.test_daily_schedule.test_update_itinerary
+   citam.tests.engine.test_daily_schedule.test_update_itinerary_route_is_none
+   citam.tests.engine.test_daily_schedule.test_update_schedule_continue_last_item
+   citam.tests.engine.test_daily_schedule.test_update_schedule_items_add
+   citam.tests.engine.test_daily_schedule.test_build
+
+
+
+.. function:: sample_empty_schedule_object(simple_facility_floorplan, request, monkeypatch, rect_floorplan_ingester_data)
+
+
+.. function:: test_build_schedule_item_not_enough_time(sample_empty_schedule_object)
+
+   Not enough time before next meeting, raise error
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: test_build_schedule_item(sample_empty_schedule_object)
+
+
+.. function:: test_find_next_schedule_item_first_item(sample_empty_schedule_object)
+
+   If no upcoming meeting, start schedule with office work
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: test_find_next_schedule_item_upcoming_meeting(sample_empty_schedule_object)
+
+   upcoming meeting found, just return it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. function:: test_find_next_schedule_item_existing_item(sample_empty_schedule_object)
+
+
+.. function:: test_choose_valid_scheduling_purpose(sample_empty_schedule_object)
+
+
+.. function:: test_find_possible_purposes(sample_empty_schedule_object)
+
+
+.. function:: test_get_valid_purposes_from_possible_purposes(sample_empty_schedule_object)
+
+
+.. function:: test_get_valid_purposes_no_consecutive_restroom_visits(sample_empty_schedule_object)
+
+
+.. function:: test_get_pace(sample_empty_schedule_object)
+
+
+.. function:: test_update_itinerary(sample_empty_schedule_object)
+
+
+.. function:: test_update_itinerary_route_is_none(sample_empty_schedule_object)
+
+
+.. function:: test_update_schedule_continue_last_item(sample_empty_schedule_object)
+
+
+.. function:: test_update_schedule_items_add(sample_empty_schedule_object)
+
+
+.. function:: test_build(sample_empty_schedule_object)
+
+

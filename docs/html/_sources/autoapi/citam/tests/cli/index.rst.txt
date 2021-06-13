@@ -1,0 +1,15 @@
+:mod:`citam.tests.cli`
+======================
+
+.. py:module:: citam.tests.cli
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   test_dash/index.rst
+
+

@@ -1,0 +1,115 @@
+:mod:`citam.tests.engine.test_simulation`
+=========================================
+
+.. py:module:: citam.tests.engine.test_simulation
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_simulation.simple_facility_model
+   citam.tests.engine.test_simulation.test_create_sim_hash
+   citam.tests.engine.test_simulation.test_add_agents_and_build_schedules
+   citam.tests.engine.test_simulation.test_identify_xy_proximity_no_data
+   citam.tests.engine.test_simulation.test_identify_xy_proximity_same_coords
+   citam.tests.engine.test_simulation.test_identify_contacts
+   citam.tests.engine.test_simulation.test_identify_contacts_outside_facility
+   citam.tests.engine.test_simulation.test_identify_contacts_wall_seperation
+   citam.tests.engine.test_simulation.test_identify_contacts_3_way
+   citam.tests.engine.test_simulation.test_add_contact_event
+   citam.tests.engine.test_simulation.test_step
+   citam.tests.engine.test_simulation.test_run_serial
+   citam.tests.engine.test_simulation.test_extract_contact_distribution_per_agent
+   citam.tests.engine.test_simulation.test_save_manifest
+   citam.tests.engine.test_simulation.test_save_maps
+   citam.tests.engine.test_simulation.test_create_svg_heatmap
+   citam.tests.engine.test_simulation.test_create_svg_heatmap_no_map
+   citam.tests.engine.test_simulation.test_save_outputs
+   citam.tests.engine.test_simulation.test_close_dining
+   citam.tests.engine.test_simulation.test_no_meetings
+   citam.tests.engine.test_simulation.test_assign_office_preassigned
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.tests.engine.test_simulation.MAP_SVG_FILE
+
+
+.. data:: MAP_SVG_FILE
+   :annotation: = map.svg
+
+   
+
+.. function:: simple_facility_model(simple_facility_floorplan, monkeypatch, request)
+
+
+.. function:: test_create_sim_hash(simple_facility_model)
+
+
+.. function:: test_add_agents_and_build_schedules(simple_facility_model)
+
+
+.. function:: test_identify_xy_proximity_no_data(simple_facility_model)
+
+
+.. function:: test_identify_xy_proximity_same_coords(simple_facility_model)
+
+
+.. function:: test_identify_contacts(simple_facility_model)
+
+
+.. function:: test_identify_contacts_outside_facility(simple_facility_model)
+
+
+.. function:: test_identify_contacts_wall_seperation(simple_facility_model)
+
+
+.. function:: test_identify_contacts_3_way(simple_facility_model)
+
+
+.. function:: test_add_contact_event(simple_facility_model)
+
+
+.. function:: test_step(simple_facility_model)
+
+
+.. function:: test_run_serial(simple_facility_model, tmpdir)
+
+
+.. function:: test_extract_contact_distribution_per_agent(simple_facility_model)
+
+
+.. function:: test_save_manifest(tmpdir, simple_facility_model)
+
+
+.. function:: test_save_maps(tmpdir, simple_facility_model)
+
+
+.. function:: test_create_svg_heatmap(tmpdir, simple_facility_model)
+
+
+.. function:: test_create_svg_heatmap_no_map(tmpdir, simple_facility_model)
+
+
+.. function:: test_save_outputs(tmpdir, simple_facility_model)
+
+
+.. function:: test_close_dining(simple_facility_floorplan, monkeypatch, request)
+
+
+.. function:: test_no_meetings(simple_facility_model, request, tmpdir)
+
+
+.. function:: test_assign_office_preassigned(simple_facility_model)
+
+
