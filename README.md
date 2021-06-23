@@ -63,11 +63,10 @@ If all pre-requisites are satisfied, download the source code as follows:
 git clone https://github.com/corning-incorporated/citam.git
 ```
 
-> For the latest usable version, please change directory to the citam directory and checkout the "alpha" branch as follows:
+> Change directory to the citam directory:
 
 ```
 cd citam
-git checkout alpha
 ```
 
 Then install the pip package using the command
