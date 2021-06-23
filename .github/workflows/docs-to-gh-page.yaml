@@ -32,7 +32,7 @@ jobs:
       - name: Merge changes
         run: |
           echo ${{ github.head_ref }}
-          git pull origin main
+          git merge origin main
       - name: Build docs
         working-directory: ./docsrc
         run: |
