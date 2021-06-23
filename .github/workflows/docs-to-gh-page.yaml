@@ -24,15 +24,19 @@ jobs:
         run: |
           pip install -U sphinx
           pip install -r requirements.txt
-      - name: switch to gh-page
+      - name: Set user email and name
         run: |
-          git checkout gh-page
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+      - name: Update local main
+        run: |
+          git checkout main
+          git pull
       - name: Merge changes
         run: |
           echo ${{ github.head_ref }}
-          git merge origin main
+          git checkout gh-page
+          git merge main
       - name: Build docs
         working-directory: ./docsrc
         run: |
