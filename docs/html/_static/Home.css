@@ -50,6 +50,7 @@
   margin: 15px 0 0 55px;
   width: 150px;
   height: 35px;
+  max-width: none;
 }
 #citamTitle {
   font-size: 55px;
