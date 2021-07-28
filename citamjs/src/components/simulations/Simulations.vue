@@ -16,9 +16,6 @@
     <div id="title">
       <span>Visualizer</span>Interactive visualization of trajectory data for:
       <b style="color: #0080ff">{{ simulationName }} -> {{ runName }}</b>
-      =======
-      <span>Visualizer</span>Interactive visualization of trajectory data of a
-      specific run. >>>>>>> gh-page
     </div>
     <div class="container-fluid">
       <div>
