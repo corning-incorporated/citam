@@ -1,6 +1,0 @@
-:mod:`citam.tests.engine.test_geometry_and_svg_utils`
-=====================================================
-
-.. py:module:: citam.tests.engine.test_geometry_and_svg_utils
-
-
