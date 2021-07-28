@@ -1,0 +1,113 @@
+:py:mod:`citam.api`
+===================
+
+.. py:module:: citam.api
+
+.. autoapi-nested-parse::
+
+   =================
+   CITAM Results API
+   =================
+   Python backend for retrieving CITAM model results
+
+   --------
+   Commands
+   --------
+   * Start the API server locally::
+
+         python -m citam.api
+
+   * Start the API server for production use::
+
+         gunicorn citam.api:app
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   storage/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   parser/index.rst
+   server/index.rst
+
+
+Package Contents
+----------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.api.run_server
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.api.app
+
+
+.. py:data:: app
+   
+
+   
+
+.. py:function:: run_server(port: int = 8000, host: str = '127.0.0.1', results: str = None, *args, **kwargs)
+
+   Run the ``citam dash`` server
+
+   :param int port: port to serve the dash from
+   :param str host: hostname to serve the dash from
+   :param str results: directory to load results from
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+

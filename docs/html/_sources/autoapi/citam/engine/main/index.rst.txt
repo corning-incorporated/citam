@@ -1,0 +1,288 @@
+:py:mod:`citam.engine.main`
+===========================
+
+.. py:module:: citam.engine.main
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.main.list_facilities
+   citam.engine.main.ingest_floorplan
+   citam.engine.main.export_floorplan_to_svg
+   citam.engine.main.build_navigation_network
+   citam.engine.main.update_floorplan_from_svg_file
+   citam.engine.main.export_navigation_graph_to_svg
+   citam.engine.main.load_floorplans
+   citam.engine.main.run_simulation
+   citam.engine.main.initialize_oneway_network
+   citam.engine.main.check_and_remove_node_from_oneway_network
+   citam.engine.main.find_and_save_potential_one_way_aisles
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.main.LOG
+   citam.engine.main.ROUTES_JSON_FILE
+
+
+.. py:data:: LOG
+   
+
+   
+
+.. py:data:: ROUTES_JSON_FILE
+   :annotation: = routes.json
+
+   
+
+.. py:function:: list_facilities(**kwargs)
+
+   List all the floorplans already ingested
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: ingest_floorplan(svg: str, csv: str, facility: str, scale: float = 1 / 12, floor: str = '0', buildings: List[str] = None, output_directory=None, force_overwrite=False, **kwargs)
+
+   Ingest raw floorplan and data files for a given floor of a facility.
+
+   This method is executed with the CLI call ``citam engine ingest``
+
+   :param svg: Path to the floorplan file in SVG format
+   :param csv: Path to the floorplan metadata file in CSV format
+   :param facility: Name of this facility
+   :param scale: The scale of the drawing (default = 1/12)
+   :param floor: Name of this floor (default=0)
+   :param output_directory: Custom location to store output (default=cache)
+   :param buildings: List of buildings to process(default to all buildings
+           found in SVG file)
+   :raise FileNotFoundError: If input files are not found
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: export_floorplan_to_svg(facility: str, floor: str, outputfile: str, doors=False, floorplan_directory: str = None, **kwargs)
+
+   Export a given floorplan to an SVG file for visualization and editing.
+
+   :param facility: Name of this facility
+   :param floor: Name of this floor
+   :param outputfile: Location to store output
+   :param floorplan_directory: Custom directory for floorplans (default=cache)
+   :raise NotADirectoryError: floorplan_directory is invalid
+   :raise FileMotFoundError: could not find floorplan file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: build_navigation_network(facility: str, floor: str = '0', floorplan_directory: str = None, **kwargs)
+
+   Build the navigation network for a given facility floor plan.
+
+   :param facility: Name of this facility
+   :param floor: Name of this floor (default=0)
+   :param floorplan_directory: Custom directory for floorplans (default=cache)
+   :raise NotADirectoryError: floorplan_directory is invalid
+   :raise FileMotFoundError: could not find floorplan file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: update_floorplan_from_svg_file(svg: str, facility: str, floor: str = '0', floorplan_directory: str = None, **kwargs)
+
+   Update the walls and doors in a floorplan using an SVG file
+
+   :param svg: Path to the floorplan file in SVG format
+   :param facility: Name of this facility
+   :param floor: Name of this floor (default=0)
+   :param floorplan_directory: Custom directory for floorplans (default=cache)
+   :raise NotADirectoryError: floorplan_directory is invalid
+   :raise FileMotFoundError: could not find floorplan file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: export_navigation_graph_to_svg(facility: str, floor: str, outputfile: str, floorplan_directory: str = None, **kwargs)
+
+   Export navigation network to svg file for visualization.
+
+   :param facility: Name of this facility
+   :param floor: Name of this floor
+   :param outputfile: Location to store output
+   :param floorplan_directory: Custom directory for floorplans (default=cache)
+   :raise NotADirectoryError: floorplan_directory is invalid
+   :raise FileMotFoundError: could not find floorplan file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: load_floorplans(floors, facility_name, user_scale=None)
+
+
+.. py:function:: run_simulation(inputs: dict)
+
+   Perform an agent-based simulation given a dictionary of input values
+
+   :param inputs: Dictionary of input values
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: initialize_oneway_network(navnet: networkx.classes.graph.Graph) -> networkx.classes.graph.Graph
+
+
+.. py:function:: check_and_remove_node_from_oneway_network(node, oneway_network)
+
+
+.. py:function:: find_and_save_potential_one_way_aisles(facility: str, floor: str, outputfile: str, floorplan_directory: str = None, **kwargs)
+
+   Iterate over nodes and edges in the navigation network and identify
+   segments that could potentially be assigned one-way traffic.
+
+   Creates a list of potential one-way nav segments where each segment is a
+   list of successive nodes belonging to that nav segment. Save the list
+   for later retrieval and outputs it to an SVG file for the user.
+
+   :param facility: Name of this facility
+   :param floor: Name of this floor
+   :param outputfile: Location to store output
+   :param floorplan_directory: Custom directory for floorplans (default=cache)
+   :raise NotADirectoryError: floorplan_directory is invalid
+   :raise FileMotFoundError: could not find floorplan file
+   :raise FileMotFoundError: could not find navnet file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+

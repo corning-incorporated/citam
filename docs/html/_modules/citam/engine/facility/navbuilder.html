@@ -1,0 +1,1550 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.engine.facility.navbuilder &#8212; CITAM 0.13.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/engine/facility/navbuilder.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_White_Logo.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" accesskey="U">citam.engine</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.engine.facility.navbuilder</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2021. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1">#  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1">#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1">#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1">#  CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1">#  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span>
+<span class="c1">#  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1">#  ==========================================================================</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">progressbar</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">Line</span><span class="p">,</span> <span class="n">svg2paths</span><span class="p">,</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">citam.engine.io.visualization</span> <span class="k">as</span> <span class="nn">bv</span>
+<span class="kn">import</span> <span class="nn">citam.engine.map.utils</span> <span class="k">as</span> <span class="nn">fu</span>
+<span class="kn">import</span> <span class="nn">citam.engine.map.geometry</span> <span class="k">as</span> <span class="nn">gsu</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.door</span> <span class="kn">import</span> <span class="n">Door</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.floorplan</span> <span class="kn">import</span> <span class="n">Floorplan</span>
+<span class="kn">from</span> <span class="nn">citam.engine.map.space</span> <span class="kn">import</span> <span class="n">Space</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="NavigationBuilder"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder">[docs]</a><span class="k">class</span> <span class="nc">NavigationBuilder</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create the navigation network (navnet) for a given floorplan.</span>
+
+<span class="sd">    Each node in the navigation network is a notable xy coordinate in the</span>
+<span class="sd">    floorplan corresponding to entrances to various spaces and intersections</span>
+<span class="sd">    between navigation segments. The correspondence between nodes and</span>
+<span class="sd">    actual locations is handled at the floorplan and navigation (see the</span>
+<span class="sd">    navigation class) level.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">floorplan</span><span class="p">:</span> <span class="n">Floorplan</span><span class="p">,</span> <span class="n">add_all_nav_points</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new navnet builder.</span>
+
+<span class="sd">        Whether &#39;add_all_nav_points&#39; is True of False, the final simplification</span>
+<span class="sd">        process will remove any unnecessary nodes in the last step of the</span>
+<span class="sd">        navnet creation process. The tradeoff here is the speed of finding</span>
+<span class="sd">        intersections between segments. If all points are added, intersections</span>
+<span class="sd">        are found almost for free (nodes with more than 2 edges) but the</span>
+<span class="sd">        simplification process takes longer because there are more superfluous</span>
+<span class="sd">        points to remove. If only the endpoints are added, an iteration over</span>
+<span class="sd">        pairs of nav segments that fall within the same space is required to</span>
+<span class="sd">        find intersections.</span>
+
+<span class="sd">        :param current_floorplan: The floorplan for which to create the navnet.</span>
+<span class="sd">        :type current_floorplan: Floorplan</span>
+<span class="sd">        :param add_all_nav_points: whether to add all points from navigation</span>
+<span class="sd">            segments to the network or just the endpoints, defaults to False</span>
+<span class="sd">        :type add_all_nav_points: bool, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_all_nav_points</span> <span class="o">=</span> <span class="n">add_all_nav_points</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+
+        <span class="c1"># Keys will be space unique names and each entry will be a list of nav</span>
+        <span class="c1"># segments where each segment is a tuple of the 2 endpoints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">,</span> <span class="n">Point</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># To avoid parallel nav segments (if a door is already part of the</span>
+        <span class="c1"># navnet, no need to use it to start new nav segments)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">excluded_doors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Door</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="NavigationBuilder.build"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build the navigation network (navnet) for a given floorplan.</span>
+
+<span class="sd">        The navigation network is created by adding a navigation segment</span>
+<span class="sd">        at the center of each aisle and then adding perpendicular nav segments</span>
+<span class="sd">        acroos each door that hasn&#39;t been added to the navnet yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Create nav segements for all aisles and doors</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating nav segments for each aisle...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_nav_segments_for_aisles</span><span class="p">()</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing doors for each space...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_nav_segments_for_doors</span><span class="p">()</span>
+
+        <span class="c1"># Simplify nav network by removing unncesssary edges and nodes</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Removing unnecessary nodes from nav network...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simplify_navigation_network</span><span class="p">()</span>
+
+        <span class="c1"># Make sure no intersection was missed</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_all_nav_points</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">space</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">spaces</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">find_intersections_in_space</span><span class="p">(</span><span class="n">space</span><span class="p">)</span>
+
+        <span class="c1"># Ensure no nav path crosses a special wall</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Make sure nav paths do not cross any walls...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sanitize_navnet</span><span class="p">()</span>
+
+        <span class="c1"># Label all intersection nodes accordingly</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">nneigh</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nneigh</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;node_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;intersection&quot;</span>
+
+        <span class="c1"># Convert to directed graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._create_nav_segments_for_doors"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_doors">[docs]</a>    <span class="k">def</span> <span class="nf">_create_nav_segments_for_doors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over each door in floorplan and create perpendicular nav</span>
+<span class="sd">        segments for each.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">ProgressBar</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">doors</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">door</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">doors</span><span class="p">):</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">door</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">excluded_doors</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Add mid-point of door path to navnet as a door node</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">door</span><span class="o">.</span><span class="n">midpoint_coords</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;door&quot;</span><span class="p">)</span>
+            <span class="n">door_width</span> <span class="o">=</span> <span class="n">door</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+            <span class="n">door_normal</span> <span class="o">=</span> <span class="n">door</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+            <span class="n">segments</span><span class="p">,</span> <span class="n">seg_spaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_nav_segments</span><span class="p">(</span>
+                <span class="n">door</span><span class="o">.</span><span class="n">midpoint</span><span class="p">,</span>
+                <span class="n">door_normal</span><span class="p">,</span>
+                <span class="n">stop_at_existing_segments</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No nav segments found. This is not typical.&quot;</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Door is: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">door</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_spaces_to_hallway_graph</span><span class="p">(</span><span class="n">seg_spaces</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_navnet</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">seg_spaces</span><span class="p">,</span> <span class="n">door_width</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._create_nav_segments_for_aisles"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_aisles">[docs]</a>    <span class="k">def</span> <span class="nf">_create_nav_segments_for_aisles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over each hallway and create nav segments along each</span>
+<span class="sd">        aisle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">ProgressBar</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">spaces</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">space</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">():</span>
+                <span class="n">valid_boundaries</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">boundaries</span>
+                <span class="n">aisles</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">find_aisles</span><span class="p">(</span>
+                    <span class="n">space</span><span class="p">,</span> <span class="n">valid_boundaries</span><span class="p">,</span> <span class="n">no_repeat</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">aisle</span> <span class="ow">in</span> <span class="n">aisles</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aisle_has_nav_segment</span><span class="p">(</span><span class="n">aisle</span><span class="p">,</span> <span class="n">space</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">create_nav_segment_for_aisle</span><span class="p">(</span><span class="n">aisle</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._update_navnet"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._update_navnet">[docs]</a>    <span class="k">def</span> <span class="nf">_update_navnet</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Point</span><span class="p">]],</span>
+        <span class="n">seg_spaces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">],</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For each segment in list of nav segments, create nodes and edges</span>
+<span class="sd">        in navnet. Also keep track in which space each segment falls.</span>
+
+<span class="sd">        [extended_summary]</span>
+
+<span class="sd">        :param segments: List of segments where each segment is a list of</span>
+<span class="sd">             points.</span>
+<span class="sd">        :type segments: List[List[Point]]</span>
+<span class="sd">        :param seg_spaces: List of spaces where each segment falls.</span>
+<span class="sd">        :type seg_spaces: List[Space]</span>
+<span class="sd">        :param width: Width of each edge to be added to navent.</span>
+<span class="sd">        :type width: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Add segments to navnet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_segments_to_navnet</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">seg_spaces</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+
+        <span class="c1"># Add segments to space</span>
+        <span class="k">for</span> <span class="n">seg</span><span class="p">,</span> <span class="n">seg_space</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">seg_spaces</span><span class="p">):</span>
+            <span class="n">full_line</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">,</span> <span class="n">Point</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">seg_space</span><span class="o">.</span><span class="n">unique_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">seg_space</span><span class="o">.</span><span class="n">unique_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">full_line</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">seg_space</span><span class="o">.</span><span class="n">unique_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">full_line</span><span class="p">]</span>
+
+        <span class="c1"># Find nav intersections within spaces</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_all_nav_points</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">seg_space</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">seg_spaces</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">find_intersections_in_space</span><span class="p">(</span><span class="n">seg_space</span><span class="p">)</span></div>
+                <span class="c1"># self.find_and_remove_overlaps(seg_space)</span>
+                <span class="c1"># TODO: Also look for overlapping segments and merge them while</span>
+                <span class="c1"># keeping all existing intersections. Would be great to</span>
+                <span class="c1"># merge parallel segments as well</span>
+
+<div class="viewcode-block" id="NavigationBuilder._aisle_has_nav_segment"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._aisle_has_nav_segment">[docs]</a>    <span class="k">def</span> <span class="nf">_aisle_has_nav_segment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">aisle</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Line</span><span class="p">,</span> <span class="n">Line</span><span class="p">],</span> <span class="n">space</span><span class="p">:</span> <span class="n">Space</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if aisle already has a navigation segment.</span>
+
+<span class="sd">        :param aisle: Aisle, given as a tuple of 2 walls.</span>
+<span class="sd">        :type aisle: Tuple[Line, Line]</span>
+<span class="sd">        :param space: The space where this aisle is located.</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :return: Whether a nav segment was found in this aisle or not.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">unique_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Perpendicular vector between the two walls</span>
+        <span class="n">v_perp</span> <span class="o">=</span> <span class="n">gsu</span><span class="o">.</span><span class="n">calculate_perpendicular_vector</span><span class="p">(</span><span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># If all of these lead to intersection with a nav seg, we are good</span>
+        <span class="n">test_points</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+        <span class="n">tot_intersects</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">space</span><span class="o">.</span><span class="n">unique_name</span><span class="p">]:</span>
+            <span class="n">line2</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">seg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">seg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">complex_coords</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">line2</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">test_points</span><span class="p">:</span>
+                <span class="n">complex_point1</span> <span class="o">=</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+                <span class="n">point1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">complex_point1</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">complex_point1</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">point2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">point1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">v_perp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">point1</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">v_perp</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="p">)</span>
+                <span class="n">line1</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+                    <span class="n">start</span><span class="o">=</span><span class="n">point1</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">point2</span><span class="o">.</span><span class="n">complex_coords</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">line1</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">line2</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">tot_intersects</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">tot_intersects</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_points</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._find_valid_boundaries"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._find_valid_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">_find_valid_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Line</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over boundary walls of a space and return only the</span>
+<span class="sd">         ones that are not between two hallways.</span>
+
+<span class="sd">        :param space: The space of interest.</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        :return: List of valid boundaries.</span>
+<span class="sd">        :rtype: List[Line]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">valid_boundaries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">boundaries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">wall</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">mid_normal</span> <span class="o">=</span> <span class="n">wall</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">mid_normal</span><span class="o">.</span><span class="n">real</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="n">mid_normal</span><span class="o">.</span><span class="n">imag</span>
+            <span class="n">mid_point</span> <span class="o">=</span> <span class="n">wall</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">test_point1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">mid_point</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">dx</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">mid_point</span><span class="o">.</span><span class="n">imag</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">space1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_location_of_point</span><span class="p">(</span><span class="n">test_point1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">space1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">valid_boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wall</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">test_point2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">mid_point</span><span class="o">.</span><span class="n">real</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">dx</span><span class="p">),</span>
+                <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">mid_point</span><span class="o">.</span><span class="n">imag</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">dy</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">space2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_location_of_point</span><span class="p">(</span><span class="n">test_point2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">space2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">valid_boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wall</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="n">space1</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">()</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">space2</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="n">valid_boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wall</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">valid_boundaries</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.create_nav_segment_for_aisle"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.create_nav_segment_for_aisle">[docs]</a>    <span class="k">def</span> <span class="nf">create_nav_segment_for_aisle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aisle</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create navigation segements (edges in the navnet) to handle</span>
+<span class="sd">        circulation in this aisle.</span>
+
+<span class="sd">        :param aisle: An aisle, given by two parallel walls.</span>
+<span class="sd">        :type aisle: Tuple[Line, Line]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># use one of the walls to find the direction vector</span>
+        <span class="n">wall1</span> <span class="o">=</span> <span class="n">aisle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall1</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall1</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+        <span class="n">q1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall1</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">wall1</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">wall1</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        <span class="n">direction_vector</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">((</span><span class="n">q1</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">p1</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">L</span><span class="p">,</span> <span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">p1</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">L</span><span class="p">)</span>
+
+        <span class="n">center_point</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">fu</span><span class="o">.</span><span class="n">get_aisle_center_point_and_width</span><span class="p">(</span><span class="n">aisle</span><span class="p">)</span>
+        <span class="n">segments</span><span class="p">,</span> <span class="n">seg_spaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_nav_segments</span><span class="p">(</span>
+            <span class="n">center_point</span><span class="p">,</span> <span class="n">direction_vector</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_spaces_to_hallway_graph</span><span class="p">(</span><span class="n">seg_spaces</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_navnet</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">seg_spaces</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._find_location_of_point"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._find_location_of_point">[docs]</a>    <span class="k">def</span> <span class="nf">_find_location_of_point</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Point</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Space</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find the space inside which this point is located.</span>
+
+<span class="sd">        :param point: The point of interest</span>
+<span class="sd">        :type point: Point</span>
+<span class="sd">        :return: Space object where the point is located (None if not found)</span>
+<span class="sd">                and its index in the list of spaces (None if not found).</span>
+<span class="sd">        :rtype: Tuple[Optional[Space], Optional[int]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">space</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">is_point_inside_space</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">space</span><span class="p">,</span> <span class="n">i</span>
+
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._is_point_on_boundaries"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._is_point_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">_is_point_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if point falls on any boundary and return list of</span>
+<span class="sd">        corresponding spaces. If only one space, then this is an exterior</span>
+<span class="sd">        boundary.</span>
+
+<span class="sd">        :param point: The point of interest.</span>
+<span class="sd">        :type point: Point</span>
+<span class="sd">        :return: List of spaces on which boundaries this point lies.</span>
+<span class="sd">        :rtype: List[Space]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">boundary_spaces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">space</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">is_point_on_space_boundaries</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+                <span class="n">boundary_spaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">space</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">boundary_spaces</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._add_segments_to_navnet"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._add_segments_to_navnet">[docs]</a>    <span class="k">def</span> <span class="nf">_add_segments_to_navnet</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Point</span><span class="p">]],</span>
+        <span class="n">seg_spaces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">],</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add nodes and edges to the navigation network based on a given list of</span>
+<span class="sd">        nav segments.</span>
+
+<span class="sd">        Each point in each segment is added as a node in the nav network</span>
+<span class="sd">        and a connection (edge) is created between each successive pair of</span>
+<span class="sd">        points.</span>
+
+<span class="sd">        :param segments: List of segments to consider.</span>
+<span class="sd">        :type segments: List[List[Point]]</span>
+<span class="sd">        :param seg_spaces: List of spaces where the segments fall.</span>
+<span class="sd">        :type seg_spaces: List[Space]</span>
+<span class="sd">        :param width: Width to assign to each edge in the navnet.</span>
+<span class="sd">        :type width: float</span>
+<span class="sd">        :raises ValueError: If a segment has less than 2 points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">seg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segments</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each segment must have two points.&quot;</span><span class="p">)</span>
+
+            <span class="n">coords1</span> <span class="o">=</span> <span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">seg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">coords1</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_all_nav_points</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">seg</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                    <span class="n">coords2</span> <span class="o">=</span> <span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">coords2</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                        <span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">coords1</span> <span class="o">=</span> <span class="n">coords2</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">coords2</span> <span class="o">=</span> <span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">seg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">coords2</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">coords1</span> <span class="o">!=</span> <span class="n">coords2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                        <span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._add_spaces_to_hallway_graph"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._add_spaces_to_hallway_graph">[docs]</a>    <span class="k">def</span> <span class="nf">_add_spaces_to_hallway_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spaces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add hallways to the hallway graph.</span>
+
+<span class="sd">        The hallway graph keeps track of which hallway is accessible from</span>
+<span class="sd">        which hallway. A connection is created between each space given</span>
+<span class="sd">        as input.</span>
+
+<span class="sd">        :param spaces: The list of space objects to add to the graph.</span>
+<span class="sd">        :type spaces: List[Space]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spaces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">old_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">old_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">old_space</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">old_space</span><span class="o">.</span><span class="n">unique_name</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">current_space</span> <span class="ow">in</span> <span class="n">spaces</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">old_space</span> <span class="o">!=</span> <span class="n">current_space</span>
+                <span class="ow">and</span> <span class="n">current_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">old_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">old_space</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">()</span>
+                <span class="ow">and</span> <span class="n">current_space</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">()</span>
+            <span class="p">):</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                    <span class="n">old_space</span><span class="o">.</span><span class="n">unique_name</span><span class="p">,</span> <span class="n">current_space</span><span class="o">.</span><span class="n">unique_name</span>
+                <span class="p">)</span>
+            <span class="n">old_space</span> <span class="o">=</span> <span class="n">current_space</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.find_door_intersect"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.find_door_intersect">[docs]</a>    <span class="k">def</span> <span class="nf">find_door_intersect</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">test_line</span><span class="p">:</span> <span class="n">Line</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Door</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the given line intersects with a door.</span>
+
+<span class="sd">        Intersect coords are to the nearest integer.</span>
+
+<span class="sd">        :param test_line: The line of interest.</span>
+<span class="sd">        :type test_line: Line</span>
+<span class="sd">        :return: The intersect xy coordinates and the door object, (None, None)</span>
+<span class="sd">                if not found.</span>
+<span class="sd">        :rtype: Tuple[Optional[Tuple[int, int]], Optional[Door]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">door_found</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">door</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">doors</span><span class="p">:</span>
+            <span class="n">intersects</span> <span class="o">=</span> <span class="n">test_line</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">door</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersects</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">intersects</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">t1</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">door_intersect</span> <span class="o">=</span> <span class="n">test_line</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+                <span class="n">coords</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="n">door_intersect</span><span class="o">.</span><span class="n">real</span><span class="p">),</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="n">door_intersect</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">door_found</span> <span class="o">=</span> <span class="n">door</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">coords</span><span class="p">,</span> <span class="n">door_found</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.find_if_valid_nearby_space_exits"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.find_if_valid_nearby_space_exits">[docs]</a>    <span class="k">def</span> <span class="nf">find_if_valid_nearby_space_exits</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">current_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Space</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a point and direction, look ahead by (dx, dy) to verify if a</span>
+<span class="sd">        valid space exists there and return that space.</span>
+
+<span class="sd">        This function is expected to be used to decide whether to continue with</span>
+<span class="sd">        a navigation segment or not when crossing the boundaries of the current</span>
+<span class="sd">        space (hence the direction parameter). Keep in mind that a boundary</span>
+<span class="sd">        does not need to correspond to a wall).</span>
+
+<span class="sd">        :param new_point: The current point that falls on the boundaries.</span>
+<span class="sd">        :type new_point: Point</span>
+<span class="sd">        :param direction: The current direction of the nav segment.</span>
+<span class="sd">        :type direction: int</span>
+<span class="sd">        :param dx: The look ahead distance in the x direction.</span>
+<span class="sd">        :type dx: float</span>
+<span class="sd">        :param dy: The look ahead distance in the y direction.</span>
+<span class="sd">        :type dy: float</span>
+<span class="sd">        :raises ValueError: If point is not on any boundary.</span>
+<span class="sd">        :raises ValueError: If space is found to be on the boundary of 2 or</span>
+<span class="sd">                more spaces but no space is found ahead (clearly something is</span>
+<span class="sd">                wrong).</span>
+<span class="sd">        :return: The space ahead</span>
+<span class="sd">        :rtype: Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">boundary_spaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_point_on_boundaries</span><span class="p">(</span><span class="n">current_point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">boundary_spaces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to compute a nav segment from </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">current_point</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">boundary_spaces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;{</span><span class="si">%s</span><span class="s2">} on space boundary. Is it an entrance?&quot;</span><span class="p">,</span> <span class="n">current_point</span>
+            <span class="p">)</span>
+            <span class="n">current_space</span> <span class="o">=</span> <span class="n">boundary_spaces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">current_space</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">test_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">dx</span><span class="p">),</span>
+                <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">current_point</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">dy</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">current_space</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_location_of_point</span><span class="p">(</span><span class="n">test_point</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">current_space</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Unable to compute a nav segment from </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">current_point</span><span class="p">),</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">current_space</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._update_segments"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._update_segments">[docs]</a>    <span class="k">def</span> <span class="nf">_update_segments</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">new_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a valid new point, update the current navigation segments.</span>
+
+<span class="sd">        :param new_point: The new point to add to one of the segments</span>
+<span class="sd">        :type new_point: Point</span>
+<span class="sd">        :param direction: The current direction of the nav segment.</span>
+<span class="sd">        :type direction: int</span>
+<span class="sd">        :param segments: The current list of segments</span>
+<span class="sd">        :type segments: List[Point]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_point</span><span class="p">]</span> <span class="o">+</span> <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_point</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._is_crossing_wall"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_wall">[docs]</a>    <span class="k">def</span> <span class="nf">_is_crossing_wall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">new_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify if the current nav segment has reached an existing wall.</span>
+
+<span class="sd">        :param first_point: The very first point of the navigation segment.</span>
+<span class="sd">        :type first_point: Point</span>
+<span class="sd">        :param new_point: The current point in the navigation segment.</span>
+<span class="sd">        :type new_point: Point</span>
+<span class="sd">        :return: Whether a wall is reached or not.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">test_line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">first_point</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">new_point</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># TODO: Change test_line to be the last segment!</span>
+        <span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">walls</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">wall</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_line</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">wall</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># We encountered a wall!!!</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._is_heading_outside_facility"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._is_heading_outside_facility">[docs]</a>    <span class="k">def</span> <span class="nf">_is_heading_outside_facility</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">new_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">look_ahead_dist</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify if current nav segment is heading outside the facility</span>
+<span class="sd">        within a given look ahead distance.</span>
+
+<span class="sd">        [extended_summary]</span>
+
+<span class="sd">        :param new_point: The current point of the nav segment.</span>
+<span class="sd">        :type new_point: Point</span>
+<span class="sd">        :param direction: The direction (positive or negative) where the</span>
+<span class="sd">            segment is headed.</span>
+<span class="sd">        :type direction: int</span>
+<span class="sd">        :param dx: look ahead distance in the x direction</span>
+<span class="sd">        :type dx: float</span>
+<span class="sd">        :param dy: look ahead distance in the y direction</span>
+<span class="sd">        :type dy: float</span>
+<span class="sd">        :param look_ahead_dist: look-ahead distance multiplier, defaults to 3</span>
+<span class="sd">        :type look_ahead_dist: int, optional</span>
+<span class="sd">        :raises ValueError: If value for the direction is invalid.</span>
+<span class="sd">        :return: Whether the position ahead is outside the facility or not.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Direction must be 1 or -1.&quot;</span><span class="p">)</span>
+
+        <span class="n">test_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">new_point</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">look_ahead_dist</span> <span class="o">*</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">dx</span><span class="p">),</span>
+            <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">new_point</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">look_ahead_dist</span> <span class="o">*</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">dy</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">test_point_space</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_location_of_point</span><span class="p">(</span><span class="n">test_point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">test_point_space</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._is_crossing_door"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_door">[docs]</a>    <span class="k">def</span> <span class="nf">_is_crossing_door</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">first_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span> <span class="n">current_point</span><span class="p">:</span> <span class="n">Point</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify if current nav segment is crossing a door, if so add door</span>
+<span class="sd">        to list of excluded doors and update segments accordingly.</span>
+
+<span class="sd">        ..Note: Expected to cross only one door at a time.</span>
+
+<span class="sd">        :param first_point: The very first point in the current nav segment.</span>
+<span class="sd">        :type first_point: Point</span>
+<span class="sd">        :param new_point: The current point in the nav segment.</span>
+<span class="sd">        :type new_point: Point</span>
+<span class="sd">        :return: The intersect coordinates with a door, if any, None otherwise.</span>
+<span class="sd">        :rtype: Optional[Tuple[int, int]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">test_line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">first_point</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">current_point</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">coords</span><span class="p">,</span> <span class="n">door</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_door_intersect</span><span class="p">(</span><span class="n">test_line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">door</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">door</span><span class="o">.</span><span class="n">intersect_coords</span> <span class="o">=</span> <span class="n">coords</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">excluded_doors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">door</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">coords</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._create_segments_for_new_space"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._create_segments_for_new_space">[docs]</a>    <span class="k">def</span> <span class="nf">_create_segments_for_new_space</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">first_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="n">new_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Point</span><span class="p">]],</span>
+        <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create navigation segments when crossing from one space to another.</span>
+
+<span class="sd">        :param first_point: The first point in the current nav segment.</span>
+<span class="sd">        :type first_point: Point</span>
+<span class="sd">        :param new_point: The current point in the navigation segment.</span>
+<span class="sd">        :type new_point: Point</span>
+<span class="sd">        :param new_space: The new space.</span>
+<span class="sd">        :type new_space: Space</span>
+<span class="sd">        :param segments: List of all current nav segments to be updated.</span>
+<span class="sd">        :type segments: List[List[Point]]</span>
+<span class="sd">        :param segment_spaces: List of all current spaces where each segment is</span>
+<span class="sd">            located.</span>
+<span class="sd">        :type segment_spaces: List[Space]</span>
+<span class="sd">        :param direction: The direction of the segment (-1 or 1).</span>
+<span class="sd">        :type direction: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">door_inters_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_crossing_door</span><span class="p">(</span><span class="n">first_point</span><span class="p">,</span> <span class="n">new_point</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">door_inters_coords</span><span class="p">:</span>
+            <span class="c1"># create new segment from intersect coords</span>
+            <span class="n">inters_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">door_inters_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">door_inters_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_segments</span><span class="p">(</span><span class="n">inters_point</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">segments</span><span class="p">)</span>
+            <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">inters_point</span><span class="p">])</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Create new segment from last point</span>
+            <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_point</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">new_point</span><span class="p">,</span> <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.compute_single_direction_nav_segment"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.compute_single_direction_nav_segment">[docs]</a>    <span class="k">def</span> <span class="nf">compute_single_direction_nav_segment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">current_space</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span>
+        <span class="n">first_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="n">direction</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">]]],</span>
+        <span class="n">segment_spaces</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">],</span>
+        <span class="n">stop_at_existing_segments</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute navigation segments in a given direction. More than 1 segment</span>
+<span class="sd">        will be created if crossing into different spaces.</span>
+
+<span class="sd">        :param current_space: The current space.</span>
+<span class="sd">        :type current_space: Space</span>
+<span class="sd">        :param first_point: The first point in this navigation segment.</span>
+<span class="sd">        :type first_point: Point</span>
+<span class="sd">        :param direction: The direction of the navigation segment.</span>
+<span class="sd">        :type direction: int</span>
+<span class="sd">        :param dx: x-increment of the navigation segment.</span>
+<span class="sd">        :type dx: float</span>
+<span class="sd">        :param dy: y-increment of the navigation segment.</span>
+<span class="sd">        :type dy: float</span>
+<span class="sd">        :param segments: List of all current nav segments to be updated.</span>
+<span class="sd">        :type segments: List[List[Point]]</span>
+<span class="sd">        :param segment_spaces: List of all spaces where the nav segments are</span>
+<span class="sd">            located</span>
+<span class="sd">        :type segment_spaces: List[Space]</span>
+<span class="sd">        :param stop_at_existing_segments: Whether to stop when crossing an</span>
+<span class="sd">            existing nav segment or not.</span>
+<span class="sd">        :type stop_at_existing_segments: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_point</span> <span class="o">=</span> <span class="n">first_point</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># move one point in the given direction</span>
+            <span class="n">new_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">new_point</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">dx</span><span class="p">),</span>
+                <span class="n">y</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">new_point</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">dy</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">current_space</span><span class="o">.</span><span class="n">is_point_inside_space</span><span class="p">(</span><span class="n">new_point</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_segments</span><span class="p">(</span><span class="n">new_point</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">segments</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Check if this is a wall</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_crossing_wall</span><span class="p">(</span><span class="n">first_point</span><span class="p">,</span> <span class="n">new_point</span><span class="p">):</span>
+                    <span class="k">break</span>
+
+                <span class="n">new_space</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_location_of_point</span><span class="p">(</span><span class="n">new_point</span><span class="p">)</span>
+
+                <span class="c1"># Check if heading outside facility</span>
+                <span class="k">if</span> <span class="n">new_space</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_heading_outside_facility</span><span class="p">(</span>
+                    <span class="n">new_point</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span>
+                <span class="p">):</span>
+                    <span class="k">break</span>
+
+                <span class="k">if</span> <span class="n">new_space</span><span class="p">:</span>
+                    <span class="n">current_space</span> <span class="o">=</span> <span class="n">new_space</span>
+                    <span class="n">segment_spaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_space</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_create_segments_for_new_space</span><span class="p">(</span>
+                        <span class="n">first_point</span><span class="p">,</span> <span class="n">new_point</span><span class="p">,</span> <span class="n">segments</span><span class="p">,</span> <span class="n">direction</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Just update segment. This is to support edge case</span>
+                    <span class="c1"># where a small gap exists between valid spaces</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_update_segments</span><span class="p">(</span><span class="n">new_point</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">segments</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">stop_at_existing_segments</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">new_point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">new_point</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">break</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.compute_nav_segments"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.compute_nav_segments">[docs]</a>    <span class="k">def</span> <span class="nf">compute_nav_segments</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">first_point</span><span class="p">:</span> <span class="n">Point</span><span class="p">,</span>
+        <span class="n">direction_vector</span><span class="p">:</span> <span class="nb">complex</span><span class="p">,</span>
+        <span class="n">stop_at_existing_segments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute navigation segments from a given point and direction.</span>
+<span class="sd">        2 segments are created from the starting point going in opposite</span>
+<span class="sd">        directions.</span>
+
+<span class="sd">        A navigation segment corresponds to an edge in the navigation graph</span>
+<span class="sd">        connecting 2 nodes (usually doors or walls marking the end of the</span>
+<span class="sd">        navigation segment).</span>
+
+<span class="sd">        :param first_point: The initial point from which to start the segments</span>
+<span class="sd">        :type first_point: Point</span>
+<span class="sd">        :param direction_vector: Vector indicating the directions (positive and</span>
+<span class="sd">                 negative) of the segments.</span>
+<span class="sd">        :type direction_vector: complex</span>
+<span class="sd">        :param width: The width to assign to edges in the navnet.</span>
+<span class="sd">        :type width: float</span>
+<span class="sd">        :param stop_at_existing_segments: Whether to stop if the segment</span>
+<span class="sd">             crosses an existing navigation segment in the navnet or not,</span>
+<span class="sd">             defaults to False</span>
+<span class="sd">        :type stop_at_existing_segments: bool, optional</span>
+<span class="sd">        :raises ValueError: if the number of segments is different from the</span>
+<span class="sd">            number of spaces at the end of the process, indicating that</span>
+<span class="sd">            something went wrong.</span>
+<span class="sd">        :return: list of segments and corresponding space ids where they fall.</span>
+<span class="sd">        :rtype: Tuple[List, List]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">segment_spaces</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">direction_vector</span><span class="o">.</span><span class="n">real</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">direction_vector</span><span class="o">.</span><span class="n">imag</span>
+
+        <span class="k">for</span> <span class="n">direction</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+
+            <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">first_point</span><span class="p">])</span>
+
+            <span class="n">current_space</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_location_of_point</span><span class="p">(</span><span class="n">first_point</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">current_space</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">current_space</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_if_valid_nearby_space_exits</span><span class="p">(</span>
+                    <span class="n">first_point</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span>
+                <span class="p">)</span>
+
+            <span class="n">segment_spaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_space</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_single_direction_nav_segment</span><span class="p">(</span>
+                <span class="n">current_space</span><span class="p">,</span>
+                <span class="n">first_point</span><span class="p">,</span>
+                <span class="n">direction</span><span class="p">,</span>
+                <span class="n">dx</span><span class="p">,</span>
+                <span class="n">dy</span><span class="p">,</span>
+                <span class="n">segments</span><span class="p">,</span>
+                <span class="n">segment_spaces</span><span class="p">,</span>
+                <span class="n">stop_at_existing_segments</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment_spaces</span><span class="p">):</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;Number of segments should equal number of spaces&quot;</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;We have: {</span><span class="si">%d</span><span class="s2">} * {</span><span class="si">%d</span><span class="s2">}&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">segment_spaces</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Failed to build nav segments in this floorplan&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Remove all segments that only have 1 point.</span>
+        <span class="c1"># They are not actual segments now, are they?</span>
+
+        <span class="n">good_segments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">good_segment_spaces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">seg</span><span class="p">,</span> <span class="n">seg_space</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">segment_spaces</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">good_segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
+                <span class="n">good_segment_spaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seg_space</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">good_segments</span><span class="p">,</span> <span class="n">good_segment_spaces</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._handle_wall_intersects"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._handle_wall_intersects">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_wall_intersects</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">intersects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">],</span>
+        <span class="n">path_line</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">edge</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">],</span>
+        <span class="n">half_width</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Break nav segments when they intersect with walls.</span>
+
+<span class="sd">        :param intersects: Points where nav segment intersects walls.</span>
+<span class="sd">        :type intersects: List[Tuple]</span>
+<span class="sd">        :param path_line: The path object representing the nav segment.</span>
+<span class="sd">        :type path_line: Path</span>
+<span class="sd">        :param edge: Edge in the navnet corresponding to current nav segment.</span>
+<span class="sd">        :type edge: List[List]</span>
+<span class="sd">        :param half_width: Half width of the current nav segment.</span>
+<span class="sd">        :type half_width: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">intersection_point</span> <span class="o">=</span> <span class="n">path_line</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">intersects</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">inter_coords</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">intersection_point</span><span class="o">.</span><span class="n">real</span><span class="p">)),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">intersection_point</span><span class="o">.</span><span class="n">imag</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">inter_coords</span><span class="p">:</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">inter_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">inter_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">dx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+            <span class="n">coords2</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">inter_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">round</span><span class="p">(</span><span class="n">dx</span> <span class="o">/</span> <span class="n">L</span><span class="p">),</span>
+                <span class="n">inter_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">round</span><span class="p">(</span><span class="n">dy</span> <span class="o">/</span> <span class="n">L</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords2</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="n">half_width</span><span class="p">)</span>
+        <span class="c1"># TODO: implement support for case when edge crosses</span>
+        <span class="c1"># multiple walls</span>
+        <span class="c1">#     new_edge = (edge[0], inter_coords,</span>
+        <span class="c1">#                 {&#39;half_width&#39;: half_width})</span>
+        <span class="c1">#     # edges.append(new_edge)</span>
+
+        <span class="k">if</span> <span class="n">inter_coords</span> <span class="o">!=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">inter_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">inter_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">dx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+            <span class="n">coords2</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">inter_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">round</span><span class="p">(</span><span class="n">dx</span> <span class="o">/</span> <span class="n">L</span><span class="p">),</span>
+                <span class="n">inter_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">round</span><span class="p">(</span><span class="n">dy</span> <span class="o">/</span> <span class="n">L</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">coords2</span><span class="p">,</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">half_width</span><span class="o">=</span><span class="n">half_width</span><span class="p">)</span></div>
+            <span class="c1"># TODO: implement support for case case when edge crosses</span>
+            <span class="c1"># multiple walls</span>
+            <span class="c1">#     new_edge = (inter_coords, edge[1],</span>
+            <span class="c1">#                 {&#39;half_width&#39;: half_width})</span>
+            <span class="c1">#     # edges.append(new_edge)</span>
+
+<div class="viewcode-block" id="NavigationBuilder.sanitize_navnet"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.sanitize_navnet">[docs]</a>    <span class="k">def</span> <span class="nf">sanitize_navnet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make sure navigation paths do not cross any walls, including</span>
+<span class="sd">        standalone walls.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">special_walls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">n_intersect</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">ProgressBar</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">edge</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">half_width</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;half_width&quot;</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">path_line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">q</span><span class="o">.</span><span class="n">complex_coords</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">path_line</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">special_walls</span><span class="p">:</span>
+                <span class="n">intersects</span> <span class="o">=</span> <span class="n">path_line</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">wall</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersects</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_handle_wall_intersects</span><span class="p">(</span>
+                        <span class="n">intersects</span><span class="p">,</span> <span class="n">path_line</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">half_width</span>
+                    <span class="p">)</span>
+                    <span class="n">n_intersect</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">n_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of intersections removed: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_intersect</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of edges: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_edges</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._remove_node_if_invalid"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._remove_node_if_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_node_if_invalid</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">tuple</span><span class="p">],</span> <span class="n">door_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a node should be removed based on whether it has two neighbors</span>
+<span class="sd">        with which it forms a straight line.</span>
+
+<span class="sd">        :param node: The node of interest</span>
+<span class="sd">        :type node: tuple</span>
+<span class="sd">        :param neighbors: List of the neighboring nodes</span>
+<span class="sd">        :type neighbors: List[tuple]</span>
+<span class="sd">        :param door_paths: SVG path for all the doors in facility</span>
+<span class="sd">        :type door_paths: List[Path]</span>
+<span class="sd">        :return: Whether the node was removed or not.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">remove_node</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># The nodes have to be on a straight line</span>
+        <span class="n">test_line</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">end</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">neighbors</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="p">)</span>
+        <span class="n">test_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">gsu</span><span class="o">.</span><span class="n">is_point_on_line</span><span class="p">(</span><span class="n">test_line</span><span class="p">,</span> <span class="n">test_point</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">):</span>
+            <span class="n">remove_node</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># Do not remove node if it belongs to a door path</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">door_path</span> <span class="ow">in</span> <span class="n">door_paths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">gsu</span><span class="o">.</span><span class="n">is_point_on_line</span><span class="p">(</span><span class="n">door_path</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+                <span class="n">remove_node</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">remove_node</span><span class="p">:</span>
+            <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">half_width</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">edges</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;half_width&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                <span class="n">neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">neighbors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">half_width</span><span class="o">=</span><span class="n">half_width</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">remove_node</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.simplify_navigation_network"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.simplify_navigation_network">[docs]</a>    <span class="k">def</span> <span class="nf">simplify_navigation_network</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove unnecessary edges and nodes in navigation network.</span>
+
+<span class="sd">        A node is unnecessary if it only has 2 neighbors and all 3 together</span>
+<span class="sd">        form a straight line.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="s2">&quot;is_simplified&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">graph</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;is_simplified&quot;</span><span class="p">]:</span>
+                <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting number of nodes: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">)</span>
+
+            <span class="n">n_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting number of edges: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_edges</span><span class="p">)</span>
+
+            <span class="n">door_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">doors</span><span class="p">]</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of doors: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">door_paths</span><span class="p">))</span>
+
+            <span class="n">nodes_removed</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">completed</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">completed</span><span class="p">:</span>
+                <span class="n">completed</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+                <span class="n">pbar</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">ProgressBar</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+                    <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">neighbors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_node_if_invalid</span><span class="p">(</span>
+                        <span class="n">node</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">,</span> <span class="n">door_paths</span>
+                    <span class="p">):</span>
+                        <span class="n">completed</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="n">nodes_removed</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of nodes removed: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">nodes_removed</span><span class="p">)</span>
+            <span class="n">n_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;New number of nodes: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">)</span>
+            <span class="n">n_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;New number of edges: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_edges</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;is_simplified&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.find_and_collapse_parallel_segments"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.find_and_collapse_parallel_segments">[docs]</a>    <span class="k">def</span> <span class="nf">find_and_collapse_parallel_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate over segments in this space, test for overlap (parallel</span>
+<span class="sd">        segments) and remove any.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._compute_intersection_and_remove_segments"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._compute_intersection_and_remove_segments">[docs]</a>    <span class="k">def</span> <span class="nf">_compute_intersection_and_remove_segments</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">seg1</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">],</span> <span class="n">seg2</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Point</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if nav segments intersect and update list of nav segments</span>
+<span class="sd">        accordingly to capture the intersection point as a node in the graph.</span>
+
+<span class="sd">        :param key: key to find the space of interset.</span>
+<span class="sd">        :type key: str</span>
+<span class="sd">        :param seg1: The first segment</span>
+<span class="sd">        :type seg1: Tuple[Point]</span>
+<span class="sd">        :param seg2: The second segment</span>
+<span class="sd">        :type seg2: Tuple[Point]</span>
+<span class="sd">        :return: Whether an intersection point was found or not.</span>
+<span class="sd">        :rtype: False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">point1</span> <span class="o">=</span> <span class="n">seg1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">point2</span> <span class="o">=</span> <span class="n">seg1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">point3</span> <span class="o">=</span> <span class="n">seg2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">point4</span> <span class="o">=</span> <span class="n">seg2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">coords1</span> <span class="o">=</span> <span class="p">(</span><span class="n">point1</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point1</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">coords2</span> <span class="o">=</span> <span class="p">(</span><span class="n">point2</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point2</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">coords3</span> <span class="o">=</span> <span class="p">(</span><span class="n">point3</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point3</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">coords4</span> <span class="o">=</span> <span class="p">(</span><span class="n">point4</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point4</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="n">intersect_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_and_add_intersection_node_to_graph</span><span class="p">(</span>
+            <span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">,</span> <span class="n">coords3</span><span class="p">,</span> <span class="n">coords4</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">intersect_coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># update space seg</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">seg1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">seg2</span><span class="p">)</span>
+            <span class="n">new_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">intersect_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">intersect_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="p">[</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">point3</span><span class="p">,</span> <span class="n">point4</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">point</span> <span class="o">!=</span> <span class="n">new_point</span><span class="p">:</span>
+                    <span class="n">new_segment</span> <span class="o">=</span> <span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">new_point</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_segment</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._check_for_intersection_with_other_segments"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._check_for_intersection_with_other_segments">[docs]</a>    <span class="k">def</span> <span class="nf">_check_for_intersection_with_other_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n_segments</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_segments</span><span class="p">):</span>
+            <span class="n">seg1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">seg2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">seg1</span> <span class="o">==</span> <span class="n">seg2</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_intersection_and_remove_segments</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">seg1</span><span class="p">,</span> <span class="n">seg2</span><span class="p">):</span>
+                <span class="c1"># An intersection was found, n_segments has changed,</span>
+                <span class="c1"># return True</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.find_intersections_in_space"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.find_intersections_in_space">[docs]</a>    <span class="k">def</span> <span class="nf">find_intersections_in_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate through all nav segment pairs in this space, find any</span>
+<span class="sd">        intersections and add to navnet.</span>
+
+<span class="sd">        An intersection is when 2 nav segments cross each other.</span>
+
+<span class="sd">        :param space: The space of interest</span>
+<span class="sd">        :type space: Space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">unique_name</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">n_segments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">space_nav_segments</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_segments</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_intersection_with_other_segments</span><span class="p">(</span>
+                    <span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n_segments</span>
+                <span class="p">):</span>
+                    <span class="c1"># An intersection was found, n_segments has changed, time</span>
+                    <span class="c1"># to exit this loop and start over</span>
+                    <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">break</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder._remove_intersecting_edges"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder._remove_intersecting_edges">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_intersecting_edges</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">coords1</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">coords2</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">coords3</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">coords4</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given 4 xy coordiantes where the first 2 form one segment and the next</span>
+<span class="sd">        2 form another segment, remove corresponding edges from navnet.</span>
+
+<span class="sd">        :param coords1: Coordinates of first point of first edge.</span>
+<span class="sd">        :type coords1: Tuple[int, int]</span>
+<span class="sd">        :param coords2: Coordinates of second point of first edge.</span>
+<span class="sd">        :type coords2: Tuple[int, int]</span>
+<span class="sd">        :param coords3: Coordinates of first point of second edge.</span>
+<span class="sd">        :type coords3: Tuple[int, int]</span>
+<span class="sd">        :param coords4: Coordinates of second point of second edge.</span>
+<span class="sd">        :type coords4: Tuple[int, int]</span>
+<span class="sd">        :return: Half widths of both edges.</span>
+<span class="sd">        :rtype: Tuple[float, float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">):</span>
+            <span class="n">edge1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">)</span>
+            <span class="n">half_width1</span> <span class="o">=</span> <span class="n">edge1</span><span class="p">[</span><span class="s2">&quot;half_width&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">half_width1</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">coords2</span><span class="p">,</span> <span class="n">coords1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">coords2</span><span class="p">,</span> <span class="n">coords1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">coords3</span><span class="p">,</span> <span class="n">coords4</span><span class="p">):</span>
+            <span class="n">edge2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="n">coords3</span><span class="p">,</span> <span class="n">coords4</span><span class="p">)</span>
+            <span class="n">half_width2</span> <span class="o">=</span> <span class="n">edge2</span><span class="p">[</span><span class="s2">&quot;half_width&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">coords3</span><span class="p">,</span> <span class="n">coords4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">half_width2</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">coords4</span><span class="p">,</span> <span class="n">coords3</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">coords4</span><span class="p">,</span> <span class="n">coords3</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">half_width1</span><span class="p">,</span> <span class="n">half_width2</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.find_and_add_intersection_node_to_graph"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.find_and_add_intersection_node_to_graph">[docs]</a>    <span class="k">def</span> <span class="nf">find_and_add_intersection_node_to_graph</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">coords1</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">coords2</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">coords3</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">coords4</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given four points forming 2 lines, check if they intersect</span>
+<span class="sd">        and if so add new node to graph and create new edges.</span>
+
+<span class="sd">        :param coords1: Coordinates of first point.</span>
+<span class="sd">        :type coords1: Tuple[int, int]</span>
+<span class="sd">        :param coords2: Coordinates of first point.</span>
+<span class="sd">        :type coords2: Tuple[int, int]</span>
+<span class="sd">        :param coords3: Coordinates of first point.</span>
+<span class="sd">        :type coords3: Tuple[int, int]</span>
+<span class="sd">        :param coords4: Coordinates of first point.</span>
+<span class="sd">        :type coords4: Tuple[int, int]</span>
+<span class="sd">        :return: xy coordinates of the intersection. None if none.</span>
+<span class="sd">        :rtype: Point</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">line1</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">coords1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords1</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">end</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">coords2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords2</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="p">)</span>
+        <span class="n">line2</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">coords3</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords3</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">end</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">coords4</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords4</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">line1</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">line2</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">intersect_coords</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">intersects</span> <span class="o">=</span> <span class="n">line1</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">line2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersects</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">intersects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">t1</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">t2</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">):</span>
+                <span class="k">return</span>
+
+            <span class="n">intersect_coords</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">round</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">),</span>
+                <span class="nb">round</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">intersect_coords</span><span class="p">)</span>
+
+            <span class="n">half_width1</span><span class="p">,</span> <span class="n">half_width2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_intersecting_edges</span><span class="p">(</span>
+                <span class="n">coords1</span><span class="p">,</span> <span class="n">coords2</span><span class="p">,</span> <span class="n">coords3</span><span class="p">,</span> <span class="n">coords4</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">coords1</span> <span class="o">!=</span> <span class="n">intersect_coords</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                    <span class="n">coords1</span><span class="p">,</span> <span class="n">intersect_coords</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="n">half_width1</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">coords2</span> <span class="o">!=</span> <span class="n">intersect_coords</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                    <span class="n">coords2</span><span class="p">,</span> <span class="n">intersect_coords</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="n">half_width1</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">coords3</span> <span class="o">!=</span> <span class="n">intersect_coords</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                    <span class="n">coords3</span><span class="p">,</span> <span class="n">intersect_coords</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="n">half_width2</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">coords4</span> <span class="o">!=</span> <span class="n">intersect_coords</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                    <span class="n">coords4</span><span class="p">,</span> <span class="n">intersect_coords</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="n">half_width2</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">intersect_coords</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.export_navnet_to_svg"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.export_navnet_to_svg">[docs]</a>    <span class="k">def</span> <span class="nf">export_navnet_to_svg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export the navigation network to an svg file for visualization.</span>
+
+<span class="sd">        Superimposes the navigation network on top of the floorplan for easier</span>
+<span class="sd">        interpretation.</span>
+
+<span class="sd">        :param svg_file: path the svg file to export to.</span>
+<span class="sd">        :type svg_file: Union[str, pathlib.Path]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">nav_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">nav_paths</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">edges</span><span class="p">):</span>
+            <span class="n">nav_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">nav_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="n">nav_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Exporting...&quot;</span><span class="p">)</span>
+        <span class="n">bv</span><span class="o">.</span><span class="n">export_nav_network_to_svg</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span> <span class="n">nav_paths</span><span class="p">,</span> <span class="n">nav_nodes</span><span class="p">,</span> <span class="n">svg_file</span>
+        <span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Navigation network exported to: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.load_nav_paths_from_svg_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.load_nav_paths_from_svg_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_nav_paths_from_svg_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load all the nav segments found in an SVG file. Nav segments are paths</span>
+<span class="sd">        tagged with a &#39;nav&#39; in their id attribute.</span>
+
+<span class="sd">        :param svg_file: Path to the SVG file</span>
+<span class="sd">        :type svg_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :return: List of nav paths found in SVG file.</span>
+<span class="sd">        :rtype: List[Path]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">svg_file</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">paths</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">svg2paths</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">path</span>
+            <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">attr</span> <span class="ow">and</span> <span class="s2">&quot;nav&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.update_network_from_svg_file"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.update_network_from_svg_file">[docs]</a>    <span class="k">def</span> <span class="nf">update_network_from_svg_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the navigation file using nav paths defined in an svg file. Can</span>
+<span class="sd">        be used to allow a user to edit the navnet after the fact to add, edit</span>
+<span class="sd">        or remove segments.</span>
+
+<span class="sd">        :param svg_file: full path to the svg file.</span>
+<span class="sd">        :type svg_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :raises FileNotFoundError: If the svg file is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">svg_file</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">()</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+        <span class="n">new_nav_segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_nav_paths_from_svg_file</span><span class="p">(</span><span class="n">svg_file</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">nav_seg</span> <span class="ow">in</span> <span class="n">new_nav_segments</span><span class="p">:</span>
+            <span class="n">point1</span> <span class="o">=</span> <span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">nav_seg</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">nav_seg</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">point1</span><span class="p">)</span>
+
+            <span class="n">point2</span> <span class="o">=</span> <span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">nav_seg</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">real</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">nav_seg</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">point2</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">point2</span><span class="p">,</span> <span class="n">point1</span><span class="p">,</span> <span class="n">half_width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+                <span class="n">point3</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">point4</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">find_and_add_intersection_node_to_graph</span><span class="p">(</span>
+                    <span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">point3</span><span class="p">,</span> <span class="n">point4</span>
+                <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.export_navdata_to_json"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.export_navdata_to_json">[docs]</a>    <span class="k">def</span> <span class="nf">export_navdata_to_json</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">navnet_json_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+        <span class="n">hallway_graph_json_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export the navigation network data to json file for later use.</span>
+
+<span class="sd">        [extended_summary]</span>
+
+<span class="sd">        :param navnet_json_file: path to location to save navnet json file</span>
+<span class="sd">        :type navnet_json_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :param hallway_graph_json_file: path to location to save the hallways</span>
+<span class="sd">             graph</span>
+<span class="sd">        :type hallway_graph_json_file: Union[str, pathlib.Path]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">nav_dict</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">json_graph</span><span class="o">.</span><span class="n">node_link_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">navnet_json_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">nav_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+        <span class="n">hg_dict</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">json_graph</span><span class="o">.</span><span class="n">node_link_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hallway_graph_json_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">hg_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NavigationBuilder.load_navdata_from_json_files"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navbuilder/index.html#citam.engine.facility.navbuilder.NavigationBuilder.load_navdata_from_json_files">[docs]</a>    <span class="k">def</span> <span class="nf">load_navdata_from_json_files</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">navnet_json_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+        <span class="n">hallway_graph_json_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the navigation network and the hallway graph from json files.</span>
+
+<span class="sd">        Used to initialize the navnet and hallway graph using data from</span>
+<span class="sd">        existing files.</span>
+
+<span class="sd">        :param navnet_json_file: Full path to the navigation graph json file</span>
+<span class="sd">        :type navnet_json_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :param hallway_graph_json_file: Full path to the hallway graph json</span>
+<span class="sd">                file</span>
+<span class="sd">        :type hallway_graph_json_file: Union[str, pathlib.Path]</span>
+<span class="sd">        :raises ValueError: If a navnet or hallway graph currently exists, to</span>
+<span class="sd">                avoid accidental overwrite.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">n_nodes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to load new navigation data. The navigation &quot;</span>
+                <span class="s2">&quot;network currently has </span><span class="si">%d</span><span class="s2">. Please remove them first.&quot;</span><span class="p">,</span>
+                <span class="n">n_nodes</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;A navnet currently exists. Cannot load new network.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">navnet_json_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">navdata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_navnet</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">json_graph</span><span class="o">.</span><span class="n">node_link_graph</span><span class="p">(</span><span class="n">navdata</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hallway_graph_json_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">hgdata</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hallways_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">readwrite</span><span class="o">.</span><span class="n">json_graph</span><span class="o">.</span><span class="n">node_link_graph</span><span class="p">(</span><span class="n">hgdata</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" >citam.engine</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.corning.com/worldwide/en/privacy-policy.html">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank">Licensing</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2021 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

@@ -1,0 +1,252 @@
+:py:mod:`citam.engine.map.door`
+===============================
+
+.. py:module:: citam.engine.map.door
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.map.door.Door
+
+
+
+
+.. py:class:: Door(path: svgpathtools.Path, space1: citam.engine.map.space.Space = None, space2: citam.engine.map.space.Space = None, space1_id: int = None, space2_id: int = None, in_service: bool = True, emergency_only: bool = False, special_access: bool = False)
+
+   Class to represent and manage a door in a floorplan.
+
+   Note: the in_service, emergency and special_access flags are currently not
+   used.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:attribute:: _intersect_coords
+      :annotation: :Optional[Tuple[int, int]]
+
+      
+
+   .. py:method:: intersect_coords(self) -> Tuple[int, int]
+      :property:
+
+      Return the point where the navigation network intersects with this
+      door. If no intersect is found, the midpoint is returned.
+
+      :return: the intersect or midpoint coordinates
+      :rtype: Tuple[int, int]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: midpoint(self) -> citam.engine.map.point.Point
+      :property:
+
+      Return the midpoint of this door, generally used as where the navnet
+      would intersect this door.
+
+      :return: The mid point of this door.
+      :rtype: Point
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: midpoint_coords(self) -> Tuple[int, int]
+      :property:
+
+      The xy coordinates of the mid-point of this door.
+
+      :return: xy coordinates of the mid-point
+      :rtype: Tuple[int, int]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: is_intersect_and_midpoint_same(self) -> bool
+
+      Check whether the mid-point and the intersect with the navnet are the
+      same.
+
+      :return: Whether they are the same or not.
+      :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: __str__(self)
+
+      Return str(self).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: __eq__(self, other)
+
+      Return self==value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: __hash__(self)
+
+      Return hash(self).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: _as_dict(self) -> Dict[str, Any]
+
+      Return this class as a dictionary, useful for JSON serialization.
+
+      Note that only the space ids are kept in the dictionary and not the
+      spaces themselves.
+
+      :return: this door represented as a dictionary
+      :rtype: Dict[str, Any]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+

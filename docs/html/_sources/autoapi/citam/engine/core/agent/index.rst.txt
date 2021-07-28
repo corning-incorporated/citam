@@ -1,0 +1,73 @@
+:py:mod:`citam.engine.core.agent`
+=================================
+
+.. py:module:: citam.engine.core.agent
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.core.agent.Agent
+
+
+
+
+.. py:class:: Agent(unique_id: int, schedule: citam.engine.policy.daily_schedule.Schedule, name: Optional[str] = None, office_id: Optional[int] = None, job_function: Optional[str] = None)
+
+   The agent in Agent-based modeling. An agent represents a user of the
+   facility (employee or otherwise). An agent has a schedule (and associated
+   itinerary) that they follow throughout the day. This also keeps track of
+   the number of contacts that this agent has had so far.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: step(self)
+
+      Move this agent one step forward in its itinerary.
+
+      This updates the agent's current position only if the agent's itinerary
+      indicates a different location.
+
+      :return: whether the agent has moved from its current location or not.
+      :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+

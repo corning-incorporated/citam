@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Facility Data Requirements &#8212; CITAM 0.13.0 documentation</title>
+<link rel="stylesheet" href="_static/style.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="_static/style.css" />
+<link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+<script id="documentation_options" data-url_root="./"
+  src="_static/documentation_options.js"></script>
+<script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+<script src="_static/jquery.js"></script>
+<script src="_static/underscore.js"></script>
+<script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Output Description" href="outputs_description.html" />
+    <link rel="prev" title="Simulation Input Requirements" href="input_requirements.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=facility_data_requirement.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_White_Logo.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="right" >
+      <a href="outputs_description.html" title="Output Description" accesskey="N">next</a> |
+    </li>
+    <li class="right" >
+      <a href="input_requirements.html" title="Simulation Input Requirements" accesskey="P">previous</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="tutorial.html" accesskey="U">Tutorial</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="facility-data-requirements">
+<span id="svg-requirements"></span><h1>Facility Data Requirements<a class="headerlink" href="#facility-data-requirements" title="Permalink to this headline">¶</a></h1>
+<p>The CITAM platform requires a Simplified Vector Graphic (SVG) representation of the facility drawing you wish to use as input. The model has simple but specific requirements for the SVG format. Although the platform can act upon SVG’s produced by free online converters there are expectations about the format of the initial drawing that must be met in order for this to work. Free converters typically produce unnecessarily bloated files, which can cause performance issues within the platform.</p>
+<p>This document will explain what a lightweight SVG will need to consist of - and what it doesn’t. We recognize that there are many drawing formats that can be the starting point for producing an SVG file. The focus of this process document will be to represent the most stripped down components required within the SVG file used by the model. It will also describe what information is required within the SVG in order for the model to best simulate real life scenarios.</p>
+<p>The general idea is to relay a clear understanding of what the converted end point should look like, regardless of a user’s starting point,. We will leave it up to the end user to determine the best method to arrive at this format. Producing such a representation of your drawing will likely require some custom scripting. We will provide an example of what this would look like in the form of a VBA script that is designed to convert an AutoDesk DWG file to the desired simplified SVG format.
+Scripting to accommodate other drawing sources are in consideration for future releases. We also welcome community contributions.</p>
+<section id="svg-bare-essentials">
+<span id="id1"></span><h2>SVG Bare Essentials<a class="headerlink" href="#svg-bare-essentials" title="Permalink to this headline">¶</a></h2>
+<p>There are several sections within the simplified SVG format that CITAM require.
+Ancillary segments included in an SVG that are not represented below do not negatively impact the accuracy of the simulation, however they will be ignored by the model. It is, therefore, recommended to exclude them if possible.
+Here is the breakdown of the required sections:</p>
+<ul>
+<li><p>SVG tag - identifies the facility and floor and defines the view box perimeter</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;svg</span> <span class="na">description=</span><span class="s">&#39;MyMap&#39;</span> <span class="na">id=</span><span class="s">&#39;SP-01&#39;</span> <span class="na">viewBox=</span><span class="s">&#39;-16325 -9000 22583 14101&#39;</span> <span class="na">xmlns=</span><span class="s">&#39;http://www.w3.org/2000/svg&#39;</span> <span class="na">xmlns:xlink=</span><span class="s">&quot;http://www.w3.org/1999/xlink&quot;</span><span class="nt">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Style and Content Sections - used by the platform visualizers</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;style</span> <span class="na">type=</span><span class="s">&#39;text/css&#39;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- style section --&gt;</span>
+    .spaces {stroke:red;  stroke-width:2;  fill: grey; fill-opacity: 0.1}
+    .floors {stroke:blue; stroke-width:10; fill: none; fill-opacity: 0.1}
+    .doors {stroke:green;  stroke-width:2;  fill: none; fill-opacity: 0.2}
+<span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;Contents&#39;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- contents section --&gt;</span>
+    <span class="c">&lt;!--Group Elements -- see below --&gt;</span>
+<span class="nt">&lt;/g&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Group elements - used to indicate the different buildings, spaces and doors that the related path elements represent.</p>
+<blockquote>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;FacilityName&#39;</span> <span class="na">class=</span><span class="s">&#39;floorplan&#39;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;BUILDING-01&#39;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- ID of this building (this file supports multiple buildings as long as they are interconnected)  --&gt;</span>
+        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;floors&quot;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- outline of the outside boundary of the floor --&gt;</span>
+            <span class="c">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
+        <span class="nt">&lt;/g&gt;</span>
+        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;spaces&quot;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- Boundary of all spaces in this floor --&gt;</span>
+            <span class="c">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
+        <span class="nt">&lt;/g&gt;</span>
+        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;doors&quot;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- Doors found in this floor --&gt;</span>
+            <span class="c">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
+        <span class="nt">&lt;/g&gt;</span>
+    <span class="nt">&lt;/g&gt;</span>
+    <span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;BUILDING-02&#39;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- contents similar to previous building --&gt;</span>
+    <span class="nt">&lt;/g&gt;</span>
+<span class="nt">&lt;/g&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Path elements - used to represent the polylines that define each of the spaces and doors.</p>
+<blockquote>
+<div><p>NOTE: each space path is required to have a unique id that is used throughout CITAM to tie them to related metadata.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&#39;SI_60985&#39;</span> <span class="na">d=</span><span class="s">&#39;M-3359.88 -2451.25 -3251.88 -2451.25 -3251.88 -2343.25 -3359.88 -2343.25Z&#39;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&#39;SI_61037&#39;</span> <span class="na">d=</span><span class="s">&#39;M-2700.69 -1699.25 -2623.44 -1699.25 -2623.44 -1778.25 -2700.69 -1778.25Z&#39;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&#39;SI_61036&#39;</span> <span class="na">d=</span><span class="s">&#39;M-2777.94 -1699.25 -2700.69 -1699.25 -2700.69 -1778.25 -2777.94 -1778.25Z&#39;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&#39;SI_61034&#39;</span> <span class="na">d=</span><span class="s">&#39;M-3066 -2683.81 -3000.97 -2618.78 -2925.84 -2693.94 -2935.78 -2703.84 -2937.53 -2702.09 -2992.62 -2757.19Z&#39;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&#39;SI_61033&#39;</span> <span class="na">d=</span><span class="s">&#39;M-3067.84 -2832.41 -3141.22 -2759.03 -3066 -2683.81 -2992.62 -2757.19Z&#39;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;path</span> <span class="na">id=</span><span class="s">&#39;SI_61032&#39;</span> <span class="na">d=</span><span class="s">&#39;M-3211.22 -2689.03 -3136 -2613.81 -3066 -2683.81 -3141.22 -2759.03Z&#39;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="detailed-requirements">
+<h2>Detailed Requirements<a class="headerlink" href="#detailed-requirements" title="Permalink to this headline">¶</a></h2>
+<section id="facilities">
+<h3>Facilities<a class="headerlink" href="#facilities" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The source drawing must represent indoor spaces only. The platform is not designed to simulate transmission points in outdoor spaces - even outdoor spaces that are part of facility, such as…</p></li>
+</ul>
+<img alt="Example floorplan." src="_images/example_floorplan_1.png" />
+<ul>
+<li><p>If the source facility is a large campus consisting of multiple connected buildings, the entirety of the campus must be represented (for a single floor, of course) across buildings within the SVG. This allows CITAM to appropriately handle traffic flow between buildings on that floor.</p></li>
+<li><p>If the source drawing represents a multi-floor building:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A separate drawing for each floor must be generated</p></li>
+<li><p>Stairways and elevators must be included within the drawings so that model understands all the points within a facility that could serve as an entrance or exit for a floor. These should exist in separate layers within the drawing</p></li>
+<li><p>Information in the SVG file should be grouped by building as shown in the <a class="reference internal" href="#svg-bare-essentials"><span class="std std-ref">SVG Bare Essentials</span></a> section above.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="groups">
+<h3>Groups<a class="headerlink" href="#groups" title="Permalink to this headline">¶</a></h3>
+<p>All groups or subsections within a building section must be labeled with the following key words. All other subsections are ignored.
+* <em>spaces</em> - to represent stairways
+* <em>doors</em> - represent elevators</p>
+</section>
+<section id="spaces">
+<h3>Spaces<a class="headerlink" href="#spaces" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>All inhabitable spaces within a source drawing must be defined by path elements</p></li>
+<li><p>The space defining polylines should exist within a separate and distinct layer or group in the SVG drawing file.</p></li>
+<li><p>Each path element defining a space will require an identifier that is unique across the drawing.</p></li>
+<li><p>The path element id must be embedded as an attribute of the path.</p></li>
+<li><p>The path element can include additional metadata as attributes or they can be provided in a separate CSV file along with other metadata. The unique ID is used to match spaces in the SVG and CSV files.</p></li>
+<li><p>The primary attributes are space type and space name:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Space Types: can be one of the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Stairway or Stairs</p></li>
+<li><p>Elevator</p></li>
+<li><p>Office</p></li>
+<li><p>Meeting Room</p></li>
+<li><p>Laboratory</p></li>
+<li><p>Restroom</p></li>
+<li><p>Break room</p></li>
+<li><p>Cafeteria</p></li>
+<li><p>Hallway or Circulation</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Space Name: these can be completely custom labels used to reference a space by humans within a facility. Examples:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Arbitrary names such as: Chamber of Secrets, Jungle Room, etc.</p></li>
+<li><p>Grid related identifiers unique to the facility such as:  <em>TF-B1-01-A1W06F</em></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="doors">
+<h3>Doors<a class="headerlink" href="#doors" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Doors are represented by their own path elements and grouped together under the “Doors” layer or section.</p></li>
+<li><p>Ideally, each space must contain at least one doorway or opening that indicates where a person would enter or leave a space.</p></li>
+<li><p>We realize that not all spaces, such as cubicals, have designated doorways assigned in drawings, therefore, the platform is designed to autonomously assign doorways to spaces that don’t include them. The assignment is made using two simple rules: (1) Find a wall for this space that is shared with a hallway and (2) Create a door at the end of the wall to represent the door. As you can image this will not work for all spaces, specially those that only share walls with other spaces that are not identified as hallways. In those cases, a manual update of the ingested floorplan is required to add doors to those spaces.</p></li>
+</ul>
+<p>Below is a representation of the same space as the one shown in Fig. 1 with only the path elements required by CITAM.</p>
+<img alt="Example floorplan." src="_images/example_floorplan_2.png" />
+<p>Please note that CITAM was originally designed to identify potential transmission points within buildings associated with a manufacturing or research facilities. Your inputs in how to
+make it more general for your types of facilities are welcome.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Facility Data Requirements</a><ul>
+<li><a class="reference internal" href="#svg-bare-essentials">SVG Bare Essentials</a></li>
+<li><a class="reference internal" href="#detailed-requirements">Detailed Requirements</a><ul>
+<li><a class="reference internal" href="#facilities">Facilities</a></li>
+<li><a class="reference internal" href="#groups">Groups</a></li>
+<li><a class="reference internal" href="#spaces">Spaces</a></li>
+<li><a class="reference internal" href="#doors">Doors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="input_requirements.html"
+                        title="previous chapter">Simulation Input Requirements</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="outputs_description.html"
+                        title="next chapter">Output Description</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/facility_data_requirement.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="right" >
+      <a href="outputs_description.html" title="Output Description" >next</a> |
+    </li>
+    <li class="right" >
+      <a href="input_requirements.html" title="Simulation Input Requirements" >previous</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="tutorial.html" >Tutorial</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.corning.com/worldwide/en/privacy-policy.html">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank">Licensing</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2021 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

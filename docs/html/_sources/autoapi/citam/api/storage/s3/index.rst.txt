@@ -1,0 +1,382 @@
+:py:mod:`citam.api.storage.s3`
+==============================
+
+.. py:module:: citam.api.storage.s3
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.api.storage.s3.S3StorageDriver
+
+
+
+
+.. py:class:: S3StorageDriver(bucket, **kwargs)
+
+   Bases: :py:obj:`citam.api.storage.BaseStorageDriver`
+
+   Base class for CITAM storage engines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: _get_s3_client(self, **kwargs)
+
+      Return a S3 client for fetching result files
+
+      :param verify ssl:
+          Whether to verify SSL Certificates.
+      :param bool ssl:
+          Whether to use SSL for the S3 Connection.
+      :param str access_key:
+          S3 Access Key.
+      :param str secret_key:
+          S3 Secret Key.
+      :param str region_name:
+          S3 region name.
+      :param str storage_url:
+          S3 storage url.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: _get_text_file(self, sim_id, filename)
+
+      Load a text file from S3
+
+      :param str sim_id: simulation identifier
+      :param str filename: Result filename
+      :rtype: StringIO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: list_runs(self)
+
+      List all simulations
+
+      :return: A list of completed simulations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_coordinate_distribution_file(self, sim_id, floor)
+
+      Return the Coordinate Distribution file for a simulation
+
+      :param sim_id: simulation identifier
+      :param floor: Floor number
+      :return: Coordinate Distribution file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_trajectory_file(self, sim_id)
+
+      Return the trajectory file for a simulation
+
+      :param sim_id: simulation identifier
+      :return: Trajectory file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_trajectory_file_location(self, sim_id: str) -> os.PathLike
+      :abstractmethod:
+
+      Return the trajectory file for a simulation
+
+      :param sim_id: simulation identifier
+      :return: Trajectory file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_contact_file(self, sim_id, floor)
+
+      Return the contact file for a simulation
+
+      :param sim_id: simulation identifier
+      :param floor: Floor number
+      :return: Contacts file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_map_file(self, sim_id, floor)
+
+      Return the map image for given simulation
+
+      :param sim_id: simulation identifier
+      :param floor: Floor number
+      :return: Map file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_heatmap_file(self, sim_id, floor)
+
+      Return a heatmap file for a simulation and floor
+
+      :param sim_id: simulation identifier
+      :param floor: Floor number
+      :return: Heatmap File
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_manifest_file(self, sim_id)
+
+      Return the manifest file for a simulation
+
+      :param sim_id: simulation identifier
+      :return: Simulation manifest file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_pair_contact_file(self, sim_id)
+
+      Return the pair contact file for a simulation
+
+      :param sim_id: simulation identifier
+      :return: Pair contact file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_statistics_file(self, sim_id)
+
+      Get the statistics file for a simulation
+
+      :param sim_id: simulation identifier
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_policy_file(self, sim_id)
+
+      Get the statistics file for a simulation
+
+      :param sim_id: simulation identifier
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+

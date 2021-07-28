@@ -1,0 +1,766 @@
+:py:mod:`citam.engine.facility.navigation`
+==========================================
+
+.. py:module:: citam.engine.facility.navigation
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.facility.navigation.TrafficPattern
+   citam.engine.facility.navigation.MultifloorType
+   citam.engine.facility.navigation.Navigation
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.facility.navigation.remove_unnecessary_coords
+   citam.engine.facility.navigation.unroll_route
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.facility.navigation.LOG
+
+
+.. py:data:: LOG
+   
+
+   
+
+.. py:class:: TrafficPattern
+
+   Bases: :py:obj:`enum.Enum`
+
+   Generic enumeration.
+
+   Derive from this class to define new enumerations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:attribute:: ONEWAY_POSITIVE_DIRECTION
+      :annotation: = 1
+
+      
+
+   .. py:attribute:: ONEWAY_NEGATIVE_DIRECTION
+      
+
+      
+
+   .. py:attribute:: TWO_WAY
+      :annotation: = 0
+
+      
+
+
+.. py:class:: MultifloorType
+
+   Bases: :py:obj:`enum.Enum`
+
+   Enum to hold the different ways the different floors are connected in
+   multifloor facilities.
+
+   Two types are defined:
+   - naming-X: corresponding spaces on different floors don't necessarily have
+           the same xy but their names carry information about the floor.
+           The 'X' at the end is for the position of the floor identifier in
+           space names. For example: 'naming-2' => F2R13 or 'naming-1' => 213
+           both are valid identifier of room 13 in the second floor.
+   - xy: corresponding spaces on different floors have the same xy. This means
+         the space directly on top of a stairway in terms of xy position is
+         also a stairway.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:attribute:: NAMING
+      :annotation: = naming-2
+
+      
+
+   .. py:attribute:: XY
+      :annotation: = xy
+
+      
+
+
+.. py:class:: Navigation(floorplans: List[citam.engine.map.floorplan.Floorplan], facility_name: str, traffic_policy: List[Dict[str, Union[str, int]]], multifloor_type: str = MultifloorType.NAMING.value)
+
+   Implements the navigation class to manage agents circulation between
+   different spaces in a facility.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+   .. py:method:: load_hallway_graph(self, floor_hallway_graph_file: Union[str, pathlib.Path]) -> networkx.Graph
+
+      Load the hallway graph from file. The hallway graph is a graph of
+      hallways that share at least one boundary.
+
+      :param floor_hallway_graph_file: location of the file containing the
+               hallway graph in json format.
+      :type floor_hallway_graph_file: Union[str, pathlib.Path]
+      :raises FileNotFoundError: If the provided file is not found.
+      :return: [description]
+      :rtype: nx.Graph
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: load_floor_oneway_net(self, oneway_net_file: Union[str, pathlib.Path]) -> networkx.Graph
+
+      Load the oneway network from file. The oneway network is a graph of
+      connected aisles that support one-way navigation.
+
+      :param oneway_net_file: location of one-way network file in json
+              format.
+      :type oneway_net_file: Union[str, pathlib.Path]
+      :raises FileNotFoundError: If file not found.
+      :return: the network as read from file.
+      :rtype: nx.Graph
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: load_floor_navnet(self, floor_navnet_file: Union[str, pathlib.Path]) -> networkx.Graph
+
+      Load the navigation network (navnet) from file. The navnet is a graph
+      of connected notable points in the facility describing where agents
+      can move around.
+
+      :param floor_navnet_file: location of navnet file in json format.
+      :type floor_navnet_file: Union[str, pathlib.Path]
+      :raises FileNotFoundError: if specified file is not found.
+      :return: The navnet object.
+      :rtype: nx.Graph
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_corresponding_space_by_name(self, ref_space: citam.engine.map.space.Space, dest_floor: int) -> Tuple[citam.engine.map.space.Space, int]
+
+      Given a reference space, typically a vertical space (e.g. stairway),
+      find which space would be exactly at that same location on another
+      floor.
+
+      :param ref_space: The reference space.
+      :type ref_space: Space
+      :param dest_floor: The destination floor
+      :type dest_floor: int
+      :raises ValueError: If problems are found with the space names.
+      :return: The destination space and id.
+      :rtype: Tuple[Space, int]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_corresponding_vertical_space(self, ref_space: citam.engine.map.space.Space, dest_floor: int) -> Tuple[Optional[int], Optional[citam.engine.map.space.Space]]
+
+      Given a reference space and a destination floor, find the space
+      on the destination floor that lies in the same xy position as the
+      reference space. Mostly used for stairs and elevators.
+
+      :param ref_space: the reference space
+      :type ref_space: Space
+      :param dest_floor: index of the destination floor
+      :type dest_floor: int
+      :raises ValueError: if the value used for the multifloor_type is
+               unknown.
+      :return: index of the corresponding space and the corresponding space
+               itself.
+      :rtype: Tuple[Optional[int], Optional[Space]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: add_vertical_edges(self, coords1: List[Tuple[int, int]], floor_number1: int, coords2: List[Tuple[int, int]], floor_number2: int) -> int
+
+      Add vertical edges between two lists of coordinates from different
+      floors.
+
+      :param coords1: list of coordinates on the first floor.
+      :type coords1: Tuple[int, int]
+      :param floor_number1: id of the first floor.
+      :type floor_number1: int
+      :param coords2: list of coordinates on the other floor.
+      :type coords2: Tuple[int, int]
+      :param floor_number2: id of the other floor.
+      :type floor_number2: int
+      :return: the number of edges successfully created.
+      :rtype: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: add_all_vertical_edges_between_floors(self, floor_number1: int, floor_number2: int) -> int
+
+      Create new edges in the navigation network to connect vertical
+      spaces allowing multifloor navigation. If there are more than 2 floors
+      in the facility, this function should be used toconnect only
+      adjacent floors.
+
+      This function finds all the vertical spaces in the starting floor and
+      finds if there is a corresponding space on the destination floor in
+      which case edges are added between them.
+
+      :param floor_number1: index of the first floor.
+      :type floor_number1: int
+      :param floor_number2: index of the second floor.
+      :type floor_number2: int
+      :return: Number of vertical spaces connected.
+      :rtype: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: create_multifloor_navnet(self)
+
+      Use vertical spaces to combine multiple floor navnets into a global
+      navnet.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: apply_traffic_policy(self)
+
+      Remove edges that should not exist based on user traffic policy
+      for all floors.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: apply_traffic_policy_to_edge(self, policy: Dict[str, Union[str, int]], all_coords: List[Tuple[int, int]], i: int, j: int, navnet: networkx.classes.graph.Graph, navnet_type: str, floor_number: int) -> None
+
+      Given 2 coordinates corresponding to navnet nodes, remove any edge that
+      doesn't match the desired traffic direction.
+
+      :param policy: The policy to apply prescribing a desired traffic
+          direction.
+      :type policy: Dict[str, Union[str, int]]
+      :param all_coords: list of all coordinates under consideration.
+      :type all_coords: List[Tuple[int, int]]
+      :param i: index of the first node.
+      :type i: int
+      :param j: index of the second node.
+      :type j: int
+      :param navnet: the overall navigation network.
+      :type navnet: Graph
+      :param navnet_type: the type of navnet (singlefloor or multifloor)
+      :type navnet_type: str
+      :param floor_number: id of the floor of interest.
+      :type floor_number: int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: set_policy_for_aisle(self, policy: Dict[str, Union[str, int]], navnet: networkx.Graph, oneway_net: networkx.Graph, navnet_type='singlefloor', floor_number=0) -> None
+
+      Find edge of interest from navnet and keep only the ones that
+      match the desired traffic pattern.
+
+      :param policy: The traffic policy to apply
+      :type policy: Dict[str, Union[str, int]]
+      :param navnet: the navnet to apply the policy to.
+      :type navnet: nx.Graph
+      :param oneway_net: The oneway navnet for this facility.
+      :type oneway_net: nx.Graph
+      :param navnet_type: the type of navnet, defaults to "singlefloor"
+      :type navnet_type: str, optional
+      :param floor_number: integer id of the floor of interst, defaults to 0
+      :type floor_number: int, optional
+      :raises ValueError: If the direction is not a valid value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: is_edge_matching_direction(self, edge: Tuple[Tuple[Any, Ellipsis], Tuple[Any, Ellipsis]], desired_direction: Union[str, int]) -> bool
+
+      Verify if edge direction matches desired direction.
+
+      This is how the edge direction is defined and computed:
+      Use the start and end points to compute a direction angle alpha
+      with respect to the positive x-axis. The positive direction corresponds
+      to 0 <= alpha <= 90 or 270 > alpha >= 360. The negative direction is
+      the other half of the possible angles.
+
+      :param edge: The edge of interest.
+      :type edge: Tuple[Tuple[Any, ...], Tuple[Any, ...]]
+      :param desired_direction: The direction of interest.
+      :type desired_direction: int
+      :return: Whether a match is found or not.
+      :rtype: bool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_route(self, starting_location: int, starting_floor_number: int, destination: int, destination_floor_number: int, pace: float) -> Optional[List[Tuple[Any, int]]]
+
+      Get the shortest path between 2 spaces in the floorplans.
+
+      :param starting_location: index of the space where the agent is
+              currently located
+      :type starting_location: int
+      :param starting_floor_number: index of the the floor where the
+              agent is going
+      :type starting_floor_number: int
+      :param destination: index of the space where the agent is going.
+      :type destination: int
+      :param destination_floor_number: index of the floor where the
+              agent is going.
+      :type destination_floor_number: int
+      :param pace: The pace of walking [distance unit/timestep].
+      :type pace: float
+      :return: The sequence of xy points and floor numbers to get from
+              current location to destination. None if no route is found.
+      :rtype: Optional[List[Tuple[Any, int]]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_valid_multifloor_exit_nodes(self, location: int, floor_number: int) -> List[Tuple[int, int, int]]
+
+      Find list of exit coords that corresponds to a valid node in the
+      navigation network.
+
+      :param location: index of the space where the agent is currently
+              located.
+      :type location: int
+      :param floor_number: Index of the floor number.
+      :type floor_number: int
+      :return: List of exit coords as xy and floor number.
+      :rtype: List[Tuple[int, int, int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_valid_single_floor_exit_nodes(self, location: Union[int, tuple], floor_number: int) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]
+
+      Find list of exit coords that corresponds to a valid node in the
+      navigation network.
+
+      :param location: index of the space where agent is located.
+      :type location: int
+      :param floor_number: index of floor number.
+      :type floor_number: int
+      :return: List of exit coordinates.
+      :rtype: List[Tuple[int,int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_best_possible_routes_multifloor(self, starting_location: int, starting_floor_number: int, destination: int, destination_floor_number: int) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]
+
+      Get list of valid routes between a starting space and a destination
+      space in the current multifloor facility.
+
+      :param starting_location: index of the starting space.
+      :type starting_location: int
+      :param starting_floor_number: index of the starting floor.
+      :type starting_floor_number: int
+      :param destination: index of the destination space.
+      :type destination: int
+      :param destination_floor_number: index of the destination floor.
+      :type destination_floor_number: int
+      :return: list of valid routes.
+      :rtype: List[List[Tuple[int, int, int]]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+   .. py:method:: get_best_possible_routes_same_floor(self, floor_number: int, current_location: int, destination: int) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]
+
+      Find list of possible routes between two locations on the same floor in
+      this facility.
+
+      :param floor_number: index of the floor.
+      :type floor_number: int
+      :param current_location: index of the starting space.
+      :type current_location: int
+      :param destination: index of the destination space.
+      :type destination: int
+      :return: list of valid routes between the two spaces.
+      :rtype: List[List[Tuple[int, int, int]]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+
+
+.. py:function:: remove_unnecessary_coords(route: List[Union[Tuple[int, int], Tuple[int, int, int]]]) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]
+
+   Inspect a route given by a set of coordinates and remove any intermediate
+   coords that's collinear with its two neighbors.
+
+   [extended_summary]
+
+   :param route: List of tuples of x, y coordinates
+   :type route: List[Tuple[int, int]]
+   :return: Trimmed down list of coordinates.
+   :rtype: List[Tuple[int, int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
+.. py:function:: unroll_route(route: List[Union[Tuple[int, int], Tuple[int, int, int]]], pace: float) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]
+
+   Use the given pace to find intermediate coordinates between each
+   pair of nodes in this route.
+
+   Note that currently the agent is required to pass through all notable
+   points (e.g. turns at intersections)
+
+   :param route: initial route with only notable coordinates.
+   :type route: List[Union[Tuple[int, int], Tuple[int, int, int]]]
+   :param pace: The desired pace in units of [dist/time]
+   :type pace: float
+   :return: list of all coordinates required to navigate this route at the
+           desired pace.
+   :rtype: List[Union[Tuple[int, int], Tuple[int, int, int]]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+
