@@ -15,9 +15,10 @@ import xml.etree.ElementTree as ET
 
 import networkx as nx
 import pathlib
-from typing import Union, List, Tuple, Dict, Any
+from typing import Optional, Union, List, Tuple, Dict, Any
 from matplotlib import cm, colors
 from svgpathtools import wsvg, Arc, Line, parse_path, Path
+from svgpathtools.paths2svg import paths2Drawing
 
 from citam.engine.map.point import Point
 
@@ -235,7 +236,7 @@ def export_nav_network_to_svg(
     walls: List[Path],
     nav_paths: List[Path],
     nav_nodes: List[Tuple[int, int]],
-    filename: Union[str, pathlib.Path],
+    filename: Optional[Union[str, pathlib.Path]] = None,
     marker_type: int = X_MARKER,
     color="blue",
 ) -> None:
@@ -289,17 +290,20 @@ def export_nav_network_to_svg(
         attributes.append(
             {"fill": color, "stroke": color, "stroke-width": 0.1}
         )
-    wsvg(paths, attributes=attributes, filename=filename)
+    if filename is None:
+        return wsvg(paths, attributes=attributes, paths2Drawing=True)
+    else:
+        wsvg(paths, attributes=attributes, filename=filename)
 
 
 def export_world_to_svg(
     walls: List[Path],
-    agent_positions_and_contacts: List[Tuple[int, int, int]],
-    svg_file: Union[str, pathlib.Path],
-    marker_locations: List[Tuple[int, int, int]] = [],
+    agent_positions_and_contacts: Optional[List[Tuple[int, int, int]]] = None,
+    svg_file: Optional[Union[str, pathlib.Path]] = None,
+    marker_locations: Optional[List[Tuple[int, int, int]]] = None,
     marker_type: int = None,
-    arrows: List[Tuple[Tuple[int, int], Tuple[int, int]]] = [],
-    doors: List[Path] = [],
+    arrows: Optional[List[Tuple[Tuple[int, int], Tuple[int, int]]]] = None,
+    doors: Optional[List[Path]] = None,
     max_contacts: int = 100,
     current_time: int = None,
     show_colobar=False,
@@ -339,6 +343,15 @@ def export_world_to_svg(
         multiplier = round(xmax / 1500, 1)
     else:
         multiplier = 1.0
+
+    doors = [] if doors is None else doors
+    marker_locations = [] if marker_locations is None else marker_locations
+    arrows = [] if arrows is None else arrows
+    agent_positions_and_contacts = (
+        []
+        if agent_positions_and_contacts is None
+        else agent_positions_and_contacts
+    )
 
     radius = complex(2, 2)
     paths = [wall for wall in walls]
@@ -408,15 +421,27 @@ def export_world_to_svg(
     else:
         svg_attributes = None  # type: ignore
 
-    wsvg(
-        paths,
-        attributes=attributes,
-        text=current_time,
-        text_path=t_path,
-        filename=svg_file,
-        svg_attributes=svg_attributes,
-    )
-    add_root_layer_to_svg(svg_file, svg_file)
+    if svg_file is None:
+        return wsvg(
+            paths,
+            attributes=attributes,
+            text=current_time,
+            text_path=t_path,
+            svg_attributes=svg_attributes,
+            paths2Drawing=True,
+        )
+
+    else:
+        wsvg(
+            paths,
+            attributes=attributes,
+            text=current_time,
+            text_path=t_path,
+            filename=svg_file,
+            svg_attributes=svg_attributes,
+        )
+
+        add_root_layer_to_svg(svg_file, svg_file)
 
 
 def add_root_layer_to_svg(

@@ -17,6 +17,7 @@ from typing import Dict, Any, Tuple, List, Optional, Union
 import pathlib
 
 from svgpathtools import Line
+from svgwrite.drawing import Drawing
 
 import citam.engine.io.visualization as bv
 from citam.engine.map.point import Point
@@ -285,6 +286,10 @@ class Floorplan:
             show_colobar=False,
             viewbox=None,
         )
+
+    def show(self, include_doors=False) -> Drawing:
+        doors = self.doors if include_doors else None
+        return bv.export_world_to_svg(self.walls, doors=doors)
 
     def _as_dict(self) -> Dict[str, Any]:
         """
