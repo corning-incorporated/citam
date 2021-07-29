@@ -196,6 +196,9 @@ export default class Map2D {
         let domParser = new DOMParser();
         let newMap = domParser.parseFromString(mapData, 'image/svg+xml').firstChild;
         newMap.setAttribute('id', 'svg-map');
+        newMap.style.display = "flex";
+        newMap.style.flex = " 1 1 auto";
+        newMap.style.height = "420px";
         this.mapRoot.insertAdjacentElement('afterbegin', newMap);
         let map = select('#svg-map');
         let drawLayer = map.select('#root');
