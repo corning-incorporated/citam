@@ -18,7 +18,6 @@ import pathlib
 from typing import Optional, Union, List, Tuple, Dict, Any
 from matplotlib import cm, colors
 from svgpathtools import wsvg, Arc, Line, parse_path, Path
-from svgpathtools.paths2svg import paths2Drawing
 
 from citam.engine.map.point import Point
 
