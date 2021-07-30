@@ -15,3 +15,9 @@ __all__ = ["api", "cli", "engine", "settings"]
 from citam import api, cli, engine, conf
 
 settings = conf.settings
+
+# Alias key methods to make them available at the citam level
+list_facilities = engine.main.list_facilities
+load_floorplans = engine.main.load_floorplans
+ingest_floorplan = engine.main.ingest_floorplan
+show_navigation_network = engine.main.export_navigation_graph_to_svg

@@ -15,7 +15,7 @@ import errno
 import logging
 import os
 import time
-from typing import List
+from typing import List, Optional
 
 import networkx as nx
 from networkx.classes.graph import Graph
@@ -206,8 +206,8 @@ def update_floorplan_from_svg_file(
 def export_navigation_graph_to_svg(
     facility: str,
     floor: str,
-    outputfile: str,
-    floorplan_directory: str = None,
+    outputfile: Optional[str] = None,
+    floorplan_directory: Optional[str] = None,
     **kwargs
 ):  # noqa
     """Export navigation network to svg file for visualization.
@@ -220,7 +220,7 @@ def export_navigation_graph_to_svg(
     :raise FileMotFoundError: could not find floorplan file
     """
 
-    if not floorplan_directory:
+    if floorplan_directory is None:
         floorplan_directory = su.get_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
@@ -244,10 +244,15 @@ def export_navigation_graph_to_svg(
         nav_paths.append(p)
 
     LOG.info("Exporting nav network to svg")
-    bv.export_nav_network_to_svg(
-        floorplan.walls, nav_paths, nav_nodes, outputfile
-    )
-    LOG.info("Navigation network exported to: %s", outputfile)
+    if outputfile is None:
+        return bv.export_nav_network_to_svg(
+            floorplan.walls, nav_paths, nav_nodes
+        )
+    else:
+        bv.export_nav_network_to_svg(
+            floorplan.walls, nav_paths, nav_nodes, outputfile
+        )
+        LOG.info("Navigation network exported to: %s", outputfile)
 
 
 def load_floorplans(floors, facility_name, user_scale=None):
