@@ -278,7 +278,7 @@ def test_save_manifest(tmpdir, simple_facility_model):
     assert "NumberOfFloors" in data
     assert "NumberOfOneWayAisles" in data
     assert "NumberOfAgents" in data
-    assert data["NumberOfAgents"] == 0
+    assert data["NumberOfAgents"] == 2
     assert "SimulationName" in data
     assert "FacilityName" in data
     assert "FacilityOccupancy" in data
