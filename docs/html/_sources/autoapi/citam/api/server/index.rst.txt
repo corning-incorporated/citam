@@ -20,7 +20,6 @@
        !! processed by numpydoc !!
 
 
-
 Module Contents
 ---------------
 
@@ -36,6 +35,7 @@ Functions
 
 .. py:function:: get_wsgi_app()
 
+   
    Return the WSGI application for this API.
    This should be used with a WSGI server like Gunicorn
 
@@ -56,5 +56,4 @@ Functions
 
    ..
        !! processed by numpydoc !!
-
 

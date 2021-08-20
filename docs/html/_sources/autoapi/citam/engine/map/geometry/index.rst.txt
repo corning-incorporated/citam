@@ -14,7 +14,6 @@
        !! processed by numpydoc !!
 
 
-
 Module Contents
 ---------------
 
@@ -56,6 +55,7 @@ Attributes
 
 .. py:function:: on_segment(p: citam.engine.map.point.Point, q: citam.engine.map.point.Point, r: citam.engine.map.point.Point) -> bool
 
+   
    Given three points p, q, r, the function checks if point q lies on line
    segment 'pr'
 
@@ -85,9 +85,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: determine_orientation(p: citam.engine.map.point.Point, q: citam.engine.map.point.Point, r: citam.engine.map.point.Point) -> int
 
+   
    Find orientation of ordered triplet (p, q, r).
 
    The function returns the following values:
@@ -121,9 +121,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: do_intersect(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) -> bool
 
+   
    Check if two segments as given by their respective end points intersect.
 
    :param p1: First endpoint of first segment.
@@ -154,9 +154,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: is_one_segment_within_the_other(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) -> bool
 
+   
    Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
    within the other.
 
@@ -188,9 +188,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: do_lines_intersect_at_endpoint(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) -> bool
 
+   
    Check if one of the lines start or ends on the other line.
 
    :param p1: The first endpoint of the first segment.
@@ -221,9 +221,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: calculate_normal_vector_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> numpy.ndarray
 
+   
    Given two Line objects, compute the normal vector between them (computed
    with respect to Wall 1).
 
@@ -251,14 +251,32 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:data:: calculate_perpendicular_vector
    
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: _compute_key_vectors(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]
 
+   
    Helper function used to compute the vector for wall1 and wall2 as well as
    an arbitrary vector W joining both lines.
 
@@ -286,9 +304,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: calculate_dot_product_and_distance_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> Tuple[Optional[float], float]
 
+   
    Compute the dot product and distance between two walls.
 
    :param wall1: The first wall
@@ -315,9 +333,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: calculate_dot_product_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> numpy.ndarray
 
+   
    Calculate the dot product between 2 walls. NB: If the 2 walls are parallel,
     the dot product will equal 1.0
 
@@ -345,9 +363,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: calculate_distance_between_walls(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> float
 
+   
    Calculate distance between 2 walls.
 
    This function assumes the 2 walls are parallel but does not
@@ -379,9 +397,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: calculate_x_and_y_overlap(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> Tuple[float, float]
 
+   
    Given two lines, calculate their x and y overlaps (e.g. if the x values
    for line 1 and 2 are [0, 6] and [3, 10] resp, the overlap is [3, 6] = 3).
 
@@ -409,9 +427,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: round_coords(wall: svgpathtools.Line) -> svgpathtools.Line
 
+   
    Given a line, round the its start and end coordinates to the nearest
    integer.
 
@@ -437,9 +455,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: sample_random_points_from_line(line: svgpathtools.Line, npoints=10) -> List[Tuple[int, int]]
 
+   
    Sample n random points from line
 
    :param line: the line to sample from.
@@ -466,9 +484,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: create_parallel_line(line: svgpathtools.Line, d=1) -> svgpathtools.Line
 
+   
    Create a parallel line at a distance 'd' from a reference line. Both x
    and y are changed by d.
 
@@ -497,9 +515,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: compute_new_door_line(room_wall: svgpathtools.Line, door_size=2.0) -> svgpathtools.Line
 
+   
    Compute a door line to add to a wall. This door line is computed from
    one of the end points of the wall.
 
@@ -527,9 +545,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: find_door_line(cubic_bezier: svgpathtools.CubicBezier) -> svgpathtools.Line
 
+   
    Given a cubic bezier, find the line that is most likely to corresponds to
    the door line.
 
@@ -555,9 +573,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: align_to_reference(reference_line: svgpathtools.Line, test_line: svgpathtools.Line) -> svgpathtools.Line
 
+   
    Given a reference line, modify a test line to be parallel with the
    reference.
 
@@ -585,9 +603,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: is_point_on_line(line: svgpathtools.Line, p_test: citam.engine.map.point.Point, tol: float = 0.001) -> bool
 
+   
    Verify if a test point is on a given Line.
 
    :param line: The Line of interest.
@@ -617,9 +635,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: remove_segment_from_wall(wall: svgpathtools.Line, segment: svgpathtools.Line) -> List[svgpathtools.Line]
 
+   
    Given a wall, subtract an arbitrary segment from the wall and return the
    remaining wall segments.
 
@@ -646,5 +664,4 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
 

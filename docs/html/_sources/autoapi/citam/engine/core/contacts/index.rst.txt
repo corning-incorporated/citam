@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.core.contacts
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -28,6 +34,7 @@ Functions
 
 .. py:function:: update_data_dictionary(datadict: dict, key: Hashable, data: Union[float, int]) -> dict
 
+   
    Utility function to update a dictionary to add data to existing value if
    the key exist or create new key:value pair if not
 
@@ -54,9 +61,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:class:: ContactEvent(floor_number: int, location: int, position: Tuple[int, int], current_step: int)
 
+   
    A contact event object keeps track of the initial timestep and total
    duration as well as the list of xy positions, locations and floor numbers
    of a contact (e.g. two people walking together).
@@ -79,9 +86,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:class:: ContactEvents
 
+   
    Class to keep track of every time 2 agents come in close proximity
 
 
@@ -101,9 +108,9 @@ Functions
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: add_contact(self, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent, current_step: int, position: Tuple[int, int]) -> None
 
+      
       Add single contact event between two agents. If there was a contact
       event in the previous step, update its duration and list of locations.
       The floor number is extracted from the first agent's position.
@@ -137,9 +144,9 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: count(self) -> int
 
+      
       compute the total number of unique contact events. A unique contact
       event involves two specific agents and has a start and end time.
 
@@ -165,9 +172,9 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: save_pairwise_contacts(self, filename: str) -> None
 
+      
       Save pairwise contact data to file. The file is saved in a CSV format
       with the following columns: Agent1, Agent2, total contacts and total
       contact duration.
@@ -194,9 +201,9 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: extract_statistics(self) -> List[Dict[str, Any]]
 
+      
       Extract important contact statistics from contact data.
 
       :return: list of dictionaries of important statistics. Each stat is
@@ -220,9 +227,9 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_floor_contact_coords(self, key: str, floor_number: int) -> List[Tuple[int, int]]
 
+      
       Iterate over all contact events associated with key (referring to two
       specific agents), and return the ones that took place on given floor
       number.
@@ -252,9 +259,9 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_contacts_per_coordinates(self, step: int, floor_number: int) -> Dict[Tuple[int, int], int]
 
+      
       Save per coordinate contact data to file.
 
       :param step: Simulation step for which to extract contact data.
@@ -281,9 +288,9 @@ Functions
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: save_raw_contact_data(self, filename: str) -> None
 
+      
       Save all contact data to file.
 
       This will write all the contact information in this simulation to file
@@ -312,6 +319,5 @@ Functions
 
       ..
           !! processed by numpydoc !!
-
 
 

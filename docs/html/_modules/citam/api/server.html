@@ -197,7 +197,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">floor</span><span class="p">:</span>
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
 
@@ -209,7 +209,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">floor</span><span class="p">:</span>
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_map_file</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
@@ -222,7 +222,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">floor</span><span class="p">:</span>
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_heatmap_file</span><span class="p">(</span>
             <span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span>
         <span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -237,7 +237,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">floor</span><span class="p">:</span>
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_coordinate_distribution</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
 

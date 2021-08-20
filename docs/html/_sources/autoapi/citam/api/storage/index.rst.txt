@@ -3,6 +3,28 @@
 
 .. py:module:: citam.api.storage
 
+.. autoapi-nested-parse::
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 
 Submodules
 ----------
@@ -31,6 +53,7 @@ Classes
 
    Bases: :py:obj:`OSError`
 
+   
    Error raised when no results were found by the driver
 
 
@@ -51,11 +74,11 @@ Classes
    ..
        !! processed by numpydoc !!
 
-
 .. py:class:: BaseStorageDriver(**kwargs)
 
    Bases: :py:obj:`abc.ABC`
 
+   
    Base class for CITAM storage engines
 
 
@@ -75,10 +98,10 @@ Classes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: list_runs(self) -> List[str]
       :abstractmethod:
 
+      
       List all simulations
 
       :return: A list of completed simulations
@@ -100,10 +123,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_coordinate_distribution_file(self, sim_id: str, floor: str) -> TextIO
       :abstractmethod:
 
+      
       Return the Coordinate Distribution file for a simulation
 
       :param sim_id: simulation identifier
@@ -127,10 +150,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_trajectory_file(self, sim_id: str) -> TextIO
       :abstractmethod:
 
+      
       Return the trajectory file for a simulation
 
       :param sim_id: simulation identifier
@@ -152,11 +175,11 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
    .. py:method:: get_trajectory_file_location(self, sim_id: str) -> os.PathLike
       :abstractmethod:
 
+      
       Return the trajectory file for a simulation
 
       :param sim_id: simulation identifier
@@ -179,10 +202,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_contact_file(self, sim_id: str, floor: str) -> TextIO
       :abstractmethod:
 
+      
       Return the contact file for a simulation
 
       :param sim_id: simulation identifier
@@ -206,10 +229,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_map_file(self, sim_id: str, floor: str) -> io.BytesIO
       :abstractmethod:
 
+      
       Return the map image for given simulation
 
       :param sim_id: simulation identifier
@@ -233,10 +256,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_manifest_file(self, sim_id: str) -> TextIO
       :abstractmethod:
 
+      
       Return the manifest file for a simulation
 
       :param sim_id: simulation identifier
@@ -259,10 +282,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_heatmap_file(self, sim_id: str, floor: str) -> io.BytesIO
       :abstractmethod:
 
+      
       Return a heatmap file for a simulation and floor
 
       :param sim_id: simulation identifier
@@ -286,10 +309,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_pair_contact_file(self, sim_id: str) -> TextIO
       :abstractmethod:
 
+      
       Return the pair contact file for a simulation
 
       :param sim_id: simulation identifier
@@ -312,10 +335,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_statistics_file(self, sim_id: str) -> TextIO
       :abstractmethod:
 
+      
       Get the statistics file for a simulation
 
       :param sim_id: simulation identifier
@@ -336,11 +359,11 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
    .. py:method:: get_policy_file(self, sim_id: str) -> TextIO
       :abstractmethod:
 
+      
       Get the statistics file for a simulation
 
       :param sim_id: simulation identifier
@@ -362,9 +385,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_manifest(self, sim_id: str) -> Dict
 
+      
       Return the parsed manifest for a simulation
 
       :param sim_id: simulation identifier
@@ -386,6 +409,5 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
 

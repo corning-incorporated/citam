@@ -11,7 +11,6 @@
        !! processed by numpydoc !!
 
 
-
 Module Contents
 ---------------
 
@@ -45,18 +44,73 @@ Attributes
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: FLOOR_NAME
    :annotation: = Floor name
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: SVG_PATH
    :annotation: = Path to SVG file
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: main()
 
+   
    CLI Entrypoint
 
 
@@ -77,9 +131,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: get_parser()
 
+   
    Create the CLI argparse instance.
 
    .. note::
@@ -105,9 +159,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: _add_engine_commands(subparser, global_args)
 
+   
    Add ``engine`` sub-command to the parser
 
    :params argparse.ArgumentParser subparser:
@@ -132,9 +186,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: _add_config_commands(subparser, global_args)
 
+   
    Add ``config`` sub-command to the parser
 
    :params argparse.ArgumentParser subparser:
@@ -159,9 +213,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: _add_dash_commands(subparser, global_args)
 
+   
    Add ``dash`` sub-command to the parser
 
    :params argparse.ArgumentParser subparser:
@@ -186,9 +240,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: _placeholder_func(*args, **kwargs)
 
+   
    This is a placeholder function for subcommands which
    are not yet implemented
 
@@ -209,5 +263,4 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
 

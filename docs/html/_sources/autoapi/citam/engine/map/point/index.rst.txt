@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.map.point
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -19,8 +25,28 @@ Classes
 
 .. py:class:: Point(x: Optional[int] = None, y: Optional[int] = None, complex_coords=None)
 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
    .. py:method:: __str__(self)
 
+      
       Return str(self).
 
 
@@ -41,9 +67,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: __eq__(self, other)
 
+      
       Return self==value.
 
 
@@ -64,11 +90,48 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: convert_to_cartesian(self)
 
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: convert_to_complex(self)
 
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
 

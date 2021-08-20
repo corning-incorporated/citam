@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.policy.daily_schedule
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -31,11 +37,49 @@ Attributes
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:class:: ScheduleItem(purpose, location, floor_number, duration)
 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:class:: Schedule(timestep: int, start_time: int, exit_time: int, entrance_door: citam.engine.map.door.Door, entrance_floor: int, exit_door: citam.engine.map.door.Door, exit_floor: int, office_location: int, office_floor: int, navigation: citam.engine.facility.navigation.Navigation, scheduling_rules: Dict[str, Any], meetings: List[citam.engine.policy.meetings.Meeting] = None)
 
+   
    Create and manage a schedule typically associated with one agent. Schedules
    are created based on rules encoded in a scheduling policy and include a
    full itinerary.
@@ -57,9 +101,9 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: build_schedule_item(self, purpose: str, next_meeting_start_time: Optional[int]) -> ScheduleItem
 
+      
       Given a purpose and additional properties such as meeting duration,
       build a schedule item for this agent.
 
@@ -89,9 +133,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_next_schedule_item(self) -> ScheduleItem
 
+      
       Check if a meeting is happening within MEETING_BUFFER time. If so,
       return the meeting as the next schedule item, otherwise, build a new
       item that must ned before the next meeting time for this agent.
@@ -118,9 +162,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_possible_purposes(self) -> List[str]
 
+      
       Feturn list of possible purposes for this agent in this facility.
 
       Iterate over purposes defined in scheduling rules and compare with
@@ -151,9 +195,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_max_duration_for_purpose(self, purpose: str, next_meeting_start_time: Optional[int]) -> int
 
+      
       Calculate the maximum duration possible for a given scheduling purpose
       while taking into account any upcoming meeting after this schedule
       item.
@@ -182,9 +226,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: count_purpose_occurence_in_schedule_items(self) -> List[int]
 
+      
       Iterate over schedule items and count how many items each scheduling
       purpose exists.
 
@@ -208,9 +252,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_valid_purposes_from_possible_purposes(self, next_meeting_start_time: Optional[int]) -> List[str]
 
+      
       Iterate through list of purposes under consideration, remove any that
       doesn't satisfy exisiting scheduling rules.
 
@@ -236,9 +280,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: choose_valid_scheduling_purpose(self, next_meeting_start_time: Optional[int]) -> str
 
+      
       Find a valid scheduling purpose using rules defined in the
       scheduling policy for this facility. Common purposes include:
       restroom visits, lab work, office work and cafeteria visit.
@@ -266,9 +310,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_pace(self, scale: float) -> float
 
+      
       Randomly pick a walking pace for this agent by sampling from a
       gaussian distribution around a pace of 4 ft/sec. The acceptable
       range is set between 2 and 6 ft/sec.
@@ -295,9 +339,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: update_schedule_items(self, new_item: ScheduleItem) -> None
 
+      
       Update list of schedule items by adding this new item. If previous item
       is the same location and purpose as this new one, merge them.
 
@@ -321,9 +365,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: update_itinerary(self, route: List[Tuple[Any, Ellipsis]], schedule_item: ScheduleItem) -> None
 
+      
       Given a route and a next schedule item, update this agent's itinerary
       accordingly
 
@@ -345,9 +389,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: build(self) -> None
 
+      
       Build this agent's schedule and corresponding itinerary.
 
 
@@ -368,9 +412,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: __str__(self) -> str
 
+      
       Convert current schedule to a str for output purposes
 
 
@@ -391,9 +435,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_next_position(self) -> Tuple[Optional[int], Ellipsis]
 
+      
       Return the next position of this agent from its itinerary
 
 
@@ -413,6 +457,5 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
 
 

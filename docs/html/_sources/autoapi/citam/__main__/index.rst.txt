@@ -3,4 +3,10 @@
 
 .. py:module:: citam.__main__
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 

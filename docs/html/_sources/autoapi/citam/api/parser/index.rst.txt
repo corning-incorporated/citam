@@ -3,6 +3,12 @@
 
 .. py:module:: citam.api.parser
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -22,9 +28,29 @@ Functions
 
 .. py:function:: get_trajectories_lines(sim_id: str, floor: Union[str, int] = None) -> Dict
 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:function:: get_trajectories(sim_id: str, floor: Union[str, int] = None, first_timestep: int = 0, max_steps: int = 5000) -> Dict
 
+   
    Get trajectory information for a simulation
 
    :param sim_id: simulation identifier
@@ -49,9 +75,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: get_contacts(sim_id: str, floor: str) -> List[List[Dict]]
 
+   
    Retrieve contact information for a simulation
 
    :param sim_id: simulation identifier
@@ -75,9 +101,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: get_coordinate_distribution(sim_id: str, floor: str) -> List[Dict]
 
+   
    Retrieve contact/coordinate distribution for a simulation
 
    :param sim_id: simulation identifier
@@ -100,5 +126,4 @@ Functions
 
    ..
        !! processed by numpydoc !!
-
 

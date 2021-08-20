@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.core.agent
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -19,6 +25,7 @@ Classes
 
 .. py:class:: Agent(unique_id: int, schedule: citam.engine.policy.daily_schedule.Schedule, name: Optional[str] = None, office_id: Optional[int] = None, job_function: Optional[str] = None)
 
+   
    The agent in Agent-based modeling. An agent represents a user of the
    facility (employee or otherwise). An agent has a schedule (and associated
    itinerary) that they follow throughout the day. This also keeps track of
@@ -41,9 +48,9 @@ Classes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: step(self)
 
+      
       Move this agent one step forward in its itinerary.
 
       This updates the agent's current position only if the agent's itinerary
@@ -68,6 +75,5 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
 

@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.io.serializer
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -27,6 +33,7 @@ Attributes
 
 .. py:class:: _Serializer(classname_key='__class__')
 
+   
    Helper class to manage encoding and decoding classes to/from JSON.
 
 
@@ -46,19 +53,93 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: __call__(self, class_)
 
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: decoder_hook(self, d: dict)
 
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: encoder_default(self, obj)
 
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
 
 .. py:data:: serializer
    
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 

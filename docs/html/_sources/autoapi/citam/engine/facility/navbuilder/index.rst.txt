@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.facility.navbuilder
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -30,8 +36,27 @@ Attributes
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:class:: NavigationBuilder(floorplan: citam.engine.map.floorplan.Floorplan, add_all_nav_points=False)
 
+   
    Create the navigation network (navnet) for a given floorplan.
 
    Each node in the navigation network is a notable xy coordinate in the
@@ -56,9 +81,9 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: build(self)
 
+      
       Build the navigation network (navnet) for a given floorplan.
 
       The navigation network is created by adding a navigation segment
@@ -82,9 +107,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _create_nav_segments_for_doors(self)
 
+      
       Iterate over each door in floorplan and create perpendicular nav
       segments for each.
 
@@ -106,9 +131,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _create_nav_segments_for_aisles(self)
 
+      
       Iterate over each hallway and create nav segments along each
       aisle.
 
@@ -130,9 +155,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _update_navnet(self, segments: List[List[citam.engine.map.point.Point]], seg_spaces: List[citam.engine.map.space.Space], width: float) -> None
 
+      
       For each segment in list of nav segments, create nodes and edges
       in navnet. Also keep track in which space each segment falls.
 
@@ -163,9 +188,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _aisle_has_nav_segment(self, aisle: Tuple[svgpathtools.Line, svgpathtools.Line], space: citam.engine.map.space.Space) -> bool
 
+      
       Check if aisle already has a navigation segment.
 
       :param aisle: Aisle, given as a tuple of 2 walls.
@@ -192,9 +217,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _find_valid_boundaries(self, space: citam.engine.map.space.Space) -> List[svgpathtools.Line]
 
+      
       Iterate over boundary walls of a space and return only the
        ones that are not between two hallways.
 
@@ -220,9 +245,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: create_nav_segment_for_aisle(self, aisle: tuple) -> None
 
+      
       Create navigation segements (edges in the navnet) to handle
       circulation in this aisle.
 
@@ -246,9 +271,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _find_location_of_point(self, point: citam.engine.map.point.Point) -> Tuple[Optional[citam.engine.map.space.Space], Optional[int]]
 
+      
       Find the space inside which this point is located.
 
       :param point: The point of interest
@@ -274,9 +299,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _is_point_on_boundaries(self, point: citam.engine.map.point.Point) -> List[citam.engine.map.space.Space]
 
+      
       Check if point falls on any boundary and return list of
       corresponding spaces. If only one space, then this is an exterior
       boundary.
@@ -303,9 +328,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _add_segments_to_navnet(self, segments: List[List[citam.engine.map.point.Point]], seg_spaces: List[citam.engine.map.space.Space], width: float) -> None
 
+      
       Add nodes and edges to the navigation network based on a given list of
       nav segments.
 
@@ -338,9 +363,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _add_spaces_to_hallway_graph(self, spaces: List[citam.engine.map.space.Space]) -> None
 
+      
       Add hallways to the hallway graph.
 
       The hallway graph keeps track of which hallway is accessible from
@@ -367,9 +392,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_door_intersect(self, test_line: svgpathtools.Line) -> Tuple[Optional[Tuple[int, int]], Optional[citam.engine.map.door.Door]]
 
+      
       Check if the given line intersects with a door.
 
       Intersect coords are to the nearest integer.
@@ -397,9 +422,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_if_valid_nearby_space_exits(self, current_point: citam.engine.map.point.Point, direction: int, dx: float, dy: float) -> citam.engine.map.space.Space
 
+      
       Given a point and direction, look ahead by (dx, dy) to verify if a
       valid space exists there and return that space.
 
@@ -440,9 +465,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _update_segments(self, new_point: citam.engine.map.point.Point, direction: int, segments: List[citam.engine.map.point.Point]) -> None
 
+      
       Given a valid new point, update the current navigation segments.
 
       :param new_point: The new point to add to one of the segments
@@ -469,9 +494,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _is_crossing_wall(self, first_point: citam.engine.map.point.Point, new_point: citam.engine.map.point.Point) -> bool
 
+      
       Verify if the current nav segment has reached an existing wall.
 
       :param first_point: The very first point of the navigation segment.
@@ -498,9 +523,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _is_heading_outside_facility(self, new_point: citam.engine.map.point.Point, direction: int, dx: float, dy: float, look_ahead_dist=3) -> bool
 
+      
       Verify if current nav segment is heading outside the facility
       within a given look ahead distance.
 
@@ -538,9 +563,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _is_crossing_door(self, first_point: citam.engine.map.point.Point, current_point: citam.engine.map.point.Point) -> Optional[Tuple[int, int]]
 
+      
       Verify if current nav segment is crossing a door, if so add door
       to list of excluded doors and update segments accordingly.
 
@@ -570,9 +595,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _create_segments_for_new_space(self, first_point: citam.engine.map.point.Point, new_point: citam.engine.map.point.Point, segments: List[List[citam.engine.map.point.Point]], direction: int)
 
+      
       Create navigation segments when crossing from one space to another.
 
       :param first_point: The first point in the current nav segment.
@@ -606,9 +631,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: compute_single_direction_nav_segment(self, current_space: citam.engine.map.space.Space, first_point: citam.engine.map.point.Point, direction: int, dx: float, dy: float, segments: List[List[Tuple[citam.engine.map.point.Point]]], segment_spaces: List[citam.engine.map.space.Space], stop_at_existing_segments: bool)
 
+      
       Compute navigation segments in a given direction. More than 1 segment
       will be created if crossing into different spaces.
 
@@ -648,9 +673,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: compute_nav_segments(self, first_point: citam.engine.map.point.Point, direction_vector: complex, stop_at_existing_segments: bool = False) -> Tuple[List, List]
 
+      
       Compute navigation segments from a given point and direction.
       2 segments are created from the starting point going in opposite
       directions.
@@ -693,9 +718,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _handle_wall_intersects(self, intersects: List[Tuple], path_line: svgpathtools.Path, edge: List[List], half_width: float)
 
+      
       Break nav segments when they intersect with walls.
 
       :param intersects: Points where nav segment intersects walls.
@@ -724,9 +749,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: sanitize_navnet(self) -> None
 
+      
       Make sure navigation paths do not cross any walls, including
       standalone walls.
 
@@ -748,9 +773,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _remove_node_if_invalid(self, node: tuple, neighbors: List[tuple], door_paths: List[svgpathtools.Path]) -> bool
 
+      
       Check if a node should be removed based on whether it has two neighbors
       with which it forms a straight line.
 
@@ -780,9 +805,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: simplify_navigation_network(self) -> None
 
+      
       Remove unnecessary edges and nodes in navigation network.
 
       A node is unnecessary if it only has 2 neighbors and all 3 together
@@ -805,10 +830,10 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_and_collapse_parallel_segments(self, space: citam.engine.map.space.Space) -> None
       :abstractmethod:
 
+      
       Iterate over segments in this space, test for overlap (parallel
       segments) and remove any.
 
@@ -830,9 +855,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _compute_intersection_and_remove_segments(self, key: str, seg1: Tuple[citam.engine.map.point.Point], seg2: Tuple[citam.engine.map.point.Point]) -> False
 
+      
       Check if nav segments intersect and update list of nav segments
       accordingly to capture the intersection point as a node in the graph.
 
@@ -862,12 +887,31 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _check_for_intersection_with_other_segments(self, key, i, n_segments)
 
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
 
    .. py:method:: find_intersections_in_space(self, space: citam.engine.map.space.Space) -> None
 
+      
       Iterate through all nav segment pairs in this space, find any
       intersections and add to navnet.
 
@@ -893,9 +937,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _remove_intersecting_edges(self, coords1: Tuple[int, int], coords2: Tuple[int, int], coords3: Tuple[int, int], coords4: Tuple[int, int]) -> Tuple[float, float]
 
+      
       Given 4 xy coordiantes where the first 2 form one segment and the next
       2 form another segment, remove corresponding edges from navnet.
 
@@ -927,9 +971,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_and_add_intersection_node_to_graph(self, coords1: Tuple[int, int], coords2: Tuple[int, int], coords3: Tuple[int, int], coords4: Tuple[int, int]) -> Optional[Tuple[int, int]]
 
+      
       Given four points forming 2 lines, check if they intersect
       and if so add new node to graph and create new edges.
 
@@ -961,9 +1005,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: export_navnet_to_svg(self, svg_file: Union[str, pathlib.Path]) -> None
 
+      
       Export the navigation network to an svg file for visualization.
 
       Superimposes the navigation network on top of the floorplan for easier
@@ -989,9 +1033,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: load_nav_paths_from_svg_file(self, svg_file: Union[str, pathlib.Path]) -> List[svgpathtools.Path]
 
+      
       Load all the nav segments found in an SVG file. Nav segments are paths
       tagged with a 'nav' in their id attribute.
 
@@ -1017,9 +1061,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: update_network_from_svg_file(self, svg_file: Union[str, pathlib.Path]) -> None
 
+      
       Update the navigation file using nav paths defined in an svg file. Can
       be used to allow a user to edit the navnet after the fact to add, edit
       or remove segments.
@@ -1045,9 +1089,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: export_navdata_to_json(self, navnet_json_file: Union[str, pathlib.Path], hallway_graph_json_file: Union[str, pathlib.Path]) -> None
 
+      
       Export the navigation network data to json file for later use.
 
       [extended_summary]
@@ -1075,9 +1119,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: load_navdata_from_json_files(self, navnet_json_file: Union[str, pathlib.Path], hallway_graph_json_file: Union[str, pathlib.Path]) -> None
 
+      
       Load the navigation network and the hallway graph from json files.
 
       Used to initialize the navnet and hallway graph using data from
@@ -1107,6 +1151,5 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
 
 

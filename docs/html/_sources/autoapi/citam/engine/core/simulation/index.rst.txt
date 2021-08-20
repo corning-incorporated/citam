@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.core.simulation
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -30,8 +36,27 @@ Attributes
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:class:: Simulation(facility: citam.engine.facility.indoor_facility.Facility, total_timesteps: int, n_agents: int, shifts: List[Dict], buffer: int = 300, occupancy_rate: float = None, timestep: float = 1.0, contact_distance: float = 6.0, meetings_policy_params=None, create_meetings=True, close_dining=False, scheduling_policy=None, dry_run=False, preassigned_offices: Optional[List[Tuple[int, int]]] = None)
 
+   
    Implements a CITAM indoor Agent-Based Modeling simulation.
 
    Given a facility and simulation inputs, this implements routines to
@@ -54,9 +79,9 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: create_sim_hash(self)
 
+      
       Hash simulation inputs, scheduling policy, meetings policy,
       navigation policy, floorplan and navigation data to generate a unique
       ID for each simulation.
@@ -79,9 +104,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: generate_meetings(self) -> None
 
+      
       Create meetings based on meeting policy.
 
 
@@ -102,9 +127,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: run_serial(self, workdir: str, sim_name: str, run_name: str) -> None
 
+      
       Run a CITAM simulation serially (i.e. only one core will be used).
 
       The serial runner is understandably slow because at each timestep,
@@ -133,9 +158,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: run_simulation_and_save_results(self, workdir: str) -> None
 
+      
       Perform simulation and save results to files.
 
       :param workdir: path where results are saved.
@@ -158,9 +183,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: assign_office(self) -> Tuple[int, int]
 
+      
       Assign an office to the current agent. If office spaces are not
       pre-assigned, select one randomly and remove it from list of available
       offices. Otherwise, return the next office from the queue.
@@ -185,9 +210,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: add_agents_and_build_schedules(self) -> None
 
+      
       Add the specified number of agents to the facility and create a
       schedule and an itinerary for each of them.
 
@@ -210,9 +235,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: identify_xy_proximity(self, positions_vector: numpy.ndarray) -> numpy.ndarray
 
+      
       Compute pairwise distances, given a vector of xy positions, and
       return the indices of the ones that fall within the given contact
       distance.
@@ -241,9 +266,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: identify_contacts(self, agents: List[citam.engine.core.agent.Agent]) -> None
 
+      
       Iterate over agents, compute whether they fall within the contact
       distance or not and verify that they are indeed making contact (based
       on whether they are in the same space or not).
@@ -269,9 +294,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: verify_and_add_contact(self, floor_number: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent)
 
+      
       Verify if agents are in nearby hallways before creating contact event.
 
       :param floor_number: [description]
@@ -298,9 +323,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: add_contact_event(self, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent) -> None
 
+      
       Record contact event between agent1 and agent2.
 
       :param agent1: The first agent.
@@ -325,9 +350,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: step(self, traj_outfile: TextIO = None, contact_outfiles: List[TextIO] = None) -> None
 
+      
       Move the simulation one step ahead.
 
       At each step, agents are advanced one step ahead in their itineraries
@@ -356,9 +381,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: move_agents(self) -> Tuple[List[citam.engine.core.agent.Agent], List[citam.engine.core.agent.Agent]]
 
+      
       Iterate over agents and move them to the next position in their
       itinerary. Active agents are agents currently in the facility and
       moving agents are agents currently moving from one location to the
@@ -384,9 +409,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: extract_contact_distribution_per_agent(self) -> Tuple[List[str], List[int]]
 
+      
       Compute and return total contacts per agent.
 
       :return: List of agent ids and their total contacts
@@ -409,9 +434,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: save_manifest(self, work_directory: str, sim_name: str, run_name: str) -> None
 
+      
       Save manifest file, used by the dashboard to show results.
 
       :param work_directory:  top level directory where all simulation
@@ -435,9 +460,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: save_maps(self, work_directory: str) -> None
 
+      
       Save svg maps for each floor for visualization. Each floor map is
       saved in a separate subdirectory (created if not found).
 
@@ -462,9 +487,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: create_svg_heatmap(self, contacts_per_coord: Dict[Tuple[int, int], int], floor_directory: str) -> None
 
+      
       Create and save a heatmap from coordinate contact data.
 
       :param contacts_per_coord: dictionary where each key is an (x,y )
@@ -491,9 +516,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: save_schedules(self, work_directory: str) -> None
 
+      
       Write schedules and meetings to file.
 
       Three files are created: one for all the
@@ -520,9 +545,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: save_outputs(self, work_directory: str) -> None
 
+      
       Write output files to the output directory
 
       :param work_directory: directory where all output files are to be
@@ -545,6 +570,5 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
 
 

@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.map.door
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -19,6 +25,7 @@ Classes
 
 .. py:class:: Door(path: svgpathtools.Path, space1: citam.engine.map.space.Space = None, space2: citam.engine.map.space.Space = None, space1_id: int = None, space2_id: int = None, in_service: bool = True, emergency_only: bool = False, special_access: bool = False)
 
+   
    Class to represent and manage a door in a floorplan.
 
    Note: the in_service, emergency and special_access flags are currently not
@@ -40,15 +47,33 @@ Classes
 
    ..
        !! processed by numpydoc !!
-
    .. py:attribute:: _intersect_coords
       :annotation: :Optional[Tuple[int, int]]
 
       
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: intersect_coords(self) -> Tuple[int, int]
       :property:
 
+      
       Return the point where the navigation network intersects with this
       door. If no intersect is found, the midpoint is returned.
 
@@ -72,10 +97,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: midpoint(self) -> citam.engine.map.point.Point
       :property:
 
+      
       Return the midpoint of this door, generally used as where the navnet
       would intersect this door.
 
@@ -99,10 +124,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: midpoint_coords(self) -> Tuple[int, int]
       :property:
 
+      
       The xy coordinates of the mid-point of this door.
 
       :return: xy coordinates of the mid-point
@@ -125,9 +150,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_intersect_and_midpoint_same(self) -> bool
 
+      
       Check whether the mid-point and the intersect with the navnet are the
       same.
 
@@ -151,9 +176,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: __str__(self)
 
+      
       Return str(self).
 
 
@@ -174,9 +199,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: __eq__(self, other)
 
+      
       Return self==value.
 
 
@@ -197,9 +222,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: __hash__(self)
 
+      
       Return hash(self).
 
 
@@ -220,9 +245,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _as_dict(self) -> Dict[str, Any]
 
+      
       Return this class as a dictionary, useful for JSON serialization.
 
       Note that only the space ids are kept in the dictionary and not the
@@ -247,6 +272,5 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
 

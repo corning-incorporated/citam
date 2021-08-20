@@ -11,7 +11,6 @@
        !! processed by numpydoc !!
 
 
-
 Module Contents
 ---------------
 
@@ -19,6 +18,7 @@ Module Contents
 
    Bases: :py:obj:`Exception`
 
+   
    This error is raised when the running CITAM configuration is invalid
 
 
@@ -39,9 +39,26 @@ Module Contents
    ..
        !! processed by numpydoc !!
 
-
 .. py:data:: settings
    
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 

@@ -3,6 +3,28 @@
 
 .. py:module:: citam.engine
 
+.. autoapi-nested-parse::
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 
 Subpackages
 -----------
@@ -52,6 +74,7 @@ Attributes
 
 .. py:function:: parse_input_file(input_file: Union[str, pathlib.Path]) -> Dict[str, Any]
 
+   
    Read primary simulation input file in json format, validate values,
    load floorplans and returns dictionary of model inputs.
 
@@ -86,9 +109,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: run_simulation(inputs: dict)
 
+   
    Perform an agent-based simulation given a dictionary of input values
 
    :param inputs: Dictionary of input values
@@ -110,14 +133,32 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:data:: LOG
    
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: engine_run(**kwargs)
 
+   
    Run a simulation
 
    This method is executed with the CLI call ``citam engine run``
@@ -138,5 +179,4 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
 

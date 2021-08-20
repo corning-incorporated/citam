@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.map.space
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -19,6 +25,7 @@ Classes
 
 .. py:class:: Space(path: svgpathtools.Path, boundaries: svgpathtools.Path, id: str, unique_name: str, building: str, space_function: str, facility: str = None, floor: str = None, space_category: str = None, capacity: int = None, department: str = None, square_footage: float = None)
 
+   
    Class to manage all types of spaces within a facility (a space can be a
    room, a hallway or any navigable area within a facility)
 
@@ -39,9 +46,9 @@ Classes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: __eq__(self, other) -> bool
 
+      
       Check if two spaces are equal (meaning they are the same space in real
       life). This function does not compare door objects directly as they
       hold references to space objects which in turn hold references to door
@@ -69,9 +76,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: __hash__(self)
 
+      
       Return hash(self).
 
 
@@ -92,9 +99,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: __str__(self)
 
+      
       Return str(self).
 
 
@@ -115,9 +122,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: _as_dict(self) -> Dict[str, Any]
 
+      
        Return this space object as a dictionary. Note: this operation
       ignores any reference to door objects which must be recreated
       at the floorplan level when a space object is to be recreated.
@@ -142,9 +149,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_point_on_space_walls(self, test_point: citam.engine.map.point.Point) -> bool
 
+      
       Verify if a given point falls on one of the walls of this space.
 
       :param test_point: The point of interest.
@@ -169,9 +176,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_point_on_space_boundaries(self, test_point: citam.engine.map.point.Point) -> bool
 
+      
       Verify if a given point falls on one of the boundaries of this space.
 
       :param test_point: The point of interest.
@@ -196,9 +203,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_point_inside_space(self, test_point: citam.engine.map.point.Point, include_boundaries=False) -> bool
 
+      
       Check if a given point falls inside this space.
 
       :param test_point: The point of interest.
@@ -226,9 +233,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: infinite_line_intersection_test(self, test_point: citam.engine.map.point.Point) -> bool
 
+      
       Create s set of infinite lines starting from the test point and count
       the number of intersections with the space boundaries.
       If the number of intesections is odd for any test line, return True.
@@ -256,9 +263,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_random_internal_point(self) -> citam.engine.map.point.Point
 
+      
       Return a randomly selected point inside this space.
 
       :return: xy coordinates of the point.
@@ -281,9 +288,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_space_a_hallway(self) -> bool
 
+      
       Verify is this space is a hallway.
 
       :return: Whether this space is a hallway or not.
@@ -306,9 +313,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_space_an_office(self) -> bool
 
+      
       Verify if this space is an office.
 
       :return: Whether this space is an office or not.
@@ -331,9 +338,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_space_a_cafeteria(self) -> bool
 
+      
       Verify if this space is a cafeteria.
 
       :return: Whether this space is a cafeteria or not.
@@ -356,9 +363,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_space_a_lab(self) -> bool
 
+      
       Verify if this space is a lab.
 
       :return: Whether this space is a lab or not
@@ -381,9 +388,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_space_a_meeting_room(self) -> bool
 
+      
       Verify if this space is meeting room.
 
       :return: Whether this space is a meeting room or not.
@@ -406,9 +413,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_space_a_restroom(self) -> bool
 
+      
       Verify if this space is a restroom.
 
       :return: Whether this space is a restroom or not.
@@ -431,9 +438,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: is_space_vertical(self) -> bool
 
+      
       Check if this space is a stair or an elevator that can be used for
       regular navigation.
 
@@ -457,9 +464,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_space_coords(self) -> Tuple[int, int]
 
+      
       Compute coordinates of the geometric center of this space
 
       :return: The xy coordinates of the center.
@@ -481,6 +488,5 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
 

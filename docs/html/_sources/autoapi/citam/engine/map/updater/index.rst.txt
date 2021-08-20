@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.map.updater
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -30,8 +36,27 @@ Attributes
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:class:: FloorplanUpdater(floorplan: citam.engine.map.floorplan.Floorplan, svg_file: Union[str, pathlib.Path] = None, csv_file: Union[str, pathlib.Path] = None)
 
+   
    Class to update an existing floorplan from SVG and CSV files.
 
 
@@ -51,9 +76,9 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: update_from_csv_data(self) -> None
 
+      
       Update space properties in floorplan using data from CSV file
 
       ..Note:: Cannot change space unique names
@@ -75,9 +100,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: read_updated_svg_file(self) -> Tuple[List[svgpathtools.Path], List[svgpathtools.Path]]
 
+      
       Read edited SVG file and extract wall and door paths.
 
       TODO: use appropriate function in io.input_parser instead.
@@ -102,9 +127,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_special_walls(self, svg_wall_paths: List[svgpathtools.Line]) -> None
 
+      
       Compared walls from svg file to exising walls and identify new or
       edited walls as special walls
 
@@ -129,9 +154,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: remove_door_from_spaces(self, door: citam.engine.map.door.Door) -> None
 
+      
       Remove door from corresponding spaces.
 
       :param door: The door to remove from the facility.
@@ -154,9 +179,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_doors_to_remove(self) -> List[citam.engine.map.door.Door]
 
+      
       Go through existing doors and check if they overal with any special
       walls. If so, tag them for removal
 
@@ -180,9 +205,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: run(self) -> None
 
+      
       Run the floorplan update process using data from provided csv
       and svg files.
 
@@ -204,9 +229,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: update_from_svg_data(self, svg_wall_paths: List[svgpathtools.Path], svg_door_paths: List[svgpathtools.Path]) -> None
 
+      
       Read SVG file to extract walls and door info and update floorplan
       object accordingly.
 
@@ -232,9 +257,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_spaces_for_door(self, door_path: svgpathtools.Path) -> Tuple[Optional[citam.engine.map.space.Space], Optional[citam.engine.map.space.Space]]
 
+      
       Given a door path, check which spaces are on both sides of the door.
 
       ..Note:: Only line objects are supported (BezierCurves are not).
@@ -261,9 +286,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: overlap_door_with_wall(self, new_door: svgpathtools.Line, max_distance_to_walls=3.0) -> svgpathtools.Line
 
+      
       Verify if new door lines as provided by user overlap with existing
       walls. If so, update walls accordingly (carve out door segment) and
       update door path as necessary (e.g. translate and change orientation
@@ -294,9 +319,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: process_new_doors(self, svg_door_paths: List[svgpathtools.Line], updated_doors: List[citam.engine.map.door.Door]) -> None
 
+      
       Iterate over door paths extracted from svg file and process them
       for addition to the floorplan.
 
@@ -322,9 +347,9 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: find_spaces_of_point(self, point: citam.engine.map.point.Point) -> List[int]
 
+      
       Find all spaces that a point belongs to. This should always be
       one unless the point is on a door line or a space boundary.
 
@@ -349,6 +374,5 @@ Attributes
 
       ..
           !! processed by numpydoc !!
-
 
 

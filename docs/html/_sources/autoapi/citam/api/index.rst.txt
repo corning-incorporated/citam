@@ -5,6 +5,7 @@
 
 .. autoapi-nested-parse::
 
+   
    =================
    CITAM Results API
    =================
@@ -37,7 +38,6 @@
 
    ..
        !! processed by numpydoc !!
-
 
 
 Subpackages
@@ -85,8 +85,27 @@ Attributes
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: run_server(port: int = 8000, host: str = '127.0.0.1', results: str = None, *args, **kwargs)
 
+   
    Run the ``citam dash`` server
 
    :param int port: port to serve the dash from
@@ -109,5 +128,4 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
 

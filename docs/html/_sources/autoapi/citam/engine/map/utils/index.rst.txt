@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.map.utils
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -29,6 +35,7 @@ Functions
 
 .. py:function:: find_closest_parallel_wall(space_boundaries: List[svgpathtools.Line], ref_wall: svgpathtools.Line) -> svgpathtools.Line
 
+   
    For a given wall, find other walls in same space that are
    parallel to this (with some x or y overlap) and return the
    closest wall.
@@ -57,9 +64,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: is_wall_valid_for_aisle(no_repeat: bool, wall: Optional[svgpathtools.Line], aisles: List[Tuple[svgpathtools.Line, svgpathtools.Line]]) -> bool
 
+   
    Check if a wall is valid to be apart of an aisle.
 
    :param no_repeat: Whether to consider walls that are already part of an
@@ -89,9 +96,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: find_aisles(space: citam.engine.map.space.Space, valid_boundaries: List[svgpathtools.Line], no_repeat=True) -> List[Tuple[svgpathtools.Line, svgpathtools.Line]]
 
+   
    Given the svg path of the boundaries of a space, find all pairs of 2 walls
     that define an aisle (parallel walls with navigable space between them).
 
@@ -122,9 +129,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: is_this_wall_part_of_an_aisle(wall: svgpathtools.Line, aisles: List[Tuple[svgpathtools.Line, svgpathtools.Line]]) -> bool
 
+   
    Verify if a wall already belongs to an aisle.
 
    :param wall: The wall of interest.
@@ -151,9 +158,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: get_aisle_center_point_and_width(aisle: Tuple[svgpathtools.Line, svgpathtools.Line]) -> Tuple[citam.engine.map.point.Point, float]
 
+   
    Find the center point and the width of an aisle.
 
    :param aisle: The aisle of interest.
@@ -178,9 +185,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: is_this_an_aisle(wall1: svgpathtools.Line, wall2: svgpathtools.Line, space: citam.engine.map.space.Space) -> bool
 
+   
    Verify that 2 walls form an aisle. Works by verifying that the center point
     of this aisle is part of the same space. Note that this is a rather weak
     definition. Use accordingly.
@@ -211,9 +218,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: compute_bounding_box(walls: List[svgpathtools.Line]) -> Tuple[float, float, float, float]
 
+   
    Computes the bounding box of the floorplan given by all its walls and
    return the min and max x and y values.
 
@@ -239,9 +246,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: generate_closed_path_for_aisle(aisle: Tuple[svgpathtools.Line, svgpathtools.Line]) -> svgpathtools.Path
 
+   
    Given an aisle (tuple of two walls), add new walls to create a closed
    path for this aisle.
 
@@ -267,9 +274,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: do_walls_overlap(wall1: svgpathtools.Line, wall2: svgpathtools.Line, max_distance: float = 1.0) -> bool
 
+   
    Verify if two walls overlap.
 
    Uses the start and end points of each line and verifies if either one
@@ -304,9 +311,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: extract_end_points(wall: svgpathtools.Line) -> Tuple[citam.engine.map.point.Point, citam.engine.map.point.Point]
 
+   
    Extract the end points of a wall returned as integer coordinates.
 
    :param wall: The wall of interest.
@@ -331,9 +338,9 @@ Functions
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: check_for_collinearity(wall1: svgpathtools.Line, wall2: svgpathtools.Line, max_distance: float) -> bool
 
+   
    Verify that two walls are collinear by making sure all end points are or
    by measuring the distance and angle between the walls.
 
@@ -362,5 +369,4 @@ Functions
 
    ..
        !! processed by numpydoc !!
-
 

@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.io.visualization
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -38,23 +44,96 @@ Attributes
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: LINE_MARKER
    :annotation: = 2
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: PLUS_MARKER
    :annotation: = 3
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: LOG
    
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:function:: export_possible_oneway_aisles_to_svg(walls: List[svgpathtools.Path], oneway_network: networkx.Graph, svgfile: Union[str, pathlib.Path]) -> None
 
+   
    Export the one_way network superimposed on the floorplan to an SVG file.
 
    :param walls: All the walls found in the floorplan.
@@ -81,9 +160,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: create_arrow_svg_paths(arrow: Tuple[Tuple[int, int], Tuple[int, int]]) -> Tuple[List[svgpathtools.Path], List[Dict[str, Any]]]
 
+   
    Given two points, create an arrow-like SVG element with the first point as
    the head.
 
@@ -109,9 +188,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: create_markers_svg_paths(x: int, y: int, marker_type: int = None) -> Tuple[List[svgpathtools.Path], List[Dict[str, Any]]]
 
+   
    Create SVG paths for arbitrary markers to be used on a floorplan.
 
    :param x: the x position of the marker
@@ -140,9 +219,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: export_nav_network_to_svg(walls: List[svgpathtools.Path], nav_paths: List[svgpathtools.Path], nav_nodes: List[Tuple[int, int]], filename: Union[str, pathlib.Path], marker_type: int = X_MARKER, color='blue') -> None
 
+   
    Export a navigation network superimposed on a floorplan to an SVG file.
 
    :param walls: All the walls in the floorplan.
@@ -175,9 +254,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: export_world_to_svg(walls: List[svgpathtools.Path], agent_positions_and_contacts: List[Tuple[int, int, int]], svg_file: Union[str, pathlib.Path], marker_locations: List[Tuple[int, int, int]] = [], marker_type: int = None, arrows: List[Tuple[Tuple[int, int], Tuple[int, int]]] = [], doors: List[svgpathtools.Path] = [], max_contacts: int = 100, current_time: int = None, show_colobar=False, viewbox: Tuple[float, Ellipsis] = None) -> None
 
+   
    Save a snapshot of a simulation with the floorplan, agent positions and
    number of contacts, doors and any markers to an SVG file.
 
@@ -223,9 +302,9 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-
 .. py:function:: add_root_layer_to_svg(original_svg_filename: Union[str, pathlib.Path], updated_filename: Union[str, pathlib.Path]) -> None
 
+   
    Helper function to update an existing SVG file to add a root element.
 
    :param original_svg_filename: Initial SVG file.
@@ -249,5 +328,4 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-
 

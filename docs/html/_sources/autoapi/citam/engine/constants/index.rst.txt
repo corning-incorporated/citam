@@ -3,6 +3,12 @@
 
 .. py:module:: citam.engine.constants
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -12,58 +18,274 @@ Module Contents
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: OPTIONAL_SPACE_METADATA
    :annotation: = ['facility', 'space_category', 'floor', 'department', 'capacity', 'square_footage']
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: SUPPORTED_SPACE_FUNCTIONS
    :annotation: = ['circulation', 'office', 'lab', 'restroom (men)', 'restroom (women)', 'restroom', 'cafeteria',...
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: RESTROOM_VISIT
    :annotation: = Restroom visit
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: MEETING
    :annotation: = Meeting
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: LAB_WORK
    :annotation: = Lab work
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: CAFETERIA_VISIT
    :annotation: = Cafeteria
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: OFFICE_WORK
    :annotation: = Office work
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: DEFAULT_SCHEDULING_RULES
    
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: DEFAULT_MEETINGS_POLICY
    
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: MEETING_BUFFER
    
 
    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
 .. py:data:: DEFAULT_MEETING_ROOM_CAPACITY
    :annotation: = 25
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 

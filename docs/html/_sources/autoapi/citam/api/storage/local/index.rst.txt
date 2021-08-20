@@ -3,6 +3,12 @@
 
 .. py:module:: citam.api.storage.local
 
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
 
 Module Contents
 ---------------
@@ -21,6 +27,7 @@ Classes
 
    Bases: :py:obj:`citam.api.storage.BaseStorageDriver`
 
+   
    Local storage driver for simulation results.
 
    This driver will scan the provided search_path for valid manifest.json
@@ -45,9 +52,9 @@ Classes
 
    ..
        !! processed by numpydoc !!
-
    .. py:method:: list_runs(self)
 
+      
       List all simulations
 
       :return: A list of completed simulations
@@ -69,9 +76,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_coordinate_distribution_file(self, run_id, floor)
 
+      
       Return the Coordinate Distribution file for a simulation
 
       :param sim_id: simulation identifier
@@ -95,9 +102,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_trajectory_file(self, run_id)
 
+      
       Return the trajectory file for a simulation
 
       :param sim_id: simulation identifier
@@ -119,10 +126,10 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
    .. py:method:: get_trajectory_file_location(self, run_id)
 
+      
       Return the trajectory file for a simulation
 
       :param sim_id: simulation identifier
@@ -145,9 +152,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_contact_file(self, run_id, floor)
 
+      
       Return the contact file for a simulation
 
       :param sim_id: simulation identifier
@@ -171,9 +178,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_map_file(self, run_id, floor)
 
+      
       Return the map image for given simulation
 
       :param sim_id: simulation identifier
@@ -197,9 +204,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_heatmap_file(self, run_id, floor)
 
+      
       Return a heatmap file for a simulation and floor
 
       :param sim_id: simulation identifier
@@ -223,9 +230,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_manifest_file(self, run_id)
 
+      
       Return the manifest file for a simulation
 
       :param sim_id: simulation identifier
@@ -248,9 +255,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_pair_contact_file(self, run_id)
 
+      
       Return the pair contact file for a simulation
 
       :param sim_id: simulation identifier
@@ -273,9 +280,9 @@ Classes
       ..
           !! processed by numpydoc !!
 
-
    .. py:method:: get_statistics_file(self, run_id)
 
+      
       Get the statistics file for a simulation
 
       :param sim_id: simulation identifier
@@ -296,10 +303,10 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
    .. py:method:: get_policy_file(self, run_id)
 
+      
       Get the statistics file for a simulation
 
       :param sim_id: simulation identifier
@@ -320,6 +327,5 @@ Classes
 
       ..
           !! processed by numpydoc !!
-
 
 
