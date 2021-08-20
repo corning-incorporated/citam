@@ -281,9 +281,9 @@ export default {
           policy.simulationRuns.forEach((sim) => {
             this.runList.forEach((run) => {
               if (run.RunID === sim.runID) {
-                Vue.set(sim, "floors", run.floors);
+                Vue.set(sim, "floors", run.Floors);
                 Vue.set(sim, "totalSteps", run.TotalTimesteps);
-                Vue.set(sim, "scaleMultiplier", run.scaleMultiplier);
+                Vue.set(sim, "scaleMultiplier", run.ScaleMultiplier);
                 Vue.set(sim, "agents", run.NumberOfAgents);
                 Vue.set(sim, "numberOfEntrances", run.NumberOfEntrances);
 
