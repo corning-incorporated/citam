@@ -29,7 +29,7 @@
                 href="#"
                 @click="getPolicyDetails(policy.policyHash, id)"
               >
-                {{ policy.policyHash }}
+                {{ policy.simulationName }}
               </a>
             </li>
           </ul>
@@ -71,13 +71,13 @@
                 <div class="col">
                   <span>Total Steps</span>
                   <div class="polValue">
-                    {{ policyDetails.general.daylength }}
+                    {{ policyDetails.general.total_timesteps }}
                   </div>
                 </div>
                 <div class="col">
                   <span>Total Hours</span>
                   <div class="polValue">
-                    {{ policyDetails.general.daylength / 3600 }}
+                    {{ policyDetails.general.total_timesteps / 3600 }}
                   </div>
                 </div>
                 <div class="col"></div>
@@ -89,7 +89,7 @@
                 <div class="col">
                   <span>Number of Agents</span>
                   <div class="polValue">
-                    {{ policyDetails.general.NumberOfEmployees }}
+                    {{ policyDetails.general.n_agents }}
                   </div>
                 </div>
                 <div class="col"></div>
@@ -102,7 +102,13 @@
                 <div class="col">
                   <span>Distance (Meters)</span>
                   <div class="polValue">
-                    {{ policyDetails.general.contact_distance }}
+                    {{
+                      Math.round(
+                        (policyDetails.general.contact_distance +
+                          Number.EPSILON) *
+                          100
+                      ) / 100
+                    }}
                   </div>
                 </div>
                 <div class="col"></div>
@@ -123,7 +129,7 @@
                   </div>
                 </div>
                 <div class="col">
-                  <span>Shift Start time</span>
+                  <span>Shift Start Timestep</span>
                   <div
                     class="polValue"
                     v-for="(shift, id) in policyDetails.general.shifts"
@@ -133,13 +139,13 @@
                   </div>
                 </div>
                 <div class="col">
-                  <span>Percent of agents assigned to shift</span>
+                  <span>Percent of Agents Assigned to Shift</span>
                   <div
                     class="polValue"
                     v-for="(shift, id) in policyDetails.general.shifts"
                     :key="id"
                   >
-                    {{ shift.percent_workforce }}
+                    {{ shift.percent_agents * 100 }}%
                   </div>
                 </div>
               </div>
@@ -155,7 +161,7 @@
               future, the possibility will be given to manually add specific
               meetings that always take place (e.g. classroom instructions).
             </div>
-            <div>
+            <div v-if="policyDetails.meetings">
               <span class="headingFont">MEETING DURATION</span>
               <div class="row polSubSection">
                 <div class="col">
@@ -216,6 +222,7 @@
                 <div class="col"></div>
               </div>
             </div>
+            <div v-else>No meetings in this simulation.</div>
           </div>
           <div class="polHeading">SCHEDULING POLICY</div>
           <div class="polPanel">
@@ -282,7 +289,8 @@
           <div class="polPanel">
             <div class="polDesc">
               A traffic policy is made of list of circulation rules where each
-              rule is as follows:
+              rule will apply to specific hallways (or aisles) and will dictate
+              the direciton of agent traffic in that space.
             </div>
             <div class="row polSubSection">
               <div class="col">
@@ -296,7 +304,7 @@
                 </div>
               </div>
               <div class="col">
-                <span>Aisle SSegment Id</span>
+                <span>Aisle Segment Id</span>
                 <div
                   class="polValue"
                   v-for="(traffic, id) in policyDetails.traffic"
@@ -385,32 +393,43 @@ export default {
         (item) => item.facilityName == this.selectedFacility
       ).policies,
     };
+    console.log("Policy name: ", this.polName);
+    console.log("Policy data: ", this.policyData);
     if (_.isEmpty(this.polName)) {
       this.selectedPolicyData.policyInfo = this.policyData.policies[0];
       axios
-      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`) //get policy info with any of the simid
-      .then((response) => {
-        this.policyDetails = response.data;
-        return response.data;
-      })
-       .catch((error) => {
-         console.log(error.response)
-         alert('No policy data found, please check if policy.json file exists')
-       });
+        .get(
+          `/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`
+        ) //get policy info with any of the simid
+        .then((response) => {
+          console.log("We have the policy: ", response.data);
+          this.policyDetails = response.data;
+          return response.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+          alert(
+            "No policy data found, please check if policy.json file exists"
+          );
+        });
     } else {
       this.selectedPolicyData.policyInfo = this.policyData.policies.find(
         (item) => item.policyHash == this.polName
       );
       axios
-      .get(`/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`) //get policy info with any of the simid
-      .then((response) => {
-        this.policyDetails = response.data;
-        return response.data;
-      })
+        .get(
+          `/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`
+        ) //get policy info with any of the simid
+        .then((response) => {
+          this.policyDetails = response.data;
+          return response.data;
+        })
         .catch((error) => {
-         console.log(error.response)
-         alert('No policy data found, please check if policy.json file exists')
-       });
+          console.log(error.response);
+          alert(
+            "No policy data found, please check if policy.json file exists"
+          );
+        });
       this.polIndex = this.policyData.policies.findIndex(
         (item) => item.policyHash == this.polName
       );

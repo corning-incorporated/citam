@@ -190,12 +190,14 @@ export default {
         .get("/list") //get list of policies, simulations, facilities
         .then((response) => {
           this.policyList = response.data.map((list) => list);
+          console.log("Policy list is: ", this.policyList);
           this.$store.commit("setPolicyList", this.policyList);
           return axios.all(response.data.map((x) => axios.get(`/${x.RunID}`)));
         })
         .then((runResponse) => {
           // eslint-disable-next-line no-unused-vars
           this.runList = runResponse.map((run) => run.data);
+          console.log("Run List: ", this.runList);
           return axios.all(
             runResponse.map((x) => axios.get(`/${x.data.RunID}/statistics`))
           );

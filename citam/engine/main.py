@@ -321,6 +321,16 @@ def run_simulation(inputs: dict):
     LOG.info("Extracting stats...")
     my_model.save_outputs(work_directory)
 
+    # Write policy.json
+    policy = {}
+    policy["facility_name"] = inputs["facility_name"]
+    policy["general"] = inputs
+    policy["meetings"] = my_model.meetings_policy_params
+    policy["scheduling"] = my_model.scheduling_rules
+    policy["traffic"] = inputs["traffic_policy"]
+    with open(os.path.join(work_directory, "policy.json"), "w") as outfile:
+        json.dump(policy, outfile)
+
     if upload_results and upload_location is not None:
         LOG.info("Uploading results to server...")
         cwd = os.getcwd()
