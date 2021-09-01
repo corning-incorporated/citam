@@ -323,6 +323,7 @@ def run_simulation(inputs: dict):
 
     # Write policy.json
     policy = {}
+    del inputs["output_directory"]
     policy["facility_name"] = inputs["facility_name"]
     policy["general"] = inputs
     policy["meetings"] = my_model.meetings_policy_params
