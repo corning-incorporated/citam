@@ -12,9 +12,23 @@
 
 __all__ = ["api", "cli", "engine", "settings"]
 
+import os
+import logging
+
 from citam import api, cli, engine, conf
 import citam.engine.io.storage_utils as su
-import os
+
+from rich.logging import RichHandler
+
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level=logging.INFO,
+    format=FORMAT,
+    datefmt="[%X]",
+    handlers=[
+        RichHandler(rich_tracebacks=True, show_path=False, show_time=False)
+    ],
+)
 
 settings = conf.settings
 
@@ -24,6 +38,9 @@ load_floorplans = engine.main.load_floorplans
 ingest_floorplan = engine.main.ingest_floorplan
 show_navigation_network = engine.main.export_navigation_graph_to_svg
 show_floorplan = engine.main.show_floorplan
+update_floorplan_from_svg = engine.main.update_floorplan_from_svg_file
+build_navigation_network = engine.main.build_navigation_network
+run_simulation = engine.main.run_simulation
 
 
 def show_facility_summary(facility_name):

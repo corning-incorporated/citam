@@ -25,6 +25,9 @@ from citam.engine.main import update_floorplan_from_svg_file
 from citam.engine.main import export_navigation_graph_to_svg
 from citam.engine.main import find_and_save_potential_one_way_aisles
 
+from rich.logging import RichHandler
+
+FORMAT = "%(message)s"
 
 FACILITY_NAME = "Facility name"
 FLOOR_NAME = "Floor name"
@@ -44,10 +47,27 @@ def main():
         log_levels = [logging.WARNING, logging.INFO, logging.DEBUG]
         if args.log_file:
             logging.basicConfig(
-                filename=args.log_file, level=log_levels[args.verbose]
+                format=FORMAT,
+                datefmt="[%X]",
+                handlers=[
+                    RichHandler(
+                        rich_tracebacks=True, show_path=False, show_time=False
+                    )
+                ],
+                filename=args.log_file,
+                level=log_levels[args.verbose],
             )
         else:
-            logging.basicConfig(level=log_levels[args.verbose])
+            logging.basicConfig(
+                format=FORMAT,
+                datefmt="[%X]",
+                handlers=[
+                    RichHandler(
+                        rich_tracebacks=True, show_path=False, show_time=False
+                    )
+                ],
+                level=log_levels[args.verbose],
+            )
         # The below logger is annoying. TODO: Replace with real log config
         logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
         args.func(**vars(args))

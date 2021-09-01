@@ -248,12 +248,12 @@ def export_navigation_graph_to_svg(
         )
         nav_paths.append(p)
 
-    LOG.info("Exporting nav network to svg")
     if outputfile is None:
         return bv.export_nav_network_to_svg(
             floorplan.walls, nav_paths, nav_nodes
         )
     else:
+        LOG.info("Writing nav network to svg file...")
         bv.export_nav_network_to_svg(
             floorplan.walls, nav_paths, nav_nodes, outputfile
         )

@@ -18,6 +18,7 @@ import pathlib
 
 from svgpathtools import Line
 from svgwrite.drawing import Drawing
+from rich import print
 
 import citam.engine.io.visualization as bv
 from citam.engine.map.point import Point
