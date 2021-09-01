@@ -37,6 +37,7 @@ setuptools.setup(
         "boto3",
         "falcon",
         "appdirs",
+        "rich[jupyter]",
     ],
     setup_requires=["setuptools_scm"],
     # For a list of classifiers, see https://pypi.org/classifiers/
