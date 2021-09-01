@@ -7,12 +7,12 @@
     "SimulationHash": "_hash_0001",
     "RunID": "run_id_0001",
     "FacilityName": "TEST",
-    "trajectory_file": "trajectory.txt",
-    "floors": [
+    "TrajectoryFile": "trajectory.txt",
+    "Floors": [
         {
             "name": "0",
             "directory": "floor_0/"
         }
     ],
-    "scaleMultiplier": 1
+    "ScaleMultiplier": 1
 }
