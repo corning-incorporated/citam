@@ -43,7 +43,7 @@ def get_floorplans_directory() -> Union[str, pathlib.Path]:
     return os.path.join(citam_cache_directory, "floorplans_and_nav_data/")
 
 
-def create_datadir(
+def create_floor_datadir(
     facility_name: str, floor_name: str
 ) -> Union[str, pathlib.Path]:
     """
@@ -74,7 +74,7 @@ def create_datadir(
     return floor_directory
 
 
-def get_datadir(
+def get_floor_datadir(
     facility_name: str, floor_name: str
 ) -> Union[str, pathlib.Path]:
     """
@@ -95,4 +95,23 @@ def get_datadir(
         "floorplans_and_nav_data",
         facility_name,
         "floor_" + floor_name,
+    )
+
+
+def get_facility_datadir(facility_name: str) -> Union[str, pathlib.Path]:
+    """
+    Get the directory where data for a given facility are saved.
+
+    :param facility_name: The name of the facility.
+    :type facility_name: str
+    :return: path of the directory where data for this facility and floor are
+            found.
+    :rtype: Union[str, pathlib.Path]
+    """
+    """"""
+    citam_cache_directory = get_user_cache()
+    return os.path.join(
+        citam_cache_directory,
+        "floorplans_and_nav_data",
+        facility_name,
     )
