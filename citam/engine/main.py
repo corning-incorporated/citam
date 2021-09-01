@@ -203,6 +203,11 @@ def update_floorplan_from_svg_file(
     fp_updater.floorplan.to_json_file(updated_json_file)
 
 
+def show_floorplan(facility_name: str, floor_name: str, include_doors=False):
+    floorplans = load_floorplans([floor_name], facility_name)
+    return floorplans[0].show(include_doors=include_doors)
+
+
 def export_navigation_graph_to_svg(
     facility: str,
     floor: str,

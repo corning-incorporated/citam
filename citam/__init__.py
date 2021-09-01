@@ -21,3 +21,4 @@ list_facilities = engine.main.list_facilities
 load_floorplans = engine.main.load_floorplans
 ingest_floorplan = engine.main.ingest_floorplan
 show_navigation_network = engine.main.export_navigation_graph_to_svg
+show_floorplan = engine.main.show_floorplan
