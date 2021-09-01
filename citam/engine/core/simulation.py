@@ -679,7 +679,7 @@ class Simulation:
             "TimestepInSec": 1,
             "NumberOfFloors": self.facility.number_of_floors,
             "NumberOfOneWayAisles": n_one_way_aisles,
-            "NumberOfAgents": len(self.agents),
+            "NumberOfAgents": self.n_agents,
             "SimulationName": sim_name,
             "RunName": run_name,
             "SimulationHash": self.simulation_hash,

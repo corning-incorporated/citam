@@ -99,11 +99,11 @@ export default new Vuex.Store({
             return new Promise(() => {
                 try {
                     getSummary(state.currentSimID).then(async (response) => {
-                        let floorOptions = response.data.floors.map((x) => x.name);
+                        let floorOptions = response.data.Floors.map((x) => x.name);
                         commit("setFloorOptions", floorOptions);
                         commit("setNumberOfAgents", response.data.NumberOfAgents);
                         commit("setTotalSteps", response.data.TotalTimesteps);
-                        commit("setScaleMultiplier", response.data.scaleMultiplier);
+                        commit("setScaleMultiplier", response.data.ScaleMultiplier);
 
                         getBaseMap(state.currentSimID, state.currentFloor).then((resp) => {
                             commit("setMapData", resp.data);
