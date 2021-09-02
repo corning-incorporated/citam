@@ -59,11 +59,11 @@ def list_facilities(**kwargs):  # noqa
 
 
 def ingest_floorplan(
-    svg: str,
-    csv: str,
     facility: str,
+    floor: str,
+    svg: str,
+    csv: str = None,
     scale: float = 1 / 12,
-    floor: str = "0",
     buildings: List[str] = None,
     output_directory=None,
     force_overwrite=False,
@@ -88,9 +88,9 @@ def ingest_floorplan(
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), svg)
 
     if output_directory is None:
-        floor_directory = su.get_datadir(facility, floor)
+        floor_directory = su.get_floor_datadir(facility, floor)
         if not os.path.isdir(floor_directory):
-            su.create_datadir(facility, floor)
+            su.create_floor_datadir(facility, floor)
     else:
         floor_directory = output_directory
         if not os.path.isdir(floor_directory):
@@ -138,7 +138,7 @@ def export_floorplan_to_svg(
     """
 
     if not floorplan_directory:
-        floorplan_directory = su.get_datadir(facility, floor)
+        floorplan_directory = su.get_floor_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
     floorplan.export_to_svg(outputfile, include_doors=doors)
@@ -158,7 +158,7 @@ def build_navigation_network(
     """
 
     if not floorplan_directory:
-        floorplan_directory = su.get_datadir(facility, floor)
+        floorplan_directory = su.get_floor_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
     LOG.info("Building navigation network...")
@@ -191,7 +191,7 @@ def update_floorplan_from_svg_file(
         raise FileNotFoundError(svg)
 
     if not floorplan_directory:
-        floorplan_directory = su.get_datadir(facility, floor)
+        floorplan_directory = su.get_floor_datadir(facility, floor)
 
     floorplan = floorplan_from_directory(floorplan_directory, floor)
     fp_updater = FloorplanUpdater(floorplan, svg_file=svg)
@@ -201,6 +201,11 @@ def update_floorplan_from_svg_file(
         floorplan_directory, "updated_floorplan.json"
     )
     fp_updater.floorplan.to_json_file(updated_json_file)
+
+
+def show_floorplan(facility_name: str, floor_name: str, include_doors=False):
+    floorplans = load_floorplans(facility_name, [floor_name])
+    return floorplans[0].show(include_doors=include_doors)
 
 
 def export_navigation_graph_to_svg(
@@ -221,7 +226,7 @@ def export_navigation_graph_to_svg(
     """
 
     if floorplan_directory is None:
-        floorplan_directory = su.get_datadir(facility, floor)
+        floorplan_directory = su.get_floor_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
     nav_network_file = os.path.join(floorplan_directory, ROUTES_JSON_FILE)
@@ -243,25 +248,30 @@ def export_navigation_graph_to_svg(
         )
         nav_paths.append(p)
 
-    LOG.info("Exporting nav network to svg")
     if outputfile is None:
         return bv.export_nav_network_to_svg(
             floorplan.walls, nav_paths, nav_nodes
         )
     else:
+        LOG.info("Writing nav network to svg file...")
         bv.export_nav_network_to_svg(
             floorplan.walls, nav_paths, nav_nodes, outputfile
         )
         LOG.info("Navigation network exported to: %s", outputfile)
 
 
-def load_floorplans(floors, facility_name, user_scale=None):
-    # TODO: TEST ME
-    # TODO: DOCUMENT ME!
-    # TODO: TEST ME!
-    # TODO: DOCUMENT ME!
-    # TODO: TEST ME!
-    # TODO: DOCUMENT ME!
+def load_floorplans(facility_name, floors, user_scale=None):
+    """Create and return a floorplan object for each floor requested.
+
+    :param facility_name: Name of facility of interest.
+    :type facility_name: str
+    :param floors: List of floor names of interest
+    :type floors: List[str]
+    :param user_scale: scale to use for the floorplans, defaults to None
+    :type user_scale: float, optional
+    :return: list of floorplan objects
+    :rtype: List[Floorplan]
+    """
     floorplans = []
 
     if user_scale is not None:
@@ -269,7 +279,7 @@ def load_floorplans(floors, facility_name, user_scale=None):
 
     for fn in floors:
         LOG.info("Loading floorplan for floor: %s", fn)
-        floorplan_directory = su.get_datadir(facility_name, fn)
+        floorplan_directory = su.get_floor_datadir(facility_name, fn)
         floorplan = floorplan_from_directory(
             floorplan_directory, fn, scale=user_scale
         )
@@ -287,7 +297,7 @@ def run_simulation(inputs: dict):
     upload_location = inputs["upload_location"]
 
     LOG.info("Loading floorplans...")
-    floorplans = load_floorplans(inputs["floors"], inputs["facility_name"])
+    floorplans = load_floorplans(inputs["facility_name"], inputs["floors"])
 
     if len(floorplans) > 0:
         excluded_keys = [
@@ -413,7 +423,7 @@ def find_and_save_potential_one_way_aisles(
     """
 
     if not floorplan_directory:
-        floorplan_directory = su.get_datadir(facility, floor)
+        floorplan_directory = su.get_floor_datadir(facility, floor)
     floorplan = floorplan_from_directory(floorplan_directory, floor)
 
     nav_network_file = os.path.join(floorplan_directory, ROUTES_JSON_FILE)

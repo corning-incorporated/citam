@@ -18,6 +18,7 @@ import pathlib
 
 from svgpathtools import Line
 from svgwrite.drawing import Drawing
+from rich import print
 
 import citam.engine.io.visualization as bv
 from citam.engine.map.point import Point
@@ -102,34 +103,38 @@ class Floorplan:
         if assign_doors_on_load:
             self.match_doors_and_spaces()
 
-        n_rooms_with_doors = 0
-        n_rooms = 0
+        self.n_rooms_with_doors = 0
+        self.n_rooms = 0
         for space in self.spaces:
             if space.building not in self.buildings:
                 self.buildings.append(space.building)
             if not space.is_space_a_hallway():
-                n_rooms += 1
+                self.n_rooms += 1
                 if len(space.doors) > 0:
-                    n_rooms_with_doors += 1
+                    self.n_rooms_with_doors += 1
 
-        LOG.info("Number of spaces: " + str(len(self.spaces)))
-        LOG.info("Number of rooms: " + str(n_rooms))
-        LOG.info("Number of rooms with doors: " + str(n_rooms_with_doors))
-        LOG.info("Number of walls: " + str(len(self.walls)))
-        LOG.info("Total number of doors: " + str(len(self.doors)))
-
-        n_outside_doors = sum(
+        self.n_outside_doors = sum(
             1
             for door in self.doors
             if door.space1 is None or door.space2 is None
         )
-        LOG.info("Number of outside doors: " + str(n_outside_doors))
 
         # This is to avoid using a grid and keeping track of all possible
         # locations on the floor. Instead, only locations that have agents
         # are tracked.
         self.agent_locations: Dict[str, List[Agent]] = {}
         self.traffic_policy = traffic_policy
+
+    def show_summary(self):
+        """Show summary stats about this floorplan"""
+        # TODO: Also show number of rooms by room type
+        print("Floor Name: ", self.floor_name)
+        print("\tNumber of spaces: " + str(len(self.spaces)))
+        print("\tNumber of rooms: " + str(self.n_rooms))
+        print("\tNumber of rooms with doors: " + str(self.n_rooms_with_doors))
+        print("\tNumber of walls: " + str(len(self.walls)))
+        print("\tTotal number of doors: " + str(len(self.doors)))
+        print("\tNumber of outside doors: " + str(self.n_outside_doors))
 
     def match_doors_and_spaces(self) -> None:
         """
