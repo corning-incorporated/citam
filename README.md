@@ -216,7 +216,7 @@ where you expect all your simulation results to be. If you have the `CITAM_RESUL
 ## Contributing
 -----
 
-We encourage and welcome your contributions to any or all of the components of this code. We also welcome bug reports and feature requests (but we make no guarantee that new feature requests will be implemented any time soon). For detailed instructions, please refer to the "[How to Contribute](contributing.md)" document.
+We encourage and welcome your contributions to any or all of the components of this code. We also welcome bug reports and feature requests (but we make no guarantee that new feature requests will be implemented any time soon). For detailed instructions, please refer to the "[How to Contribute](CONTRIBUTING.md)" document.
 
 ## License
 ------------
