@@ -426,6 +426,17 @@
     <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting stats...&quot;</span><span class="p">)</span>
     <span class="n">my_model</span><span class="o">.</span><span class="n">save_outputs</span><span class="p">(</span><span class="n">work_directory</span><span class="p">)</span>
 
+    <span class="c1"># Write policy.json</span>
+    <span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">del</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;output_directory&quot;</span><span class="p">]</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">]</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;meetings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_model</span><span class="o">.</span><span class="n">meetings_policy_params</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;scheduling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_model</span><span class="o">.</span><span class="n">scheduling_rules</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;traffic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;traffic_policy&quot;</span><span class="p">]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;policy.json&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">upload_results</span> <span class="ow">and</span> <span class="n">upload_location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Uploading results to server...&quot;</span><span class="p">)</span>
         <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
