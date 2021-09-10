@@ -228,13 +228,6 @@ def get_pair_contacts(sim_id: str) -> List[Dict]:
     result_file.readline().strip()
     for line in result_file:
         data = line.strip().split(",")
-        if len(data) != 4:  # pragma: nocover
-            LOG.error(
-                "Corrupted file! 4 values are expected for each line "
-                "in pair_contact.csv. %d found.",
-                len(data),
-            )
-            return []
         pairs.append(
             {
                 "Agent1": data[0],
