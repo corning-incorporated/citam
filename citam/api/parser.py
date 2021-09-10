@@ -232,7 +232,7 @@ def get_pair_contacts(sim_id: str) -> List[Dict]:
             {
                 "Agent1": data[0],
                 "Agent2": data[1],
-                "N_Contacts": int(data[2]) ,
+                "N_Contacts": int(data[2]),
                 "TotalContactDuration": data[3],
             }
         )
