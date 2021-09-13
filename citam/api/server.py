@@ -49,7 +49,7 @@ class ResultsResource:
         resp.status = falcon.HTTP_200
 
     def on_get_summary(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get simulation summary"""
         try:
@@ -60,7 +60,7 @@ class ResultsResource:
             resp.body = "No data for this Simulation, please check the ID!"
 
     def on_get_trajectory(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get trajectory data"""
         floor = req.params.get("floor")  # Floor is allowed to be None here.
@@ -78,7 +78,7 @@ class ResultsResource:
             resp.body = "No trajectory data for this Simulation!"
 
     def on_get_trajectory_lines(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get trajectory data"""
         floor = req.params.get("floor")  # Floor is allowed to be None here.
@@ -90,7 +90,7 @@ class ResultsResource:
             resp.body = "No trajectory data for this Simulation!"
 
     def on_get_total_timesteps(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get total timesteps"""
         try:
@@ -101,7 +101,7 @@ class ResultsResource:
             resp.body = "Simulation ID could not be found!"
 
     def on_get_contact(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get contact data"""
         floor = req.params.get("floor")
@@ -117,7 +117,7 @@ class ResultsResource:
             resp.body = "Simulation ID could not be found!"
 
     def on_get_map(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get the base map as an SVG"""
         floor = req.params.get("floor")
@@ -126,7 +126,8 @@ class ResultsResource:
             manifest = settings.storage_driver.get_manifest(sim_id)
             floor = manifest["Floors"][0]["name"]
         try:
-            resp.body = settings.storage_driver.get_map_file(sim_id, floor).read()
+            resp.body = settings.storage_driver.get_map_file(
+                sim_id, floor).read()
             resp.content_type = "image/svg+xml"
             resp.status = falcon.HTTP_200
         except KeyError:
@@ -134,7 +135,7 @@ class ResultsResource:
             resp.body = "Simulation ID could not be found!"
 
     def on_get_heatmap(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get the base map as an SVG"""
         floor = req.params.get("floor")
@@ -153,7 +154,7 @@ class ResultsResource:
             resp.body = "Simulation ID could not be found!"
 
     def on_get_coordinate_dist(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get the contact per coordinate distribution"""
         floor = req.params.get("floor")
@@ -169,7 +170,7 @@ class ResultsResource:
             resp.body = "Simulation ID could not be found!"
 
     def on_get_pair_contact(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get pair contact data"""
         try:
@@ -180,7 +181,7 @@ class ResultsResource:
             resp.body = "Simulation ID could not be found!"
 
     def on_get_statistics(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get statistics.json data"""
         try:
@@ -191,7 +192,7 @@ class ResultsResource:
             resp.body = "Simulation ID could not be found!"
 
     def on_get_policy(
-        self, req: falcon.Request, resp: falcon.response, sim_id: str
+            self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get statistics.json data"""
         try:
@@ -248,17 +249,17 @@ class CORSMiddleware:
     """Middleware to enable CORS requests"""
 
     def process_response(
-        self,
-        req: falcon.Request,
-        resp: falcon.Response,
-        resource: Any,
-        req_succeeded: bool,
+            self,
+            req: falcon.Request,
+            resp: falcon.Response,
+            resource: Any,
+            req_succeeded: bool,
     ):
         resp.set_header("Access-Control-Allow-Origin", "*")
 
         if (
-            req.get_header("Access-Control-Request-Method")
-            and req.method == "OPTIONS"
+                req.get_header("Access-Control-Request-Method")
+                and req.method == "OPTIONS"
         ):  # pragma: no cover
             # CORS preflight request
             # Note, we don't have any resources that would trigger a
