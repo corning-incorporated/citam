@@ -55,10 +55,9 @@ class ResultsResource:
         try:
             resp.media = settings.storage_driver.get_manifest(sim_id)
             resp.status = falcon.HTTP_200
-        except:
+        except KeyError:
             resp.status = falcon.HTTP_404
             resp.body = "No data for this Simulation, please check the ID!"
-
 
     def on_get_trajectory(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
@@ -68,11 +67,15 @@ class ResultsResource:
         first_timestep = int(req.params.get("first_timestep"))
         max_steps = int(req.params.get("max_steps"))
         start_time = time.time()
-        resp.media = parser.get_trajectories(
-            sim_id, floor, first_timestep, max_steps
-        )
-        resp.status = falcon.HTTP_200
-        print("Total time: ", time.time() - start_time)
+        try:
+            resp.media = parser.get_trajectories(
+                sim_id, floor, first_timestep, max_steps
+            )
+            resp.status = falcon.HTTP_200
+            print("Total time: ", time.time() - start_time)
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "No trajectory data for this Simulation!"
 
     def on_get_trajectory_lines(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
