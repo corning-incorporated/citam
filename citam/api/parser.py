@@ -251,7 +251,7 @@ def get_statistics_json(sim_id: str) -> List[Dict]:
     )
     LOG.info("Statistics JSON file parsing process started")
 
-    if "data" not in result_dict or len(result_dict["data"]) != 4:
+    if "data" not in result_dict:
         LOG.error(
             "Corrupted file! Statistics JSON file does "
             "not have required attributes."

@@ -52,8 +52,13 @@ class ResultsResource:
         self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get simulation summary"""
-        resp.media = settings.storage_driver.get_manifest(sim_id)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = settings.storage_driver.get_manifest(sim_id)
+            resp.status = falcon.HTTP_200
+        except:
+            resp.status = falcon.HTTP_404
+            resp.body = "No data for this Simulation, please check the ID!"
+
 
     def on_get_trajectory(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
