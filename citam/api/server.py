@@ -82,15 +82,23 @@ class ResultsResource:
     ):
         """Get trajectory data"""
         floor = req.params.get("floor")  # Floor is allowed to be None here.
-        resp.media = parser.get_trajectories_lines(sim_id, floor)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = parser.get_trajectories_lines(sim_id, floor)
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "No trajectory data for this Simulation!"
 
     def on_get_total_timesteps(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get total timesteps"""
-        resp.media = parser.get_total_timesteps(sim_id)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = parser.get_total_timesteps(sim_id)
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
     def on_get_contact(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
@@ -101,8 +109,12 @@ class ResultsResource:
             # If floor is not specified, use the first listed floor in manifest
             manifest = settings.storage_driver.get_manifest(sim_id)
             floor = manifest["Floors"][0]["name"]
-        resp.media = parser.get_contacts(sim_id, floor)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = parser.get_contacts(sim_id, floor)
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
     def on_get_map(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
@@ -113,9 +125,13 @@ class ResultsResource:
             # If floor is not specified, use the first listed floor in manifest
             manifest = settings.storage_driver.get_manifest(sim_id)
             floor = manifest["Floors"][0]["name"]
-        resp.body = settings.storage_driver.get_map_file(sim_id, floor).read()
-        resp.content_type = "image/svg+xml"
-        resp.status = falcon.HTTP_200
+        try:
+            resp.body = settings.storage_driver.get_map_file(sim_id, floor).read()
+            resp.content_type = "image/svg+xml"
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
     def on_get_heatmap(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
@@ -126,11 +142,15 @@ class ResultsResource:
             # If floor is not specified, use the first listed floor in manifest
             manifest = settings.storage_driver.get_manifest(sim_id)
             floor = manifest["Floors"][0]["name"]
-        resp.body = settings.storage_driver.get_heatmap_file(
-            sim_id, floor
-        ).read()
-        resp.content_type = "image/svg+xml"
-        resp.status = falcon.HTTP_200
+        try:
+            resp.body = settings.storage_driver.get_heatmap_file(
+                sim_id, floor
+            ).read()
+            resp.content_type = "image/svg+xml"
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
     def on_get_coordinate_dist(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
@@ -141,29 +161,45 @@ class ResultsResource:
             # If floor is not specified, use the first listed floor in manifest
             manifest = settings.storage_driver.get_manifest(sim_id)
             floor = manifest["Floors"][0]["name"]
-        resp.media = parser.get_coordinate_distribution(sim_id, floor)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = parser.get_coordinate_distribution(sim_id, floor)
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
     def on_get_pair_contact(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get pair contact data"""
-        resp.media = parser.get_pair_contacts(sim_id)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = parser.get_pair_contacts(sim_id)
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
     def on_get_statistics(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get statistics.json data"""
-        resp.media = parser.get_statistics_json(sim_id)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = parser.get_statistics_json(sim_id)
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
     def on_get_policy(
         self, req: falcon.Request, resp: falcon.response, sim_id: str
     ):
         """Get statistics.json data"""
-        resp.media = parser.get_policy_json(sim_id)
-        resp.status = falcon.HTTP_200
+        try:
+            resp.media = parser.get_policy_json(sim_id)
+            resp.status = falcon.HTTP_200
+        except KeyError:
+            resp.status = falcon.HTTP_404
+            resp.body = "Simulation ID could not be found!"
 
 
 # noinspection PyUnusedLocal
