@@ -129,6 +129,9 @@
 <span class="kn">from</span> <span class="nn">citam.engine.main</span> <span class="kn">import</span> <span class="n">export_navigation_graph_to_svg</span>
 <span class="kn">from</span> <span class="nn">citam.engine.main</span> <span class="kn">import</span> <span class="n">find_and_save_potential_one_way_aisles</span>
 
+<span class="kn">from</span> <span class="nn">rich.logging</span> <span class="kn">import</span> <span class="n">RichHandler</span>
+
+<span class="n">FORMAT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(message)s</span><span class="s2">&quot;</span>
 
 <span class="n">FACILITY_NAME</span> <span class="o">=</span> <span class="s2">&quot;Facility name&quot;</span>
 <span class="n">FLOOR_NAME</span> <span class="o">=</span> <span class="s2">&quot;Floor name&quot;</span>
@@ -148,10 +151,27 @@
         <span class="n">log_levels</span> <span class="o">=</span> <span class="p">[</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-                <span class="n">filename</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">log_levels</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">]</span>
+                <span class="nb">format</span><span class="o">=</span><span class="n">FORMAT</span><span class="p">,</span>
+                <span class="n">datefmt</span><span class="o">=</span><span class="s2">&quot;[</span><span class="si">%X</span><span class="s2">]&quot;</span><span class="p">,</span>
+                <span class="n">handlers</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">RichHandler</span><span class="p">(</span>
+                        <span class="n">rich_tracebacks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_path</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_time</span><span class="o">=</span><span class="kc">False</span>
+                    <span class="p">)</span>
+                <span class="p">],</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">log_levels</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">log_levels</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">])</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+                <span class="nb">format</span><span class="o">=</span><span class="n">FORMAT</span><span class="p">,</span>
+                <span class="n">datefmt</span><span class="o">=</span><span class="s2">&quot;[</span><span class="si">%X</span><span class="s2">]&quot;</span><span class="p">,</span>
+                <span class="n">handlers</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">RichHandler</span><span class="p">(</span>
+                        <span class="n">rich_tracebacks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_path</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_time</span><span class="o">=</span><span class="kc">False</span>
+                    <span class="p">)</span>
+                <span class="p">],</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">log_levels</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">],</span>
+            <span class="p">)</span>
         <span class="c1"># The below logger is annoying. TODO: Replace with real log config</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;urllib3.connectionpool&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">))</span></div>

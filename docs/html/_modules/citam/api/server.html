@@ -157,8 +157,12 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get simulation summary&quot;&quot;&quot;</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;No data for this Simulation, please check the ID!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_trajectory</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
@@ -168,26 +172,38 @@
         <span class="n">first_timestep</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;first_timestep&quot;</span><span class="p">))</span>
         <span class="n">max_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_steps&quot;</span><span class="p">))</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_trajectories</span><span class="p">(</span>
-            <span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">first_timestep</span><span class="p">,</span> <span class="n">max_steps</span>
-        <span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total time: &quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_trajectories</span><span class="p">(</span>
+                <span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">first_timestep</span><span class="p">,</span> <span class="n">max_steps</span>
+            <span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total time: &quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;No trajectory data for this Simulation!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_trajectory_lines</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get trajectory data&quot;&quot;&quot;</span>
         <span class="n">floor</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;floor&quot;</span><span class="p">)</span>  <span class="c1"># Floor is allowed to be None here.</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_trajectories_lines</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_trajectories_lines</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;No trajectory data for this Simulation!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_total_timesteps</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get total timesteps&quot;&quot;&quot;</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_total_timesteps</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_total_timesteps</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_contact</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
@@ -198,8 +214,12 @@
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
             <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_map</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
@@ -210,9 +230,15 @@
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
             <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_map_file</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_map_file</span><span class="p">(</span>
+                <span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_heatmap</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
@@ -223,11 +249,15 @@
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
             <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_heatmap_file</span><span class="p">(</span>
-            <span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_heatmap_file</span><span class="p">(</span>
+                <span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="s2">&quot;image/svg+xml&quot;</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_coordinate_dist</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
@@ -238,29 +268,45 @@
             <span class="c1"># If floor is not specified, use the first listed floor in manifest</span>
             <span class="n">manifest</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">storage_driver</span><span class="o">.</span><span class="n">get_manifest</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
             <span class="n">floor</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="s2">&quot;Floors&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_coordinate_distribution</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_coordinate_distribution</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_pair_contact</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get pair contact data&quot;&quot;&quot;</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_pair_contacts</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_pair_contacts</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_statistics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get statistics.json data&quot;&quot;&quot;</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_statistics_json</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_statistics_json</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
     <span class="k">def</span> <span class="nf">on_get_policy</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="n">resp</span><span class="p">:</span> <span class="n">falcon</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get statistics.json data&quot;&quot;&quot;</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_policy_json</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
-        <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">media</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_policy_json</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_200</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">falcon</span><span class="o">.</span><span class="n">HTTP_404</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Simulation ID could not be found!&quot;</span>
 
 
 <span class="c1"># noinspection PyUnusedLocal</span>

@@ -219,7 +219,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: export_nav_network_to_svg(walls: List[svgpathtools.Path], nav_paths: List[svgpathtools.Path], nav_nodes: List[Tuple[int, int]], filename: Union[str, pathlib.Path], marker_type: int = X_MARKER, color='blue') -> None
+.. py:function:: export_nav_network_to_svg(walls: List[svgpathtools.Path], nav_paths: List[svgpathtools.Path], nav_nodes: List[Tuple[int, int]], filename: Optional[Union[str, pathlib.Path]] = None, marker_type: int = X_MARKER, color='blue') -> None
 
    
    Export a navigation network superimposed on a floorplan to an SVG file.
@@ -254,7 +254,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:function:: export_world_to_svg(walls: List[svgpathtools.Path], agent_positions_and_contacts: List[Tuple[int, int, int]], svg_file: Union[str, pathlib.Path], marker_locations: List[Tuple[int, int, int]] = [], marker_type: int = None, arrows: List[Tuple[Tuple[int, int], Tuple[int, int]]] = [], doors: List[svgpathtools.Path] = [], max_contacts: int = 100, current_time: int = None, show_colobar=False, viewbox: Tuple[float, Ellipsis] = None) -> None
+.. py:function:: export_world_to_svg(walls: List[svgpathtools.Path], agent_positions_and_contacts: Optional[List[Tuple[int, int, int]]] = None, svg_file: Optional[Union[str, pathlib.Path]] = None, marker_locations: Optional[List[Tuple[int, int, int]]] = None, marker_type: int = None, arrows: Optional[List[Tuple[Tuple[int, int], Tuple[int, int]]]] = None, doors: Optional[List[svgpathtools.Path]] = None, max_contacts: int = 100, current_time: int = None, show_colobar=False, viewbox: Tuple[float, Ellipsis] = None) -> None
 
    
    Save a snapshot of a simulation with the floorplan, agent positions and

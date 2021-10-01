@@ -120,7 +120,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">from</span> <span class="nn">networkx.classes.graph</span> <span class="kn">import</span> <span class="n">Graph</span>
@@ -164,11 +164,11 @@
 
 
 <div class="viewcode-block" id="ingest_floorplan"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.ingest_floorplan">[docs]</a><span class="k">def</span> <span class="nf">ingest_floorplan</span><span class="p">(</span>
-    <span class="n">svg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">csv</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">facility</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">floor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">svg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">csv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">12</span><span class="p">,</span>
-    <span class="n">floor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
     <span class="n">buildings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">force_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -193,9 +193,9 @@
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">),</span> <span class="n">svg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">output_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">floor_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+        <span class="n">floor_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">floor_directory</span><span class="p">):</span>
-            <span class="n">su</span><span class="o">.</span><span class="n">create_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+            <span class="n">su</span><span class="o">.</span><span class="n">create_floor_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">floor_directory</span> <span class="o">=</span> <span class="n">output_directory</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">floor_directory</span><span class="p">):</span>
@@ -243,7 +243,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">floorplan_directory</span><span class="p">:</span>
-        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
     <span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan_from_directory</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
 
     <span class="n">floorplan</span><span class="o">.</span><span class="n">export_to_svg</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">include_doors</span><span class="o">=</span><span class="n">doors</span><span class="p">)</span>
@@ -263,7 +263,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">floorplan_directory</span><span class="p">:</span>
-        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
     <span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan_from_directory</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
 
     <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building navigation network...&quot;</span><span class="p">)</span>
@@ -296,7 +296,7 @@
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">svg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">floorplan_directory</span><span class="p">:</span>
-        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
 
     <span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan_from_directory</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
     <span class="n">fp_updater</span> <span class="o">=</span> <span class="n">FloorplanUpdater</span><span class="p">(</span><span class="n">floorplan</span><span class="p">,</span> <span class="n">svg_file</span><span class="o">=</span><span class="n">svg</span><span class="p">)</span>
@@ -308,11 +308,16 @@
     <span class="n">fp_updater</span><span class="o">.</span><span class="n">floorplan</span><span class="o">.</span><span class="n">to_json_file</span><span class="p">(</span><span class="n">updated_json_file</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="show_floorplan"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.show_floorplan">[docs]</a><span class="k">def</span> <span class="nf">show_floorplan</span><span class="p">(</span><span class="n">facility_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">floor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_doors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">floorplans</span> <span class="o">=</span> <span class="n">load_floorplans</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="p">[</span><span class="n">floor_name</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">floorplans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">include_doors</span><span class="o">=</span><span class="n">include_doors</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="export_navigation_graph_to_svg"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.export_navigation_graph_to_svg">[docs]</a><span class="k">def</span> <span class="nf">export_navigation_graph_to_svg</span><span class="p">(</span>
     <span class="n">facility</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">floor</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">outputfile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">floorplan_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">outputfile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">floorplan_directory</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>  <span class="c1"># noqa</span>
     <span class="sd">&quot;&quot;&quot;Export navigation network to svg file for visualization.</span>
@@ -325,8 +330,8 @@
 <span class="sd">    :raise FileMotFoundError: could not find floorplan file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">floorplan_directory</span><span class="p">:</span>
-        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">floorplan_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
     <span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan_from_directory</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
 
     <span class="n">nav_network_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">ROUTES_JSON_FILE</span><span class="p">)</span>
@@ -348,20 +353,30 @@
         <span class="p">)</span>
         <span class="n">nav_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
-    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Exporting nav network to svg&quot;</span><span class="p">)</span>
-    <span class="n">bv</span><span class="o">.</span><span class="n">export_nav_network_to_svg</span><span class="p">(</span>
-        <span class="n">floorplan</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span> <span class="n">nav_paths</span><span class="p">,</span> <span class="n">nav_nodes</span><span class="p">,</span> <span class="n">outputfile</span>
-    <span class="p">)</span>
-    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Navigation network exported to: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">outputfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bv</span><span class="o">.</span><span class="n">export_nav_network_to_svg</span><span class="p">(</span>
+            <span class="n">floorplan</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span> <span class="n">nav_paths</span><span class="p">,</span> <span class="n">nav_nodes</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing nav network to svg file...&quot;</span><span class="p">)</span>
+        <span class="n">bv</span><span class="o">.</span><span class="n">export_nav_network_to_svg</span><span class="p">(</span>
+            <span class="n">floorplan</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span> <span class="n">nav_paths</span><span class="p">,</span> <span class="n">nav_nodes</span><span class="p">,</span> <span class="n">outputfile</span>
+        <span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Navigation network exported to: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_floorplans"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.load_floorplans">[docs]</a><span class="k">def</span> <span class="nf">load_floorplans</span><span class="p">(</span><span class="n">floors</span><span class="p">,</span> <span class="n">facility_name</span><span class="p">,</span> <span class="n">user_scale</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="c1"># TODO: TEST ME</span>
-    <span class="c1"># TODO: DOCUMENT ME!</span>
-    <span class="c1"># TODO: TEST ME!</span>
-    <span class="c1"># TODO: DOCUMENT ME!</span>
-    <span class="c1"># TODO: TEST ME!</span>
-    <span class="c1"># TODO: DOCUMENT ME!</span>
+<div class="viewcode-block" id="load_floorplans"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.load_floorplans">[docs]</a><span class="k">def</span> <span class="nf">load_floorplans</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="n">floors</span><span class="p">,</span> <span class="n">user_scale</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create and return a floorplan object for each floor requested.</span>
+
+<span class="sd">    :param facility_name: Name of facility of interest.</span>
+<span class="sd">    :type facility_name: str</span>
+<span class="sd">    :param floors: List of floor names of interest</span>
+<span class="sd">    :type floors: List[str]</span>
+<span class="sd">    :param user_scale: scale to use for the floorplans, defaults to None</span>
+<span class="sd">    :type user_scale: float, optional</span>
+<span class="sd">    :return: list of floorplan objects</span>
+<span class="sd">    :rtype: List[Floorplan]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">floorplans</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">if</span> <span class="n">user_scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -369,7 +384,7 @@
 
     <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">floors</span><span class="p">:</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading floorplan for floor: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
-        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
         <span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan_from_directory</span><span class="p">(</span>
             <span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">user_scale</span>
         <span class="p">)</span>
@@ -387,7 +402,7 @@
     <span class="n">upload_location</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;upload_location&quot;</span><span class="p">]</span>
 
     <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading floorplans...&quot;</span><span class="p">)</span>
-    <span class="n">floorplans</span> <span class="o">=</span> <span class="n">load_floorplans</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">],</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">])</span>
+    <span class="n">floorplans</span> <span class="o">=</span> <span class="n">load_floorplans</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">],</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">floorplans</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">excluded_keys</span> <span class="o">=</span> <span class="p">[</span>
@@ -524,7 +539,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">floorplan_directory</span><span class="p">:</span>
-        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
+        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
     <span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan_from_directory</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">floor</span><span class="p">)</span>
 
     <span class="n">nav_network_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">ROUTES_JSON_FILE</span><span class="p">)</span>

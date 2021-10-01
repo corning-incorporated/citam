@@ -34,10 +34,34 @@ Attributes
 
 .. autoapisummary::
 
+   citam.cli.FORMAT
    citam.cli.FACILITY_NAME
    citam.cli.FLOOR_NAME
    citam.cli.SVG_PATH
 
+
+.. py:data:: FORMAT
+   :annotation: = %(message)s
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
 
 .. py:data:: FACILITY_NAME
    :annotation: = Facility name

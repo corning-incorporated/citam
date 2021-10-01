@@ -120,7 +120,7 @@
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span><span class="p">,</span> <span class="n">colors</span>
 <span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">wsvg</span><span class="p">,</span> <span class="n">Arc</span><span class="p">,</span> <span class="n">Line</span><span class="p">,</span> <span class="n">parse_path</span><span class="p">,</span> <span class="n">Path</span>
 
@@ -340,7 +340,7 @@
     <span class="n">walls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">nav_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">nav_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
-    <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">marker_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">X_MARKER</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -394,17 +394,20 @@
         <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span> <span class="s2">&quot;stroke&quot;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span> <span class="s2">&quot;stroke-width&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}</span>
         <span class="p">)</span>
-    <span class="n">wsvg</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">wsvg</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span> <span class="n">paths2Drawing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wsvg</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="export_world_to_svg"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/visualization/index.html#citam.engine.io.visualization.export_world_to_svg">[docs]</a><span class="k">def</span> <span class="nf">export_world_to_svg</span><span class="p">(</span>
     <span class="n">walls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">agent_positions_and_contacts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
-    <span class="n">svg_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">marker_locations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">agent_positions_and_contacts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">svg_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">marker_locations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">marker_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">arrows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[],</span>
-    <span class="n">doors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">arrows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_contacts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
     <span class="n">current_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">show_colobar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -444,6 +447,15 @@
         <span class="n">multiplier</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">xmax</span> <span class="o">/</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">multiplier</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="n">doors</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">doors</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">doors</span>
+    <span class="n">marker_locations</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">marker_locations</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">marker_locations</span>
+    <span class="n">arrows</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">arrows</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">arrows</span>
+    <span class="n">agent_positions_and_contacts</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">agent_positions_and_contacts</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="n">agent_positions_and_contacts</span>
+    <span class="p">)</span>
 
     <span class="n">radius</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">wall</span> <span class="k">for</span> <span class="n">wall</span> <span class="ow">in</span> <span class="n">walls</span><span class="p">]</span>
@@ -513,15 +525,27 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">svg_attributes</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
 
-    <span class="n">wsvg</span><span class="p">(</span>
-        <span class="n">paths</span><span class="p">,</span>
-        <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
-        <span class="n">text</span><span class="o">=</span><span class="n">current_time</span><span class="p">,</span>
-        <span class="n">text_path</span><span class="o">=</span><span class="n">t_path</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="n">svg_file</span><span class="p">,</span>
-        <span class="n">svg_attributes</span><span class="o">=</span><span class="n">svg_attributes</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">add_root_layer_to_svg</span><span class="p">(</span><span class="n">svg_file</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">svg_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">wsvg</span><span class="p">(</span>
+            <span class="n">paths</span><span class="p">,</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">current_time</span><span class="p">,</span>
+            <span class="n">text_path</span><span class="o">=</span><span class="n">t_path</span><span class="p">,</span>
+            <span class="n">svg_attributes</span><span class="o">=</span><span class="n">svg_attributes</span><span class="p">,</span>
+            <span class="n">paths2Drawing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wsvg</span><span class="p">(</span>
+            <span class="n">paths</span><span class="p">,</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">current_time</span><span class="p">,</span>
+            <span class="n">text_path</span><span class="o">=</span><span class="n">t_path</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">svg_file</span><span class="p">,</span>
+            <span class="n">svg_attributes</span><span class="o">=</span><span class="n">svg_attributes</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">add_root_layer_to_svg</span><span class="p">(</span><span class="n">svg_file</span><span class="p">,</span> <span class="n">svg_file</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="add_root_layer_to_svg"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/visualization/index.html#citam.engine.io.visualization.add_root_layer_to_svg">[docs]</a><span class="k">def</span> <span class="nf">add_root_layer_to_svg</span><span class="p">(</span>

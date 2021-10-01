@@ -122,6 +122,8 @@
 <span class="kn">import</span> <span class="nn">pathlib</span>
 
 <span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span> <span class="nn">svgwrite.drawing</span> <span class="kn">import</span> <span class="n">Drawing</span>
+<span class="kn">from</span> <span class="nn">rich</span> <span class="kn">import</span> <span class="nb">print</span>
 
 <span class="kn">import</span> <span class="nn">citam.engine.io.visualization</span> <span class="k">as</span> <span class="nn">bv</span>
 <span class="kn">from</span> <span class="nn">citam.engine.map.point</span> <span class="kn">import</span> <span class="n">Point</span>
@@ -206,34 +208,38 @@
         <span class="k">if</span> <span class="n">assign_doors_on_load</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">match_doors_and_spaces</span><span class="p">()</span>
 
-        <span class="n">n_rooms_with_doors</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">n_rooms</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_rooms_with_doors</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_rooms</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">space</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">building</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">buildings</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">buildings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">building</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">space</span><span class="o">.</span><span class="n">is_space_a_hallway</span><span class="p">():</span>
-                <span class="n">n_rooms</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_rooms</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">doors</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">n_rooms_with_doors</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_rooms_with_doors</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of spaces: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">)))</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of rooms: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_rooms</span><span class="p">))</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of rooms with doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_rooms_with_doors</span><span class="p">))</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of walls: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">walls</span><span class="p">)))</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Total number of doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doors</span><span class="p">)))</span>
-
-        <span class="n">n_outside_doors</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_outside_doors</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
             <span class="mi">1</span>
             <span class="k">for</span> <span class="n">door</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">doors</span>
             <span class="k">if</span> <span class="n">door</span><span class="o">.</span><span class="n">space1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">door</span><span class="o">.</span><span class="n">space2</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="p">)</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Number of outside doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_outside_doors</span><span class="p">))</span>
 
         <span class="c1"># This is to avoid using a grid and keeping track of all possible</span>
         <span class="c1"># locations on the floor. Instead, only locations that have agents</span>
         <span class="c1"># are tracked.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent_locations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Agent</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="o">=</span> <span class="n">traffic_policy</span>
+
+<div class="viewcode-block" id="Floorplan.show_summary"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.show_summary">[docs]</a>    <span class="k">def</span> <span class="nf">show_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show summary stats about this floorplan&quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Also show number of rooms by room type</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Floor Name: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_name</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Number of spaces: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaces</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Number of rooms: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rooms</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Number of rooms with doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rooms_with_doors</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Number of walls: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">walls</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Total number of doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doors</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Number of outside doors: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_outside_doors</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Floorplan.match_doors_and_spaces"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.match_doors_and_spaces">[docs]</a>    <span class="k">def</span> <span class="nf">match_doors_and_spaces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -390,6 +396,10 @@
             <span class="n">show_colobar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">viewbox</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Floorplan.show"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_doors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Drawing</span><span class="p">:</span>
+        <span class="n">doors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doors</span> <span class="k">if</span> <span class="n">include_doors</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">bv</span><span class="o">.</span><span class="n">export_world_to_svg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span> <span class="n">doors</span><span class="o">=</span><span class="n">doors</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Floorplan._as_dict"><a class="viewcode-back" href="../../../../autoapi/citam/engine/map/floorplan/index.html#citam.engine.map.floorplan.Floorplan._as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">_as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>

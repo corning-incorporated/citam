@@ -148,7 +148,7 @@
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">citam_cache_directory</span><span class="p">,</span> <span class="s2">&quot;floorplans_and_nav_data/&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_datadir"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/storage_utils/index.html#citam.engine.io.storage_utils.create_datadir">[docs]</a><span class="k">def</span> <span class="nf">create_datadir</span><span class="p">(</span>
+<div class="viewcode-block" id="create_floor_datadir"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/storage_utils/index.html#citam.engine.io.storage_utils.create_floor_datadir">[docs]</a><span class="k">def</span> <span class="nf">create_floor_datadir</span><span class="p">(</span>
     <span class="n">facility_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">floor_name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -179,7 +179,7 @@
     <span class="k">return</span> <span class="n">floor_directory</span></div>
 
 
-<div class="viewcode-block" id="get_datadir"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/storage_utils/index.html#citam.engine.io.storage_utils.get_datadir">[docs]</a><span class="k">def</span> <span class="nf">get_datadir</span><span class="p">(</span>
+<div class="viewcode-block" id="get_floor_datadir"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/storage_utils/index.html#citam.engine.io.storage_utils.get_floor_datadir">[docs]</a><span class="k">def</span> <span class="nf">get_floor_datadir</span><span class="p">(</span>
     <span class="n">facility_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">floor_name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -200,6 +200,25 @@
         <span class="s2">&quot;floorplans_and_nav_data&quot;</span><span class="p">,</span>
         <span class="n">facility_name</span><span class="p">,</span>
         <span class="s2">&quot;floor_&quot;</span> <span class="o">+</span> <span class="n">floor_name</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_facility_datadir"><a class="viewcode-back" href="../../../../autoapi/citam/engine/io/storage_utils/index.html#citam.engine.io.storage_utils.get_facility_datadir">[docs]</a><span class="k">def</span> <span class="nf">get_facility_datadir</span><span class="p">(</span><span class="n">facility_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the directory where data for a given facility are saved.</span>
+
+<span class="sd">    :param facility_name: The name of the facility.</span>
+<span class="sd">    :type facility_name: str</span>
+<span class="sd">    :return: path of the directory where data for this facility and floor are</span>
+<span class="sd">            found.</span>
+<span class="sd">    :rtype: Union[str, pathlib.Path]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="n">citam_cache_directory</span> <span class="o">=</span> <span class="n">get_user_cache</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">citam_cache_directory</span><span class="p">,</span>
+        <span class="s2">&quot;floorplans_and_nav_data&quot;</span><span class="p">,</span>
+        <span class="n">facility_name</span><span class="p">,</span>
     <span class="p">)</span></div>
 </pre></div>
 

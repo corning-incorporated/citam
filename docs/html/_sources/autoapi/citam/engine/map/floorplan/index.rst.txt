@@ -84,6 +84,29 @@ Attributes
 
    ..
        !! processed by numpydoc !!
+   .. py:method:: show_summary(self)
+
+      
+      Show summary stats about this floorplan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
    .. py:method:: match_doors_and_spaces(self) -> None
 
       
@@ -289,6 +312,28 @@ Attributes
       :param include_doors: Whether to include doors in the SVG file or not,
                defaults to False
       :type include_doors: bool, optional
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: show(self, include_doors=False) -> svgwrite.drawing.Drawing
+
+      
+
 
 
 
