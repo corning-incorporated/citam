@@ -8,3 +8,4 @@ matplotlib
 boto3
 falcon
 appdirs
+rich[jupyter]

@@ -101,7 +101,7 @@ class Navigation:
                 "Loading navigation data for floor {%s}", floorplan.floor_name
             )
 
-            floorplan_directory = su.get_datadir(
+            floorplan_directory = su.get_floor_datadir(
                 facility_name, floorplan.floor_name
             )
 
