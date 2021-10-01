@@ -12,7 +12,7 @@ def test_ingest_floorplan_file_not_found():
 
     with pytest.raises(FileNotFoundError):
         main.ingest_floorplan(
-            csv=csv_file, svg=svg_file, facility=facility_name
+            csv=csv_file, svg=svg_file, facility=facility_name, floor="0"
         )
 
 
@@ -24,6 +24,7 @@ def test_ingest_floorplan_no_issues(datadir, tmpdir):
         csv=csv_file,
         svg=svg_file,
         facility=facility_name,
+        floor="0",
         output_directory=tmpdir,
     )
     output_filename = os.path.join(tmpdir, "floorplan.json")

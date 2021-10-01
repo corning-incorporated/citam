@@ -311,6 +311,9 @@ class Space:
             or "vestibule" in self.space_function.lower()
         )
 
+    # TODO: Create space type and validation mapping as a config or setting
+    # to make this framework extensible
+
     def is_space_an_office(self) -> bool:
         """
         Verify if this space is an office.
