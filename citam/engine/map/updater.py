@@ -90,8 +90,8 @@ class FloorplanUpdater:
         for i, path in enumerate(paths):
             if len(path) > 1:
                 raise ValueError(
-                    f"Unable to update the floorplan from this SVG file: {self.svg_file}. "
-                    + "Please export the floorplan and edit the SVG file to update."
+                    f"Unable to update floorplan using: {self.svg_file}. "
+                    + "Export floorplan and edit the SVG file to update."
                 )
             if "id" not in attributes[i]:
                 svg_wall_paths.append(path[0])
