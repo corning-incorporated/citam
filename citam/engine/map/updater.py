@@ -81,8 +81,6 @@ class FloorplanUpdater:
         """
         Read edited SVG file and extract wall and door paths.
 
-        TODO: use appropriate function in io.input_parser instead.
-
         :return: List of wall and door paths from SVG file.
         :rtype: Tuple[List[Path], List[Path]]
         """
@@ -90,6 +88,11 @@ class FloorplanUpdater:
         svg_door_paths = []
         svg_wall_paths = []
         for i, path in enumerate(paths):
+            if len(path) > 1:
+                raise ValueError(
+                    f"Unable to update the floorplan from this SVG file: {self.svg_file}. "
+                    + "Please export the floorplan and edit the SVG file to update."
+                )
             if "id" not in attributes[i]:
                 svg_wall_paths.append(path[0])
             elif "door" not in attributes[i]["id"]:
