@@ -105,8 +105,6 @@ Attributes
       
       Read edited SVG file and extract wall and door paths.
 
-      TODO: use appropriate function in io.input_parser instead.
-
       :return: List of wall and door paths from SVG file.
       :rtype: Tuple[List[Path], List[Path]]
 
