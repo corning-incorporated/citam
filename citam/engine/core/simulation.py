@@ -26,7 +26,7 @@ from matplotlib import cm
 import progressbar as pb
 
 from citam.engine.core.agent import Agent
-from citam.engine.schedulers.daily_schedule import Schedule
+from citam.engine.schedulers.schedule import Schedule
 import citam.engine.io.visualization as bv
 import citam.engine.core.contacts as cev
 from citam.engine.schedulers.meetings import MeetingPolicy

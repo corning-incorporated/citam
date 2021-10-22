@@ -1,4 +1,4 @@
-from citam.engine.schedulers.daily_schedule import Schedule, ScheduleItem
+from citam.engine.schedulers.schedule import Schedule, ScheduleItem
 from citam.engine.facility.navigation import Navigation
 from citam.engine.schedulers.meetings import Meeting
 from citam.engine.constants import (
