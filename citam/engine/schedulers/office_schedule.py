@@ -40,7 +40,7 @@ from citam.engine.schedulers.meetings import Meeting
 LOG = logging.getLogger(__name__)
 
 
-class EmployeeSchedule(Schedule):
+class OfficeSchedule(Schedule):
     """
     Create and manage a schedule typically associated with one agent. Schedules
     are created based on rules encoded in a scheduling policy and include a

@@ -250,8 +250,7 @@ class Simulation:
         self.create_sim_hash()
         self.save_manifest(workdir, sim_name, run_name)
         self.save_maps(workdir)
-        self.generate_meetings()
-        self.add_agents_and_build_schedules()
+        self.generate_schedules()
         self.save_schedules(workdir)
         self.run_simulation_and_save_results(workdir)
 
@@ -304,7 +303,6 @@ class Simulation:
         for current_agent, schedule in enumerate(schedules):
             agent = Agent(current_agent, schedule)
             self.agents[agent.unique_id] = agent
-
 
     def identify_xy_proximity(
         self, positions_vector: np.ndarray

@@ -2,7 +2,7 @@ from typing import Tuple
 import numpy as np
 import logging
 import progressbar as pb
-from citam.engine.schedulers.employee_schedule import EmployeeSchedule
+from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.schedulers.meetings import MeetingPolicy
 from citam.engine.schedulers.scheduler import Scheduler
 
@@ -72,6 +72,11 @@ class OfficeScheduler(Scheduler):
         return office_id, office_floor
 
     def run(self, n_agents, shifts):
+
+        # Start by generating meetings
+        self.generate_meetings()
+
+        # Now generate individual schedules
         schedules = []
         current_agent = 0
         agent_pool = list(range(n_agents))
@@ -122,7 +127,7 @@ class OfficeScheduler(Scheduler):
                 exit_door = entrance_door
                 exit_floor = entrance_floor
 
-                schedule = EmployeeSchedule(
+                schedule = OfficeSchedule(
                     timestep=self.timestep,
                     start_time=start_time,
                     exit_time=exit_time,
@@ -134,6 +139,7 @@ class OfficeScheduler(Scheduler):
                     office_floor=office_floor,
                     navigation=self.facility.navigation,
                     scheduling_rules=self.scheduling_rules,
+                    meetings=self.meeting_policy.meetings,
                 )
                 schedule.build()
                 schedules.append(schedule)
