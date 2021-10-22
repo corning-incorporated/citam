@@ -1,6 +1,6 @@
-from citam.engine.policy.daily_schedule import Schedule, ScheduleItem
+from citam.engine.schedulers.daily_schedule import Schedule, ScheduleItem
 from citam.engine.facility.navigation import Navigation
-from citam.engine.policy.meetings import Meeting
+from citam.engine.schedulers.meetings import Meeting
 from citam.engine.constants import (
     DEFAULT_SCHEDULING_RULES,
     OFFICE_WORK,

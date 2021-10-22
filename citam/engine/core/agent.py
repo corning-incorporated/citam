@@ -12,7 +12,7 @@
 
 from typing import Optional
 
-from citam.engine.policy.daily_schedule import Schedule
+from citam.engine.schedulers.daily_schedule import Schedule
 
 
 class Agent:
