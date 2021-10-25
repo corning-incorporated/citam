@@ -1,7 +1,7 @@
 import pytest
 from copy import deepcopy
 
-from citam.engine.policy.meetings import MeetingPolicy, Meeting
+from citam.engine.schedulers.meetings import MeetingPolicy, Meeting
 from citam.engine.map.space import Space
 
 

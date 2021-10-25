@@ -33,7 +33,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from citam.engine.facility.navigation import Navigation
 
-from citam.engine.policy.meetings import Meeting
+from citam.engine.schedulers.meetings import Meeting
 
 LOG = logging.getLogger(__name__)
 
