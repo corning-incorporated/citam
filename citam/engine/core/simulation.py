@@ -26,10 +26,10 @@ from matplotlib import cm
 import progressbar as pb
 
 from citam.engine.core.agent import Agent
-from citam.engine.policy.daily_schedule import Schedule
+from citam.engine.schedulers.schedule import Schedule
 import citam.engine.io.visualization as bv
 import citam.engine.core.contacts as cev
-from citam.engine.policy.meetings import MeetingPolicy
+from citam.engine.schedulers.meetings import MeetingPolicy
 from citam.engine.constants import DEFAULT_SCHEDULING_RULES, CAFETERIA_VISIT
 from citam.engine.facility.indoor_facility import Facility
 
