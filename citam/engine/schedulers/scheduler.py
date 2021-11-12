@@ -17,3 +17,7 @@ class Scheduler(ABC):
     @abstractmethod
     def run(self):
         pass
+
+    @abstractmethod
+    def save_to_files(self, work_directory):
+        pass

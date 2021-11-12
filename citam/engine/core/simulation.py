@@ -26,12 +26,18 @@ from matplotlib import cm
 import progressbar as pb
 
 from citam.engine.core.agent import Agent
+from citam.engine.schedulers.office_schedule import OfficeSchedule
+from citam.engine.schedulers.office_scheduler import OfficeScheduler
 from citam.engine.schedulers.schedule import Schedule
 import citam.engine.io.visualization as bv
 import citam.engine.core.contacts as cev
-from citam.engine.schedulers.meetings import MeetingPolicy
-from citam.engine.constants import DEFAULT_SCHEDULING_RULES, CAFETERIA_VISIT
+from citam.engine.constants import (
+    DEFAULT_MEETINGS_POLICY,
+    DEFAULT_SCHEDULING_RULES,
+    CAFETERIA_VISIT,
+)
 from citam.engine.facility.indoor_facility import Facility
+from citam.engine.schedulers.scheduler import Scheduler
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
 ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
@@ -197,7 +203,13 @@ class Simulation:
 
         self.simulation_hash = m.hexdigest()
 
-    def run_serial(self, workdir: str, sim_name: str, run_name: str) -> None:
+    def run_serial(
+        self,
+        workdir: str,
+        sim_name: str,
+        run_name: str,
+        scheduler: Optional[Scheduler] = None,
+    ) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
 
@@ -244,14 +256,35 @@ class Simulation:
                 len(self.preassigned_offices),
                 self.n_agents,
             )
-        LOG.info("Running simulation serially")
-        LOG.info("Total agents: " + str(self.n_agents))
+
+        # Initialize scheduler to be an office scheduler if not provided
+        if not scheduler:
+            LOG.info(
+                "No scheduler provided. The default office scheduler will be used"
+            )
+
+            if self.meetings_policy_params is None and self.create_meetings:
+                LOG.info(
+                    "No meetings policy provided. The default policy defined "
+                    "in constants.py will be used."
+                )
+                self.meetings_policy_params = DEFAULT_MEETINGS_POLICY
+            scheduler = OfficeScheduler(
+                self.facility,
+                self.timestep,
+                self.total_timesteps,
+                self.scheduling_rules,
+                self.meetings_policy_params,
+                self.buffer,
+                self.preassigned_offices,
+            )
 
         self.create_sim_hash()
         self.save_manifest(workdir, sim_name, run_name)
         self.save_maps(workdir)
-        self.generate_schedules()
-        self.save_schedules(workdir)
+        self.create_agents(scheduler)
+        self.save_schedules(workdir, scheduler)
+        LOG.info(f"Running simulation serially with {self.n_agents} agents")
         self.run_simulation_and_save_results(workdir)
 
     def run_simulation_and_save_results(self, workdir: str) -> None:
@@ -282,7 +315,7 @@ class Simulation:
             if i % 1000 == 0:
                 LOG.info("Current step is: " + str(i))
 
-        LOG.info("Current step is: " + str(self.current_step))
+        LOG.info(f"Done with all {self.current_step} steps.")
 
         # Close files
         t_outfile.close()
@@ -290,14 +323,14 @@ class Simulation:
             cof.close()
         LOG.info("Done with simulation.\n")
 
-    def generate_schedules(self, scheduler) -> List[Schedule]:
+    def create_agents(self, scheduler: Scheduler) -> List[Schedule]:
         """
         Generate a list of schedules, one per agent.
 
         :raises ValueError: If an entrance could not be found
 
         """
-        LOG.info("Initializing with " + str(self.n_agents) + " agents...")
+        LOG.info(f"Generating schedules for {self.n_agents} agents...")
         current_agent = 0
         schedules = scheduler.run(self.n_agents, shifts=self.shifts)
         for current_agent, schedule in enumerate(schedules):
@@ -688,46 +721,25 @@ class Simulation:
 
         tree.write(heatmap_file)
 
-    def save_schedules(self, work_directory: str) -> None:
+    def save_schedules(
+        self, work_directory: str, scheduler: Scheduler
+    ) -> None:
         """
-        Write schedules and meetings to file.
-
-        Three files are created: one for all the
-        meetings, one for the full schedule of all the agents and the last one
-        with each agent's assigned office.
+        Write agent schedules to file.
 
         :param work_directory: directory where output files are to be saved.
         :type work_directory: str
+        :param scheduler: Scheduler agent used in this simulation.
+        :type scheduler: Scheduler
         """
 
-        # agent ids
-        filename = os.path.join(work_directory, "agent_ids.csv")
-        with open(filename, "w") as outfile:
-            outfile.write("AgentID,OfficeID,FloorID\n")
-            for unique_id, agent in self.agents.items():
-                outfile.write(
-                    str(unique_id)
-                    + ","
-                    + str(agent.schedule.office_location)
-                    + ","
-                    + str(agent.schedule.office_floor)
-                    + "\n"
-                )
-
-        # Meetings
-        filename = os.path.join(work_directory, "meetings.txt")
-        with open(filename, "w") as outfile:
-            outfile.write(
-                "Total number of meetings: "
-                + str(len(self.meeting_policy.meetings))
-                + "\n\n"
-            )
-            for meeting in self.meeting_policy.meetings:
-                outfile.write(str(meeting) + "\n")
+        # agent ids and
+        scheduler.save_to_files(work_directory)
 
         # Full schedules of all agents
-        filename = os.path.join(work_directory, "schedules.txt")
-        with open(filename, "w") as outfile:
+        with open(
+            os.path.join(work_directory, "schedules.txt"), "w"
+        ) as outfile:
             for unique_id, agent in self.agents.items():
                 outfile.write(
                     "Agent ID: "

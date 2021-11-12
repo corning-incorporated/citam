@@ -105,7 +105,7 @@ def test__init(sample_policy_params, simple_facility_floorplan):
     )
 
 
-def test_create_all_meetings(sample_meeting_policy, sample_policy_params):
+def test_create_all_meetings(sample_meeting_schedule, sample_policy_params):
 
     # Verify that no attendee is overbooked
     # Verify that the meeting rooms are from the right list
@@ -113,7 +113,7 @@ def test_create_all_meetings(sample_meeting_policy, sample_policy_params):
     # Verify that the number of meetings per person is acceptable
 
     for _ in range(5):
-        policy = deepcopy(sample_meeting_policy)
+        policy = deepcopy(sample_meeting_schedule)
         policy.create_all_meetings()
 
         attendees = set()
@@ -141,37 +141,37 @@ def test_create_all_meetings(sample_meeting_policy, sample_policy_params):
         )
 
 
-def test__update_attendee_pool(sample_meeting_policy):
+def test__update_attendee_pool(sample_meeting_schedule):
 
-    sample_meeting_policy.attendee_pool[0] = 25
-    sample_meeting_policy._update_attendee_pool()
+    sample_meeting_schedule.attendee_pool[0] = 25
+    sample_meeting_schedule._update_attendee_pool()
 
-    assert len(sample_meeting_policy.attendee_pool) == 2
-
-
-def test__update_attendee_pool_2(sample_meeting_policy):
-
-    sample_meeting_policy.attendee_pool[0] = 9
-    sample_meeting_policy._update_attendee_pool()
-
-    assert len(sample_meeting_policy.attendee_pool) == 3
+    assert len(sample_meeting_schedule.attendee_pool) == 2
 
 
-def test_get_daily_meetings(sample_meeting_policy):
+def test__update_attendee_pool_2(sample_meeting_schedule):
 
-    meetings = sample_meeting_policy.get_daily_meetings(0)
+    sample_meeting_schedule.attendee_pool[0] = 9
+    sample_meeting_schedule._update_attendee_pool()
+
+    assert len(sample_meeting_schedule.attendee_pool) == 3
+
+
+def test_get_daily_meetings(sample_meeting_schedule):
+
+    meetings = sample_meeting_schedule.get_daily_meetings(0)
     assert not meetings
 
-    meetings = sample_meeting_policy.get_daily_meetings(1)
+    meetings = sample_meeting_schedule.get_daily_meetings(1)
     assert not meetings
 
-    meetings = sample_meeting_policy.get_daily_meetings(2)
+    meetings = sample_meeting_schedule.get_daily_meetings(2)
     assert not meetings
 
 
-def test_get_daily_meetings_2(sample_meeting_policy):
+def test_get_daily_meetings_2(sample_meeting_schedule):
 
-    sample_meeting_policy.meetings.append(
+    sample_meeting_schedule.meetings.append(
         Meeting(
             location=0,
             floor_number=0,
@@ -181,24 +181,24 @@ def test_get_daily_meetings_2(sample_meeting_policy):
         )
     )
 
-    meetings = sample_meeting_policy.get_daily_meetings(0)
+    meetings = sample_meeting_schedule.get_daily_meetings(0)
     assert len(meetings) == 1
 
-    meetings = sample_meeting_policy.get_daily_meetings(1)
+    meetings = sample_meeting_schedule.get_daily_meetings(1)
     assert len(meetings) == 1
 
-    meetings = sample_meeting_policy.get_daily_meetings(2)
+    meetings = sample_meeting_schedule.get_daily_meetings(2)
     assert not meetings
 
 
-def test__find_potential_attendees(sample_meeting_policy):
+def test__find_potential_attendees(sample_meeting_schedule):
 
-    assert len(sample_meeting_policy._find_potential_attendees(0, 3600)) == 3
+    assert len(sample_meeting_schedule._find_potential_attendees(0, 3600)) == 3
 
 
-def test__find_potential_attendees_2(sample_meeting_policy):
+def test__find_potential_attendees_2(sample_meeting_schedule):
 
-    sample_meeting_policy.meetings.append(
+    sample_meeting_schedule.meetings.append(
         Meeting(
             location=0,
             floor_number=0,
@@ -208,35 +208,37 @@ def test__find_potential_attendees_2(sample_meeting_policy):
         )
     )
 
-    assert len(sample_meeting_policy._find_potential_attendees(0, 3600)) == 1
+    assert len(sample_meeting_schedule._find_potential_attendees(0, 3600)) == 1
 
 
-def test__generate_meeting_attendee_list(sample_meeting_policy):
+def test__generate_meeting_attendee_list(sample_meeting_schedule):
 
     meeting_room = Space("", "", "", "", "", "", capacity=25)
 
-    attendees = sample_meeting_policy._generate_meeting_attendee_list(
+    attendees = sample_meeting_schedule._generate_meeting_attendee_list(
         meeting_room, 0, 3600
     )
     assert len(attendees) == 3
 
 
-def test__generate_meeting_attendee_list2(sample_meeting_policy):
+def test__generate_meeting_attendee_list2(sample_meeting_schedule):
 
     meeting_room = Space("", "", "", "", "", "", capacity=5)
-    sample_meeting_policy.attendee_pool.update({4: 0, 5: 0, 6: 0, 7: 0, 8: 0})
+    sample_meeting_schedule.attendee_pool.update(
+        {4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
+    )
 
-    attendees = sample_meeting_policy._generate_meeting_attendee_list(
+    attendees = sample_meeting_schedule._generate_meeting_attendee_list(
         meeting_room, 0, 3600
     )
     assert len(attendees) <= 5
 
 
-def test__create_meetings_for_room(sample_meeting_policy):
+def test__create_meetings_for_room(sample_meeting_schedule):
     n_meetings = 0
     for _ in range(5):
         meeting_room = Space("", "", "", "", "", "", capacity=5)
-        sample_meeting_policy._create_meetings_for_room(meeting_room, 0)
-        n_meetings += len(sample_meeting_policy.meetings)
+        sample_meeting_schedule._create_meetings_for_room(meeting_room, 0)
+        n_meetings += len(sample_meeting_schedule.meetings)
 
     assert n_meetings / 5.0 > 0

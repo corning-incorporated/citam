@@ -1,6 +1,7 @@
 from typing import Tuple, List
 import numpy as np
 import logging
+import os
 import progressbar as pb
 from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.schedulers.meetings import MeetingSchedule
@@ -24,7 +25,7 @@ class OfficeScheduler(Scheduler):
         timestep,
         total_timesteps,
         scheduling_rules,
-        meetings_policy_params,
+        meeting_policy,
         buffer,
         preassigned_offices=None,
     ) -> None:
@@ -33,14 +34,14 @@ class OfficeScheduler(Scheduler):
         self.scheduling_rules = scheduling_rules
         self.buffer = buffer
         self.preassigned_offices = preassigned_offices
-        self.meeting_policy = meetings_policy_params
+        self.meeting_policy = meeting_policy
+        self.schedules = []
 
     def generate_meetings(self, n_agents: int) -> None:
         """
         Create meetings based on meeting policy.
         """
-        # Create meetings
-        agent_ids = list(range(n_agents))
+        # Get all meeting rooms
         meeting_room_objects = []
         for fn, floor_rooms in enumerate(self.facility.meeting_rooms):
             floor_room_objs = []
@@ -48,16 +49,28 @@ class OfficeScheduler(Scheduler):
                 room_obj = self.facility.floorplans[fn].spaces[room_id]
                 floor_room_objs.append(room_obj)
             meeting_room_objects.append(floor_room_objs)
+
+        # Create meeting schedule object
+        agent_ids = list(range(n_agents))
         self.meeting_schedule = MeetingSchedule(
             meeting_room_objects,
             agent_ids,
             daylength=self.total_timesteps,
-            policy_params=self.meetings_policy_params,
+            policy_params=self.meeting_policy,
         )
 
+        if self.meeting_policy:
+            LOG.info(
+                "No meeting policy provided. Meetings will not be generated."
+            )
+            return
+
+        # Generate meetings
         n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
-        if n_meeting_rooms > 0 and self.create_meetings:
+        if n_meeting_rooms > 0:
             self.meeting_schedule.create_all_meetings()
+        else:
+            LOG.info("No meeting rooms found. Meetings will not be generated")
 
     def assign_office(self) -> Tuple[int, int]:
         """
@@ -93,10 +106,10 @@ class OfficeScheduler(Scheduler):
         :rtype: List[Schedule]
         """
         # Start by generating meetings
-        self.generate_meetings()
+        self.generate_meetings(n_agents)
 
         # Now generate individual schedules
-        schedules = []
+        self.schedules = []
         current_agent = 0
         agent_pool = list(range(n_agents))
         for shift in shifts:
@@ -158,11 +171,44 @@ class OfficeScheduler(Scheduler):
                     office_floor=office_floor,
                     navigation=self.facility.navigation,
                     scheduling_rules=self.scheduling_rules,
-                    meetings=self.meeting_policy.meetings,
+                    meetings=self.meeting_schedule.meetings,
                 )
                 schedule.build()
-                schedules.append(schedule)
+                self.schedules.append(schedule)
 
                 current_agent += 1
+        return self.schedules
 
-        return schedules
+    def save_to_files(self, work_directory):
+        """Write agent assigned offices and meetings to file.
+
+        Two files are created with respectively the following contents:
+        1. meetings.txt with all the meetings
+        3. agent_ids.csv with each agent's assigned office
+
+        :param work_directory: [description]
+        :type work_directory: [type]
+        """
+        filename = os.path.join(work_directory, "agent_ids.csv")
+        with open(filename, "w") as outfile:
+            outfile.write("AgentID,OfficeID,FloorID\n")
+            for i, schedule in enumerate(self.schedules):
+                outfile.write(
+                    str(i)
+                    + ","
+                    + str(schedule.office_location)
+                    + ","
+                    + str(schedule.office_floor)
+                    + "\n"
+                )
+
+        # Meetings
+        filename = os.path.join(work_directory, "meetings.txt")
+        with open(filename, "w") as outfile:
+            outfile.write(
+                "Total number of meetings: "
+                + str(len(self.meeting_schedule.meetings))
+                + "\n\n"
+            )
+            for meeting in self.meeting_schedule.meetings:
+                outfile.write(str(meeting) + "\n")

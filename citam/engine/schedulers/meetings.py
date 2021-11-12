@@ -102,7 +102,7 @@ class MeetingSchedule:
         meeting_rooms: List[List[Space]],
         agent_ids: List[int],
         daylength: int,
-        policy_params: Dict[str, Any] = None,
+        policy_params: Dict[str, Any],
     ) -> None:
         """
         Initialize a new meeting policy object.
@@ -123,9 +123,6 @@ class MeetingSchedule:
 
         # Attendee pool
         self.attendee_pool = {agent_id: 0 for agent_id in agent_ids}
-
-        if policy_params is None:
-            policy_params = DEFAULT_MEETINGS_POLICY
 
         # Meetings duration
         self.min_meeting_duration = policy_params["min_meeting_duration"]

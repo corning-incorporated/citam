@@ -24,18 +24,17 @@ from citam.engine.constants import (
     MEETING_BUFFER,
 )
 from citam.engine.map.door import Door
+from citam.engine.schedulers.schedule import Schedule, ScheduleItem
+from citam.engine.schedulers.meetings import Meeting
 
 
 # Navigation creates a circular import : Solved by using conditional import
 # (only for type checking)
 from typing import TYPE_CHECKING
 
-from citam.engine.schedulers.schedule import Schedule, ScheduleItem
-
 if TYPE_CHECKING:
     from citam.engine.facility.navigation import Navigation
 
-from citam.engine.schedulers.meetings import Meeting
 
 LOG = logging.getLogger(__name__)
 
@@ -58,7 +57,7 @@ class OfficeSchedule(Schedule):
         exit_floor: int,
         office_location: int,
         office_floor: int,
-        navigation: Navigation,
+        navigation,
         scheduling_rules: Dict[str, Any],
         meetings: List[Meeting] = None,
     ):
@@ -92,7 +91,7 @@ class OfficeSchedule(Schedule):
              defaults to None
         :type meetings: List[Meeting], optional
         """
-        super.__init__(timestep, start_time, exit_time)
+        super().__init__(timestep, start_time, exit_time)
 
         self.exit_time = exit_time
         self.entrance_door = entrance_door
@@ -194,6 +193,10 @@ class OfficeSchedule(Schedule):
         max_duration = self.get_max_duration_for_purpose(
             purpose, next_meeting_start_time
         )
+
+        if max_duration < self.scheduling_rules[purpose]["min_duration"]:
+            raise ValueError("Not enough time is available for this meeting.")
+
         duration = np.random.randint(
             self.scheduling_rules[purpose]["min_duration"], max_duration
         )
