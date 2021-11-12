@@ -138,7 +138,6 @@ export default new Vuex.Store({
                 first_timestep += max_chunk_size;
             }
             await Promise.all(request_arr).then((response) => {
-                console.log("prommm")
                 if (response !== undefined) {
                     response.forEach((chunk) => {
                         trajectories = trajectories.concat(chunk.data.data);
