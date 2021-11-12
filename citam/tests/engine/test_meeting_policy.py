@@ -1,7 +1,7 @@
 import pytest
 from copy import deepcopy
 
-from citam.engine.schedulers.meetings import MeetingPolicy, Meeting
+from citam.engine.schedulers.meetings import MeetingSchedule, Meeting
 from citam.engine.map.space import Space
 
 
@@ -26,7 +26,7 @@ def sample_policy_params():
 
 
 @pytest.fixture
-def sample_meeting_policy(sample_policy_params, simple_facility_floorplan):
+def sample_meeting_schedule(sample_policy_params, simple_facility_floorplan):
 
     meeting_rooms = [
         space
@@ -37,14 +37,14 @@ def sample_meeting_policy(sample_policy_params, simple_facility_floorplan):
     for space in meeting_rooms:
         space.capacity = 25
 
-    meeting_policy = MeetingPolicy(
+    meeting_schedule = MeetingSchedule(
         meeting_rooms=[meeting_rooms],
         agent_ids=[0, 1, 2],
         daylength=3600 * 8,
         policy_params=sample_policy_params,
     )
 
-    return meeting_policy
+    return meeting_schedule
 
 
 def test__init(sample_policy_params, simple_facility_floorplan):
@@ -58,49 +58,49 @@ def test__init(sample_policy_params, simple_facility_floorplan):
         space.capacity = 25
 
     agent_ids = [0, 1, 2]
-    meeting_policy = MeetingPolicy(
+    meeting_schedule = MeetingSchedule(
         meeting_rooms=[meeting_rooms],
         agent_ids=agent_ids,
         daylength=8 * 3600,
         policy_params=sample_policy_params,
     )
-    assert len(meeting_policy.attendee_pool) == len(agent_ids)
-    assert len(meeting_policy.meeting_rooms[0]) == len(meeting_rooms)
-    assert meeting_policy.daylength == 8 * 3600
+    assert len(meeting_schedule.attendee_pool) == len(agent_ids)
+    assert len(meeting_schedule.meeting_rooms[0]) == len(meeting_rooms)
+    assert meeting_schedule.daylength == 8 * 3600
     assert (
-        meeting_policy.min_meeting_duration
+        meeting_schedule.min_meeting_duration
         == sample_policy_params["min_meeting_duration"]
     )
     assert (
-        meeting_policy.max_meeting_length
+        meeting_schedule.max_meeting_length
         == sample_policy_params["max_meeting_length"]
     )
     assert (
-        meeting_policy.meeting_duration_increment
+        meeting_schedule.meeting_duration_increment
         == sample_policy_params["meeting_duration_increment"]
     )
     assert (
-        meeting_policy.avg_meetings_per_person
+        meeting_schedule.avg_meetings_per_person
         == sample_policy_params["avg_meetings_per_room"]
     )
     assert (
-        meeting_policy.percent_meeting_rooms_used
+        meeting_schedule.percent_meeting_rooms_used
         == sample_policy_params["percent_meeting_rooms_used"]
     )
     assert (
-        meeting_policy.avg_meetings_per_person
+        meeting_schedule.avg_meetings_per_person
         == sample_policy_params["avg_meetings_per_person"]
     )
     assert (
-        meeting_policy.min_attendees_per_meeting
+        meeting_schedule.min_attendees_per_meeting
         == sample_policy_params["min_attendees_per_meeting"]
     )
     assert (
-        meeting_policy.min_buffer_between_meetings
+        meeting_schedule.min_buffer_between_meetings
         == sample_policy_params["min_buffer_between_meetings"]
     )
     assert (
-        meeting_policy.max_buffer_between_meetings
+        meeting_schedule.max_buffer_between_meetings
         == sample_policy_params["max_buffer_between_meetings"]
     )
 

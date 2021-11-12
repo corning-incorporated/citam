@@ -1,9 +1,10 @@
-from typing import Tuple
+from typing import Tuple, List
 import numpy as np
 import logging
 import progressbar as pb
 from citam.engine.schedulers.office_schedule import OfficeSchedule
-from citam.engine.schedulers.meetings import MeetingPolicy
+from citam.engine.schedulers.meetings import MeetingSchedule
+from citam.engine.schedulers.schedule import Schedule
 from citam.engine.schedulers.scheduler import Scheduler
 
 
@@ -11,6 +12,12 @@ LOG = logging.getLogger(__name__)
 
 
 class OfficeScheduler(Scheduler):
+    """Scheduler class used to create a typical schedules for an
+    office building. This assumes each agent has an office space, go to meetings
+    throughout the day and spend time in special spaces called labs. This scheduler
+    also supports the use of restrooms and dining areas by agents.
+    """
+
     def __init__(
         self,
         facility,
@@ -21,13 +28,14 @@ class OfficeScheduler(Scheduler):
         buffer,
         preassigned_offices=None,
     ) -> None:
+
         super().__init__(facility, timestep, total_timesteps)
         self.scheduling_rules = scheduling_rules
         self.buffer = buffer
         self.preassigned_offices = preassigned_offices
         self.meeting_policy = meetings_policy_params
 
-    def generate_meetings(self, n_agents) -> None:
+    def generate_meetings(self, n_agents: int) -> None:
         """
         Create meetings based on meeting policy.
         """
@@ -40,7 +48,7 @@ class OfficeScheduler(Scheduler):
                 room_obj = self.facility.floorplans[fn].spaces[room_id]
                 floor_room_objs.append(room_obj)
             meeting_room_objects.append(floor_room_objs)
-        self.meeting_policy = MeetingPolicy(
+        self.meeting_schedule = MeetingSchedule(
             meeting_room_objects,
             agent_ids,
             daylength=self.total_timesteps,
@@ -49,7 +57,7 @@ class OfficeScheduler(Scheduler):
 
         n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
         if n_meeting_rooms > 0 and self.create_meetings:
-            self.meeting_policy.create_all_meetings()
+            self.meeting_schedule.create_all_meetings()
 
     def assign_office(self) -> Tuple[int, int]:
         """
@@ -71,8 +79,19 @@ class OfficeScheduler(Scheduler):
 
         return office_id, office_floor
 
-    def run(self, n_agents, shifts):
+    def run(self, n_agents: int, shifts: dict) -> List[Schedule]:
+        """Run this scheduler and return one schedule per agent.
 
+        :param n_agents: Number of agents to create schedules for
+        :type n_agents: int
+        :param shifts: Dictionary describing a shift (group of agents with
+                    the same start time)
+        :type shifts: dict
+        :raises ValueError: If unable to find an appropriate entrance for an
+                    assigned office space.
+        :return: list of schedule objects, one per agent
+        :rtype: List[Schedule]
+        """
         # Start by generating meetings
         self.generate_meetings()
 

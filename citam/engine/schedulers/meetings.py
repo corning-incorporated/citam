@@ -91,7 +91,7 @@ class Meeting:
         )
 
 
-class MeetingPolicy:
+class MeetingSchedule:
     """
     Class to implement a meeting policy defining all the meetings that take
     place in a facility based on predefined parameters.
