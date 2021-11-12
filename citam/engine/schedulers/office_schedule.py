@@ -57,7 +57,7 @@ class OfficeSchedule(Schedule):
         exit_floor: int,
         office_location: int,
         office_floor: int,
-        navigation,
+        navigation: Navigation,
         scheduling_rules: Dict[str, Any],
         meetings: List[Meeting] = None,
     ):

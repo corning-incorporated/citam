@@ -26,7 +26,6 @@ from matplotlib import cm
 import progressbar as pb
 
 from citam.engine.core.agent import Agent
-from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.schedulers.office_scheduler import OfficeScheduler
 from citam.engine.schedulers.schedule import Schedule
 import citam.engine.io.visualization as bv
@@ -260,7 +259,7 @@ class Simulation:
         # Initialize scheduler to be an office scheduler if not provided
         if not scheduler:
             LOG.info(
-                "No scheduler provided. The default office scheduler will be used"
+                "No scheduler provided. Using the default office scheduler."
             )
 
             if self.meetings_policy_params is None and self.create_meetings:

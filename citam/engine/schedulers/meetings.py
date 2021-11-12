@@ -16,7 +16,6 @@ import logging
 import progressbar as pb
 from typing import List, Dict, Any
 
-from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 from citam.engine.map.space import Space
 
 LOG = logging.getLogger(__name__)

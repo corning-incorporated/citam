@@ -13,10 +13,10 @@ LOG = logging.getLogger(__name__)
 
 
 class OfficeScheduler(Scheduler):
-    """Scheduler class used to create a typical schedules for an
-    office building. This assumes each agent has an office space, go to meetings
-    throughout the day and spend time in special spaces called labs. This scheduler
-    also supports the use of restrooms and dining areas by agents.
+    """Scheduler class used to create a typical schedules for an office
+    building. This assumes each agent has an office space, go to meetings
+    throughout the day and spend time in special spaces called labs.
+    Supports the use of restrooms and dining areas by agents.
     """
 
     def __init__(
