@@ -26,14 +26,7 @@ from citam.engine.constants import (
 from citam.engine.map.door import Door
 from citam.engine.schedulers.schedule import Schedule, ScheduleItem
 from citam.engine.schedulers.meetings import Meeting
-
-
-# Navigation creates a circular import : Solved by using conditional import
-# (only for type checking)
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from citam.engine.facility.navigation import Navigation
+from citam.engine.facility.navigation import Navigation
 
 
 LOG = logging.getLogger(__name__)
