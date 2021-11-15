@@ -2,6 +2,7 @@ from typing import Tuple, List
 import numpy as np
 import logging
 import os
+from copy import deepcopy
 import progressbar as pb
 from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.schedulers.meetings import MeetingSchedule
@@ -59,7 +60,7 @@ class OfficeScheduler(Scheduler):
             policy_params=self.meeting_policy,
         )
 
-        if self.meeting_policy:
+        if self.meeting_policy is None:
             LOG.info(
                 "No meeting policy provided. Meetings will not be generated."
             )
@@ -68,7 +69,7 @@ class OfficeScheduler(Scheduler):
         # Generate meetings
         n_meeting_rooms = sum(len(rooms) for rooms in meeting_room_objects)
         if n_meeting_rooms > 0:
-            self.meeting_schedule.create_all_meetings()
+            self.meeting_schedule.build()
         else:
             LOG.info("No meeting rooms found. Meetings will not be generated")
 
@@ -84,10 +85,26 @@ class OfficeScheduler(Scheduler):
 
         if self.preassigned_offices is not None:
             office_id, office_floor = self.preassigned_offices.pop(0)
+            if (
+                office_id >= len(self.facility.floorplans[office_floor].spaces)
+                or office_id < 0
+            ):
+                raise ValueError(
+                    "Invalid preassigned office ID. Please double check."
+                )
         else:
-            office_floor = np.random.randint(self.facility.number_of_floors)
-            n_offices = len(self.facility.all_office_spaces[office_floor])
-            rint = np.random.randint(n_offices)
+            floors_with_offices = [
+                i
+                for i in range(len(self.facility.all_office_spaces))
+                if len(self.facility.all_office_spaces[i]) > 0
+            ]
+            if len(floors_with_offices) == 0:
+                raise ValueError("No office space found throughout facility.")
+
+            office_floor = np.random.choice(floors_with_offices)
+            rint = np.random.randint(
+                len(self.facility.all_office_spaces[office_floor])
+            )
             office_id = self.facility.all_office_spaces[office_floor].pop(rint)
 
         return office_id, office_floor
@@ -110,9 +127,18 @@ class OfficeScheduler(Scheduler):
 
         # Now generate individual schedules
         self.schedules = []
-        current_agent = 0
         agent_pool = list(range(n_agents))
         for shift in shifts:
+            if (
+                "start_time" not in shift.keys()
+                or "percent_agents" not in shift.keys()
+                or "name" not in shift.keys()
+            ):
+                raise ValueError(
+                    "Invalid shift info: name, start_time and "
+                    "percent_agents required."
+                )
+
             shift_start_time = shift["start_time"] + self.buffer
             n_shift_agents = round(shift["percent_agents"] * n_agents)
             shift_agents = np.random.choice(agent_pool, n_shift_agents)
@@ -126,7 +152,7 @@ class OfficeScheduler(Scheduler):
 
                 # Find office space
                 office_id, office_floor = self.assign_office()
-
+                print("Office ID assigned: ", office_id, office_floor)
                 # Choose the closest entrance to office
                 (
                     entrance_door,
@@ -176,11 +202,10 @@ class OfficeScheduler(Scheduler):
                 schedule.build()
                 self.schedules.append(schedule)
 
-                current_agent += 1
         return self.schedules
 
-    def save_to_files(self, work_directory):
-        """Write agent assigned offices and meetings to file.
+    def save_to_files(self, work_directory) -> None:
+        """Write key scheduling info to file.
 
         Two files are created with respectively the following contents:
         1. meetings.txt with all the meetings
@@ -189,26 +214,32 @@ class OfficeScheduler(Scheduler):
         :param work_directory: [description]
         :type work_directory: [type]
         """
-        filename = os.path.join(work_directory, "agent_ids.csv")
-        with open(filename, "w") as outfile:
-            outfile.write("AgentID,OfficeID,FloorID\n")
-            for i, schedule in enumerate(self.schedules):
-                outfile.write(
-                    str(i)
-                    + ","
-                    + str(schedule.office_location)
-                    + ","
-                    + str(schedule.office_floor)
-                    + "\n"
-                )
+        filename = os.path.join(work_directory, "agents.csv")
+        try:
+            with open(filename, "w") as outfile:
+                outfile.write("AgentID,OfficeID,FloorID\n")
+                for i, schedule in enumerate(self.schedules):
+                    outfile.write(
+                        str(i)
+                        + ","
+                        + str(schedule.office_location)
+                        + ","
+                        + str(schedule.office_floor)
+                        + "\n"
+                    )
+        except Exception as e:
+            LOG.error(f"An eception occured while writing agents.csv. {e}")
 
         # Meetings
         filename = os.path.join(work_directory, "meetings.txt")
-        with open(filename, "w") as outfile:
-            outfile.write(
-                "Total number of meetings: "
-                + str(len(self.meeting_schedule.meetings))
-                + "\n\n"
-            )
-            for meeting in self.meeting_schedule.meetings:
-                outfile.write(str(meeting) + "\n")
+        try:
+            with open(filename, "w") as outfile:
+                outfile.write(
+                    "Total number of meetings: "
+                    + str(len(self.meeting_schedule.meetings))
+                    + "\n\n"
+                )
+                for meeting in self.meeting_schedule.meetings:
+                    outfile.write(str(meeting) + "\n")
+        except Exception as e:
+            LOG.error(f"An eception occured while writing meetings.csv. {e}")

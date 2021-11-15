@@ -13,37 +13,6 @@ from citam.engine.schedulers.office_scheduler import OfficeScheduler
 MAP_SVG_FILE = "map.svg"
 
 
-@pytest.fixture
-def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
-    filename = request.module.__file__
-    test_dir = os.path.dirname(filename)
-    datadir = os.path.join(test_dir, "data_navigation")
-    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-
-    facility = Facility(
-        [simple_facility_floorplan],
-        facility_name="test_simple_facility",
-        entrances=[{"name": "1", "floor": "0"}],
-        traffic_policy=None,
-    )
-
-    simulation = Simulation(
-        facility=facility,
-        total_timesteps=3600,
-        n_agents=2,
-        occupancy_rate=None,
-        buffer=100,
-        timestep=1.0,
-        contact_distance=6.0,
-        shifts=[{"name": "1", "start_time": 0, "percent_agents": 1.0}],
-        meetings_policy_params=None,
-        scheduling_policy=None,
-        dry_run=False,
-    )
-
-    return simulation
-
-
 def test_create_sim_hash(simple_facility_model):
     model = simple_facility_model
     model.create_sim_hash()
@@ -386,25 +355,3 @@ def test_close_dining(simple_facility_floorplan, monkeypatch, request):
     )
 
     assert CAFETERIA_VISIT not in model.scheduling_rules
-
-
-# def test_no_meetings(simple_facility_model, request, tmpdir):
-
-#     simple_facility_model.create_meetings = False
-#     simple_facility_model.run_serial(tmpdir, "sim_name", "run_name")
-
-#     assert len(simple_facility_model.meeting_policy.meetings) == 0
-#     assert os.path.isfile(os.path.join(tmpdir, "agent_ids.csv"))
-#     assert os.path.isfile(os.path.join(tmpdir, "meetings.txt"))
-#     assert os.path.isfile(os.path.join(tmpdir, "schedules.txt"))
-
-
-# def test_assign_office_preassigned(simple_facility_model):
-#     simple_facility_model.preassigned_offices = [(23, 0), (32, 0), (45, 0)]
-#     res = simple_facility_model.assign_office()
-#     assert res == (23, 0)
-#     res = simple_facility_model.assign_office()
-#     assert res == (32, 0)
-
-# TODO Test that meeting schedule exists when required
-# assert model.meeting_policy is not None

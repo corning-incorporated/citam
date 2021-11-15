@@ -114,7 +114,7 @@ def test_create_all_meetings(sample_meeting_schedule, sample_policy_params):
 
     for _ in range(5):
         policy = deepcopy(sample_meeting_schedule)
-        policy.create_all_meetings()
+        policy.build()
 
         attendees = set()
         meetings_per_person = {}

@@ -367,7 +367,6 @@ class OfficeSchedule(Schedule):
         # the tests have passed
         # Count how many items of each type is already in the schedule
         n_items = self.count_purpose_occurence_in_schedule_items()
-
         # Don't consider schedule item that already reached their max instances
         for i, purpose in enumerate(self.possible_purposes):
             item_details = self.scheduling_rules[purpose]
@@ -376,7 +375,7 @@ class OfficeSchedule(Schedule):
                 max_duration = self.get_max_duration_for_purpose(
                     purpose, next_meeting_start_time
                 )
-                if max_duration > item_details["min_duration"]:
+                if max_duration >= item_details["min_duration"]:
                     valid_purposes.append(purpose)
 
         # No consecutive restroom visits #TODO: Add this to scheduling rules
@@ -394,7 +393,6 @@ class OfficeSchedule(Schedule):
             or len(self.itinerary) > round(2 * self.daylength / 3.0)
         ):
             valid_purposes.remove(CAFETERIA_VISIT)
-
         return valid_purposes
 
     def choose_valid_scheduling_purpose(

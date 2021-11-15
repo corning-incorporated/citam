@@ -120,6 +120,10 @@ class MeetingSchedule:
         self.meetings: List[Meeting] = []
         self.daylength = daylength
 
+        if policy_params is None:
+            LOG.info("No meeting policy provided. Nothing to do.")
+            return
+
         # Attendee pool
         self.attendee_pool = {agent_id: 0 for agent_id in agent_ids}
 
@@ -302,7 +306,7 @@ class MeetingSchedule:
 
         return attendees
 
-    def create_all_meetings(self) -> None:
+    def build(self) -> None:
         """
         Create meetings for this facility with no conflicts (room nor agent)
         """
