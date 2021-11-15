@@ -2,18 +2,6 @@ import os
 from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 from citam.engine.schedulers.office_scheduler import OfficeScheduler
 
-from citam.engine.schedulers.scheduler import Scheduler
-
-# def test_no_meetings(simple_facility_model, request, tmpdir):
-
-#     simple_facility_model.create_meetings = False
-#     simple_facility_model.run_serial(tmpdir, "sim_name", "run_name")
-
-#     assert len(simple_facility_model.meeting_schedule.meetings) == 0
-#     assert os.path.isfile(os.path.join(tmpdir, "agent_ids.csv"))
-#     assert os.path.isfile(os.path.join(tmpdir, "meetings.txt"))
-#     assert os.path.isfile(os.path.join(tmpdir, "schedules.txt"))
-
 
 def test_no_meetings(simple_facility_model, request, tmpdir):
 

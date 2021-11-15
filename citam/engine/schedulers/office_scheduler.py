@@ -2,7 +2,6 @@ from typing import Tuple, List
 import numpy as np
 import logging
 import os
-from copy import deepcopy
 import progressbar as pb
 from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.schedulers.meetings import MeetingSchedule
