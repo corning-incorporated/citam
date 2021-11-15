@@ -269,12 +269,7 @@ class Simulation:
                     "in constants.py will be used."
                 )
                 self.meetings_policy_params = DEFAULT_MEETINGS_POLICY
-                if self.total_timesteps < 3600 * 4.5:
-                    raise ValueError(
-                        f"Min simulation duration of {3600*4.5} steps required "
-                        "to use default meeting policy. "
-                        "Current: {self.total_timesteps}."
-                    )
+
             scheduler = OfficeScheduler(
                 self.facility,
                 self.timestep,
