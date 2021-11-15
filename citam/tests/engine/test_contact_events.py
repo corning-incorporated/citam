@@ -1,4 +1,4 @@
-from citam.engine.core.contacts import ContactEvents, ContactEvent
+from citam.engine.calculators.contacts import ContactEvents, ContactEvent
 from citam.engine.core.agent import Agent
 
 import pytest

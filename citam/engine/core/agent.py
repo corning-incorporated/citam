@@ -27,8 +27,8 @@ class Agent:
         unique_id: int,
         schedule: Schedule,
         name: Optional[str] = None,
-        office_id: Optional[int] = None,
-        job_function: Optional[str] = None,
+        base_location: Optional[int] = None,
+        group: Optional[str] = None,
     ):
         """
         Initialize an agent object.
@@ -41,9 +41,9 @@ class Agent:
         :type schedule: Schedule
         :param name: The name of this agent, defaults to None
         :type name: str, optional
-        :param office_id: ID of the office space assigned to this agent,
+        :param base_location: ID of the office space assigned to this agent,
             defaults to None
-        :type office_id: int, optional
+        :type base_location: int, optional
         :param job_function: job function of this agent, defaults to None
         :type job_function: str, optional
         """
@@ -51,10 +51,11 @@ class Agent:
         self.schedule = schedule
 
         self.name = name
-        self.office_id = office_id
-        self.job_function = job_function
+        self.base_location = base_location
+        self.group = group
 
-        self.cumulative_contact_duration = 0
+        self.instantaneous_properties = {}
+
         self.pos = None
         self.current_location = None
         self.current_floor = None

@@ -151,7 +151,6 @@ class OfficeScheduler(Scheduler):
 
                 # Find office space
                 office_id, office_floor = self.assign_office()
-                print("Office ID assigned: ", office_id, office_floor)
                 # Choose the closest entrance to office
                 (
                     entrance_door,
