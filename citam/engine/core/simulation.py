@@ -325,7 +325,7 @@ class Simulation:
         # Close files
         t_outfile.close()
         for calc in self.calculators:
-            calc.finalize()
+            calc.finalize(self.agents, work_directory=workdir)
         LOG.info("Done with simulation.\n")
 
     def create_agents(self, scheduler: Scheduler) -> List[Schedule]:
