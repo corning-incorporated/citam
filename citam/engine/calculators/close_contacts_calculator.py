@@ -1,6 +1,5 @@
-from typing import Dict, List, Optional, OrderedDict, TextIO, Tuple, Union
+from typing import Dict, List, Optional, OrderedDict, Tuple, Union
 
-from networkx.generators.random_graphs import random_shell_graph
 from citam.engine.calculators.calculator import Calculator
 from citam.engine.facility.indoor_facility import Facility
 from citam.engine.core.agent import Agent
