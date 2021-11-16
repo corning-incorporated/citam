@@ -20,12 +20,13 @@ import uuid
 import xml.etree.ElementTree as ET
 
 import networkx as nx
-from matplotlib import cm
 import progressbar as pb
+
 from citam.engine.calculators.calculator import Calculator
-
+from citam.engine.calculators.close_contacts_calculator import (
+    CloseContactsCalculator,
+)
 from citam.engine.core.agent import Agent
-
 from citam.engine.schedulers.office_scheduler import OfficeScheduler
 from citam.engine.schedulers.schedule import Schedule
 import citam.engine.io.visualization as bv
@@ -61,6 +62,7 @@ class Simulation:
         buffer: int = 300,
         occupancy_rate: float = None,
         timestep: float = 1.0,
+        calculators: Optional[List[Calculator]] = None,
         meetings_policy_params=None,
         create_meetings=True,
         close_dining=False,
@@ -120,6 +122,22 @@ class Simulation:
         self.occupancy_rate = occupancy_rate
         self.preassigned_offices = preassigned_offices
 
+        self.calculators = calculators
+        if calculators is None:
+            LOG.info(
+                "No calculator provided. The default close contacts "
+                "calculator will be used."
+            )
+            self.calculators = [CloseContactsCalculator(facility)]
+        if isinstance(self.calculators, Calculator):
+            self.calculators = [self.calculators]
+
+        for calc in self.calculators:
+            if not isinstance(calc, Calculator):
+                raise ValueError(
+                    "Invalid calculator. Must be an instance of Calculator."
+                )
+
         self.current_step = 0
         self.agents = OrderedDict()
         self.shifts = shifts
@@ -127,11 +145,6 @@ class Simulation:
         self.simulation_hash = None
         self.run_id = str(uuid.uuid4())
 
-        # list used to keep track of total contact events per xy location per
-        #  floor
-        self.step_contact_locations: List[Dict[Tuple[int, int], int]] = [
-            {} for _ in facility.floorplans
-        ]
         self.create_meetings = create_meetings
 
         # Handle scheduling rules
@@ -199,11 +212,10 @@ class Simulation:
 
     def run_serial(
         self,
-        workdir: str,
+        workdir: Union[str, os.PathLike, bytes],
         sim_name: str,
         run_name: str,
         scheduler: Optional[Scheduler] = None,
-        calculator: Optional[Calculator] = None,
     ) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
@@ -280,11 +292,15 @@ class Simulation:
         self.save_maps(workdir)
         self.create_agents(scheduler)
         self.save_schedules(workdir, scheduler)
+        # Initialize calculator
+        for calculator in self.calculators:
+            calculator.initialize(self.agents, workdir)
+        # Run simulation
         LOG.info(f"Running simulation serially with {self.n_agents} agents")
-        self.run_simulation_and_save_results(workdir, calculator)
+        self.run_simulation_and_save_results(workdir)
 
     def run_simulation_and_save_results(
-        self, workdir: Union[str, bytes, os.PathLike], calculator: Calculator
+        self, workdir: Union[str, bytes, os.PathLike]
     ) -> None:
         """
         Perform simulation and save results to files.
@@ -295,22 +311,12 @@ class Simulation:
         # open files
         traj_file = workdir + "/trajectory.txt"
         t_outfile = open(traj_file, "w")  # Keep the trajectory file open
-        contact_outfiles = []
-        for floor_number in range(self.facility.number_of_floors):
-            directory = os.path.join(workdir, "floor_" + str(floor_number))
-            if not os.path.isdir(directory):
-                os.mkdir(directory)
-            contact_file = os.path.join(directory, "contacts.txt")
-            contact_outfiles.append(open(contact_file, "w"))
 
         # Run simulation
         pbar = pb.ProgressBar(max_value=self.total_timesteps + self.buffer)
         for i in range(self.total_timesteps + self.buffer):
             pbar.update(i)
-            self.step(
-                traj_outfile=t_outfile, contact_outfiles=contact_outfiles
-            )
-            calculator.run(i, self.agents)
+            self.step(traj_outfile=t_outfile)
             if i % 1000 == 0:
                 LOG.info("Current step is: " + str(i))
 
@@ -318,8 +324,8 @@ class Simulation:
 
         # Close files
         t_outfile.close()
-        for cof in contact_outfiles:
-            cof.close()
+        for calc in self.calculators:
+            calc.finalize()
         LOG.info("Done with simulation.\n")
 
     def create_agents(self, scheduler: Scheduler) -> List[Schedule]:
@@ -339,7 +345,6 @@ class Simulation:
     def step(
         self,
         traj_outfile: TextIO = None,
-        contact_outfiles: List[TextIO] = None,
     ) -> None:
         """
         Move the simulation one step ahead.
@@ -349,22 +354,14 @@ class Simulation:
 
         :param traj_outfile: File to write trajectory data, defaults to None
         :type traj_outfile: TextIO, optional
-        :param contact_outfiles: Files to write contact data, one per floor,
-                defaults to None
-        :type contact_outfiles: List[TextIO], optional
+
         """
-        self.step_contact_locations = [
-            {}
-        ] * self.facility.number_of_floors  # One per floor
 
         active_agents, _ = self.move_agents()
-
-        if len(active_agents) > 1 and not self.dry_run:
-            # At least 2 agents required
-            moving_active_agents = [
-                a for a in active_agents if a.current_location is not None
-            ]
-            self.identify_contacts(moving_active_agents)
+        if not self.dry_run:
+            # if dry_run is True, don't run the calculator.
+            for calculator in self.calculators:
+                calculator.run(self.current_step, active_agents)
 
         if traj_outfile is not None:
             traj_outfile.write(
@@ -374,7 +371,7 @@ class Simulation:
                 + "\n"
             )
             for agent in active_agents:
-                traj_outfile.write(
+                agent_data = (
                     str(agent.unique_id)
                     + "\t"
                     + str(agent.pos[0])
@@ -382,27 +379,14 @@ class Simulation:
                     + str(agent.pos[1])
                     + "\t"
                     + str(agent.current_floor)
-                    + "\t"
-                    + str(agent.cumulative_contact_duration)
-                    + "\n"
                 )
+                for ip in agent.instantaneous_properties.values():
+                    agent_data += "\t" + str(ip[-1])
+                for cp in agent.cumulative_properties.values():
+                    agent_data += "\t" + str(cp)
+                agent_data += "\n"
+                traj_outfile.write(agent_data)
 
-        if contact_outfiles is not None:
-
-            for fn in range(self.facility.number_of_floors):
-
-                n_contact_loc = len(self.step_contact_locations[fn])
-                contact_outfiles[fn].write(
-                    str(n_contact_loc)
-                    + "\nstep :"
-                    + str(self.current_step)
-                    + "\n"
-                )
-
-                for cl, nc in self.step_contact_locations[fn].items():
-                    contact_outfiles[fn].write(
-                        str(cl[0]) + "\t" + str(cl[1]) + "\t" + str(nc) + "\n"
-                    )
         self.current_step += 1
 
     def move_agents(self) -> Tuple[List[Agent], List[Agent]]:
@@ -421,9 +405,8 @@ class Simulation:
         # TODO: consider contacts for agents that are stationary as well
         moving_agents = []  # All employees that are currently moving
 
-        for unique_id, agent in self.agents.items():
+        for _, agent in self.agents.items():
             has_moved = agent.step()
-
             if agent.pos is not None:
                 active_agents.append(agent)
                 if has_moved:
@@ -528,65 +511,6 @@ class Simulation:
                 ],
             )
 
-    def create_svg_heatmap(
-        self,
-        contacts_per_coord: Dict[Tuple[int, int], int],
-        floor_directory: str,
-    ) -> None:
-        """
-        Create and save a heatmap from coordinate contact data.
-
-        :param contacts_per_coord: dictionary where each key is an (x,y )
-                tuple and values are the number of contacts in that location.
-        :type contacts_per_coord: Dict[Tuple[int, int], int]
-        :param floor_directory: directory to save the heatmap file.
-        :type floor_directory: str
-        :raises FileNotFoundError: if the floor svg map file is not found.
-        """
-
-        heatmap_file = os.path.join(floor_directory, "heatmap.svg")
-        map_file = os.path.join(floor_directory, "map.svg")
-
-        if not os.path.isfile(map_file):
-            raise FileNotFoundError(map_file)
-
-        max_contacts = 0
-        if len(contacts_per_coord.values()) > 0:
-            max_contacts = max(contacts_per_coord.values())
-        tree = ET.parse(map_file)
-
-        root = tree.getroot()[0]
-
-        filter_elem = ET.Element("filter")
-        filter_elem.set("id", "blurMe")
-        filter_elem.set("width", str(self.contact_distance * 2))
-        filter_elem.set("height", str(self.contact_distance * 2))
-        filter_elem.set("x", "-100%")
-        filter_elem.set("y", "-100%")
-
-        blur_elem = ET.Element("feGaussianBlur")
-        blur_elem.set("in", "SourceGraphic")
-        blur_elem.set("stdDeviation", str(self.contact_distance * 0.4))
-        blur_elem.set("edgeMode", "duplicate")
-
-        filter_elem.append(blur_elem)
-        root.append(filter_elem)
-        color_scale = cm.get_cmap("RdYlGn")
-
-        for key, v in contacts_per_coord.items():
-            x, y = key
-            color = color_scale(1.0 - v * 1.0 / max_contacts)
-            new_elem = ET.Element("circle")
-            new_elem.set("cx", str(x))
-            new_elem.set("cy", str(y))
-            new_elem.set("r", str(self.contact_distance))
-            new_elem.set("fill", color)
-            new_elem.set("fill-opacity", str(0.2))
-            new_elem.set("filter", "url(#blurMe)")
-            root.append(new_elem)
-
-        tree.write(heatmap_file)
-
     def save_schedules(
         self, work_directory: str, scheduler: Scheduler
     ) -> None:
@@ -613,14 +537,3 @@ class Simulation:
                     + str(agent.schedule)
                     + "\n\n"
                 )
-
-    def save_outputs(
-        self, work_directory: Union[str, bytes, os.PathLike]
-    ) -> None:
-        """Save all data computed by the calculator.
-
-        :param work_directory: Directory where the data is to be saved.
-        :type work_directory: PathLike
-        """
-
-        self.calculator.save_to_files(work_directory)

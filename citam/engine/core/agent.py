@@ -54,7 +54,11 @@ class Agent:
         self.base_location = base_location
         self.group = group
 
+        # Values that are independently computed at every step, each item in
+        # the dictionary should be a list of numbers, one for each step
         self.instantaneous_properties = {}
+        # Values that are cumulative in nature, each item should be a number
+        self.cumulative_properties = {}
 
         self.pos = None
         self.current_location = None

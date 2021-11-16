@@ -319,7 +319,7 @@ class ContactEvents:
         return floor_positions
 
     def get_contacts_per_coordinates(
-        self, step: int, floor_number: int
+        self, floor_number: int
     ) -> Dict[Tuple[int, int], int]:
         """
         Save per coordinate contact data to file.
