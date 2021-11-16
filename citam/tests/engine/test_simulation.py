@@ -1,11 +1,8 @@
 from citam.engine.core.simulation import Simulation
-from citam.engine.core.agent import Agent
 from citam.engine.facility.indoor_facility import Facility
 from citam.engine.constants import CAFETERIA_VISIT, DEFAULT_MEETINGS_POLICY
 
 import os
-import pytest
-import numpy as np
 import json
 
 from citam.engine.schedulers.office_scheduler import OfficeScheduler

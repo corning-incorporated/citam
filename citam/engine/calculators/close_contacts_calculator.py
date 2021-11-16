@@ -11,6 +11,7 @@ import scipy.spatial.distance
 import os
 import json
 import xml.etree.ElementTree as ET
+from matplotlib import cm
 
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
@@ -38,7 +39,9 @@ class CloseContactsCalculator(Calculator):
         self.data_outfiles = []
 
     def initialize(
-        self, agents: OrderedDict[int, Agent], workdir: Union[os.PathLike, str]
+        self,
+        agents: OrderedDict[int, Agent],
+        workdir: Optional[Union[os.PathLike, str]] = None,
     ):
         for a in agents.values():
             # Make sure another calculator is not setting
@@ -52,6 +55,8 @@ class CloseContactsCalculator(Calculator):
 
         # Opening output files
         self.data_outfiles = []
+        if not workdir:
+            return
         for floor_number in range(self.facility.number_of_floors):
             directory = os.path.join(workdir, "floor_" + str(floor_number))
             contact_file = os.path.join(directory, "contacts.txt")
@@ -119,22 +124,31 @@ class CloseContactsCalculator(Calculator):
                         current_step, fn, agent1, agent2
                     )
 
-        for fn in range(self.facility.number_of_floors):
+        if self.data_outfiles:
+            for fn in range(self.facility.number_of_floors):
 
-            n_contact_loc = len(self.step_contact_locations[fn])
-            self.data_outfiles[fn].write(
-                str(n_contact_loc) + "\nstep :" + str(current_step) + "\n"
-            )
-
-            for cl, nc in self.step_contact_locations[fn].items():
+                n_contact_loc = len(self.step_contact_locations[fn])
                 self.data_outfiles[fn].write(
-                    str(cl[0]) + "\t" + str(cl[1]) + "\t" + str(nc) + "\n"
+                    str(n_contact_loc) + "\nstep :" + str(current_step) + "\n"
                 )
 
-    def finalize(self):
+                for cl, nc in self.step_contact_locations[fn].items():
+                    self.data_outfiles[fn].write(
+                        str(cl[0]) + "\t" + str(cl[1]) + "\t" + str(nc) + "\n"
+                    )
 
+    def finalize(
+        self,
+        agents: List[Agent],
+        work_directory: Optional[Union[str, bytes, os.PathLike]] = None,
+    ) -> None:
         for cof in self.data_outfiles:
             cof.close()
+        if work_directory:
+            self.save_to_files(
+                agents,
+                work_directory,
+            )
 
     def identify_xy_proximity(
         self, positions_vector: np.ndarray
@@ -270,7 +284,6 @@ class CloseContactsCalculator(Calculator):
         # Statistics
         statistics = self.contact_events.extract_statistics()
         statistics_dict = {
-            "SimulationName": self.simulation_hash,
             "data": statistics,
         }
         filename = os.path.join(work_directory, "statistics.json")

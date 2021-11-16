@@ -2,7 +2,7 @@ from citam.engine.core.agent import Agent
 from citam.engine.facility.indoor_facility import Facility
 
 from abc import ABC, abstractmethod
-from typing import List, OrderedDict, Union
+from typing import List, Optional, OrderedDict, Union
 import os
 
 
@@ -16,7 +16,7 @@ class Calculator(ABC):
     def initialize(
         self,
         agents: OrderedDict[int, Agent],
-        work_directory: Union[str, bytes, os.PathLike],
+        work_directory: Optional[Union[str, bytes, os.PathLike]] = None,
     ):
         pass
 
@@ -28,6 +28,6 @@ class Calculator(ABC):
     def finalize(
         self,
         agents: List[Agent],
-        work_directory: Union[str, bytes, os.PathLike],
+        work_directory: Optional[Union[str, bytes, os.PathLike]] = None,
     ):
         pass
