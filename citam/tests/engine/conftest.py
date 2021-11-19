@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from svgpathtools import Path, Line, parse_path
+from citam.engine.core.simulation import Simulation
+from citam.engine.facility.indoor_facility import Facility
 
 from citam.engine.map.space import Space
 from citam.engine.map.floorplan import Floorplan
@@ -318,3 +320,34 @@ def rect_floorplan_ingester_data():
     rect_fi.space_attributes.append({"id": space_id})
 
     return rect_fi
+
+
+@pytest.fixture
+def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
+    filename = request.module.__file__
+    test_dir = os.path.dirname(filename)
+    datadir = os.path.join(test_dir, "data_navigation")
+    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
+
+    facility = Facility(
+        [simple_facility_floorplan],
+        facility_name="test_simple_facility",
+        entrances=[{"name": "1", "floor": "0"}],
+        traffic_policy=None,
+    )
+
+    simulation = Simulation(
+        facility=facility,
+        total_timesteps=3600,
+        n_agents=2,
+        occupancy_rate=None,
+        buffer=100,
+        timestep=1.0,
+        contact_distance=6.0,
+        shifts=[{"name": "1", "start_time": 0, "percent_agents": 1.0}],
+        meetings_policy_params=None,
+        scheduling_policy=None,
+        dry_run=False,
+    )
+
+    return simulation

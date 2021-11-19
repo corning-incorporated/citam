@@ -1,4 +1,5 @@
-from citam.engine.schedulers.schedule import Schedule, ScheduleItem
+from citam.engine.schedulers.schedule import ScheduleItem
+from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.facility.navigation import Navigation
 from citam.engine.schedulers.meetings import Meeting
 from citam.engine.constants import (
@@ -31,7 +32,7 @@ def sample_empty_schedule_object(
         traffic_policy=None,
     )
 
-    sched = Schedule(
+    sched = OfficeSchedule(
         timestep=1.0,
         start_time=0,
         exit_time=3600,

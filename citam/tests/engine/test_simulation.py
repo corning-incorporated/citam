@@ -1,45 +1,16 @@
 from citam.engine.core.simulation import Simulation
 from citam.engine.core.agent import Agent
 from citam.engine.facility.indoor_facility import Facility
-from citam.engine.constants import CAFETERIA_VISIT
+from citam.engine.constants import CAFETERIA_VISIT, DEFAULT_MEETINGS_POLICY
 
 import os
 import pytest
 import numpy as np
 import json
 
+from citam.engine.schedulers.office_scheduler import OfficeScheduler
+
 MAP_SVG_FILE = "map.svg"
-
-
-@pytest.fixture
-def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
-    filename = request.module.__file__
-    test_dir = os.path.dirname(filename)
-    datadir = os.path.join(test_dir, "data_navigation")
-    monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
-
-    facility = Facility(
-        [simple_facility_floorplan],
-        facility_name="test_simple_facility",
-        entrances=[{"name": "1", "floor": "0"}],
-        traffic_policy=None,
-    )
-
-    simulation = Simulation(
-        facility=facility,
-        total_timesteps=3600,
-        n_agents=2,
-        occupancy_rate=None,
-        buffer=100,
-        timestep=1.0,
-        contact_distance=6.0,
-        shifts=[{"name": "1", "start_time": 0, "percent_agents": 1.0}],
-        meetings_policy_params=None,
-        scheduling_policy=None,
-        dry_run=False,
-    )
-
-    return simulation
 
 
 def test_create_sim_hash(simple_facility_model):
@@ -55,10 +26,18 @@ def test_create_sim_hash(simple_facility_model):
     assert name1 == name2
 
 
-def test_add_agents_and_build_schedules(simple_facility_model):
+def test_create_agents(simple_facility_model):
 
     model = simple_facility_model
-    model.add_agents_and_build_schedules()
+    office_scheduler = OfficeScheduler(
+        model.facility,
+        model.timestep,
+        model.total_timesteps,
+        model.scheduling_rules,
+        DEFAULT_MEETINGS_POLICY,
+        model.buffer,
+    )
+    model.create_agents(office_scheduler)
 
     assert len(model.agents) == simple_facility_model.n_agents
     for agent in model.agents.values():
@@ -239,7 +218,6 @@ def test_run_serial(simple_facility_model, tmpdir):
     model = simple_facility_model
     model.run_serial(tmpdir, "sim_name", "run_name")
 
-    assert model.meeting_policy is not None
     assert len(model.agents) == model.n_agents
     for agent in model.agents.values():
         assert agent.schedule is not None
@@ -253,7 +231,15 @@ def test_run_serial(simple_facility_model, tmpdir):
 def test_extract_contact_distribution_per_agent(simple_facility_model):
 
     model = simple_facility_model
-    model.add_agents_and_build_schedules()
+    office_scheduler = OfficeScheduler(
+        model.facility,
+        model.timestep,
+        model.total_timesteps,
+        model.scheduling_rules,
+        DEFAULT_MEETINGS_POLICY,
+        model.buffer,
+    )
+    model.create_agents(office_scheduler)
     agent_ids, n_contacts = model.extract_contact_distribution_per_agent()
 
     assert len(agent_ids) == 2
@@ -369,22 +355,3 @@ def test_close_dining(simple_facility_floorplan, monkeypatch, request):
     )
 
     assert CAFETERIA_VISIT not in model.scheduling_rules
-
-
-def test_no_meetings(simple_facility_model, request, tmpdir):
-
-    simple_facility_model.create_meetings = False
-    simple_facility_model.run_serial(tmpdir, "sim_name", "run_name")
-
-    assert len(simple_facility_model.meeting_policy.meetings) == 0
-    assert os.path.isfile(os.path.join(tmpdir, "agent_ids.csv"))
-    assert os.path.isfile(os.path.join(tmpdir, "meetings.txt"))
-    assert os.path.isfile(os.path.join(tmpdir, "schedules.txt"))
-
-
-def test_assign_office_preassigned(simple_facility_model):
-    simple_facility_model.preassigned_offices = [(23, 0), (32, 0), (45, 0)]
-    res = simple_facility_model.assign_office()
-    assert res == (23, 0)
-    res = simple_facility_model.assign_office()
-    assert res == (32, 0)

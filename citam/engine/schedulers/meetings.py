@@ -16,7 +16,6 @@ import logging
 import progressbar as pb
 from typing import List, Dict, Any
 
-from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 from citam.engine.map.space import Space
 
 LOG = logging.getLogger(__name__)
@@ -91,7 +90,7 @@ class Meeting:
         )
 
 
-class MeetingPolicy:
+class MeetingSchedule:
     """
     Class to implement a meeting policy defining all the meetings that take
     place in a facility based on predefined parameters.
@@ -102,7 +101,7 @@ class MeetingPolicy:
         meeting_rooms: List[List[Space]],
         agent_ids: List[int],
         daylength: int,
-        policy_params: Dict[str, Any] = None,
+        policy_params: Dict[str, Any],
     ) -> None:
         """
         Initialize a new meeting policy object.
@@ -121,11 +120,12 @@ class MeetingPolicy:
         self.meetings: List[Meeting] = []
         self.daylength = daylength
 
+        if policy_params is None:
+            LOG.info("No meeting policy provided. Nothing to do.")
+            return
+
         # Attendee pool
         self.attendee_pool = {agent_id: 0 for agent_id in agent_ids}
-
-        if policy_params is None:
-            policy_params = DEFAULT_MEETINGS_POLICY
 
         # Meetings duration
         self.min_meeting_duration = policy_params["min_meeting_duration"]
@@ -306,7 +306,7 @@ class MeetingPolicy:
 
         return attendees
 
-    def create_all_meetings(self) -> None:
+    def build(self) -> None:
         """
         Create meetings for this facility with no conflicts (room nor agent)
         """
