@@ -30,6 +30,7 @@ from citam.engine.core.agent import Agent
 from citam.engine.schedulers.office_scheduler import OfficeScheduler
 from citam.engine.schedulers.schedule import Schedule
 import citam.engine.io.visualization as bv
+
 from citam.engine.constants import (
     DEFAULT_MEETINGS_POLICY,
     DEFAULT_SCHEDULING_RULES,
@@ -292,10 +293,11 @@ class Simulation:
         self.save_maps(workdir)
         self.create_agents(scheduler)
         self.save_schedules(workdir, scheduler)
-        # Initialize calculator
+        
+        # Initialize calculators
         for calculator in self.calculators:
             calculator.initialize(self.agents, workdir)
-        # Run simulation
+
         LOG.info(f"Running simulation serially with {self.n_agents} agents")
         self.run_simulation_and_save_results(workdir)
 
