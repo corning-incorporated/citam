@@ -65,6 +65,7 @@ def test_run_serial(simple_facility_model, tmpdir):
     assert os.path.isfile(os.path.join(tmpdir, "floor_0", MAP_SVG_FILE))
     assert os.path.isfile(os.path.join(tmpdir, "floor_0", "contacts.txt"))
 
+
 def test_save_manifest(tmpdir, simple_facility_model):
     model = simple_facility_model
     model.save_manifest(tmpdir, "sim_name", "run_name")

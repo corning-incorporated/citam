@@ -293,7 +293,7 @@ class Simulation:
         self.save_maps(workdir)
         self.create_agents(scheduler)
         self.save_schedules(workdir, scheduler)
-        
+
         # Initialize calculators
         for calculator in self.calculators:
             calculator.initialize(self.agents, workdir)
