@@ -333,9 +333,6 @@ def run_simulation(inputs: dict):
         run_name=inputs["run_name"],
     )
 
-    LOG.info("Extracting stats...")
-    my_model.save_outputs(work_directory)
-
     # Write policy.json
     policy = {}
     del inputs["output_directory"]
