@@ -12,62 +12,91 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-  <div>
-    <ul class="nav nav-tabs" id="my-tab" role="tablist">
-      <li class="nav-item facility">
-        <select v-model="selectedFacility" class="nav-link">
-          <option v-for="(item, id) in facilities" :key="id">
-            {{ item }}
-          </option>
-        </select>
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link overviewTab active"
-          id="overview-tab"
-          data-toggle="tab"
-          role="tab"
-          aria-controls="profile"
-          aria-selected="false"
-          @click="setSelectedComponent('overview')"
-          >Overview</a
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+        <ul class="nav nav-tabs" id="my-tab" role="tablist">
+          <li class="nav-item facility">
+            <select v-model="selectedFacility" class="nav-link">
+              <option v-for="(item, id) in facilities" :key="id">
+                {{ item }}
+              </option>
+            </select>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-10" style="margin-left: -30px">
+        <ul class="nav nav-tabs" id="my-tab" role="tablist">
+          <li class="nav-item facility">
+            <select v-model="selectedFacility" class="nav-link">
+              <option v-for="(item, id) in facilities" :key="id">
+                {{ item }}
+              </option>
+            </select>
+          </li>
+          <li class="nav-item facility">
+            <select v-model="selectedFacility" class="nav-link">
+              <option v-for="(item, id) in facilities" :key="id">
+                {{ item }}
+              </option>
+            </select>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link overviewTab active"
+              id="overview-tab"
+              data-toggle="tab"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+              @click="setSelectedComponent('overview')"
+              >Overview</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link simTab"
+              id="sim-tab"
+              data-toggle="tab"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+              @click="setSelectedComponent('simulations')"
+              >Visualizer</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link policyTab"
+              data-toggle="tab"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+              @click="setSelectedComponent('policies')"
+              >Simulation Inputs</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4" v-if="facilities.length > 0">
+        <div class="input">Inputs</div>
+        <policies :selectedFacility="selectedFacility" :polName="polName">
+        </policies>
+      </div>
+      <div class="col-sm-8">
+        <component
+          :is="selectedComponent"
+          @setFacilities="setFacilities($event)"
+          :selectedFacility="selectedFacility"
+          @showSims="showSimulations($event)"
+          @showPolicy="showPolicyInfo($event)"
+          :overviewSimObj="overviewSimObj"
+          :polName="polName"
         >
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link simTab"
-          id="sim-tab"
-          data-toggle="tab"
-          role="tab"
-          aria-controls="profile"
-          aria-selected="false"
-          @click="setSelectedComponent('simulations')"
-          >Visualizer</a
-        >
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link policyTab"
-          data-toggle="tab"
-          role="tab"
-          aria-controls="profile"
-          aria-selected="false"
-          @click="setSelectedComponent('policies')"
-          >Simulation Inputs</a
-        >
-      </li>
-    </ul>
-    <div>
-      <component
-        :is="selectedComponent"
-        @setFacilities="setFacilities($event)"
-        :selectedFacility="selectedFacility"
-        @showSims="showSimulations($event)"
-        @showPolicy="showPolicyInfo($event)"
-        :overviewSimObj="overviewSimObj"
-        :polName="polName"
-      >
-      </component>
+        </component>
+      </div>
     </div>
   </div>
 </template>
@@ -143,7 +172,7 @@ export default {
   background-color: #ebeff2;
 }
 .nav-tabs .nav-item.facility {
-  width: 130px;
+  width: 280px;
   text-align: left;
   height: 50px;
   background-color: #32404d;
@@ -202,5 +231,13 @@ export default {
   padding: 20px;
   font-size: 20px;
   cursor: pointer;
+}
+
+.input {
+  color: #607080;
+  background-color: #98a6b3;
+  height: 50px;
+  padding: 10px;
+  text-align: left;
 }
 </style>

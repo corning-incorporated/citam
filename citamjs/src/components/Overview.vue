@@ -15,10 +15,6 @@
 <template>
   <main>
     <div id="overviewLayout">
-      <div id="title">
-        <span>Overview of Simulation Results</span>Runs are grouped by policy.
-        Select a row to view individual runs.
-      </div>
       <div class="container-fluid">
         <div class="row">
           <div class="table-responsive">
@@ -85,12 +81,6 @@
                         {{ sim.runName }}
                       </button>
                     </td>
-                    <!-- <td
-                      v-for="(stats, ind) in sim.statisctics"
-                      :key="sim.simName + ind"
-                    >
-                      {{ stats.value }}
-                    </td> -->
                   </tr>
                 </template>
               </tbody>
@@ -375,6 +365,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap");
 #overviewLayout {
   background-color: #ffff;
+  margin-left: -30px;
 }
 #title {
   font-family: Inter;
