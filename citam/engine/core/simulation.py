@@ -59,17 +59,9 @@ class Simulation:
         facility: Facility,
         total_timesteps: int,
         n_agents: int,
-        shifts: List[Dict],
-        buffer: int = 300,
-        occupancy_rate: float = None,
-        timestep: float = 1.0,
         calculators: Optional[List[Calculator]] = None,
-        meetings_policy_params=None,
-        create_meetings=True,
-        close_dining=False,
-        scheduling_policy=None,
+        scheduler: Optional[Scheduler] = None,
         dry_run=False,
-        preassigned_offices: Optional[List[Tuple[int, int]]] = None,
     ) -> None:
         """
         Initialize a new simulation object.
@@ -117,47 +109,59 @@ class Simulation:
 
         self.facility = facility
         self.total_timesteps = total_timesteps
-        self.buffer = buffer
-        self.timestep = timestep
+        # self.buffer = buffer
+        # self.timestep = timestep
         self.n_agents = n_agents
-        self.occupancy_rate = occupancy_rate
-        self.preassigned_offices = preassigned_offices
+        # self.occupancy_rate = occupancy_rate
+        # self.preassigned_offices = preassigned_offices
 
-        self.calculators = calculators
         if calculators is None:
             LOG.info(
-                "No calculator provided. The default close contacts "
-                "calculator will be used."
+                "No calculator provided. Defaulting to close contacts calculator."
             )
             self.calculators = [CloseContactsCalculator(facility)]
-        if isinstance(self.calculators, Calculator):
-            self.calculators = [self.calculators]
-
-        for calc in self.calculators:
-            if not isinstance(calc, Calculator):
-                raise ValueError(
-                    "Invalid calculator. Must be an instance of Calculator."
-                )
+        elif isinstance(calculators, Calculator):
+            self.calculators = [calculators]
+        elif isinstance(calculators, list):
+            for calc in calculators:
+                if not isinstance(calc, Calculator):
+                    raise ValueError(
+                        "Invalid calculator. Must be an instance of Calculator."
+                    )
+            self.calculators = calculators
+        else:
+            raise ValueError(
+                "Invalid calculator. Must be an instance of Calculator"
+            )
+        if scheduler is None:
+            LOG.info("No scheduler provided. Defaulting to office scheduler.")
+            self.scheduler = OfficeScheduler(facility, total_timesteps)
+        elif not isinstance(scheduler, Scheduler):
+            raise ValueError(
+                "Invalid scheduler. Must be an instance of Scheduler"
+            )
+        else:
+            self.scheduler = scheduler
 
         self.current_step = 0
         self.agents = OrderedDict()
-        self.shifts = shifts
+        # self.shifts = shifts
         self.dry_run = dry_run
         self.simulation_hash = None
         self.run_id = str(uuid.uuid4())
 
-        self.create_meetings = create_meetings
+        # self.create_meetings = create_meetings
 
         # Handle scheduling rules
-        if scheduling_policy is None:
-            self.scheduling_rules = DEFAULT_SCHEDULING_RULES
-        else:
-            self.scheduling_rules = scheduling_policy
+        # if scheduling_policy is None:
+        #     self.scheduling_rules = DEFAULT_SCHEDULING_RULES
+        # else:
+        #     self.scheduling_rules = scheduling_policy
 
-        if close_dining and CAFETERIA_VISIT in self.scheduling_rules:
-            del self.scheduling_rules[CAFETERIA_VISIT]
+        # if close_dining and CAFETERIA_VISIT in self.scheduling_rules:
+        #     del self.scheduling_rules[CAFETERIA_VISIT]
 
-        self.meetings_policy_params = meetings_policy_params
+        # self.meetings_policy_params = meetings_policy_params
 
     def create_sim_hash(self):
         """
@@ -170,14 +174,14 @@ class Simulation:
         data = [
             self.total_timesteps,
             self.n_agents,
-            self.occupancy_rate,
-            self.buffer,
-            self.timestep,
+            # self.occupancy_rate,
+            # self.buffer,
+            # self.timestep,
             self.facility.entrances,
             self.facility,
-            self.shifts,
-            self.meetings_policy_params,
-            self.scheduling_rules,
+            # self.shifts,
+            # self.meetings_policy_params,
+            # self.scheduling_rules,
             self.dry_run,
         ]
         m.update(repr(data).encode("utf-8"))
@@ -216,7 +220,6 @@ class Simulation:
         workdir: Union[str, os.PathLike, bytes],
         sim_name: str,
         run_name: str,
-        scheduler: Optional[Scheduler] = None,
     ) -> None:
         """
         Run a CITAM simulation serially (i.e. only one core will be used).
@@ -231,68 +234,12 @@ class Simulation:
         :raises ValueError: If occupancy rate is not between 0.0 and 1.0
         """
 
-        # Compute occupancy rate and/or number of agents
-        if self.n_agents is not None:
-
-            occupancy_rate = round(
-                self.n_agents * 1.0 / self.facility.total_offices, 2
-            )
-            if occupancy_rate > 1.0:
-                LOG.warn(
-                    "Occupancy rate is "
-                    + str(occupancy_rate)
-                    + " > 1.0 (Office spaces: "
-                    + str(self.facility.total_offices)
-                )
-                self.occupancy_rate = occupancy_rate
-        else:
-            if self.occupancy_rate is None:
-                raise ValueError(
-                    "One of 'n_agents' or 'occupancy_rate' must be specified"
-                )
-            if self.occupancy_rate < 0.0 or self.occupancy_rate > 1.0:
-                raise ValueError("Invalid occupancy rate (must be > 0 & <=1")
-            self.n_agents = round(self.occupancy_rate * self.total_offices)
-
         # Load pre-assigned offices as needed
-        if (
-            self.preassigned_offices is not None
-            and len(self.preassigned_offices) != self.n_agents
-        ):
-            raise ValueError(
-                "Preassigned offices must equal number of agents %d vs %d.",
-                len(self.preassigned_offices),
-                self.n_agents,
-            )
-
-        # Initialize scheduler to be an office scheduler if not provided
-        if not scheduler:
-            LOG.info(
-                "No scheduler provided. Using the default office scheduler."
-            )
-
-            if self.meetings_policy_params is None and self.create_meetings:
-                LOG.info(
-                    "No meetings policy provided. The default policy defined "
-                    "in constants.py will be used."
-                )
-                self.meetings_policy_params = DEFAULT_MEETINGS_POLICY
-
-            scheduler = OfficeScheduler(
-                self.facility,
-                self.timestep,
-                self.total_timesteps,
-                self.scheduling_rules,
-                self.meetings_policy_params,
-                self.buffer,
-                self.preassigned_offices,
-            )
-
         self.create_sim_hash()
         self.save_manifest(workdir, sim_name, run_name)
         self.save_maps(workdir)
-        self.create_agents(scheduler)
-        self.save_schedules(workdir, scheduler)
+        self.create_agents()
+        self.save_schedules(workdir)
 
         # Initialize calculators
         for calculator in self.calculators:
@@ -315,8 +262,8 @@ class Simulation:
         t_outfile = open(traj_file, "w")  # Keep the trajectory file open
 
         # Run simulation
-        pbar = pb.ProgressBar(max_value=self.total_timesteps + self.buffer)
-        for i in range(self.total_timesteps + self.buffer):
+        pbar = pb.ProgressBar(max_value=self.total_timesteps)
+        for i in range(self.total_timesteps):
             pbar.update(i)
             self.step(traj_outfile=t_outfile)
             if i % 1000 == 0:
@@ -330,7 +277,7 @@ class Simulation:
             calc.finalize(self.agents, work_directory=workdir)
         LOG.info("Done with simulation.\n")
 
-    def create_agents(self, scheduler: Scheduler) -> List[Schedule]:
+    def create_agents(self) -> List[Schedule]:
         """
         Generate a list of schedules, one per agent.
 
@@ -339,7 +286,7 @@ class Simulation:
         """
         LOG.info(f"Generating schedules for {self.n_agents} agents...")
         current_agent = 0
-        schedules = scheduler.run(self.n_agents, shifts=self.shifts)
+        schedules = self.scheduler.run(self.n_agents)
         for current_agent, schedule in enumerate(schedules):
             agent = Agent(current_agent, schedule)
             self.agents[agent.unique_id] = agent
@@ -458,7 +405,7 @@ class Simulation:
             "SimulationHash": self.simulation_hash,
             "RunID": self.run_id,
             "FacilityName": self.facility.facility_name,
-            "FacilityOccupancy": self.occupancy_rate,  # between 0.0 and 1.0
+            # "FacilityOccupancy": self.occupancy_rate,  # between 0.0 and 1.0
             "MaxRoomOccupancy": 1.0,
             "NumberOfShifts": 1,
             "NumberOfEntrances": 1,
@@ -514,7 +461,8 @@ class Simulation:
             )
 
     def save_schedules(
-        self, work_directory: str, scheduler: Scheduler
+        self,
+        work_directory: str,
     ) -> None:
         """
         Write agent schedules to file.
@@ -526,7 +474,7 @@ class Simulation:
         """
 
         # agent ids and
-        scheduler.save_to_files(work_directory)
+        self.scheduler.save_to_files(work_directory)
 
         # Full schedules of all agents
         with open(
