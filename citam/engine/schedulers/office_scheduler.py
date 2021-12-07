@@ -7,10 +7,7 @@ from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.schedulers.meetings import MeetingSchedule
 from citam.engine.schedulers.schedule import Schedule
 from citam.engine.schedulers.scheduler import Scheduler
-from citam.engine.constants import (
-    DEFAULT_MEETINGS_POLICY,
-    DEFAULT_SCHEDULING_RULES,
-)
+from citam.engine.constants import DEFAULT_SCHEDULING_RULES
 
 LOG = logging.getLogger(__name__)
 

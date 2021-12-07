@@ -1,5 +1,4 @@
 import os
-from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 from citam.engine.schedulers.office_scheduler import OfficeScheduler
 
 

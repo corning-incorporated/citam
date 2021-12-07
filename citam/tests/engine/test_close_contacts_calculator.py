@@ -3,9 +3,7 @@ import numpy as np
 import os
 import pytest
 
-from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 from citam.engine.core.agent import Agent
-from citam.engine.schedulers.office_scheduler import OfficeScheduler
 
 MAP_SVG_FILE = "map.svg"
 

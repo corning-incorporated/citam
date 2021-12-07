@@ -1,11 +1,6 @@
-from citam.engine.core.simulation import Simulation
-from citam.engine.facility.indoor_facility import Facility
-from citam.engine.constants import CAFETERIA_VISIT, DEFAULT_MEETINGS_POLICY
-
 import os
 import json
 
-from citam.engine.schedulers.office_scheduler import OfficeScheduler
 
 MAP_SVG_FILE = "map.svg"
 

@@ -10,7 +10,7 @@
 #  CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 #  ==========================================================================
 
-from typing import Dict, Tuple, List, TextIO, Optional, Union
+from typing import Tuple, List, TextIO, Optional, Union
 from collections import OrderedDict
 import json
 import os
@@ -31,11 +31,6 @@ from citam.engine.schedulers.office_scheduler import OfficeScheduler
 from citam.engine.schedulers.schedule import Schedule
 import citam.engine.io.visualization as bv
 
-from citam.engine.constants import (
-    DEFAULT_MEETINGS_POLICY,
-    DEFAULT_SCHEDULING_RULES,
-    CAFETERIA_VISIT,
-)
 from citam.engine.facility.indoor_facility import Facility
 from citam.engine.schedulers.scheduler import Scheduler
 
@@ -117,7 +112,8 @@ class Simulation:
 
         if calculators is None:
             LOG.info(
-                "No calculator provided. Defaulting to close contacts calculator."
+                "No calculator provided. "
+                "Defaulting to close contacts calculator."
             )
             self.calculators = [CloseContactsCalculator(facility)]
         elif isinstance(calculators, Calculator):
@@ -126,7 +122,8 @@ class Simulation:
             for calc in calculators:
                 if not isinstance(calc, Calculator):
                     raise ValueError(
-                        "Invalid calculator. Must be an instance of Calculator."
+                        "Invalid calculator. "
+                        "Must be an instance of Calculator."
                     )
             self.calculators = calculators
         else:
