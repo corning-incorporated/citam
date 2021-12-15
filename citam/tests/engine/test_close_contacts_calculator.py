@@ -3,9 +3,7 @@ import numpy as np
 import os
 import pytest
 
-from citam.engine.constants import DEFAULT_MEETINGS_POLICY
 from citam.engine.core.agent import Agent
-from citam.engine.schedulers.office_scheduler import OfficeScheduler
 
 MAP_SVG_FILE = "map.svg"
 
@@ -35,15 +33,7 @@ def test_save_outputs(tmpdir, simple_facility_model):
 def test_extract_contact_distribution_per_agent(simple_facility_model):
 
     model = simple_facility_model
-    office_scheduler = OfficeScheduler(
-        model.facility,
-        model.timestep,
-        model.total_timesteps,
-        model.scheduling_rules,
-        DEFAULT_MEETINGS_POLICY,
-        model.buffer,
-    )
-    model.create_agents(office_scheduler)
+    model.create_agents()
     model.calculators[0].initialize(model.agents)
     agent_ids, n_contacts = model.calculators[
         0

@@ -340,12 +340,12 @@ def simple_facility_model(simple_facility_floorplan, monkeypatch, request):
         facility=facility,
         total_timesteps=3600,
         n_agents=2,
-        occupancy_rate=None,
-        buffer=100,
-        timestep=1.0,
-        shifts=[{"name": "1", "start_time": 0, "percent_agents": 1.0}],
-        meetings_policy_params=None,
-        scheduling_policy=None,
+        # occupancy_rate=None,
+        # buffer=100,
+        # timestep=1.0,
+        # shifts=[{"name": "1", "start_time": 0, "percent_agents": 1.0}],
+        # meetings_policy_params=None,
+        # scheduling_policy=None,
         dry_run=False,
     )
 

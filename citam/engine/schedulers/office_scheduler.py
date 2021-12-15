@@ -7,7 +7,7 @@ from citam.engine.schedulers.office_schedule import OfficeSchedule
 from citam.engine.schedulers.meetings import MeetingSchedule
 from citam.engine.schedulers.schedule import Schedule
 from citam.engine.schedulers.scheduler import Scheduler
-
+from citam.engine.constants import DEFAULT_SCHEDULING_RULES
 
 LOG = logging.getLogger(__name__)
 
@@ -22,20 +22,36 @@ class OfficeScheduler(Scheduler):
     def __init__(
         self,
         facility,
-        timestep,
         total_timesteps,
-        scheduling_rules,
-        meeting_policy,
-        buffer,
+        timestep=1,
+        scheduling_rules=None,
+        meeting_policy=None,
+        entry_exit_window=300,
         preassigned_offices=None,
+        shifts=None,
     ) -> None:
 
         super().__init__(facility, timestep, total_timesteps)
-        self.scheduling_rules = scheduling_rules
-        self.buffer = buffer
+        self.entry_exit_window = entry_exit_window
         self.preassigned_offices = preassigned_offices
+        if scheduling_rules is None:
+            self.scheduling_rules = DEFAULT_SCHEDULING_RULES
+        else:
+            self.scheduling_rules = scheduling_rules
+
         self.meeting_policy = meeting_policy
+        if self.meeting_policy is None:
+            LOG.info(
+                "No meeting policy provided. No meetings will be created."
+            )
+
         self.schedules = []
+        if shifts is None:
+            self.shifts = [
+                {"name": "1", "start_time": 0, "percent_agents": 1.0}
+            ]
+        else:
+            self.shifts = shifts
 
     def generate_meetings(self, n_agents: int) -> None:
         """
@@ -108,7 +124,7 @@ class OfficeScheduler(Scheduler):
 
         return office_id, office_floor
 
-    def run(self, n_agents: int, shifts: dict) -> List[Schedule]:
+    def run(self, n_agents: int) -> List[Schedule]:
         """Run this scheduler and return one schedule per agent.
 
         :param n_agents: Number of agents to create schedules for
@@ -127,7 +143,7 @@ class OfficeScheduler(Scheduler):
         # Now generate individual schedules
         self.schedules = []
         agent_pool = list(range(n_agents))
-        for shift in shifts:
+        for shift in self.shifts:
             if (
                 "start_time" not in shift.keys()
                 or "percent_agents" not in shift.keys()
@@ -138,7 +154,7 @@ class OfficeScheduler(Scheduler):
                     "percent_agents required."
                 )
 
-            shift_start_time = shift["start_time"] + self.buffer
+            shift_start_time = shift["start_time"] + self.entry_exit_window
             n_shift_agents = round(shift["percent_agents"] * n_agents)
             shift_agents = np.random.choice(agent_pool, n_shift_agents)
             agent_pool = [a for a in agent_pool if a not in shift_agents]
@@ -174,11 +190,16 @@ class OfficeScheduler(Scheduler):
                 exit_time = 0
                 while (
                     exit_time == 0
-                    or exit_time > self.total_timesteps + self.buffer
-                    or exit_time < self.total_timesteps - self.buffer
+                    or exit_time > self.total_timesteps
+                    or exit_time
+                    < self.total_timesteps - 2 * self.entry_exit_window
                 ):
 
-                    exit_time = round(np.random.poisson(self.total_timesteps))
+                    exit_time = round(
+                        np.random.poisson(
+                            self.total_timesteps - self.entry_exit_window
+                        )
+                    )
 
                 # Exit through the same door
                 exit_door = entrance_door
