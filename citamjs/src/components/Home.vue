@@ -14,141 +14,305 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-2">
+      <div class="col-sm-3 header">
         <ul class="nav nav-tabs" id="my-tab" role="tablist">
-          <li class="nav-item facility">
-            <select v-model="selectedFacility" class="nav-link">
-              <option v-for="(item, id) in facilities" :key="id">
-                {{ item }}
+          <li class="nav-item custTab facility">
+            <select
+              @change="updatePolicyData()"
+              v-model="selectedFacility"
+              class="nav-link"
+            >
+              <option v-for="(item, id) in overviewData.facilities" :key="id">
+                {{ item.facilityName }}
               </option>
             </select>
           </li>
         </ul>
       </div>
-      <div class="col-sm-10" style="margin-left: -30px">
+      <div class="col-sm-9" style="margin-left: -30px">
         <ul class="nav nav-tabs" id="my-tab" role="tablist">
-          <li class="nav-item facility">
-            <select v-model="selectedFacility" class="nav-link">
-              <option v-for="(item, id) in facilities" :key="id">
-                {{ item }}
+          <li class="nav-item custTab">
+            <select
+              @change="updateRunData($event)"
+              v-model="selectedSimulation"
+              class="nav-link"
+            >
+              <option v-for="(item, id) in policies" :key="id">
+                {{ item.simulationName }}
               </option>
             </select>
           </li>
-          <li class="nav-item facility">
-            <select v-model="selectedFacility" class="nav-link">
-              <option v-for="(item, id) in facilities" :key="id">
-                {{ item }}
+          <li class="nav-item custTab">
+            <select
+              @change="runSimulation($event)"
+              v-model="selectedRun"
+              class="nav-link"
+            >
+              <option v-for="(item, id) in simRuns" :key="id">
+                {{ item.runName }}
               </option>
             </select>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link overviewTab active"
-              id="overview-tab"
-              data-toggle="tab"
-              role="tab"
-              aria-controls="profile"
-              aria-selected="false"
-              @click="setSelectedComponent('overview')"
-              >Overview</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link simTab"
-              id="sim-tab"
-              data-toggle="tab"
-              role="tab"
-              aria-controls="profile"
-              aria-selected="false"
-              @click="setSelectedComponent('simulations')"
-              >Visualizer</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link policyTab"
-              data-toggle="tab"
-              role="tab"
-              aria-controls="profile"
-              aria-selected="false"
-              @click="setSelectedComponent('policies')"
-              >Simulation Inputs</a
-            >
           </li>
         </ul>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-4" v-if="facilities.length > 0">
+      <div class="col-sm-3 subHeader" v-if="selectedFacility != ''">
         <div class="input">Inputs</div>
-        <policies :selectedFacility="selectedFacility" :polName="polName">
-        </policies>
-      </div>
-      <div class="col-sm-8">
-        <component
-          :is="selectedComponent"
-          @setFacilities="setFacilities($event)"
+        <general-policy
           :selectedFacility="selectedFacility"
-          @showSims="showSimulations($event)"
-          @showPolicy="showPolicyInfo($event)"
-          :overviewSimObj="overviewSimObj"
-          :polName="polName"
+          :policyHash="polHash"
         >
-        </component>
+        </general-policy>
+      </div>
+      <div class="col-sm-9 subHeader">
+        <div style="margin-left: -30px">
+          <div class="vizTab">Visualizer</div>
+        </div>
+        <!-- ToDo - this shows overview but replace with Trajectory/Simulation component for the selected run-->
+        <div v-if="showSimulation" style="height: 100%">
+          <component :is="selectedComponent" :overviewSimObj="overviewSimObj">
+          </component>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import Vue from "vue";
 import Simulations from "./simulations/Simulations.vue";
-import Policies from "./Policies.vue";
+import GeneralPolicy from "./GeneralPolicy.vue";
 import FloorPlans from "./FloorPlans.vue";
 import Overview from "./Overview.vue";
 
 export default {
   name: "Home",
-  components: { Simulations, Policies, FloorPlans, Overview },
+  components: { Simulations, GeneralPolicy, FloorPlans, Overview },
   data() {
     return {
-      selectedComponent: "overview",
+      selectedComponent: "simulations",
       facilities: [],
       selectedFacility: "",
       overviewSimObj: {},
-      polName: "",
+      showSimulation: false,
+      statsList: [],
+      polHash: "",
+      policies: [],
+      selectedSimulation: "",
+      selectedRun: "",
+      simRuns: [],
+      policyList: [],
+      runList: [],
+      policyData: {},
+      overviewData: { facilities: [] },
     };
   },
-  created() {},
+  created() {
+    // If facilities already exists, avoid fetching data from API's again
+    if (this.$store.state.facilities === null) {
+      this.fetchData();
+    } else {
+      this.overviewData.facilities = this.$store.state.facilities;
+      this.policyList = this.$store.state.policyList;
+      this.getRunList();
+      this.setDefaultValues(this.overviewData.facilities);
+    }
+  },
   methods: {
-    setSelectedComponent(cmp) {
-      this.overviewSimObj = {};
-      this.polName = "";
-      this.selectedComponent = cmp;
-    },
-    setFacilities(facilities) {
-      if (!this.facilities.length > 0) {
-        facilities.forEach((element) => {
-          this.facilities.push(element.facilityName);
-        });
-        this.selectedFacility = this.facilities[0];
+    // Set first facility from th list, first policy and it's first run by default and show the
+    // simulation map for the landing page
+    setDefaultValues(facilities) {
+      if (facilities.length > 0) {
+        this.showSimulation = true;
+        this.policies = facilities[0].policies;
+        this.simRuns = this.policies[0].simulationRuns;
+        this.simRuns.push({ runName: "test" });
+        this.selectedFacility = facilities[0].facilityName;
+        this.selectedSimulation = this.policies[0].simulationName;
+        this.polHash = this.policies[0].policyHash;
+        this.runId = this.simRuns[0].runID;
+        this.selectedRun = this.simRuns[0].runName;
+        this.overviewSimObj = {
+          policyHash: this.polHash,
+          runId: this.runId,
+        };
       }
     },
-    showSimulations(simObj) {
-      this.selectedComponent = "simulations";
-      this.overviewSimObj = simObj;
-      var current = document.getElementsByClassName("active");
-      current[0].className = current[0].className.replace("active", "");
-      var newTab = document.getElementsByClassName("simTab");
-      newTab[0].className += " active";
+
+    // Copied from overiew - update functions
+
+    // update policy data if a different facility is selected - ToDo - trigger from facility options method
+    updatePolicyData() {
+      this.policies = this.overviewData.facilities.find(
+        (item) => item.facilityName == this.selectedFacility
+      ).policies;
+      this.selectedSimulation = this.policies[0].simulationName;
+      this.simRuns = this.policies[0].simulationRuns;
+      this.polHash = this.policies[0].policyHash;
+      this.runId = this.simRuns[0].runID;
+      this.overviewSimObj = {
+        policyHash: this.polHash,
+        runId: this.runId,
+      };
     },
-    showPolicyInfo(selectedPolicy) {
-      this.selectedComponent = "policies";
-      this.polName = selectedPolicy;
-      var current = document.getElementsByClassName("active");
-      current[0].className = current[0].className.replace("active", "");
-      var newTab = document.getElementsByClassName("policyTab");
-      newTab[0].className += " active";
+
+    // update simulation runs data if a different policy is selected - ToDo - trigger from simulations options method
+    updateRunData(event) {
+      this.simRuns = this.policies.find(
+        (item) => item.simulationName == this.selectedSimulation
+      ).policies;
+      this.selectedRun = this.simRuns[0].runName;
+      this.runId = this.simRuns[0].runID;
+      this.polHash = this.policies[event.target.value].policyHash;
+      this.overviewSimObj = {
+        policyHash: this.polHash,
+        runId: this.runId,
+      };
+    },
+
+    // run the simulation for the selected run to show the visualization
+    runSimulation(event) {
+      this.runId = this.simRuns[event.target.selectedIndex].runName;
+      this.overviewSimObj = {
+        policyHash: this.polHash,
+        runId: this.runId,
+      };
+    },
+
+    fetchData() {
+      axios
+        .get("/list") //get list of policies, simulations, facilities
+        .then((response) => {
+          this.policyList = response.data.map((list) => list);
+          console.log("Policy list is: ", this.policyList);
+          this.$store.commit("setPolicyList", this.policyList);
+          return axios.all(response.data.map((x) => axios.get(`/${x.RunID}`)));
+        })
+        .then((runResponse) => {
+          // eslint-disable-next-line no-unused-vars
+          this.runList = runResponse.map((run) => run.data);
+          console.log("Run List: ", this.runList);
+          return axios.all(
+            runResponse.map((x) => axios.get(`/${x.data.RunID}/statistics`))
+          );
+        })
+        .then((response) => {
+          response.map((statCard, i) => {
+            statCard.data.runID = response[i].config.url
+              .match(/(?<=\/)(.*)(?=\/)/)[0]
+              .toString();
+            this.statsList.push(statCard.data);
+          });
+          this.$store.commit("setStatsList", this.statsList);
+          this.getOverviewData();
+
+          this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
+          this.getRunList();
+          this.setDefaultValues(this.overviewData.facilities);
+        });
+    },
+
+    getOverviewData() {
+      this.overviewData = { facilities: [] };
+      this.policyList.forEach((policy) => {
+        if (this.pushUniqueFacilities(policy.FacilityName)) {
+          this.overviewData.facilities.push({
+            facilityName: policy.FacilityName,
+            policies: [
+              {
+                simulationName: policy.SimulationName,
+                policyHash: policy.SimulationHash,
+                simulationRuns: [],
+              },
+            ],
+          });
+        }
+        this.overviewData.facilities.forEach((facility) => {
+          if (
+            facility.facilityName === policy.FacilityName &&
+            this.pushUniquePolicies(facility, policy.SimulationHash)
+          ) {
+            facility.policies.push({
+              simulationName: policy.SimulationName,
+              policyHash: policy.SimulationHash,
+              simulationRuns: [],
+            });
+          }
+          facility.policies.forEach((pol) => {
+            if (policy.SimulationHash === pol.policyHash) {
+              pol.simulationRuns.push({
+                runName: policy.RunName,
+                runID: policy.RunID,
+              });
+              pol.simulationRuns.agents = 0;
+              pol.simulationRuns.totalFloors = 0;
+              pol.simulationRuns.totalTimeStep = 0;
+              pol.simulationRuns.totalScaleMultiplier = 0;
+              pol.simulationRuns.individuals = 0;
+            }
+          });
+        });
+      });
+    },
+
+    getRunList() {
+      // build stats object for each simulation run within each policies for each facility
+      this.overviewData.facilities.forEach((facility) => {
+        facility.policies.forEach((policy) => {
+          policy.simulationRuns.forEach((sim) => {
+            this.runList.forEach((run) => {
+              if (run.RunID === sim.runID) {
+                Vue.set(sim, "floors", run.Floors);
+                Vue.set(sim, "totalSteps", run.TotalTimesteps);
+                Vue.set(sim, "scaleMultiplier", run.ScaleMultiplier);
+                Vue.set(sim, "agents", run.NumberOfAgents);
+                Vue.set(sim, "numberOfEntrances", run.NumberOfEntrances);
+
+                // ToDo - Is below logic still needed?
+                // this.statsList.forEach((stats) => {
+                //   if (this.metricAttributes.length == 0) {
+                //     stats.forEach((stat) =>
+                //       this.metricAttributes.push(stat.name)
+                //     );
+                //   }
+                //   if (stats.runID === sim.runID) {
+                //     stats.forEach((item) => {
+                //       Vue.set(sim, item.name, item.value);
+                //     });
+                //     Vue.set(sim, "statistics", stats);
+                //   }
+                // });
+                policy.simulationRuns.totalFloors = sim.floors.length;
+                policy.simulationRuns.totalSteps = (
+                  sim.totalSteps / 3600
+                ).toFixed(2);
+                policy.simulationRuns.numberOfEntrances = sim.numberOfEntrances;
+                policy.simulationRuns.agents = sim.agents;
+              }
+            });
+          });
+        });
+      });
+    },
+
+    pushUniqueFacilities(item) {
+      var index = this.overviewData.facilities
+        .map(function (e) {
+          return e.facilityName;
+        })
+        .indexOf(item);
+      return index === -1 ? true : false;
+    },
+
+    pushUniquePolicies(facility, item) {
+      var index = facility.policies
+        .map(function (e) {
+          return e.policyHash;
+        })
+        .indexOf(item);
+      return index === -1 ? true : false;
     },
   },
 };
@@ -165,20 +329,27 @@ export default {
   background-color: #f0f0f0;
 }
 
+.nav-tabs {
+  border-bottom: none !important;
+}
+
 .nav-tabs .nav-item {
   width: 170px;
   height: 50px;
   border-right: 1px solid black !important;
   background-color: #ebeff2;
 }
-.nav-tabs .nav-item.facility {
-  width: 280px;
+.nav-tabs .nav-item.custTab {
   text-align: left;
   height: 50px;
   background-color: #32404d;
 }
 
-.nav-tabs .nav-item.facility select {
+.nav-tabs .nav-item.facility {
+  width: 100%;
+}
+
+.nav-tabs .nav-item.custTab select {
   width: 130px;
   font-family: Inter;
   font-weight: 600;
@@ -235,9 +406,25 @@ export default {
 
 .input {
   color: #607080;
-  background-color: #98a6b3;
+  background-color: #ebeff2;
+  height: 50px;
+  width: 100px;
+  padding: 10px;
+  text-align: left;
+}
+.vizTab {
+  color: #607080;
+  background-color: #ebeff2;
+  width: 150px;
   height: 50px;
   padding: 10px;
   text-align: left;
+}
+.subHeader {
+  background-color: #98a6b3;
+  padding-left: 0px !important;
+}
+.header {
+  padding-left: 0px !important;
 }
 </style>

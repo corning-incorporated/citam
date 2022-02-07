@@ -200,9 +200,9 @@
           </div>
           <div class="row polSubSection">
             <div class="col">
-              <span>Purpose</span>
+              <span>Purpose <br /><br /></span>
               <div
-                class="polValue"
+                class="polValue val"
                 v-for="(schedule, id) in policyDetails.scheduling"
                 :key="id"
               >
@@ -303,7 +303,7 @@ import axios from "axios";
 export default {
   props: {
     selectedFacility: String,
-    polName: String,
+    policyHash: String,
   },
   data() {
     return {
@@ -358,9 +358,9 @@ export default {
         (item) => item.facilityName == this.selectedFacility
       ).policies,
     };
-    console.log("Policy name: ", this.polName);
+    console.log("Policy name: ", this.policyHash);
     console.log("Policy data: ", this.policyData);
-    if (_.isEmpty(this.polName)) {
+    if (_.isEmpty(this.policyHash)) {
       this.selectedPolicyData.policyInfo = this.policyData.policies[0];
       axios
         .get(
@@ -379,7 +379,7 @@ export default {
         });
     } else {
       this.selectedPolicyData.policyInfo = this.policyData.policies.find(
-        (item) => item.policyHash == this.polName
+        (item) => item.policyHash == this.policyHash
       );
       axios
         .get(
@@ -396,7 +396,7 @@ export default {
           );
         });
       this.polIndex = this.policyData.policies.findIndex(
-        (item) => item.policyHash == this.polName
+        (item) => item.policyHash == this.policyHash
       );
     }
   },
@@ -518,11 +518,17 @@ export default {
 .polDesc {
   font-family: Inter;
   color: #607080;
+  font-size: 13px;
 }
 .polValue {
   background-color: #f7f9fa;
-  padding: 5px;
-  font-size: small;
+  padding: 2px;
+  font-size: 10px;
+  height: 20px;
+}
+.polValue.val {
+  margin-left: 5px;
+  font-size: 7px !important;
 }
 
 .polSubSection {
@@ -533,6 +539,10 @@ export default {
   color: #607080;
   font-size: 12px;
   font-family: Inter;
+}
+
+.polSubSection .col {
+  padding: 0px !important;
 }
 
 *:focus {

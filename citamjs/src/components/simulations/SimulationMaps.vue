@@ -24,7 +24,6 @@ export default {
   name: "SimulationMaps",
   components: { Visualizer },
   props: {
-    selectedFacility: String,
     simId: String,
   },
   watch: {
@@ -34,18 +33,11 @@ export default {
   },
   data() {
     return {
-      policyData: {},
-      simRuns: [],
       currSimId: "",
     };
   },
   created() {
     this.currSimId = this.simId;
-  },
-  methods: {
-    getSimMap(simId) {
-      this.currSimId = simId;
-    },
   },
 };
 </script>

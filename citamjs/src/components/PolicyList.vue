@@ -46,92 +46,100 @@
 </template>
 
 <script>
-import _ from "lodash"
+import _ from "lodash";
 export default {
-    name: "PolicyList",
-    props: {
-    policyData: Object,  
+  name: "PolicyList",
+  props: {
+    policyData: Object,
   },
   watch: {
-   policyData(policy) {      
-    this.policyData = policy
-    this.subRows = []
-    this.viewRuns(0)
-    this.currSimId = '' 
-    }
+    policyData(policy) {
+      this.policyData = policy;
+      this.subRows = [];
+      this.viewRuns(0);
+      this.currSimId = "";
+    },
   },
   data() {
-      return {        
-        subRows: [],
-        simRuns: [],
-        polIndex: '',
-        simIndex: '' ,
-        currSimId: ''
-      }
+    return {
+      subRows: [],
+      simRuns: [],
+      polIndex: "",
+      simIndex: "",
+      currSimId: "",
+    };
   },
   created() {
-      if(this.policyData.selectedPolicy) {
-        this.currSimId = this.policyData.selectedSim
-        this.subRows.push(this.policyData.policies.findIndex(item=>item.policyHash == this.policyData.selectedPolicy))        
-        this.simRuns.push(this.policyData.policies.find(item=>item.policyHash == this.policyData.selectedPolicy))
-        this.simIndex = this.simRuns[0].simulationRuns.findIndex(item=>item.simName == this.currSimId)     
-      }
-      else {
-          // show simulation runs for the first policy by default
-        this.viewRuns(0)
-        this.currSimId = this.simRuns[0].simulationRuns[0].simName
-      }          
+    if (this.policyData.selectedPolicy) {
+      this.currSimId = this.policyData.selectedSim;
+      this.subRows.push(
+        this.policyData.policies.findIndex(
+          (item) => item.policyHash == this.policyData.selectedPolicy
+        )
+      );
+      this.simRuns.push(
+        this.policyData.policies.find(
+          (item) => item.policyHash == this.policyData.selectedPolicy
+        )
+      );
+      this.simIndex = this.simRuns[0].simulationRuns.findIndex(
+        (item) => item.simName == this.currSimId
+      );
+    } else {
+      // show simulation runs for the first policy by default
+      this.viewRuns(0);
+      this.currSimId = this.simRuns[0].simulationRuns[0].simName;
+    }
   },
- mounted() {
+  mounted() {
     // wait till Simulations component is loaded and update the DOM element
-    this.$nextTick (function(){
-      if(this.simIndex == '' ) {
-          this.simIndex = 0
-      } 
-      this.setActiveSelectedSimulation(this.simIndex)      
-    })
+    this.$nextTick(function () {
+      if (this.simIndex == "") {
+        this.simIndex = 0;
+      }
+      this.setActiveSelectedSimulation(this.simIndex);
+    });
   },
 
-  updated: function() {
-      if(_.isEmpty(this.currSimId)) {
-          this.setActiveSelectedSimulation(0)
-          this.currSimId = this.simRuns[0].simulationRuns[0].simName
-      }
-      else {
-          this.simIndex = this.simRuns[0].simulationRuns.findIndex(item=>item.simName == this.currSimId)
-         this.simIndex >=0 ? this.setActiveSelectedSimulation(this.simIndex) : ''
-      }  
+  updated: function () {
+    if (_.isEmpty(this.currSimId)) {
+      this.setActiveSelectedSimulation(0);
+      this.currSimId = this.simRuns[0].simulationRuns[0].simName;
+    } else {
+      this.simIndex = this.simRuns[0].simulationRuns.findIndex(
+        (item) => item.simName == this.currSimId
+      );
+      this.simIndex >= 0 ? this.setActiveSelectedSimulation(this.simIndex) : "";
+    }
   },
   methods: {
-    viewRuns(idx) {      
-      const index = this.subRows.indexOf(idx)
-      if(index > -1) {
-        this.subRows.splice(index, 1)
-        this.simRuns =  [] 
+    viewRuns(idx) {
+      const index = this.subRows.indexOf(idx);
+      if (index > -1) {
+        this.subRows.splice(index, 1);
+        this.simRuns = [];
+      } else {
+        this.subRows = [];
+        this.subRows.push(idx);
+        this.simRuns = [];
+        this.simRuns.push(this.policyData.policies[idx]);
       }
-      else{
-        this.subRows = []
-        this.subRows.push(idx)
-        this.simRuns = []        
-        this.simRuns.push(this.policyData.policies[idx])   
-      }      
     },
     setSimMap(newSimId, simIndex) {
-        this.currSimId = newSimId
-        this.$emit('getSimMap', newSimId)
-        this.setActiveSelectedSimulation(simIndex)
+      this.currSimId = newSimId;
+      this.setActiveSelectedSimulation(simIndex);
     },
-    
+
     setActiveSelectedSimulation(Id) {
-      var current =  document.getElementsByClassName('setActive')
-      if(current.length > 0) {
+      var current = document.getElementsByClassName("setActive");
+      if (current.length > 0) {
         current[0].className = current[0].className.replace("setActive", "");
-      }      
-      var simId = document.getElementById(Id)
-      simId.className += " setActive"
-    }
-  }
-}
+      }
+      var simId = document.getElementById(Id);
+      simId.className += " setActive";
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -197,7 +205,4 @@ export default {
 .simName.setActive {
   color: #0080ff;
 }
-/* a.simName {
-    color: #0080FF;
-} */
 </style>

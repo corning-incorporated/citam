@@ -43,21 +43,11 @@
                     </button>
                   </td>
                   <td class="noBorder">
-                    <button
-                      type="button"
-                      class="btn btn-link"
-                      @click="showPolicyInfo(item.policyHash)"
-                    >
+                    <button type="button" class="btn btn-link">
                       {{ item.simulationName }}
                     </button>
                     <br />
                     {{ item.simulationRuns.length }} Runs
-                  </td>
-                  <td
-                    v-for="(avg, id) in item.simulationRuns.average"
-                    :key="id"
-                  >
-                    {{ avg }}
                   </td>
                   <td>{{ item.simulationRuns.agents }}</td>
                   <td>{{ item.simulationRuns.totalFloors }}</td>
@@ -95,7 +85,6 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
-import _ from "lodash";
 
 export default {
   name: "Overview",
@@ -104,13 +93,6 @@ export default {
   },
   data() {
     return {
-      metricHeaders: [
-        "Total Contact (minutes)",
-        "Average Contacts/Agent",
-        "Average Contact Duration (min/Agent)",
-        "Average Number of People/Agent",
-      ],
-      metricAttributes: [],
       policyInputHeaders: [
         "Number of Agents",
         "Total Floors",
@@ -124,10 +106,10 @@ export default {
       runList: [],
       policyData: {},
       overviewData: { facilities: [] },
-      hasSims: false,
     };
   },
   watch: {
+    // Update policy data if facility is changed in Home component - Remove later
     selectedFacility(newFacility) {
       this.policyData = {
         policies: this.overviewData.facilities.find(
@@ -135,10 +117,10 @@ export default {
         ).policies,
       };
       this.subRows = [];
-      this.calculatePolicyAvg();
     },
   },
   created() {
+    // If facilities already exists, avoid fetching data from API's again
     if (this.$store.state.facilities === null) {
       this.fetchData();
     } else {
@@ -147,21 +129,9 @@ export default {
       this.statsList = this.$store.state.statsList;
       this.getRunList();
       this.setDefaultPolicy();
-      this.calculatePolicyAvg();
     }
   },
   methods: {
-    sortTable(att) {
-      this.policyList = _.sortBy(this.policyList, [att]);
-      this.runList = _.sortBy(this.runList, [att]);
-      this.statsList = _.sortBy(this.statsList, [att]);
-      this.policyData;
-      this.metricAttributes;
-      this.overviewData.facilities = _.sortBy(this.overviewData.facilities, [
-        att,
-      ]);
-      this.$store.state.facilities;
-    },
     setDefaultPolicy() {
       if (this.selectedFacility) {
         this.policyData = {
@@ -203,13 +173,13 @@ export default {
           this.getOverviewData();
 
           this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
-          this.$emit("setFacilities", this.overviewData.facilities); // To display facility list in the dropdown
-
           this.getRunList();
           this.setDefaultPolicy();
-          this.calculatePolicyAvg();
+          this.$emit("showFacilities", this.overviewData.facilities); // To display facility list in the dropdown
         });
     },
+
+    // View all runs for each simulation
     viewRuns(idx) {
       const index = this.subRows.indexOf(idx);
       if (index > -1) {
@@ -279,19 +249,20 @@ export default {
                 Vue.set(sim, "agents", run.NumberOfAgents);
                 Vue.set(sim, "numberOfEntrances", run.NumberOfEntrances);
 
-                this.statsList.forEach((stats) => {
-                  if (this.metricAttributes.length == 0) {
-                    stats.forEach((stat) =>
-                      this.metricAttributes.push(stat.name)
-                    );
-                  }
-                  if (stats.runID === sim.runID) {
-                    stats.forEach((item) => {
-                      Vue.set(sim, item.name, item.value);
-                    });
-                    Vue.set(sim, "statistics", stats);
-                  }
-                });
+                // ToDo - Is below logic still needed?
+                // this.statsList.forEach((stats) => {
+                //   if (this.metricAttributes.length == 0) {
+                //     stats.forEach((stat) =>
+                //       this.metricAttributes.push(stat.name)
+                //     );
+                //   }
+                //   if (stats.runID === sim.runID) {
+                //     stats.forEach((item) => {
+                //       Vue.set(sim, item.name, item.value);
+                //     });
+                //     Vue.set(sim, "statistics", stats);
+                //   }
+                // });
                 policy.simulationRuns.totalFloors = sim.floors.length;
                 policy.simulationRuns.totalSteps = (
                   sim.totalSteps / 3600
@@ -303,9 +274,6 @@ export default {
           });
         });
       });
-      // document.getElementById(
-      //   "metricCols"
-      // ).colSpan = this.metricAttributes.length;
     },
 
     pushUniqueFacilities(item) {
@@ -326,36 +294,12 @@ export default {
       return index === -1 ? true : false;
     },
 
-    calculatePolicyAvg() {
-      var stat_list = [];
-      for (var p of this.policyData.policies) {
-        for (var sruns of p.simulationRuns) {
-          stat_list.push(
-            _.mapValues(_.keyBy(sruns.statisctics, "name"), "value")
-          );
-        }
-        var dynamicKeys = _.keys(stat_list[0]);
-        var sums = {};
-        _.each(stat_list, function (item) {
-          _.each(dynamicKeys, function (statKeys) {
-            sums[statKeys] = (sums[statKeys] || 0) + item[statKeys];
-          });
-        });
-        p.simulationRuns.average = sums;
-        stat_list = [];
-      }
-    },
-
     showSimulations(policyHash, runId, type) {
       this.$emit("showSims", {
         policyHash: policyHash,
         runId: runId,
         type: type,
       });
-    },
-
-    showPolicyInfo(policyHash) {
-      this.$emit("showPolicy", policyHash);
     },
   },
 };

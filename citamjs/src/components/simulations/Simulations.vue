@@ -13,9 +13,8 @@
 <!--  ==============================================================================-->
 <template>
   <div id="simLayout">
-    <div id="title">
-      <span>Visualizer</span>Interactive visualization of trajectory data for:
-      <b style="color: #0080ff">{{ simulationName }} -> {{ runName }}</b>
+    <div class="trjBtn">
+      <button type="button" class="btn btn-primary">Load Trajectory</button>
     </div>
     <div class="container-fluid">
       <div>
@@ -28,87 +27,32 @@
 </template>
 
 <script>
-import PolicyList from "../PolicyList.vue";
 import SimulationMaps from "./SimulationMaps.vue";
 import DataVisualization from "./DataVisualizations.vue";
-import _ from "lodash";
 
 export default {
   name: "Simulations",
-  components: { PolicyList, SimulationMaps, DataVisualization },
+  components: { SimulationMaps, DataVisualization },
   props: {
-    selectedFacility: String,
     overviewSimObj: Object,
   },
+
+  watch: {
+    overviewSimObj(simObj) {
+      this.currSimId = simObj.runId;
+    },
+  },
+
   data() {
     return {
       selectedComponent: "simulation-maps",
       policyData: {},
       currSimId: "",
-      selectedPolicy: "",
-      selectedSim: "",
-      runName: "",
-      simulationName: "",
     };
   },
-  watch: {
-    selectedFacility(newFacility) {
-      this.policyData = {
-        policies: this.$store.state.facilities.find(
-          (item) => item.facilityName == newFacility
-        ).policies,
-      };
-      this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
-    },
-  },
+
   created() {
-    this.policyData = {
-      policies: this.$store.state.facilities.find(
-        (item) => item.facilityName == this.selectedFacility
-      ).policies,
-    };
-
-    for (let element of this.policyData.policies) {
-      let run = element.simulationRuns.find(
-        (run) => run.runID === this.$store.state.currentSimID
-      );
-      if (run !== undefined) {
-        this.runName = run.runName;
-        this.simulationName = element.simulationName;
-        break;
-      }
-    }
-
-    if (_.isEmpty(this.overviewSimObj)) {
-      this.currSimId = this.policyData.policies[0].simulationRuns[0].simName;
-    } else {
-      this.currSimId = this.overviewSimObj.runId;
-      this.policyData.selectedPolicy = this.overviewSimObj.policyHash;
-      this.policyData.selectedSim = this.overviewSimObj.runId;
-      this.selectedComponent =
-        this.overviewSimObj.type == "simMaps"
-          ? "simulation-maps"
-          : "data-visualization";
-    }
-  },
-  mounted() {
-    // wait till Simulations component is loaded and update the DOM element
-    this.$nextTick(function () {
-      if (this.overviewSimObj.type == "dataViz") {
-        var simTab = document.getElementsByClassName("simMaps");
-        simTab[0].className = simTab[0].className.replace("active", "");
-        var dataTab = document.getElementsByClassName("dataViz");
-        dataTab[0].className += " active";
-      }
-    });
-  },
-  methods: {
-    setSelectedComponent(cmp) {
-      this.selectedComponent = cmp;
-    },
-    getSimMap(simId) {
-      this.currSimId = simId;
-    },
+    this.currSimId = this.overviewSimObj.runId;
   },
 };
 </script>
@@ -131,7 +75,8 @@ export default {
 }
 #simLayout {
   background-color: #ffff;
-  margin-bottom: 100px;
+  margin: 0 0 100px -15px;
+  height: 100%;
 }
 .navbar {
   padding-top: 0 !important;
@@ -214,5 +159,9 @@ export default {
 .btn-link:hover {
   text-decoration: none !important;
   color: #007bff;
+}
+
+.trjBtn {
+  padding: 10px;
 }
 </style>

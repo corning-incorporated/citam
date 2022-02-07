@@ -42,6 +42,10 @@ export default {
   computed: mapState(["mapData", "status"]),
 
   watch: {
+    simId(runId) {
+      this.simId = runId;
+      this.loadVisualization();
+    },
     status(newValue, oldValue) {
       if (oldValue === "fetchingData" && newValue === "ready") {
         this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
@@ -81,31 +85,34 @@ export default {
     }
   },
   mounted() {
-    if (
-      (this.simId !== undefined && this.simId !== null) ||
-      (this.$store.state.currentSimID !== undefined &&
-        this.$store.state.currentSimID !== null)
-    ) {
-      if (
-        this.simId !== undefined &&
-        this.simId !== this.$store.state.currentSimID
-      ) {
-        // A new run was selected. Reset map and trajectory data
-        this.gui = null;
-        this.mapInstance = null;
-        this.$store.commit("setMapData", null);
-        this.$store.commit("removeTrajectoryData");
-        this.floor = 0;
-      }
-      this.showSimulationMap();
-    } else {
-      alert(
-        "Please select a run from the Overview tab to see the visualization "
-      );
-    }
+    this.loadVisualization();
   },
 
   methods: {
+    loadVisualization() {
+      if (
+        (this.simId !== undefined && this.simId !== null) ||
+        (this.$store.state.currentSimID !== undefined &&
+          this.$store.state.currentSimID !== null)
+      ) {
+        if (
+          this.simId !== undefined &&
+          this.simId !== this.$store.state.currentSimID
+        ) {
+          // A new run was selected. Reset map and trajectory data
+          this.gui = null;
+          this.mapInstance = null;
+          this.$store.commit("setMapData", null);
+          this.$store.commit("removeTrajectoryData");
+          this.floor = 0;
+        }
+        this.showSimulationMap();
+      } else {
+        alert(
+          "Please select a run from the Overview tab to see the visualization "
+        );
+      }
+    },
     showSimulationMap() {
       this.createMapInstance();
       if (
@@ -181,14 +188,6 @@ export default {
       /** Create Control Panel */
       this.gui = GUI = new dat.GUI({ autoPlace: false });
       this.$refs.controls.appendChild(this.gui.domElement);
-
-      // if (this.newSimId) {
-      //   while (this.$refs.controls.hasChildNodes()) {
-      //     this.$refs.controls.removeChild(this.$refs.controls.firstChild);
-      //   }
-      //   this.$refs.controls.appendChild(this.gui.domElement);
-      // } else {
-      // }
 
       this.guiFloorWidget = GUI.add(
         this.animationParams,
