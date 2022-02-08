@@ -32,10 +32,6 @@ export class Loader {
               <span class="loader-label" id="countdown-root"></span>
             </div>
            </div>
-          <div class="loader-wrapper">
-            <div id="map-loader" class="loader"></div>
-            <span class="loader-label">Map File</span>
-          </div>
         </div>
       </div>
     `;
@@ -45,7 +41,7 @@ export class Loader {
     this.trajLoaderLabel = document.getElementById('traj-loader-label');
 
     // this._contactElem = document.getElementById('contact-loader');
-    this._mapElem = document.getElementById('map-loader');
+    //this._mapElem = document.getElementById('map-loader');
     // this._distributionsElem = document.getElementById('distribution-loader');
     this.countdownRoot = document.getElementById('countdown-root');
 
@@ -83,9 +79,9 @@ export class Loader {
   }
 
   /** Set the map spinner to the loaded state */
-  mapLoaded() {
-    this._setComplete(this._mapElem);
-  }
+  // mapLoaded() {
+  //   this._setComplete(this._mapElem);
+  // }
 
   /** Set the heatmap spinner to the loaded state */
   distributionsLoaded() {
@@ -149,7 +145,7 @@ export class Loader {
    * @private
    */
   _reset() {
-    [this._trajectoryElem, this._mapElem].forEach(
+    [this._trajectoryElem].forEach(
       (elem) => {
         elem.classList.remove('loaded');
         elem.classList.remove('error');

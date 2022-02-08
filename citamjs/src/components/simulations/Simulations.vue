@@ -13,9 +13,6 @@
 <!--  ==============================================================================-->
 <template>
   <div id="simLayout">
-    <div class="trjBtn">
-      <button type="button" class="btn btn-primary">Load Trajectory</button>
-    </div>
     <div class="container-fluid">
       <div>
         <div>
@@ -159,9 +156,5 @@ export default {
 .btn-link:hover {
   text-decoration: none !important;
   color: #007bff;
-}
-
-.trjBtn {
-  padding: 10px;
 }
 </style>

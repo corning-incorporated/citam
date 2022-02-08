@@ -128,7 +128,7 @@ export default {
         this.showSimulation = true;
         this.policies = facilities[0].policies;
         this.simRuns = this.policies[0].simulationRuns;
-        this.simRuns.push({ runName: "test" });
+        this.simRuns.push({ runName: "test1" });
         this.selectedFacility = facilities[0].facilityName;
         this.selectedSimulation = this.policies[0].simulationName;
         this.polHash = this.policies[0].policyHash;

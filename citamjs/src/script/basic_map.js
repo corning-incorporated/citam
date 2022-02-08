@@ -38,6 +38,7 @@ export default class Map2D {
         /** Timer **/
         this.timer = new Timer(1);
         this.mapRoot.append(this.timer.domElement);
+        this.timer.hide();
 
         /** Handle for running animation set by window.setInterval */
         this.animationIntervalID = null;
@@ -96,6 +97,14 @@ export default class Map2D {
 
     hideLoader() {
         this.loader.hide()
+    }
+
+    showTimer() {
+        this.timer.show()
+    }
+
+    hideTimer() {
+        this.timer.hide()
     }
 
 

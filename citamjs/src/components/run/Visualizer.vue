@@ -14,7 +14,16 @@
 
 <template>
   <div id="app" style="position: relative">
-    <div id="controls" ref="controls"></div>
+    <div class="trjBtn" v-if="showTrjctryBtn">
+      <button type="button" class="btn btn-primary" @click="loadTrajectory()">
+        Load Trajectory
+      </button>
+    </div>
+    <div
+      class="controls"
+      :class="{ hideControl: hideControl }"
+      ref="controls"
+    ></div>
     <div id="map" ref="mapRoot"></div>
   </div>
 </template>
@@ -37,6 +46,8 @@ export default {
       nAgents: null,
       totalSteps: null,
       isLoadingData: null,
+      showTrjctryBtn: true,
+      hideControl: true,
     };
   },
   computed: mapState(["mapData", "status"]),
@@ -44,14 +55,24 @@ export default {
   watch: {
     simId(runId) {
       this.simId = runId;
+      this.showTrjctryBtn = true;
+      this.resetSimulation();
       this.loadVisualization();
     },
     status(newValue, oldValue) {
-      if (oldValue === "fetchingData" && newValue === "ready") {
+      if (
+        oldValue === "fetchingTrajectoryData" &&
+        newValue === "trajectoryReady"
+      ) {
+        this.showTrjctryBtn = false;
         this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
         this.mapInstance.hideLoader();
+        this.mapInstance.setCurrentStep(0);
+        this.mapInstance.showTimer();
+        this.createTrajectoryControl();
         this.mapInstance.startAnimation();
       } else if (newValue === "error") {
+        this.showTrjctryBtn = true;
         this.mapInstance.showError(this.$store.state.errorMessage);
       }
     },
@@ -60,9 +81,6 @@ export default {
         this.mapInstance.setMapData(this.$store.state.mapData);
         this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
-        this.setMapFloorOptions();
-        this.mapInstance.loader.show();
-        this.mapInstance.loader.mapLoaded();
         let expectedDuration = this.computeEstimatedLoadTime();
         if (expectedDuration !== null) {
           this.mapInstance.loader.startCountdown(expectedDuration);
@@ -100,11 +118,7 @@ export default {
           this.simId !== this.$store.state.currentSimID
         ) {
           // A new run was selected. Reset map and trajectory data
-          this.gui = null;
-          this.mapInstance = null;
-          this.$store.commit("setMapData", null);
-          this.$store.commit("removeTrajectoryData");
-          this.floor = 0;
+          this.resetSimulation();
         }
         this.showSimulationMap();
       } else {
@@ -113,36 +127,45 @@ export default {
         );
       }
     },
+
+    resetSimulation() {
+      this.hideControl = true;
+      this.$store.commit("setMapData", null);
+      this.$store.commit("removeTrajectoryData");
+      this.floor = 0;
+      if (this.mapInstance !== null) {
+        this.mapInstance.hideTimer();
+        this.mapInstance.hideLoader();
+        this.mapInstance = new Map2D(this.$refs.mapRoot);
+      }
+    },
+    loadTrajectory() {
+      this.showTrjctryBtn = false;
+      this.mapInstance.loader.show();
+      this.hideControl = false;
+      this.$store.dispatch("getTrajectoryData");
+      let expectedDuration = this.computeEstimatedLoadTime();
+      let currentTime = new Date().getTime() / 1000;
+      let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
+      if (expectedDuration !== null) {
+        this.mapInstance.loader.startCountdown(expectedDuration - elapsedTime);
+      }
+    },
     showSimulationMap() {
-      this.createMapInstance();
-      if (
-        this.$store.state.trajectoryData === null &&
-        (this.$store.state.status === "ready" ||
-          this.$store.state.status === null)
-      ) {
+      this.mapInstance = new Map2D(this.$refs.mapRoot);
+      if (this.$store.state.mapData === null) {
         this.$store.commit("setSimulationID", this.simId);
         this.$store.dispatch("fetchSimulationData");
       } else if (this.$store.state.trajectoryData !== null) {
         this.mapInstance.setMapData(this.$store.state.mapData);
         this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
-        this.mapInstance.setCurrentStep(this.$store.state.currentStep);
         this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
         this.setMapFloorOptions();
         this.mapInstance.startAnimation();
-      } else if (this.$store.state.status === "fetchingData") {
+      } else if (this.$store.state.status === "fetchingSimulationData") {
         if (this.$store.state.mapData !== null) {
           this.mapInstance.setMapData(this.$store.state.mapData);
-          this.mapInstance.loader.show();
-          this.mapInstance.loader.mapLoaded();
-          let expectedDuration = this.computeEstimatedLoadTime();
-          let currentTime = new Date().getTime() / 1000;
-          let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
-          if (expectedDuration !== null) {
-            this.mapInstance.loader.startCountdown(
-              expectedDuration - elapsedTime
-            );
-          }
         }
       }
     },
@@ -171,11 +194,10 @@ export default {
         .onChange((value) => this.mapInstance.setFloor(value));
     },
 
-    createMapInstance() {
+    createTrajectoryControl() {
       this.animationParams = {};
       let GUI, timestepSlider;
-      let mapRoot = this.$refs.mapRoot;
-      let mapInstance = (this.mapInstance = new Map2D(mapRoot));
+      let mapInstance = this.mapInstance;
 
       /** Control Panel Parameters */
       this.animationParams = {
@@ -225,12 +247,20 @@ export default {
 </script>
 
 <style scoped>
-#controls {
+.controls {
   position: absolute;
   right: 0px;
   top: 0px;
 }
+.hideControl {
+  display: none;
+}
 #map {
   background-color: white;
+  height: 100% !important;
+}
+.trjBtn {
+  padding: 10px;
+  background-color: white !important;
 }
 </style>

@@ -31,7 +31,7 @@ export default new Vuex.Store({
         nAgents: null,
         mapData: null,
         scaleMultiplier: null,
-        status: null, // fetchingData | error | ready | null
+        status: null, // fetchingSimulationData | fetchingTrajectoryData | error | mapReady | trajectoryReady | null
         errorMessage: null,
         fetchingStartTime: null,
         currentStep: null,
@@ -88,13 +88,13 @@ export default new Vuex.Store({
             state.currentSimID = null;
             state.nAgents = null;
             state.mapData = null;
-            state.status = 'ready';
+            state.status = 'mapReady';
             state.currentFloor = null;
         }
     },
     actions: {
-        async fetchSimulationData({ dispatch, commit, state }) {
-            commit("updateStatus", { status: "fetchingData", msg: null });
+        async fetchSimulationData({ commit, state }) {
+            commit("updateStatus", { status: "fetchingSimulationData", msg: null });
             commit("setFetchingStartTime", new Date().getTime() / 1000);
             return new Promise(() => {
                 try {
@@ -107,13 +107,11 @@ export default new Vuex.Store({
 
                         getBaseMap(state.currentSimID, state.currentFloor).then((resp) => {
                             commit("setMapData", resp.data);
+                            commit("updateStatus", { status: "mapReady", msg: null });
                         });
-                        if (response.data.NumberOfAgents > 0 || response.data.TotalTimesteps >= 0) {
-                            await dispatch("getTrajectoryData");
-                        } else {
+                        if (response.data.NumberOfAgents < 1 || response.data.TotalTimesteps < 0) {
                             commit('updateStatus', { status: 'error', msg: 'Number of agents or total steps is zero.' });
                         }
-
                     });
 
                 } catch (e) {
@@ -126,6 +124,7 @@ export default new Vuex.Store({
             let trajectories = [];
             let max_chunk_size = Math.ceil(1e8 / state.nAgents);
             let request_arr = [], first_timestep = 0, max_contacts = 0;
+            commit("updateStatus", { status: "fetchingTrajectoryData", msg: null });
 
             while (first_timestep < state.totalSteps) {
                 request_arr.push(
@@ -144,10 +143,10 @@ export default new Vuex.Store({
                         max_contacts = Math.max(max_contacts, chunk.data.max_count);
                     });
                     commit("setTrajectoryData", trajectories);
-                    commit("updateStatus", { status: "ready", msg: null });
                 }
             });
             commit("setTotalSteps", trajectories.length);
+            commit("updateStatus", { status: "trajectoryReady", msg: null });
         },
     }
 });
