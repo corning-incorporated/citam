@@ -128,7 +128,6 @@ export default {
         this.showSimulation = true;
         this.policies = facilities[0].policies;
         this.simRuns = this.policies[0].simulationRuns;
-        this.simRuns.push({ runName: "test1" });
         this.selectedFacility = facilities[0].facilityName;
         this.selectedSimulation = this.policies[0].simulationName;
         this.polHash = this.policies[0].policyHash;
@@ -269,21 +268,6 @@ export default {
                 Vue.set(sim, "scaleMultiplier", run.ScaleMultiplier);
                 Vue.set(sim, "agents", run.NumberOfAgents);
                 Vue.set(sim, "numberOfEntrances", run.NumberOfEntrances);
-
-                // ToDo - Is below logic still needed?
-                // this.statsList.forEach((stats) => {
-                //   if (this.metricAttributes.length == 0) {
-                //     stats.forEach((stat) =>
-                //       this.metricAttributes.push(stat.name)
-                //     );
-                //   }
-                //   if (stats.runID === sim.runID) {
-                //     stats.forEach((item) => {
-                //       Vue.set(sim, item.name, item.value);
-                //     });
-                //     Vue.set(sim, "statistics", stats);
-                //   }
-                // });
                 policy.simulationRuns.totalFloors = sim.floors.length;
                 policy.simulationRuns.totalSteps = (
                   sim.totalSteps / 3600
