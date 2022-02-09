@@ -71,9 +71,12 @@ export default {
   padding: 10px 0 10px 0;
 }
 #simLayout {
-  background-color: #ffff;
+  background-color: #ebeff2 !important;
   margin: 0 0 100px -15px;
   height: 100%;
+}
+#simLayout .container-fluid {
+  padding: 0px !important;
 }
 .navbar {
   padding-top: 0 !important;

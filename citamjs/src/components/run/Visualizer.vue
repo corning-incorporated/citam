@@ -65,11 +65,15 @@ export default {
         newValue === "trajectoryReady"
       ) {
         this.showTrjctryBtn = false;
-        this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
         this.mapInstance.hideLoader();
         this.mapInstance.setCurrentStep(0);
         this.mapInstance.showTimer();
-        this.createTrajectoryControl();
+        if (this.gui === null) {
+          this.createTrajectoryControl();
+        }
+        this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
+        this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
+        this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
         this.mapInstance.startAnimation();
       } else if (newValue === "error") {
         this.showTrjctryBtn = true;
@@ -113,13 +117,7 @@ export default {
         (this.$store.state.currentSimID !== undefined &&
           this.$store.state.currentSimID !== null)
       ) {
-        if (
-          this.simId !== undefined &&
-          this.simId !== this.$store.state.currentSimID
-        ) {
-          // A new run was selected. Reset map and trajectory data
-          this.resetSimulation();
-        }
+        this.mapInstance = new Map2D(this.$refs.mapRoot);
         this.showSimulationMap();
       } else {
         alert(
@@ -130,15 +128,13 @@ export default {
 
     resetSimulation() {
       this.hideControl = true;
-      this.$store.commit("setMapData", null);
       this.$store.commit("removeTrajectoryData");
       this.floor = 0;
       if (this.mapInstance !== null) {
-        this.mapInstance.hideTimer();
-        this.mapInstance.hideLoader();
-        this.mapInstance = new Map2D(this.$refs.mapRoot);
+        this.mapInstance.reloadSimulation();
       }
     },
+
     loadTrajectory() {
       this.showTrjctryBtn = false;
       this.mapInstance.loader.show();
@@ -152,7 +148,6 @@ export default {
       }
     },
     showSimulationMap() {
-      this.mapInstance = new Map2D(this.$refs.mapRoot);
       if (this.$store.state.mapData === null) {
         this.$store.commit("setSimulationID", this.simId);
         this.$store.dispatch("fetchSimulationData");
@@ -163,7 +158,7 @@ export default {
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
         this.setMapFloorOptions();
         this.mapInstance.startAnimation();
-      } else if (this.$store.state.status === "fetchingSimulationData") {
+      } else if (this.$store.state.status === "mapReady") {
         if (this.$store.state.mapData !== null) {
           this.mapInstance.setMapData(this.$store.state.mapData);
         }
@@ -261,6 +256,6 @@ export default {
 }
 .trjBtn {
   padding: 10px;
-  background-color: white !important;
+  background-color: #ebeff2 !important;
 }
 </style>

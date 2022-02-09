@@ -446,6 +446,7 @@ export default {
   border-left: 1px solid lightgray;
   font-size: smaller;
   width: 100%;
+  height: 58px;
 }
 
 .headingFont {

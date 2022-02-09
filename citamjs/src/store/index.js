@@ -84,10 +84,6 @@ export default new Vuex.Store({
         },
         removeTrajectoryData(state) {
             state.trajectoryData = null;
-            state.totalSteps = null;
-            state.currentSimID = null;
-            state.nAgents = null;
-            state.mapData = null;
             state.status = 'mapReady';
             state.currentFloor = null;
         }

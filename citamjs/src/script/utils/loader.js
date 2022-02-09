@@ -66,6 +66,7 @@ export class Loader {
   /** Hide the loader element */
   hide() {
     this.loaderRoot.style.display = 'none';
+    this._reset();
   }
 
   /** Set the trajectory spinner to the loaded state */

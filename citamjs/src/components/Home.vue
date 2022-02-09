@@ -173,7 +173,7 @@ export default {
 
     // run the simulation for the selected run to show the visualization
     runSimulation(event) {
-      this.runId = this.simRuns[event.target.selectedIndex].runName;
+      this.runId = this.simRuns[event.target.selectedIndex].runID;
       this.overviewSimObj = {
         policyHash: this.polHash,
         runId: this.runId,
@@ -318,7 +318,7 @@ export default {
 }
 
 .nav-tabs .nav-item {
-  width: 170px;
+  width: 340px;
   height: 50px;
   border-right: 1px solid black !important;
   background-color: #ebeff2;
@@ -334,7 +334,6 @@ export default {
 }
 
 .nav-tabs .nav-item.custTab select {
-  width: 130px;
   font-family: Inter;
   font-weight: 600;
   font-size: 16px;
@@ -406,7 +405,7 @@ export default {
 }
 .subHeader {
   background-color: #98a6b3;
-  padding-left: 0px !important;
+  padding: 0px 0px 0px 0px !important ;
 }
 .header {
   padding-left: 0px !important;
