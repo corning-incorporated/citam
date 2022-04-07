@@ -297,133 +297,49 @@
 </template>
 
 <script>
-import _ from "lodash";
+// import _ from "lodash";
 import axios from "axios";
 
 export default {
   props: {
-    selectedFacility: String,
     policyHash: String,
+    runID:String
+
   },
   data() {
     return {
-      policyData: {},
-      selectedPolicyData: {
-        generalPolicy: {
-          spaceName: "",
-          floor: "",
-          entranceTime: "",
-          leaveTime: "",
-          quantity: "",
-          distance: "",
-          shiftName: "",
-          shiftStartTime: "",
-          shiftAgentPercent: "",
-        },
-        meetingsPolicy: {
-          minDuration: "",
-          maxDuration: "",
-          avgMtngsPerRoomPerDay: "",
-          avgMtngRooms: "",
-          avgMtngsPerAgent: "",
-          minMtngAttendees: "",
-        },
-        schedulingPolicy: {
-          purpose: "",
-          minDuration: "",
-          maxDuration: "",
-          minInstance: "",
-          maxInstance: "",
-        },
-        trafficPolicy: { floor: "", aisleId: "", direction: "" },
-      },
-      polIndex: "",
       policyDetails: null,
     };
   },
   watch: {
-    selectedFacility(newFacility) {
-      this.policyData = {
-        policies: this.$store.state.facilities.find(
-          (item) => item.facilityName == newFacility
-        ).policies,
-      };
-      this.selectedPolicyData.policyInfo = this.policyData.policies[0];
-      this.setActiveSelectedPolicy(0);
-    },
-  },
-  created() {
-    this.policyData = {
-      policies: this.$store.state.facilities.find(
-        (item) => item.facilityName == this.selectedFacility
-      ).policies,
-    };
-    if (_.isEmpty(this.policyHash)) {
-      this.selectedPolicyData.policyInfo = this.policyData.policies[0];
-      axios
-        .get(
-          `/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`
-        ) //get policy info with any of the simid
-        .then((response) => {
-          this.policyDetails = response.data;
-          return response.data;
-        })
-        .catch((error) => {
-          console.log(error.response);
-          alert(
-            "No policy data found, please check if policy.json file exists"
-          );
-        });
-    } else {
-      this.selectedPolicyData.policyInfo = this.policyData.policies.find(
-        (item) => item.policyHash == this.policyHash
-      );
-      axios
-        .get(
-          `/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`
-        ) //get policy info with any of the simid
-        .then((response) => {
-          this.policyDetails = response.data;
-          return response.data;
-        })
-        .catch((error) => {
-          console.log(error.response);
-          alert(
-            "No policy data found, please check if policy.json file exists"
-          );
-        });
-      this.polIndex = this.policyData.policies.findIndex(
-        (item) => item.policyHash == this.policyHash
-      );
+    policyHash(){
+      this.fetchPolicyDetails()
     }
   },
-  mounted() {
-    // wait till Simulations component is loaded and update the DOM element
-    this.$nextTick(function () {
-      this.polIndex == ""
-        ? this.setActiveSelectedPolicy(0)
-        : this.setActiveSelectedPolicy(this.polIndex);
-    });
+  created() {
+    this.fetchPolicyDetails();
   },
+
   methods: {
-    getPolicyDetails(policyName, Id) {
-      this.selectedPolicyData.policyInfo = this.policyData.policies.find(
-        (item) => item.policyHash == policyName
-      );
-      this.setActiveSelectedPolicy(Id);
+
+    fetchPolicyDetails(){
+      axios
+      .get(
+        `/${this.runID}/policy`
+      ) //get policy info with any of the simid
+      .then((response) => {
+        this.policyDetails = response.data;
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error.response);
+        alert(
+          "No policy data found, please check if policy.json file exists"
+        );
+      });
     },
 
-    setActiveSelectedPolicy(Id) {
-      var current = document.getElementsByClassName("setActive");
-      if (current.length > 0) {
-        current[0].className = current[0].className.replace("setActive", "");
-      }
-      if (Id !== 0){
-        var polId = document.getElementById(Id);
-        polId.className += " setActive";
-      }
 
-    },
   },
 };
 </script>

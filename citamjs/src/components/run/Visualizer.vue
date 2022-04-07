@@ -124,7 +124,8 @@ export default {
         this.showSimulationMap();
       } else {
         alert(
-          "Please select a run from the Overview tab to see the visualization "
+          "Please select a run from the Overview tab to see the visualization ");
+          console.log("more info on alert:", this.simId, this.$store.state.currentSimID
         );
       }
     },

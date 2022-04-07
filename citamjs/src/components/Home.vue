@@ -65,8 +65,8 @@
       <div class="col-sm-3 subHeader" v-if="selectedFacility != ''">
         <div class="input">Inputs</div>
         <general-policy
-          :selectedFacility="selectedFacility"
           :policyHash="polHash"
+          :runID="runId"
         >
         </general-policy>
       </div>
@@ -74,10 +74,8 @@
         <div style="margin-left: -30px">
           <div class="vizTab">Visualizer</div>
         </div>
-        <!-- ToDo - this shows overview but replace with Trajectory/Simulation component for the selected run-->
         <div v-if="showSimulation" style="height: 100%">
-          <component :is="selectedComponent" :overviewSimObj="overviewSimObj">
-          </component>
+          <visualizer :simId="runId"></visualizer>
         </div>
       </div>
     </div>
@@ -87,14 +85,15 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
-import Simulations from "./simulations/Simulations.vue";
+// import Simulations from "./simulations/Simulations.vue";
 import GeneralPolicy from "./GeneralPolicy.vue";
-import FloorPlans from "./FloorPlans.vue";
-import Overview from "./Overview.vue";
+// import FloorPlans from "./FloorPlans.vue";
+// import Overview from "./Overview.vue";
+import Visualizer from './run/Visualizer.vue';
 
 export default {
   name: "Home",
-  components: { Simulations, GeneralPolicy, FloorPlans, Overview },
+  components: { GeneralPolicy, Visualizer },
   data() {
     return {
       selectedComponent: "simulations",
@@ -107,12 +106,14 @@ export default {
       policies: [],
       selectedSimulation: "",
       selectedRun: "",
+      selectedPolicy: null,
       simRuns: [],
       policyList: [],
       runList: [],
       policyData: {},
       overviewData: { facilities: [] },
-      isBackendLive: true
+      isBackendLive: true,
+      runId: null
 
     };
   },
@@ -128,7 +129,7 @@ export default {
     }
   },
   methods: {
-    // Set first facility from th list, first policy and it's first run by default and show the
+    // Set first facility from the list, first policy and it's first run by default and show the
     // simulation map for the landing page
     setDefaultValues(facilities) {
       if (facilities.length > 0) {
@@ -138,8 +139,9 @@ export default {
         this.selectedFacility = facilities[0].facilityName;
         this.selectedSimulation = this.policies[0].policyHash;
         this.polHash = this.policies[0].policyHash;
-        this.runId = this.simRuns[0].runID;
+        this.selectedPolicy = this.policies[0];
         this.selectedRun = this.simRuns[0].runName;
+        this.runId = this.simRuns[0].runID;
         this.overviewSimObj = {
           policyHash: this.polHash,
           runId: this.runId,
@@ -158,10 +160,11 @@ export default {
       this.simRuns = this.policies[0].simulationRuns;
       this.polHash = this.policies[0].policyHash;
       this.runId = this.simRuns[0].runID;
-      // this.overviewSimObj = {
-      //   policyHash: this.polHash,
-      //   runId: this.runId,
-      // };
+      this.selectedPolicy = this.policies[0];
+      this.overviewSimObj = {
+        policyHash: this.polHash,
+        runId: this.runId,
+      };
     },
 
     // update simulation runs data if a different policy is selected - ToDo - trigger from simulations options method
@@ -172,6 +175,9 @@ export default {
       this.selectedRun = this.simRuns[0].runName;
       this.runId = this.simRuns[0].runID;
       this.polHash = this.selectedSimulation;
+      this.selectedPolicy = this.policies.find(
+        (item) => item.policyHash == this.polHash
+      );
       this.overviewSimObj = {
         policyHash: this.polHash,
         runId: this.runId,
@@ -181,10 +187,10 @@ export default {
     // run the simulation for the selected run to show the visualization
     runSimulation(event) {
       this.runId = this.simRuns[event.target.selectedIndex].runID;
-      // this.overviewSimObj = {
-      //   policyHash: this.polHash,
-      //   runId: this.runId,
-      // };
+      this.overviewSimObj = {
+        policyHash: this.polHash,
+        runId: this.runId,
+      };
     },
 
     fetchData() {
