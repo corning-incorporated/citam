@@ -85,10 +85,7 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
-// import Simulations from "./simulations/Simulations.vue";
-import GeneralPolicy from "./GeneralPolicy.vue";
-// import FloorPlans from "./FloorPlans.vue";
-// import Overview from "./Overview.vue";
+import GeneralPolicy from "./run/GeneralPolicy.vue";
 import Visualizer from './run/Visualizer.vue';
 
 export default {

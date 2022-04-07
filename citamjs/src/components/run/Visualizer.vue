@@ -41,7 +41,6 @@ export default {
       mapInstance: null,
       animationParams: null,
       gui: null,
-      // newSimId: false,
       trajectories: null,
       nAgents: null,
       totalSteps: null,
