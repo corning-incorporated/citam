@@ -85,10 +85,11 @@ export default {
         this.mapInstance.setMapData(this.$store.state.mapData);
         this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
-        let expectedDuration = this.computeEstimatedLoadTime();
-        if (expectedDuration !== null) {
-          this.mapInstance.loader.startCountdown(expectedDuration);
-        }
+        // let expectedDuration = this.computeEstimatedLoadTime();
+        // if (expectedDuration !== null) {
+        //   this.mapInstance.loader.startCountdown(expectedDuration);
+        // }
+        this.mapInstance.hideLoader();
       }
     },
   },
@@ -117,7 +118,9 @@ export default {
         (this.$store.state.currentSimID !== undefined &&
           this.$store.state.currentSimID !== null)
       ) {
-        this.mapInstance = new Map2D(this.$refs.mapRoot);
+        if (this.mapInstance == null) {
+          this.mapInstance = new Map2D(this.$refs.mapRoot);
+        }
         this.showSimulationMap();
       } else {
         alert(
@@ -137,15 +140,15 @@ export default {
 
     loadTrajectory() {
       this.showTrjctryBtn = false;
-      this.mapInstance.loader.show();
+      // this.mapInstance.loader.show();
       this.hideControl = false;
       this.$store.dispatch("getTrajectoryData");
-      let expectedDuration = this.computeEstimatedLoadTime();
-      let currentTime = new Date().getTime() / 1000;
-      let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
-      if (expectedDuration !== null) {
-        this.mapInstance.loader.startCountdown(expectedDuration - elapsedTime);
-      }
+      // let expectedDuration = this.computeEstimatedLoadTime();
+      // let currentTime = new Date().getTime() / 1000;
+      // let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
+      // if (expectedDuration !== null) {
+      //   this.mapInstance.loader.startCountdown(expectedDuration - elapsedTime);
+      // }
     },
     showSimulationMap() {
       if (this.$store.state.mapData === null) {

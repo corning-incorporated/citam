@@ -13,7 +13,12 @@
 <!--  ==============================================================================-->
 <template>
   <div class="container-fluid">
-    <div class="row">
+     <div v-if="!isBackendLive">
+      <h2 style="padding-top: 100px; color:white">Unable to retrieve data from backend.</h2>
+      <span style="color: white"> Make sure the backend is running on localhost:8000. </span>
+      <p style="color: white">If not, start the backend server with `citam dash --results [your-results-folder]`` then refresh this page.</p>
+    </div>
+    <div class="row" v-if="isBackendLive">
       <div class="col-sm-3 header">
         <ul class="nav nav-tabs" id="my-tab" role="tablist">
           <li class="nav-item custTab facility">
@@ -33,12 +38,12 @@
         <ul class="nav nav-tabs" id="my-tab" role="tablist">
           <li class="nav-item custTab">
             <select
-              @change="updateRunData($event)"
+              @change="updateRunData()"
               v-model="selectedSimulation"
               class="nav-link"
             >
-              <option v-for="(item, id) in policies" :key="id">
-                {{ item.simulationName }}
+              <option v-for="(item, id) in policies" :key="id" v-bind:value="item.policyHash">
+                {{item.simulationName}} ({{ item.policyHash.slice(-4)}})
               </option>
             </select>
           </li>
@@ -56,7 +61,7 @@
         </ul>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="isBackendLive">
       <div class="col-sm-3 subHeader" v-if="selectedFacility != ''">
         <div class="input">Inputs</div>
         <general-policy
@@ -107,6 +112,8 @@ export default {
       runList: [],
       policyData: {},
       overviewData: { facilities: [] },
+      isBackendLive: true
+
     };
   },
   created() {
@@ -129,7 +136,7 @@ export default {
         this.policies = facilities[0].policies;
         this.simRuns = this.policies[0].simulationRuns;
         this.selectedFacility = facilities[0].facilityName;
-        this.selectedSimulation = this.policies[0].simulationName;
+        this.selectedSimulation = this.policies[0].policyHash;
         this.polHash = this.policies[0].policyHash;
         this.runId = this.simRuns[0].runID;
         this.selectedRun = this.simRuns[0].runName;
@@ -147,24 +154,24 @@ export default {
       this.policies = this.overviewData.facilities.find(
         (item) => item.facilityName == this.selectedFacility
       ).policies;
-      this.selectedSimulation = this.policies[0].simulationName;
+      this.selectedSimulation = this.policies[0].policyHash;
       this.simRuns = this.policies[0].simulationRuns;
       this.polHash = this.policies[0].policyHash;
       this.runId = this.simRuns[0].runID;
-      this.overviewSimObj = {
-        policyHash: this.polHash,
-        runId: this.runId,
-      };
+      // this.overviewSimObj = {
+      //   policyHash: this.polHash,
+      //   runId: this.runId,
+      // };
     },
 
     // update simulation runs data if a different policy is selected - ToDo - trigger from simulations options method
-    updateRunData(event) {
+    updateRunData() {
       this.simRuns = this.policies.find(
-        (item) => item.simulationName == this.selectedSimulation
-      ).policies;
+        (item) => item.policyHash == this.selectedSimulation
+      ).simulationRuns;
       this.selectedRun = this.simRuns[0].runName;
       this.runId = this.simRuns[0].runID;
-      this.polHash = this.policies[event.target.value].policyHash;
+      this.polHash = this.selectedSimulation;
       this.overviewSimObj = {
         policyHash: this.polHash,
         runId: this.runId,
@@ -174,10 +181,10 @@ export default {
     // run the simulation for the selected run to show the visualization
     runSimulation(event) {
       this.runId = this.simRuns[event.target.selectedIndex].runID;
-      this.overviewSimObj = {
-        policyHash: this.polHash,
-        runId: this.runId,
-      };
+      // this.overviewSimObj = {
+      //   policyHash: this.polHash,
+      //   runId: this.runId,
+      // };
     },
 
     fetchData() {
@@ -185,14 +192,12 @@ export default {
         .get("/list") //get list of policies, simulations, facilities
         .then((response) => {
           this.policyList = response.data.map((list) => list);
-          console.log("Policy list is: ", this.policyList);
           this.$store.commit("setPolicyList", this.policyList);
           return axios.all(response.data.map((x) => axios.get(`/${x.RunID}`)));
         })
         .then((runResponse) => {
           // eslint-disable-next-line no-unused-vars
           this.runList = runResponse.map((run) => run.data);
-          console.log("Run List: ", this.runList);
           return axios.all(
             runResponse.map((x) => axios.get(`/${x.data.RunID}/statistics`))
           );
@@ -210,7 +215,10 @@ export default {
           this.$store.commit("setFacilities", this.overviewData.facilities); // Store it in a centralized variable to use in other components
           this.getRunList();
           this.setDefaultValues(this.overviewData.facilities);
-        });
+        })
+        .catch( () => {
+          this.isBackendLive = false;
+        } );
     },
 
     getOverviewData() {

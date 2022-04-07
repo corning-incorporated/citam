@@ -15,14 +15,14 @@
 <template>
     <div id="floorPlansLayout">
         <div id="title">
-        <span>Floot Plans</span>Reference of floor plans
-      </div>    
-    </div>   
+        <span>Floor Plans</span>Reference of floor plans
+      </div>
+    </div>
 </template>
 
 <script>
 export default {
-    
+
 }
 </script>
 

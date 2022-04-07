@@ -15,7 +15,7 @@
 <template>
   <div id="policiesLayout">
     <div class="container-fluid">
-      <div class="row header">
+      <div class="row header" v-if="policyDetails !== null">
         <div class="polHeading">GENERAL POLICY</div>
         <div class="polPanel">
           <div>
@@ -338,7 +338,7 @@ export default {
         trafficPolicy: { floor: "", aisleId: "", direction: "" },
       },
       polIndex: "",
-      policyDetails: {},
+      policyDetails: null,
     };
   },
   watch: {
@@ -358,8 +358,6 @@ export default {
         (item) => item.facilityName == this.selectedFacility
       ).policies,
     };
-    console.log("Policy name: ", this.policyHash);
-    console.log("Policy data: ", this.policyData);
     if (_.isEmpty(this.policyHash)) {
       this.selectedPolicyData.policyInfo = this.policyData.policies[0];
       axios
@@ -367,7 +365,6 @@ export default {
           `/${this.selectedPolicyData.policyInfo.simulationRuns[0].runID}/policy`
         ) //get policy info with any of the simid
         .then((response) => {
-          console.log("We have the policy: ", response.data);
           this.policyDetails = response.data;
           return response.data;
         })
@@ -421,8 +418,11 @@ export default {
       if (current.length > 0) {
         current[0].className = current[0].className.replace("setActive", "");
       }
-      var polId = document.getElementById(Id);
-      polId.className += " setActive";
+      if (Id !== 0){
+        var polId = document.getElementById(Id);
+        polId.className += " setActive";
+      }
+
     },
   },
 };
