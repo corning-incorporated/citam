@@ -32,17 +32,7 @@ https://user-images.githubusercontent.com/13964846/127400958-eacabb47-b725-4656-
 
 ## Install
 
-> Pre-requisite: Python 3.x
-
-Check your Python version as follows:
-
-```shell script
-python --version    # must be 3.x
-```
-
-> Consider creating a new [virtual environment](https://docs.python.org/3/library/venv.html) to install and run CITAM.
-
-Below are the different ways to install CITAM.
+CITAM requires Python 3.7 or above. You can install CITAM from a release wheel or from source (direct install from pip and conda will be supported soon).
 
 ### From Python-Wheel (Recommended)
 
@@ -81,23 +71,26 @@ Open a web browser and navigate to localhost:8000.
 
 To run your own simulations, create a new folder (outside of the citam source code folder, if you installed from source). Let's call it citam-test.
 
-You will need to copy an example input file in that folder and then run the following inside the citam-test folder:
+You will need an input file and a facility directory which contains a map and a navigation network for each floor. We include an example input file and facility directory in the examples/basic_example folder. Copy the example facility folder and input file into citam-test then run your simulation as follows.
 
 ```
+cp -r citam/citam/examples/basic_example/foo_facility citam-test/.
+cp citam/citam/examples/basic_example/example_sim_inputs.json citam-tes/.
+cd citam-test
 citam engine run example_sim_inputs.json -v
 ```
 
-To learn how to ingest your own facility data, follow this tutorial.
+## Resources
+
+To learn how to ingest your own facility maps and what inputs citam supports, follow the tutorial included in our documentation.
+
+We also include an example Jupyter notebook that shows how to manage facilities from a notebook: [/examples/visualize_floorplan.ipynb](https://github.com/corning-incorporated/citam/blob/ui-redesign/examples/visualize_floorplan.ipynb)
 
 ## Contributing
-
----
 
 We encourage and welcome your contributions to any or all of the components of this code. We also welcome bug reports and feature requests (but we make no guarantee that new feature requests will be implemented any time soon). For detailed instructions, please refer to the "[How to Contribute](CONTRIBUTING.md)" document.
 
 ## License
-
----
 
 CITAM is made available to the public under GPLv3 and may only be used in accordance with the identified license(s).
 
