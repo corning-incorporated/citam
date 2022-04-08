@@ -141,9 +141,12 @@ export default {
       if (this.mapInstance !== null) {
         this.mapInstance.reloadSimulation();
       }
-      this.gui.destroy();
-      this.gui = null;
-      this.mapInstance.hideTimer();
+      if (this.gui !== null) {
+        this.gui.destroy();
+        this.gui = null;
+        this.mapInstance.hideTimer();
+      }
+
     },
 
     loadTrajectory() {

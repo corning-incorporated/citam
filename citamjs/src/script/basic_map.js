@@ -63,7 +63,7 @@ export default class Map2D {
 
         /** Marker sizes */
         this.contactSize = 0.5;
-        this.agentSize = 1.5;
+        this.agentSize = 7.0;
 
     }
 
