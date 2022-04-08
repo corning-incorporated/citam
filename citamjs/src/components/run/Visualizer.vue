@@ -178,108 +178,33 @@ export default {
           this.mapInstance.setMapData(this.$store.state.mapData);
 
         }
+      }
     },
 
-    methods: {
-        showSimulationMap() {
-            this.createMapInstance();
-            if (
-                this.$store.state.trajectoryData === null &&
-                (this.$store.state.status === "ready" ||
-                    this.$store.state.status === null)
-            ) {
-                this.$store.commit("setSimulationID", this.simId);
-                this.$store.dispatch("fetchSimulationData");
-            } else if (this.$store.state.trajectoryData !== null) {
-                this.mapInstance.setMapData(this.$store.state.mapData);
-                this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
-                this.mapInstance.setCurrentStep(this.$store.state.currentStep);
-                this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
-                this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
-                this.setMapFloorOptions();
-                this.mapInstance.startAnimation();
-            } else if (this.$store.state.status === "fetchingData") {
-                if (this.$store.state.mapData !== null) {
-                    this.mapInstance.setMapData(this.$store.state.mapData);
-                    this.mapInstance.loader.show();
-                    this.mapInstance.loader.mapLoaded();
-                    let expectedDuration = this.computeEstimatedLoadTime();
-                    let currentTime = new Date().getTime() / 1000;
-                    let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
-                    if (expectedDuration !== null) {
-                        this.mapInstance.loader.startCountdown(
-                            expectedDuration - elapsedTime
-                        );
-                    }
-                }
-            }
-        },
+    computeEstimatedLoadTime() {
+        // The factor of 160,000 is based on observations and used here for a
+        // rough estimate of how long it will take to process the trajectory
+        // data based on number of agents and total steps.
+        if (this.$store.state.totalSteps > 0 && this.$store.state.nAgents > 0) {
+            return (
+                (this.$store.state.totalSteps * this.$store.state.nAgents) / 160000
+            );
+        } else {
+            return null;
+        }
+    },
 
-        computeEstimatedLoadTime() {
-            // The factor of 160,000 is based on observations and used here for a
-            // rough estimate of how long it will take to process the trajectory
-            // data based on number of agents and total steps.
-            if (this.$store.state.totalSteps > 0 && this.$store.state.nAgents > 0) {
-                return (
-                    (this.$store.state.totalSteps * this.$store.state.nAgents) / 160000
-                );
-            } else {
-                return null;
-            }
-        },
+    setMapFloorOptions() {
+        this.animationParams.floorOptions = this.$store.state.floorOptions;
+        this.animationParams.floor = this.animationParams.floorOptions[0];
+        this.mapInstance.floor = this.animationParams.floor;
 
-        setMapFloorOptions() {
-            this.animationParams.floorOptions = this.$store.state.floorOptions;
-            this.animationParams.floor = this.animationParams.floorOptions[0];
-            this.mapInstance.floor = this.animationParams.floor;
+        this.guiFloorWidget
+            .options(this.animationParams.floorOptions)
+            .name("Floor")
+            .onChange((value) => this.mapInstance.setFloor(value));
+    },
 
-            this.guiFloorWidget
-                .options(this.animationParams.floorOptions)
-                .name("Floor")
-                .onChange((value) => this.mapInstance.setFloor(value));
-        },
-
-        createMapInstance() {
-            this.animationParams = {};
-            let GUI, timestepSlider;
-            let mapRoot = this.$refs.mapRoot;
-            let mapInstance = (this.mapInstance = new Map2D(mapRoot));
-
-            /** Control Panel Parameters */
-            this.animationParams = {
-                startAnimation: () => mapInstance.startAnimation(),
-                stopAnimation: () => mapInstance.stopAnimation(),
-                animationSpeed: 10,
-                floorOptions: ["1"],
-                floor: "1",
-            };
-            /** Create Control Panel */
-            this.gui = GUI = new dat.GUI({autoPlace: false});
-            this.$refs.controls.appendChild(this.gui.domElement);
-
-            // if (this.newSimId) {
-            //   while (this.$refs.controls.hasChildNodes()) {
-            //     this.$refs.controls.removeChild(this.$refs.controls.firstChild);
-            //   }
-            //   this.$refs.controls.appendChild(this.gui.domElement);
-            // } else {
-            // }
-
-            this.guiFloorWidget = GUI.add(
-                this.animationParams,
-                "floor",
-                this.animationParams.floorOptions
-            )
-                .name("Floor")
-                .onChange((value) => {
-                    mapInstance.setFloor(value);
-                    this.floor = value;
-                });
-
-            GUI.add(this.animationParams, "animationSpeed", 1, 300)
-                .name("Speed (fps)")
-                .step(1)
-                .onChange((value) => mapInstance.setSpeed(value));
 
     createTrajectoryControl() {
       while(this.$refs.controls.hasChildNodes()) {
@@ -333,7 +258,8 @@ export default {
       timestepSlider.max(this.$store.state.totalSteps);
 
     },
-};
+  }
+}
 </script>
 
 <style scoped>
