@@ -55,7 +55,6 @@ jobs:
       - name: npm install
         working-directory: ${{ github.workspace }}/citamjs
         run: npm install
-      - run: npm list eslint
       - name: npm lint
         working-directory: ${{ github.workspace }}/citamjs
         run: npm run lint
