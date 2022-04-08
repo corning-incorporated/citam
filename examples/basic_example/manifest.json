@@ -1,0 +1,27 @@
+{
+    "TimestepInSec": 1,
+    "NumberOfFloors": 1,
+    "NumberOfOneWayAisles": 0,
+    "NumberOfAgents": 20,
+    "SimulationName": "test_sim_1",
+    "RunName": "test_run_1",
+    "SimulationHash": "949bc426b7ca58935dab",
+    "RunID": "870b29ee-bea6-4900-8dd8-a0f7819f00ae",
+    "FacilityName": "foo_facility",
+    "FacilityOccupancy": null,
+    "MaxRoomOccupancy": 1.0,
+    "NumberOfShifts": 1,
+    "NumberOfEntrances": 1,
+    "NumberOfExits": 1,
+    "EntranceScreening": false,
+    "TrajectoryFile": "trajectory.txt",
+    "Floors": [
+        {
+            "name": "0",
+            "directory": "floor_0/"
+        }
+    ],
+    "ScaleMultiplier": 1,
+    "Timestep": 1,
+    "TotalTimesteps": 1800
+}
