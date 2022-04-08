@@ -619,7 +619,8 @@ def validate_traffic_policy(traffic_policy):
 
     if not isinstance(traffic_policy, list):
         raise TypeError(
-            "traffic_policy must be a list. Found {%s}", type(traffic_policy),
+            "traffic_policy must be a list. Found {%s}",
+            type(traffic_policy),
         )
 
     for pol in traffic_policy:
@@ -639,7 +640,9 @@ def validate_traffic_policy(traffic_policy):
             )
 
 
-def parse_input_file(input_file: Union[str, pathlib.Path],) -> Dict[str, Any]:
+def parse_input_file(
+    input_file: Union[str, pathlib.Path],
+) -> Dict[str, Any]:
     """
     Read primary simulation input file in json format, validate values,
     load floorplans and returns dictionary of model inputs.

@@ -64,7 +64,9 @@ def get_trajectories(
 
     result_file = settings.storage_driver.get_trajectory_file_location(sim_id)
 
-    LOG.info("trajectory file parsing process started",)
+    LOG.info(
+        "trajectory file parsing process started",
+    )
     if floor is not None:
         floor = int(floor)
         LOG.info("Filtering trajectories for floor %d", floor)
@@ -190,7 +192,8 @@ def get_coordinate_distribution(sim_id: str, floor: str) -> List[Dict]:
     :return: List of contacts per coordinate
     """
     result_file = settings.storage_driver.get_coordinate_distribution_file(
-        sim_id, floor,
+        sim_id,
+        floor,
     )
     LOG.info("coordinate distribution file parsing process started")
 
@@ -200,7 +203,11 @@ def get_coordinate_distribution(sim_id: str, floor: str) -> List[Dict]:
     while line:
         data = line.split(",")
         contacts.append(
-            {"x": data[0], "y": data[1], "count": data[2],}
+            {
+                "x": data[0],
+                "y": data[1],
+                "count": data[2],
+            }
         )
         line = result_file.readline().strip()
     LOG.info("coordinate distribution file parsing process complete")

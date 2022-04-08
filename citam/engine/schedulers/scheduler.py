@@ -4,7 +4,10 @@ from citam.engine.facility.indoor_facility import Facility
 
 class Scheduler(ABC):
     def __init__(
-        self, facility: Facility, timestep: int, total_timesteps: int,
+        self,
+        facility: Facility,
+        timestep: int,
+        total_timesteps: int,
     ) -> None:
         super().__init__()
         self.facility = facility

@@ -255,7 +255,8 @@ class OfficeSchedule(Schedule):
         if len(self.schedule_items) == 0:  # First item for the day
 
             schedule_item = self.build_schedule_item(
-                OFFICE_WORK, next_meeting_start_time,
+                OFFICE_WORK,
+                next_meeting_start_time,
             )
             return schedule_item
 

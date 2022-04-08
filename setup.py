@@ -19,7 +19,9 @@ setuptools.setup(
     use_scm_version=True,
     author="Corning Inc",
     description="The COVID Indoor Transmission Agent-based Modeling Platform",
-    packages=setuptools.find_packages(exclude=["*.tests.*"],),
+    packages=setuptools.find_packages(
+        exclude=["*.tests.*"],
+    ),
     entry_points={"console_scripts": ["citam=citam.cli:main"]},
     cmdclass={"build_js": NodeJSBuild},
     include_package_data=True,

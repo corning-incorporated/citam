@@ -295,7 +295,8 @@ def _get_sink():
     """
 
     static_route = StaticRoute(
-        "/", join(dirname(abspath(__file__)), "static", "dash"),
+        "/",
+        join(dirname(abspath(__file__)), "static", "dash"),
     )
 
     def _sink(req, resp):

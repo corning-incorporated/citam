@@ -15,7 +15,9 @@ import pytest
 from citam.api.storage import s3
 
 TEST_RESULT_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "sample_results", "TF",
+    os.path.dirname(os.path.abspath(__file__)),
+    "sample_results",
+    "TF",
 )
 
 

@@ -139,8 +139,9 @@ class Navigation:
 
         self.apply_traffic_policy()
 
-    # TODO: Move the following 3 functions outside of this class either into main.py
-    # or eleswhere
+
+#TODO: Move the following 3 functions outside of this class either into main.py
+# or eleswhere
 
     def load_hallway_graph(
         self, floor_hallway_graph_file: Union[str, pathlib.Path]

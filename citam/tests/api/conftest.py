@@ -19,7 +19,8 @@ from citam.conf import settings
 def use_local_storage():
     """Configure CITAM dash to use the test sample_results directory"""
     search_root = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "sample_results",
+        os.path.dirname(os.path.abspath(__file__)),
+        "sample_results",
     )
     settings.storage_driver_path = "citam.api.storage.local.LocalStorageDriver"
     settings.result_path = search_root

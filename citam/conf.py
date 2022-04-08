@@ -101,7 +101,8 @@ class CitamSettings:
 
         #: Storage bucket for S3 backend
         self.storage_bucket = os.environ.get(
-            "CITAM_STORAGE_BUCKET", "example",
+            "CITAM_STORAGE_BUCKET",
+            "example",
         )
 
         #: Region Name for S3 backend
@@ -109,7 +110,8 @@ class CitamSettings:
 
         #: Storage URL for S3 backend
         self.storage_url = os.environ.get(
-            "CITAM_STORAGE_URL", "http://example.com",
+            "CITAM_STORAGE_URL",
+            "http://example.com",
         )
 
         #: Path to storage driver class

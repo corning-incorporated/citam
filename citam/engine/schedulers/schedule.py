@@ -22,7 +22,12 @@ class ScheduleItem:
 
 
 class Schedule(ABC):
-    def __init__(self, timestep: int, start_time: int, end_time: int,) -> None:
+    def __init__(
+        self,
+        timestep: int,
+        start_time: int,
+        end_time: int,
+    ) -> None:
         super().__init__()
         self.timestep = timestep
         self.start_time = start_time
