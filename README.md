@@ -15,10 +15,6 @@ In addition to its core functionalities, CITAM comes with:
 
 Moreover, CITAM can be used as extendable library to create more complex simulations.
 
-The video below shows an example simulation. Each black dot represents a facility user going through their daily routine. The web-based visualizer shown in the video is included in this repository.
-
-https://user-images.githubusercontent.com/13964846/127400958-eacabb47-b725-4656-b3a7-7e490683773a.mp4
-
 ## Install
 
 CITAM requires Python 3.7 or above. You can install CITAM from a release wheel or from source (direct install from pip and conda will be supported soon).
@@ -64,7 +60,7 @@ You will need an input file and a facility directory which contains a map and a 
 
 ```
 cp -r citam/citam/examples/basic_example/foo_facility citam-test/.
-cp citam/citam/examples/basic_example/example_sim_inputs.json citam-test/.
+cp citam/citam/examples/basic_example/example_sim_inputs.json citam-test /.
 cd citam-test
 citam engine run example_sim_inputs.json -v
 ```
