@@ -30,16 +30,8 @@ CITAM requires Python 3.7 or above. You can install CITAM from a release wheel o
 Make sure you have node v12 or above and npm v6 or above.
 
 ```
-git clone https://github.com/corning-incorporated/citam.git
-cd citam
-pip install .
+pip install git+https://github.com/corning-incorporated/citam.git
 python setup.py build_js
-```
-
-> Note: If you plan on making changes to the code, use the -e option in your pip command as follows:
-
-```
-pip install -e .
 ```
 
 ## Run the CITAM visualizer
