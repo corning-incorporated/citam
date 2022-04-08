@@ -58,6 +58,7 @@ jobs:
       - name: npm test
         working-directory: ${{ github.workspace }}/citamjs
         run: npm run lint
+      - run: vue --version
 
   test-javascript:
     runs-on: ubuntu-latest
