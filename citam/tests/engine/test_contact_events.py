@@ -1,4 +1,4 @@
-from citam.engine.core.contacts import ContactEvents, ContactEvent
+from citam.engine.calculators.contacts import ContactEvents, ContactEvent
 from citam.engine.core.agent import Agent
 
 import pytest
@@ -245,7 +245,7 @@ def test_get_floor_contact_coords_3(sample_contacts):
 
 def test_get_contacts_per_coordinates(sample_contacts):
 
-    contacts_per_location = sample_contacts.get_contacts_per_coordinates(0, 0)
+    contacts_per_location = sample_contacts.get_contacts_per_coordinates(0)
 
     assert len(contacts_per_location) == 1
     assert (1, 1) in contacts_per_location

@@ -144,6 +144,10 @@ export default new Vuex.Store({
                     });
                     commit("setTrajectoryData", trajectories);
                 }
+            }).catch((err)=>{
+                console.error("Error while getting traj data:", err)
+                commit("setTrajectoryData", null);
+                commit("updateStatus", { status: "error", msg: err });
             });
             commit("setTotalSteps", trajectories.length);
             commit("updateStatus", { status: "trajectoryReady", msg: null });

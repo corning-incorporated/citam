@@ -9,7 +9,7 @@
 # ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
 # ==============================================================================
-from __future__ import annotations
+
 
 import logging
 from typing import Tuple, List, Dict, Any, Optional
@@ -24,31 +24,17 @@ from citam.engine.constants import (
     MEETING_BUFFER,
 )
 from citam.engine.map.door import Door
+from citam.engine.schedulers.schedule import Schedule, ScheduleItem
+from citam.engine.schedulers.meetings import Meeting
+from citam.engine.facility.navigation import Navigation
 
-
-# Navigation creates a circular import : Solved by using conditional import
-# (only for type checking)
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from citam.engine.facility.navigation import Navigation
-
-from citam.engine.policy.meetings import Meeting
 
 LOG = logging.getLogger(__name__)
 
 
-class ScheduleItem:
-    def __init__(self, purpose, location, floor_number, duration):
-        self.purpose = purpose
-        self.location = location
-        self.floor_number = floor_number
-        self.duration = duration
-
-
-class Schedule:
+class OfficeSchedule(Schedule):
     """
-    Create and manage a schedule typically associated with one agent. Schedules
+    Create and manage a schedule associated with one agent. Schedules
     are created based on rules encoded in a scheduling policy and include a
     full itinerary.
     """
@@ -98,14 +84,14 @@ class Schedule:
              defaults to None
         :type meetings: List[Meeting], optional
         """
-        self.start_time = start_time
+        super().__init__(timestep, start_time, exit_time)
+
         self.exit_time = exit_time
         self.entrance_door = entrance_door
         self.entrance_floor = entrance_floor
         self.exit_door = exit_door
         self.exit_floor = exit_floor
         self.daylength = exit_time - start_time
-        self.timestep = timestep
         self.meetings = meetings if meetings else []
         self.next_meeting_index = 0
 
@@ -200,6 +186,10 @@ class Schedule:
         max_duration = self.get_max_duration_for_purpose(
             purpose, next_meeting_start_time
         )
+
+        if max_duration < self.scheduling_rules[purpose]["min_duration"]:
+            raise ValueError("Not enough time is available for this meeting.")
+
         duration = np.random.randint(
             self.scheduling_rules[purpose]["min_duration"], max_duration
         )
@@ -377,7 +367,6 @@ class Schedule:
         # the tests have passed
         # Count how many items of each type is already in the schedule
         n_items = self.count_purpose_occurence_in_schedule_items()
-
         # Don't consider schedule item that already reached their max instances
         for i, purpose in enumerate(self.possible_purposes):
             item_details = self.scheduling_rules[purpose]
@@ -386,7 +375,7 @@ class Schedule:
                 max_duration = self.get_max_duration_for_purpose(
                     purpose, next_meeting_start_time
                 )
-                if max_duration > item_details["min_duration"]:
+                if max_duration >= item_details["min_duration"]:
                     valid_purposes.append(purpose)
 
         # No consecutive restroom visits #TODO: Add this to scheduling rules
@@ -404,7 +393,6 @@ class Schedule:
             or len(self.itinerary) > round(2 * self.daylength / 3.0)
         ):
             valid_purposes.remove(CAFETERIA_VISIT)
-
         return valid_purposes
 
     def choose_valid_scheduling_purpose(
