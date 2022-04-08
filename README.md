@@ -64,7 +64,7 @@ You will need an input file and a facility directory which contains a map and a 
 
 ```
 cp -r citam/citam/examples/basic_example/foo_facility citam-test/.
-cp citam/citam/examples/basic_example/example_sim_inputs.json citam-tes/.
+cp citam/citam/examples/basic_example/example_sim_inputs.json citam-test/.
 cd citam-test
 citam engine run example_sim_inputs.json -v
 ```

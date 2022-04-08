@@ -4,7 +4,7 @@
 Visualize Results
 ==================
 
-Simulation results can be visualized using a basic GUI. 
+Simulation results can be visualized using a basic GUI.
 
 .. note::
 
@@ -29,20 +29,3 @@ as a parent directory from which all results subdirectories are accessible.
 To set your environment variable, a quick web search should provide instructions
 on how to do it on your machine. For more customization options, please see the global configuration page.
 
-
-|main_dash|
-
-
-The visualization offers an interactive way to explore the time-dependent contact
-data and trajectories of each agent. The page has a colorbar to denote the number of contacts of each agent.
-An agent with higher number of contact will be represented with a darker shade of red.
-
-|visual|
-
-.. |main_dash| image:: assets/main_dash.png
-    :align: middle
-    :alt: Main dashboard
-
-.. |visual| image:: assets/visual.png
-    :align: middle
-    :alt: Visualization image
