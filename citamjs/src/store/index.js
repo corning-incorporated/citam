@@ -82,6 +82,11 @@ export default new Vuex.Store({
             state.status = status;
             state.errorMessage = msg;
         },
+        removeMapData(state){
+            state.mapData = null;
+            state.status = null;
+            state.currentFloor = null;
+        },
         removeTrajectoryData(state) {
             state.trajectoryData = null;
             state.status = 'mapReady';
@@ -121,7 +126,6 @@ export default new Vuex.Store({
             let max_chunk_size = Math.ceil(1e8 / state.nAgents);
             let request_arr = [], first_timestep = 0, max_contacts = 0;
             commit("updateStatus", { status: "fetchingTrajectoryData", msg: null });
-
             while (first_timestep < state.totalSteps) {
                 request_arr.push(
                     getTrajectory(

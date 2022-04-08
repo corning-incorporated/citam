@@ -35,7 +35,10 @@ import { mapState } from "vuex";
 
 export default {
   name: "Visualizer",
-  props: ["simId"],
+  props: {
+    policyHash: String,
+    simId: String
+  },
   data() {
     return {
       mapInstance: null,
@@ -52,8 +55,11 @@ export default {
   computed: mapState(["mapData", "status"]),
 
   watch: {
-    simId(runId) {
-      this.simId = runId;
+    policyHash() {
+      this.$store.commit("removeMapData")
+    },
+    simId() {
+      this.$store.commit("setSimulationID", this.simId);
       this.showTrjctryBtn = true;
       this.resetSimulation();
       this.loadVisualization();
@@ -70,6 +76,7 @@ export default {
         if (this.gui === null) {
           this.createTrajectoryControl();
         }
+        this.setMapFloorOptions();
         this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
         this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
@@ -84,10 +91,10 @@ export default {
         this.mapInstance.setMapData(this.$store.state.mapData);
         this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
-        // let expectedDuration = this.computeEstimatedLoadTime();
-        // if (expectedDuration !== null) {
-        //   this.mapInstance.loader.startCountdown(expectedDuration);
-        // }
+        let expectedDuration = this.computeEstimatedLoadTime();
+        if (expectedDuration !== null) {
+          this.mapInstance.loader.startCountdown(expectedDuration);
+        }
         this.mapInstance.hideLoader();
       }
     },
@@ -122,10 +129,8 @@ export default {
         }
         this.showSimulationMap();
       } else {
-        alert(
-          "Please select a run from the Overview tab to see the visualization ");
-          console.log("more info on alert:", this.simId, this.$store.state.currentSimID
-        );
+        alert("Please select a run from the Overview tab to see the visualization ");
+
       }
     },
 
@@ -136,19 +141,21 @@ export default {
       if (this.mapInstance !== null) {
         this.mapInstance.reloadSimulation();
       }
+      this.gui.destroy();
+      this.gui = null;
     },
 
     loadTrajectory() {
       this.showTrjctryBtn = false;
-      // this.mapInstance.loader.show();
+      this.mapInstance.showLoader();
       this.hideControl = false;
       this.$store.dispatch("getTrajectoryData");
-      // let expectedDuration = this.computeEstimatedLoadTime();
-      // let currentTime = new Date().getTime() / 1000;
-      // let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
-      // if (expectedDuration !== null) {
-      //   this.mapInstance.loader.startCountdown(expectedDuration - elapsedTime);
-      // }
+      let expectedDuration = this.computeEstimatedLoadTime();
+      let currentTime = new Date().getTime() / 1000;
+      let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
+      if (expectedDuration !== null) {
+        this.mapInstance.loader.startCountdown(expectedDuration - elapsedTime);
+      }
     },
     showSimulationMap() {
       if (this.$store.state.mapData === null) {
@@ -193,6 +200,9 @@ export default {
     },
 
     createTrajectoryControl() {
+      while(this.$refs.controls.hasChildNodes()) {
+        this.$refs.controls.removeChild(this.$refs.controls.firstChild);
+      }
       this.animationParams = {};
       let GUI, timestepSlider;
       let mapInstance = this.mapInstance;

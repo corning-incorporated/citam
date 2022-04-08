@@ -75,7 +75,7 @@
           <div class="vizTab">Visualizer</div>
         </div>
         <div v-if="showSimulation" style="height: 100%">
-          <visualizer :simId="runId"></visualizer>
+          <visualizer :simId="runId" :policyHash="polHash"></visualizer>
         </div>
       </div>
     </div>

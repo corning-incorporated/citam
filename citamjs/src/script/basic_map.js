@@ -89,10 +89,10 @@ export default class Map2D {
         this.loader.showError(message);
     }
 
-    // showLoader() {
-    //     this.loader.show();
+    showLoader() {
+        this.loader.show();
 
-    // }
+    }
 
     hideLoader() {
         this.loader.hide()
