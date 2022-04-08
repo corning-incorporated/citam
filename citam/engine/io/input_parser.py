@@ -481,7 +481,7 @@ def parse_office_assignment_file(
                 elif len(values) != 0:
                     raise ValueError(
                         "Invalid file: three comma-seperated values expected \
-                            (index, office_id, floor_id)"
+                            (index, base_location, floor_id)"
                     )
     except Exception as exception:
         LOG.error(f"{UNABLE_TO_READ_FILE_STR}: {filepath}")

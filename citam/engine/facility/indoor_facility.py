@@ -81,16 +81,16 @@ class Facility:
         self.group_spaces()
 
     def choose_best_entrance(
-        self, office_floor: int, office_id: int
+        self, office_floor: int, base_location: int
     ) -> Tuple[Optional[Door], Optional[int]]:
         """
         Find the facility entrance that offers the fastest route to an agent's
-        assigned office space.
+        assigned base location.
 
         :param office_floor: index of the floor where this office is located.
         :type office_floor: int
-        :param office_id: index of the office space
-        :type office_id: int
+        :param base_location: index of the office space
+        :type base_location: int
         :return: best entrance door and floor number of best entrance
         :rtype: Tuple[Door, int]
         """
@@ -119,7 +119,11 @@ class Facility:
                 round(door_mid_point.imag),
             )
             route = self.navigation.get_route(
-                entrance_coords, entrance_floor, office_id, office_floor, 1.0
+                entrance_coords,
+                entrance_floor,
+                base_location,
+                office_floor,
+                1.0,
             )
             if route is not None and len(route) < min_length:
                 min_length = len(route)
@@ -127,7 +131,7 @@ class Facility:
                 best_entrance_floor = entrance_floor
 
         if best_entrance_door is None:
-            office = self.floorplans[office_floor].spaces[office_id]
+            office = self.floorplans[office_floor].spaces[base_location]
             LOG.warning("No entrance found for office: %s", office.unique_name)
         return best_entrance_door, best_entrance_floor
 
