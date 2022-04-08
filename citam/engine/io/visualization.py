@@ -52,7 +52,7 @@ def export_possible_oneway_aisles_to_svg(
     small_radius = complex(1.0, 1.0)
     paths = [wall for wall in walls]
     attributes = [
-        {"fill": "white", "stroke": "black", "stroke-width": 0.5}
+        {"fill": "white", "stroke": "black", "stroke-width": 3.0}
         for _ in paths
     ]
 
@@ -63,7 +63,7 @@ def export_possible_oneway_aisles_to_svg(
         )
         paths.append(p)
         attributes.append(
-            {"fill": color, "stroke": color, "stroke-width": 0.1}
+            {"fill": color, "stroke": color, "stroke-width": 3.0}
         )
         midx, midy = p.point(0.5).real, p.point(0.5).imag
         t_path = parse_path(
@@ -355,7 +355,7 @@ def export_world_to_svg(
     radius = complex(2, 2)
     paths = [wall for wall in walls]
     attributes = [
-        {"fill": "white", "stroke": "black", "stroke-width": 0.5 * multiplier}
+        {"fill": "white", "stroke": "black", "stroke-width": 3.0 * multiplier}
         for _ in paths
     ]
 
@@ -377,7 +377,7 @@ def export_world_to_svg(
             {
                 "fill": colors.to_hex(color),
                 "stroke": "blue",
-                "stroke-width": 0.1 * multiplier,
+                "stroke-width": 3.0 * multiplier,
             }
         )
         paths.append(agent_top)
@@ -386,7 +386,7 @@ def export_world_to_svg(
             {
                 "fill": colors.to_hex(color),
                 "stroke": "blue",
-                "stroke-width": 0.1 * multiplier,
+                "stroke-width": 3.0 * multiplier,
             }
         )
         paths.append(agent_bottom)

@@ -14,17 +14,13 @@
 <template>
   <div>
     <nav class="topnav navbar navbar-expand sticky-top navbar-dark justify-content-between">
-      <div class="navbar-brand title"><router-link to="/"> CITAM </router-link> 
-      Indoor Agent-based Modeling</div>
+      <div class="navbar-brand title"><router-link to="/"> CITAM </router-link>
+      COVID-19 Indoor Transmission Agent-based Modeling</div>
       <form class="form-inline">
         <div class="mr-sm-2 navbar-text text">
-          <a :href="docLink" target="_blank">Documentation</a></div> 
-        <div class="mr-sm-2 navbar-text text">
-          <a :href="aboutLink" target="_blank">About</a></div>
-        <div class="mr-sm-2 navbar-text text">
-          <a :href="aboutLink" target="_blank">Tutorials</a></div>  
+          <a :href="docLink" target="_blank">Documentation</a></div>
        <div class="mr-sm-2 navbar-text"><a :href="gitHubLink" target="_blank">
-           <font-awesome-icon :icon="['fab','github']" size="lg"/></a></div>       
+           <font-awesome-icon :icon="['fab','github']" size="lg"/></a></div>
       </form>
     </nav>
   </div>
@@ -36,7 +32,7 @@ export default {
   data(){return{
   aboutLink:'https://github.com/corning-incorporated/citam/blob/alpha/README.md',
   gitHubLink:'https://github.com/corning-incorporated/citam',
-  docLink:'https://github.com/corning-incorporated/citam/blob/alpha/docs/index.rst'
+  docLink:'https://corning-incorporated.github.io/citam/index.html'
   }}
 }
 </script>
@@ -72,7 +68,7 @@ line-height: 29px;
 display: flex;
 align-items: center;
 color: #0080FF;
-} 
+}
 .navbar-brand a.router-link-active{
   text-decoration: none;
 }

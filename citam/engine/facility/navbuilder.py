@@ -865,7 +865,7 @@ class NavigationBuilder:
         if edge[0] != inter_coords:
             dx = edge[0][0] - inter_coords[0]
             dy = edge[0][1] - inter_coords[1]
-            L = (dx ** 2 + dy ** 2) ** 0.5
+            L = (dx**2 + dy**2) ** 0.5
             coords2 = (
                 inter_coords[0] + round(dx / L),
                 inter_coords[1] + round(dy / L),
@@ -880,7 +880,7 @@ class NavigationBuilder:
         if inter_coords != edge[1]:
             dx = edge[1][0] - inter_coords[0]
             dy = edge[1][1] - inter_coords[1]
-            L = (dx ** 2 + dy ** 2) ** 0.5
+            L = (dx**2 + dy**2) ** 0.5
             coords2 = (
                 inter_coords[0] + round(dx / L),
                 inter_coords[1] + round(dy / L),

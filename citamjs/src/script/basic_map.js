@@ -34,10 +34,10 @@ export default class Map2D {
      */
     constructor(mapRoot) {
         this.mapRoot = mapRoot;
-
         /** Timer **/
         this.timer = new Timer(1);
         this.mapRoot.append(this.timer.domElement);
+        this.timer.hide();
 
         /** Handle for running animation set by window.setInterval */
         this.animationIntervalID = null;
@@ -63,7 +63,7 @@ export default class Map2D {
 
         /** Marker sizes */
         this.contactSize = 0.5;
-        this.agentSize = 1.5;
+        this.agentSize = 7.0;
 
     }
 
@@ -96,6 +96,14 @@ export default class Map2D {
 
     hideLoader() {
         this.loader.hide()
+    }
+
+    showTimer() {
+        this.timer.show()
+    }
+
+    hideTimer() {
+        this.timer.hide()
     }
 
 
@@ -160,7 +168,7 @@ export default class Map2D {
      * @param {number} newSpeed
      */
     setSpeed(newSpeed) {
-        // 1000 ms divided by the number of frames per second to get duration 
+        // 1000 ms divided by the number of frames per second to get duration
         // per frame in seconds (or how often to update the animation).
         this.animationInterval = 1000 / newSpeed;
         this._resetInterval();
