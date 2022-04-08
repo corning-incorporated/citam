@@ -19,7 +19,7 @@
       <router-view>
         <home v-show="showDash"></home>
       </router-view>
-      <footer class="py-4 bg-light mt-auto">
+      <footer class="py-2 bg-light mt-auto">
         <div class="container-fluid">
           <div class="d-flex align-items-center justify-content-between small">
             <div class="text-muted">&copy; Corning Incorporated</div>
@@ -91,6 +91,11 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap");
 body {
   background-color: black !important;
+  overflow-y: hidden;
+  height: 100%;
+}
+html {
+  height: 100%;
 }
 #app {
   font-family: Inter;
@@ -101,6 +106,7 @@ body {
 }
 #mainLayout {
   margin: 0 30px 0 30px;
+  display: flex;
 }
 
 #mainLayout footer {

@@ -143,6 +143,7 @@ export default {
       }
       this.gui.destroy();
       this.gui = null;
+      this.mapInstance.hideTimer();
     },
 
     loadTrajectory() {

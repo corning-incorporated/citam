@@ -13,9 +13,9 @@
 <!--  ==============================================================================-->
 
 <template>
-  <div id="policiesLayout">
+  <div id="policiesLayout" class="main-content">
     <div class="container-fluid">
-      <div class="row header" v-if="policyDetails !== null">
+      <div class="row" v-if="policyDetails !== null">
         <div class="polHeading">GENERAL POLICY</div>
         <div class="polPanel">
           <div>
@@ -330,8 +330,7 @@ export default {
         this.policyDetails = response.data;
         return response.data;
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch(() => {
         alert(
           "No policy data found, please check if policy.json file exists"
         );
@@ -346,10 +345,12 @@ export default {
 ><style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap");
 #policiesLayout {
+  display: flex;
   background-color: #ffff;
   margin-bottom: 80px;
   overflow-y: scroll;
-  height: 1000px;
+  flex: 1 1 auto;
+  max-height: 80vh;
 }
 
 .polHeading {

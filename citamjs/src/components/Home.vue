@@ -12,7 +12,7 @@
 <!--  WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.-->
 <!--  ==============================================================================-->
 <template>
-  <div class="container-fluid">
+  <div >
      <div v-if="!isBackendLive">
       <h2 style="padding-top: 100px; color:white">Unable to retrieve data from backend.</h2>
       <span style="color: white"> Make sure the backend is running on localhost:8000. </span>
@@ -34,7 +34,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-9" style="margin-left: -30px">
+      <div class="col-sm-9 visualizer" style="margin-left: -30px">
         <ul class="nav nav-tabs" id="my-tab" role="tablist">
           <li class="nav-item custTab">
             <select
@@ -61,7 +61,7 @@
         </ul>
       </div>
     </div>
-    <div class="row" v-if="isBackendLive">
+    <div class="row " v-if="isBackendLive">
       <div class="col-sm-3 subHeader" v-if="selectedFacility != ''">
         <div class="input">Inputs</div>
         <general-policy
@@ -70,11 +70,11 @@
         >
         </general-policy>
       </div>
-      <div class="col-sm-9 subHeader">
-        <div style="margin-left: -30px">
+      <div class="subHeader visualizer">
+        <div>
           <div class="vizTab">Visualizer</div>
         </div>
-        <div v-if="showSimulation" style="height: 100%">
+        <div v-if="showSimulation">
           <visualizer :simId="runId" :policyHash="polHash"></visualizer>
         </div>
       </div>
@@ -413,6 +413,11 @@ export default {
   height: 50px;
   padding: 10px;
   text-align: left;
+}
+
+
+.visualizer {
+  flex-grow: 1;
 }
 .subHeader {
   background-color: #98a6b3;
