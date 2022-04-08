@@ -19,17 +19,6 @@ The video below shows an example simulation. Each black dot represents a facilit
 
 https://user-images.githubusercontent.com/13964846/127400958-eacabb47-b725-4656-b3a7-7e490683773a.mp4
 
-## Contents
-
-- [Install CITAM](#install-citam)
-  - [From Python-Wheel (Recommended)](#from-python-wheel-recommended)
-  - [From Source](#from-source)
-- [Add Facilities](#add-facilities)
-- [Run Simulations](#run-simulations)
-- [Visualize Results](#visualize-results)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Install
 
 CITAM requires Python 3.7 or above. You can install CITAM from a release wheel or from source (direct install from pip and conda will be supported soon).
@@ -59,7 +48,7 @@ pip install -e .
 
 ## Run the CITAM visualizer
 
-From the main citam directory, run the following command which will start the citam server and allow you to visualize an example simulation results included in this repository.
+From the main CITAM directory, run the following command which will start the CITAM server and allow you to visualize an example simulation results included in this repository.
 
 ```
 citam dash --results examples/basic_example
@@ -69,7 +58,7 @@ Open a web browser and navigate to localhost:8000.
 
 ## Run CITAM Simulations
 
-To run your own simulations, create a new folder (outside of the citam source code folder, if you installed from source). Let's call it citam-test.
+To run your own simulations, create a new folder (outside of the CITAM source code folder, if you installed from source). Let's call it citam-test.
 
 You will need an input file and a facility directory which contains a map and a navigation network for each floor. We include an example input file and facility directory in the examples/basic_example folder. Copy the example facility folder and input file into citam-test then run your simulation as follows.
 
@@ -82,7 +71,7 @@ citam engine run example_sim_inputs.json -v
 
 ## Resources
 
-To learn how to ingest your own facility maps and what inputs citam supports, follow the tutorial included in our documentation.
+To learn how to ingest your own facility maps and what inputs CITAM supports, follow the tutorial included in our documentation.
 
 We also include an example Jupyter notebook that shows how to manage facilities from a notebook: [/examples/visualize_floorplan.ipynb](https://github.com/corning-incorporated/citam/blob/ui-redesign/examples/visualize_floorplan.ipynb)
 
