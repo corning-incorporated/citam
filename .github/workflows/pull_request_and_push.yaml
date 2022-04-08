@@ -55,10 +55,10 @@ jobs:
       - name: npm install
         working-directory: ${{ github.workspace }}/citamjs
         run: npm install
+      - run: vue --version
       - name: npm test
         working-directory: ${{ github.workspace }}/citamjs
         run: npm run lint
-      - run: vue --version
 
   test-javascript:
     runs-on: ubuntu-latest
