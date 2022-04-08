@@ -63,7 +63,7 @@ export default class Map2D {
 
         /** Marker sizes */
         this.contactSize = 0.5;
-        this.agentSize = 7.0;
+        this.agentSize = 1.5;
 
     }
 
@@ -206,7 +206,7 @@ export default class Map2D {
         newMap.setAttribute('id', 'svg-map');
         newMap.style.display = "flex";
         newMap.style.flex = " 1 1 auto";
-        newMap.style.height = "520";
+        newMap.style.height = "420px";
         this.mapRoot.insertAdjacentElement('afterbegin', newMap);
         let map = select('#svg-map');
         let drawLayer = map.select('#root');
