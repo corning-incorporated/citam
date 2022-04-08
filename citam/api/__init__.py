@@ -59,8 +59,7 @@ def run_server(
 
     if results is not None:
         LOG.debug(
-            "--results='%s' specified via CLI. Updating settings",
-            results,
+            "--results='%s' specified via CLI. Updating settings", results,
         )
         settings.result_path = os.path.abspath(results)
 

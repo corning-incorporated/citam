@@ -55,16 +55,14 @@ def test_build_schedule_item_not_enough_time(sample_empty_schedule_object):
     sched = sample_empty_schedule_object
     with pytest.raises(ValueError):
         sched.build_schedule_item(
-            purpose=OFFICE_WORK,
-            next_meeting_start_time=100,
+            purpose=OFFICE_WORK, next_meeting_start_time=100,
         )
 
 
 def test_build_schedule_item(sample_empty_schedule_object):
     sched = sample_empty_schedule_object
     item = sched.build_schedule_item(
-        purpose=OFFICE_WORK,
-        next_meeting_start_time=None,
+        purpose=OFFICE_WORK, next_meeting_start_time=None,
     )
 
     assert isinstance(item, ScheduleItem)

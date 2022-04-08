@@ -440,7 +440,7 @@ def compute_new_door_line(room_wall: Line, door_size=2.0) -> Line:
     # vector between start and end points
     vx = room_wall.end.real - room_wall.start.real
     vy = room_wall.end.imag - room_wall.start.imag
-    v_norm = math.sqrt(vx**2 + vy**2)
+    v_norm = math.sqrt(vx ** 2 + vy ** 2)
     if v_norm == 0:
         return None
 
@@ -493,8 +493,8 @@ def find_door_line(cubic_bezier: CubicBezier) -> Line:
     a2 = bx - cx
     b2 = by - cy
 
-    d1 = 0.5 * (ax**2 - bx**2 + ay**2 - by**2)
-    d2 = 0.5 * (bx**2 - cx**2 + by**2 - cy**2)
+    d1 = 0.5 * (ax ** 2 - bx ** 2 + ay ** 2 - by ** 2)
+    d2 = 0.5 * (bx ** 2 - cx ** 2 + by ** 2 - cy ** 2)
 
     y = (d2 - a2 * d1 / a1) / (b2 - a2 * b1 / a1)
     x = (d1 - b1 * y) / a1

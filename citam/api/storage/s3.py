@@ -70,8 +70,7 @@ class S3StorageDriver(BaseStorageDriver):
         LOG.info("Downloading file: '%s'", filename)
 
         response = self.client.get_object(
-            Bucket=self.bucket,
-            Key=f"{sim_id}/{filename}",
+            Bucket=self.bucket, Key=f"{sim_id}/{filename}",
         )
         output = StringIO()
         output.write(response["Body"].read().decode("UTF-8"))
@@ -85,8 +84,7 @@ class S3StorageDriver(BaseStorageDriver):
 
     def list_runs(self):
         prefixes = self.client.list_objects_v2(
-            Bucket=self.bucket,
-            Delimiter="/",
+            Bucket=self.bucket, Delimiter="/",
         )["CommonPrefixes"]
 
         return list(map(lambda x: x["Prefix"].strip("/"), prefixes))
@@ -110,8 +108,7 @@ class S3StorageDriver(BaseStorageDriver):
     def get_contact_file(self, sim_id, floor):
         manifest = self.get_manifest(sim_id)
         return self._get_text_file(
-            sim_id,
-            f'{manifest["floor_dict"][floor]}contacts.txt',
+            sim_id, f'{manifest["floor_dict"][floor]}contacts.txt',
         )
 
     def get_map_file(self, sim_id, floor):

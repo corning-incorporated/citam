@@ -18,8 +18,7 @@ from citam.api.storage.local import LocalStorageDriver
 from citam.api.storage import NoResultsFoundError
 
 search_root = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "sample_results",
+    os.path.dirname(os.path.abspath(__file__)), "sample_results",
 )
 
 

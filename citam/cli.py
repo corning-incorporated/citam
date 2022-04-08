@@ -84,12 +84,9 @@ def get_parser():
     https://docs.python.org/dev/library/argparse.html
     """
     parser = argparse.ArgumentParser(
-        prog="citam",
-        description="The CITAM CLI",
+        prog="citam", description="The CITAM CLI",
     )
-    global_args = argparse.ArgumentParser(
-        add_help=False,
-    )
+    global_args = argparse.ArgumentParser(add_help=False,)
     global_args.add_argument(
         "-v",
         "--verbose",
@@ -99,10 +96,7 @@ def get_parser():
     )
     global_args.add_argument("--log-file", type=str, help="log file location")
 
-    subparsers = parser.add_subparsers(
-        metavar="<command>",
-        required=True,
-    )
+    subparsers = parser.add_subparsers(metavar="<command>", required=True,)
 
     _add_engine_commands(subparsers, global_args)
     _add_config_commands(subparsers, global_args)
@@ -126,8 +120,7 @@ def _add_engine_commands(subparser, global_args):
         help="Interact with the CITAM simulation engine",
     )
     engine_commands = engine.add_subparsers(
-        metavar="<engine_command>",
-        required=True,
+        metavar="<engine_command>", required=True,
     )
 
     ingest = engine_commands.add_parser(
@@ -266,8 +259,7 @@ def _add_config_commands(subparser, global_args):
     )
     config.set_defaults(func=_placeholder_func)
     config.add_argument(
-        "get",
-        help="Print the current CITAM configuration",
+        "get", help="Print the current CITAM configuration",
     )
 
 
@@ -281,9 +273,7 @@ def _add_dash_commands(subparser, global_args):
         Global arguments to use as parent for spawned parsers
     """
     dash = subparser.add_parser(
-        "dash",
-        parents=[global_args],
-        help="Start the CITAM dashboard",
+        "dash", parents=[global_args], help="Start the CITAM dashboard",
     )
     dash.set_defaults(func=run_server)
     dash.add_argument(

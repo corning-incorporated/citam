@@ -111,7 +111,5 @@ def get_facility_datadir(facility_name: str) -> Union[str, pathlib.Path]:
     """"""
     citam_cache_directory = get_user_cache()
     return os.path.join(
-        citam_cache_directory,
-        "floorplans_and_nav_data",
-        facility_name,
+        citam_cache_directory, "floorplans_and_nav_data", facility_name,
     )

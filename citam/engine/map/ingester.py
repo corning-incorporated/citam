@@ -146,12 +146,10 @@ class FloorplanIngester:
             self.buildings.add(space_attr["building"])
             for i, line in enumerate(space_path):
                 new_start = complex(
-                    int(round(line.start.real)),
-                    int(round(line.start.imag)),
+                    int(round(line.start.real)), int(round(line.start.imag)),
                 )
                 new_end = complex(
-                    int(round(line.end.real)),
-                    int(round(line.end.imag)),
+                    int(round(line.end.real)), int(round(line.end.imag)),
                 )
                 new_line = Line(start=new_start, end=new_end)
                 space_path[i] = new_line
@@ -647,13 +645,8 @@ class FloorplanIngester:
         while not processing_queue.empty():
             h_wall = processing_queue.get()
             processed_segments.append(h_wall)
-            segments = (
-                self.check_for_overlap_with_other_walls_and_add_door_to_wall(
-                    h_wall,
-                    other_walls,
-                    other_space_ids,
-                    add_door,
-                )
+            segments = self.check_for_overlap_with_other_walls_and_add_door_to_wall(
+                h_wall, other_walls, other_space_ids, add_door,
             )
             if segments is not None:
                 for seg in segments:

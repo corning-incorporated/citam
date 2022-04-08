@@ -288,10 +288,7 @@ class Simulation:
             agent = Agent(current_agent, schedule)
             self.agents[agent.unique_id] = agent
 
-    def step(
-        self,
-        traj_outfile: TextIO = None,
-    ) -> None:
+    def step(self, traj_outfile: TextIO = None,) -> None:
         """
         Move the simulation one step ahead.
 
@@ -457,10 +454,7 @@ class Simulation:
                 ],
             )
 
-    def save_schedules(
-        self,
-        work_directory: str,
-    ) -> None:
+    def save_schedules(self, work_directory: str,) -> None:
         """
         Write agent schedules to file.
 

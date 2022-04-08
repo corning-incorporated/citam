@@ -19,9 +19,7 @@ ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
 
 class CloseContactsCalculator(Calculator):
     def __init__(
-        self,
-        facility: Facility,
-        contact_distance: float = 6.0,
+        self, facility: Facility, contact_distance: float = 6.0,
     ) -> None:
         super().__init__(facility)
         self.facility = facility
@@ -61,11 +59,7 @@ class CloseContactsCalculator(Calculator):
             contact_file = os.path.join(directory, "contacts.txt")
             self.data_outfiles.append(open(contact_file, "w"))
 
-    def run(
-        self,
-        current_step: int,
-        active_agents: List[Agent],
-    ) -> None:
+    def run(self, current_step: int, active_agents: List[Agent],) -> None:
         """
         Iterate over agents, compute whether they fall within the contact
         distance or not and verify that they are indeed making contact (based
@@ -145,8 +139,7 @@ class CloseContactsCalculator(Calculator):
             cof.close()
         if work_directory:
             self.save_to_files(
-                agents,
-                work_directory,
+                agents, work_directory,
             )
 
     def identify_xy_proximity(
@@ -302,8 +295,8 @@ class CloseContactsCalculator(Calculator):
                 floor_directory, "contact_dist_per_coord.csv"
             )
 
-            contacts_per_coord = (
-                self.contact_events.get_contacts_per_coordinates(floor_number)
+            contacts_per_coord = self.contact_events.get_contacts_per_coordinates(
+                floor_number
             )
 
             with open(coord_contact_dist_filename, "a") as outfile:

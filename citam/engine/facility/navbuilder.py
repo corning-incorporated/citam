@@ -135,9 +135,7 @@ class NavigationBuilder:
             door_normal = door.path.normal(0.5)
 
             segments, seg_spaces = self.compute_nav_segments(
-                door.midpoint,
-                door_normal,
-                stop_at_existing_segments=True,
+                door.midpoint, door_normal, stop_at_existing_segments=True,
             )
 
             if len(segments) == 0:
@@ -507,8 +505,7 @@ class NavigationBuilder:
         boundary_spaces = self._is_point_on_boundaries(current_point)
         if len(boundary_spaces) == 0:
             raise ValueError(
-                "Unable to compute a nav segment from %s",
-                str(current_point),
+                "Unable to compute a nav segment from %s", str(current_point),
             )
         elif len(boundary_spaces) == 1:
             LOG.info(
@@ -561,8 +558,7 @@ class NavigationBuilder:
         """
 
         test_line = Line(
-            start=first_point.complex_coords,
-            end=new_point.complex_coords,
+            start=first_point.complex_coords, end=new_point.complex_coords,
         )
         # TODO: Change test_line to be the last segment!
         for wall in self.floorplan.walls:
@@ -633,8 +629,7 @@ class NavigationBuilder:
         """
 
         test_line = Line(
-            start=first_point.complex_coords,
-            end=current_point.complex_coords,
+            start=first_point.complex_coords, end=current_point.complex_coords,
         )
         coords, door = self.find_door_intersect(test_line)
         if coords is not None and door is not None:
@@ -865,7 +860,7 @@ class NavigationBuilder:
         if edge[0] != inter_coords:
             dx = edge[0][0] - inter_coords[0]
             dy = edge[0][1] - inter_coords[1]
-            L = (dx**2 + dy**2) ** 0.5
+            L = (dx ** 2 + dy ** 2) ** 0.5
             coords2 = (
                 inter_coords[0] + round(dx / L),
                 inter_coords[1] + round(dy / L),
@@ -880,7 +875,7 @@ class NavigationBuilder:
         if inter_coords != edge[1]:
             dx = edge[1][0] - inter_coords[0]
             dy = edge[1][1] - inter_coords[1]
-            L = (dx**2 + dy**2) ** 0.5
+            L = (dx ** 2 + dy ** 2) ** 0.5
             coords2 = (
                 inter_coords[0] + round(dx / L),
                 inter_coords[1] + round(dy / L),
@@ -969,9 +964,7 @@ class NavigationBuilder:
             half_width = list(edges)[0][2]["half_width"]
             self.floor_navnet.remove_node(node)
             self.floor_navnet.add_edge(
-                neighbors[0],
-                neighbors[1],
-                half_width=half_width,
+                neighbors[0], neighbors[1], half_width=half_width,
             )
         return remove_node
 
