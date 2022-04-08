@@ -377,7 +377,7 @@ def export_world_to_svg(
             {
                 "fill": colors.to_hex(color),
                 "stroke": "blue",
-                "stroke-width": 0.1 * multiplier,
+                "stroke-width": 3.0 * multiplier,
             }
         )
         paths.append(agent_top)
@@ -386,7 +386,7 @@ def export_world_to_svg(
             {
                 "fill": colors.to_hex(color),
                 "stroke": "blue",
-                "stroke-width": 0.1 * multiplier,
+                "stroke-width": 3.0 * multiplier,
             }
         )
         paths.append(agent_bottom)
