@@ -95,15 +95,19 @@ class Navigation:
         self.facility_name = facility_name
         self.traffic_policy = traffic_policy
 
-        for fnum, floorplan in enumerate(self.floorplans):
+        for _, floorplan in enumerate(self.floorplans):
 
             LOG.info(
                 "Loading navigation data for floor {%s}", floorplan.floor_name
             )
 
-            floorplan_directory = su.get_floor_datadir(
-                facility_name, floorplan.floor_name
+            floorplan_directory = os.path.join(
+                facility_name, "floor_" + floorplan.floor_name
             )
+            if not os.path.isdir(floorplan_directory):
+                floorplan_directory = su.get_floor_datadir(
+                    facility_name, floorplan.floor_name
+                )
 
             # Load navigation network
             LOG.info("Loading navnet...")
@@ -134,6 +138,9 @@ class Navigation:
             self.create_multifloor_navnet()
 
         self.apply_traffic_policy()
+
+    # TODO: Move the following 3 functions outside of this class either
+    #  into main.py or eleswhere
 
     def load_hallway_graph(
         self, floor_hallway_graph_file: Union[str, pathlib.Path]

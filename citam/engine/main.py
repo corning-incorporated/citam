@@ -273,6 +273,9 @@ def export_navigation_graph_to_svg(
 def load_floorplans(facility_name, floors, user_scale=None):
     """Create and return a floorplan object for each floor requested.
 
+    By default, it looks in the current directory for facility data otherwise
+    looks in the citam cache directory.
+
     :param facility_name: Name of facility of interest.
     :type facility_name: str
     :param floors: List of floor names of interest
@@ -289,7 +292,9 @@ def load_floorplans(facility_name, floors, user_scale=None):
 
     for fn in floors:
         LOG.info("Loading floorplan for floor: %s", fn)
-        floorplan_directory = su.get_floor_datadir(facility_name, fn)
+        floorplan_directory = os.path.join(facility_name, "floor_" + fn)
+        if not os.path.isdir(floorplan_directory):
+            floorplan_directory = su.get_floor_datadir(facility_name, fn)
         floorplan = floorplan_from_directory(
             floorplan_directory, fn, scale=user_scale
         )
