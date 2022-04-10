@@ -30,6 +30,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+*package-lock.json
 
 citam/api/static/dash/
 public/doctrees/
