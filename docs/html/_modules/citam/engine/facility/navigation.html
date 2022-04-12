@@ -200,15 +200,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">facility_name</span> <span class="o">=</span> <span class="n">facility_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">traffic_policy</span> <span class="o">=</span> <span class="n">traffic_policy</span>
 
-        <span class="k">for</span> <span class="n">fnum</span><span class="p">,</span> <span class="n">floorplan</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">floorplan</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floorplans</span><span class="p">):</span>
 
             <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                 <span class="s2">&quot;Loading navigation data for floor {</span><span class="si">%s</span><span class="s2">}&quot;</span><span class="p">,</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">floor_name</span>
             <span class="p">)</span>
 
-            <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span>
-                <span class="n">facility_name</span><span class="p">,</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">floor_name</span>
+            <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">facility_name</span><span class="p">,</span> <span class="s2">&quot;floor_&quot;</span> <span class="o">+</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">floor_name</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">):</span>
+                <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span>
+                    <span class="n">facility_name</span><span class="p">,</span> <span class="n">floorplan</span><span class="o">.</span><span class="n">floor_name</span>
+                <span class="p">)</span>
 
             <span class="c1"># Load navigation network</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading navnet...&quot;</span><span class="p">)</span>
@@ -239,6 +243,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">create_multifloor_navnet</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">apply_traffic_policy</span><span class="p">()</span>
+
+    <span class="c1"># TODO: Move the following 3 functions outside of this class either</span>
+    <span class="c1">#  into main.py or eleswhere</span>
 
 <div class="viewcode-block" id="Navigation.load_hallway_graph"><a class="viewcode-back" href="../../../../autoapi/citam/engine/facility/navigation/index.html#citam.engine.facility.navigation.Navigation.load_hallway_graph">[docs]</a>    <span class="k">def</span> <span class="nf">load_hallway_graph</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">floor_hallway_graph_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span>
@@ -1097,7 +1104,7 @@
     </div>
     <div class="col-sm-6">
       <p id="copyRight">
-        &#169; 2021 Corning Incorporated. All Rights Reserved.
+        &#169; 2022 Corning Incorporated. All Rights Reserved.
       </p>
     </div>
   </div>

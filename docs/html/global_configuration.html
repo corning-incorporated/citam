@@ -19,9 +19,7 @@
 <script src="_static/underscore.js"></script>
 <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Engine Developer Reference" href="engine_developer_reference.html" />
-    <link rel="prev" title="CLI Reference" href="cli_commands.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -94,12 +92,6 @@
     <li class="right" >
       <a href="py-modindex.html" title="Python Module Index" >modules</a> |
     </li>
-    <li class="right" >
-      <a href="engine_developer_reference.html" title="Engine Developer Reference" accesskey="N">next</a> |
-    </li>
-    <li class="right" >
-      <a href="cli_commands.html" title="CLI Reference" accesskey="P">previous</a> |
-    </li>
     <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.13.0 documentation</a> &#187;</li> 
   </ul>
 </div>  
@@ -111,50 +103,7 @@
             
   <section id="global-configuration">
 <h1>Global Configuration<a class="headerlink" href="#global-configuration" title="Permalink to this headline">¶</a></h1>
-<section id="dashboard-configuration">
-<h2>Dashboard Configuration<a class="headerlink" href="#dashboard-configuration" title="Permalink to this headline">¶</a></h2>
-<p><em>Required</em></p>
-<dl class="field-list simple">
-<dt class="field-odd">CITAM_RESULT_PATH</dt>
-<dd class="field-odd"><p>The local results directory. To view multiple results in the
-dashboard, set <strong>CITAM_RESULT_PATH</strong> to a parent directory. This is only used
-by <a class="reference internal" href="autoapi/citam/api/storage/local/index.html#citam.api.storage.local.LocalStorageDriver" title="citam.api.storage.local.LocalStorageDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.local.LocalStorageDriver</span></code></a></p>
-</dd>
-</dl>
-<p><em>Optional</em>
-The following settings can be set using environment variables can be used</p>
-<dl class="field-list simple">
-<dt class="field-odd">CITAM_STORAGE_DRIVER</dt>
-<dd class="field-odd"><p>The storage backend to use.  Current options are
-<code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.ceph.CephStorageDriver</span></code> and
-<a class="reference internal" href="autoapi/citam/api/storage/local/index.html#citam.api.storage.local.LocalStorageDriver" title="citam.api.storage.local.LocalStorageDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.local.LocalStorageDriver</span></code></a></p>
-</dd>
-<dt class="field-even">CITAM_STORAGE_KEY</dt>
-<dd class="field-even"><p>The s3 storage access key.  This is only used by
-<code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.ceph.CephStorageDriver</span></code></p>
-</dd>
-<dt class="field-odd">CITAM_STORAGE_SECRET</dt>
-<dd class="field-odd"><p>The s3 storage secret key.  This is only used by
-<code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.ceph.CephStorageDriver</span></code></p>
-</dd>
-<dt class="field-even">CITAM_STORAGE_BUCKET</dt>
-<dd class="field-even"><p>The s3 storage access key.  This is only used by
-<code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.ceph.CephStorageDriver</span></code></p>
-</dd>
-<dt class="field-odd">CITAM_STORAGE_REGION</dt>
-<dd class="field-odd"><p>The s3 storage region.  This is only used by
-<code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.ceph.CephStorageDriver</span></code></p>
-</dd>
-<dt class="field-even">CITAM_STORAGE_URL</dt>
-<dd class="field-even"><p>The filesystem path to model results.  This is only used
-by <code class="xref py py-class docutils literal notranslate"><span class="pre">citam.api.storage.ceph.CephStorageDriver</span></code></p>
-</dd>
-<dt class="field-odd">CITAM_LOG_LEVEL</dt>
-<dd class="field-odd"><p>Application logging level.
-Options are: DEBUG, INFO, WARNING, ERROR, CRITICAL</p>
-</dd>
-</dl>
-</section>
+<p>Coming soon…</p>
 </section>
 
 
@@ -163,20 +112,6 @@ Options are: DEBUG, INFO, WARNING, ERROR, CRITICAL</p>
       </div>
 <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
   <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Global Configuration</a><ul>
-<li><a class="reference internal" href="#dashboard-configuration">Dashboard Configuration</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="cli_commands.html"
-                        title="previous chapter">CLI Reference</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="engine_developer_reference.html"
-                        title="next chapter">Engine Developer Reference</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -207,12 +142,6 @@ Options are: DEBUG, INFO, WARNING, ERROR, CRITICAL</p>
     <li class="right" >
       <a href="py-modindex.html" title="Python Module Index" >modules</a> |
     </li>
-    <li class="right" >
-      <a href="engine_developer_reference.html" title="Engine Developer Reference" >next</a> |
-    </li>
-    <li class="right" >
-      <a href="cli_commands.html" title="CLI Reference" >previous</a> |
-    </li>
     <li class="nav-item nav-item-0"><a href="index.html">CITAM 0.13.0 documentation</a> &#187;</li> 
   </ul>
 </div><div class="container-fluid">
@@ -233,7 +162,7 @@ Options are: DEBUG, INFO, WARNING, ERROR, CRITICAL</p>
     </div>
     <div class="col-sm-6">
       <p id="copyRight">
-        &#169; 2021 Corning Incorporated. All Rights Reserved.
+        &#169; 2022 Corning Incorporated. All Rights Reserved.
       </p>
     </div>
   </div>

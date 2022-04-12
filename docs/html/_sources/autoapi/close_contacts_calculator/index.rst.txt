@@ -1,0 +1,293 @@
+:py:mod:`close_contacts_calculator`
+===================================
+
+.. py:module:: close_contacts_calculator
+
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   close_contacts_calculator.CloseContactsCalculator
+
+
+
+
+.. py:class:: CloseContactsCalculator(facility: citam.engine.facility.indoor_facility.Facility, contact_distance: float = 6.0)
+
+   Bases: :py:obj:`citam.engine.calculators.calculator.Calculator`
+
+   
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: initialize(self, agents: OrderedDict[int, citam.engine.core.agent.Agent], workdir: Optional[Union[os.PathLike, str]] = None)
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: run(self, current_step: int, active_agents: List[citam.engine.core.agent.Agent]) -> None
+
+      
+      Iterate over agents, compute whether they fall within the contact
+      distance or not and verify that they are indeed making contact (based
+      on whether they are in the same space or not).
+
+      :param agents: list of agents under consideration for contact
+          statistics
+      :type agents: List[Agent]
+      :param contact_outfiles: Files to write contact data, one per floor,
+              defaults to None
+      :type contact_outfiles: List[TextIO], optional
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: finalize(self, agents: List[citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None) -> None
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: identify_xy_proximity(self, positions_vector: numpy.ndarray) -> numpy.ndarray
+
+      
+      Compute pairwise distances, given a vector of xy positions, and
+      return the indices of the ones that fall within the given contact
+      distance.
+
+      :param positions_vector: Array of current xy positions of all active
+              agents
+      :type positions_vector: np.ndarray
+      :return: Array of indices of agents that are within the contact
+          distance of each other
+      :rtype: np.ndarray
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: verify_and_add_contact(self, current_step: int, floor_number: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent)
+
+      
+      Verify if agents are in nearby hallways before creating contact event.
+
+      :param floor_number: [description]
+      :type floor_number: int
+      :param agent1: First agent
+      :type agent1: Agent
+      :param agent2: Second agent
+      :type agent2: Agent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: add_contact_event(self, current_step: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent) -> None
+
+      
+      Record contact event between agent1 and agent2.
+
+      :param agent1: The first agent.
+      :type agent1: Agent
+      :param agent2: The second agent.
+      :type agent2: Agent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: extract_contact_distribution_per_agent(self, agents: List[citam.engine.core.agent.Agent]) -> Tuple[List[str], List[int]]
+
+      
+      Compute and return total contacts per agent.
+
+      :return: List of agent ids and their total contacts
+      :rtype: Tuple[List[int], List[int]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: save_to_files(self, agents: List[citam.engine.core.agent.Agent], work_directory: Union[str, bytes, os.PathLike])
+
+      
+      Write output files to the output directory
+
+      :param work_directory: directory where all output files are to be
+          saved.
+      :type work_directory: str
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: create_svg_heatmap(self, contacts_per_coord: Dict[Tuple[int, int], int], floor_directory: str) -> None
+
+      
+      Create and save a heatmap from coordinate contact data.
+
+      :param contacts_per_coord: dictionary where each key is an (x,y )
+              tuple and values are the number of contacts in that location.
+      :type contacts_per_coord: Dict[Tuple[int, int], int]
+      :param floor_directory: directory to save the heatmap file.
+      :type floor_directory: str
+      :raises FileNotFoundError: if the floor svg map file is not found.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+

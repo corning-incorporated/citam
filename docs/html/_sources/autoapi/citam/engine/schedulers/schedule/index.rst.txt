@@ -1,0 +1,97 @@
+:py:mod:`citam.engine.schedulers.schedule`
+==========================================
+
+.. py:module:: citam.engine.schedulers.schedule
+
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.schedulers.schedule.ScheduleItem
+   citam.engine.schedulers.schedule.Schedule
+
+
+
+
+.. py:class:: ScheduleItem(purpose, location, floor_number, duration)
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: Schedule(timestep: int, start_time: int, end_time: int)
+
+   Bases: :py:obj:`abc.ABC`
+
+   
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: build(self)
+      :abstractmethod:
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+

@@ -77,16 +77,16 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: choose_best_entrance(self, office_floor: int, office_id: int) -> Tuple[Optional[citam.engine.map.door.Door], Optional[int]]
+   .. py:method:: choose_best_entrance(self, office_floor: int, base_location: int) -> Tuple[Optional[citam.engine.map.door.Door], Optional[int]]
 
       
       Find the facility entrance that offers the fastest route to an agent's
-      assigned office space.
+      assigned base location.
 
       :param office_floor: index of the floor where this office is located.
       :type office_floor: int
-      :param office_id: index of the office space
-      :type office_id: int
+      :param base_location: index of the office space
+      :type base_location: int
       :return: best entrance door and floor number of best entrance
       :rtype: Tuple[Door, int]
 

@@ -36,7 +36,7 @@ Subpackages
    facility/index.rst
    io/index.rst
    map/index.rst
-   policy/index.rst
+   schedulers/index.rst
 
 
 Submodules

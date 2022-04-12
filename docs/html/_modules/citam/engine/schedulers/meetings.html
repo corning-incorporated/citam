@@ -1,0 +1,562 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>citam.engine.schedulers.meetings &#8212; CITAM 0.13.0 documentation</title>
+<link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/style.css" />
+<link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+<script id="documentation_options" data-url_root="../../../../"
+  src="../../../../_static/documentation_options.js"></script>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+<script src="../../../../_static/jquery.js"></script>
+<script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class=_modules/citam/engine/schedulers/meetings.html><div class="container-fluid">
+  <div class="row customNav fixed-top">
+    <div class="col-sm-3">
+
+      <div class="row titleBorder">
+        <div class="col-sm-2 colSpacing">
+          <img src="../Images/CITAM_White_Logo.png" alt="CITAM vector" style="margin: 15px 0 0 55px" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-9">
+      <!-- Nav tabs -->
+      <nav class="nav-tabs navbar navbar-expand-sm justify-content-end">
+        <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="home.html"
+              href="https://corning-incorporated.github.io/citam/index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" href="https://github.com/corning-incorporated/citam" target="_blank">View on
+              GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="getting_started.html" href="getting_started.html">How it Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="tutorial.html" href="tutorial.html">Tutorial</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link itemStyle" id="index.html" href="index.html">Documentation</a>
+
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<script>
+  function navHighlight(elem, home, active) {
+    var className = document.getElementsByTagName("body")[0].className,
+      link = document.querySelectorAll(elem);
+    for (var i = 0; i < link.length; i++) {
+      var page = link[i].id;
+      if (page == className || (page == home && className == "")) {
+        link[i].className += " " + active;
+      }
+    }
+  }
+  navHighlight(
+    ".customNav a",
+    "home.html",
+    "active"
+  ); /* menu link selector, home page, highlight class */
+</script>
+    
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" accesskey="U">citam.engine</a> &#187;</li> 
+  </ul>
+</div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for citam.engine.schedulers.meetings</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021. Corning Incorporated. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1">#  This software may only be used in accordance with the identified license(s).</span>
+<span class="c1">#</span>
+<span class="c1"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="c1"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="c1"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL</span>
+<span class="c1"># CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="c1"># ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span>
+<span class="c1"># WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">progressbar</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">citam.engine.map.space</span> <span class="kn">import</span> <span class="n">Space</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Meeting"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.Meeting">[docs]</a><span class="k">class</span> <span class="nc">Meeting</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to manage meeting instances.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">location</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span>
+        <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">end_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">attendees</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new meeting object.</span>
+
+<span class="sd">        :param location: The location of the meeting</span>
+<span class="sd">        :type location: Space</span>
+<span class="sd">        :param floor_number: index of the floor where this meeting takes place.</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        :param start_time: Start time of the meeting.</span>
+<span class="sd">        :type start_time: int</span>
+<span class="sd">        :param end_time: End time of the meeting.</span>
+<span class="sd">        :type end_time: int</span>
+<span class="sd">        :param attendees: List of agents attending this meeting,</span>
+<span class="sd">            defaults to None</span>
+<span class="sd">        :type attendees: List[int], optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floor_number</span> <span class="o">=</span> <span class="n">floor_number</span>
+        <span class="k">if</span> <span class="n">attendees</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attendees</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># ID of all the participants</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attendees</span> <span class="o">=</span> <span class="n">attendees</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+
+<div class="viewcode-block" id="Meeting.__str__"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.Meeting.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a string representation of this meeting.</span>
+
+<span class="sd">        :return: The string representing this meeting</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">str_repr</span> <span class="o">=</span> <span class="s2">&quot;Meeting Details: </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">str_repr</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;&gt;&gt;&gt;&gt;&gt;&gt; attendees: &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attendees</span><span class="p">))</span>
+            <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attendees</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">str_repr</span> <span class="o">+=</span> <span class="s2">&quot;&gt;&gt;&gt;&gt;&gt;&gt; start time: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">str_repr</span> <span class="o">+=</span> <span class="s2">&quot;&gt;&gt;&gt;&gt;&gt;&gt; end time: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">str_repr</span> <span class="o">+=</span> <span class="s2">&quot;&gt;&gt;&gt;&gt;&gt;&gt; location: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">unique_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">str_repr</span> <span class="o">+=</span> <span class="s2">&quot;&gt;&gt;&gt;&gt;&gt;&gt; floor_number: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floor_number</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">str_repr</span></div>
+
+<div class="viewcode-block" id="Meeting.__eq__"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.Meeting.__eq__">[docs]</a>    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">location</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">floor_number</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">floor_number</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendees</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">attendees</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">start_time</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">end_time</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MeetingSchedule"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule">[docs]</a><span class="k">class</span> <span class="nc">MeetingSchedule</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to implement a meeting policy defining all the meetings that take</span>
+<span class="sd">    place in a facility based on predefined parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">meeting_rooms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">]],</span>
+        <span class="n">agent_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">daylength</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">policy_params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new meeting policy object.</span>
+
+<span class="sd">        :param meeting_rooms: The list of meeting rooms available.</span>
+<span class="sd">        :type meeting_rooms: List[List[Space]]</span>
+<span class="sd">        :param agent_ids: List of agent ids to create meetings for.</span>
+<span class="sd">        :type agent_ids: List[int]</span>
+<span class="sd">        :param daylength: The total time window within which meetings are to be</span>
+<span class="sd">            created.</span>
+<span class="sd">        :type daylength: int</span>
+<span class="sd">        :param policy_params: Parameters used to decide how to create the</span>
+<span class="sd">            meetings, defaults to None</span>
+<span class="sd">        :type policy_params: Dict[str, Any], optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meetings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Meeting</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">daylength</span> <span class="o">=</span> <span class="n">daylength</span>
+
+        <span class="k">if</span> <span class="n">policy_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No meeting policy provided. Nothing to do.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Attendee pool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span> <span class="o">=</span> <span class="p">{</span><span class="n">agent_id</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="n">agent_ids</span><span class="p">}</span>
+
+        <span class="c1"># Meetings duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_meeting_duration</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span><span class="s2">&quot;min_meeting_duration&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_meeting_length</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span><span class="s2">&quot;max_meeting_length&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meeting_duration_increment</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span>
+            <span class="s2">&quot;meeting_duration_increment&quot;</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Meetings frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_meetings_per_room</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span><span class="s2">&quot;avg_meetings_per_room&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">percent_meeting_rooms_used</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span>
+            <span class="s2">&quot;percent_meeting_rooms_used&quot;</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Meetings participants</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_meetings_per_person</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span><span class="s2">&quot;avg_meetings_per_person&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_attendees_per_meeting</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span>
+            <span class="s2">&quot;min_attendees_per_meeting&quot;</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Timing between meetings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_buffer_between_meetings</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span>
+            <span class="s2">&quot;min_buffer_between_meetings&quot;</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_buffer_between_meetings</span> <span class="o">=</span> <span class="n">policy_params</span><span class="p">[</span>
+            <span class="s2">&quot;max_buffer_between_meetings&quot;</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_time_blocks</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_meeting_length</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">meeting_duration_increment</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Space</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">floor</span> <span class="ow">in</span> <span class="n">meeting_rooms</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="n">floor</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">room</span><span class="o">.</span><span class="n">capacity</span>
+                    <span class="ow">and</span> <span class="n">room</span><span class="o">.</span><span class="n">capacity</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_attendees_per_meeting</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">room</span><span class="p">)</span>
+
+        <span class="n">n_meeting_rooms</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rooms</span><span class="p">)</span> <span class="k">for</span> <span class="n">rooms</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Valid meeting rooms for this policy: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_meeting_rooms</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="MeetingSchedule.create_new_meeting"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule.create_new_meeting">[docs]</a>    <span class="k">def</span> <span class="nf">create_new_meeting</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">meeting_room</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span>
+        <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">end_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        :param meeting_room: Space where the meeting room will take place.</span>
+<span class="sd">        :type meeting_room: Space</span>
+<span class="sd">        :param floor_number: index of the floor.</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        :param start_time: The meeting start time.</span>
+<span class="sd">        :type start_time: int</span>
+<span class="sd">        :param end_time: The meeting end time.</span>
+<span class="sd">        :type end_time: int</span>
+<span class="sd">        :return: True if meeting successfully created. False, otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attendees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_meeting_attendee_list</span><span class="p">(</span>
+            <span class="n">meeting_room</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attendees</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">attendee</span> <span class="ow">in</span> <span class="n">attendees</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="p">[</span><span class="n">attendee</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Create new meeting</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meetings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Meeting</span><span class="p">(</span>
+                    <span class="n">location</span><span class="o">=</span><span class="n">meeting_room</span><span class="p">,</span>
+                    <span class="n">floor_number</span><span class="o">=</span><span class="n">floor_number</span><span class="p">,</span>
+                    <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+                    <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span>
+                    <span class="n">attendees</span><span class="o">=</span><span class="n">attendees</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_attendee_pool</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="MeetingSchedule._create_meetings_for_room"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule._create_meetings_for_room">[docs]</a>    <span class="k">def</span> <span class="nf">_create_meetings_for_room</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">meeting_room</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">floor_number</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create all meetings to take place in this specific room.</span>
+
+<span class="sd">        :param meeting_room: The meeting room of interest.</span>
+<span class="sd">        :type meeting_room: Space</span>
+<span class="sd">        :param floor_number: Index of the floor of this meeting room.</span>
+<span class="sd">        :type floor_number: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n_meetings</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_meetings_per_room</span><span class="p">))</span>
+
+        <span class="c1"># TODO: Create first and last meeting then add extra meetings</span>
+        <span class="c1"># to avoid all meetings happening in the morning</span>
+
+        <span class="n">last_meeting_end_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_meetings</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">last_meeting_end_time</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">daylength</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Start next meeting within min and max buffer time</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">last_meeting_end_time</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">min_buffer_between_meetings</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">max_buffer_between_meetings</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">start_time</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">daylength</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Randomly set the duration</span>
+            <span class="n">n_blocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_time_blocks</span><span class="p">)</span>
+            <span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_meeting_duration</span>
+            <span class="n">duration</span> <span class="o">+=</span> <span class="n">n_blocks</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">meeting_duration_increment</span>
+
+            <span class="c1"># Set end time</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">start_time</span> <span class="o">+</span> <span class="n">duration</span>
+            <span class="k">if</span> <span class="n">end_time</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">daylength</span><span class="p">:</span>
+                <span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">daylength</span>
+
+            <span class="k">if</span> <span class="n">end_time</span> <span class="o">&lt;</span> <span class="n">start_time</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_new_meeting</span><span class="p">(</span>
+                <span class="n">meeting_room</span><span class="p">,</span> <span class="n">floor_number</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span>
+            <span class="p">):</span>
+                <span class="n">last_meeting_end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span></div>
+
+<div class="viewcode-block" id="MeetingSchedule._generate_meeting_attendee_list"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule._generate_meeting_attendee_list">[docs]</a>    <span class="k">def</span> <span class="nf">_generate_meeting_attendee_list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">meeting_room</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">start_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end_time</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Randomly add attendees to a meeting time slot based on agents&#39;</span>
+<span class="sd">        availability.</span>
+
+<span class="sd">        :param meeting_room: The meeting room</span>
+<span class="sd">        :type meeting_room: Space</span>
+<span class="sd">        :param start_time: When the meeting starts</span>
+<span class="sd">        :type start_time: int</span>
+<span class="sd">        :param end_time: When the meeting ends.</span>
+<span class="sd">        :type end_time: int</span>
+<span class="sd">        :return: The list of selected agents (given by their ids).</span>
+<span class="sd">        :rtype: List[int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pot_attendees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_potential_attendees</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pot_attendees</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">attendees</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">n_attendees</span> <span class="o">=</span> <span class="n">meeting_room</span><span class="o">.</span><span class="n">capacity</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_attendees_per_meeting</span> <span class="o">&lt;</span> <span class="n">meeting_room</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+            <span class="n">n_attendees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">min_attendees_per_meeting</span><span class="p">,</span> <span class="n">meeting_room</span><span class="o">.</span><span class="n">capacity</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n_attendees</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pot_attendees</span><span class="p">):</span>
+            <span class="c1"># We need more attendees than currently available</span>
+            <span class="n">attendees</span> <span class="o">=</span> <span class="n">pot_attendees</span>
+        <span class="k">elif</span> <span class="n">n_attendees</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">attendees</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pot_attendees</span><span class="p">,</span> <span class="n">n_attendees</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">attendees</span></div>
+
+<div class="viewcode-block" id="MeetingSchedule.build"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create meetings for this facility with no conflicts (room nor agent)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n_meeting_rooms</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rooms</span><span class="p">)</span> <span class="k">for</span> <span class="n">rooms</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_meeting_rooms</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No valid meeting room found&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Randomly select rooms</span>
+        <span class="n">available_rooms</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">floor_number</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">floor_number</span><span class="p">,</span> <span class="n">floor_rooms</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">floor_rooms</span><span class="p">))</span>
+        <span class="p">]</span>
+
+        <span class="n">n_rooms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">percent_meeting_rooms_used</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_rooms</span><span class="p">))</span>
+        <span class="n">rooms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">available_rooms</span><span class="p">,</span> <span class="n">n_rooms</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating meetings...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">roomkey</span> <span class="ow">in</span> <span class="n">pb</span><span class="o">.</span><span class="n">progressbar</span><span class="p">(</span><span class="n">rooms</span><span class="p">):</span>
+            <span class="n">fn</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">roomkey</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+            <span class="n">room</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meeting_rooms</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">fn</span><span class="p">)][</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_meetings_for_room</span><span class="p">(</span><span class="n">room</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MeetingSchedule._find_potential_attendees"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule._find_potential_attendees">[docs]</a>    <span class="k">def</span> <span class="nf">_find_potential_attendees</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end_time</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find all individuals in attendee pool who are free between start and</span>
+<span class="sd">        end time to be later added to a meeting within that time period.</span>
+
+<span class="sd">        :param start_time: Start time of the meeting.</span>
+<span class="sd">        :type start_time: int</span>
+<span class="sd">        :param end_time: End time of the meeting.</span>
+<span class="sd">        :type end_time: int</span>
+<span class="sd">        :return: List of potential attendees</span>
+<span class="sd">        :rtype: List[int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Find if there is another meeting at that same time</span>
+        <span class="n">pot_attendees</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="p">]</span>  <span class="c1"># copy of the list</span>
+        <span class="k">for</span> <span class="n">meeting</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meetings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">start_time</span> <span class="o">&lt;</span> <span class="n">meeting</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">and</span> <span class="n">end_time</span> <span class="o">&gt;</span> <span class="n">meeting</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+                <span class="c1"># this is an overlap, attendees are not available</span>
+                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">meeting</span><span class="o">.</span><span class="n">attendees</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">pot_attendees</span><span class="p">:</span>
+                        <span class="n">pot_attendees</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pot_attendees</span></div>
+
+<div class="viewcode-block" id="MeetingSchedule._update_attendee_pool"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule._update_attendee_pool">[docs]</a>    <span class="k">def</span> <span class="nf">_update_attendee_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the attendee pool to ensure the average</span>
+<span class="sd">        number of meetings per agent is not exceeded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if the avg is greater than desired, remove the attendee with the most</span>
+        <span class="c1"># meetings from the attendee pool</span>
+
+        <span class="n">current_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+
+        <span class="k">while</span> <span class="n">current_avg</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_meetings_per_person</span><span class="p">:</span>
+            <span class="n">max_meetings</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">val</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="n">max_meetings</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attendee_pool</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+            <span class="n">current_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MeetingSchedule.get_daily_meetings"><a class="viewcode-back" href="../../../../autoapi/citam/engine/schedulers/meetings/index.html#citam.engine.schedulers.meetings.MeetingSchedule.get_daily_meetings">[docs]</a>    <span class="k">def</span> <span class="nf">get_daily_meetings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Meeting</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of meetings for a given agent.</span>
+
+<span class="sd">        :param agent_id: Id of the agent of interest.</span>
+<span class="sd">        :type agent_id: int</span>
+<span class="sd">        :return: The list of meetings for this agent.</span>
+<span class="sd">        :rtype: List[Meeting]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">meeting</span>
+            <span class="k">for</span> <span class="n">meeting</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meetings</span>
+            <span class="k">if</span> <span class="n">agent_id</span> <span class="ow">in</span> <span class="n">meeting</span><span class="o">.</span><span class="n">attendees</span>
+        <span class="p">]</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+<div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+  <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+<div class="related" role="navigation" aria-label="related navigation">
+  <h3>Navigation</h3>
+  <ul>
+    <li class="right" style="margin-right: 10px" >
+      <a href="../../../../genindex.html" title="General Index" >index</a>
+    </li>
+    <li class="right" >
+      <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a> |
+    </li>
+    <li class="nav-item nav-item-0"><a href="../../../../index.html">CITAM 0.13.0 documentation</a> &#187;</li>
+    <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+    <li class="nav-item nav-item-2"><a href="../../engine.html" >citam.engine</a> &#187;</li> 
+  </ul>
+</div><div class="container-fluid">
+  <!--    Footer Section-->
+  <div class="row customNav fixed-bottom">
+    <div class="col-sm-6">
+      <nav class="navbar navbar-expand-sm">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.corning.com/worldwide/en/privacy-policy.html">Privacy Notice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/corning-incorporated/citam/blob/main/LICENSE"
+              target="_blank">Licensing</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-6">
+      <p id="copyRight">
+        &#169; 2022 Corning Incorporated. All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</div>
+  </body>
+
+  </html>

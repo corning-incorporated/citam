@@ -117,7 +117,7 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">citam.engine.policy.daily_schedule</span> <span class="kn">import</span> <span class="n">Schedule</span>
+<span class="kn">from</span> <span class="nn">citam.engine.schedulers.schedule</span> <span class="kn">import</span> <span class="n">Schedule</span>
 
 
 <div class="viewcode-block" id="Agent"><a class="viewcode-back" href="../../../../autoapi/citam/engine/core/agent/index.html#citam.engine.core.agent.Agent">[docs]</a><span class="k">class</span> <span class="nc">Agent</span><span class="p">:</span>
@@ -132,8 +132,8 @@
         <span class="n">unique_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">schedule</span><span class="p">:</span> <span class="n">Schedule</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">office_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">job_function</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">base_location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize an agent object.</span>
@@ -146,9 +146,9 @@
 <span class="sd">        :type schedule: Schedule</span>
 <span class="sd">        :param name: The name of this agent, defaults to None</span>
 <span class="sd">        :type name: str, optional</span>
-<span class="sd">        :param office_id: ID of the office space assigned to this agent,</span>
+<span class="sd">        :param base_location: ID of the office space assigned to this agent,</span>
 <span class="sd">            defaults to None</span>
-<span class="sd">        :type office_id: int, optional</span>
+<span class="sd">        :type base_location: int, optional</span>
 <span class="sd">        :param job_function: job function of this agent, defaults to None</span>
 <span class="sd">        :type job_function: str, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -156,10 +156,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span> <span class="o">=</span> <span class="n">schedule</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">office_id</span> <span class="o">=</span> <span class="n">office_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">job_function</span> <span class="o">=</span> <span class="n">job_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_location</span> <span class="o">=</span> <span class="n">base_location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">cumulative_contact_duration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Values that are independently computed at every step, each item in</span>
+        <span class="c1"># the dictionary should be a list of numbers, one for each step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instantaneous_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Values that are cumulative in nature, each item should be a number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cumulative_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_location</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_floor</span> <span class="o">=</span> <span class="kc">None</span>
@@ -259,7 +264,7 @@
     </div>
     <div class="col-sm-6">
       <p id="copyRight">
-        &#169; 2021 Corning Incorporated. All Rights Reserved.
+        &#169; 2022 Corning Incorporated. All Rights Reserved.
       </p>
     </div>
   </div>

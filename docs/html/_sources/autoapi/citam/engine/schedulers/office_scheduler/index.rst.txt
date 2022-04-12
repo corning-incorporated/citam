@@ -1,0 +1,195 @@
+:py:mod:`citam.engine.schedulers.office_scheduler`
+==================================================
+
+.. py:module:: citam.engine.schedulers.office_scheduler
+
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.schedulers.office_scheduler.OfficeScheduler
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   citam.engine.schedulers.office_scheduler.LOG
+
+
+.. py:data:: LOG
+   
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:class:: OfficeScheduler(facility, total_timesteps, timestep=1, scheduling_rules=None, meeting_policy=None, entry_exit_window=300, preassigned_offices=None, shifts=None)
+
+   Bases: :py:obj:`citam.engine.schedulers.scheduler.Scheduler`
+
+   
+   Scheduler class used to create a typical schedules for an office
+   building. This assumes each agent has an office space, go to meetings
+   throughout the day and spend time in special spaces called labs.
+   Supports the use of restrooms and dining areas by agents.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: generate_meetings(self, n_agents: int) -> None
+
+      
+      Create meetings based on meeting policy.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: assign_office(self) -> Tuple[int, int]
+
+      
+      Assign an office to the current agent. If office spaces are not
+      pre-assigned, select one randomly and remove it from list of available
+      offices. Otherwise, return the next office from the queue.
+
+      :return: office id and floor
+      :rtype: Tuple[int, int]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: run(self, n_agents: int) -> List[citam.engine.schedulers.schedule.Schedule]
+
+      
+      Run this scheduler and return one schedule per agent.
+
+      :param n_agents: Number of agents to create schedules for
+      :type n_agents: int
+      :param shifts: Dictionary describing a shift (group of agents with
+                  the same start time)
+      :type shifts: dict
+      :raises ValueError: If unable to find an appropriate entrance for an
+                  assigned office space.
+      :return: list of schedule objects, one per agent
+      :rtype: List[Schedule]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: save_to_files(self, work_directory) -> None
+
+      
+      Write key scheduling info to file.
+
+      Two files are created with respectively the following contents:
+      1. meetings.txt with all the meetings
+      3. agent_ids.csv with each agent's assigned office
+
+      :param work_directory: [description]
+      :type work_directory: [type]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+

@@ -1,0 +1,120 @@
+:py:mod:`calculator`
+====================
+
+.. py:module:: calculator
+
+.. autoapi-nested-parse::
+
+   
+   ..
+       !! processed by numpydoc !!
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   calculator.Calculator
+
+
+
+
+.. py:class:: Calculator(facility: citam.engine.facility.indoor_facility.Facility, **kwargs)
+
+   Bases: :py:obj:`abc.ABC`
+
+   
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+   .. py:method:: initialize(self, agents: OrderedDict[int, citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None)
+      :abstractmethod:
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: run(self, current_step: int, agents: List[citam.engine.core.agent.Agent], **kwargs)
+      :abstractmethod:
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+   .. py:method:: finalize(self, agents: List[citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None)
+      :abstractmethod:
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      ..
+          !! processed by numpydoc !!
+
+

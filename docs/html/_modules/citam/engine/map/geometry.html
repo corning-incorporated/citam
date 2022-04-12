@@ -545,7 +545,7 @@
     <span class="c1"># vector between start and end points</span>
     <span class="n">vx</span> <span class="o">=</span> <span class="n">room_wall</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">real</span> <span class="o">-</span> <span class="n">room_wall</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">real</span>
     <span class="n">vy</span> <span class="o">=</span> <span class="n">room_wall</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">imag</span> <span class="o">-</span> <span class="n">room_wall</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">imag</span>
-    <span class="n">v_norm</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">v_norm</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">vy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">v_norm</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -598,8 +598,8 @@
     <span class="n">a2</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">-</span> <span class="n">cx</span>
     <span class="n">b2</span> <span class="o">=</span> <span class="n">by</span> <span class="o">-</span> <span class="n">cy</span>
 
-    <span class="n">d1</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">ax</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">bx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ay</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">by</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">d2</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">cx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">by</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">cy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">ax</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">bx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ay</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">by</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bx</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">cx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">by</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">cy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">d2</span> <span class="o">-</span> <span class="n">a2</span> <span class="o">*</span> <span class="n">d1</span> <span class="o">/</span> <span class="n">a1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b2</span> <span class="o">-</span> <span class="n">a2</span> <span class="o">*</span> <span class="n">b1</span> <span class="o">/</span> <span class="n">a1</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">d1</span> <span class="o">-</span> <span class="n">b1</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">a1</span>
@@ -791,7 +791,7 @@
     </div>
     <div class="col-sm-6">
       <p id="copyRight">
-        &#169; 2021 Corning Incorporated. All Rights Reserved.
+        &#169; 2022 Corning Incorporated. All Rights Reserved.
       </p>
     </div>
   </div>

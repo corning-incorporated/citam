@@ -125,6 +125,14 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">from</span> <span class="nn">networkx.classes.graph</span> <span class="kn">import</span> <span class="n">Graph</span>
 <span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span> <span class="nn">citam.engine.calculators.close_contacts_calculator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CloseContactsCalculator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">citam.engine.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CAFETERIA_VISIT</span><span class="p">,</span>
+    <span class="n">DEFAULT_MEETINGS_POLICY</span><span class="p">,</span>
+    <span class="n">DEFAULT_SCHEDULING_RULES</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">citam.engine.io.visualization</span> <span class="k">as</span> <span class="nn">bv</span>
 <span class="kn">import</span> <span class="nn">citam.engine.map.geometry</span> <span class="k">as</span> <span class="nn">gsu</span>
@@ -137,6 +145,8 @@
 <span class="kn">from</span> <span class="nn">citam.engine.map.point</span> <span class="kn">import</span> <span class="n">Point</span>
 <span class="kn">from</span> <span class="nn">citam.engine.facility.indoor_facility</span> <span class="kn">import</span> <span class="n">Facility</span>
 <span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">citam.engine.schedulers.office_scheduler</span> <span class="kn">import</span> <span class="n">OfficeScheduler</span>
 
 <span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -368,6 +378,9 @@
 <div class="viewcode-block" id="load_floorplans"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.load_floorplans">[docs]</a><span class="k">def</span> <span class="nf">load_floorplans</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="n">floors</span><span class="p">,</span> <span class="n">user_scale</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create and return a floorplan object for each floor requested.</span>
 
+<span class="sd">    By default, it looks in the current directory for facility data otherwise</span>
+<span class="sd">    looks in the citam cache directory.</span>
+
 <span class="sd">    :param facility_name: Name of facility of interest.</span>
 <span class="sd">    :type facility_name: str</span>
 <span class="sd">    :param floors: List of floor names of interest</span>
@@ -384,12 +397,30 @@
 
     <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">floors</span><span class="p">:</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading floorplan for floor: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
-        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+        <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="s2">&quot;floor_&quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">floorplan_directory</span><span class="p">):</span>
+            <span class="n">floorplan_directory</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">get_floor_datadir</span><span class="p">(</span><span class="n">facility_name</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
         <span class="n">floorplan</span> <span class="o">=</span> <span class="n">floorplan_from_directory</span><span class="p">(</span>
             <span class="n">floorplan_directory</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">user_scale</span>
         <span class="p">)</span>
         <span class="n">floorplans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">floorplan</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">floorplans</span></div>
+
+
+<div class="viewcode-block" id="compute_occupancy_rate"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.compute_occupancy_rate">[docs]</a><span class="k">def</span> <span class="nf">compute_occupancy_rate</span><span class="p">(</span><span class="n">facility</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">):</span>
+
+    <span class="c1"># Compute occupancy rate and/or number of agents</span>
+    <span class="k">if</span> <span class="n">n_agents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">occupancy_rate</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">n_agents</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">facility</span><span class="o">.</span><span class="n">total_offices</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">occupancy_rate</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Occupancy rate is &quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">occupancy_rate</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot; &gt; 1.0 (Office spaces: &quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">facility</span><span class="o">.</span><span class="n">total_offices</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">occupancy_rate</span> <span class="o">=</span> <span class="n">occupancy_rate</span></div>
 
 
 <div class="viewcode-block" id="run_simulation"><a class="viewcode-back" href="../../../autoapi/citam/engine/main/index.html#citam.engine.run_simulation">[docs]</a><span class="k">def</span> <span class="nf">run_simulation</span><span class="p">(</span><span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -405,28 +436,81 @@
     <span class="n">floorplans</span> <span class="o">=</span> <span class="n">load_floorplans</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">],</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;floors&quot;</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">floorplans</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">excluded_keys</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;upload_results&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;upload_location&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;floors&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;output_directory&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;simulation_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;run_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;entrances&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;facility_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;traffic_policy&quot;</span><span class="p">,</span>
-        <span class="p">]</span>
-        <span class="n">model_inputs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">key</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excluded_keys</span>
-        <span class="p">}</span>
+
+        <span class="c1"># Load facility</span>
         <span class="n">facility</span> <span class="o">=</span> <span class="n">Facility</span><span class="p">(</span>
             <span class="n">floorplans</span><span class="p">,</span>
             <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;entrances&quot;</span><span class="p">],</span>
             <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">],</span>
             <span class="n">traffic_policy</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;traffic_policy&quot;</span><span class="p">],</span>
         <span class="p">)</span>
-        <span class="n">model_inputs</span><span class="p">[</span><span class="s2">&quot;facility&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">facility</span>
-        <span class="n">my_model</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="o">**</span><span class="n">model_inputs</span><span class="p">)</span>
+        <span class="c1"># Update inputs dictionary</span>
+        <span class="k">if</span> <span class="s2">&quot;close_dining&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;close_dining&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="s2">&quot;preassigned_offices&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;preassigned_offices&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;dry_run&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Update n agents</span>
+        <span class="k">if</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;n_agents&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;occupancy_rate&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;One of &#39;n_agents&#39; or &#39;occupancy_rate&#39; must be specified&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;n_agents&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;occupancy_rate&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span>
+                <span class="ow">or</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;occupancy_rate&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.0</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid occupancy rate (must be &gt; 0 &amp; &lt;=1&quot;</span><span class="p">)</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;n_agents&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+                <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;occupancy_rate&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">facility</span><span class="o">.</span><span class="n">total_offices</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Create office scheduler</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;meetings_policy_params&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;create_meetings&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;No meetings policy provided. The default policy defined &quot;</span>
+                <span class="s2">&quot;in constants.py will be used.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;meetings_policy_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_MEETINGS_POLICY</span>
+
+        <span class="k">if</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;scheduling_policy&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;No scheduling policy provided. The default policy defined &quot;</span>
+                <span class="s2">&quot;in constants.py will be used.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;scheduling_policy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_SCHEDULING_RULES</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;close_dining&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">CAFETERIA_VISIT</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;scheduling_policy&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">del</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;scheduling_policy&quot;</span><span class="p">][</span><span class="n">CAFETERIA_VISIT</span><span class="p">]</span>
+
+        <span class="n">scheduler</span> <span class="o">=</span> <span class="n">OfficeScheduler</span><span class="p">(</span>
+            <span class="n">facility</span><span class="p">,</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;total_timesteps&quot;</span><span class="p">],</span>
+            <span class="n">timestep</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;timestep&quot;</span><span class="p">],</span>
+            <span class="n">scheduling_rules</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;scheduling_policy&quot;</span><span class="p">],</span>
+            <span class="n">meeting_policy</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;meetings_policy_params&quot;</span><span class="p">],</span>
+            <span class="n">entry_exit_window</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;buffer&quot;</span><span class="p">],</span>
+            <span class="n">preassigned_offices</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;preassigned_offices&quot;</span><span class="p">],</span>
+            <span class="n">shifts</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;shifts&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="c1"># Initialize simulation</span>
+        <span class="n">my_model</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
+            <span class="n">facility</span><span class="p">,</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;total_timesteps&quot;</span><span class="p">],</span>
+            <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;n_agents&quot;</span><span class="p">],</span>
+            <span class="n">calculators</span><span class="o">=</span><span class="p">[</span><span class="n">CloseContactsCalculator</span><span class="p">(</span><span class="n">facility</span><span class="p">)],</span>
+            <span class="n">scheduler</span><span class="o">=</span><span class="n">scheduler</span><span class="p">,</span>
+            <span class="n">dry_run</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least one floorplan must be provided.&quot;</span><span class="p">)</span>
 
@@ -438,16 +522,17 @@
         <span class="n">run_name</span><span class="o">=</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;run_name&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 
-    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting stats...&quot;</span><span class="p">)</span>
-    <span class="n">my_model</span><span class="o">.</span><span class="n">save_outputs</span><span class="p">(</span><span class="n">work_directory</span><span class="p">)</span>
-
     <span class="c1"># Write policy.json</span>
     <span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">del</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;output_directory&quot;</span><span class="p">]</span>
     <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;facility_name&quot;</span><span class="p">]</span>
-    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span>
-    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;meetings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_model</span><span class="o">.</span><span class="n">meetings_policy_params</span>
-    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;scheduling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_model</span><span class="o">.</span><span class="n">scheduling_rules</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;general&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">val</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;total_timesteps&quot;</span><span class="p">,</span> <span class="s2">&quot;n_agents&quot;</span><span class="p">,</span> <span class="s2">&quot;dry_run&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;meetings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;meetings_policy_params&quot;</span><span class="p">]</span>
+    <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;scheduling&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;scheduling_policy&quot;</span><span class="p">]</span>
     <span class="n">policy</span><span class="p">[</span><span class="s2">&quot;traffic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;traffic_policy&quot;</span><span class="p">]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_directory</span><span class="p">,</span> <span class="s2">&quot;policy.json&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
@@ -632,7 +717,7 @@
     </div>
     <div class="col-sm-6">
       <p id="copyRight">
-        &#169; 2021 Corning Incorporated. All Rights Reserved.
+        &#169; 2022 Corning Incorporated. All Rights Reserved.
       </p>
     </div>
   </div>

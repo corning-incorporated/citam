@@ -33,7 +33,6 @@ Submodules
    :maxdepth: 1
 
    agent/index.rst
-   contacts/index.rst
    simulation/index.rst
 
 

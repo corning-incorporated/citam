@@ -54,7 +54,7 @@ Attributes
    ..
        !! processed by numpydoc !!
 
-.. py:class:: Simulation(facility: citam.engine.facility.indoor_facility.Facility, total_timesteps: int, n_agents: int, shifts: List[Dict], buffer: int = 300, occupancy_rate: float = None, timestep: float = 1.0, contact_distance: float = 6.0, meetings_policy_params=None, create_meetings=True, close_dining=False, scheduling_policy=None, dry_run=False, preassigned_offices: Optional[List[Tuple[int, int]]] = None)
+.. py:class:: Simulation(facility: citam.engine.facility.indoor_facility.Facility, total_timesteps: int, n_agents: int, calculators: Optional[List[citam.engine.calculators.calculator.Calculator]] = None, scheduler: Optional[citam.engine.schedulers.scheduler.Scheduler] = None, dry_run=False)
 
    
    Implements a CITAM indoor Agent-Based Modeling simulation.
@@ -104,30 +104,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: generate_meetings(self) -> None
-
-      
-      Create meetings based on meeting policy.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: run_serial(self, workdir: str, sim_name: str, run_name: str) -> None
+   .. py:method:: run_serial(self, workdir: Union[str, os.PathLike, bytes], sim_name: str, run_name: str) -> None
 
       
       Run a CITAM simulation serially (i.e. only one core will be used).
@@ -158,7 +135,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: run_simulation_and_save_results(self, workdir: str) -> None
+   .. py:method:: run_simulation_and_save_results(self, workdir: Union[str, bytes, os.PathLike]) -> None
 
       
       Perform simulation and save results to files.
@@ -183,38 +160,10 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: assign_office(self) -> Tuple[int, int]
+   .. py:method:: create_agents(self) -> List[citam.engine.schedulers.schedule.Schedule]
 
       
-      Assign an office to the current agent. If office spaces are not
-      pre-assigned, select one randomly and remove it from list of available
-      offices. Otherwise, return the next office from the queue.
-
-      :return: office id and floor
-      :rtype: Tuple[int, int]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: add_agents_and_build_schedules(self) -> None
-
-      
-      Add the specified number of agents to the facility and create a
-      schedule and an itinerary for each of them.
+      Generate a list of schedules, one per agent.
 
       :raises ValueError: If an entrance could not be found
 
@@ -235,122 +184,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: identify_xy_proximity(self, positions_vector: numpy.ndarray) -> numpy.ndarray
-
-      
-      Compute pairwise distances, given a vector of xy positions, and
-      return the indices of the ones that fall within the given contact
-      distance.
-
-      :param positions_vector: Array of current xy positions of all active
-              agents
-      :type positions_vector: np.ndarray
-      :return: Array of indices of agents that are within the contact
-          distance of each other
-      :rtype: np.ndarray
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: identify_contacts(self, agents: List[citam.engine.core.agent.Agent]) -> None
-
-      
-      Iterate over agents, compute whether they fall within the contact
-      distance or not and verify that they are indeed making contact (based
-      on whether they are in the same space or not).
-
-      :param agents: list of agents under consideration for contact
-          statistics
-      :type agents: List[Agent]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: verify_and_add_contact(self, floor_number: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent)
-
-      
-      Verify if agents are in nearby hallways before creating contact event.
-
-      :param floor_number: [description]
-      :type floor_number: int
-      :param agent1: First agent
-      :type agent1: Agent
-      :param agent2: Second agent
-      :type agent2: Agent
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: add_contact_event(self, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent) -> None
-
-      
-      Record contact event between agent1 and agent2.
-
-      :param agent1: The first agent.
-      :type agent1: Agent
-      :param agent2: The second agent.
-      :type agent2: Agent
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: step(self, traj_outfile: TextIO = None, contact_outfiles: List[TextIO] = None) -> None
+   .. py:method:: step(self, traj_outfile: TextIO = None) -> None
 
       
       Move the simulation one step ahead.
@@ -360,9 +194,6 @@ Attributes
 
       :param traj_outfile: File to write trajectory data, defaults to None
       :type traj_outfile: TextIO, optional
-      :param contact_outfiles: Files to write contact data, one per floor,
-              defaults to None
-      :type contact_outfiles: List[TextIO], optional
 
 
 
@@ -391,31 +222,6 @@ Attributes
 
       :return: list of active and moving agents
       :rtype: Tuple[List[Agent], List[Agent]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: extract_contact_distribution_per_agent(self) -> Tuple[List[str], List[int]]
-
-      
-      Compute and return total contacts per agent.
-
-      :return: List of agent ids and their total contacts
-      :rtype: Tuple[List[int], List[int]]
 
 
 
@@ -487,72 +293,15 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_svg_heatmap(self, contacts_per_coord: Dict[Tuple[int, int], int], floor_directory: str) -> None
-
-      
-      Create and save a heatmap from coordinate contact data.
-
-      :param contacts_per_coord: dictionary where each key is an (x,y )
-              tuple and values are the number of contacts in that location.
-      :type contacts_per_coord: Dict[Tuple[int, int], int]
-      :param floor_directory: directory to save the heatmap file.
-      :type floor_directory: str
-      :raises FileNotFoundError: if the floor svg map file is not found.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:method:: save_schedules(self, work_directory: str) -> None
 
       
-      Write schedules and meetings to file.
-
-      Three files are created: one for all the
-      meetings, one for the full schedule of all the agents and the last one
-      with each agent's assigned office.
+      Write agent schedules to file.
 
       :param work_directory: directory where output files are to be saved.
       :type work_directory: str
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: save_outputs(self, work_directory: str) -> None
-
-      
-      Write output files to the output directory
-
-      :param work_directory: directory where all output files are to be
-          saved.
-      :type work_directory: str
+      :param scheduler: Scheduler agent used in this simulation.
+      :type scheduler: Scheduler
 
 
 

@@ -27,6 +27,7 @@ Functions
    citam.engine.main.show_floorplan
    citam.engine.main.export_navigation_graph_to_svg
    citam.engine.main.load_floorplans
+   citam.engine.main.compute_occupancy_rate
    citam.engine.main.run_simulation
    citam.engine.main.initialize_oneway_network
    citam.engine.main.check_and_remove_node_from_oneway_network
@@ -288,6 +289,9 @@ Attributes
    
    Create and return a floorplan object for each floor requested.
 
+   By default, it looks in the current directory for facility data otherwise
+   looks in the citam cache directory.
+
    :param facility_name: Name of facility of interest.
    :type facility_name: str
    :param floors: List of floor names of interest
@@ -296,6 +300,28 @@ Attributes
    :type user_scale: float, optional
    :return: list of floorplan objects
    :rtype: List[Floorplan]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ..
+       !! processed by numpydoc !!
+
+.. py:function:: compute_occupancy_rate(facility, n_agents)
+
+   
+
 
 
 

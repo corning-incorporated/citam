@@ -131,13 +131,13 @@ Here is the breakdown of the required sections:</p>
 </li>
 <li><p>Style and Content Sections - used by the platform visualizers</p>
 <blockquote>
-<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;style</span> <span class="na">type=</span><span class="s">&#39;text/css&#39;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- style section --&gt;</span>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;style</span> <span class="na">type=</span><span class="s">&#39;text/css&#39;</span><span class="nt">&gt;</span> <span class="cm">&lt;!-- style section --&gt;</span>
     .spaces {stroke:red;  stroke-width:2;  fill: grey; fill-opacity: 0.1}
     .floors {stroke:blue; stroke-width:10; fill: none; fill-opacity: 0.1}
     .doors {stroke:green;  stroke-width:2;  fill: none; fill-opacity: 0.2}
 <span class="nt">&lt;/style&gt;</span>
-<span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;Contents&#39;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- contents section --&gt;</span>
-    <span class="c">&lt;!--Group Elements -- see below --&gt;</span>
+<span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;Contents&#39;</span><span class="nt">&gt;</span> <span class="cm">&lt;!-- contents section --&gt;</span>
+    <span class="cm">&lt;!--Group Elements -- see below --&gt;</span>
 <span class="nt">&lt;/g&gt;</span>
 </pre></div>
 </div>
@@ -146,19 +146,19 @@ Here is the breakdown of the required sections:</p>
 <li><p>Group elements - used to indicate the different buildings, spaces and doors that the related path elements represent.</p>
 <blockquote>
 <div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;FacilityName&#39;</span> <span class="na">class=</span><span class="s">&#39;floorplan&#39;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;BUILDING-01&#39;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- ID of this building (this file supports multiple buildings as long as they are interconnected)  --&gt;</span>
-        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;floors&quot;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- outline of the outside boundary of the floor --&gt;</span>
-            <span class="c">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
+    <span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;BUILDING-01&#39;</span><span class="nt">&gt;</span> <span class="cm">&lt;!-- ID of this building (this file supports multiple buildings as long as they are interconnected)  --&gt;</span>
+        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;floors&quot;</span><span class="nt">&gt;</span> <span class="cm">&lt;!-- outline of the outside boundary of the floor --&gt;</span>
+            <span class="cm">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
         <span class="nt">&lt;/g&gt;</span>
-        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;spaces&quot;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- Boundary of all spaces in this floor --&gt;</span>
-            <span class="c">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
+        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;spaces&quot;</span><span class="nt">&gt;</span> <span class="cm">&lt;!-- Boundary of all spaces in this floor --&gt;</span>
+            <span class="cm">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
         <span class="nt">&lt;/g&gt;</span>
-        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;doors&quot;</span><span class="nt">&gt;</span> <span class="c">&lt;!-- Doors found in this floor --&gt;</span>
-            <span class="c">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
+        <span class="nt">&lt;g</span> <span class="na">class=</span><span class="s">&quot;doors&quot;</span><span class="nt">&gt;</span> <span class="cm">&lt;!-- Doors found in this floor --&gt;</span>
+            <span class="cm">&lt;!-- Path Elements &lt;path .../&gt; --&gt;</span>
         <span class="nt">&lt;/g&gt;</span>
     <span class="nt">&lt;/g&gt;</span>
     <span class="nt">&lt;g</span> <span class="na">id=</span><span class="s">&#39;BUILDING-02&#39;</span><span class="nt">&gt;</span>
-        <span class="c">&lt;!-- contents similar to previous building --&gt;</span>
+        <span class="cm">&lt;!-- contents similar to previous building --&gt;</span>
     <span class="nt">&lt;/g&gt;</span>
 <span class="nt">&lt;/g&gt;</span>
 </pre></div>
@@ -267,8 +267,9 @@ make it more general for your types of facilities are welcome.</p>
       </div>
 <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
   <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Facility Data Requirements</a><ul>
 <li><a class="reference internal" href="#svg-bare-essentials">SVG Bare Essentials</a></li>
 <li><a class="reference internal" href="#detailed-requirements">Detailed Requirements</a><ul>
@@ -282,12 +283,17 @@ make it more general for your types of facilities are welcome.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="input_requirements.html"
-                        title="previous chapter">Simulation Input Requirements</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="outputs_description.html"
-                        title="next chapter">Output Description</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="input_requirements.html"
+                          title="previous chapter">Simulation Input Requirements</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="outputs_description.html"
+                          title="next chapter">Output Description</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -345,7 +351,7 @@ make it more general for your types of facilities are welcome.</p>
     </div>
     <div class="col-sm-6">
       <p id="copyRight">
-        &#169; 2021 Corning Incorporated. All Rights Reserved.
+        &#169; 2022 Corning Incorporated. All Rights Reserved.
       </p>
     </div>
   </div>

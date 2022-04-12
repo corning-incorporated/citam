@@ -23,7 +23,7 @@ Classes
 
 
 
-.. py:class:: Agent(unique_id: int, schedule: citam.engine.policy.daily_schedule.Schedule, name: Optional[str] = None, office_id: Optional[int] = None, job_function: Optional[str] = None)
+.. py:class:: Agent(unique_id: int, schedule: citam.engine.schedulers.schedule.Schedule, name: Optional[str] = None, base_location: Optional[int] = None, group: Optional[str] = None)
 
    
    The agent in Agent-based modeling. An agent represents a user of the
