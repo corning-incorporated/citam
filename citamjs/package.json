@@ -7,7 +7,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit"
+    "test": "vue-cli-service test:unit --passWithNoTests"
   },
   "dependencies": {
     "@fortawesome/fontawesome-common-types": "^0.2.32",
@@ -32,10 +32,10 @@
     "vuex": "^3.6.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.13",
-    "@vue/cli-plugin-eslint": "^4.5.13",
-    "@vue/cli-plugin-unit-jest": "^4.5.13",
-    "@vue/cli-service": "^4.5.13",
+    "@vue/cli-plugin-babel": "4.5.16",
+    "@vue/cli-plugin-eslint": "4.5.16",
+    "@vue/cli-plugin-unit-jest": "4.5.16",
+    "@vue/cli-service": "4.5.16",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "babel-plugin-lodash": "^3.3.4",

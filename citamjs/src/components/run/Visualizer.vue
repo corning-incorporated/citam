@@ -14,40 +14,76 @@
 
 <template>
   <div id="app" style="position: relative">
-    <div id="controls" ref="controls"></div>
+    <div class="trjBtn" v-if="showTrjctryBtn">
+      <button type="button" class="btn btn-primary" @click="loadTrajectory()">
+        Load Trajectory
+      </button>
+    </div>
+    <div
+      class="controls"
+      :class="{ hideControl: hideControl }"
+      ref="controls"
+    ></div>
     <div id="map" ref="mapRoot"></div>
   </div>
+
 </template>
 
 <script>
 import Map2D from "../../script/basic_map";
 import * as dat from "dat.gui";
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 export default {
   name: "Visualizer",
-  props: ["simId"],
+  props: {
+    policyHash: String,
+    simId: String
+  },
   data() {
     return {
       mapInstance: null,
       animationParams: null,
       gui: null,
-      // newSimId: false,
       trajectories: null,
       nAgents: null,
       totalSteps: null,
       isLoadingData: null,
+      showTrjctryBtn: true,
+      hideControl: true,
     };
   },
   computed: mapState(["mapData", "status"]),
 
   watch: {
+    policyHash() {
+      this.$store.commit("removeMapData")
+    },
+    simId() {
+      this.$store.commit("setSimulationID", this.simId);
+      this.showTrjctryBtn = true;
+      this.resetSimulation();
+      this.loadVisualization();
+    },
     status(newValue, oldValue) {
-      if (oldValue === "fetchingData" && newValue === "ready") {
-        this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
+      if (
+        oldValue === "fetchingTrajectoryData" &&
+        newValue === "trajectoryReady"
+      ) {
+        this.showTrjctryBtn = false;
         this.mapInstance.hideLoader();
+        this.mapInstance.setCurrentStep(0);
+        this.mapInstance.showTimer();
+        if (this.gui === null) {
+          this.createTrajectoryControl();
+        }
+        this.setMapFloorOptions();
+        this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
+        this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
+        this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
         this.mapInstance.startAnimation();
       } else if (newValue === "error") {
+        this.showTrjctryBtn = true;
         this.mapInstance.showError(this.$store.state.errorMessage);
       }
     },
@@ -56,13 +92,11 @@ export default {
         this.mapInstance.setMapData(this.$store.state.mapData);
         this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
-        this.setMapFloorOptions();
-        this.mapInstance.loader.show();
-        this.mapInstance.loader.mapLoaded();
         let expectedDuration = this.computeEstimatedLoadTime();
         if (expectedDuration !== null) {
           this.mapInstance.loader.startCountdown(expectedDuration);
         }
+        this.mapInstance.hideLoader();
       }
     },
   },
@@ -81,94 +115,104 @@ export default {
     }
   },
   mounted() {
-    if (
-      (this.simId !== undefined && this.simId !== null) ||
-      (this.$store.state.currentSimID !== undefined &&
-        this.$store.state.currentSimID !== null)
-    ) {
-      if (
-        this.simId !== undefined &&
-        this.simId !== this.$store.state.currentSimID
-      ) {
-        // A new run was selected. Reset map and trajectory data
-        this.gui = null;
-        this.mapInstance = null;
-        this.$store.commit("setMapData", null);
-        this.$store.commit("removeTrajectoryData");
-        this.floor = 0;
-      }
-      this.showSimulationMap();
-    } else {
-      alert(
-        "Please select a run from the Overview tab to see the visualization "
-      );
-    }
+    this.loadVisualization();
   },
 
   methods: {
-    showSimulationMap() {
-      this.createMapInstance();
+    loadVisualization() {
       if (
-        this.$store.state.trajectoryData === null &&
-        (this.$store.state.status === "ready" ||
-          this.$store.state.status === null)
+        (this.simId !== undefined && this.simId !== null) ||
+        (this.$store.state.currentSimID !== undefined &&
+          this.$store.state.currentSimID !== null)
       ) {
+        if (this.mapInstance == null) {
+          this.mapInstance = new Map2D(this.$refs.mapRoot);
+        }
+        this.showSimulationMap();
+      } else {
+        alert("Please select a run from the Overview tab to see the visualization ");
+
+      }
+    },
+
+    resetSimulation() {
+      this.hideControl = true;
+      this.$store.commit("removeTrajectoryData");
+      this.floor = 0;
+      if (this.mapInstance !== null) {
+        this.mapInstance.reloadSimulation();
+      }
+      if (this.gui !== null) {
+        this.gui.destroy();
+        this.gui = null;
+        this.mapInstance.hideTimer();
+      }
+
+    },
+
+    loadTrajectory() {
+      this.showTrjctryBtn = false;
+      this.mapInstance.showLoader();
+      this.hideControl = false;
+      this.$store.dispatch("getTrajectoryData");
+      let expectedDuration = this.computeEstimatedLoadTime();
+      let currentTime = new Date().getTime() / 1000;
+      let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
+      if (expectedDuration !== null) {
+        this.mapInstance.loader.startCountdown(expectedDuration - elapsedTime);
+      }
+    },
+    showSimulationMap() {
+      if (this.$store.state.mapData === null) {
         this.$store.commit("setSimulationID", this.simId);
         this.$store.dispatch("fetchSimulationData");
       } else if (this.$store.state.trajectoryData !== null) {
         this.mapInstance.setMapData(this.$store.state.mapData);
         this.mapInstance.setTrajectoryData(this.$store.state.trajectoryData);
-        this.mapInstance.setCurrentStep(this.$store.state.currentStep);
         this.mapInstance.setNumberOfAgents(this.$store.state.nAgents);
         this.mapInstance.setTotalSteps(this.$store.state.totalSteps);
         this.setMapFloorOptions();
         this.mapInstance.startAnimation();
-      } else if (this.$store.state.status === "fetchingData") {
+      } else if (this.$store.state.status === "mapReady") {
         if (this.$store.state.mapData !== null) {
           this.mapInstance.setMapData(this.$store.state.mapData);
-          this.mapInstance.loader.show();
-          this.mapInstance.loader.mapLoaded();
-          let expectedDuration = this.computeEstimatedLoadTime();
-          let currentTime = new Date().getTime() / 1000;
-          let elapsedTime = currentTime - this.$store.state.fetchingStartTime;
-          if (expectedDuration !== null) {
-            this.mapInstance.loader.startCountdown(
-              expectedDuration - elapsedTime
-            );
-          }
+
         }
       }
     },
 
     computeEstimatedLoadTime() {
-      // The factor of 160,000 is based on observations and used here for a
-      // rough estimate of how long it will take to process the trajectory
-      // data based on number of agents and total steps.
-      if (this.$store.state.totalSteps > 0 && this.$store.state.nAgents > 0) {
-        return (
-          (this.$store.state.totalSteps * this.$store.state.nAgents) / 160000
-        );
-      } else {
-        return null;
-      }
+        // The factor of 160,000 is based on observations and used here for a
+        // rough estimate of how long it will take to process the trajectory
+        // data based on number of agents and total steps.
+        if (this.$store.state.totalSteps > 0 && this.$store.state.nAgents > 0) {
+            return (
+                (this.$store.state.totalSteps * this.$store.state.nAgents) / 160000
+            );
+        } else {
+            return null;
+        }
     },
 
     setMapFloorOptions() {
-      this.animationParams.floorOptions = this.$store.state.floorOptions;
-      this.animationParams.floor = this.animationParams.floorOptions[0];
-      this.mapInstance.floor = this.animationParams.floor;
+        this.animationParams.floorOptions = this.$store.state.floorOptions;
+        this.animationParams.floor = this.animationParams.floorOptions[0];
+        this.mapInstance.floor = this.animationParams.floor;
 
-      this.guiFloorWidget
-        .options(this.animationParams.floorOptions)
-        .name("Floor")
-        .onChange((value) => this.mapInstance.setFloor(value));
+        this.guiFloorWidget
+            .options(this.animationParams.floorOptions)
+            .name("Floor")
+            .onChange((value) => this.mapInstance.setFloor(value));
     },
 
-    createMapInstance() {
+
+    createTrajectoryControl() {
+      while(this.$refs.controls.hasChildNodes()) {
+        this.$refs.controls.removeChild(this.$refs.controls.firstChild);
+      }
       this.animationParams = {};
       let GUI, timestepSlider;
-      let mapRoot = this.$refs.mapRoot;
-      let mapInstance = (this.mapInstance = new Map2D(mapRoot));
+      let mapInstance = this.mapInstance;
 
       /** Control Panel Parameters */
       this.animationParams = {
@@ -181,14 +225,6 @@ export default {
       /** Create Control Panel */
       this.gui = GUI = new dat.GUI({ autoPlace: false });
       this.$refs.controls.appendChild(this.gui.domElement);
-
-      // if (this.newSimId) {
-      //   while (this.$refs.controls.hasChildNodes()) {
-      //     this.$refs.controls.removeChild(this.$refs.controls.firstChild);
-      //   }
-      //   this.$refs.controls.appendChild(this.gui.domElement);
-      // } else {
-      // }
 
       this.guiFloorWidget = GUI.add(
         this.animationParams,
@@ -220,18 +256,35 @@ export default {
 
       mapInstance.scaleFactor = this.$store.state.scaleMultiplier || 1;
       timestepSlider.max(this.$store.state.totalSteps);
+
     },
-  },
-};
+  }
+}
 </script>
 
 <style scoped>
-#controls {
+.controls {
   position: absolute;
   right: 0px;
   top: 0px;
 }
+.hideControl {
+  display: none;
+}
 #map {
   background-color: white;
+  height: 100% !important;
 }
+.trjBtn {
+  padding: 10px;
+  background-color: #ebeff2 !important;
+
+}
+
+#error > span > button {
+    border: 0;
+    background-color: inherit;
+    color: red;
+}
+
 </style>

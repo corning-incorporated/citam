@@ -21,7 +21,8 @@ jobs:
           python-version: '3.8.3'
       - run: python -m pip install --upgrade pip
       - run: pip install . black
-      - run: black --check citam
+      - run: black --version
+      - run: black --check --diff citam
 
   test-python:
     runs-on: ${{ matrix.os }}
@@ -54,7 +55,7 @@ jobs:
       - name: npm install
         working-directory: ${{ github.workspace }}/citamjs
         run: npm install
-      - name: npm test
+      - name: npm lint
         working-directory: ${{ github.workspace }}/citamjs
         run: npm run lint
 

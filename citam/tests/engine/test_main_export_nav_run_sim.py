@@ -26,12 +26,12 @@ def test_run_simulation_no_issues(datadir, tmpdir, monkeypatch):
         "buffer": 100,
         "timestep": 1.0,
         "entrances": [{"floor": "0", "name": "aisle213"}],
-        "contact_distance": 6.0,
         "shifts": [{"name": "1", "start_time": 100, "percent_agents": 1.0}],
         "meetings_policy_params": None,
         "scheduling_policy": None,
         "output_directory": tmpdir,
         "traffic_policy": None,
+        "create_meetings": False,
     }
     monkeypatch.setenv("CITAM_CACHE_DIRECTORY", str(datadir))
     main.run_simulation(inputs_dict)

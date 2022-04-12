@@ -1,0 +1,202 @@
+Agent ID: 0
+Schedule
+-----------------------
+Day length: 1473 Number of items: 3
+
+Schedule details
+0. room44: 16.83 min	Office work
+1. room199: 7.72 min	Restroom visit
+2. None: 0.0 min	Leave for the day
+
+
+Agent ID: 1
+Schedule
+-----------------------
+Day length: 1590 Number of items: 2
+
+Schedule details
+0. room104: 26.5 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 2
+Schedule
+-----------------------
+Day length: 1154 Number of items: 2
+
+Schedule details
+0. room69: 19.23 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 3
+Schedule
+-----------------------
+Day length: 1075 Number of items: 2
+
+Schedule details
+0. room39: 17.92 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 4
+Schedule
+-----------------------
+Day length: 1304 Number of items: 2
+
+Schedule details
+0. room30: 21.73 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 5
+Schedule
+-----------------------
+Day length: 1329 Number of items: 2
+
+Schedule details
+0. room108: 22.15 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 6
+Schedule
+-----------------------
+Day length: 1426 Number of items: 2
+
+Schedule details
+0. room87: 23.77 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 7
+Schedule
+-----------------------
+Day length: 1485 Number of items: 2
+
+Schedule details
+0. room147: 24.75 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 8
+Schedule
+-----------------------
+Day length: 1388 Number of items: 2
+
+Schedule details
+0. room32: 23.13 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 9
+Schedule
+-----------------------
+Day length: 1641 Number of items: 2
+
+Schedule details
+0. room52: 27.35 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 10
+Schedule
+-----------------------
+Day length: 1553 Number of items: 2
+
+Schedule details
+0. room59: 25.88 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 11
+Schedule
+-----------------------
+Day length: 1296 Number of items: 2
+
+Schedule details
+0. room51: 21.6 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 12
+Schedule
+-----------------------
+Day length: 1140 Number of items: 2
+
+Schedule details
+0. room94: 19.0 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 13
+Schedule
+-----------------------
+Day length: 1445 Number of items: 2
+
+Schedule details
+0. room136: 24.08 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 14
+Schedule
+-----------------------
+Day length: 1355 Number of items: 2
+
+Schedule details
+0. room40: 22.58 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 15
+Schedule
+-----------------------
+Day length: 1577 Number of items: 2
+
+Schedule details
+0. room76: 26.28 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 16
+Schedule
+-----------------------
+Day length: 1552 Number of items: 3
+
+Schedule details
+0. room107: 11.77 min	Office work
+1. room206: 14.1 min	Restroom visit
+2. None: 0.0 min	Leave for the day
+
+
+Agent ID: 17
+Schedule
+-----------------------
+Day length: 1331 Number of items: 2
+
+Schedule details
+0. room162: 22.18 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 18
+Schedule
+-----------------------
+Day length: 967 Number of items: 2
+
+Schedule details
+0. room_9: 16.12 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
+Agent ID: 19
+Schedule
+-----------------------
+Day length: 1540 Number of items: 2
+
+Schedule details
+0. room14: 25.67 min	Office work
+1. None: 0.0 min	Leave for the day
+
+
