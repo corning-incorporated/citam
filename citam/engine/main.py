@@ -20,6 +20,14 @@ from typing import List, Optional
 import networkx as nx
 from networkx.classes.graph import Graph
 from svgpathtools import Line
+from citam.engine.calculators.close_contacts_calculator import (
+    CloseContactsCalculator,
+)
+from citam.engine.constants import (
+    CAFETERIA_VISIT,
+    DEFAULT_MEETINGS_POLICY,
+    DEFAULT_SCHEDULING_RULES,
+)
 
 import citam.engine.io.visualization as bv
 import citam.engine.map.geometry as gsu
@@ -32,6 +40,8 @@ from citam.engine.core.simulation import Simulation
 from citam.engine.map.point import Point
 from citam.engine.facility.indoor_facility import Facility
 import json
+
+from citam.engine.schedulers.office_scheduler import OfficeScheduler
 
 LOG = logging.getLogger(__name__)
 
@@ -263,6 +273,9 @@ def export_navigation_graph_to_svg(
 def load_floorplans(facility_name, floors, user_scale=None):
     """Create and return a floorplan object for each floor requested.
 
+    By default, it looks in the current directory for facility data otherwise
+    looks in the citam cache directory.
+
     :param facility_name: Name of facility of interest.
     :type facility_name: str
     :param floors: List of floor names of interest
@@ -279,12 +292,30 @@ def load_floorplans(facility_name, floors, user_scale=None):
 
     for fn in floors:
         LOG.info("Loading floorplan for floor: %s", fn)
-        floorplan_directory = su.get_floor_datadir(facility_name, fn)
+        floorplan_directory = os.path.join(facility_name, "floor_" + fn)
+        if not os.path.isdir(floorplan_directory):
+            floorplan_directory = su.get_floor_datadir(facility_name, fn)
         floorplan = floorplan_from_directory(
             floorplan_directory, fn, scale=user_scale
         )
         floorplans.append(floorplan)
     return floorplans
+
+
+def compute_occupancy_rate(facility, n_agents):
+
+    # Compute occupancy rate and/or number of agents
+    if n_agents is not None:
+
+        occupancy_rate = round(n_agents * 1.0 / facility.total_offices, 2)
+        if occupancy_rate > 1.0:
+            LOG.warn(
+                "Occupancy rate is "
+                + str(occupancy_rate)
+                + " > 1.0 (Office spaces: "
+                + str(facility.total_offices)
+            )
+            occupancy_rate = occupancy_rate
 
 
 def run_simulation(inputs: dict):
@@ -300,28 +331,81 @@ def run_simulation(inputs: dict):
     floorplans = load_floorplans(inputs["facility_name"], inputs["floors"])
 
     if len(floorplans) > 0:
-        excluded_keys = [
-            "upload_results",
-            "upload_location",
-            "floors",
-            "output_directory",
-            "simulation_name",
-            "run_name",
-            "entrances",
-            "facility_name",
-            "traffic_policy",
-        ]
-        model_inputs = {
-            key: val for key, val in inputs.items() if key not in excluded_keys
-        }
+
+        # Load facility
         facility = Facility(
             floorplans,
             inputs["entrances"],
             inputs["facility_name"],
             traffic_policy=inputs["traffic_policy"],
         )
-        model_inputs["facility"] = facility
-        my_model = Simulation(**model_inputs)
+        # Update inputs dictionary
+        if "close_dining" not in inputs:
+            inputs["close_dining"] = False
+        if "preassigned_offices" not in inputs:
+            inputs["preassigned_offices"] = None
+        if "dry_run" not in inputs:
+            inputs["dry_run"] = False
+
+        # Update n agents
+        if inputs["n_agents"] is None and inputs["occupancy_rate"] is None:
+            raise ValueError(
+                "One of 'n_agents' or 'occupancy_rate' must be specified"
+            )
+
+        if inputs["n_agents"] is None:
+            if (
+                inputs["occupancy_rate"] < 0.0
+                or inputs["occupancy_rate"] > 1.0
+            ):
+                raise ValueError("Invalid occupancy rate (must be > 0 & <=1")
+            inputs["n_agents"] = round(
+                inputs["occupancy_rate"] * facility.total_offices
+            )
+
+        # Create office scheduler
+        if (
+            inputs["meetings_policy_params"] is None
+            and inputs["create_meetings"]
+        ):
+            LOG.info(
+                "No meetings policy provided. The default policy defined "
+                "in constants.py will be used."
+            )
+            inputs["meetings_policy_params"] = DEFAULT_MEETINGS_POLICY
+
+        if inputs["scheduling_policy"] is None:
+            LOG.info(
+                "No scheduling policy provided. The default policy defined "
+                "in constants.py will be used."
+            )
+            inputs["scheduling_policy"] = DEFAULT_SCHEDULING_RULES
+
+        if (
+            inputs["close_dining"]
+            and CAFETERIA_VISIT in inputs["scheduling_policy"]
+        ):
+            del inputs["scheduling_policy"][CAFETERIA_VISIT]
+
+        scheduler = OfficeScheduler(
+            facility,
+            inputs["total_timesteps"],
+            timestep=inputs["timestep"],
+            scheduling_rules=inputs["scheduling_policy"],
+            meeting_policy=inputs["meetings_policy_params"],
+            entry_exit_window=inputs["buffer"],
+            preassigned_offices=inputs["preassigned_offices"],
+            shifts=inputs["shifts"],
+        )
+        # Initialize simulation
+        my_model = Simulation(
+            facility,
+            inputs["total_timesteps"],
+            inputs["n_agents"],
+            calculators=[CloseContactsCalculator(facility)],
+            scheduler=scheduler,
+            dry_run=inputs["dry_run"],
+        )
     else:
         raise ValueError("At least one floorplan must be provided.")
 
@@ -333,16 +417,17 @@ def run_simulation(inputs: dict):
         run_name=inputs["run_name"],
     )
 
-    LOG.info("Extracting stats...")
-    my_model.save_outputs(work_directory)
-
     # Write policy.json
     policy = {}
     del inputs["output_directory"]
     policy["facility_name"] = inputs["facility_name"]
-    policy["general"] = inputs
-    policy["meetings"] = my_model.meetings_policy_params
-    policy["scheduling"] = my_model.scheduling_rules
+    policy["general"] = {
+        key: val
+        for key, val in inputs.items()
+        if key in ["total_timesteps", "n_agents", "dry_run"]
+    }
+    policy["meetings"] = inputs["meetings_policy_params"]
+    policy["scheduling"] = inputs["scheduling_policy"]
     policy["traffic"] = inputs["traffic_policy"]
     with open(os.path.join(work_directory, "policy.json"), "w") as outfile:
         json.dump(policy, outfile)
