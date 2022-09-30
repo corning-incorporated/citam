@@ -61,7 +61,7 @@ citam engine run example_sim_inputs.json -v
 
 To learn how to ingest your own facility maps and what inputs CITAM supports, follow the tutorial included in our documentation.
 
-We also include an example Jupyter notebook that shows how to manage facilities from a notebook: [/examples/visualize_floorplan.ipynb](https://github.com/corning-incorporated/citam/blob/ui-redesign/examples/visualize_floorplan.ipynb)
+We also include an example Jupyter notebook that shows how to manage facilities from a notebook: [/examples/visualize_floorplan.ipynb](https://github.com/corning-incorporated/citam/blob/main/examples/visualize_floorplan.ipynb)
 
 ## Contributing
 
@@ -71,6 +71,6 @@ We encourage and welcome your contributions to any or all of the components of t
 
 CITAM is made available to the public under GPLv3 and may only be used in accordance with the identified license(s).
 
-Copyright 2020-2021. Corning Incorporated. All rights reserved.
+Copyright 2020-2022. Corning Incorporated. All rights reserved.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL CORNING BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
