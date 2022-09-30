@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.facility.navbuilder &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.facility.navbuilder">
-<span id="citam-engine-facility-navbuilder"></span><h1><a class="reference internal" href="#module-citam.engine.facility.navbuilder" title="citam.engine.facility.navbuilder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.navbuilder</span></code></a><a class="headerlink" href="#module-citam.engine.facility.navbuilder" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-facility-navbuilder"></span><h1><a class="reference internal" href="#module-citam.engine.facility.navbuilder" title="citam.engine.facility.navbuilder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.navbuilder</span></code></a><a class="headerlink" href="#module-citam.engine.facility.navbuilder" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder" title="citam.engine.facility.navbuilder.NavigationBuilder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NavigationBuilder</span></code></a></p></td>
 <td><p>Create the navigation network (navnet) for a given floorplan.</p></td>
@@ -120,12 +119,8 @@
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.navbuilder.LOG" title="citam.engine.facility.navbuilder.LOG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOG</span></code></a></p></td>
 <td><p></p></td>
@@ -148,7 +143,7 @@ actual locations is handled at the floorplan and navigation (see the
 navigation class) level.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.build">
-<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.build" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.build" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the navigation network (navnet) for a given floorplan.</p>
 <p>The navigation network is created by adding a navigation segment
 at the center of each aisle and then adding perpendicular nav segments
@@ -157,26 +152,26 @@ acroos each door that hasn’t been added to the navnet yet.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_doors">
-<span class="sig-name descname"><span class="pre">_create_nav_segments_for_doors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._create_nav_segments_for_doors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_doors" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_create_nav_segments_for_doors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._create_nav_segments_for_doors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_doors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over each door in floorplan and create perpendicular nav
 segments for each.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_aisles">
-<span class="sig-name descname"><span class="pre">_create_nav_segments_for_aisles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._create_nav_segments_for_aisles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_aisles" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_create_nav_segments_for_aisles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._create_nav_segments_for_aisles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_aisles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over each hallway and create nav segments along each
 aisle.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._update_navnet">
-<span class="sig-name descname"><span class="pre">_update_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._update_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._update_navnet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_update_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._update_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._update_navnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>For each segment in list of nav segments, create nodes and edges
 in navnet. Also keep track in which space each segment falls.</p>
 <p>[extended_summary]</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>segments</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a><em>]</em><em>]</em>) – List of segments where each segment is a list of
 points.</p></li>
@@ -189,19 +184,19 @@ points.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._aisle_has_nav_segment">
-<span class="sig-name descname"><span class="pre">_aisle_has_nav_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aisle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._aisle_has_nav_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._aisle_has_nav_segment" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_aisle_has_nav_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aisle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._aisle_has_nav_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._aisle_has_nav_segment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if aisle already has a navigation segment.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>aisle</strong> (<em>Tuple</em><em>[</em><em>Line</em><em>, </em><em>Line</em><em>]</em>) – Aisle, given as a tuple of 2 walls.</p></li>
 <li><p><strong>space</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The space where this aisle is located.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether a nav segment was found in this aisle or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -209,19 +204,19 @@ points.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._find_valid_boundaries">
-<span class="sig-name descname"><span class="pre">_find_valid_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._find_valid_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._find_valid_boundaries" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_find_valid_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._find_valid_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._find_valid_boundaries" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Iterate over boundary walls of a space and return only the</dt><dd><p>ones that are not between two hallways.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>space</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The space of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of valid boundaries.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Line]</p>
 </dd>
 </dl>
@@ -229,11 +224,11 @@ points.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.create_nav_segment_for_aisle">
-<span class="sig-name descname"><span class="pre">create_nav_segment_for_aisle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aisle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.create_nav_segment_for_aisle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.create_nav_segment_for_aisle" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_nav_segment_for_aisle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aisle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.create_nav_segment_for_aisle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.create_nav_segment_for_aisle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create navigation segements (edges in the navnet) to handle
 circulation in this aisle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>aisle</strong> (<em>Tuple</em><em>[</em><em>Line</em><em>, </em><em>Line</em><em>]</em>) – An aisle, given by two parallel walls.</p>
 </dd>
 </dl>
@@ -241,17 +236,17 @@ circulation in this aisle.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._find_location_of_point">
-<span class="sig-name descname"><span class="pre">_find_location_of_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._find_location_of_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._find_location_of_point" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_find_location_of_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._find_location_of_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._find_location_of_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the space inside which this point is located.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The point of interest</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Space object where the point is located (None if not found)
 and its index in the list of spaces (None if not found).</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[Optional[<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space">Space</a>], Optional[int]]</p>
 </dd>
 </dl>
@@ -259,18 +254,18 @@ and its index in the list of spaces (None if not found).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._is_point_on_boundaries">
-<span class="sig-name descname"><span class="pre">_is_point_on_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_point_on_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_point_on_boundaries" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_is_point_on_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_point_on_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_point_on_boundaries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if point falls on any boundary and return list of
 corresponding spaces. If only one space, then this is an exterior
 boundary.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The point of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of spaces on which boundaries this point lies.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space">Space</a>]</p>
 </dd>
 </dl>
@@ -278,21 +273,21 @@ boundary.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._add_segments_to_navnet">
-<span class="sig-name descname"><span class="pre">_add_segments_to_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._add_segments_to_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._add_segments_to_navnet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_add_segments_to_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._add_segments_to_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._add_segments_to_navnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add nodes and edges to the navigation network based on a given list of
 nav segments.</p>
 <p>Each point in each segment is added as a node in the nav network
 and a connection (edge) is created between each successive pair of
 points.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>segments</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a><em>]</em><em>]</em>) – List of segments to consider.</p></li>
 <li><p><strong>seg_spaces</strong> (<em>List</em><em>[</em><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a><em>]</em>) – List of spaces where the segments fall.</p></li>
 <li><p><strong>width</strong> (<em>float</em>) – Width to assign to each edge in the navnet.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If a segment has less than 2 points.</p>
 </dd>
 </dl>
@@ -300,13 +295,13 @@ points.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._add_spaces_to_hallway_graph">
-<span class="sig-name descname"><span class="pre">_add_spaces_to_hallway_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._add_spaces_to_hallway_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._add_spaces_to_hallway_graph" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_add_spaces_to_hallway_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._add_spaces_to_hallway_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._add_spaces_to_hallway_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add hallways to the hallway graph.</p>
 <p>The hallway graph keeps track of which hallway is accessible from
 which hallway. A connection is created between each space given
 as input.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>spaces</strong> (<em>List</em><em>[</em><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a><em>]</em>) – The list of space objects to add to the graph.</p>
 </dd>
 </dl>
@@ -314,18 +309,18 @@ as input.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.find_door_intersect">
-<span class="sig-name descname"><span class="pre">find_door_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_door_intersect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_door_intersect" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_door_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_door_intersect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_door_intersect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given line intersects with a door.</p>
 <p>Intersect coords are to the nearest integer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>test_line</strong> (<em>Line</em>) – The line of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The intersect xy coordinates and the door object, (None, None)
 if not found.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[Optional[Tuple[int, int]], Optional[<a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door">Door</a>]]</p>
 </dd>
 </dl>
@@ -333,7 +328,7 @@ if not found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.find_if_valid_nearby_space_exits">
-<span class="sig-name descname"><span class="pre">find_if_valid_nearby_space_exits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_if_valid_nearby_space_exits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_if_valid_nearby_space_exits" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_if_valid_nearby_space_exits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_if_valid_nearby_space_exits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_if_valid_nearby_space_exits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a point and direction, look ahead by (dx, dy) to verify if a
 valid space exists there and return that space.</p>
 <p>This function is expected to be used to decide whether to continue with
@@ -341,7 +336,7 @@ a navigation segment or not when crossing the boundaries of the current
 space (hence the direction parameter). Keep in mind that a boundary
 does not need to correspond to a wall).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>new_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The current point that falls on the boundaries.</p></li>
 <li><p><strong>direction</strong> (<em>int</em>) – The current direction of the nav segment.</p></li>
@@ -349,7 +344,7 @@ does not need to correspond to a wall).</p>
 <li><p><strong>dy</strong> (<em>float</em>) – The look ahead distance in the y direction.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If point is not on any boundary.</p></li>
 <li><p><strong>ValueError</strong> – If space is found to be on the boundary of 2 or
@@ -357,10 +352,10 @@ more spaces but no space is found ahead (clearly something is
 wrong).</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The space ahead</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space">Space</a></p>
 </dd>
 </dl>
@@ -368,10 +363,10 @@ wrong).</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._update_segments">
-<span class="sig-name descname"><span class="pre">_update_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._update_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._update_segments" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_update_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._update_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._update_segments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a valid new point, update the current navigation segments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>new_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The new point to add to one of the segments</p></li>
 <li><p><strong>direction</strong> (<em>int</em>) – The current direction of the nav segment.</p></li>
@@ -383,19 +378,19 @@ wrong).</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_wall">
-<span class="sig-name descname"><span class="pre">_is_crossing_wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_crossing_wall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_wall" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_is_crossing_wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_crossing_wall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_wall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if the current nav segment has reached an existing wall.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>first_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The very first point of the navigation segment.</p></li>
 <li><p><strong>new_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The current point in the navigation segment.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether a wall is reached or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -403,12 +398,12 @@ wrong).</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._is_heading_outside_facility">
-<span class="sig-name descname"><span class="pre">_is_heading_outside_facility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">look_ahead_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_heading_outside_facility"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_heading_outside_facility" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_is_heading_outside_facility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">look_ahead_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_heading_outside_facility"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_heading_outside_facility" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if current nav segment is heading outside the facility
 within a given look ahead distance.</p>
 <p>[extended_summary]</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>new_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The current point of the nav segment.</p></li>
 <li><p><strong>direction</strong> (<em>int</em>) – The direction (positive or negative) where the
@@ -418,13 +413,13 @@ segment is headed.</p></li>
 <li><p><strong>look_ahead_dist</strong> (<em>int</em><em>, </em><em>optional</em>) – look-ahead distance multiplier, defaults to 3</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If value for the direction is invalid.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Whether the position ahead is outside the facility or not.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -432,21 +427,21 @@ segment is headed.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_door">
-<span class="sig-name descname"><span class="pre">_is_crossing_door</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_crossing_door"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_door" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_is_crossing_door</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._is_crossing_door"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_door" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if current nav segment is crossing a door, if so add door
 to list of excluded doors and update segments accordingly.</p>
 <p>..Note: Expected to cross only one door at a time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>first_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The very first point in the current nav segment.</p></li>
 <li><p><strong>new_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The current point in the nav segment.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The intersect coordinates with a door, if any, None otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Optional[Tuple[int, int]]</p>
 </dd>
 </dl>
@@ -454,10 +449,10 @@ to list of excluded doors and update segments accordingly.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._create_segments_for_new_space">
-<span class="sig-name descname"><span class="pre">_create_segments_for_new_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._create_segments_for_new_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_segments_for_new_space" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_create_segments_for_new_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._create_segments_for_new_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_segments_for_new_space" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create navigation segments when crossing from one space to another.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>first_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The first point in the current nav segment.</p></li>
 <li><p><strong>new_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The current point in the navigation segment.</p></li>
@@ -473,11 +468,11 @@ located.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.compute_single_direction_nav_segment">
-<span class="sig-name descname"><span class="pre">compute_single_direction_nav_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segment_spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_at_existing_segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.compute_single_direction_nav_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.compute_single_direction_nav_segment" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compute_single_direction_nav_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segment_spaces</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_at_existing_segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.compute_single_direction_nav_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.compute_single_direction_nav_segment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute navigation segments in a given direction. More than 1 segment
 will be created if crossing into different spaces.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>current_space</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The current space.</p></li>
 <li><p><strong>first_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The first point in this navigation segment.</p></li>
@@ -496,7 +491,7 @@ existing nav segment or not.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.compute_nav_segments">
-<span class="sig-name descname"><span class="pre">compute_nav_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_at_existing_segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.compute_nav_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.compute_nav_segments" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compute_nav_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_at_existing_segments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.compute_nav_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.compute_nav_segments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute navigation segments from a given point and direction.
 2 segments are created from the starting point going in opposite
 directions.</p>
@@ -504,7 +499,7 @@ directions.</p>
 connecting 2 nodes (usually doors or walls marking the end of the
 navigation segment).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>first_point</strong> (<a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The initial point from which to start the segments</p></li>
 <li><p><strong>direction_vector</strong> (<em>complex</em>) – Vector indicating the directions (positive and
@@ -515,15 +510,15 @@ crosses an existing navigation segment in the navnet or not,
 defaults to False</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – if the number of segments is different from the
 number of spaces at the end of the process, indicating that
 something went wrong.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list of segments and corresponding space ids where they fall.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple[List, List]</p>
 </dd>
 </dl>
@@ -531,10 +526,10 @@ something went wrong.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._handle_wall_intersects">
-<span class="sig-name descname"><span class="pre">_handle_wall_intersects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intersects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">half_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._handle_wall_intersects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._handle_wall_intersects" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_handle_wall_intersects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intersects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">half_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._handle_wall_intersects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._handle_wall_intersects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Break nav segments when they intersect with walls.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>intersects</strong> (<em>List</em><em>[</em><em>Tuple</em><em>]</em>) – Points where nav segment intersects walls.</p></li>
 <li><p><strong>path_line</strong> (<em>Path</em>) – The path object representing the nav segment.</p></li>
@@ -547,28 +542,28 @@ something went wrong.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.sanitize_navnet">
-<span class="sig-name descname"><span class="pre">sanitize_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.sanitize_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.sanitize_navnet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sanitize_navnet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.sanitize_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.sanitize_navnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make sure navigation paths do not cross any walls, including
 standalone walls.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._remove_node_if_invalid">
-<span class="sig-name descname"><span class="pre">_remove_node_if_invalid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._remove_node_if_invalid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._remove_node_if_invalid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_remove_node_if_invalid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighbors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">door_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._remove_node_if_invalid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._remove_node_if_invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a node should be removed based on whether it has two neighbors
 with which it forms a straight line.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>node</strong> (<em>tuple</em>) – The node of interest</p></li>
 <li><p><strong>neighbors</strong> (<em>List</em><em>[</em><em>tuple</em><em>]</em>) – List of the neighboring nodes</p></li>
 <li><p><strong>door_paths</strong> (<em>List</em><em>[</em><em>Path</em><em>]</em>) – SVG path for all the doors in facility</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether the node was removed or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -576,7 +571,7 @@ with which it forms a straight line.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.simplify_navigation_network">
-<span class="sig-name descname"><span class="pre">simplify_navigation_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.simplify_navigation_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.simplify_navigation_network" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">simplify_navigation_network</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.simplify_navigation_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.simplify_navigation_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove unnecessary edges and nodes in navigation network.</p>
 <p>A node is unnecessary if it only has 2 neighbors and all 3 together
 form a straight line.</p>
@@ -584,28 +579,28 @@ form a straight line.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.find_and_collapse_parallel_segments">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_and_collapse_parallel_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_and_collapse_parallel_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_and_collapse_parallel_segments" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_and_collapse_parallel_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_and_collapse_parallel_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_and_collapse_parallel_segments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over segments in this space, test for overlap (parallel
 segments) and remove any.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._compute_intersection_and_remove_segments">
-<span class="sig-name descname"><span class="pre">_compute_intersection_and_remove_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="k"><span class="pre">False</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._compute_intersection_and_remove_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._compute_intersection_and_remove_segments" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_compute_intersection_and_remove_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="k"><span class="pre">False</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._compute_intersection_and_remove_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._compute_intersection_and_remove_segments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if nav segments intersect and update list of nav segments
 accordingly to capture the intersection point as a node in the graph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>str</em>) – key to find the space of interset.</p></li>
 <li><p><strong>seg1</strong> (<em>Tuple</em><em>[</em><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a><em>]</em>) – The first segment</p></li>
 <li><p><strong>seg2</strong> (<em>Tuple</em><em>[</em><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a><em>]</em>) – The second segment</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether an intersection point was found or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
@@ -613,17 +608,17 @@ accordingly to capture the intersection point as a node in the graph.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._check_for_intersection_with_other_segments">
-<span class="sig-name descname"><span class="pre">_check_for_intersection_with_other_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_segments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._check_for_intersection_with_other_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._check_for_intersection_with_other_segments" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_check_for_intersection_with_other_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_segments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._check_for_intersection_with_other_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._check_for_intersection_with_other_segments" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.find_intersections_in_space">
-<span class="sig-name descname"><span class="pre">find_intersections_in_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_intersections_in_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_intersections_in_space" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_intersections_in_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_intersections_in_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_intersections_in_space" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate through all nav segment pairs in this space, find any
 intersections and add to navnet.</p>
 <p>An intersection is when 2 nav segments cross each other.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>space</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The space of interest</p>
 </dd>
 </dl>
@@ -631,11 +626,11 @@ intersections and add to navnet.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder._remove_intersecting_edges">
-<span class="sig-name descname"><span class="pre">_remove_intersecting_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords4</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._remove_intersecting_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._remove_intersecting_edges" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_remove_intersecting_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords4</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder._remove_intersecting_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder._remove_intersecting_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given 4 xy coordiantes where the first 2 form one segment and the next
 2 form another segment, remove corresponding edges from navnet.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coords1</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Coordinates of first point of first edge.</p></li>
 <li><p><strong>coords2</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Coordinates of second point of first edge.</p></li>
@@ -643,10 +638,10 @@ intersections and add to navnet.</p>
 <li><p><strong>coords4</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Coordinates of second point of second edge.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Half widths of both edges.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[float, float]</p>
 </dd>
 </dl>
@@ -654,11 +649,11 @@ intersections and add to navnet.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.find_and_add_intersection_node_to_graph">
-<span class="sig-name descname"><span class="pre">find_and_add_intersection_node_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords4</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_and_add_intersection_node_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_and_add_intersection_node_to_graph" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_and_add_intersection_node_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords4</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.find_and_add_intersection_node_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_and_add_intersection_node_to_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given four points forming 2 lines, check if they intersect
 and if so add new node to graph and create new edges.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coords1</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Coordinates of first point.</p></li>
 <li><p><strong>coords2</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Coordinates of first point.</p></li>
@@ -666,10 +661,10 @@ and if so add new node to graph and create new edges.</p>
 <li><p><strong>coords4</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Coordinates of first point.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>xy coordinates of the intersection. None if none.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="../../map/point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point">Point</a></p>
 </dd>
 </dl>
@@ -677,12 +672,12 @@ and if so add new node to graph and create new edges.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.export_navnet_to_svg">
-<span class="sig-name descname"><span class="pre">export_navnet_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.export_navnet_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.export_navnet_to_svg" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">export_navnet_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.export_navnet_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.export_navnet_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export the navigation network to an svg file for visualization.</p>
 <p>Superimposes the navigation network on top of the floorplan for easier
 interpretation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>svg_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – path the svg file to export to.</p>
 </dd>
 </dl>
@@ -690,17 +685,17 @@ interpretation.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.load_nav_paths_from_svg_file">
-<span class="sig-name descname"><span class="pre">load_nav_paths_from_svg_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.load_nav_paths_from_svg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.load_nav_paths_from_svg_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_nav_paths_from_svg_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.load_nav_paths_from_svg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.load_nav_paths_from_svg_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load all the nav segments found in an SVG file. Nav segments are paths
 tagged with a ‘nav’ in their id attribute.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>svg_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – Path to the SVG file</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of nav paths found in SVG file.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Path]</p>
 </dd>
 </dl>
@@ -708,15 +703,15 @@ tagged with a ‘nav’ in their id attribute.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.update_network_from_svg_file">
-<span class="sig-name descname"><span class="pre">update_network_from_svg_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.update_network_from_svg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.update_network_from_svg_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">update_network_from_svg_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.update_network_from_svg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.update_network_from_svg_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the navigation file using nav paths defined in an svg file. Can
 be used to allow a user to edit the navnet after the fact to add, edit
 or remove segments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>svg_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – full path to the svg file.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>FileNotFoundError</strong> – If the svg file is not found.</p>
 </dd>
 </dl>
@@ -724,11 +719,11 @@ or remove segments.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.export_navdata_to_json">
-<span class="sig-name descname"><span class="pre">export_navdata_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_graph_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.export_navdata_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.export_navdata_to_json" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">export_navdata_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">navnet_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_graph_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.export_navdata_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.export_navdata_to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export the navigation network data to json file for later use.</p>
 <p>[extended_summary]</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>navnet_json_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – path to location to save navnet json file</p></li>
 <li><p><strong>hallway_graph_json_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – path to location to save the hallways
@@ -740,19 +735,19 @@ graph</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navbuilder.NavigationBuilder.load_navdata_from_json_files">
-<span class="sig-name descname"><span class="pre">load_navdata_from_json_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_graph_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.load_navdata_from_json_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.load_navdata_from_json_files" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_navdata_from_json_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">navnet_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hallway_graph_json_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navbuilder.html#NavigationBuilder.load_navdata_from_json_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navbuilder.NavigationBuilder.load_navdata_from_json_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the navigation network and the hallway graph from json files.</p>
 <p>Used to initialize the navnet and hallway graph using data from
 existing files.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>navnet_json_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – Full path to the navigation graph json file</p></li>
 <li><p><strong>hallway_graph_json_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – Full path to the hallway graph json
 file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If a navnet or hallway graph currently exists, to
 avoid accidental overwrite.</p>
 </dd>
@@ -778,6 +773,45 @@ avoid accidental overwrite.</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.LOG"><code class="docutils literal notranslate"><span class="pre">LOG</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.build"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.build()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_doors"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._create_nav_segments_for_doors()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_nav_segments_for_aisles"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._create_nav_segments_for_aisles()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._update_navnet"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._update_navnet()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._aisle_has_nav_segment"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._aisle_has_nav_segment()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._find_valid_boundaries"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._find_valid_boundaries()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.create_nav_segment_for_aisle"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.create_nav_segment_for_aisle()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._find_location_of_point"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._find_location_of_point()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_point_on_boundaries"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._is_point_on_boundaries()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._add_segments_to_navnet"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._add_segments_to_navnet()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._add_spaces_to_hallway_graph"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._add_spaces_to_hallway_graph()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_door_intersect"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.find_door_intersect()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_if_valid_nearby_space_exits"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.find_if_valid_nearby_space_exits()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._update_segments"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._update_segments()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_wall"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._is_crossing_wall()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_heading_outside_facility"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._is_heading_outside_facility()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._is_crossing_door"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._is_crossing_door()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._create_segments_for_new_space"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._create_segments_for_new_space()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.compute_single_direction_nav_segment"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.compute_single_direction_nav_segment()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.compute_nav_segments"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.compute_nav_segments()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._handle_wall_intersects"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._handle_wall_intersects()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.sanitize_navnet"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.sanitize_navnet()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._remove_node_if_invalid"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._remove_node_if_invalid()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.simplify_navigation_network"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.simplify_navigation_network()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_and_collapse_parallel_segments"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.find_and_collapse_parallel_segments()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._compute_intersection_and_remove_segments"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._compute_intersection_and_remove_segments()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._check_for_intersection_with_other_segments"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._check_for_intersection_with_other_segments()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_intersections_in_space"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.find_intersections_in_space()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder._remove_intersecting_edges"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder._remove_intersecting_edges()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.find_and_add_intersection_node_to_graph"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.find_and_add_intersection_node_to_graph()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.export_navnet_to_svg"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.export_navnet_to_svg()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.load_nav_paths_from_svg_file"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.load_nav_paths_from_svg_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.update_network_from_svg_file"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.update_network_from_svg_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.export_navdata_to_json"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.export_navdata_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.load_navdata_from_json_files"><code class="docutils literal notranslate"><span class="pre">NavigationBuilder.load_navdata_from_json_files()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#citam.engine.facility.navbuilder.LOG">LOG</a></li>
 <li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder">NavigationBuilder</a><ul>
 <li><a class="reference internal" href="#citam.engine.facility.navbuilder.NavigationBuilder.build">build</a></li>
@@ -842,7 +876,7 @@ avoid accidental overwrite.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

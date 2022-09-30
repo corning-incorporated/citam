@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.core.agent &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.core.agent">
-<span id="citam-engine-core-agent"></span><h1><a class="reference internal" href="#module-citam.engine.core.agent" title="citam.engine.core.agent"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.agent</span></code></a><a class="headerlink" href="#module-citam.engine.core.agent" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-core-agent"></span><h1><a class="reference internal" href="#module-citam.engine.core.agent" title="citam.engine.core.agent"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.agent</span></code></a><a class="headerlink" href="#module-citam.engine.core.agent" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Agent</span></code></a></p></td>
 <td><p>The agent in Agent-based modeling. An agent represents a user of the</p></td>
@@ -127,15 +126,15 @@ itinerary) that they follow throughout the day. This also keeps track of
 the number of contacts that this agent has had so far.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.agent.Agent.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/core/agent.html#Agent.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.agent.Agent.step" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/core/agent.html#Agent.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.agent.Agent.step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move this agent one step forward in its itinerary.</p>
 <p>This updates the agent’s current position only if the agent’s itinerary
 indicates a different location.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>whether the agent has moved from its current location or not.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -159,6 +158,10 @@ indicates a different location.</p>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.agent</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#citam.engine.core.agent.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.core.agent.Agent.step"><code class="docutils literal notranslate"><span class="pre">Agent.step()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#citam.engine.core.agent.Agent">Agent</a><ul>
 <li><a class="reference internal" href="#citam.engine.core.agent.Agent.step">step</a></li>
 </ul>
@@ -188,7 +191,7 @@ indicates a different location.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

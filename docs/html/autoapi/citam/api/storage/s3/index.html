@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.api.storage.s3 &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-citam.api.storage.s3">
-<span id="citam-api-storage-s3"></span><h1><a class="reference internal" href="#module-citam.api.storage.s3" title="citam.api.storage.s3"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.storage.s3</span></code></a><a class="headerlink" href="#module-citam.api.storage.s3" title="Permalink to this headline">¶</a></h1>
+<span id="citam-api-storage-s3"></span><h1><a class="reference internal" href="#module-citam.api.storage.s3" title="citam.api.storage.s3"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.storage.s3</span></code></a><a class="headerlink" href="#module-citam.api.storage.s3" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver" title="citam.api.storage.s3.S3StorageDriver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3StorageDriver</span></code></a></p></td>
 <td><p>Base class for CITAM storage engines</p></td>
@@ -125,10 +124,10 @@
 <p>Base class for CITAM storage engines</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver._get_s3_client">
-<span class="sig-name descname"><span class="pre">_get_s3_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver._get_s3_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver._get_s3_client" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_get_s3_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver._get_s3_client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver._get_s3_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a S3 client for fetching result files</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ssl</strong> (<em>bool</em>) – Whether to verify SSL Certificates.</p></li>
 <li><p><strong>ssl</strong> – Whether to use SSL for the S3 Connection.</p></li>
@@ -143,16 +142,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver._get_text_file">
-<span class="sig-name descname"><span class="pre">_get_text_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver._get_text_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver._get_text_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_get_text_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver._get_text_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver._get_text_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a text file from S3</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> (<em>str</em>) – simulation identifier</p></li>
 <li><p><strong>filename</strong> (<em>str</em>) – Result filename</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>StringIO</p>
 </dd>
 </dl>
@@ -160,10 +159,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.list_runs">
-<span class="sig-name descname"><span class="pre">list_runs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.list_runs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.list_runs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">list_runs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.list_runs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.list_runs" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all simulations</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list of completed simulations</p>
 </dd>
 </dl>
@@ -171,16 +170,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_coordinate_distribution_file">
-<span class="sig-name descname"><span class="pre">get_coordinate_distribution_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_coordinate_distribution_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_coordinate_distribution_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_coordinate_distribution_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_coordinate_distribution_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_coordinate_distribution_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Coordinate Distribution file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> – simulation identifier</p></li>
 <li><p><strong>floor</strong> – Floor number</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Coordinate Distribution file</p>
 </dd>
 </dl>
@@ -188,13 +187,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_trajectory_file">
-<span class="sig-name descname"><span class="pre">get_trajectory_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_trajectory_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_trajectory_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_trajectory_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_trajectory_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_trajectory_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the trajectory file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sim_id</strong> – simulation identifier</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Trajectory file</p>
 </dd>
 </dl>
@@ -202,13 +201,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_trajectory_file_location">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_trajectory_file_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">os.PathLike</span></span></span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_trajectory_file_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_trajectory_file_location" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_trajectory_file_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">os.PathLike</span></span></span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_trajectory_file_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_trajectory_file_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the trajectory file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sim_id</strong> – simulation identifier</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Trajectory file</p>
 </dd>
 </dl>
@@ -216,16 +215,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_contact_file">
-<span class="sig-name descname"><span class="pre">get_contact_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_contact_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_contact_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_contact_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_contact_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_contact_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the contact file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> – simulation identifier</p></li>
 <li><p><strong>floor</strong> – Floor number</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Contacts file</p>
 </dd>
 </dl>
@@ -233,16 +232,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_map_file">
-<span class="sig-name descname"><span class="pre">get_map_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_map_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_map_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_map_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_map_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_map_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the map image for given simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> – simulation identifier</p></li>
 <li><p><strong>floor</strong> – Floor number</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Map file</p>
 </dd>
 </dl>
@@ -250,16 +249,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_heatmap_file">
-<span class="sig-name descname"><span class="pre">get_heatmap_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_heatmap_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_heatmap_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_heatmap_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_heatmap_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_heatmap_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a heatmap file for a simulation and floor</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> – simulation identifier</p></li>
 <li><p><strong>floor</strong> – Floor number</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Heatmap File</p>
 </dd>
 </dl>
@@ -267,13 +266,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_manifest_file">
-<span class="sig-name descname"><span class="pre">get_manifest_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_manifest_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_manifest_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_manifest_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_manifest_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_manifest_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the manifest file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sim_id</strong> – simulation identifier</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Simulation manifest file</p>
 </dd>
 </dl>
@@ -281,13 +280,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_pair_contact_file">
-<span class="sig-name descname"><span class="pre">get_pair_contact_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_pair_contact_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_pair_contact_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_pair_contact_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_pair_contact_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_pair_contact_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the pair contact file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sim_id</strong> – simulation identifier</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Pair contact file</p>
 </dd>
 </dl>
@@ -295,10 +294,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_statistics_file">
-<span class="sig-name descname"><span class="pre">get_statistics_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_statistics_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_statistics_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_statistics_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_statistics_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_statistics_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the statistics file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sim_id</strong> – simulation identifier</p>
 </dd>
 </dl>
@@ -306,10 +305,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.api.storage.s3.S3StorageDriver.get_policy_file">
-<span class="sig-name descname"><span class="pre">get_policy_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_policy_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_policy_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_policy_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/api/storage/s3.html#S3StorageDriver.get_policy_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.storage.s3.S3StorageDriver.get_policy_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the statistics file for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sim_id</strong> – simulation identifier</p>
 </dd>
 </dl>
@@ -333,6 +332,22 @@
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.storage.s3</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver</span></code></a><ul>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver._get_s3_client"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver._get_s3_client()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver._get_text_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver._get_text_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.list_runs"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.list_runs()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_coordinate_distribution_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_coordinate_distribution_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_trajectory_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_trajectory_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_trajectory_file_location"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_trajectory_file_location()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_contact_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_contact_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_map_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_map_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_heatmap_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_heatmap_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_manifest_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_manifest_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_pair_contact_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_pair_contact_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_statistics_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_statistics_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver.get_policy_file"><code class="docutils literal notranslate"><span class="pre">S3StorageDriver.get_policy_file()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver">S3StorageDriver</a><ul>
 <li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver._get_s3_client">_get_s3_client</a></li>
 <li><a class="reference internal" href="#citam.api.storage.s3.S3StorageDriver._get_text_file">_get_text_file</a></li>
@@ -374,7 +389,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

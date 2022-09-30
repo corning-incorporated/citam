@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.schedulers.scheduler
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -48,50 +42,12 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: run(self)
+   .. py:method:: run()
       :abstractmethod:
 
-      
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: save_to_files(self, work_directory)
+   .. py:method:: save_to_files(work_directory)
       :abstractmethod:
 
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
 
 

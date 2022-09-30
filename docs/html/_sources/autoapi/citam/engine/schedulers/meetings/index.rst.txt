@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.schedulers.meetings
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -37,24 +31,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:class:: Meeting(location: citam.engine.map.space.Space, floor_number: int, start_time: int, end_time: int, attendees: List[int] = None)
 
    
@@ -77,7 +53,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: __str__(self) -> str
+   .. py:method:: __str__() -> str
 
       
       Generate a string representation of this meeting.
@@ -102,7 +78,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: __eq__(self, other) -> bool
+   .. py:method:: __eq__(other) -> bool
 
       
       Return self==value.
@@ -149,7 +125,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: create_new_meeting(self, meeting_room: citam.engine.map.space.Space, floor_number: int, start_time: int, end_time: int) -> bool
+   .. py:method:: create_new_meeting(meeting_room: citam.engine.map.space.Space, floor_number: int, start_time: int, end_time: int) -> bool
 
       
       [summary]
@@ -182,7 +158,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _create_meetings_for_room(self, meeting_room: citam.engine.map.space.Space, floor_number: int) -> None
+   .. py:method:: _create_meetings_for_room(meeting_room: citam.engine.map.space.Space, floor_number: int) -> None
 
       
       Create all meetings to take place in this specific room.
@@ -209,7 +185,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _generate_meeting_attendee_list(self, meeting_room: citam.engine.map.space.Space, start_time: int, end_time: int) -> List[int]
+   .. py:method:: _generate_meeting_attendee_list(meeting_room: citam.engine.map.space.Space, start_time: int, end_time: int) -> List[int]
 
       
       Randomly add attendees to a meeting time slot based on agents'
@@ -241,7 +217,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: build(self) -> None
+   .. py:method:: build() -> None
 
       
       Create meetings for this facility with no conflicts (room nor agent)
@@ -264,7 +240,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _find_potential_attendees(self, start_time: int, end_time: int) -> List[int]
+   .. py:method:: _find_potential_attendees(start_time: int, end_time: int) -> List[int]
 
       
       Find all individuals in attendee pool who are free between start and
@@ -294,7 +270,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _update_attendee_pool(self) -> None
+   .. py:method:: _update_attendee_pool() -> None
 
       
       Update the attendee pool to ensure the average
@@ -318,7 +294,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_daily_meetings(self, agent_id: int) -> List[Meeting]
+   .. py:method:: get_daily_meetings(agent_id: int) -> List[Meeting]
 
       
       Returns the list of meetings for a given agent.

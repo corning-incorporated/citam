@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>contacts &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
 <script src="../../_static/jquery.js"></script>
 <script src="../../_static/underscore.js"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../_static/doctools.js"></script>
+<script src="../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-contacts">
-<span id="contacts"></span><h1><a class="reference internal" href="#module-contacts" title="contacts"><code class="xref py py-mod docutils literal notranslate"><span class="pre">contacts</span></code></a><a class="headerlink" href="#module-contacts" title="Permalink to this headline">¶</a></h1>
+<span id="contacts"></span><h1><a class="reference internal" href="#module-contacts" title="contacts"><code class="xref py py-mod docutils literal notranslate"><span class="pre">contacts</span></code></a><a class="headerlink" href="#module-contacts" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#contacts.ContactEvent" title="contacts.ContactEvent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContactEvent</span></code></a></p></td>
 <td><p>A contact event object keeps track of the initial timestep and total</p></td>
@@ -123,14 +122,10 @@
 </table>
 </section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#contacts.update_data_dictionary" title="contacts.update_data_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data_dictionary</span></code></a>(datadict: dict, key: Hashable, data: Union[float, int]) → dict</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#contacts.update_data_dictionary" title="contacts.update_data_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_data_dictionary</span></code></a>(→ dict)</p></td>
 <td><p>Utility function to update a dictionary to add data to existing value if</p></td>
 </tr>
 </tbody>
@@ -141,17 +136,17 @@
 <dd><p>Utility function to update a dictionary to add data to existing value if
 the key exist or create new key:value pair if not</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>datadict</strong> (<em>dict</em>) – the dictionary to update</p></li>
 <li><p><strong>key</strong> (<em>str</em>) – key for the value to update</p></li>
 <li><p><strong>data</strong> (<em>float</em><em> or </em><em>int</em>) – the value to add to current value</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the updated dictionary</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -171,13 +166,13 @@ of a contact (e.g. two people walking together).</p>
 <dd><p>Class to keep track of every time 2 agents come in close proximity</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contacts.ContactEvents.add_contact">
-<span class="sig-name descname"><span class="pre">add_contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#contacts.ContactEvents.add_contact" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#contacts.ContactEvents.add_contact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add single contact event between two agents. If there was a contact
 event in the previous step, update its duration and list of locations.
 The floor number is extracted from the first agent’s position.</p>
 <p>..note: a contact event is identified</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>agent1</strong> (<a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><em>Agent</em></a>) – First agent involved in this contact event.</p></li>
 <li><p><strong>agent2</strong> (<a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><em>Agent</em></a>) – Second agent involved in this contact event.</p></li>
@@ -185,7 +180,7 @@ The floor number is extracted from the first agent’s position.</p>
 <li><p><strong>position</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – xy position of contact</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the two agents have the same ID.</p>
 </dd>
 </dl>
@@ -193,15 +188,15 @@ The floor number is extracted from the first agent’s position.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contacts.ContactEvents.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#contacts.ContactEvents.count" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#contacts.ContactEvents.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>compute the total number of unique contact events. A unique contact
 event involves two specific agents and has a start and end time.</p>
 <p>..Note: two agents can have more than 1 unique contact event.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>total number of unique contact events</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -209,13 +204,13 @@ event involves two specific agents and has a start and end time.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contacts.ContactEvents.save_pairwise_contacts">
-<span class="sig-name descname"><span class="pre">save_pairwise_contacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#contacts.ContactEvents.save_pairwise_contacts" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_pairwise_contacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#contacts.ContactEvents.save_pairwise_contacts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save pairwise contact data to file. The file is saved in a CSV format
 with the following columns: Agent1, Agent2, total contacts and total
 contact duration.</p>
 <p>..note: this is an aggregate over all the contacts between two agents.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – name of the file</p>
 </dd>
 </dl>
@@ -223,14 +218,14 @@ contact duration.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contacts.ContactEvents.extract_statistics">
-<span class="sig-name descname"><span class="pre">extract_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contacts.ContactEvents.extract_statistics" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">extract_statistics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contacts.ContactEvents.extract_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract important contact statistics from contact data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list of dictionaries of important statistics. Each stat is
 given by its name, value and unit.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[dict[str, Dict]]</p>
 </dd>
 </dl>
@@ -238,22 +233,22 @@ given by its name, value and unit.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contacts.ContactEvents.get_floor_contact_coords">
-<span class="sig-name descname"><span class="pre">get_floor_contact_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contacts.ContactEvents.get_floor_contact_coords" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_floor_contact_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contacts.ContactEvents.get_floor_contact_coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over all contact events associated with key (referring to two
 specific agents), and return the ones that took place on given floor
 number.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>str</em>) – the pair of agents given by a key of the form
 &lt;agent1_id&gt;-&lt;agent2_id&gt; where agent1_id &lt; agent2_id.</p></li>
 <li><p><strong>floor_number</strong> (<em>int</em>) – index of the floor of interest.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the xy coordinates of where contacts took place</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Tuple[int, int]]</p>
 </dd>
 </dl>
@@ -261,19 +256,19 @@ number.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contacts.ContactEvents.get_contacts_per_coordinates">
-<span class="sig-name descname"><span class="pre">get_contacts_per_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contacts.ContactEvents.get_contacts_per_coordinates" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_contacts_per_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#contacts.ContactEvents.get_contacts_per_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save per coordinate contact data to file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>step</strong> (<em>int</em>) – Simulation step for which to extract contact data.</p></li>
 <li><p><strong>floor_number</strong> (<em>int</em>) – Floor number for which to extract data.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dictionary of contacts per location with xy positions as keys</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dict[Tuple[int, int], int]</p>
 </dd>
 </dl>
@@ -281,7 +276,7 @@ number.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contacts.ContactEvents.save_raw_contact_data">
-<span class="sig-name descname"><span class="pre">save_raw_contact_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#contacts.ContactEvents.save_raw_contact_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_raw_contact_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#contacts.ContactEvents.save_raw_contact_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save all contact data to file.</p>
 <p>This will write all the contact information in this simulation to file
 (can be big). The data will be converted to a dictionary of list of
@@ -290,7 +285,7 @@ with their corresponding list of contacts. Each contact event is
 represented by a dictionary with property names and values of the
 ContactEvent class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The file path to save the data</p>
 </dd>
 </dl>
@@ -315,6 +310,18 @@ ContactEvent class.</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#contacts.update_data_dictionary"><code class="docutils literal notranslate"><span class="pre">update_data_dictionary()</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvent"><code class="docutils literal notranslate"><span class="pre">ContactEvent</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvents"><code class="docutils literal notranslate"><span class="pre">ContactEvents</span></code></a><ul>
+<li><a class="reference internal" href="#contacts.ContactEvents.add_contact"><code class="docutils literal notranslate"><span class="pre">ContactEvents.add_contact()</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvents.count"><code class="docutils literal notranslate"><span class="pre">ContactEvents.count()</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvents.save_pairwise_contacts"><code class="docutils literal notranslate"><span class="pre">ContactEvents.save_pairwise_contacts()</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvents.extract_statistics"><code class="docutils literal notranslate"><span class="pre">ContactEvents.extract_statistics()</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvents.get_floor_contact_coords"><code class="docutils literal notranslate"><span class="pre">ContactEvents.get_floor_contact_coords()</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvents.get_contacts_per_coordinates"><code class="docutils literal notranslate"><span class="pre">ContactEvents.get_contacts_per_coordinates()</span></code></a></li>
+<li><a class="reference internal" href="#contacts.ContactEvents.save_raw_contact_data"><code class="docutils literal notranslate"><span class="pre">ContactEvents.save_raw_contact_data()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#contacts.update_data_dictionary">update_data_dictionary</a></li>
 <li><a class="reference internal" href="#contacts.ContactEvent">ContactEvent</a></li>
 <li><a class="reference internal" href="#contacts.ContactEvents">ContactEvents</a><ul>
@@ -352,7 +359,7 @@ ContactEvent class.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

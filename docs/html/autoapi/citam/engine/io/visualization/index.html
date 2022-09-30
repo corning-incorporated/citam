@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.io.visualization &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,45 +105,37 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.io.visualization">
-<span id="citam-engine-io-visualization"></span><h1><a class="reference internal" href="#module-citam.engine.io.visualization" title="citam.engine.io.visualization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.visualization</span></code></a><a class="headerlink" href="#module-citam.engine.io.visualization" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-io-visualization"></span><h1><a class="reference internal" href="#module-citam.engine.io.visualization" title="citam.engine.io.visualization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.visualization</span></code></a><a class="headerlink" href="#module-citam.engine.io.visualization" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.visualization.export_possible_oneway_aisles_to_svg" title="citam.engine.io.visualization.export_possible_oneway_aisles_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_possible_oneway_aisles_to_svg</span></code></a>(walls: List[svgpathtools.Path], oneway_network: networkx.Graph, svgfile: Union[str, pathlib.Path]) → None</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.visualization.export_possible_oneway_aisles_to_svg" title="citam.engine.io.visualization.export_possible_oneway_aisles_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_possible_oneway_aisles_to_svg</span></code></a>(→ None)</p></td>
 <td><p>Export the one_way network superimposed on the floorplan to an SVG file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.visualization.create_arrow_svg_paths" title="citam.engine.io.visualization.create_arrow_svg_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_arrow_svg_paths</span></code></a>(arrow: Tuple[Tuple[int, int], Tuple[int, int]]) → Tuple[List[svgpathtools.Path], List[Dict[str, Any]]]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.visualization.create_arrow_svg_paths" title="citam.engine.io.visualization.create_arrow_svg_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_arrow_svg_paths</span></code></a>(...)</p></td>
 <td><p>Given two points, create an arrow-like SVG element with the first point as</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.visualization.create_markers_svg_paths" title="citam.engine.io.visualization.create_markers_svg_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_markers_svg_paths</span></code></a>(x: int, y: int, marker_type: int = None) → Tuple[List[svgpathtools.Path], List[Dict[str, Any]]]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.visualization.create_markers_svg_paths" title="citam.engine.io.visualization.create_markers_svg_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_markers_svg_paths</span></code></a>(...)</p></td>
 <td><p>Create SVG paths for arbitrary markers to be used on a floorplan.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.visualization.export_nav_network_to_svg" title="citam.engine.io.visualization.export_nav_network_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_nav_network_to_svg</span></code></a>(walls: List[svgpathtools.Path], nav_paths: List[svgpathtools.Path], nav_nodes: List[Tuple[int, int]], filename: Optional[Union[str, pathlib.Path]] = None, marker_type: int = X_MARKER, color='blue') → None</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.visualization.export_nav_network_to_svg" title="citam.engine.io.visualization.export_nav_network_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_nav_network_to_svg</span></code></a>(→ None)</p></td>
 <td><p>Export a navigation network superimposed on a floorplan to an SVG file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.visualization.export_world_to_svg" title="citam.engine.io.visualization.export_world_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_world_to_svg</span></code></a>(walls: List[svgpathtools.Path], agent_positions_and_contacts: Optional[List[Tuple[int, int, int]]] = None, svg_file: Optional[Union[str, pathlib.Path]] = None, marker_locations: Optional[List[Tuple[int, int, int]]] = None, marker_type: int = None, arrows: Optional[List[Tuple[Tuple[int, int], Tuple[int, int]]]] = None, doors: Optional[List[svgpathtools.Path]] = None, max_contacts: int = 100, current_time: int = None, show_colobar=False, viewbox: Tuple[float, Ellipsis] = None) → None</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.visualization.export_world_to_svg" title="citam.engine.io.visualization.export_world_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_world_to_svg</span></code></a>(→ None)</p></td>
 <td><p>Save a snapshot of a simulation with the floorplan, agent positions and</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.visualization.add_root_layer_to_svg" title="citam.engine.io.visualization.add_root_layer_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_root_layer_to_svg</span></code></a>(original_svg_filename: Union[str, pathlib.Path], updated_filename: Union[str, pathlib.Path]) → None</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.visualization.add_root_layer_to_svg" title="citam.engine.io.visualization.add_root_layer_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_root_layer_to_svg</span></code></a>(→ None)</p></td>
 <td><p>Helper function to update an existing SVG file to add a root element.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.visualization.X_MARKER" title="citam.engine.io.visualization.X_MARKER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">X_MARKER</span></code></a></p></td>
 <td><p></p></td>
@@ -181,7 +176,7 @@
 <span class="sig-prename descclassname"><span class="pre">citam.engine.io.visualization.</span></span><span class="sig-name descname"><span class="pre">export_possible_oneway_aisles_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">walls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oneway_network</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svgfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/io/visualization.html#export_possible_oneway_aisles_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.io.visualization.export_possible_oneway_aisles_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export the one_way network superimposed on the floorplan to an SVG file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>walls</strong> (<em>List</em><em>[</em><em>Path</em><em>]</em>) – All the walls found in the floorplan.</p></li>
 <li><p><strong>oneway_network</strong> (<em>nx.Graph</em>) – The one-way network.</p></li>
@@ -197,13 +192,13 @@
 <dd><p>Given two points, create an arrow-like SVG element with the first point as
 the head.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>arrow</strong> (<em>Tuple</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>int</em><em>,</em><em>int</em><em>]</em><em>]</em>) – The haid and tail xy coordinates of the arrow.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of paths and attributes (color, stroke size, etc.)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[List[Path], List[Dict[str, str]]</p>
 </dd>
 </dl>
@@ -214,17 +209,17 @@ the head.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.io.visualization.</span></span><span class="sig-name descname"><span class="pre">create_markers_svg_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/io/visualization.html#create_markers_svg_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.io.visualization.create_markers_svg_paths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create SVG paths for arbitrary markers to be used on a floorplan.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>int</em>) – the x position of the marker</p></li>
 <li><p><strong>y</strong> (<em>int</em>) – the y position of the marker</p></li>
 <li><p><strong>marker_type</strong> (<em>int</em><em>, </em><em>optional</em>) – the type of the marker (e.g. a plus sign, a line, etc.)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The SVG paths and attributes</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[List[Path], List[Dict[str, Any]]]</p>
 </dd>
 </dl>
@@ -235,7 +230,7 @@ the head.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.io.visualization.</span></span><span class="sig-name descname"><span class="pre">export_nav_network_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">walls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nav_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nav_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">X_MARKER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/io/visualization.html#export_nav_network_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.io.visualization.export_nav_network_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export a navigation network superimposed on a floorplan to an SVG file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>walls</strong> (<em>List</em><em>[</em><em>Path</em><em>]</em>) – All the walls in the floorplan.</p></li>
 <li><p><strong>nav_paths</strong> (<em>List</em><em>[</em><em>Path</em><em>]</em>) – The navigation paths of the navnet.</p></li>
@@ -254,7 +249,7 @@ the head.</p>
 <dd><p>Save a snapshot of a simulation with the floorplan, agent positions and
 number of contacts, doors and any markers to an SVG file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>walls</strong> (<em>List</em><em>[</em><em>Path</em><em>]</em>) – All the walls in the floorplan.</p></li>
 <li><p><strong>agent_positions_and_contacts</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em>) – positions and number of contacts for
@@ -279,7 +274,7 @@ colorbar, defaults to 100</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.io.visualization.</span></span><span class="sig-name descname"><span class="pre">add_root_layer_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_svg_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updated_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/io/visualization.html#add_root_layer_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.io.visualization.add_root_layer_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper function to update an existing SVG file to add a root element.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>original_svg_filename</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – Initial SVG file.</p></li>
 <li><p><strong>updated_filename</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – new SVG file to write.</p></li>
@@ -305,6 +300,16 @@ colorbar, defaults to 100</p></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.io.visualization.X_MARKER"><code class="docutils literal notranslate"><span class="pre">X_MARKER</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.LINE_MARKER"><code class="docutils literal notranslate"><span class="pre">LINE_MARKER</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.PLUS_MARKER"><code class="docutils literal notranslate"><span class="pre">PLUS_MARKER</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.LOG"><code class="docutils literal notranslate"><span class="pre">LOG</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.export_possible_oneway_aisles_to_svg"><code class="docutils literal notranslate"><span class="pre">export_possible_oneway_aisles_to_svg()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.create_arrow_svg_paths"><code class="docutils literal notranslate"><span class="pre">create_arrow_svg_paths()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.create_markers_svg_paths"><code class="docutils literal notranslate"><span class="pre">create_markers_svg_paths()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.export_nav_network_to_svg"><code class="docutils literal notranslate"><span class="pre">export_nav_network_to_svg()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.export_world_to_svg"><code class="docutils literal notranslate"><span class="pre">export_world_to_svg()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.visualization.add_root_layer_to_svg"><code class="docutils literal notranslate"><span class="pre">add_root_layer_to_svg()</span></code></a></li>
 <li><a class="reference internal" href="#citam.engine.io.visualization.X_MARKER">X_MARKER</a></li>
 <li><a class="reference internal" href="#citam.engine.io.visualization.LINE_MARKER">LINE_MARKER</a></li>
 <li><a class="reference internal" href="#citam.engine.io.visualization.PLUS_MARKER">PLUS_MARKER</a></li>
@@ -340,7 +345,7 @@ colorbar, defaults to 100</p></li>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

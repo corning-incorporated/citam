@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.io.storage_utils
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -55,25 +49,6 @@ Functions
 
 .. py:function:: get_floorplans_directory() -> Union[str, pathlib.Path]
 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:function:: create_floor_datadir(facility_name: str, floor_name: str) -> Union[str, pathlib.Path]
 

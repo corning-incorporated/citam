@@ -3,12 +3,6 @@
 
 .. py:module:: contacts
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -108,7 +102,7 @@ Functions
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: add_contact(self, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent, current_step: int, position: Tuple[int, int]) -> None
+   .. py:method:: add_contact(agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent, current_step: int, position: Tuple[int, int]) -> None
 
       
       Add single contact event between two agents. If there was a contact
@@ -144,7 +138,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: count(self) -> int
+   .. py:method:: count() -> int
 
       
       compute the total number of unique contact events. A unique contact
@@ -172,7 +166,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: save_pairwise_contacts(self, filename: str) -> None
+   .. py:method:: save_pairwise_contacts(filename: str) -> None
 
       
       Save pairwise contact data to file. The file is saved in a CSV format
@@ -201,7 +195,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: extract_statistics(self) -> List[Dict[str, Any]]
+   .. py:method:: extract_statistics() -> List[Dict[str, Any]]
 
       
       Extract important contact statistics from contact data.
@@ -227,7 +221,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_floor_contact_coords(self, key: str, floor_number: int) -> List[Tuple[int, int]]
+   .. py:method:: get_floor_contact_coords(key: str, floor_number: int) -> List[Tuple[int, int]]
 
       
       Iterate over all contact events associated with key (referring to two
@@ -259,7 +253,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_contacts_per_coordinates(self, floor_number: int) -> Dict[Tuple[int, int], int]
+   .. py:method:: get_contacts_per_coordinates(floor_number: int) -> Dict[Tuple[int, int], int]
 
       
       Save per coordinate contact data to file.
@@ -288,7 +282,7 @@ Functions
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: save_raw_contact_data(self, filename: str) -> None
+   .. py:method:: save_raw_contact_data(filename: str) -> None
 
       
       Save all contact data to file.

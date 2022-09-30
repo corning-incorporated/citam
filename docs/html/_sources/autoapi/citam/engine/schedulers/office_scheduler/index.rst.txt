@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.schedulers.office_scheduler
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -35,24 +29,6 @@ Attributes
    
 
    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:class:: OfficeScheduler(facility, total_timesteps, timestep=1, scheduling_rules=None, meeting_policy=None, entry_exit_window=300, preassigned_offices=None, shifts=None)
 
@@ -81,7 +57,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: generate_meetings(self, n_agents: int) -> None
+   .. py:method:: generate_meetings(n_agents: int) -> None
 
       
       Create meetings based on meeting policy.
@@ -104,7 +80,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: assign_office(self) -> Tuple[int, int]
+   .. py:method:: assign_office() -> Tuple[int, int]
 
       
       Assign an office to the current agent. If office spaces are not
@@ -131,7 +107,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: run(self, n_agents: int) -> List[citam.engine.schedulers.schedule.Schedule]
+   .. py:method:: run(n_agents: int) -> List[citam.engine.schedulers.schedule.Schedule]
 
       
       Run this scheduler and return one schedule per agent.
@@ -163,7 +139,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: save_to_files(self, work_directory) -> None
+   .. py:method:: save_to_files(work_directory) -> None
 
       
       Write key scheduling info to file.

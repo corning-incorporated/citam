@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.facility.navigation &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.facility.navigation">
-<span id="citam-engine-facility-navigation"></span><h1><a class="reference internal" href="#module-citam.engine.facility.navigation" title="citam.engine.facility.navigation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.navigation</span></code></a><a class="headerlink" href="#module-citam.engine.facility.navigation" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-facility-navigation"></span><h1><a class="reference internal" href="#module-citam.engine.facility.navigation" title="citam.engine.facility.navigation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.navigation</span></code></a><a class="headerlink" href="#module-citam.engine.facility.navigation" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.navigation.TrafficPattern" title="citam.engine.facility.navigation.TrafficPattern"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrafficPattern</span></code></a></p></td>
 <td><p>Generic enumeration.</p></td>
@@ -126,29 +125,21 @@
 </table>
 </section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.navigation.remove_unnecessary_coords" title="citam.engine.facility.navigation.remove_unnecessary_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unnecessary_coords</span></code></a>(route: List[Union[Tuple[int, int], Tuple[int, int, int]]]) → List[Union[Tuple[int, int], Tuple[int, int, int]]]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.navigation.remove_unnecessary_coords" title="citam.engine.facility.navigation.remove_unnecessary_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unnecessary_coords</span></code></a>(→ List[Union[Tuple[int, ...)</p></td>
 <td><p>Inspect a route given by a set of coordinates and remove any intermediate</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.facility.navigation.unroll_route" title="citam.engine.facility.navigation.unroll_route"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unroll_route</span></code></a>(route: List[Union[Tuple[int, int], Tuple[int, int, int]]], pace: float) → List[Union[Tuple[int, int], Tuple[int, int, int]]]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.facility.navigation.unroll_route" title="citam.engine.facility.navigation.unroll_route"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unroll_route</span></code></a>(→ List[Union[Tuple[int, int], Tuple[int, ...)</p></td>
 <td><p>Use the given pace to find intermediate coordinates between each</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.navigation.LOG" title="citam.engine.facility.navigation.LOG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOG</span></code></a></p></td>
 <td><p></p></td>
@@ -224,21 +215,21 @@ also a stairway.</p>
 different spaces in a facility.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.load_hallway_graph">
-<span class="sig-name descname"><span class="pre">load_hallway_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_hallway_graph_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">networkx.Graph</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.load_hallway_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.load_hallway_graph" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_hallway_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floor_hallway_graph_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">networkx.Graph</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.load_hallway_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.load_hallway_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the hallway graph from file. The hallway graph is a graph of
 hallways that share at least one boundary.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>floor_hallway_graph_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – location of the file containing the
 hallway graph in json format.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>FileNotFoundError</strong> – If the provided file is not found.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>[description]</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>nx.Graph</p>
 </dd>
 </dl>
@@ -246,21 +237,21 @@ hallway graph in json format.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.load_floor_oneway_net">
-<span class="sig-name descname"><span class="pre">load_floor_oneway_net</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oneway_net_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">networkx.Graph</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.load_floor_oneway_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.load_floor_oneway_net" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_floor_oneway_net</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oneway_net_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">networkx.Graph</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.load_floor_oneway_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.load_floor_oneway_net" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the oneway network from file. The oneway network is a graph of
 connected aisles that support one-way navigation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>oneway_net_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – location of one-way network file in json
 format.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>FileNotFoundError</strong> – If file not found.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the network as read from file.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>nx.Graph</p>
 </dd>
 </dl>
@@ -268,21 +259,21 @@ format.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.load_floor_navnet">
-<span class="sig-name descname"><span class="pre">load_floor_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_navnet_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">networkx.Graph</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.load_floor_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.load_floor_navnet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_floor_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floor_navnet_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">networkx.Graph</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.load_floor_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.load_floor_navnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the navigation network (navnet) from file. The navnet is a graph
 of connected notable points in the facility describing where agents
 can move around.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>floor_navnet_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – location of navnet file in json format.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>FileNotFoundError</strong> – if specified file is not found.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The navnet object.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>nx.Graph</p>
 </dd>
 </dl>
@@ -290,24 +281,24 @@ can move around.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.get_corresponding_space_by_name">
-<span class="sig-name descname"><span class="pre">get_corresponding_space_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_corresponding_space_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_corresponding_space_by_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_corresponding_space_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_corresponding_space_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_corresponding_space_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a reference space, typically a vertical space (e.g. stairway),
 find which space would be exactly at that same location on another
 floor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ref_space</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The reference space.</p></li>
 <li><p><strong>dest_floor</strong> (<em>int</em>) – The destination floor</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If problems are found with the space names.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The destination space and id.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple[<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space">Space</a>, int]</p>
 </dd>
 </dl>
@@ -315,26 +306,26 @@ floor.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.get_corresponding_vertical_space">
-<span class="sig-name descname"><span class="pre">get_corresponding_vertical_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_corresponding_vertical_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_corresponding_vertical_space" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_corresponding_vertical_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_corresponding_vertical_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_corresponding_vertical_space" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a reference space and a destination floor, find the space
 on the destination floor that lies in the same xy position as the
 reference space. Mostly used for stairs and elevators.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ref_space</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – the reference space</p></li>
 <li><p><strong>dest_floor</strong> (<em>int</em>) – index of the destination floor</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – if the value used for the multifloor_type is
 unknown.</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>index of the corresponding space and the corresponding space
 itself.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple[Optional[int], Optional[<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space">Space</a>]]</p>
 </dd>
 </dl>
@@ -342,11 +333,11 @@ itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.add_vertical_edges">
-<span class="sig-name descname"><span class="pre">add_vertical_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.add_vertical_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.add_vertical_edges" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_vertical_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.add_vertical_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.add_vertical_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add vertical edges between two lists of coordinates from different
 floors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coords1</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – list of coordinates on the first floor.</p></li>
 <li><p><strong>floor_number1</strong> (<em>int</em>) – id of the first floor.</p></li>
@@ -354,10 +345,10 @@ floors.</p>
 <li><p><strong>floor_number2</strong> (<em>int</em>) – id of the other floor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the number of edges successfully created.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -365,7 +356,7 @@ floors.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.add_all_vertical_edges_between_floors">
-<span class="sig-name descname"><span class="pre">add_all_vertical_edges_between_floors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.add_all_vertical_edges_between_floors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.add_all_vertical_edges_between_floors" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_all_vertical_edges_between_floors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floor_number1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.add_all_vertical_edges_between_floors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.add_all_vertical_edges_between_floors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new edges in the navigation network to connect vertical
 spaces allowing multifloor navigation. If there are more than 2 floors
 in the facility, this function should be used toconnect only
@@ -374,16 +365,16 @@ adjacent floors.</p>
 finds if there is a corresponding space on the destination floor in
 which case edges are added between them.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>floor_number1</strong> (<em>int</em>) – index of the first floor.</p></li>
 <li><p><strong>floor_number2</strong> (<em>int</em>) – index of the second floor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Number of vertical spaces connected.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -391,25 +382,25 @@ which case edges are added between them.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.create_multifloor_navnet">
-<span class="sig-name descname"><span class="pre">create_multifloor_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.create_multifloor_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.create_multifloor_navnet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_multifloor_navnet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.create_multifloor_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.create_multifloor_navnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use vertical spaces to combine multiple floor navnets into a global
 navnet.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.apply_traffic_policy">
-<span class="sig-name descname"><span class="pre">apply_traffic_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.apply_traffic_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.apply_traffic_policy" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">apply_traffic_policy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.apply_traffic_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.apply_traffic_policy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove edges that should not exist based on user traffic policy
 for all floors.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.apply_traffic_policy_to_edge">
-<span class="sig-name descname"><span class="pre">apply_traffic_policy_to_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.classes.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.apply_traffic_policy_to_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.apply_traffic_policy_to_edge" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">apply_traffic_policy_to_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.classes.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.apply_traffic_policy_to_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.apply_traffic_policy_to_edge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given 2 coordinates corresponding to navnet nodes, remove any edge that
 doesn’t match the desired traffic direction.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>policy</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – The policy to apply prescribing a desired traffic
 direction.</p></li>
@@ -426,11 +417,11 @@ direction.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.set_policy_for_aisle">
-<span class="sig-name descname"><span class="pre">set_policy_for_aisle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oneway_net</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'singlefloor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.set_policy_for_aisle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.set_policy_for_aisle" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_policy_for_aisle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oneway_net</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navnet_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'singlefloor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.set_policy_for_aisle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.set_policy_for_aisle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find edge of interest from navnet and keep only the ones that
 match the desired traffic pattern.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>policy</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – The traffic policy to apply</p></li>
 <li><p><strong>navnet</strong> (<em>nx.Graph</em>) – the navnet to apply the policy to.</p></li>
@@ -439,7 +430,7 @@ match the desired traffic pattern.</p>
 <li><p><strong>floor_number</strong> (<em>int</em><em>, </em><em>optional</em>) – integer id of the floor of interst, defaults to 0</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If the direction is not a valid value.</p>
 </dd>
 </dl>
@@ -447,7 +438,7 @@ match the desired traffic pattern.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.is_edge_matching_direction">
-<span class="sig-name descname"><span class="pre">is_edge_matching_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.is_edge_matching_direction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.is_edge_matching_direction" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_edge_matching_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ellipsis</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.is_edge_matching_direction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.is_edge_matching_direction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if edge direction matches desired direction.</p>
 <p>This is how the edge direction is defined and computed:
 Use the start and end points to compute a direction angle alpha
@@ -455,16 +446,16 @@ with respect to the positive x-axis. The positive direction corresponds
 to 0 &lt;= alpha &lt;= 90 or 270 &gt; alpha &gt;= 360. The negative direction is
 the other half of the possible angles.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>edge</strong> (<em>Tuple</em><em>[</em><em>Tuple</em><em>[</em><em>Any</em><em>, </em><em>...</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>Any</em><em>, </em><em>...</em><em>]</em><em>]</em>) – The edge of interest.</p></li>
 <li><p><strong>desired_direction</strong> (<em>int</em>) – The direction of interest.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether a match is found or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -472,10 +463,10 @@ the other half of the possible angles.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.get_route">
-<span class="sig-name descname"><span class="pre">get_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_route" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_route" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the shortest path between 2 spaces in the floorplans.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>starting_location</strong> (<em>int</em>) – index of the space where the agent is
 currently located</p></li>
@@ -487,11 +478,11 @@ agent is going.</p></li>
 <li><p><strong>pace</strong> (<em>float</em>) – The pace of walking [distance unit/timestep].</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The sequence of xy points and floor numbers to get from
 current location to destination. None if no route is found.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Optional[List[Tuple[Any, int]]]</p>
 </dd>
 </dl>
@@ -499,21 +490,21 @@ current location to destination. None if no route is found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.get_valid_multifloor_exit_nodes">
-<span class="sig-name descname"><span class="pre">get_valid_multifloor_exit_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_valid_multifloor_exit_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_valid_multifloor_exit_nodes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_valid_multifloor_exit_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_valid_multifloor_exit_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_valid_multifloor_exit_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find list of exit coords that corresponds to a valid node in the
 navigation network.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>location</strong> (<em>int</em>) – index of the space where the agent is currently
 located.</p></li>
 <li><p><strong>floor_number</strong> (<em>int</em>) – Index of the floor number.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of exit coords as xy and floor number.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Tuple[int, int, int]]</p>
 </dd>
 </dl>
@@ -521,20 +512,20 @@ located.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.get_valid_single_floor_exit_nodes">
-<span class="sig-name descname"><span class="pre">get_valid_single_floor_exit_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_valid_single_floor_exit_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_valid_single_floor_exit_nodes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_valid_single_floor_exit_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_valid_single_floor_exit_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_valid_single_floor_exit_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find list of exit coords that corresponds to a valid node in the
 navigation network.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>location</strong> (<em>int</em>) – index of the space where agent is located.</p></li>
 <li><p><strong>floor_number</strong> (<em>int</em>) – index of floor number.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of exit coordinates.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Tuple[int,int]]</p>
 </dd>
 </dl>
@@ -542,11 +533,11 @@ navigation network.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.get_best_possible_routes_multifloor">
-<span class="sig-name descname"><span class="pre">get_best_possible_routes_multifloor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_best_possible_routes_multifloor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_best_possible_routes_multifloor" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_best_possible_routes_multifloor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_best_possible_routes_multifloor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_best_possible_routes_multifloor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of valid routes between a starting space and a destination
 space in the current multifloor facility.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>starting_location</strong> (<em>int</em>) – index of the starting space.</p></li>
 <li><p><strong>starting_floor_number</strong> (<em>int</em>) – index of the starting floor.</p></li>
@@ -554,10 +545,10 @@ space in the current multifloor facility.</p>
 <li><p><strong>destination_floor_number</strong> (<em>int</em>) – index of the destination floor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of valid routes.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[List[Tuple[int, int, int]]]</p>
 </dd>
 </dl>
@@ -565,21 +556,21 @@ space in the current multifloor facility.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.navigation.Navigation.get_best_possible_routes_same_floor">
-<span class="sig-name descname"><span class="pre">get_best_possible_routes_same_floor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_best_possible_routes_same_floor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_best_possible_routes_same_floor" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_best_possible_routes_same_floor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/navigation.html#Navigation.get_best_possible_routes_same_floor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.navigation.Navigation.get_best_possible_routes_same_floor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find list of possible routes between two locations on the same floor in
 this facility.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>floor_number</strong> (<em>int</em>) – index of the floor.</p></li>
 <li><p><strong>current_location</strong> (<em>int</em>) – index of the starting space.</p></li>
 <li><p><strong>destination</strong> (<em>int</em>) – index of the destination space.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of valid routes between the two spaces.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[List[Tuple[int, int, int]]]</p>
 </dd>
 </dl>
@@ -594,13 +585,13 @@ this facility.</p>
 coords that’s collinear with its two neighbors.</p>
 <p>[extended_summary]</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>route</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em>) – List of tuples of x, y coordinates</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Trimmed down list of coordinates.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Tuple[int, int]]</p>
 </dd>
 </dl>
@@ -614,17 +605,17 @@ pair of nodes in this route.</p>
 <p>Note that currently the agent is required to pass through all notable
 points (e.g. turns at intersections)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>route</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em><em>]</em>) – initial route with only notable coordinates.</p></li>
 <li><p><strong>pace</strong> (<em>float</em>) – The desired pace in units of [dist/time]</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of all coordinates required to navigate this route at the
 desired pace.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Union[Tuple[int, int], Tuple[int, int, int]]]</p>
 </dd>
 </dl>
@@ -648,6 +639,40 @@ desired pace.</p>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.LOG"><code class="docutils literal notranslate"><span class="pre">LOG</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.TrafficPattern"><code class="docutils literal notranslate"><span class="pre">TrafficPattern</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.TrafficPattern.ONEWAY_POSITIVE_DIRECTION"><code class="docutils literal notranslate"><span class="pre">TrafficPattern.ONEWAY_POSITIVE_DIRECTION</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.TrafficPattern.ONEWAY_NEGATIVE_DIRECTION"><code class="docutils literal notranslate"><span class="pre">TrafficPattern.ONEWAY_NEGATIVE_DIRECTION</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.TrafficPattern.TWO_WAY"><code class="docutils literal notranslate"><span class="pre">TrafficPattern.TWO_WAY</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.MultifloorType"><code class="docutils literal notranslate"><span class="pre">MultifloorType</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.MultifloorType.NAMING"><code class="docutils literal notranslate"><span class="pre">MultifloorType.NAMING</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.MultifloorType.XY"><code class="docutils literal notranslate"><span class="pre">MultifloorType.XY</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation"><code class="docutils literal notranslate"><span class="pre">Navigation</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.load_hallway_graph"><code class="docutils literal notranslate"><span class="pre">Navigation.load_hallway_graph()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.load_floor_oneway_net"><code class="docutils literal notranslate"><span class="pre">Navigation.load_floor_oneway_net()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.load_floor_navnet"><code class="docutils literal notranslate"><span class="pre">Navigation.load_floor_navnet()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.get_corresponding_space_by_name"><code class="docutils literal notranslate"><span class="pre">Navigation.get_corresponding_space_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.get_corresponding_vertical_space"><code class="docutils literal notranslate"><span class="pre">Navigation.get_corresponding_vertical_space()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.add_vertical_edges"><code class="docutils literal notranslate"><span class="pre">Navigation.add_vertical_edges()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.add_all_vertical_edges_between_floors"><code class="docutils literal notranslate"><span class="pre">Navigation.add_all_vertical_edges_between_floors()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.create_multifloor_navnet"><code class="docutils literal notranslate"><span class="pre">Navigation.create_multifloor_navnet()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.apply_traffic_policy"><code class="docutils literal notranslate"><span class="pre">Navigation.apply_traffic_policy()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.apply_traffic_policy_to_edge"><code class="docutils literal notranslate"><span class="pre">Navigation.apply_traffic_policy_to_edge()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.set_policy_for_aisle"><code class="docutils literal notranslate"><span class="pre">Navigation.set_policy_for_aisle()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.is_edge_matching_direction"><code class="docutils literal notranslate"><span class="pre">Navigation.is_edge_matching_direction()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.get_route"><code class="docutils literal notranslate"><span class="pre">Navigation.get_route()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.get_valid_multifloor_exit_nodes"><code class="docutils literal notranslate"><span class="pre">Navigation.get_valid_multifloor_exit_nodes()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.get_valid_single_floor_exit_nodes"><code class="docutils literal notranslate"><span class="pre">Navigation.get_valid_single_floor_exit_nodes()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.get_best_possible_routes_multifloor"><code class="docutils literal notranslate"><span class="pre">Navigation.get_best_possible_routes_multifloor()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.Navigation.get_best_possible_routes_same_floor"><code class="docutils literal notranslate"><span class="pre">Navigation.get_best_possible_routes_same_floor()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.remove_unnecessary_coords"><code class="docutils literal notranslate"><span class="pre">remove_unnecessary_coords()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.navigation.unroll_route"><code class="docutils literal notranslate"><span class="pre">unroll_route()</span></code></a></li>
 <li><a class="reference internal" href="#citam.engine.facility.navigation.LOG">LOG</a></li>
 <li><a class="reference internal" href="#citam.engine.facility.navigation.TrafficPattern">TrafficPattern</a><ul>
 <li><a class="reference internal" href="#citam.engine.facility.navigation.TrafficPattern.ONEWAY_POSITIVE_DIRECTION">ONEWAY_POSITIVE_DIRECTION</a></li>
@@ -707,7 +732,7 @@ desired pace.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

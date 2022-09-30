@@ -256,24 +256,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:function:: _compute_key_vectors(wall1: svgpathtools.Line, wall2: svgpathtools.Line) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]
 
    

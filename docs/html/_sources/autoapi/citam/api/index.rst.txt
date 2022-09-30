@@ -85,24 +85,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:function:: run_server(port: int = 8000, host: str = '127.0.0.1', results: str = None, *args, **kwargs)
 
    

@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>close_contacts_calculator &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
 <script src="../../_static/jquery.js"></script>
 <script src="../../_static/underscore.js"></script>
+<script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../_static/doctools.js"></script>
+<script src="../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-close_contacts_calculator">
-<span id="close-contacts-calculator"></span><h1><a class="reference internal" href="#module-close_contacts_calculator" title="close_contacts_calculator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">close_contacts_calculator</span></code></a><a class="headerlink" href="#module-close_contacts_calculator" title="Permalink to this headline">¶</a></h1>
+<span id="close-contacts-calculator"></span><h1><a class="reference internal" href="#module-close_contacts_calculator" title="close_contacts_calculator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">close_contacts_calculator</span></code></a><a class="headerlink" href="#module-close_contacts_calculator" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator" title="close_contacts_calculator.CloseContactsCalculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CloseContactsCalculator</span></code></a></p></td>
 <td><p>Helper class that provides a standard way to create an ABC using</p></td>
@@ -126,17 +125,17 @@
 inheritance.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.initialize">
-<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OrderedDict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">os.PathLike</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.initialize" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OrderedDict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">os.PathLike</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.initialize" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.run" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over agents, compute whether they fall within the contact
 distance or not and verify that they are indeed making contact (based
 on whether they are in the same space or not).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>agents</strong> (<em>List</em><em>[</em><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><em>Agent</em></a><em>]</em>) – list of agents under consideration for contact
 statistics</p></li>
@@ -149,25 +148,25 @@ defaults to None</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.finalize">
-<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.finalize" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.finalize" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.identify_xy_proximity">
-<span class="sig-name descname"><span class="pre">identify_xy_proximity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.identify_xy_proximity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">identify_xy_proximity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions_vector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.identify_xy_proximity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute pairwise distances, given a vector of xy positions, and
 return the indices of the ones that fall within the given contact
 distance.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>positions_vector</strong> (<em>np.ndarray</em>) – Array of current xy positions of all active
 agents</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Array of indices of agents that are within the contact
 distance of each other</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -175,10 +174,10 @@ distance of each other</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.verify_and_add_contact">
-<span class="sig-name descname"><span class="pre">verify_and_add_contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.verify_and_add_contact" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">verify_and_add_contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.verify_and_add_contact" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if agents are in nearby hallways before creating contact event.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>floor_number</strong> (<em>int</em>) – [description]</p></li>
 <li><p><strong>agent1</strong> (<a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><em>Agent</em></a>) – First agent</p></li>
@@ -190,10 +189,10 @@ distance of each other</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.add_contact_event">
-<span class="sig-name descname"><span class="pre">add_contact_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.add_contact_event" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_contact_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.add_contact_event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Record contact event between agent1 and agent2.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>agent1</strong> (<a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><em>Agent</em></a>) – The first agent.</p></li>
 <li><p><strong>agent2</strong> (<a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><em>Agent</em></a>) – The second agent.</p></li>
@@ -204,13 +203,13 @@ distance of each other</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.extract_contact_distribution_per_agent">
-<span class="sig-name descname"><span class="pre">extract_contact_distribution_per_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.extract_contact_distribution_per_agent" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">extract_contact_distribution_per_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.extract_contact_distribution_per_agent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute and return total contacts per agent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List of agent ids and their total contacts</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple[List[int], List[int]]</p>
 </dd>
 </dl>
@@ -218,10 +217,10 @@ distance of each other</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.save_to_files">
-<span class="sig-name descname"><span class="pre">save_to_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.save_to_files" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_to_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../citam/engine/core/agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.save_to_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write output files to the output directory</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>work_directory</strong> (<em>str</em>) – directory where all output files are to be
 saved.</p>
 </dd>
@@ -230,17 +229,17 @@ saved.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="close_contacts_calculator.CloseContactsCalculator.create_svg_heatmap">
-<span class="sig-name descname"><span class="pre">create_svg_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contacts_per_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.create_svg_heatmap" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_svg_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contacts_per_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#close_contacts_calculator.CloseContactsCalculator.create_svg_heatmap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and save a heatmap from coordinate contact data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>contacts_per_coord</strong> (<em>Dict</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>int</em><em>]</em>) – dictionary where each key is an (x,y )
 tuple and values are the number of contacts in that location.</p></li>
 <li><p><strong>floor_directory</strong> (<em>str</em>) – directory to save the heatmap file.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>FileNotFoundError</strong> – if the floor svg map file is not found.</p>
 </dd>
 </dl>
@@ -264,6 +263,18 @@ tuple and values are the number of contacts in that location.</p></li>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">close_contacts_calculator</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator</span></code></a><ul>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.initialize"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.initialize()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.run"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.run()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.finalize"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.finalize()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.identify_xy_proximity"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.identify_xy_proximity()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.verify_and_add_contact"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.verify_and_add_contact()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.add_contact_event"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.add_contact_event()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.extract_contact_distribution_per_agent"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.extract_contact_distribution_per_agent()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.save_to_files"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.save_to_files()</span></code></a></li>
+<li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.create_svg_heatmap"><code class="docutils literal notranslate"><span class="pre">CloseContactsCalculator.create_svg_heatmap()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator">CloseContactsCalculator</a><ul>
 <li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.initialize">initialize</a></li>
 <li><a class="reference internal" href="#close_contacts_calculator.CloseContactsCalculator.run">run</a></li>
@@ -301,7 +312,7 @@ tuple and values are the number of contacts in that location.</p></li>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.facility.indoor_facility &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.facility.indoor_facility">
-<span id="citam-engine-facility-indoor-facility"></span><h1><a class="reference internal" href="#module-citam.engine.facility.indoor_facility" title="citam.engine.facility.indoor_facility"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.indoor_facility</span></code></a><a class="headerlink" href="#module-citam.engine.facility.indoor_facility" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-facility-indoor-facility"></span><h1><a class="reference internal" href="#module-citam.engine.facility.indoor_facility" title="citam.engine.facility.indoor_facility"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.facility.indoor_facility</span></code></a><a class="headerlink" href="#module-citam.engine.facility.indoor_facility" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility" title="citam.engine.facility.indoor_facility.Facility"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Facility</span></code></a></p></td>
 <td><p>Facility class to manage an indoor facility with one or more floors.</p></td>
@@ -120,12 +119,8 @@
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.facility.indoor_facility.LOG" title="citam.engine.facility.indoor_facility.LOG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOG</span></code></a></p></td>
 <td><p></p></td>
@@ -144,20 +139,20 @@
 <p>Supports the designation of entrances/exits, navigation and traffic policy.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.choose_best_entrance">
-<span class="sig-name descname"><span class="pre">choose_best_entrance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">office_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.choose_best_entrance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.choose_best_entrance" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">choose_best_entrance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">office_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.choose_best_entrance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.choose_best_entrance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the facility entrance that offers the fastest route to an agent’s
 assigned base location.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>office_floor</strong> (<em>int</em>) – index of the floor where this office is located.</p></li>
 <li><p><strong>base_location</strong> (<em>int</em>) – index of the office space</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>best entrance door and floor number of best entrance</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[<a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door">Door</a>, int]</p>
 </dd>
 </dl>
@@ -165,23 +160,23 @@ assigned base location.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.validate_entrances">
-<span class="sig-name descname"><span class="pre">validate_entrances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.validate_entrances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.validate_entrances" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">validate_entrances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.validate_entrances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.validate_entrances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over possible entrances and verify that there is indeed
 an outside facing door and that the door is present in the navnet.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.is_door_in_navnet">
-<span class="sig-name descname"><span class="pre">is_door_in_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrance_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrance_door</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.is_door_in_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.is_door_in_navnet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_door_in_navnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrance_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrance_door</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.is_door_in_navnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.is_door_in_navnet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if a given door is part of the navnet.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>entrance_floor</strong> (<em>int</em>) – index of the entrance floor.</p></li>
 <li><p><strong>entrance_door</strong> (<a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><em>Door</em></a>) – door object to check.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if door is part of navnet, False otherwise.</p>
 </dd>
 </dl>
@@ -189,16 +184,16 @@ an outside facing door and that the door is present in the navnet.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.find_floor_by_name">
-<span class="sig-name descname"><span class="pre">find_floor_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_floor_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_floor_by_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_floor_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">floor_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_floor_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_floor_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the floor that corresponds to this name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>floor_name</strong> (<em>str</em>) – Name of the floor.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>index of the floorplan. None if not found.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Optional[int]</p>
 </dd>
 </dl>
@@ -206,20 +201,20 @@ an outside facing door and that the door is present in the navnet.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.find_space_by_name">
-<span class="sig-name descname"><span class="pre">find_space_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_space_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_space_by_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_space_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_space_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_space_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the space that corresponds to a given name. Mostly used to find
 the space that corresponds to a user-given entrance.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fp_index</strong> (<em>int</em>) – index of the floorplan that contains the space.</p></li>
 <li><p><strong>ename</strong> (<em>str</em>) – name of the space.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>index of the space. None if not found.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Optional[int]</p>
 </dd>
 </dl>
@@ -227,20 +222,20 @@ the space that corresponds to a user-given entrance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.find_possible_entrance_doors">
-<span class="sig-name descname"><span class="pre">find_possible_entrance_doors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrance_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrance_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_possible_entrance_doors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_possible_entrance_doors" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_possible_entrance_doors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrance_floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrance_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door"><span class="pre">citam.engine.map.door.Door</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_possible_entrance_doors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_possible_entrance_doors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over all doors in the facility to identify any that belong to
 the entrance floor and entrance space and are outside facing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>entrance_floor</strong> (<em>int</em>) – index of the floor of interest.</p></li>
 <li><p><strong>entrance_space</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The space where to look for doors.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of possible entrance doors.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[<a class="reference internal" href="../../map/door/index.html#citam.engine.map.door.Door" title="citam.engine.map.door.Door">Door</a>]</p>
 </dd>
 </dl>
@@ -248,38 +243,38 @@ the entrance floor and entrance space and are outside facing.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.group_spaces">
-<span class="sig-name descname"><span class="pre">group_spaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.group_spaces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.group_spaces" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">group_spaces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.group_spaces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.group_spaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over all spaces and group them according to their function.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.find_and_remove_unreachable_rooms">
-<span class="sig-name descname"><span class="pre">find_and_remove_unreachable_rooms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_and_remove_unreachable_rooms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_and_remove_unreachable_rooms" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">find_and_remove_unreachable_rooms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.find_and_remove_unreachable_rooms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.find_and_remove_unreachable_rooms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over all spaces and remove the unreachable ones.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.facility.indoor_facility.Facility.get_entrance_floor_and_space_id">
-<span class="sig-name descname"><span class="pre">get_entrance_floor_and_space_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.get_entrance_floor_and_space_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.get_entrance_floor_and_space_id" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_entrance_floor_and_space_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entrance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/facility/indoor_facility.html#Facility.get_entrance_floor_and_space_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.facility.indoor_facility.Facility.get_entrance_floor_and_space_id" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Given an entrance dictionary, find the corresponding floor name and</dt><dd><p>space ID.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>entrance</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary describing an entrance as from user inputs.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If floor is not found.</p></li>
 <li><p><strong>ValueError</strong> – If space is not found</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Inex of the entrance floor and the entrance space from the
 floorplan.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple[int, int]</p>
 </dd>
 </dl>
@@ -304,6 +299,19 @@ floorplan.</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.LOG"><code class="docutils literal notranslate"><span class="pre">LOG</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility"><code class="docutils literal notranslate"><span class="pre">Facility</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.choose_best_entrance"><code class="docutils literal notranslate"><span class="pre">Facility.choose_best_entrance()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.validate_entrances"><code class="docutils literal notranslate"><span class="pre">Facility.validate_entrances()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.is_door_in_navnet"><code class="docutils literal notranslate"><span class="pre">Facility.is_door_in_navnet()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.find_floor_by_name"><code class="docutils literal notranslate"><span class="pre">Facility.find_floor_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.find_space_by_name"><code class="docutils literal notranslate"><span class="pre">Facility.find_space_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.find_possible_entrance_doors"><code class="docutils literal notranslate"><span class="pre">Facility.find_possible_entrance_doors()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.group_spaces"><code class="docutils literal notranslate"><span class="pre">Facility.group_spaces()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.find_and_remove_unreachable_rooms"><code class="docutils literal notranslate"><span class="pre">Facility.find_and_remove_unreachable_rooms()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.get_entrance_floor_and_space_id"><code class="docutils literal notranslate"><span class="pre">Facility.get_entrance_floor_and_space_id()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#citam.engine.facility.indoor_facility.LOG">LOG</a></li>
 <li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility">Facility</a><ul>
 <li><a class="reference internal" href="#citam.engine.facility.indoor_facility.Facility.choose_best_entrance">choose_best_entrance</a></li>
@@ -342,7 +350,7 @@ floorplan.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

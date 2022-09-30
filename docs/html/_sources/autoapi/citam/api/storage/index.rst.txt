@@ -3,28 +3,6 @@
 
 .. py:module:: citam.api.storage
 
-.. autoapi-nested-parse::
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 
 Submodules
 ----------
@@ -98,7 +76,7 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: list_runs(self) -> List[str]
+   .. py:method:: list_runs() -> List[str]
       :abstractmethod:
 
       
@@ -123,7 +101,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_coordinate_distribution_file(self, sim_id: str, floor: str) -> TextIO
+   .. py:method:: get_coordinate_distribution_file(sim_id: str, floor: str) -> TextIO
       :abstractmethod:
 
       
@@ -150,7 +128,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_trajectory_file(self, sim_id: str) -> TextIO
+   .. py:method:: get_trajectory_file(sim_id: str) -> TextIO
       :abstractmethod:
 
       
@@ -176,7 +154,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_trajectory_file_location(self, sim_id: str) -> os.PathLike
+   .. py:method:: get_trajectory_file_location(sim_id: str) -> os.PathLike
       :abstractmethod:
 
       
@@ -202,7 +180,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_contact_file(self, sim_id: str, floor: str) -> TextIO
+   .. py:method:: get_contact_file(sim_id: str, floor: str) -> TextIO
       :abstractmethod:
 
       
@@ -229,7 +207,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_map_file(self, sim_id: str, floor: str) -> io.BytesIO
+   .. py:method:: get_map_file(sim_id: str, floor: str) -> io.BytesIO
       :abstractmethod:
 
       
@@ -256,7 +234,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_manifest_file(self, sim_id: str) -> TextIO
+   .. py:method:: get_manifest_file(sim_id: str) -> TextIO
       :abstractmethod:
 
       
@@ -282,7 +260,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_heatmap_file(self, sim_id: str, floor: str) -> io.BytesIO
+   .. py:method:: get_heatmap_file(sim_id: str, floor: str) -> io.BytesIO
       :abstractmethod:
 
       
@@ -309,7 +287,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_pair_contact_file(self, sim_id: str) -> TextIO
+   .. py:method:: get_pair_contact_file(sim_id: str) -> TextIO
       :abstractmethod:
 
       
@@ -335,7 +313,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_statistics_file(self, sim_id: str) -> TextIO
+   .. py:method:: get_statistics_file(sim_id: str) -> TextIO
       :abstractmethod:
 
       
@@ -360,7 +338,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_policy_file(self, sim_id: str) -> TextIO
+   .. py:method:: get_policy_file(sim_id: str) -> TextIO
       :abstractmethod:
 
       
@@ -385,7 +363,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_manifest(self, sim_id: str) -> Dict
+   .. py:method:: get_manifest(sim_id: str) -> Dict
 
       
       Return the parsed manifest for a simulation

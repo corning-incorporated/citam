@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Simulation Input Requirements &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
 <script src="_static/jquery.js"></script>
 <script src="_static/underscore.js"></script>
+<script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="_static/doctools.js"></script>
+<script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Facility Data Requirements" href="facility_data_requirement.html" />
@@ -111,85 +114,85 @@
           <div class="body" role="main">
             
   <section id="simulation-input-requirements">
-<span id="input-requirements"></span><h1>Simulation Input Requirements<a class="headerlink" href="#simulation-input-requirements" title="Permalink to this headline">¶</a></h1>
+<span id="input-requirements"></span><h1>Simulation Input Requirements<a class="headerlink" href="#simulation-input-requirements" title="Permalink to this heading">¶</a></h1>
 <p>Simulation inputs are provided in JSON files. There is one required input file:
 the main simulation input file; and two optional input files:
 the meetings and scheduling policies respectively.</p>
 <section id="main-simulation-inputs">
-<h2>Main Simulation Inputs<a class="headerlink" href="#main-simulation-inputs" title="Permalink to this headline">¶</a></h2>
+<h2>Main Simulation Inputs<a class="headerlink" href="#main-simulation-inputs" title="Permalink to this heading">¶</a></h2>
 <p><em>Required Inputs</em></p>
 <dl class="field-list simple">
-<dt class="field-odd">facility_name</dt>
+<dt class="field-odd">facility_name<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>string</em>) The name of the facility to run this simulation for. This must be
 a facility that’s already been added.</p>
 </dd>
-<dt class="field-even">simulation_name</dt>
+<dt class="field-even">simulation_name<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>string</em>) User-provided name for this simulation. Note that a simulation (same set of inputs) may have
 different runs associated with it.</p>
 </dd>
-<dt class="field-odd">run_name</dt>
+<dt class="field-odd">run_name<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>string</em>) User-provided name for this run.</p>
 </dd>
-<dt class="field-even">floors</dt>
+<dt class="field-even">floors<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>Array&lt;string&gt;</em>) List of floors to simulate. Each floor is identified by its name.
 Example: [“0”]</p>
 </dd>
-<dt class="field-odd">entrances</dt>
+<dt class="field-odd">entrances<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>Array&lt;object&gt;</em>) Each entrance is identified by the space name where it is located
 as well as the floor name. The name has to match the unique name of the space as given
 in the CSV metadata file. Example: [ {“name”:”AISLE213”, “floor”: “0”}]</p>
 </dd>
-<dt class="field-even">daylength</dt>
+<dt class="field-even">daylength<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>number</em>) How long to run the simulation in seconds. Example: 3600 (for 1 hour)</p>
 </dd>
-<dt class="field-odd">entrance_time</dt>
+<dt class="field-odd">entrance_time<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>number</em>) How many seconds after the simulation starts do most people enter
 the facility. Example: 300</p>
 </dd>
-<dt class="field-even">n_agents</dt>
+<dt class="field-even">n_agents<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>number</em>) number of agents to simulate.</p>
 </dd>
 </dl>
 <p><em>Optional Inputs</em></p>
 <dl class="field-list simple">
-<dt class="field-odd">floorplan_scale</dt>
+<dt class="field-odd">floorplan_scale<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>number</em>) The scale of the floorplan in [ft]/[drawing unit].
 Default: 1/12 [ft]/[drawing unit] (assuming the drawing is in inches)</p>
 </dd>
-<dt class="field-even">contact_distance</dt>
+<dt class="field-even">contact_distance<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>number</em>) The maximum distance within which a contact take place. Default: 6 [ft]</p>
 </dd>
-<dt class="field-odd">upload_results</dt>
+<dt class="field-odd">upload_results<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>boolean</em>) Whether to upload the results to an S3 location. To
 be able to upload data to an S3 bucket, the s3cmd program must
 be available from the terminal process where citam is running. Default: true.</p>
 </dd>
-<dt class="field-even">upload_location</dt>
+<dt class="field-even">upload_location<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>string</em>) Address of upload location. Example: s3://citam_results_storage.
 No default value. Required if ‘upload_results’ is true.</p>
 </dd>
-<dt class="field-odd">meetings_file</dt>
+<dt class="field-odd">meetings_file<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>string</em>) Path to the JSON meetings policy file. Default: “meetings.json”,</p>
 </dd>
-<dt class="field-even">scheduling_policy_file</dt>
+<dt class="field-even">scheduling_policy_file<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>string</em>) Path to the JSON scheduling policy file. Default: “scheduling_policy.json”,</p>
 </dd>
-<dt class="field-odd">shifts</dt>
+<dt class="field-odd">shifts<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>Array&lt;object&gt;</em>) Each shift information has a user-defined name, a start_time and
 percent_agents for that shift. Example: [{“name”:”1”, “start_time”: 0, “percent_agents”: 1.0}],</p>
 </dd>
-<dt class="field-even">traffic_policy</dt>
+<dt class="field-even">traffic_policy<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>Array&lt;object&gt;</em>) Each element of this array must have a floor name,
 the segment_id and direction of the traffic. To find the segment id use the CLI as
 shown below. Example: [{“floor”: “0”, “segment_id”:”0”, “direction”: -1}]</p>
 </dd>
-<dt class="field-odd">close_dining</dt>
+<dt class="field-odd">close_dining<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>boolean</em>) Whether to close all cafeteria and dining spaces or not.</p>
 </dd>
-<dt class="field-even">create_meetings</dt>
+<dt class="field-even">create_meetings<span class="colon">:</span></dt>
 <dd class="field-even"><p>(<em>boolean</em>) Whether meetings are permitted in this facility or not.</p>
 </dd>
-<dt class="field-odd">office_assignment_file</dt>
+<dt class="field-odd">office_assignment_file<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(<em>string</em>) Relative path to a file defining which office space (or work station) belongs to which agent. If this
 file is not provided, office spaces will be assigned randomly and the file will be created automatically. This file can then
 be used for subsequent repeat simulations.</p>
@@ -200,7 +203,7 @@ be used for subsequent repeat simulations.</p>
 </div>
 </section>
 <section id="scheduling-policy">
-<h2>Scheduling Policy<a class="headerlink" href="#scheduling-policy" title="Permalink to this headline">¶</a></h2>
+<h2>Scheduling Policy<a class="headerlink" href="#scheduling-policy" title="Permalink to this heading">¶</a></h2>
 <p>The optional scheduling policy file contains parameters that describe where and when agents
 move within the facility. The default values can be found in citam/engine/constants.py.</p>
 <p>The sceduling policy is made of scheduling purposes where each purpose has a
@@ -255,7 +258,7 @@ satisfied.</p>
 <p>}</p>
 </section>
 <section id="meetings-policy">
-<h2>Meetings Policy<a class="headerlink" href="#meetings-policy" title="Permalink to this headline">¶</a></h2>
+<h2>Meetings Policy<a class="headerlink" href="#meetings-policy" title="Permalink to this heading">¶</a></h2>
 <p>The meetings policy file defines how many meetings take place as well as when, where they
 happen and who participate.</p>
 <p>TODO: complete this section.</p>
@@ -306,7 +309,7 @@ happen and who participate.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

@@ -3,12 +3,6 @@
 
 .. py:module:: citam.api.storage.local
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -52,7 +46,7 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: list_runs(self)
+   .. py:method:: list_runs()
 
       
       List all simulations
@@ -76,7 +70,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_coordinate_distribution_file(self, run_id, floor)
+   .. py:method:: get_coordinate_distribution_file(run_id, floor)
 
       
       Return the Coordinate Distribution file for a simulation
@@ -102,7 +96,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_trajectory_file(self, run_id)
+   .. py:method:: get_trajectory_file(run_id)
 
       
       Return the trajectory file for a simulation
@@ -127,7 +121,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_trajectory_file_location(self, run_id)
+   .. py:method:: get_trajectory_file_location(run_id)
 
       
       Return the trajectory file for a simulation
@@ -152,7 +146,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_contact_file(self, run_id, floor)
+   .. py:method:: get_contact_file(run_id, floor)
 
       
       Return the contact file for a simulation
@@ -178,7 +172,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_map_file(self, run_id, floor)
+   .. py:method:: get_map_file(run_id, floor)
 
       
       Return the map image for given simulation
@@ -204,7 +198,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_heatmap_file(self, run_id, floor)
+   .. py:method:: get_heatmap_file(run_id, floor)
 
       
       Return a heatmap file for a simulation and floor
@@ -230,7 +224,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_manifest_file(self, run_id)
+   .. py:method:: get_manifest_file(run_id)
 
       
       Return the manifest file for a simulation
@@ -255,7 +249,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_pair_contact_file(self, run_id)
+   .. py:method:: get_pair_contact_file(run_id)
 
       
       Return the pair contact file for a simulation
@@ -280,7 +274,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_statistics_file(self, run_id)
+   .. py:method:: get_statistics_file(run_id)
 
       
       Get the statistics file for a simulation
@@ -304,7 +298,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_policy_file(self, run_id)
+   .. py:method:: get_policy_file(run_id)
 
       
       Get the statistics file for a simulation

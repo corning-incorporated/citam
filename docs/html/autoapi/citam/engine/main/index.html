@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.main &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
 <script src="../../../../_static/jquery.js"></script>
 <script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../_static/doctools.js"></script>
+<script src="../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,66 +105,58 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.main">
-<span id="citam-engine-main"></span><h1><a class="reference internal" href="#module-citam.engine.main" title="citam.engine.main"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.main</span></code></a><a class="headerlink" href="#module-citam.engine.main" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-main"></span><h1><a class="reference internal" href="#module-citam.engine.main" title="citam.engine.main"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.main</span></code></a><a class="headerlink" href="#module-citam.engine.main" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.list_facilities" title="citam.engine.main.list_facilities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_facilities</span></code></a>(**kwargs)</p></td>
 <td><p>List all the floorplans already ingested</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.ingest_floorplan" title="citam.engine.main.ingest_floorplan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ingest_floorplan</span></code></a>(facility: str, floor: str, svg: str, csv: str = None, scale: float = 1 / 12, buildings: List[str] = None, output_directory=None, force_overwrite=False, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.ingest_floorplan" title="citam.engine.main.ingest_floorplan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ingest_floorplan</span></code></a>(facility, floor, svg[, csv, scale, ...])</p></td>
 <td><p>Ingest raw floorplan and data files for a given floor of a facility.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.export_floorplan_to_svg" title="citam.engine.main.export_floorplan_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_floorplan_to_svg</span></code></a>(facility: str, floor: str, outputfile: str, doors=False, floorplan_directory: str = None, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.export_floorplan_to_svg" title="citam.engine.main.export_floorplan_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_floorplan_to_svg</span></code></a>(facility, floor, outputfile[, ...])</p></td>
 <td><p>Export a given floorplan to an SVG file for visualization and editing.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.build_navigation_network" title="citam.engine.main.build_navigation_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_navigation_network</span></code></a>(facility: str, floor: str = '0', floorplan_directory: str = None, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.build_navigation_network" title="citam.engine.main.build_navigation_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_navigation_network</span></code></a>(facility[, floor, ...])</p></td>
 <td><p>Build the navigation network for a given facility floor plan.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.update_floorplan_from_svg_file" title="citam.engine.main.update_floorplan_from_svg_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_floorplan_from_svg_file</span></code></a>(svg: str, facility: str, floor: str = '0', floorplan_directory: str = None, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.update_floorplan_from_svg_file" title="citam.engine.main.update_floorplan_from_svg_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_floorplan_from_svg_file</span></code></a>(svg, facility[, floor, ...])</p></td>
 <td><p>Update the walls and doors in a floorplan using an SVG file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.show_floorplan" title="citam.engine.main.show_floorplan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_floorplan</span></code></a>(facility_name: str, floor_name: str, include_doors=False)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.show_floorplan" title="citam.engine.main.show_floorplan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_floorplan</span></code></a>(facility_name, floor_name[, include_doors])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.export_navigation_graph_to_svg" title="citam.engine.main.export_navigation_graph_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_navigation_graph_to_svg</span></code></a>(facility: str, floor: str, outputfile: Optional[str] = None, floorplan_directory: Optional[str] = None, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.export_navigation_graph_to_svg" title="citam.engine.main.export_navigation_graph_to_svg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_navigation_graph_to_svg</span></code></a>(facility, floor[, ...])</p></td>
 <td><p>Export navigation network to svg file for visualization.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.load_floorplans" title="citam.engine.main.load_floorplans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_floorplans</span></code></a>(facility_name, floors, user_scale=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.load_floorplans" title="citam.engine.main.load_floorplans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_floorplans</span></code></a>(facility_name, floors[, user_scale])</p></td>
 <td><p>Create and return a floorplan object for each floor requested.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.compute_occupancy_rate" title="citam.engine.main.compute_occupancy_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_occupancy_rate</span></code></a>(facility, n_agents)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.run_simulation" title="citam.engine.main.run_simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_simulation</span></code></a>(inputs: dict)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.run_simulation" title="citam.engine.main.run_simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_simulation</span></code></a>(inputs)</p></td>
 <td><p>Perform an agent-based simulation given a dictionary of input values</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.initialize_oneway_network" title="citam.engine.main.initialize_oneway_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_oneway_network</span></code></a>(navnet: networkx.classes.graph.Graph) → networkx.classes.graph.Graph</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.initialize_oneway_network" title="citam.engine.main.initialize_oneway_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_oneway_network</span></code></a>(→ networkx.classes.graph.Graph)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.check_and_remove_node_from_oneway_network" title="citam.engine.main.check_and_remove_node_from_oneway_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_and_remove_node_from_oneway_network</span></code></a>(node, oneway_network)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.main.check_and_remove_node_from_oneway_network" title="citam.engine.main.check_and_remove_node_from_oneway_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_and_remove_node_from_oneway_network</span></code></a>(node, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.find_and_save_potential_one_way_aisles" title="citam.engine.main.find_and_save_potential_one_way_aisles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_and_save_potential_one_way_aisles</span></code></a>(facility: str, floor: str, outputfile: str, floorplan_directory: str = None, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.find_and_save_potential_one_way_aisles" title="citam.engine.main.find_and_save_potential_one_way_aisles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_and_save_potential_one_way_aisles</span></code></a>(facility, ...)</p></td>
 <td><p>Iterate over nodes and edges in the navigation network and identify</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.main.LOG" title="citam.engine.main.LOG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOG</span></code></a></p></td>
 <td><p></p></td>
@@ -193,7 +188,7 @@
 <dd><p>Ingest raw floorplan and data files for a given floor of a facility.</p>
 <p>This method is executed with the CLI call <code class="docutils literal notranslate"><span class="pre">citam</span> <span class="pre">engine</span> <span class="pre">ingest</span></code></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>svg</strong> – Path to the floorplan file in SVG format</p></li>
 <li><p><strong>csv</strong> – Path to the floorplan metadata file in CSV format</p></li>
@@ -205,7 +200,7 @@
 found in SVG file)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>FileNotFoundError</strong> – If input files are not found</p>
 </dd>
 </dl>
@@ -216,7 +211,7 @@ found in SVG file)</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">export_floorplan_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#export_floorplan_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.export_floorplan_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export a given floorplan to an SVG file for visualization and editing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>facility</strong> – Name of this facility</p></li>
 <li><p><strong>floor</strong> – Name of this floor</p></li>
@@ -224,7 +219,7 @@ found in SVG file)</p></li>
 <li><p><strong>floorplan_directory</strong> – Custom directory for floorplans (default=cache)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>NotADirectoryError</strong> – floorplan_directory is invalid</p></li>
 <li><p><strong>FileMotFoundError</strong> – could not find floorplan file</p></li>
@@ -238,14 +233,14 @@ found in SVG file)</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">build_navigation_network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#build_navigation_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.build_navigation_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the navigation network for a given facility floor plan.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>facility</strong> – Name of this facility</p></li>
 <li><p><strong>floor</strong> – Name of this floor (default=0)</p></li>
 <li><p><strong>floorplan_directory</strong> – Custom directory for floorplans (default=cache)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>NotADirectoryError</strong> – floorplan_directory is invalid</p></li>
 <li><p><strong>FileMotFoundError</strong> – could not find floorplan file</p></li>
@@ -259,7 +254,7 @@ found in SVG file)</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">update_floorplan_from_svg_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#update_floorplan_from_svg_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.update_floorplan_from_svg_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the walls and doors in a floorplan using an SVG file</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>svg</strong> – Path to the floorplan file in SVG format</p></li>
 <li><p><strong>facility</strong> – Name of this facility</p></li>
@@ -267,7 +262,7 @@ found in SVG file)</p></li>
 <li><p><strong>floorplan_directory</strong> – Custom directory for floorplans (default=cache)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>NotADirectoryError</strong> – floorplan_directory is invalid</p></li>
 <li><p><strong>FileMotFoundError</strong> – could not find floorplan file</p></li>
@@ -286,7 +281,7 @@ found in SVG file)</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">export_navigation_graph_to_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floorplan_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#export_navigation_graph_to_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.export_navigation_graph_to_svg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export navigation network to svg file for visualization.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>facility</strong> – Name of this facility</p></li>
 <li><p><strong>floor</strong> – Name of this floor</p></li>
@@ -294,7 +289,7 @@ found in SVG file)</p></li>
 <li><p><strong>floorplan_directory</strong> – Custom directory for floorplans (default=cache)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>NotADirectoryError</strong> – floorplan_directory is invalid</p></li>
 <li><p><strong>FileMotFoundError</strong> – could not find floorplan file</p></li>
@@ -310,17 +305,17 @@ found in SVG file)</p></li>
 <p>By default, it looks in the current directory for facility data otherwise
 looks in the citam cache directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>facility_name</strong> (<em>str</em>) – Name of facility of interest.</p></li>
 <li><p><strong>floors</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of floor names of interest</p></li>
 <li><p><strong>user_scale</strong> (<em>float</em><em>, </em><em>optional</em>) – scale to use for the floorplans, defaults to None</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of floorplan objects</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[<a class="reference internal" href="../map/floorplan/index.html#citam.engine.map.floorplan.Floorplan" title="citam.engine.map.floorplan.Floorplan">Floorplan</a>]</p>
 </dd>
 </dl>
@@ -336,7 +331,7 @@ looks in the citam cache directory.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.main.</span></span><span class="sig-name descname"><span class="pre">run_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/citam/engine/main.html#run_simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.main.run_simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform an agent-based simulation given a dictionary of input values</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>inputs</strong> – Dictionary of input values</p>
 </dd>
 </dl>
@@ -361,7 +356,7 @@ segments that could potentially be assigned one-way traffic.</p>
 list of successive nodes belonging to that nav segment. Save the list
 for later retrieval and outputs it to an SVG file for the user.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>facility</strong> – Name of this facility</p></li>
 <li><p><strong>floor</strong> – Name of this floor</p></li>
@@ -369,7 +364,7 @@ for later retrieval and outputs it to an SVG file for the user.</p>
 <li><p><strong>floorplan_directory</strong> – Custom directory for floorplans (default=cache)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>NotADirectoryError</strong> – floorplan_directory is invalid</p></li>
 <li><p><strong>FileMotFoundError</strong> – could not find floorplan file</p></li>
@@ -396,6 +391,21 @@ for later retrieval and outputs it to an SVG file for the user.</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.main.LOG"><code class="docutils literal notranslate"><span class="pre">LOG</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.ROUTES_JSON_FILE"><code class="docutils literal notranslate"><span class="pre">ROUTES_JSON_FILE</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.list_facilities"><code class="docutils literal notranslate"><span class="pre">list_facilities()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.ingest_floorplan"><code class="docutils literal notranslate"><span class="pre">ingest_floorplan()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.export_floorplan_to_svg"><code class="docutils literal notranslate"><span class="pre">export_floorplan_to_svg()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.build_navigation_network"><code class="docutils literal notranslate"><span class="pre">build_navigation_network()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.update_floorplan_from_svg_file"><code class="docutils literal notranslate"><span class="pre">update_floorplan_from_svg_file()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.show_floorplan"><code class="docutils literal notranslate"><span class="pre">show_floorplan()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.export_navigation_graph_to_svg"><code class="docutils literal notranslate"><span class="pre">export_navigation_graph_to_svg()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.load_floorplans"><code class="docutils literal notranslate"><span class="pre">load_floorplans()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.compute_occupancy_rate"><code class="docutils literal notranslate"><span class="pre">compute_occupancy_rate()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.run_simulation"><code class="docutils literal notranslate"><span class="pre">run_simulation()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.initialize_oneway_network"><code class="docutils literal notranslate"><span class="pre">initialize_oneway_network()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.check_and_remove_node_from_oneway_network"><code class="docutils literal notranslate"><span class="pre">check_and_remove_node_from_oneway_network()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.main.find_and_save_potential_one_way_aisles"><code class="docutils literal notranslate"><span class="pre">find_and_save_potential_one_way_aisles()</span></code></a></li>
 <li><a class="reference internal" href="#citam.engine.main.LOG">LOG</a></li>
 <li><a class="reference internal" href="#citam.engine.main.ROUTES_JSON_FILE">ROUTES_JSON_FILE</a></li>
 <li><a class="reference internal" href="#citam.engine.main.list_facilities">list_facilities</a></li>
@@ -436,7 +446,7 @@ for later retrieval and outputs it to an SVG file for the user.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

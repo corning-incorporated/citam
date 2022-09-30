@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.io.storage_utils &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,30 +105,26 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.io.storage_utils">
-<span id="citam-engine-io-storage-utils"></span><h1><a class="reference internal" href="#module-citam.engine.io.storage_utils" title="citam.engine.io.storage_utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.storage_utils</span></code></a><a class="headerlink" href="#module-citam.engine.io.storage_utils" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-io-storage-utils"></span><h1><a class="reference internal" href="#module-citam.engine.io.storage_utils" title="citam.engine.io.storage_utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.storage_utils</span></code></a><a class="headerlink" href="#module-citam.engine.io.storage_utils" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_user_cache" title="citam.engine.io.storage_utils.get_user_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_user_cache</span></code></a>() → Union[str, pathlib.Path]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_user_cache" title="citam.engine.io.storage_utils.get_user_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_user_cache</span></code></a>(→ Union[str, pathlib.Path])</p></td>
 <td><p>Get the path to this user's OS cache directory. The cache directory is</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_floorplans_directory" title="citam.engine.io.storage_utils.get_floorplans_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_floorplans_directory</span></code></a>() → Union[str, pathlib.Path]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_floorplans_directory" title="citam.engine.io.storage_utils.get_floorplans_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_floorplans_directory</span></code></a>(→ Union[str, pathlib.Path])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.create_floor_datadir" title="citam.engine.io.storage_utils.create_floor_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_floor_datadir</span></code></a>(facility_name: str, floor_name: str) → Union[str, pathlib.Path]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.create_floor_datadir" title="citam.engine.io.storage_utils.create_floor_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_floor_datadir</span></code></a>(→ Union[str, pathlib.Path])</p></td>
 <td><p>Create a new directory in the user's cache to save data for a given</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_floor_datadir" title="citam.engine.io.storage_utils.get_floor_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_floor_datadir</span></code></a>(facility_name: str, floor_name: str) → Union[str, pathlib.Path]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_floor_datadir" title="citam.engine.io.storage_utils.get_floor_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_floor_datadir</span></code></a>(→ Union[str, pathlib.Path])</p></td>
 <td><p>Get the directory where data for a given facility and floor are saved.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_facility_datadir" title="citam.engine.io.storage_utils.get_facility_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_facility_datadir</span></code></a>(facility_name: str) → Union[str, pathlib.Path]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.io.storage_utils.get_facility_datadir" title="citam.engine.io.storage_utils.get_facility_datadir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_facility_datadir</span></code></a>(→ Union[str, pathlib.Path])</p></td>
 <td><p>Get the directory where data for a given facility are saved.</p></td>
 </tr>
 </tbody>
@@ -136,10 +135,10 @@
 <dd><p>Get the path to this user’s OS cache directory. The cache directory is
 used to save facility and policy information.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>path to the cache directory</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Union[str, pathlib.Path]</p>
 </dd>
 </dl>
@@ -156,16 +155,16 @@ used to save facility and policy information.</p>
 <dd><p>Create a new directory in the user’s cache to save data for a given
 facility and floor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>facility_name</strong> (<em>str</em>) – The name of the facility</p></li>
 <li><p><strong>floor_name</strong> (<em>str</em>) – The name of the floor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The path of the newly created directory.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Union[str, pathlib.Path]</p>
 </dd>
 </dl>
@@ -176,17 +175,17 @@ facility and floor.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.io.storage_utils.</span></span><span class="sig-name descname"><span class="pre">get_floor_datadir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/io/storage_utils.html#get_floor_datadir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.io.storage_utils.get_floor_datadir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the directory where data for a given facility and floor are saved.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>facility_name</strong> (<em>str</em>) – The name of the facility.</p></li>
 <li><p><strong>floor_name</strong> (<em>str</em>) – The name of the floor.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>path of the directory where data for this facility and floor are
 found.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Union[str, pathlib.Path]</p>
 </dd>
 </dl>
@@ -197,14 +196,14 @@ found.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.io.storage_utils.</span></span><span class="sig-name descname"><span class="pre">get_facility_datadir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facility_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/io/storage_utils.html#get_facility_datadir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.io.storage_utils.get_facility_datadir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the directory where data for a given facility are saved.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>facility_name</strong> (<em>str</em>) – The name of the facility.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>path of the directory where data for this facility and floor are
 found.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Union[str, pathlib.Path]</p>
 </dd>
 </dl>
@@ -226,6 +225,11 @@ found.</p>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.io.storage_utils</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#citam.engine.io.storage_utils.get_user_cache"><code class="docutils literal notranslate"><span class="pre">get_user_cache()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.storage_utils.get_floorplans_directory"><code class="docutils literal notranslate"><span class="pre">get_floorplans_directory()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.storage_utils.create_floor_datadir"><code class="docutils literal notranslate"><span class="pre">create_floor_datadir()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.storage_utils.get_floor_datadir"><code class="docutils literal notranslate"><span class="pre">get_floor_datadir()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.io.storage_utils.get_facility_datadir"><code class="docutils literal notranslate"><span class="pre">get_facility_datadir()</span></code></a></li>
 <li><a class="reference internal" href="#citam.engine.io.storage_utils.get_user_cache">get_user_cache</a></li>
 <li><a class="reference internal" href="#citam.engine.io.storage_utils.get_floorplans_directory">get_floorplans_directory</a></li>
 <li><a class="reference internal" href="#citam.engine.io.storage_utils.create_floor_datadir">create_floor_datadir</a></li>
@@ -256,7 +260,7 @@ found.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

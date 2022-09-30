@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.facility.navigation
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -47,24 +41,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:class:: TrafficPattern
 
    Bases: :py:obj:`enum.Enum`
@@ -95,69 +71,15 @@ Attributes
 
       
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: ONEWAY_NEGATIVE_DIRECTION
       
 
       
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: TWO_WAY
       :annotation: = 0
 
       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
 
 
 .. py:class:: MultifloorType
@@ -199,46 +121,10 @@ Attributes
 
       
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
    .. py:attribute:: XY
       :annotation: = xy
 
       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
 
 
 .. py:class:: Navigation(floorplans: List[citam.engine.map.floorplan.Floorplan], facility_name: str, traffic_policy: List[Dict[str, Union[str, int]]], multifloor_type: str = MultifloorType.NAMING.value)
@@ -264,7 +150,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: load_hallway_graph(self, floor_hallway_graph_file: Union[str, pathlib.Path]) -> networkx.Graph
+   .. py:method:: load_hallway_graph(floor_hallway_graph_file: Union[str, pathlib.Path]) -> networkx.Graph
 
       
       Load the hallway graph from file. The hallway graph is a graph of
@@ -294,7 +180,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: load_floor_oneway_net(self, oneway_net_file: Union[str, pathlib.Path]) -> networkx.Graph
+   .. py:method:: load_floor_oneway_net(oneway_net_file: Union[str, pathlib.Path]) -> networkx.Graph
 
       
       Load the oneway network from file. The oneway network is a graph of
@@ -324,7 +210,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: load_floor_navnet(self, floor_navnet_file: Union[str, pathlib.Path]) -> networkx.Graph
+   .. py:method:: load_floor_navnet(floor_navnet_file: Union[str, pathlib.Path]) -> networkx.Graph
 
       
       Load the navigation network (navnet) from file. The navnet is a graph
@@ -354,7 +240,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_corresponding_space_by_name(self, ref_space: citam.engine.map.space.Space, dest_floor: int) -> Tuple[citam.engine.map.space.Space, int]
+   .. py:method:: get_corresponding_space_by_name(ref_space: citam.engine.map.space.Space, dest_floor: int) -> Tuple[citam.engine.map.space.Space, int]
 
       
       Given a reference space, typically a vertical space (e.g. stairway),
@@ -386,7 +272,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_corresponding_vertical_space(self, ref_space: citam.engine.map.space.Space, dest_floor: int) -> Tuple[Optional[int], Optional[citam.engine.map.space.Space]]
+   .. py:method:: get_corresponding_vertical_space(ref_space: citam.engine.map.space.Space, dest_floor: int) -> Tuple[Optional[int], Optional[citam.engine.map.space.Space]]
 
       
       Given a reference space and a destination floor, find the space
@@ -420,7 +306,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: add_vertical_edges(self, coords1: List[Tuple[int, int]], floor_number1: int, coords2: List[Tuple[int, int]], floor_number2: int) -> int
+   .. py:method:: add_vertical_edges(coords1: List[Tuple[int, int]], floor_number1: int, coords2: List[Tuple[int, int]], floor_number2: int) -> int
 
       
       Add vertical edges between two lists of coordinates from different
@@ -454,7 +340,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: add_all_vertical_edges_between_floors(self, floor_number1: int, floor_number2: int) -> int
+   .. py:method:: add_all_vertical_edges_between_floors(floor_number1: int, floor_number2: int) -> int
 
       
       Create new edges in the navigation network to connect vertical
@@ -490,7 +376,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_multifloor_navnet(self)
+   .. py:method:: create_multifloor_navnet()
 
       
       Use vertical spaces to combine multiple floor navnets into a global
@@ -514,7 +400,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: apply_traffic_policy(self)
+   .. py:method:: apply_traffic_policy()
 
       
       Remove edges that should not exist based on user traffic policy
@@ -538,7 +424,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: apply_traffic_policy_to_edge(self, policy: Dict[str, Union[str, int]], all_coords: List[Tuple[int, int]], i: int, j: int, navnet: networkx.classes.graph.Graph, navnet_type: str, floor_number: int) -> None
+   .. py:method:: apply_traffic_policy_to_edge(policy: Dict[str, Union[str, int]], all_coords: List[Tuple[int, int]], i: int, j: int, navnet: networkx.classes.graph.Graph, navnet_type: str, floor_number: int) -> None
 
       
       Given 2 coordinates corresponding to navnet nodes, remove any edge that
@@ -577,7 +463,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: set_policy_for_aisle(self, policy: Dict[str, Union[str, int]], navnet: networkx.Graph, oneway_net: networkx.Graph, navnet_type='singlefloor', floor_number=0) -> None
+   .. py:method:: set_policy_for_aisle(policy: Dict[str, Union[str, int]], navnet: networkx.Graph, oneway_net: networkx.Graph, navnet_type='singlefloor', floor_number=0) -> None
 
       
       Find edge of interest from navnet and keep only the ones that
@@ -612,7 +498,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: is_edge_matching_direction(self, edge: Tuple[Tuple[Any, Ellipsis], Tuple[Any, Ellipsis]], desired_direction: Union[str, int]) -> bool
+   .. py:method:: is_edge_matching_direction(edge: Tuple[Tuple[Any, Ellipsis], Tuple[Any, Ellipsis]], desired_direction: Union[str, int]) -> bool
 
       
       Verify if edge direction matches desired direction.
@@ -647,7 +533,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_route(self, starting_location: int, starting_floor_number: int, destination: int, destination_floor_number: int, pace: float) -> Optional[List[Tuple[Any, int]]]
+   .. py:method:: get_route(starting_location: int, starting_floor_number: int, destination: int, destination_floor_number: int, pace: float) -> Optional[List[Tuple[Any, int]]]
 
       
       Get the shortest path between 2 spaces in the floorplans.
@@ -686,7 +572,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_valid_multifloor_exit_nodes(self, location: int, floor_number: int) -> List[Tuple[int, int, int]]
+   .. py:method:: get_valid_multifloor_exit_nodes(location: int, floor_number: int) -> List[Tuple[int, int, int]]
 
       
       Find list of exit coords that corresponds to a valid node in the
@@ -717,7 +603,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_valid_single_floor_exit_nodes(self, location: Union[int, tuple], floor_number: int) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]
+   .. py:method:: get_valid_single_floor_exit_nodes(location: Union[int, tuple], floor_number: int) -> List[Union[Tuple[int, int], Tuple[int, int, int]]]
 
       
       Find list of exit coords that corresponds to a valid node in the
@@ -747,7 +633,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_best_possible_routes_multifloor(self, starting_location: int, starting_floor_number: int, destination: int, destination_floor_number: int) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]
+   .. py:method:: get_best_possible_routes_multifloor(starting_location: int, starting_floor_number: int, destination: int, destination_floor_number: int) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]
 
       
       Get list of valid routes between a starting space and a destination
@@ -781,7 +667,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_best_possible_routes_same_floor(self, floor_number: int, current_location: int, destination: int) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]
+   .. py:method:: get_best_possible_routes_same_floor(floor_number: int, current_location: int, destination: int) -> List[List[Union[Tuple[int, int], Tuple[int, int, int]]]]
 
       
       Find list of possible routes between two locations on the same floor in

@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.map.geometry &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,87 +105,79 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.map.geometry">
-<span id="citam-engine-map-geometry"></span><h1><a class="reference internal" href="#module-citam.engine.map.geometry" title="citam.engine.map.geometry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.geometry</span></code></a><a class="headerlink" href="#module-citam.engine.map.geometry" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-map-geometry"></span><h1><a class="reference internal" href="#module-citam.engine.map.geometry" title="citam.engine.map.geometry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.geometry</span></code></a><a class="headerlink" href="#module-citam.engine.map.geometry" title="Permalink to this heading">¶</a></h1>
 <p>geometry_and_svg_utils.py</p>
 <p>Author: Mardochee Reveil
 Date Created: May 12, 2020</p>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.on_segment" title="citam.engine.map.geometry.on_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_segment</span></code></a>(p: citam.engine.map.point.Point, q: citam.engine.map.point.Point, r: citam.engine.map.point.Point) → bool</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.on_segment" title="citam.engine.map.geometry.on_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_segment</span></code></a>(→ bool)</p></td>
 <td><p>Given three points p, q, r, the function checks if point q lies on line</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.determine_orientation" title="citam.engine.map.geometry.determine_orientation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_orientation</span></code></a>(p: citam.engine.map.point.Point, q: citam.engine.map.point.Point, r: citam.engine.map.point.Point) → int</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.determine_orientation" title="citam.engine.map.geometry.determine_orientation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_orientation</span></code></a>(→ int)</p></td>
 <td><p>Find orientation of ordered triplet (p, q, r).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.do_intersect" title="citam.engine.map.geometry.do_intersect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_intersect</span></code></a>(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) → bool</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.do_intersect" title="citam.engine.map.geometry.do_intersect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_intersect</span></code></a>(→ bool)</p></td>
 <td><p>Check if two segments as given by their respective end points intersect.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.is_one_segment_within_the_other" title="citam.engine.map.geometry.is_one_segment_within_the_other"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_one_segment_within_the_other</span></code></a>(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) → bool</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.is_one_segment_within_the_other" title="citam.engine.map.geometry.is_one_segment_within_the_other"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_one_segment_within_the_other</span></code></a>(→ bool)</p></td>
 <td><p>Check if one of two lines defined by p1-q1 and p2-q2 respectively falls</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.do_lines_intersect_at_endpoint" title="citam.engine.map.geometry.do_lines_intersect_at_endpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_lines_intersect_at_endpoint</span></code></a>(p1: citam.engine.map.point.Point, q1: citam.engine.map.point.Point, p2: citam.engine.map.point.Point, q2: citam.engine.map.point.Point) → bool</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.do_lines_intersect_at_endpoint" title="citam.engine.map.geometry.do_lines_intersect_at_endpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_lines_intersect_at_endpoint</span></code></a>(→ bool)</p></td>
 <td><p>Check if one of the lines start or ends on the other line.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_normal_vector_between_walls" title="citam.engine.map.geometry.calculate_normal_vector_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_normal_vector_between_walls</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line) → numpy.ndarray</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_normal_vector_between_walls" title="citam.engine.map.geometry.calculate_normal_vector_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_normal_vector_between_walls</span></code></a>(→ numpy.ndarray)</p></td>
 <td><p>Given two Line objects, compute the normal vector between them (computed</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry._compute_key_vectors" title="citam.engine.map.geometry._compute_key_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compute_key_vectors</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line) → Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry._compute_key_vectors" title="citam.engine.map.geometry._compute_key_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compute_key_vectors</span></code></a>(→ Tuple[numpy.ndarray, ...)</p></td>
 <td><p>Helper function used to compute the vector for wall1 and wall2 as well as</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_dot_product_and_distance_between_walls" title="citam.engine.map.geometry.calculate_dot_product_and_distance_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_dot_product_and_distance_between_walls</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line) → Tuple[Optional[float], float]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_dot_product_and_distance_between_walls" title="citam.engine.map.geometry.calculate_dot_product_and_distance_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_dot_product_and_distance_between_walls</span></code></a>(...)</p></td>
 <td><p>Compute the dot product and distance between two walls.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_dot_product_between_walls" title="citam.engine.map.geometry.calculate_dot_product_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_dot_product_between_walls</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line) → numpy.ndarray</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_dot_product_between_walls" title="citam.engine.map.geometry.calculate_dot_product_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_dot_product_between_walls</span></code></a>(→ numpy.ndarray)</p></td>
 <td><p>Calculate the dot product between 2 walls. NB: If the 2 walls are parallel,</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_distance_between_walls" title="citam.engine.map.geometry.calculate_distance_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_distance_between_walls</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line) → float</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_distance_between_walls" title="citam.engine.map.geometry.calculate_distance_between_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_distance_between_walls</span></code></a>(→ float)</p></td>
 <td><p>Calculate distance between 2 walls.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_x_and_y_overlap" title="citam.engine.map.geometry.calculate_x_and_y_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_x_and_y_overlap</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line) → Tuple[float, float]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_x_and_y_overlap" title="citam.engine.map.geometry.calculate_x_and_y_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_x_and_y_overlap</span></code></a>(→ Tuple[float, float])</p></td>
 <td><p>Given two lines, calculate their x and y overlaps (e.g. if the x values</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.round_coords" title="citam.engine.map.geometry.round_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">round_coords</span></code></a>(wall: svgpathtools.Line) → svgpathtools.Line</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.round_coords" title="citam.engine.map.geometry.round_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">round_coords</span></code></a>(→ svgpathtools.Line)</p></td>
 <td><p>Given a line, round the its start and end coordinates to the nearest</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.sample_random_points_from_line" title="citam.engine.map.geometry.sample_random_points_from_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_random_points_from_line</span></code></a>(line: svgpathtools.Line, npoints=10) → List[Tuple[int, int]]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.sample_random_points_from_line" title="citam.engine.map.geometry.sample_random_points_from_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_random_points_from_line</span></code></a>(→ List[Tuple[int, int]])</p></td>
 <td><p>Sample n random points from line</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.create_parallel_line" title="citam.engine.map.geometry.create_parallel_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_parallel_line</span></code></a>(line: svgpathtools.Line, d=1) → svgpathtools.Line</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.create_parallel_line" title="citam.engine.map.geometry.create_parallel_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_parallel_line</span></code></a>(→ svgpathtools.Line)</p></td>
 <td><p>Create a parallel line at a distance 'd' from a reference line. Both x</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.compute_new_door_line" title="citam.engine.map.geometry.compute_new_door_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_new_door_line</span></code></a>(room_wall: svgpathtools.Line, door_size=2.0) → svgpathtools.Line</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.compute_new_door_line" title="citam.engine.map.geometry.compute_new_door_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_new_door_line</span></code></a>(→ svgpathtools.Line)</p></td>
 <td><p>Compute a door line to add to a wall. This door line is computed from</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.find_door_line" title="citam.engine.map.geometry.find_door_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_door_line</span></code></a>(cubic_bezier: svgpathtools.CubicBezier) → svgpathtools.Line</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.find_door_line" title="citam.engine.map.geometry.find_door_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_door_line</span></code></a>(→ svgpathtools.Line)</p></td>
 <td><p>Given a cubic bezier, find the line that is most likely to corresponds to</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.align_to_reference" title="citam.engine.map.geometry.align_to_reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_to_reference</span></code></a>(reference_line: svgpathtools.Line, test_line: svgpathtools.Line) → svgpathtools.Line</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.align_to_reference" title="citam.engine.map.geometry.align_to_reference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_to_reference</span></code></a>(→ svgpathtools.Line)</p></td>
 <td><p>Given a reference line, modify a test line to be parallel with the</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.is_point_on_line" title="citam.engine.map.geometry.is_point_on_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_point_on_line</span></code></a>(line: svgpathtools.Line, p_test: citam.engine.map.point.Point, tol: float = 0.001) → bool</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.geometry.is_point_on_line" title="citam.engine.map.geometry.is_point_on_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_point_on_line</span></code></a>(→ bool)</p></td>
 <td><p>Verify if a test point is on a given Line.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.remove_segment_from_wall" title="citam.engine.map.geometry.remove_segment_from_wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_segment_from_wall</span></code></a>(wall: svgpathtools.Line, segment: svgpathtools.Line) → List[svgpathtools.Line]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.remove_segment_from_wall" title="citam.engine.map.geometry.remove_segment_from_wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_segment_from_wall</span></code></a>(→ List[svgpathtools.Line])</p></td>
 <td><p>Given a wall, subtract an arbitrary segment from the wall and return the</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.geometry.calculate_perpendicular_vector" title="citam.engine.map.geometry.calculate_perpendicular_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_perpendicular_vector</span></code></a></p></td>
 <td><p></p></td>
@@ -195,17 +190,17 @@ Date Created: May 12, 2020</p>
 <dd><p>Given three points p, q, r, the function checks if point q lies on line
 segment ‘pr’</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>p</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – First point</p></li>
 <li><p><strong>q</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – Second point</p></li>
 <li><p><strong>r</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – Third point</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether q falls on [pr] or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -222,17 +217,17 @@ segment ‘pr’</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>p</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The first point.</p></li>
 <li><p><strong>q</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The second point.</p></li>
 <li><p><strong>r</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The third point.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Orientation of the triplet</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -243,7 +238,7 @@ segment ‘pr’</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.geometry.</span></span><span class="sig-name descname"><span class="pre">do_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">q1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">q2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/geometry.html#do_intersect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.geometry.do_intersect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if two segments as given by their respective end points intersect.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>p1</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – First endpoint of first segment.</p></li>
 <li><p><strong>q1</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – Second endpoint of first segment.</p></li>
@@ -251,10 +246,10 @@ segment ‘pr’</p>
 <li><p><strong>q2</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – Second endpoint of second segment.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if segments intersect, False otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -266,7 +261,7 @@ segment ‘pr’</p>
 <dd><p>Check if one of two lines defined by p1-q1 and p2-q2 respectively falls
 within the other.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>p1</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The first endpoint of the first segment.</p></li>
 <li><p><strong>q1</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The second endpoint of the first segment.</p></li>
@@ -274,10 +269,10 @@ within the other.</p>
 <li><p><strong>q2</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The second endpoint of the second segment.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True, if [p1q1] is included in [p2q2] or vice-versa</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -288,7 +283,7 @@ within the other.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.geometry.</span></span><span class="sig-name descname"><span class="pre">do_lines_intersect_at_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">q1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">q2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/geometry.html#do_lines_intersect_at_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.geometry.do_lines_intersect_at_endpoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if one of the lines start or ends on the other line.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>p1</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The first endpoint of the first segment.</p></li>
 <li><p><strong>q1</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The second endpoint of the first segment.</p></li>
@@ -296,10 +291,10 @@ within the other.</p>
 <li><p><strong>q2</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The second endpoint of the second segment.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True, if p1 or q1 belongs to [p2q2] and vice-versa</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -311,16 +306,16 @@ within the other.</p>
 <dd><p>Given two Line objects, compute the normal vector between them (computed
 with respect to Wall 1).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the perpendicular vector</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -337,16 +332,16 @@ with respect to Wall 1).</p>
 <dd><p>Helper function used to compute the vector for wall1 and wall2 as well as
 an arbitrary vector W joining both lines.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall.</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The key vectors.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[np.ndarray, np.ndarray, np.ndarray]</p>
 </dd>
 </dl>
@@ -357,16 +352,16 @@ an arbitrary vector W joining both lines.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.geometry.</span></span><span class="sig-name descname"><span class="pre">calculate_dot_product_and_distance_between_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wall1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wall2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/geometry.html#calculate_dot_product_and_distance_between_walls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.geometry.calculate_dot_product_and_distance_between_walls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the dot product and distance between two walls.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the dot product and the distance</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[Optional[float], float]</p>
 </dd>
 </dl>
@@ -380,16 +375,16 @@ an arbitrary vector W joining both lines.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The dot product value between the two walls</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -404,16 +399,16 @@ check for that. Calculate the dot product first to verify yourself.
 Calculate a vector perpendicular to both walls and returns its
 euclidian norm.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>distance between the walls</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -425,16 +420,16 @@ euclidian norm.</p>
 <dd><p>Given two lines, calculate their x and y overlaps (e.g. if the x values
 for line 1 and 2 are [0, 6] and [3, 10] resp, the overlap is [3, 6] = 3).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The x and y overlaps in distance units</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[float, float]</p>
 </dd>
 </dl>
@@ -446,13 +441,13 @@ for line 1 and 2 are [0, 6] and [3, 10] resp, the overlap is [3, 6] = 3).</p>
 <dd><p>Given a line, round the its start and end coordinates to the nearest
 integer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>wall</strong> (<em>Line</em>) – The initial wall.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The wall will rounded up coordinates.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Line</p>
 </dd>
 </dl>
@@ -463,16 +458,16 @@ integer.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.geometry.</span></span><span class="sig-name descname"><span class="pre">sample_random_points_from_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/geometry.html#sample_random_points_from_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.geometry.sample_random_points_from_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample n random points from line</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>line</strong> (<em>Line</em>) – the line to sample from.</p></li>
 <li><p><strong>npoints</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points to sample, defaults to 10</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The list of points</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Tuple[int, int]]</p>
 </dd>
 </dl>
@@ -484,17 +479,17 @@ integer.</p>
 <dd><p>Create a parallel line at a distance ‘d’ from a reference line. Both x
 and y are changed by d.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>line</strong> (<em>Line</em>) – The reference line.</p></li>
 <li><p><strong>d</strong> (<em>int</em><em>, </em><em>optional</em>) – The distance at which to create the parallel line,
 defaults to 1</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>[description]</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Line</p>
 </dd>
 </dl>
@@ -506,16 +501,16 @@ defaults to 1</p></li>
 <dd><p>Compute a door line to add to a wall. This door line is computed from
 one of the end points of the wall.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>room_wall</strong> (<em>Line</em>) – The reference wall.</p></li>
 <li><p><strong>door_size</strong> (<em>float</em><em>, </em><em>optional</em>) – the size of the door, defaults to 2.0</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The door line.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Line</p>
 </dd>
 </dl>
@@ -527,13 +522,13 @@ one of the end points of the wall.</p>
 <dd><p>Given a cubic bezier, find the line that is most likely to corresponds to
 the door line.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cubic_bezier</strong> (<em>CubicBezier</em>) – The cubic bezier to analyze.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The most likely door line.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Line</p>
 </dd>
 </dl>
@@ -545,16 +540,16 @@ the door line.</p>
 <dd><p>Given a reference line, modify a test line to be parallel with the
 reference.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>reference_line</strong> (<em>Line</em>) – The reference line.</p></li>
 <li><p><strong>test_line</strong> (<em>Line</em>) – The test line.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The new line, translated to align with the reference.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Line</p>
 </dd>
 </dl>
@@ -565,7 +560,7 @@ reference.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.geometry.</span></span><span class="sig-name descname"><span class="pre">is_point_on_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/geometry.html#is_point_on_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.geometry.is_point_on_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if a test point is on a given Line.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>line</strong> (<em>Line</em>) – The Line of interest.</p></li>
 <li><p><strong>p_test</strong> (<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><em>Point</em></a>) – The test point.</p></li>
@@ -573,10 +568,10 @@ reference.</p>
 to the line, defaults to 1e-3</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether the point falls on line or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -588,16 +583,16 @@ to the line, defaults to 1e-3</p></li>
 <dd><p>Given a wall, subtract an arbitrary segment from the wall and return the
 remaining wall segments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall</strong> (<em>Line</em>) – The wall to subtract from.</p></li>
 <li><p><strong>segment</strong> (<em>Line</em>) – The segment to subtract.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The remaining segments.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Line]</p>
 </dd>
 </dl>
@@ -620,6 +615,26 @@ remaining wall segments.</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.map.geometry.on_segment"><code class="docutils literal notranslate"><span class="pre">on_segment()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.determine_orientation"><code class="docutils literal notranslate"><span class="pre">determine_orientation()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.do_intersect"><code class="docutils literal notranslate"><span class="pre">do_intersect()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.is_one_segment_within_the_other"><code class="docutils literal notranslate"><span class="pre">is_one_segment_within_the_other()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.do_lines_intersect_at_endpoint"><code class="docutils literal notranslate"><span class="pre">do_lines_intersect_at_endpoint()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.calculate_normal_vector_between_walls"><code class="docutils literal notranslate"><span class="pre">calculate_normal_vector_between_walls()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.calculate_perpendicular_vector"><code class="docutils literal notranslate"><span class="pre">calculate_perpendicular_vector</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry._compute_key_vectors"><code class="docutils literal notranslate"><span class="pre">_compute_key_vectors()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.calculate_dot_product_and_distance_between_walls"><code class="docutils literal notranslate"><span class="pre">calculate_dot_product_and_distance_between_walls()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.calculate_dot_product_between_walls"><code class="docutils literal notranslate"><span class="pre">calculate_dot_product_between_walls()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.calculate_distance_between_walls"><code class="docutils literal notranslate"><span class="pre">calculate_distance_between_walls()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.calculate_x_and_y_overlap"><code class="docutils literal notranslate"><span class="pre">calculate_x_and_y_overlap()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.round_coords"><code class="docutils literal notranslate"><span class="pre">round_coords()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.sample_random_points_from_line"><code class="docutils literal notranslate"><span class="pre">sample_random_points_from_line()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.create_parallel_line"><code class="docutils literal notranslate"><span class="pre">create_parallel_line()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.compute_new_door_line"><code class="docutils literal notranslate"><span class="pre">compute_new_door_line()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.find_door_line"><code class="docutils literal notranslate"><span class="pre">find_door_line()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.align_to_reference"><code class="docutils literal notranslate"><span class="pre">align_to_reference()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.is_point_on_line"><code class="docutils literal notranslate"><span class="pre">is_point_on_line()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.geometry.remove_segment_from_wall"><code class="docutils literal notranslate"><span class="pre">remove_segment_from_wall()</span></code></a></li>
 <li><a class="reference internal" href="#citam.engine.map.geometry.on_segment">on_segment</a></li>
 <li><a class="reference internal" href="#citam.engine.map.geometry.determine_orientation">determine_orientation</a></li>
 <li><a class="reference internal" href="#citam.engine.map.geometry.do_intersect">do_intersect</a></li>
@@ -665,7 +680,7 @@ remaining wall segments.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.map.utils &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,48 +105,44 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.map.utils">
-<span id="citam-engine-map-utils"></span><h1><a class="reference internal" href="#module-citam.engine.map.utils" title="citam.engine.map.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.utils</span></code></a><a class="headerlink" href="#module-citam.engine.map.utils" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-map-utils"></span><h1><a class="reference internal" href="#module-citam.engine.map.utils" title="citam.engine.map.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.utils</span></code></a><a class="headerlink" href="#module-citam.engine.map.utils" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.find_closest_parallel_wall" title="citam.engine.map.utils.find_closest_parallel_wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_closest_parallel_wall</span></code></a>(space_boundaries: List[svgpathtools.Line], ref_wall: svgpathtools.Line) → svgpathtools.Line</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.find_closest_parallel_wall" title="citam.engine.map.utils.find_closest_parallel_wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_closest_parallel_wall</span></code></a>(→ svgpathtools.Line)</p></td>
 <td><p>For a given wall, find other walls in same space that are</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.is_wall_valid_for_aisle" title="citam.engine.map.utils.is_wall_valid_for_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wall_valid_for_aisle</span></code></a>(no_repeat: bool, wall: Optional[svgpathtools.Line], aisles: List[Tuple[svgpathtools.Line, svgpathtools.Line]]) → bool</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.is_wall_valid_for_aisle" title="citam.engine.map.utils.is_wall_valid_for_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_wall_valid_for_aisle</span></code></a>(→ bool)</p></td>
 <td><p>Check if a wall is valid to be apart of an aisle.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.find_aisles" title="citam.engine.map.utils.find_aisles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_aisles</span></code></a>(space: citam.engine.map.space.Space, valid_boundaries: List[svgpathtools.Line], no_repeat=True) → List[Tuple[svgpathtools.Line, svgpathtools.Line]]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.find_aisles" title="citam.engine.map.utils.find_aisles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_aisles</span></code></a>(→ List[Tuple[svgpathtools.Line, ...)</p></td>
 <td><p>Given the svg path of the boundaries of a space, find all pairs of 2 walls</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.is_this_wall_part_of_an_aisle" title="citam.engine.map.utils.is_this_wall_part_of_an_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_this_wall_part_of_an_aisle</span></code></a>(wall: svgpathtools.Line, aisles: List[Tuple[svgpathtools.Line, svgpathtools.Line]]) → bool</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.is_this_wall_part_of_an_aisle" title="citam.engine.map.utils.is_this_wall_part_of_an_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_this_wall_part_of_an_aisle</span></code></a>(→ bool)</p></td>
 <td><p>Verify if a wall already belongs to an aisle.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.get_aisle_center_point_and_width" title="citam.engine.map.utils.get_aisle_center_point_and_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_aisle_center_point_and_width</span></code></a>(aisle: Tuple[svgpathtools.Line, svgpathtools.Line]) → Tuple[citam.engine.map.point.Point, float]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.get_aisle_center_point_and_width" title="citam.engine.map.utils.get_aisle_center_point_and_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_aisle_center_point_and_width</span></code></a>(...)</p></td>
 <td><p>Find the center point and the width of an aisle.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.is_this_an_aisle" title="citam.engine.map.utils.is_this_an_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_this_an_aisle</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line, space: citam.engine.map.space.Space) → bool</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.is_this_an_aisle" title="citam.engine.map.utils.is_this_an_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_this_an_aisle</span></code></a>(→ bool)</p></td>
 <td><p>Verify that 2 walls form an aisle. Works by verifying that the center point</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.compute_bounding_box" title="citam.engine.map.utils.compute_bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_bounding_box</span></code></a>(walls: List[svgpathtools.Line]) → Tuple[float, float, float, float]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.compute_bounding_box" title="citam.engine.map.utils.compute_bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_bounding_box</span></code></a>(→ Tuple[float, float, float, float])</p></td>
 <td><p>Computes the bounding box of the floorplan given by all its walls and</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.generate_closed_path_for_aisle" title="citam.engine.map.utils.generate_closed_path_for_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_closed_path_for_aisle</span></code></a>(aisle: Tuple[svgpathtools.Line, svgpathtools.Line]) → svgpathtools.Path</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.generate_closed_path_for_aisle" title="citam.engine.map.utils.generate_closed_path_for_aisle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_closed_path_for_aisle</span></code></a>(→ svgpathtools.Path)</p></td>
 <td><p>Given an aisle (tuple of two walls), add new walls to create a closed</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.do_walls_overlap" title="citam.engine.map.utils.do_walls_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_walls_overlap</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line, max_distance: float = 1.0) → bool</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.do_walls_overlap" title="citam.engine.map.utils.do_walls_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_walls_overlap</span></code></a>(→ bool)</p></td>
 <td><p>Verify if two walls overlap.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.extract_end_points" title="citam.engine.map.utils.extract_end_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_end_points</span></code></a>(wall: svgpathtools.Line) → Tuple[citam.engine.map.point.Point, citam.engine.map.point.Point]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.engine.map.utils.extract_end_points" title="citam.engine.map.utils.extract_end_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_end_points</span></code></a>(...)</p></td>
 <td><p>Extract the end points of a wall returned as integer coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.check_for_collinearity" title="citam.engine.map.utils.check_for_collinearity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_for_collinearity</span></code></a>(wall1: svgpathtools.Line, wall2: svgpathtools.Line, max_distance: float) → bool</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.map.utils.check_for_collinearity" title="citam.engine.map.utils.check_for_collinearity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_for_collinearity</span></code></a>(→ bool)</p></td>
 <td><p>Verify that two walls are collinear by making sure all end points are or</p></td>
 </tr>
 </tbody>
@@ -155,16 +154,16 @@
 parallel to this (with some x or y overlap) and return the
 closest wall.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>space_boundaries</strong> (<em>List</em><em>[</em><em>Line</em><em>]</em>) – The hallway object under consideration.</p></li>
 <li><p><strong>ref_wall</strong> (<em>Line</em>) – Reference wall for which to find closest parallel wall.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The closest parallel wall</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Line</p>
 </dd>
 </dl>
@@ -175,7 +174,7 @@ closest wall.</p>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.utils.</span></span><span class="sig-name descname"><span class="pre">is_wall_valid_for_aisle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">no_repeat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wall</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aisles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/utils.html#is_wall_valid_for_aisle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.utils.is_wall_valid_for_aisle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a wall is valid to be apart of an aisle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>no_repeat</strong> (<em>bool</em>) – Whether to consider walls that are already part of an
 aisle or not.</p></li>
@@ -183,10 +182,10 @@ aisle or not.</p></li>
 <li><p><strong>aisles</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>Line</em><em>, </em><em>Line</em><em>]</em><em>]</em>) – the list of all currently identified aisles.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>whether this is a valid wall or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -200,7 +199,7 @@ aisle or not.</p></li>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>space</strong> (<a class="reference internal" href="../space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The space of interest.</p></li>
 <li><p><strong>valid_boundaries</strong> (<em>List</em><em>[</em><em>Line</em><em>]</em>) – List of valid boundaries to consider.</p></li>
@@ -208,10 +207,10 @@ aisle or not.</p></li>
 defaults to True</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>[description]</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Tuple[Line, Line]]</p>
 </dd>
 </dl>
@@ -222,16 +221,16 @@ defaults to True</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.utils.</span></span><span class="sig-name descname"><span class="pre">is_this_wall_part_of_an_aisle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wall</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aisles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/utils.html#is_this_wall_part_of_an_aisle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.utils.is_this_wall_part_of_an_aisle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verify if a wall already belongs to an aisle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall</strong> (<em>Line</em>) – The wall of interest.</p></li>
 <li><p><strong>aisles</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>Line</em><em>, </em><em>Line</em><em>]</em><em>]</em>) – List of aisles to check.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether this wall is part of an aisle or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -242,13 +241,13 @@ defaults to True</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.utils.</span></span><span class="sig-name descname"><span class="pre">get_aisle_center_point_and_width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aisle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">svgpathtools.Line</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/utils.html#get_aisle_center_point_and_width"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.utils.get_aisle_center_point_and_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the center point and the width of an aisle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>aisle</strong> (<em>Tuple</em><em>[</em><em>Line</em><em>, </em><em>Line</em><em>]</em>) – The aisle of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The center point and width of the aisle.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point">Point</a>, float]</p>
 </dd>
 </dl>
@@ -263,17 +262,17 @@ definition. Use accordingly.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall.</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall.</p></li>
 <li><p><strong>space</strong> (<a class="reference internal" href="../space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The space where this aisle would presumably fall.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether the two walls form an aisle or not.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -285,13 +284,13 @@ definition. Use accordingly.</p>
 <dd><p>Computes the bounding box of the floorplan given by all its walls and
 return the min and max x and y values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>walls</strong> (<em>List</em><em>[</em><em>Line</em><em>]</em>) – List of all the walls to consider.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The minimum and the maximum x and y values</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[float, float, float, float]</p>
 </dd>
 </dl>
@@ -303,13 +302,13 @@ return the min and max x and y values.</p>
 <dd><p>Given an aisle (tuple of two walls), add new walls to create a closed
 path for this aisle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>aisle</strong> (<em>Tuple</em><em>[</em><em>Line</em><em>, </em><em>Line</em><em>]</em>) – Aisle of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Closed path for this aisle</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Path</p>
 </dd>
 </dl>
@@ -324,7 +323,7 @@ of them falls on the other segment. If so, it checks if all 4 points
 are collinear and returns True if the dot product and the
 distance between the 2 walls are respectively ~1.0 and ~0.0.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – line object corresponding to wall 1</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – line object corresponding to wall 2</p></li>
@@ -332,10 +331,10 @@ distance between the 2 walls are respectively ~1.0 and ~0.0.</p>
 considered overlapping, defaults to 1.0</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether the walls overlap or not</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -346,13 +345,13 @@ considered overlapping, defaults to 1.0</p></li>
 <span class="sig-prename descclassname"><span class="pre">citam.engine.map.utils.</span></span><span class="sig-name descname"><span class="pre">extract_end_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wall</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">svgpathtools.Line</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point"><span class="pre">citam.engine.map.point.Point</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/map/utils.html#extract_end_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.map.utils.extract_end_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the end points of a wall returned as integer coordinates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>wall</strong> (<em>Line</em>) – The wall of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The end points.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[<a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point">Point</a>, <a class="reference internal" href="../point/index.html#citam.engine.map.point.Point" title="citam.engine.map.point.Point">Point</a>]</p>
 </dd>
 </dl>
@@ -364,17 +363,17 @@ considered overlapping, defaults to 1.0</p></li>
 <dd><p>Verify that two walls are collinear by making sure all end points are or
 by measuring the distance and angle between the walls.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wall1</strong> (<em>Line</em>) – The first wall</p></li>
 <li><p><strong>wall2</strong> (<em>Line</em>) – The second wall</p></li>
 <li><p><strong>max_distance</strong> (<em>float</em>) – The max distance to consider them to be collinear</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Whether they are collinear or not</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -396,6 +395,17 @@ by measuring the distance and angle between the walls.</p>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.map.utils</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#citam.engine.map.utils.find_closest_parallel_wall"><code class="docutils literal notranslate"><span class="pre">find_closest_parallel_wall()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.is_wall_valid_for_aisle"><code class="docutils literal notranslate"><span class="pre">is_wall_valid_for_aisle()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.find_aisles"><code class="docutils literal notranslate"><span class="pre">find_aisles()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.is_this_wall_part_of_an_aisle"><code class="docutils literal notranslate"><span class="pre">is_this_wall_part_of_an_aisle()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.get_aisle_center_point_and_width"><code class="docutils literal notranslate"><span class="pre">get_aisle_center_point_and_width()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.is_this_an_aisle"><code class="docutils literal notranslate"><span class="pre">is_this_an_aisle()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.compute_bounding_box"><code class="docutils literal notranslate"><span class="pre">compute_bounding_box()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.generate_closed_path_for_aisle"><code class="docutils literal notranslate"><span class="pre">generate_closed_path_for_aisle()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.do_walls_overlap"><code class="docutils literal notranslate"><span class="pre">do_walls_overlap()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.extract_end_points"><code class="docutils literal notranslate"><span class="pre">extract_end_points()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.map.utils.check_for_collinearity"><code class="docutils literal notranslate"><span class="pre">check_for_collinearity()</span></code></a></li>
 <li><a class="reference internal" href="#citam.engine.map.utils.find_closest_parallel_wall">find_closest_parallel_wall</a></li>
 <li><a class="reference internal" href="#citam.engine.map.utils.is_wall_valid_for_aisle">is_wall_valid_for_aisle</a></li>
 <li><a class="reference internal" href="#citam.engine.map.utils.find_aisles">find_aisles</a></li>
@@ -432,7 +442,7 @@ by measuring the distance and angle between the walls.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

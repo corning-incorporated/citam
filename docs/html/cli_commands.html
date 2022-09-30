@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>CLI Reference &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
 <script src="_static/jquery.js"></script>
 <script src="_static/underscore.js"></script>
+<script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="_static/doctools.js"></script>
+<script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Visualize Results" href="visualize_results.html" /> 
@@ -106,14 +109,14 @@
           <div class="body" role="main">
             
   <section id="cli-reference">
-<span id="cli-commands"></span><h1>CLI Reference<a class="headerlink" href="#cli-reference" title="Permalink to this headline">¶</a></h1>
+<span id="cli-commands"></span><h1>CLI Reference<a class="headerlink" href="#cli-reference" title="Permalink to this heading">¶</a></h1>
 <p><p>The CITAM CLI</p>
 </p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">citam</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span> <span class="o">...</span>
 </pre></div>
 </div>
 <section id="Positional Arguments">
-<h2>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h2>
+<h2>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this heading">¶</a></h2>
 <dl class="option-list">
 <dt><kbd>&lt;command&gt;</kbd></dt>
 <dd><p>Possible choices: engine, config, dash</p>
@@ -121,15 +124,15 @@
 </dl>
 </section>
 <section id="Sub-commands:">
-<h2>Sub-commands:<a class="headerlink" href="#Sub-commands:" title="Permalink to this headline">¶</a></h2>
+<h2>Sub-commands:<a class="headerlink" href="#Sub-commands:" title="Permalink to this heading">¶</a></h2>
 <section id="engine">
-<h3>engine<a class="headerlink" href="#engine" title="Permalink to this headline">¶</a></h3>
+<h3>engine<a class="headerlink" href="#engine" title="Permalink to this heading">¶</a></h3>
 <p>Interact with the CITAM simulation engine</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">engine_command</span><span class="o">&gt;</span> <span class="o">...</span>
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat1">
-<h4>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat1" title="Permalink to this headline">¶</a></h4>
+<h4>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat1" title="Permalink to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>&lt;engine_command&gt;</kbd></dt>
 <dd><p>Possible choices: ingest, update-floorplan, list, export-floorplan, export-navnet, export-potential-oneways, build-navnet, run</p>
@@ -137,7 +140,7 @@
 </dl>
 </section>
 <section id="Named Arguments">
-<h4>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h4>
+<h4>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -149,9 +152,9 @@
 </dl>
 </section>
 <section id="Sub-commands:_repeat1">
-<h4>Sub-commands:<a class="headerlink" href="#Sub-commands:_repeat1" title="Permalink to this headline">¶</a></h4>
+<h4>Sub-commands:<a class="headerlink" href="#Sub-commands:_repeat1" title="Permalink to this heading">¶</a></h4>
 <section id="ingest">
-<h5>ingest<a class="headerlink" href="#ingest" title="Permalink to this headline">¶</a></h5>
+<h5>ingest<a class="headerlink" href="#ingest" title="Permalink to this heading">¶</a></h5>
 <p>Ingest raw floor plans and metadata files</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="n">ingest</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CSV</span><span class="p">]</span> <span class="o">-</span><span class="n">s</span> <span class="n">SVG</span>
                     <span class="p">[</span><span class="o">--</span><span class="n">output_dir</span> <span class="n">OUTPUT_DIR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span> <span class="n">BUILDINGS</span> <span class="p">[</span><span class="n">BUILDINGS</span> <span class="o">...</span><span class="p">]]</span>
@@ -159,7 +162,7 @@
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat2">
-<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat2" title="Permalink to this headline">¶</a></h6>
+<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat2" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>facility</kbd></dt>
 <dd><p>Facility name</p>
@@ -170,7 +173,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat1">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat1" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat1" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -195,14 +198,14 @@
 </section>
 </section>
 <section id="update-floorplan">
-<h5>update-floorplan<a class="headerlink" href="#update-floorplan" title="Permalink to this headline">¶</a></h5>
+<h5>update-floorplan<a class="headerlink" href="#update-floorplan" title="Permalink to this heading">¶</a></h5>
 <p>Update the floorplan data for a given simulation</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="n">update</span><span class="o">-</span><span class="n">floorplan</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="o">-</span><span class="n">s</span> <span class="n">SVG</span>
                               <span class="n">facility</span> <span class="n">floor</span>
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat3">
-<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat3" title="Permalink to this headline">¶</a></h6>
+<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat3" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>facility</kbd></dt>
 <dd><p>Facility name</p>
@@ -213,7 +216,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat2">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat2" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat2" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -229,13 +232,13 @@
 </section>
 </section>
 <section id="list">
-<h5>list<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h5>
+<h5>list<a class="headerlink" href="#list" title="Permalink to this heading">¶</a></h5>
 <p>List all the floorplans already ingested.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="nb">list</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span>
 </pre></div>
 </div>
 <section id="Named Arguments_repeat3">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat3" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat3" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -248,14 +251,14 @@
 </section>
 </section>
 <section id="export-floorplan">
-<h5>export-floorplan<a class="headerlink" href="#export-floorplan" title="Permalink to this headline">¶</a></h5>
+<h5>export-floorplan<a class="headerlink" href="#export-floorplan" title="Permalink to this heading">¶</a></h5>
 <p>Export a floorplan to an SVG file</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="n">export</span><span class="o">-</span><span class="n">floorplan</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUTFILE</span>
                               <span class="n">facility</span> <span class="n">floor</span>
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat4">
-<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat4" title="Permalink to this headline">¶</a></h6>
+<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat4" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>facility</kbd></dt>
 <dd><p>Facility name</p>
@@ -266,7 +269,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat4">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat4" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat4" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -282,14 +285,14 @@
 </section>
 </section>
 <section id="export-navnet">
-<h5>export-navnet<a class="headerlink" href="#export-navnet" title="Permalink to this headline">¶</a></h5>
+<h5>export-navnet<a class="headerlink" href="#export-navnet" title="Permalink to this heading">¶</a></h5>
 <p>Export the navigation newtork to an SVG file</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="n">export</span><span class="o">-</span><span class="n">navnet</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUTFILE</span>
                            <span class="n">facility</span> <span class="n">floor</span>
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat5">
-<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat5" title="Permalink to this headline">¶</a></h6>
+<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat5" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>facility</kbd></dt>
 <dd><p>Facility name</p>
@@ -300,7 +303,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat5">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat5" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat5" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -316,7 +319,7 @@
 </section>
 </section>
 <section id="export-potential-oneways">
-<h5>export-potential-oneways<a class="headerlink" href="#export-potential-oneways" title="Permalink to this headline">¶</a></h5>
+<h5>export-potential-oneways<a class="headerlink" href="#export-potential-oneways" title="Permalink to this heading">¶</a></h5>
 <p>Export potential one-way ailes to an SVG file</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="n">export</span><span class="o">-</span><span class="n">potential</span><span class="o">-</span><span class="n">oneways</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="o">-</span><span class="n">o</span>
                                       <span class="n">OUTPUTFILE</span>
@@ -324,7 +327,7 @@
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat6">
-<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat6" title="Permalink to this headline">¶</a></h6>
+<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat6" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>facility</kbd></dt>
 <dd><p>Facility name</p>
@@ -335,7 +338,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat6">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat6" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat6" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -351,13 +354,13 @@
 </section>
 </section>
 <section id="build-navnet">
-<h5>build-navnet<a class="headerlink" href="#build-navnet" title="Permalink to this headline">¶</a></h5>
+<h5>build-navnet<a class="headerlink" href="#build-navnet" title="Permalink to this heading">¶</a></h5>
 <p>Build the navigation network</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="n">build</span><span class="o">-</span><span class="n">navnet</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="n">facility</span> <span class="n">floor</span>
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat7">
-<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat7" title="Permalink to this headline">¶</a></h6>
+<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat7" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>facility</kbd></dt>
 <dd><p>Facility name</p>
@@ -368,7 +371,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat7">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat7" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat7" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -381,13 +384,13 @@
 </section>
 </section>
 <section id="run">
-<h5>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h5>
+<h5>run<a class="headerlink" href="#run" title="Permalink to this heading">¶</a></h5>
 <p>Run a simulation for a facility</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">engine</span> <span class="n">run</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="n">input_file</span>
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat8">
-<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat8" title="Permalink to this headline">¶</a></h6>
+<h6>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat8" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>input_file</kbd></dt>
 <dd><p>full path of file with simulation inputs</p>
@@ -395,7 +398,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat8">
-<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat8" title="Permalink to this headline">¶</a></h6>
+<h6>Named Arguments<a class="headerlink" href="#Named Arguments_repeat8" title="Permalink to this heading">¶</a></h6>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -410,13 +413,13 @@
 </section>
 </section>
 <section id="config">
-<h3>config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h3>
+<h3>config<a class="headerlink" href="#config" title="Permalink to this heading">¶</a></h3>
 <p>Interact with the CITAM global configuration</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">config</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="n">get</span>
 </pre></div>
 </div>
 <section id="Positional Arguments_repeat9">
-<h4>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat9" title="Permalink to this headline">¶</a></h4>
+<h4>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat9" title="Permalink to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>get</kbd></dt>
 <dd><p>Print the current CITAM configuration</p>
@@ -424,7 +427,7 @@
 </dl>
 </section>
 <section id="Named Arguments_repeat9">
-<h4>Named Arguments<a class="headerlink" href="#Named Arguments_repeat9" title="Permalink to this headline">¶</a></h4>
+<h4>Named Arguments<a class="headerlink" href="#Named Arguments_repeat9" title="Permalink to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -437,14 +440,14 @@
 </section>
 </section>
 <section id="dash">
-<h3>dash<a class="headerlink" href="#dash" title="Permalink to this headline">¶</a></h3>
+<h3>dash<a class="headerlink" href="#dash" title="Permalink to this heading">¶</a></h3>
 <p>Start the CITAM dashboard</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">citam</span> <span class="n">dash</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span> <span class="n">LOG_FILE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">host</span> <span class="n">HOST</span><span class="p">]</span>
            <span class="p">[</span><span class="o">-</span><span class="n">r</span> <span class="n">RESULTS</span><span class="p">]</span>
 </pre></div>
 </div>
 <section id="Named Arguments_repeat10">
-<h4>Named Arguments<a class="headerlink" href="#Named Arguments_repeat10" title="Permalink to this headline">¶</a></h4>
+<h4>Named Arguments<a class="headerlink" href="#Named Arguments_repeat10" title="Permalink to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>-v, --verbose</kbd></dt>
 <dd><p>can be supplied multiple times to increase verbosity</p>
@@ -566,7 +569,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

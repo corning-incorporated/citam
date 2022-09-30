@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.io.input_parser
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -53,46 +47,10 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:data:: UNABLE_TO_READ_FILE_STR
    :annotation: = Could not read input file
 
    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:exception:: MissingInputError
 
@@ -613,25 +571,6 @@ Attributes
 
 .. py:function:: validate_traffic_policy(traffic_policy)
 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:function:: parse_input_file(input_file: Union[str, pathlib.Path]) -> Dict[str, Any]
 

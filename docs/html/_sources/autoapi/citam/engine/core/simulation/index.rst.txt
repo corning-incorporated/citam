@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.core.simulation
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -36,24 +30,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:class:: Simulation(facility: citam.engine.facility.indoor_facility.Facility, total_timesteps: int, n_agents: int, calculators: Optional[List[citam.engine.calculators.calculator.Calculator]] = None, scheduler: Optional[citam.engine.schedulers.scheduler.Scheduler] = None, dry_run=False)
 
    
@@ -79,7 +55,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: create_sim_hash(self)
+   .. py:method:: create_sim_hash()
 
       
       Hash simulation inputs, scheduling policy, meetings policy,
@@ -104,7 +80,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: run_serial(self, workdir: Union[str, os.PathLike, bytes], sim_name: str, run_name: str) -> None
+   .. py:method:: run_serial(workdir: Union[str, os.PathLike, bytes], sim_name: str, run_name: str) -> None
 
       
       Run a CITAM simulation serially (i.e. only one core will be used).
@@ -135,7 +111,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: run_simulation_and_save_results(self, workdir: Union[str, bytes, os.PathLike]) -> None
+   .. py:method:: run_simulation_and_save_results(workdir: Union[str, bytes, os.PathLike]) -> None
 
       
       Perform simulation and save results to files.
@@ -160,7 +136,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_agents(self) -> List[citam.engine.schedulers.schedule.Schedule]
+   .. py:method:: create_agents() -> List[citam.engine.schedulers.schedule.Schedule]
 
       
       Generate a list of schedules, one per agent.
@@ -184,7 +160,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: step(self, traj_outfile: TextIO = None) -> None
+   .. py:method:: step(traj_outfile: TextIO = None) -> None
 
       
       Move the simulation one step ahead.
@@ -212,7 +188,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: move_agents(self) -> Tuple[List[citam.engine.core.agent.Agent], List[citam.engine.core.agent.Agent]]
+   .. py:method:: move_agents() -> Tuple[List[citam.engine.core.agent.Agent], List[citam.engine.core.agent.Agent]]
 
       
       Iterate over agents and move them to the next position in their
@@ -240,7 +216,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: save_manifest(self, work_directory: str, sim_name: str, run_name: str) -> None
+   .. py:method:: save_manifest(work_directory: str, sim_name: str, run_name: str) -> None
 
       
       Save manifest file, used by the dashboard to show results.
@@ -266,7 +242,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: save_maps(self, work_directory: str) -> None
+   .. py:method:: save_maps(work_directory: str) -> None
 
       
       Save svg maps for each floor for visualization. Each floor map is
@@ -293,7 +269,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: save_schedules(self, work_directory: str) -> None
+   .. py:method:: save_schedules(work_directory: str) -> None
 
       
       Write agent schedules to file.

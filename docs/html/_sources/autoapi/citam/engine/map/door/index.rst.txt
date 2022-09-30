@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.map.door
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -47,31 +41,8 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:attribute:: _intersect_coords
-      :annotation: :Optional[Tuple[int, int]]
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: intersect_coords(self) -> Tuple[int, int]
-      :property:
+   .. py:property:: intersect_coords
+      :type: Tuple[int, int]
 
       
       Return the point where the navigation network intersects with this
@@ -97,8 +68,8 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: midpoint(self) -> citam.engine.map.point.Point
-      :property:
+   .. py:property:: midpoint
+      :type: citam.engine.map.point.Point
 
       
       Return the midpoint of this door, generally used as where the navnet
@@ -124,8 +95,8 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: midpoint_coords(self) -> Tuple[int, int]
-      :property:
+   .. py:property:: midpoint_coords
+      :type: Tuple[int, int]
 
       
       The xy coordinates of the mid-point of this door.
@@ -150,7 +121,12 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: is_intersect_and_midpoint_same(self) -> bool
+   .. py:attribute:: _intersect_coords
+      :annotation: :Optional[Tuple[int, int]]
+
+      
+
+   .. py:method:: is_intersect_and_midpoint_same() -> bool
 
       
       Check whether the mid-point and the intersect with the navnet are the
@@ -176,7 +152,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: __str__(self)
+   .. py:method:: __str__()
 
       
       Return str(self).
@@ -199,7 +175,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: __eq__(self, other)
+   .. py:method:: __eq__(other)
 
       
       Return self==value.
@@ -222,7 +198,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: __hash__(self)
+   .. py:method:: __hash__()
 
       
       Return hash(self).
@@ -245,7 +221,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _as_dict(self) -> Dict[str, Any]
+   .. py:method:: _as_dict() -> Dict[str, Any]
 
       
       Return this class as a dictionary, useful for JSON serialization.

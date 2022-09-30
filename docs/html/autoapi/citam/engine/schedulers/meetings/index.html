@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.schedulers.meetings &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.schedulers.meetings">
-<span id="citam-engine-schedulers-meetings"></span><h1><a class="reference internal" href="#module-citam.engine.schedulers.meetings" title="citam.engine.schedulers.meetings"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.schedulers.meetings</span></code></a><a class="headerlink" href="#module-citam.engine.schedulers.meetings" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-schedulers-meetings"></span><h1><a class="reference internal" href="#module-citam.engine.schedulers.meetings" title="citam.engine.schedulers.meetings"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.schedulers.meetings</span></code></a><a class="headerlink" href="#module-citam.engine.schedulers.meetings" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting" title="citam.engine.schedulers.meetings.Meeting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Meeting</span></code></a></p></td>
 <td><p>Class to manage meeting instances.</p></td>
@@ -123,12 +122,8 @@
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.schedulers.meetings.LOG" title="citam.engine.schedulers.meetings.LOG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOG</span></code></a></p></td>
 <td><p></p></td>
@@ -146,13 +141,13 @@
 <dd><p>Class to manage meeting instances.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.Meeting.__str__">
-<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#Meeting.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.Meeting.__str__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#Meeting.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.Meeting.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a string representation of this meeting.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The string representing this meeting</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -160,7 +155,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.Meeting.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#Meeting.__eq__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.Meeting.__eq__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#Meeting.__eq__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.Meeting.__eq__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return self==value.</p>
 </dd></dl>
 
@@ -173,10 +168,10 @@
 place in a facility based on predefined parameters.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.MeetingSchedule.create_new_meeting">
-<span class="sig-name descname"><span class="pre">create_new_meeting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meeting_room</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule.create_new_meeting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule.create_new_meeting" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_new_meeting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meeting_room</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule.create_new_meeting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule.create_new_meeting" title="Permalink to this definition">¶</a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>meeting_room</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – Space where the meeting room will take place.</p></li>
 <li><p><strong>floor_number</strong> (<em>int</em>) – index of the floor.</p></li>
@@ -184,10 +179,10 @@ place in a facility based on predefined parameters.</p>
 <li><p><strong>end_time</strong> (<em>int</em>) – The meeting end time.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if meeting successfully created. False, otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -195,10 +190,10 @@ place in a facility based on predefined parameters.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.MeetingSchedule._create_meetings_for_room">
-<span class="sig-name descname"><span class="pre">_create_meetings_for_room</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meeting_room</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._create_meetings_for_room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._create_meetings_for_room" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_create_meetings_for_room</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meeting_room</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._create_meetings_for_room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._create_meetings_for_room" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create all meetings to take place in this specific room.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>meeting_room</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The meeting room of interest.</p></li>
 <li><p><strong>floor_number</strong> (<em>int</em>) – Index of the floor of this meeting room.</p></li>
@@ -209,21 +204,21 @@ place in a facility based on predefined parameters.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.MeetingSchedule._generate_meeting_attendee_list">
-<span class="sig-name descname"><span class="pre">_generate_meeting_attendee_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meeting_room</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._generate_meeting_attendee_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._generate_meeting_attendee_list" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_generate_meeting_attendee_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meeting_room</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><span class="pre">citam.engine.map.space.Space</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._generate_meeting_attendee_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._generate_meeting_attendee_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Randomly add attendees to a meeting time slot based on agents’
 availability.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>meeting_room</strong> (<a class="reference internal" href="../../map/space/index.html#citam.engine.map.space.Space" title="citam.engine.map.space.Space"><em>Space</em></a>) – The meeting room</p></li>
 <li><p><strong>start_time</strong> (<em>int</em>) – When the meeting starts</p></li>
 <li><p><strong>end_time</strong> (<em>int</em>) – When the meeting ends.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The list of selected agents (given by their ids).</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[int]</p>
 </dd>
 </dl>
@@ -231,26 +226,26 @@ availability.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.MeetingSchedule.build">
-<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule.build" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule.build" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create meetings for this facility with no conflicts (room nor agent)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.MeetingSchedule._find_potential_attendees">
-<span class="sig-name descname"><span class="pre">_find_potential_attendees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._find_potential_attendees"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._find_potential_attendees" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_find_potential_attendees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._find_potential_attendees"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._find_potential_attendees" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all individuals in attendee pool who are free between start and
 end time to be later added to a meeting within that time period.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>start_time</strong> (<em>int</em>) – Start time of the meeting.</p></li>
 <li><p><strong>end_time</strong> (<em>int</em>) – End time of the meeting.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of potential attendees</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[int]</p>
 </dd>
 </dl>
@@ -258,23 +253,23 @@ end time to be later added to a meeting within that time period.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.MeetingSchedule._update_attendee_pool">
-<span class="sig-name descname"><span class="pre">_update_attendee_pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._update_attendee_pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._update_attendee_pool" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_update_attendee_pool</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule._update_attendee_pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule._update_attendee_pool" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the attendee pool to ensure the average
 number of meetings per agent is not exceeded</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.schedulers.meetings.MeetingSchedule.get_daily_meetings">
-<span class="sig-name descname"><span class="pre">get_daily_meetings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting" title="citam.engine.schedulers.meetings.Meeting"><span class="pre">Meeting</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule.get_daily_meetings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule.get_daily_meetings" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_daily_meetings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting" title="citam.engine.schedulers.meetings.Meeting"><span class="pre">Meeting</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/schedulers/meetings.html#MeetingSchedule.get_daily_meetings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.schedulers.meetings.MeetingSchedule.get_daily_meetings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of meetings for a given agent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>agent_id</strong> (<em>int</em>) – Id of the agent of interest.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The list of meetings for this agent.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[<a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting" title="citam.engine.schedulers.meetings.Meeting">Meeting</a>]</p>
 </dd>
 </dl>
@@ -299,6 +294,22 @@ number of meetings per agent is not exceeded</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.LOG"><code class="docutils literal notranslate"><span class="pre">LOG</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting"><code class="docutils literal notranslate"><span class="pre">Meeting</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting.__str__"><code class="docutils literal notranslate"><span class="pre">Meeting.__str__()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting.__eq__"><code class="docutils literal notranslate"><span class="pre">Meeting.__eq__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule.create_new_meeting"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule.create_new_meeting()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule._create_meetings_for_room"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule._create_meetings_for_room()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule._generate_meeting_attendee_list"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule._generate_meeting_attendee_list()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule.build"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule.build()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule._find_potential_attendees"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule._find_potential_attendees()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule._update_attendee_pool"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule._update_attendee_pool()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.schedulers.meetings.MeetingSchedule.get_daily_meetings"><code class="docutils literal notranslate"><span class="pre">MeetingSchedule.get_daily_meetings()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#citam.engine.schedulers.meetings.LOG">LOG</a></li>
 <li><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting">Meeting</a><ul>
 <li><a class="reference internal" href="#citam.engine.schedulers.meetings.Meeting.__str__">__str__</a></li>
@@ -340,7 +351,7 @@ number of meetings per agent is not exceeded</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

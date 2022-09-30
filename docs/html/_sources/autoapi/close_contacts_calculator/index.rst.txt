@@ -3,12 +3,6 @@
 
 .. py:module:: close_contacts_calculator
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -48,29 +42,10 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: initialize(self, agents: OrderedDict[int, citam.engine.core.agent.Agent], workdir: Optional[Union[os.PathLike, str]] = None)
-
-      
+   .. py:method:: initialize(agents: OrderedDict[int, citam.engine.core.agent.Agent], workdir: Optional[Union[os.PathLike, str]] = None)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: run(self, current_step: int, active_agents: List[citam.engine.core.agent.Agent]) -> None
+   .. py:method:: run(current_step: int, active_agents: List[citam.engine.core.agent.Agent]) -> None
 
       
       Iterate over agents, compute whether they fall within the contact
@@ -101,29 +76,10 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: finalize(self, agents: List[citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None) -> None
-
-      
+   .. py:method:: finalize(agents: List[citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None) -> None
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: identify_xy_proximity(self, positions_vector: numpy.ndarray) -> numpy.ndarray
+   .. py:method:: identify_xy_proximity(positions_vector: numpy.ndarray) -> numpy.ndarray
 
       
       Compute pairwise distances, given a vector of xy positions, and
@@ -154,7 +110,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: verify_and_add_contact(self, current_step: int, floor_number: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent)
+   .. py:method:: verify_and_add_contact(current_step: int, floor_number: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent)
 
       
       Verify if agents are in nearby hallways before creating contact event.
@@ -183,7 +139,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: add_contact_event(self, current_step: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent) -> None
+   .. py:method:: add_contact_event(current_step: int, agent1: citam.engine.core.agent.Agent, agent2: citam.engine.core.agent.Agent) -> None
 
       
       Record contact event between agent1 and agent2.
@@ -210,7 +166,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: extract_contact_distribution_per_agent(self, agents: List[citam.engine.core.agent.Agent]) -> Tuple[List[str], List[int]]
+   .. py:method:: extract_contact_distribution_per_agent(agents: List[citam.engine.core.agent.Agent]) -> Tuple[List[str], List[int]]
 
       
       Compute and return total contacts per agent.
@@ -235,7 +191,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: save_to_files(self, agents: List[citam.engine.core.agent.Agent], work_directory: Union[str, bytes, os.PathLike])
+   .. py:method:: save_to_files(agents: List[citam.engine.core.agent.Agent], work_directory: Union[str, bytes, os.PathLike])
 
       
       Write output files to the output directory
@@ -261,7 +217,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_svg_heatmap(self, contacts_per_coord: Dict[Tuple[int, int], int], floor_directory: str) -> None
+   .. py:method:: create_svg_heatmap(contacts_per_coord: Dict[Tuple[int, int], int], floor_directory: str) -> None
 
       
       Create and save a heatmap from coordinate contact data.

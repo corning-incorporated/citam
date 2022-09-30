@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.schedulers.schedule
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -26,25 +20,6 @@ Classes
 
 .. py:class:: ScheduleItem(purpose, location, floor_number, duration)
 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:class:: Schedule(timestep: int, start_time: int, end_time: int)
 
@@ -71,27 +46,8 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: build(self)
+   .. py:method:: build()
       :abstractmethod:
 
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
 
 

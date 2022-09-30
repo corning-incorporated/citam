@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.api.parser &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
 <script src="../../../../_static/jquery.js"></script>
 <script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../_static/doctools.js"></script>
+<script src="../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,27 +105,23 @@
           <div class="body" role="main">
             
   <section id="module-citam.api.parser">
-<span id="citam-api-parser"></span><h1><a class="reference internal" href="#module-citam.api.parser" title="citam.api.parser"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.parser</span></code></a><a class="headerlink" href="#module-citam.api.parser" title="Permalink to this headline">¶</a></h1>
+<span id="citam-api-parser"></span><h1><a class="reference internal" href="#module-citam.api.parser" title="citam.api.parser"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.parser</span></code></a><a class="headerlink" href="#module-citam.api.parser" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.api.parser.get_trajectories_lines" title="citam.api.parser.get_trajectories_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_trajectories_lines</span></code></a>(sim_id: str, floor: Union[str, int] = None) → Dict</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.api.parser.get_trajectories_lines" title="citam.api.parser.get_trajectories_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_trajectories_lines</span></code></a>(→ Dict)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.api.parser.get_trajectories" title="citam.api.parser.get_trajectories"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_trajectories</span></code></a>(sim_id: str, floor: Union[str, int] = None, first_timestep: int = 0, max_steps: int = 5000) → Dict</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.api.parser.get_trajectories" title="citam.api.parser.get_trajectories"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_trajectories</span></code></a>(→ Dict)</p></td>
 <td><p>Get trajectory information for a simulation</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#citam.api.parser.get_contacts" title="citam.api.parser.get_contacts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_contacts</span></code></a>(sim_id: str, floor: str) → List[List[Dict]]</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#citam.api.parser.get_contacts" title="citam.api.parser.get_contacts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_contacts</span></code></a>(→ List[List[Dict]])</p></td>
 <td><p>Retrieve contact information for a simulation</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#citam.api.parser.get_coordinate_distribution" title="citam.api.parser.get_coordinate_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_coordinate_distribution</span></code></a>(sim_id: str, floor: str) → List[Dict]</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#citam.api.parser.get_coordinate_distribution" title="citam.api.parser.get_coordinate_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_coordinate_distribution</span></code></a>(→ List[Dict])</p></td>
 <td><p>Retrieve contact/coordinate distribution for a simulation</p></td>
 </tr>
 </tbody>
@@ -137,14 +136,14 @@
 <span class="sig-prename descclassname"><span class="pre">citam.api.parser.</span></span><span class="sig-name descname"><span class="pre">get_trajectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../../../../_modules/citam/api/parser.html#get_trajectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.parser.get_trajectories" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get trajectory information for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> – simulation identifier</p></li>
 <li><p><strong>floor</strong> – Floor number.  Use None to return all floors</p></li>
 <li><p><strong>offset</strong> – Offset number.  Start with 0</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of trajectories broken down by step</p>
 </dd>
 </dl>
@@ -155,13 +154,13 @@
 <span class="sig-prename descclassname"><span class="pre">citam.api.parser.</span></span><span class="sig-name descname"><span class="pre">get_contacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/citam/api/parser.html#get_contacts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.parser.get_contacts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve contact information for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> – simulation identifier</p></li>
 <li><p><strong>floor</strong> – Floor number</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of contacts</p>
 </dd>
 </dl>
@@ -172,13 +171,13 @@
 <span class="sig-prename descclassname"><span class="pre">citam.api.parser.</span></span><span class="sig-name descname"><span class="pre">get_coordinate_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/citam/api/parser.html#get_coordinate_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.api.parser.get_coordinate_distribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve contact/coordinate distribution for a simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sim_id</strong> – simulation identifier</p></li>
 <li><p><strong>floor</strong> – Floor number</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of contacts per coordinate</p>
 </dd>
 </dl>
@@ -200,6 +199,10 @@
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.parser</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#citam.api.parser.get_trajectories_lines"><code class="docutils literal notranslate"><span class="pre">get_trajectories_lines()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.parser.get_trajectories"><code class="docutils literal notranslate"><span class="pre">get_trajectories()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.parser.get_contacts"><code class="docutils literal notranslate"><span class="pre">get_contacts()</span></code></a></li>
+<li><a class="reference internal" href="#citam.api.parser.get_coordinate_distribution"><code class="docutils literal notranslate"><span class="pre">get_coordinate_distribution()</span></code></a></li>
 <li><a class="reference internal" href="#citam.api.parser.get_trajectories_lines">get_trajectories_lines</a></li>
 <li><a class="reference internal" href="#citam.api.parser.get_trajectories">get_trajectories</a></li>
 <li><a class="reference internal" href="#citam.api.parser.get_contacts">get_contacts</a></li>
@@ -229,7 +232,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

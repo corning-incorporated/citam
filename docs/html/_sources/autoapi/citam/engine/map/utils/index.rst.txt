@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.map.utils
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------

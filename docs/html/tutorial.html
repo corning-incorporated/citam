@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Tutorial &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
 <script src="_static/jquery.js"></script>
 <script src="_static/underscore.js"></script>
+<script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="_static/doctools.js"></script>
+<script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Simulation Input Requirements" href="input_requirements.html" />
@@ -110,7 +113,7 @@
           <div class="body" role="main">
             
   <section id="tutorial">
-<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">¶</a></h1>
 <dl class="simple">
 <dt><strong>Contents</strong></dt><dd><ul class="simple">
 <li><p><a class="reference internal" href="#introduction">Introduction</a></p></li>
@@ -122,7 +125,7 @@
 </dd>
 </dl>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
 <p>This is a brief tutorial on how to use CITAM.</p>
 <p>CITAM is an agent-based modeling platform that can assist in the management of indoor facilities in the context of
 contact-based pandemics like COVID-19 and help make policy decisions to mitigate
@@ -144,7 +147,7 @@ provide. We will come back to those later in this tutorial. Let’s start by
 adding a facility.</p>
 </section>
 <section id="adding-a-facility">
-<h2>Adding a facility<a class="headerlink" href="#adding-a-facility" title="Permalink to this headline">¶</a></h2>
+<h2>Adding a facility<a class="headerlink" href="#adding-a-facility" title="Permalink to this heading">¶</a></h2>
 <p>To add a facility, the most basic requirement is an SVG file that provides the spatial boundaries of
 each space in “path” elements. CITAM also needs information about the function of
 each space so it can build realistic schedules for the individuals who use them. Those information can be
@@ -283,7 +286,7 @@ but you only have to do it once for each floor of your facility. Once you are ha
 floorplan, the next step is to generate the navigation network.</p>
 </section>
 <section id="generating-the-navigation-network">
-<h2>Generating the Navigation Network<a class="headerlink" href="#generating-the-navigation-network" title="Permalink to this headline">¶</a></h2>
+<h2>Generating the Navigation Network<a class="headerlink" href="#generating-the-navigation-network" title="Permalink to this heading">¶</a></h2>
 <p>The navigation network (navnet) is what is used internally by citam to compute routes between
 different locations in the facility. Use the following command to build the navnet for TF2:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>citam engine build-navnet TF2 <span class="m">0</span>
@@ -296,7 +299,7 @@ only once per facility per floor.</p>
 as you want for this floorplan.</p>
 </section>
 <section id="running-a-simulation">
-<h2>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this headline">¶</a></h2>
+<h2>Running a simulation<a class="headerlink" href="#running-a-simulation" title="Permalink to this heading">¶</a></h2>
 <p>To run a simulation, you need an input file in JSON format. Please
 create a new folder to run the simulation. We will refer to this folder as
 SIMULATION_FOLDER. Now open your favorite text editor and create a new file called
@@ -349,11 +352,11 @@ the following files created in your SIMULATION_FOLDER:</p>
 <p>For details on how to visualize and interpret your results go to: <a class="reference internal" href="visualize_results.html#visualize"><span class="std std-ref">Visualize Results</span></a></p>
 </section>
 <section id="exploring-policies">
-<h2>Exploring Policies<a class="headerlink" href="#exploring-policies" title="Permalink to this headline">¶</a></h2>
+<h2>Exploring Policies<a class="headerlink" href="#exploring-policies" title="Permalink to this heading">¶</a></h2>
 <p>Coming soon</p>
 </section>
 <section id="to-learn-more">
-<h2>To Learn More<a class="headerlink" href="#to-learn-more" title="Permalink to this headline">¶</a></h2>
+<h2>To Learn More<a class="headerlink" href="#to-learn-more" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="input_requirements.html">Simulation Input Requirements</a><ul>
@@ -425,7 +428,7 @@ the following files created in your SIMULATION_FOLDER:</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

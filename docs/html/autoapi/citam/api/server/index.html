@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.api.server &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
 <script src="../../../../_static/jquery.js"></script>
 <script src="../../../../_static/underscore.js"></script>
+<script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../_static/doctools.js"></script>
+<script src="../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,7 +105,7 @@
           <div class="body" role="main">
             
   <section id="module-citam.api.server">
-<span id="citam-api-server"></span><h1><a class="reference internal" href="#module-citam.api.server" title="citam.api.server"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.server</span></code></a><a class="headerlink" href="#module-citam.api.server" title="Permalink to this headline">¶</a></h1>
+<span id="citam-api-server"></span><h1><a class="reference internal" href="#module-citam.api.server" title="citam.api.server"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.server</span></code></a><a class="headerlink" href="#module-citam.api.server" title="Permalink to this heading">¶</a></h1>
 <p>WSGI Server Entrypoint</p>
 <p>The CITAM results API is for retrieving results and SVG maps related to the
 CITAM COVID-19 model.</p>
@@ -113,14 +116,10 @@ set the environment variable <code class="docutils literal notranslate"><span cl
 gunicorn</p>
 </div>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.api.server.get_wsgi_app" title="citam.api.server.get_wsgi_app"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wsgi_app</span></code></a>()</p></td>
 <td><p>Return the WSGI application for this API.</p></td>
@@ -150,6 +149,7 @@ This should be used with a WSGI server like Gunicorn</p>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.api.server</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#citam.api.server.get_wsgi_app"><code class="docutils literal notranslate"><span class="pre">get_wsgi_app()</span></code></a></li>
 <li><a class="reference internal" href="#citam.api.server.get_wsgi_app">get_wsgi_app</a></li>
 </ul>
 </li>
@@ -176,7 +176,7 @@ This should be used with a WSGI server like Gunicorn</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

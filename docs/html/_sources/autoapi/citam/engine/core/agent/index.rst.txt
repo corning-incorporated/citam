@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.core.agent
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -48,7 +42,7 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: step(self)
+   .. py:method:: step()
 
       
       Move this agent one step forward in its itinerary.

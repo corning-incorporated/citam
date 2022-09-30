@@ -3,12 +3,6 @@
 
 .. py:module:: calculator
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -48,73 +42,16 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: initialize(self, agents: OrderedDict[int, citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None)
+   .. py:method:: initialize(agents: OrderedDict[int, citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None)
       :abstractmethod:
 
-      
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: run(self, current_step: int, agents: List[citam.engine.core.agent.Agent], **kwargs)
+   .. py:method:: run(current_step: int, agents: List[citam.engine.core.agent.Agent], **kwargs)
       :abstractmethod:
 
-      
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: finalize(self, agents: List[citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None)
+   .. py:method:: finalize(agents: List[citam.engine.core.agent.Agent], work_directory: Optional[Union[str, bytes, os.PathLike]] = None)
       :abstractmethod:
 
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
 
 

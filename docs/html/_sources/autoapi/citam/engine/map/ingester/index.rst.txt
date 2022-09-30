@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.map.ingester
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -45,24 +39,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:class:: FloorplanIngester(svg_file: Union[str, pathlib.Path], scale: float, csv_file: Union[str, pathlib.Path] = None, extract_doors_from_file: bool = False, buildings_to_keep: Set[str] = None, excluded_buildings: Set[str] = None)
 
    
@@ -85,7 +61,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: create_spaces_from_csv_and_svg_data(self) -> None
+   .. py:method:: create_spaces_from_csv_and_svg_data() -> None
 
       
       Create space objects from data extracted in csv and svg files
@@ -108,7 +84,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_spaces_from_svg_data(self) -> None
+   .. py:method:: create_spaces_from_svg_data() -> None
 
       
       Create space objects from data extracted in standalone svg file
@@ -131,7 +107,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: validate_buildings(self) -> None
+   .. py:method:: validate_buildings() -> None
 
       
       Make sure we take all user-provided building names into account
@@ -154,7 +130,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: read_data_from_svg_file(self) -> None
+   .. py:method:: read_data_from_svg_file() -> None
 
       
       Read and parse floorplan from svg file
@@ -177,7 +153,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: read_data_from_csv_and_svg_files(self) -> None
+   .. py:method:: read_data_from_csv_and_svg_files() -> None
 
       
       Read and parse csv and svg files
@@ -200,7 +176,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: read_input_files(self) -> None
+   .. py:method:: read_input_files() -> None
 
       
       Read and parse csv and svg files
@@ -223,7 +199,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: run(self) -> None
+   .. py:method:: run() -> None
 
       
       Perform the ingestion process
@@ -246,7 +222,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_space_index_for_door(self, door: svgpathtools.Path) -> Tuple[Optional[int], List[svgpathtools.Line]]
+   .. py:method:: find_space_index_for_door(door: svgpathtools.Path) -> Tuple[Optional[int], List[svgpathtools.Line]]
 
       
       Given a door SVG element, find the index of the space to which it
@@ -274,7 +250,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_closest_wall_and_best_door_line(self, space_index: int, door_lines: List[svgpathtools.Line], max_distance=10.0) -> Tuple[Optional[int], Optional[svgpathtools.Line]]
+   .. py:method:: find_closest_wall_and_best_door_line(space_index: int, door_lines: List[svgpathtools.Line], max_distance=10.0) -> Tuple[Optional[int], Optional[svgpathtools.Line]]
 
       
       Given a number of lines in the door SVG element, find the best line
@@ -307,7 +283,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _find_all_overlapping_walls(self, door_line: svgpathtools.Line) -> Dict[int, List[int]]
+   .. py:method:: _find_all_overlapping_walls(door_line: svgpathtools.Line) -> Dict[int, List[int]]
 
       
       Given a door line, find all overlapping walls.
@@ -334,7 +310,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: build_door_line(self, door: svgpathtools.Path) -> svgpathtools.Line
+   .. py:method:: build_door_line(door: svgpathtools.Path) -> svgpathtools.Line
 
       
       Take a door path (Line or Bezier Curve) and return a Line that
@@ -363,7 +339,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _create_door_object(self, door_line: svgpathtools.Line, space_indices: List[int]) -> None
+   .. py:method:: _create_door_object(door_line: svgpathtools.Line, space_indices: List[int]) -> None
 
       
       Given a door line and space indices, create new door object and add it
@@ -391,7 +367,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _remove_door_from_overlapping_walls(self, door_line: svgpathtools.Line, overlapping_walls: Dict[int, List[int]]) -> None
+   .. py:method:: _remove_door_from_overlapping_walls(door_line: svgpathtools.Line, overlapping_walls: Dict[int, List[int]]) -> None
 
       
       Given a door line and a dict of overlapping walls grouped by their
@@ -420,7 +396,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: process_doors(self) -> None
+   .. py:method:: process_doors() -> None
 
       
       Iterate over the door paths extracted from the SVG file, find
@@ -444,7 +420,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: create_new_door_to_room(self, room_wall: svgpathtools.Line, room_id: int) -> None
+   .. py:method:: create_new_door_to_room(room_wall: svgpathtools.Line, room_id: int) -> None
 
       
       Add door to access a given room from a given wall.
@@ -471,7 +447,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: check_for_overlap_with_other_walls_and_add_door_to_wall(self, h_wall: svgpathtools.Line, other_walls: List[svgpathtools.Line], other_space_ids: List[int], add_door: bool) -> Optional[List[svgpathtools.Line]]
+   .. py:method:: check_for_overlap_with_other_walls_and_add_door_to_wall(h_wall: svgpathtools.Line, other_walls: List[svgpathtools.Line], other_space_ids: List[int], add_door: bool) -> Optional[List[svgpathtools.Line]]
 
       
       Check for overlap between a given wall and all other walls in facility
@@ -495,7 +471,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_and_remove_overlaps_between_walls(self, hallway_wall: svgpathtools.Line, other_walls: List[svgpathtools.Line], other_space_ids: List[int], add_door=True) -> List[svgpathtools.Line]
+   .. py:method:: find_and_remove_overlaps_between_walls(hallway_wall: svgpathtools.Line, other_walls: List[svgpathtools.Line], other_space_ids: List[int], add_door=True) -> List[svgpathtools.Line]
 
       
       Given a hallway wall, iterate over all other walls to test for overlap.
@@ -532,7 +508,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_building_walls(self, building: str) -> Tuple[list, list, list, list]
+   .. py:method:: get_building_walls(building: str) -> Tuple[list, list, list, list]
 
       
       Extract all walls from building and return the room walls and hallway
@@ -561,7 +537,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_valid_walls_and_create_doors(self, building: str) -> Tuple[List[svgpathtools.Line], List[svgpathtools.Line]]
+   .. py:method:: find_valid_walls_and_create_doors(building: str) -> Tuple[List[svgpathtools.Line], List[svgpathtools.Line]]
 
       
       Remove all invalid walls, create missing doors and return the remaining
@@ -589,7 +565,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_floorplan(self)
+   .. py:method:: get_floorplan()
 
       
       Return the ingested floorplan object.
@@ -612,7 +588,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_min_and_max_coordinates(self)
+   .. py:method:: find_min_and_max_coordinates()
 
       
       Find the min and max coordinates for both x and y.

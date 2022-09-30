@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.map.updater
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -36,24 +30,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:class:: FloorplanUpdater(floorplan: citam.engine.map.floorplan.Floorplan, svg_file: Union[str, pathlib.Path] = None, csv_file: Union[str, pathlib.Path] = None)
 
    
@@ -76,7 +52,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: update_from_csv_data(self) -> None
+   .. py:method:: update_from_csv_data() -> None
 
       
       Update space properties in floorplan using data from CSV file
@@ -100,7 +76,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: read_updated_svg_file(self) -> Tuple[List[svgpathtools.Path], List[svgpathtools.Path]]
+   .. py:method:: read_updated_svg_file() -> Tuple[List[svgpathtools.Path], List[svgpathtools.Path]]
 
       
       Read edited SVG file and extract wall and door paths.
@@ -125,7 +101,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_special_walls(self, svg_wall_paths: List[svgpathtools.Line]) -> None
+   .. py:method:: find_special_walls(svg_wall_paths: List[svgpathtools.Line]) -> None
 
       
       Compared walls from svg file to exising walls and identify new or
@@ -152,7 +128,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: remove_door_from_spaces(self, door: citam.engine.map.door.Door) -> None
+   .. py:method:: remove_door_from_spaces(door: citam.engine.map.door.Door) -> None
 
       
       Remove door from corresponding spaces.
@@ -177,7 +153,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_doors_to_remove(self) -> List[citam.engine.map.door.Door]
+   .. py:method:: find_doors_to_remove() -> List[citam.engine.map.door.Door]
 
       
       Go through existing doors and check if they overal with any special
@@ -203,7 +179,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: run(self) -> None
+   .. py:method:: run() -> None
 
       
       Run the floorplan update process using data from provided csv
@@ -227,7 +203,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: update_from_svg_data(self, svg_wall_paths: List[svgpathtools.Path], svg_door_paths: List[svgpathtools.Path]) -> None
+   .. py:method:: update_from_svg_data(svg_wall_paths: List[svgpathtools.Path], svg_door_paths: List[svgpathtools.Path]) -> None
 
       
       Read SVG file to extract walls and door info and update floorplan
@@ -255,7 +231,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_spaces_for_door(self, door_path: svgpathtools.Path) -> Tuple[Optional[citam.engine.map.space.Space], Optional[citam.engine.map.space.Space]]
+   .. py:method:: find_spaces_for_door(door_path: svgpathtools.Path) -> Tuple[Optional[citam.engine.map.space.Space], Optional[citam.engine.map.space.Space]]
 
       
       Given a door path, check which spaces are on both sides of the door.
@@ -284,7 +260,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: overlap_door_with_wall(self, new_door: svgpathtools.Line, max_distance_to_walls=3.0) -> svgpathtools.Line
+   .. py:method:: overlap_door_with_wall(new_door: svgpathtools.Line, max_distance_to_walls=3.0) -> svgpathtools.Line
 
       
       Verify if new door lines as provided by user overlap with existing
@@ -317,7 +293,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: process_new_doors(self, svg_door_paths: List[svgpathtools.Line], updated_doors: List[citam.engine.map.door.Door]) -> None
+   .. py:method:: process_new_doors(svg_door_paths: List[svgpathtools.Line], updated_doors: List[citam.engine.map.door.Door]) -> None
 
       
       Iterate over door paths extracted from svg file and process them
@@ -345,7 +321,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_spaces_of_point(self, point: citam.engine.map.point.Point) -> List[int]
+   .. py:method:: find_spaces_of_point(point: citam.engine.map.point.Point) -> List[int]
 
       
       Find all spaces that a point belongs to. This should always be

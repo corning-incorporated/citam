@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.io.visualization
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -44,92 +38,20 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:data:: LINE_MARKER
    :annotation: = 2
 
    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:data:: PLUS_MARKER
    :annotation: = 3
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:data:: LOG
    
 
    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 
 .. py:function:: export_possible_oneway_aisles_to_svg(walls: List[svgpathtools.Path], oneway_network: networkx.Graph, svgfile: Union[str, pathlib.Path]) -> None
 

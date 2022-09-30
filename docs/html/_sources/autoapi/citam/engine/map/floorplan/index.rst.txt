@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.map.floorplan
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -44,24 +38,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:class:: Floorplan(scale: float, spaces: List[citam.engine.map.space.Space], doors: List[citam.engine.map.door.Door], walls: List[svgpathtools.Line], aisles: Tuple[svgpathtools.Line, svgpathtools.Line], minx: float, miny: float, maxx: float, maxy: float, floor_name='0', special_walls: List[svgpathtools.Line] = None, traffic_policy: List[Dict[str, Any]] = None, assign_doors_on_load: bool = False)
 
    
@@ -84,7 +60,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: show_summary(self)
+   .. py:method:: show_summary()
 
       
       Show summary stats about this floorplan
@@ -107,7 +83,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: match_doors_and_spaces(self) -> None
+   .. py:method:: match_doors_and_spaces() -> None
 
       
       Iterate over all doors and create references to corresponding spaces.
@@ -131,7 +107,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_space_by_id(self, space_id: int) -> Optional[citam.engine.map.space.Space]
+   .. py:method:: find_space_by_id(space_id: int) -> Optional[citam.engine.map.space.Space]
 
       
       Find and return the space object that has the given id.
@@ -158,7 +134,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: place_agent(self, agent: citam.engine.core.agent.Agent, pos: Tuple[int, int]) -> None
+   .. py:method:: place_agent(agent: citam.engine.core.agent.Agent, pos: Tuple[int, int]) -> None
 
       
       Position an agent in a given x, y position on this floor
@@ -185,7 +161,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: remove_agent(self, agent: citam.engine.core.agent.Agent) -> None
+   .. py:method:: remove_agent(agent: citam.engine.core.agent.Agent) -> None
 
       
       Remove the agent from the floor and set its position to None.
@@ -210,7 +186,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: move_agent(self, agent: citam.engine.core.agent.Agent, pos: Tuple[int, int]) -> None
+   .. py:method:: move_agent(agent: citam.engine.core.agent.Agent, pos: Tuple[int, int]) -> None
 
       
       Move an agent from its current position to a new position.
@@ -238,7 +214,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: identify_this_location(self, x: int, y: int, include_boundaries=True) -> Optional[int]
+   .. py:method:: identify_this_location(x: int, y: int, include_boundaries=True) -> Optional[int]
 
       
       Given a point given by its xy coords, find the space inside of which it
@@ -271,7 +247,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_room_exit_coords(self, room_id: int) -> Optional[List[Tuple[int, int]]]
+   .. py:method:: get_room_exit_coords(room_id: int) -> Optional[List[Tuple[int, int]]]
 
       
       Given a room id, find the exit coords (xy point at the middle of the
@@ -299,7 +275,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: export_to_svg(self, svg_file: Union[str, pathlib.Path], include_doors=False) -> None
+   .. py:method:: export_to_svg(svg_file: Union[str, pathlib.Path], include_doors=False) -> None
 
       
       Export the current floorplan to an SVG file.
@@ -330,29 +306,10 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: show(self, include_doors=False) -> svgwrite.drawing.Drawing
-
-      
+   .. py:method:: show(include_doors=False) -> svgwrite.drawing.Drawing
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: _as_dict(self) -> Dict[str, Any]
+   .. py:method:: _as_dict() -> Dict[str, Any]
 
       
       Return the floorplan as a dictionary. The "assign_doors_on_load" flag
@@ -379,7 +336,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: to_json_file(self, json_file: Union[str, pathlib.Path]) -> None
+   .. py:method:: to_json_file(json_file: Union[str, pathlib.Path]) -> None
 
       
       Export extracted floorplan data to a json file.

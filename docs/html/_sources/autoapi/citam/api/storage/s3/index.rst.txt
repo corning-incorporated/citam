@@ -3,12 +3,6 @@
 
 .. py:module:: citam.api.storage.s3
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -47,7 +41,7 @@ Classes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: _get_s3_client(self, **kwargs)
+   .. py:method:: _get_s3_client(**kwargs)
 
       
       Return a S3 client for fetching result files
@@ -82,7 +76,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: _get_text_file(self, sim_id, filename)
+   .. py:method:: _get_text_file(sim_id, filename)
 
       
       Load a text file from S3
@@ -108,7 +102,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: list_runs(self)
+   .. py:method:: list_runs()
 
       
       List all simulations
@@ -132,7 +126,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_coordinate_distribution_file(self, sim_id, floor)
+   .. py:method:: get_coordinate_distribution_file(sim_id, floor)
 
       
       Return the Coordinate Distribution file for a simulation
@@ -158,7 +152,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_trajectory_file(self, sim_id)
+   .. py:method:: get_trajectory_file(sim_id)
 
       
       Return the trajectory file for a simulation
@@ -183,7 +177,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_trajectory_file_location(self, sim_id: str) -> os.PathLike
+   .. py:method:: get_trajectory_file_location(sim_id: str) -> os.PathLike
       :abstractmethod:
 
       
@@ -209,7 +203,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_contact_file(self, sim_id, floor)
+   .. py:method:: get_contact_file(sim_id, floor)
 
       
       Return the contact file for a simulation
@@ -235,7 +229,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_map_file(self, sim_id, floor)
+   .. py:method:: get_map_file(sim_id, floor)
 
       
       Return the map image for given simulation
@@ -261,7 +255,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_heatmap_file(self, sim_id, floor)
+   .. py:method:: get_heatmap_file(sim_id, floor)
 
       
       Return a heatmap file for a simulation and floor
@@ -287,7 +281,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_manifest_file(self, sim_id)
+   .. py:method:: get_manifest_file(sim_id)
 
       
       Return the manifest file for a simulation
@@ -312,7 +306,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_pair_contact_file(self, sim_id)
+   .. py:method:: get_pair_contact_file(sim_id)
 
       
       Return the pair contact file for a simulation
@@ -337,7 +331,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_statistics_file(self, sim_id)
+   .. py:method:: get_statistics_file(sim_id)
 
       
       Get the statistics file for a simulation
@@ -361,7 +355,7 @@ Classes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_policy_file(self, sim_id)
+   .. py:method:: get_policy_file(sim_id)
 
       
       Get the statistics file for a simulation

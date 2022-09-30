@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html
+  lang="en" >
 
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>citam.engine.core.simulation &#8212; CITAM 0.13.0 documentation</title>
 <link rel="stylesheet" href="../../../../../_static/style.css" type="text/css" />
@@ -17,7 +18,9 @@
 <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
 <script src="../../../../../_static/jquery.js"></script>
 <script src="../../../../../_static/underscore.js"></script>
+<script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
 <script src="../../../../../_static/doctools.js"></script>
+<script src="../../../../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -102,16 +105,12 @@
           <div class="body" role="main">
             
   <section id="module-citam.engine.core.simulation">
-<span id="citam-engine-core-simulation"></span><h1><a class="reference internal" href="#module-citam.engine.core.simulation" title="citam.engine.core.simulation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.simulation</span></code></a><a class="headerlink" href="#module-citam.engine.core.simulation" title="Permalink to this headline">¶</a></h1>
+<span id="citam-engine-core-simulation"></span><h1><a class="reference internal" href="#module-citam.engine.core.simulation" title="citam.engine.core.simulation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">citam.engine.core.simulation</span></code></a><a class="headerlink" href="#module-citam.engine.core.simulation" title="Permalink to this heading">¶</a></h1>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.core.simulation.Simulation" title="citam.engine.core.simulation.Simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Simulation</span></code></a></p></td>
 <td><p>Implements a CITAM indoor Agent-Based Modeling simulation.</p></td>
@@ -120,12 +119,8 @@
 </table>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#citam.engine.core.simulation.LOG" title="citam.engine.core.simulation.LOG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOG</span></code></a></p></td>
 <td><p></p></td>
@@ -146,7 +141,7 @@ initialize the agents and their scheduels, run a simulation and output
 results to file.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.create_sim_hash">
-<span class="sig-name descname"><span class="pre">create_sim_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.create_sim_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.create_sim_hash" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_sim_hash</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.create_sim_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.create_sim_hash" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hash simulation inputs, scheduling policy, meetings policy,
 navigation policy, floorplan and navigation data to generate a unique
 ID for each simulation.</p>
@@ -154,17 +149,17 @@ ID for each simulation.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.run_serial">
-<span class="sig-name descname"><span class="pre">run_serial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.run_serial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.run_serial" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run_serial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.run_serial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.run_serial" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a CITAM simulation serially (i.e. only one core will be used).</p>
 <p>The serial runner is understandably slow because at each timestep,
 contacts have to be computed while taking into account the specific
 layout of the facility. A parallel version that computes contacts
 for timestep blocks is desirable.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>workdir</strong> (<em>str</em>) – The directory where all results are to saved.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> – If occupancy rate is not between 0.0 and 1.0</p>
 </dd>
 </dl>
@@ -172,10 +167,10 @@ for timestep blocks is desirable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.run_simulation_and_save_results">
-<span class="sig-name descname"><span class="pre">run_simulation_and_save_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.run_simulation_and_save_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.run_simulation_and_save_results" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run_simulation_and_save_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">os.PathLike</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.run_simulation_and_save_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.run_simulation_and_save_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform simulation and save results to files.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>workdir</strong> (<em>str</em>) – path where results are saved.</p>
 </dd>
 </dl>
@@ -183,10 +178,10 @@ for timestep blocks is desirable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.create_agents">
-<span class="sig-name descname"><span class="pre">create_agents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../schedulers/schedule/index.html#citam.engine.schedulers.schedule.Schedule" title="citam.engine.schedulers.schedule.Schedule"><span class="pre">citam.engine.schedulers.schedule.Schedule</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.create_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.create_agents" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_agents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../schedulers/schedule/index.html#citam.engine.schedulers.schedule.Schedule" title="citam.engine.schedulers.schedule.Schedule"><span class="pre">citam.engine.schedulers.schedule.Schedule</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.create_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.create_agents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a list of schedules, one per agent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> – If an entrance could not be found</p>
 </dd>
 </dl>
@@ -194,12 +189,12 @@ for timestep blocks is desirable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj_outfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TextIO</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.step" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traj_outfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TextIO</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move the simulation one step ahead.</p>
 <p>At each step, agents are advanced one step ahead in their itineraries
 and contact statistics are computed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>traj_outfile</strong> (<em>TextIO</em><em>, </em><em>optional</em>) – File to write trajectory data, defaults to None</p>
 </dd>
 </dl>
@@ -207,16 +202,16 @@ and contact statistics are computed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.move_agents">
-<span class="sig-name descname"><span class="pre">move_agents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.move_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.move_agents" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">move_agents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent"><span class="pre">citam.engine.core.agent.Agent</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.move_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.move_agents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over agents and move them to the next position in their
 itinerary. Active agents are agents currently in the facility and
 moving agents are agents currently moving from one location to the
 next.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list of active and moving agents</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple[List[<a class="reference internal" href="../agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent">Agent</a>], List[<a class="reference internal" href="../agent/index.html#citam.engine.core.agent.Agent" title="citam.engine.core.agent.Agent">Agent</a>]]</p>
 </dd>
 </dl>
@@ -224,10 +219,10 @@ next.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.save_manifest">
-<span class="sig-name descname"><span class="pre">save_manifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.save_manifest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.save_manifest" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_manifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.save_manifest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.save_manifest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save manifest file, used by the dashboard to show results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>work_directory</strong> (<em>str</em>) – top level directory where all simulation
 outputs are saved.</p>
 </dd>
@@ -236,11 +231,11 @@ outputs are saved.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.save_maps">
-<span class="sig-name descname"><span class="pre">save_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.save_maps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.save_maps" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.save_maps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.save_maps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save svg maps for each floor for visualization. Each floor map is
 saved in a separate subdirectory (created if not found).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>work_directory</strong> (<em>str</em>) – top level directory where all simulation
 outputs are saved.</p>
 </dd>
@@ -249,10 +244,10 @@ outputs are saved.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="citam.engine.core.simulation.Simulation.save_schedules">
-<span class="sig-name descname"><span class="pre">save_schedules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.save_schedules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.save_schedules" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_schedules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">work_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../../_modules/citam/engine/core/simulation.html#Simulation.save_schedules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#citam.engine.core.simulation.Simulation.save_schedules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write agent schedules to file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>work_directory</strong> (<em>str</em>) – directory where output files are to be saved.</p></li>
 <li><p><strong>scheduler</strong> (<a class="reference internal" href="../../schedulers/scheduler/index.html#citam.engine.schedulers.scheduler.Scheduler" title="citam.engine.schedulers.scheduler.Scheduler"><em>Scheduler</em></a>) – Scheduler agent used in this simulation.</p></li>
@@ -280,6 +275,19 @@ outputs are saved.</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#citam.engine.core.simulation.LOG"><code class="docutils literal notranslate"><span class="pre">LOG</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation"><code class="docutils literal notranslate"><span class="pre">Simulation</span></code></a><ul>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.create_sim_hash"><code class="docutils literal notranslate"><span class="pre">Simulation.create_sim_hash()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.run_serial"><code class="docutils literal notranslate"><span class="pre">Simulation.run_serial()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.run_simulation_and_save_results"><code class="docutils literal notranslate"><span class="pre">Simulation.run_simulation_and_save_results()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.create_agents"><code class="docutils literal notranslate"><span class="pre">Simulation.create_agents()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.step"><code class="docutils literal notranslate"><span class="pre">Simulation.step()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.move_agents"><code class="docutils literal notranslate"><span class="pre">Simulation.move_agents()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.save_manifest"><code class="docutils literal notranslate"><span class="pre">Simulation.save_manifest()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.save_maps"><code class="docutils literal notranslate"><span class="pre">Simulation.save_maps()</span></code></a></li>
+<li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.save_schedules"><code class="docutils literal notranslate"><span class="pre">Simulation.save_schedules()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#citam.engine.core.simulation.LOG">LOG</a></li>
 <li><a class="reference internal" href="#citam.engine.core.simulation.Simulation">Simulation</a><ul>
 <li><a class="reference internal" href="#citam.engine.core.simulation.Simulation.create_sim_hash">create_sim_hash</a></li>
@@ -318,7 +326,7 @@ outputs are saved.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
   </div>
 </div>
       <div class="clearer"></div>

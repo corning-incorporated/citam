@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.io.serializer
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -53,93 +47,18 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: __call__(self, class_)
-
-      
+   .. py:method:: __call__(class_)
 
 
+   .. py:method:: decoder_hook(d: dict)
 
 
+   .. py:method:: encoder_default(obj)
 
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: decoder_hook(self, d: dict)
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
-
-   .. py:method:: encoder_default(self, obj)
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      ..
-          !! processed by numpydoc !!
 
 
 .. py:data:: serializer
    
 
    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
 

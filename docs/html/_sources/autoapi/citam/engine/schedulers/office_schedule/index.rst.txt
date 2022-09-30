@@ -3,12 +3,6 @@
 
 .. py:module:: citam.engine.schedulers.office_schedule
 
-.. autoapi-nested-parse::
-
-   
-   ..
-       !! processed by numpydoc !!
-
 
 Module Contents
 ---------------
@@ -36,24 +30,6 @@ Attributes
 
    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   ..
-       !! processed by numpydoc !!
-
 .. py:class:: OfficeSchedule(timestep: int, start_time: int, exit_time: int, entrance_door: citam.engine.map.door.Door, entrance_floor: int, exit_door: citam.engine.map.door.Door, exit_floor: int, office_location: int, office_floor: int, navigation: citam.engine.facility.navigation.Navigation, scheduling_rules: Dict[str, Any], meetings: List[citam.engine.schedulers.meetings.Meeting] = None)
 
    Bases: :py:obj:`citam.engine.schedulers.schedule.Schedule`
@@ -80,7 +56,7 @@ Attributes
 
    ..
        !! processed by numpydoc !!
-   .. py:method:: build_schedule_item(self, purpose: str, next_meeting_start_time: Optional[int]) -> citam.engine.schedulers.schedule.ScheduleItem
+   .. py:method:: build_schedule_item(purpose: str, next_meeting_start_time: Optional[int]) -> citam.engine.schedulers.schedule.ScheduleItem
 
       
       Given a purpose and additional properties such as meeting duration,
@@ -112,7 +88,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_next_schedule_item(self) -> citam.engine.schedulers.schedule.ScheduleItem
+   .. py:method:: find_next_schedule_item() -> citam.engine.schedulers.schedule.ScheduleItem
 
       
       Check if a meeting is happening within MEETING_BUFFER time. If so,
@@ -141,7 +117,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: find_possible_purposes(self) -> List[str]
+   .. py:method:: find_possible_purposes() -> List[str]
 
       
       Feturn list of possible purposes for this agent in this facility.
@@ -174,7 +150,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_max_duration_for_purpose(self, purpose: str, next_meeting_start_time: Optional[int]) -> int
+   .. py:method:: get_max_duration_for_purpose(purpose: str, next_meeting_start_time: Optional[int]) -> int
 
       
       Calculate the maximum duration possible for a given scheduling purpose
@@ -205,7 +181,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: count_purpose_occurence_in_schedule_items(self) -> List[int]
+   .. py:method:: count_purpose_occurence_in_schedule_items() -> List[int]
 
       
       Iterate over schedule items and count how many items each scheduling
@@ -231,7 +207,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_valid_purposes_from_possible_purposes(self, next_meeting_start_time: Optional[int]) -> List[str]
+   .. py:method:: get_valid_purposes_from_possible_purposes(next_meeting_start_time: Optional[int]) -> List[str]
 
       
       Iterate through list of purposes under consideration, remove any that
@@ -259,7 +235,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: choose_valid_scheduling_purpose(self, next_meeting_start_time: Optional[int]) -> str
+   .. py:method:: choose_valid_scheduling_purpose(next_meeting_start_time: Optional[int]) -> str
 
       
       Find a valid scheduling purpose using rules defined in the
@@ -289,7 +265,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_pace(self, scale: float) -> float
+   .. py:method:: get_pace(scale: float) -> float
 
       
       Randomly pick a walking pace for this agent by sampling from a
@@ -318,7 +294,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: update_schedule_items(self, new_item: citam.engine.schedulers.schedule.ScheduleItem) -> None
+   .. py:method:: update_schedule_items(new_item: citam.engine.schedulers.schedule.ScheduleItem) -> None
 
       
       Update list of schedule items by adding this new item. If previous item
@@ -344,7 +320,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: update_itinerary(self, route: List[Tuple[Any, Ellipsis]], schedule_item: citam.engine.schedulers.schedule.ScheduleItem) -> None
+   .. py:method:: update_itinerary(route: List[Tuple[Any, Ellipsis]], schedule_item: citam.engine.schedulers.schedule.ScheduleItem) -> None
 
       
       Given a route and a next schedule item, update this agent's itinerary
@@ -368,7 +344,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: build(self) -> None
+   .. py:method:: build() -> None
 
       
       Build this agent's schedule and corresponding itinerary.
@@ -391,7 +367,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: __str__(self) -> str
+   .. py:method:: __str__() -> str
 
       
       Convert current schedule to a str for output purposes
@@ -414,7 +390,7 @@ Attributes
       ..
           !! processed by numpydoc !!
 
-   .. py:method:: get_next_position(self) -> Tuple[Optional[int], Ellipsis]
+   .. py:method:: get_next_position() -> Tuple[Optional[int], Ellipsis]
 
       
       Return the next position of this agent from its itinerary
